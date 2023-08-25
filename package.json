@@ -1,0 +1,24 @@
+{
+	"name": "e2e-tests",
+	"version": "1.0.0",
+	"description": "E2E tests automation for oasis-borrow",
+	"main": "index.js",
+	"author": "juan-langa <juan@oazoapps.com>",
+	"license": "MIT",
+	"devDependencies": {
+		"@playwright/test": "^1.37.1",
+		"dotenv": "^16.3.1"
+	},
+	"scripts": {
+		"test:e2e": "npx playwright test",
+		"test:e2e:regression": "npx playwright test --grep @regression  --project chromium",
+		"test:e2e:chromium": "npx playwright test --project chromium",
+		"test:e2e:firefox": "npx playwright test --project firefox",
+		"test:e2e:webkit": "npx playwright test --project webkit",
+		"test:e2e:ten-times": "npx playwright test --repeat-each=10",
+		"test:e2e:chromium:ten-times": "npx playwright test --project chromium --repeat-each=10",
+		"test:e2e:firefox:ten-times": "npx playwright test --project firefox --repeat-each=10",
+		"test:e2e:webkit:ten-times": "npx playwright test --project webkit --repeat-each=10",
+		"test:report": "npx playwright show-report"
+	}
+}
