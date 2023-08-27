@@ -10,66 +10,100 @@ export class OrderInformation {
 		this.orderInformationLocator = page.getByRole('list').filter({ hasText: 'Order information' }); // locator('ul:has-text("Order information")');
 	}
 
-	async shouldHaveBuyingAmount(token: string) {
-		await expect(this.orderInformationLocator.locator('li:has-text("Buying")')).toContainText(
-			`${token} $`,
-			{
-				timeout: 15000,
-			}
-		);
+	async shouldHaveBuyingAmount({
+		tokenAmount,
+		token,
+		dollarsAmount,
+	}: {
+		tokenAmount: string;
+		token: string;
+		dollarsAmount: string;
+	}) {
+		const regExp = new RegExp(`${tokenAmount} ${token} \\$${dollarsAmount}`);
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Buying") div:nth-child(2)')
+		).toContainText(regExp, {
+			timeout: 10_000,
+		});
 	}
 
-	async shouldHavePriceImpact() {
+	async shouldHavePriceImpact({ amount, percentage }: { amount: string; percentage: string }) {
+		const regExp = new RegExp(`${amount} \\(${percentage}%\\)`);
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Price (impact)")')
 		).toContainText('%)', {
-			timeout: 15000,
+			timeout: 10_000,
 		});
 	}
 
-	async shouldHaveSlippageLimit() {
+	async shouldHaveSlippageLimit(amount: string) {
+		const regExp = new RegExp(`${amount}%`);
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Slippage Limit")')
-		).toContainText('%', {
-			timeout: 15000,
+		).toContainText(regExp, {
+			timeout: 10_000,
 		});
 	}
 
-	async shouldHaveMultiply() {
+	async shouldHaveMultiply({ current, future }: { current: string; future: string }) {
+		const regExp = new RegExp(`${current}x${future}x`);
+
 		await expect(this.orderInformationLocator.locator('li:has-text("Multiply")')).toContainText(
-			'x',
+			regExp,
 			{
-				timeout: 15000,
+				timeout: 10_000,
 			}
 		);
 	}
-	async shouldHaveOutstandingDebt(token: string) {
+	async shouldHaveOutstandingDebt({
+		token,
+		current,
+		future,
+	}: {
+		token: string;
+		current: string;
+		future: string;
+	}) {
+		const regExp = new RegExp(`${current} ${token}${future} ${token}`);
+
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Outstanding debt")')
-		).toContainText(token, {
-			timeout: 15000,
+		).toContainText(regExp, {
+			timeout: 10_000,
 		});
 	}
 
-	async shouldHaveTotalCollateral(token: string) {
+	async shouldHaveTotalCollateral({
+		token,
+		current,
+		future,
+	}: {
+		token: string;
+		current: string;
+		future: string;
+	}) {
+		const regExp = new RegExp(`${current} ${token}${future} ${token}`);
+
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Total collateral")')
-		).toContainText(token, {
-			timeout: 15000,
+		).toContainText(regExp, {
+			timeout: 10_000,
 		});
 	}
 
-	async shouldHaveLTV() {
-		await expect(this.orderInformationLocator.locator('li:has-text("LTV")')).toContainText('%', {
-			timeout: 15000,
+	async shouldHaveLTV({ current, future }: { current: string; future: string }) {
+		const regExp = new RegExp(`${current}% ${future}%`);
+
+		await expect(this.orderInformationLocator.locator('li:has-text("LTV")')).toContainText(regExp, {
+			timeout: 10_000,
 		});
 	}
 
-	async shouldHaveTransactionFee() {
+	async shouldHaveTransactionFee(fee: string) {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Transaction fee")')
-		).toContainText('+', {
-			timeout: 15000,
+		).toContainText(fee, {
+			timeout: 10_000,
 		});
 	}
 }
