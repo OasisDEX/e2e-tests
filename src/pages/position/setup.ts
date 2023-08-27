@@ -15,17 +15,39 @@ export class Setup {
 		await this.page.getByText('I understand').click();
 	}
 
-	async deposit(amount: string) {
-		await this.page.getByPlaceholder('0 ').fill(amount);
+	async deposit({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Deposit ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
 	}
 
-	async shouldHaveLiquidationPrice() {
-		await expect(this.page.locator('span:has-text("Liquidation Price") + span')).not.toHaveText(
-			'-'
+	async borrow({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Borrow ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
+	async shouldHaveLiquidationPrice({ amount, pair }: { amount: string; pair: string }) {
+		const regExp = new RegExp(`${amount} ${pair}`);
+		await expect(this.page.locator('span:has-text("Liquidation Price") + span')).toContainText(
+			regExp,
+			{ timeout: 10_000 } // Liquidation price takes longer to be updated
 		);
 	}
 
-	async shouldHaveCurrentPrice() {
-		await expect(this.page.locator('span:has-text("Current Price") + span')).not.toHaveText('-');
+	async shouldHaveCurrentPrice({ amount, pair }: { amount: string; pair: string }) {
+		const regExp = new RegExp(`${amount} ${pair}`);
+		await expect(this.page.locator('span:has-text("Current Price") + span')).toContainText(regExp);
+	}
+
+	async shouldHaveMaxBorrowingAmount({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp('Max ' + amount + ' ' + token);
+		await expect(
+			this.page.locator(`div:has-text("Borrow ${token}") + div:has-text("Max")`)
+		).toContainText(regExp);
 	}
 }
