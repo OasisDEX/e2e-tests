@@ -1,4 +1,5 @@
 import { expect, Locator, Page } from '@playwright/test';
+import { positionSimulationTimeout } from 'utils/config';
 
 export class OrderInformation {
 	readonly page: Page;
@@ -23,7 +24,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Buying") div:nth-child(2)')
 		).toContainText(regExp, {
-			timeout: 10_000,
+			timeout: positionSimulationTimeout,
 		});
 	}
 
@@ -32,7 +33,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Price (impact)")')
 		).toContainText('%)', {
-			timeout: 10_000,
+			timeout: positionSimulationTimeout,
 		});
 	}
 
@@ -41,7 +42,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Slippage Limit")')
 		).toContainText(regExp, {
-			timeout: 10_000,
+			timeout: positionSimulationTimeout,
 		});
 	}
 
@@ -51,7 +52,7 @@ export class OrderInformation {
 		await expect(this.orderInformationLocator.locator('li:has-text("Multiply")')).toContainText(
 			regExp,
 			{
-				timeout: 10_000,
+				timeout: positionSimulationTimeout,
 			}
 		);
 	}
@@ -69,7 +70,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Outstanding debt")')
 		).toContainText(regExp, {
-			timeout: 10_000,
+			timeout: positionSimulationTimeout,
 		});
 	}
 
@@ -87,7 +88,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Total collateral")')
 		).toContainText(regExp, {
-			timeout: 10_000,
+			timeout: positionSimulationTimeout,
 		});
 	}
 
@@ -95,15 +96,17 @@ export class OrderInformation {
 		const regExp = new RegExp(`${current}% ${future}%`);
 
 		await expect(this.orderInformationLocator.locator('li:has-text("LTV")')).toContainText(regExp, {
-			timeout: 10_000,
+			timeout: positionSimulationTimeout,
 		});
 	}
 
-	async shouldHaveTransactionFee(fee: string) {
+	async shouldHaveTransactionFee({ fee, token }: { fee: string; token?: string }) {
+		const regExp = new RegExp(`${fee}${token ? ` ${token}` : ''} \\+ \\(n/a\\)`);
+
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Transaction fee")')
-		).toContainText(fee, {
-			timeout: 10_000,
+		).toContainText(regExp, {
+			timeout: positionSimulationTimeout,
 		});
 	}
 }

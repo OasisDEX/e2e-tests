@@ -1,4 +1,5 @@
 import { expect, Page } from '@playwright/test';
+import { positionSimulationTimeout } from 'utils/config';
 
 export class Overview {
 	readonly page: Page;
@@ -14,7 +15,7 @@ export class Overview {
 	}
 
 	async shouldHavePrev30daysNetValue({ token, wholePart }: { token: string; wholePart: string }) {
-		const regExp = new RegExp(`${wholePart}.[0-9]\\d ${token}`);
+		const regExp = new RegExp(`${wholePart}.[0-9]{2} ${token}`);
 		await expect(
 			this.page.getByText('Previous 90 days*').locator('xpath=//preceding::p[1]')
 		).toContainText(regExp);
@@ -26,7 +27,7 @@ export class Overview {
 	async shouldHaveLiquidationPriceAfterPill(price: RegExp) {
 		await expect(
 			this.page.getByText('Liquidation Price').locator('..').getByText('After')
-		).toContainText(price);
+		).toContainText(price, { timeout: positionSimulationTimeout });
 	}
 
 	/**
@@ -35,7 +36,7 @@ export class Overview {
 	async shouldHaveLoanToValueAfterPill(percentage: RegExp) {
 		await expect(
 			this.page.getByText('Loan to Value').locator('..').getByText('After')
-		).toContainText(percentage);
+		).toContainText(percentage, { timeout: positionSimulationTimeout });
 	}
 
 	/**
@@ -44,7 +45,7 @@ export class Overview {
 	async shouldHaveBorrowCostAfterPill(cost: RegExp) {
 		await expect(
 			this.page.getByText('Net Borrow Cost').locator('..').getByText('After')
-		).toContainText(cost);
+		).toContainText(cost, { timeout: positionSimulationTimeout });
 	}
 
 	/**
@@ -52,7 +53,8 @@ export class Overview {
 	*/
 	async shouldHaveNetValueAfterPill(cost: RegExp) {
 		await expect(this.page.getByText('Net Value').locator('..').getByText('After')).toContainText(
-			cost
+			cost,
+			{ timeout: positionSimulationTimeout }
 		);
 	}
 
@@ -60,7 +62,8 @@ export class Overview {
 		let regexObj = new RegExp(`${amount} ${token}`);
 
 		await expect(this.page.locator('li:has-text("exposure")').getByText('After')).toContainText(
-			regexObj
+			regexObj,
+			{ timeout: positionSimulationTimeout }
 		);
 	}
 
@@ -69,6 +72,24 @@ export class Overview {
 
 		await expect(
 			this.page.locator('li:has-text("Position Debt")').getByText('After')
-		).toContainText(regexObj);
+		).toContainText(regexObj, { timeout: positionSimulationTimeout });
+	}
+
+	async shouldHaveMultipleAfterPill(amount: string) {
+		let regexObj = new RegExp(`${amount}x`);
+
+		await expect(this.page.locator('li:has-text("Multiple")').getByText('After')).toContainText(
+			regexObj,
+			{ timeout: positionSimulationTimeout }
+		);
+	}
+
+	async shouldHaveBuyingPowerAfterPill({ amount, token }: { amount: string; token: string }) {
+		let regexObj = new RegExp(`${amount} ${token}`);
+
+		await expect(this.page.locator('li:has-text("Buying Power")').getByText('After')).toContainText(
+			regexObj,
+			{ timeout: positionSimulationTimeout }
+		);
 	}
 }

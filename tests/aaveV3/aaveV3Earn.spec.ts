@@ -7,8 +7,7 @@ test.describe('Aave v3 Earn', async () => {
 	}) => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description:
-				'https://app.shortcut.com/oazo-apps/story/11388/tc-aave-v3-earn-should-allow-to-simulate-a-position-before-opening-it',
+			description: '11388',
 		});
 
 		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
@@ -36,11 +35,11 @@ test.describe('Aave v3 Earn', async () => {
 		});
 		/* Asserting that Liquidation price is a number:
 			- x1 digit whole-number part
-			- x2 digits decimal part 
+			- x4 digits decimal part 
 			--> x.xxxx
 		*/
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '[1-9].[0-9]{2}',
+			amount: '[1-9].[0-9]{4}',
 			pair: 'WSTETH/ETH',
 		});
 
@@ -76,7 +75,7 @@ test.describe('Aave v3 Earn', async () => {
 			- x2 digits decimal part 
 			--> 0.xx
 		*/
-		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]\\d');
+		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]{2}');
 		/* Asserting that Multiply future value is a number:
 			- x1 digit whole-number part
 			- none or x1 digit decimal part 
@@ -115,6 +114,6 @@ test.describe('Aave v3 Earn', async () => {
 			current: '0.00',
 			future: '[1-9][0-9].[0-9]{2}',
 		});
-		await app.position.setup.orderInformation.shouldHaveTransactionFee('0 + (n/a)');
+		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
 	});
 });
