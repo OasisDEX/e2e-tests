@@ -58,4 +58,8 @@ export class Setup {
 			this.page.locator(`div:has-text("Borrow ${token}") + div:has-text("Max")`)
 		).toContainText(regExp);
 	}
+
+	async shouldHaveError(error: string) {
+		await expect(this.page.getByText(error)).toBeVisible();
+	}
 }
