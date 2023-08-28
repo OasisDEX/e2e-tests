@@ -1,5 +1,6 @@
 import { expect, Page } from '@playwright/test';
 import { OrderInformation } from './orderInformation';
+import { positionSimulationTimeout } from 'utils/config';
 
 export class Setup {
 	readonly page: Page;
@@ -31,12 +32,19 @@ export class Setup {
 			.fill(amount);
 	}
 
-	async shouldHaveLiquidationPrice({ amount, pair }: { amount: string; pair: string }) {
-		const regExp = new RegExp(`${amount} ${pair}`);
+	async shouldHaveLiquidationPrice({ amount, pair }: { amount: string; pair?: string }) {
+		const regExp = new RegExp(`${amount}${pair ? ` ${pair}` : ''}`);
+
 		await expect(this.page.locator('span:has-text("Liquidation Price") + span')).toContainText(
 			regExp,
-			{ timeout: 10_000 } // Liquidation price takes longer to be updated
+			{ timeout: positionSimulationTimeout } // Liquidation price takes longer to be updated
 		);
+	}
+
+	async shouldHaveLoanToValue(percentage: string) {
+		const regExp = new RegExp(`${percentage}%`);
+
+		await expect(this.page.locator('span:has-text("Loan to Value") + span')).toContainText(regExp);
 	}
 
 	async shouldHaveCurrentPrice({ amount, pair }: { amount: string; pair: string }) {

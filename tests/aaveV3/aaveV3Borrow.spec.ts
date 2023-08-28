@@ -7,8 +7,7 @@ test.describe('Aave v3 Borrow', async () => {
 	}) => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description:
-				'https://app.shortcut.com/oazo-apps/story/11052/tc-aave-v3-borrow-it-should-allow-to-simulate-a-position-before-opening-it-no-wallet-connected',
+			description: '11052',
 		});
 
 		await app.page.goto('/ethereum/aave/v3/borrow/ethusdc#simulate');
@@ -86,6 +85,6 @@ test.describe('Aave v3 Borrow', async () => {
 			current: '0.00',
 			future: '1[0-9].[0-9]{2}',
 		});
-		await app.position.setup.orderInformation.shouldHaveTransactionFee('0 + (n/a)');
+		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
 	});
 });
