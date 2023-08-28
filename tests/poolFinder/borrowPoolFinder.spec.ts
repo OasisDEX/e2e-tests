@@ -18,27 +18,42 @@ test.describe('Pool finder - Borrow', async () => {
 		await app.poolFinder.shouldHaveHeader('Earn');
 	});
 
-	test('It should list specific pool - Filtering by pool addresses @regression', async ({
-		app,
-	}) => {
+	test('It should list specific pool - Filtering by pool address @regression', async ({ app }) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '10913',
+		});
+
 		await app.poolFinder.filterBy({ filter: 'Pool address', value: ajnaPoolAddress });
 		await app.poolFinder.list.shouldHavePoolsCount(1);
 		await app.poolFinder.list.shouldHaveTokensPair('ETH/USDC');
 		await app.poolFinder.list.allPoolsShouldBe('Borrow');
 	});
 
-	test('It should list only Borrow pools with *ETH as collateral - Filtering by collateral contract address', async ({
+	test('It should list only Borrow pools with ETH as collateral - Filtering by collateral contract address', async ({
 		app,
 	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '10912',
+		});
+
 		await app.poolFinder.filterBy({ filter: 'Collateral token', value: wEthContractAddress });
+		await app.poolFinder.list.shouldHaveOneOrMorePools();
 		await app.poolFinder.list.allPoolsShouldBe('Borrow');
 		await app.poolFinder.list.allPoolsCollateralShouldContain('ETH');
 	});
 
-	test('It should list only Borrow pools with *ETH as quote - Filtering by quote contract address', async ({
+	test('It should list only Borrow pools with ETH as quote - Filtering by quote contract address', async ({
 		app,
 	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '10914',
+		});
+
 		await app.poolFinder.filterBy({ filter: 'Quote token', value: wEthContractAddress });
+		await app.poolFinder.list.shouldHaveOneOrMorePools();
 		await app.poolFinder.list.allPoolsShouldBe('Borrow');
 		await app.poolFinder.list.allPoolsQuoteShouldContain('ETH');
 	});
