@@ -23,12 +23,13 @@ export class PoolFinder {
 	}
 
 	async shouldLinkToBlog(positionCategory: 'Borrow' | 'Earn') {
-		await expect(
-			this.finderLocator.getByRole('link', { name: `Summer.fi ${positionCategory}` })
-		).toHaveAttribute(
+		const element = this.finderLocator.getByRole('link', { name: `Summer.fi ${positionCategory}` });
+
+		await expect(element).toHaveAttribute(
 			'href',
 			`https://docs.summer.fi/products/${positionCategory.toLocaleLowerCase()}`
 		);
+		await expect(element).toHaveAttribute('target', '_blank');
 	}
 
 	async selectPositionCategory(positionCategory: 'Borrow' | 'Earn') {

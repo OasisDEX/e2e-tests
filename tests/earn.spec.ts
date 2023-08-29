@@ -7,7 +7,12 @@ test.describe('Earn page', async () => {
 		await app.earn.productHub.list.allPoolsShouldBe('Earn');
 	});
 
-	test('It should link to pool finder - Earn', async ({ app }) => {
+	test('It should open Earn pool finder', async ({ app }) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11556',
+		});
+
 		await app.earn.open();
 		await app.earn.productHub.list.openPoolFinder();
 		await app.poolFinder.shouldHaveHeader('Earn');

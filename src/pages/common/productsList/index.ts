@@ -57,6 +57,13 @@ export class ProductsList {
 		expect(await this.listLocator.locator('[role="link"]').count()).toEqual(count);
 	}
 
+	async shouldHaveOneOrMorePools() {
+		// Wait for 1st item to be displayed to avoid random fails
+		await this.listLocator.locator('[role="link"]').first().waitFor();
+
+		expect(await this.listLocator.locator('[role="link"]').count()).toBeGreaterThanOrEqual(1);
+	}
+
 	async shouldHaveTokensPair(pair: string) {
 		await expect(this.listLocator.locator('[role="link"] td:nth-child(1)').nth(0)).toContainText(
 			pair
