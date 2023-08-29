@@ -7,18 +7,29 @@ test.describe('Pool finder - Borrow', async () => {
 	});
 
 	test('It should open Borrow poolFinder', async ({ app }) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11558',
+		});
+
 		await app.poolFinder.shouldHaveHeader('Borrow');
 		await app.poolFinder.shouldLinkToBlog('Borrow');
 	});
 
 	test('It should switch to Earn poolFinder', async ({ app }) => {
-		await app.poolFinder.shouldHaveHeader('Borrow');
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11554',
+		});
 
+		await app.poolFinder.shouldHaveHeader('Borrow');
 		await app.poolFinder.selectPositionCategory('Earn');
 		await app.poolFinder.shouldHaveHeader('Earn');
 	});
 
-	test('It should list specific pool - Filtering by pool address @regression', async ({ app }) => {
+	test('It should list only specific Borrow pool - Filtering by pool address @regression', async ({
+		app,
+	}) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '10913',
@@ -58,9 +69,14 @@ test.describe('Pool finder - Borrow', async () => {
 		await app.poolFinder.list.allPoolsQuoteShouldContain('ETH');
 	});
 
-	test('It should list specific pool - Filtering by both collateral and quote contract addresses', async ({
+	test('It should list only specific Borrow pool - Filtering by both collateral and quote contract addresses', async ({
 		app,
 	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11553',
+		});
+
 		await app.poolFinder.filterBy({ filter: 'Collateral token', value: wEthContractAddress });
 		await app.poolFinder.filterBy({ filter: 'Quote token', value: usdcContractAddress });
 		await app.poolFinder.list.shouldHavePoolsCount(1);

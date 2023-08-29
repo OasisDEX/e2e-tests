@@ -7,7 +7,12 @@ test.describe('Borrow', async () => {
 		await app.borrow.productHub.list.allPoolsShouldBe('Borrow');
 	});
 
-	test('It should link to pool finder - Borrow', async ({ app }) => {
+	test('It should open Borrow pool finder', async ({ app }) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11557',
+		});
+
 		await app.borrow.open();
 		await app.borrow.productHub.list.openPoolFinder();
 
