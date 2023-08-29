@@ -185,4 +185,70 @@ test.describe('Aave v3 Multiply', async () => {
 			token: 'USDC',
 		});
 	});
+
+	test('It should validate "Deposit <collateral>" field - No enough collateral in wallet', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11614',
+		});
+
+		await app.page.goto('ethereum/aave/v3/multiply/rethusdc');
+		await app.position.setup.deposit({ token: 'RETH', amount: '5' });
+		await app.position.setup.shouldHaveError(
+			'You cannot deposit more collateral than the amount in your wallet'
+		);
+	});
+
+	test('It should validate risk slider - Safe', async ({ app, browserName }) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11615',
+		});
+
+		await app.page.goto('ethereum/aave/v3/multiply/ethdai#simulate');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		if (['firefox', 'webkit'].includes(browserName)) {
+			await app.page.waitForTimeout(3000);
+		} else {
+			await app.page.waitForTimeout(1500);
+		}
+
+		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
+		await app.position.setup.shouldHaveWarning(
+			'At the chosen risk level, the price of ETH needs to move over ',
+			'% with respect to DAI for this position to be available for liquidation.',
+			"Aave's liquidations penalty is at least ",
+			'%.'
+		);
+	});
+
+	test('It should validate risk slider - Risky', async ({ app, browserName }) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11616',
+		});
+
+		await app.page.goto('ethereum/aave/v3/multiply/ethdai#simulate');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		if (['firefox', 'webkit'].includes(browserName)) {
+			await app.page.waitForTimeout(3000);
+		} else {
+			await app.page.waitForTimeout(1500);
+		}
+
+		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
+		// It takes some time for the slider to be editable
+		await app.position.setup.waitForSliderToBeEditable();
+		await app.position.setup.moveSlider(0.9);
+		await app.position.setup.shouldHaveWarning(
+			'At the chosen risk level, if the price of ETH moves over ',
+			'%  with respect to DAI this Multiply position could be liquidated. ',
+			"Aave's liquidations penalty is at least ",
+			'%.'
+		);
+	});
 });

@@ -32,6 +32,31 @@ export class Setup {
 			.fill(amount);
 	}
 
+	/**
+	 *
+	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
+	 */
+	async moveSlider(value: number) {
+		const step = await this.page.locator('input[type="range"]').getAttribute('step');
+		const min = await this.page.locator('input[type="range"]').getAttribute('min');
+		const max = await this.page.locator('input[type="range"]').getAttribute('max');
+
+		// 'fixedDecimals' is needed for Aave v3 Earn, which uses 15 decimals
+		const fixedDecimals = (Math.round(parseFloat(min) * 10 ** 15) / 10 ** 15).toString().slice(5);
+		const moveMIN = parseFloat(min.slice(0, 5));
+		const moveMAX = parseFloat(max) - parseFloat(step);
+		const sliderNewValue = moveMIN + Math.round((moveMAX - moveMIN) * value * 1000) / 1000;
+		const sliderNewValueString = `${sliderNewValue.toString()}${fixedDecimals}`;
+
+		await this.page.locator('input[type="range"]').fill(sliderNewValueString);
+	}
+
+	async waitForSliderToBeEditable() {
+		await expect(async () => {
+			await expect(this.page.locator('input[type="range"]')).not.toHaveAttribute('max', '0');
+		}).toPass();
+	}
+
 	async shouldHaveLiquidationPrice({ amount, pair }: { amount: string; pair?: string }) {
 		const regExp = new RegExp(`${amount}${pair ? ` ${pair}` : ''}`);
 
@@ -57,5 +82,20 @@ export class Setup {
 		await expect(
 			this.page.locator(`div:has-text("Borrow ${token}") + div:has-text("Max")`)
 		).toContainText(regExp);
+	}
+
+	async shouldHaveError(text: string) {
+		await expect(this.page.getByText(text)).toBeVisible();
+	}
+
+	async shouldHaveWarning(...texts: string[]) {
+		for (const text of texts) {
+			await expect(
+				this.page
+					.getByRole('button', { name: 'Reset' })
+					.locator('..')
+					.locator('xpath=//following-sibling::div[1]')
+			).toContainText(text, { timeout: positionSimulationTimeout });
+		}
 	}
 }
