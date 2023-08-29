@@ -116,4 +116,70 @@ test.describe('Aave v3 Earn', async () => {
 		});
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
 	});
+
+	test('It should validate "Deposit <collateral>" field - No enough collateral in wallet', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11620',
+		});
+
+		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
+		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
+		await app.position.setup.shouldHaveError(
+			'You cannot deposit more collateral than the amount in your wallet'
+		);
+	});
+
+	test('It should validate risk slider - Safe', async ({ app, browserName }) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11623',
+		});
+
+		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		if (['firefox', 'webkit'].includes(browserName)) {
+			await app.page.waitForTimeout(3000);
+		} else {
+			await app.page.waitForTimeout(1500);
+		}
+
+		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
+		// It takes some time for the slider to be editable
+		await app.position.setup.waitForSliderToBeEditable();
+		await app.position.setup.moveSlider(0.5);
+		await app.position.setup.shouldHaveWarning(
+			'At the chosen risk level, the price of WSTETH needs to move over ',
+			'% with respect to ETH for this position to be available for liquidation.',
+			"Aave's liquidations penalty is at least ",
+			'%.'
+		);
+	});
+
+	test('It should validate risk slider - Risky', async ({ app, browserName }) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11624',
+		});
+
+		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		if (['firefox', 'webkit'].includes(browserName)) {
+			await app.page.waitForTimeout(3000);
+		} else {
+			await app.page.waitForTimeout(1500);
+		}
+
+		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
+		await app.position.setup.shouldHaveWarning(
+			'At the chosen risk level, if the price of WSTETH moves over ',
+			'%  with respect to ETH this Earn position could be liquidated. ',
+			"Aave's liquidations penalty is at least ",
+			'%.'
+		);
+	});
 });
