@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { ProductsList } from '../common/productsList';
+import { NoItems } from './noItems';
 
 export class PoolFinder {
 	readonly page: Page;
@@ -8,10 +9,13 @@ export class PoolFinder {
 
 	readonly list: ProductsList;
 
+	readonly noItems: NoItems;
+
 	constructor(page: Page) {
 		this.page = page;
-		this.finderLocator = page.locator('main');
+		this.finderLocator = page.locator('main:has-text("using Ajna")');
 		this.list = new ProductsList(this.finderLocator);
+		this.noItems = new NoItems(page);
 	}
 
 	async open(positionCategory: 'borrow' | 'earn') {

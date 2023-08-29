@@ -83,4 +83,16 @@ test.describe('Pool finder - Borrow', async () => {
 		await app.poolFinder.list.shouldHaveTokensPair('ETH/USDC');
 		await app.poolFinder.list.allPoolsShouldBe('Borrow');
 	});
+
+	test('It should open Pool creator', async ({ app }) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11604, 11606',
+		});
+
+		await app.poolFinder.filterBy({ filter: 'Collateral token', value: 'no-items' });
+		await app.poolFinder.noItems.shouldBeVisible();
+		await app.poolFinder.noItems.createPool();
+		await app.poolCreator.shouldHaveHeader('Ajna Pool Creator');
+	});
 });
