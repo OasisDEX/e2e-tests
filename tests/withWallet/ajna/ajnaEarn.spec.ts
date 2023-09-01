@@ -12,7 +12,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe.only('Ajna Earn - Wallet connected', async () => {
+test.describe('Ajna Earn - Wallet connected', async () => {
 	test.beforeAll(async ({ context }) => {
 		let page = await context.newPage();
 		app = new App(page);
