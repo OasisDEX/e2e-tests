@@ -1,8 +1,7 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Aave v3 Borrow', async () => {
 	test('It should allow to simulate a position before opening it - No wallet connected @regression', async ({
-		browserName,
 		app,
 	}) => {
 		test.info().annotations.push({
@@ -13,12 +12,7 @@ test.describe('Aave v3 Borrow', async () => {
 		await app.page.goto('/ethereum/aave/v3/borrow/ethusdc#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		if (['firefox', 'webkit'].includes(browserName)) {
-			await app.page.waitForTimeout(3000);
-		} else {
-			await app.page.waitForTimeout(1500);
-		}
-
+		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '50' });
 
 		/* Asserting that Borrow Cost After pill will be a percentage:

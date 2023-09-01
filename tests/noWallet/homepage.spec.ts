@@ -1,4 +1,4 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Homepage', async () => {
 	test('It should list Earn positions by default', async ({ app }) => {

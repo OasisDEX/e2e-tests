@@ -13,6 +13,7 @@ export default defineConfig({
 		baseURL: process.env.BASE_URL,
 		headless: process.env.HEADLESS === 'false' ? false : true,
 		trace: 'on-first-retry',
+		screenshot: 'only-on-failure',
 	},
 
 	/* Configure projects for major browsers */
@@ -23,14 +24,27 @@ export default defineConfig({
 		},
 
 		{
-			name: 'firefox',
-			use: { ...devices['Desktop Firefox'] },
+			name: 'no-wallet-local',
+			testMatch: ['noWallet/**'],
+			testIgnore: ['noWallet/ajna/**'],
+			use: { ...devices['Desktop Chrome'] },
 		},
 
 		{
-			name: 'webkit',
-			use: { ...devices['Desktop Safari'] },
+			name: 'with-wallet-local',
+			testIgnore: ['noWallet/ajna/**', 'withWallet/ajna/**'],
+			use: { ...devices['Desktop Chrome'] },
 		},
+
+		// {
+		// 	name: 'firefox',
+		// 	use: { ...devices['Desktop Firefox'] },
+		// },
+
+		// {
+		// 	name: 'webkit',
+		// 	use: { ...devices['Desktop Safari'] },
+		// },
 
 		/* Test against mobile viewports. */
 		// {

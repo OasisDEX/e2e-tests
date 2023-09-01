@@ -1,4 +1,4 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Borrow', async () => {
 	test('It should list only Borrow positions', async ({ app }) => {

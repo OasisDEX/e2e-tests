@@ -2,7 +2,10 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "#fixtures": ["./src/fixtures.js"],
+            "#walletFixtures": ["./src/fixtures/wallet.ts"],
+            "#noWalletFixtures": ["./src/fixtures/noWallet.ts"],
+            "#walletUtils": ["./utils/wallet.ts"],
+            "#termsAndConditions": ["./utils/termsAndConditions.ts"],
         }
     }
 }

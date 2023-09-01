@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import { App } from './app';
+import { App } from '../app';
 
 type MyFixtures = {
 	app: App;
@@ -14,3 +14,5 @@ export const test = base.extend<MyFixtures>({
 		await app.page.close();
 	},
 });
+
+export const expect = test.expect;

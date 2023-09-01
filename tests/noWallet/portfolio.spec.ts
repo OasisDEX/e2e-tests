@@ -1,4 +1,4 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Portfolio', async () => {
 	test.skip('It should show no assets', async ({ app }) => {

@@ -1,4 +1,4 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Earn page', async () => {
 	test('It should list only Earn positions', async ({ app }) => {

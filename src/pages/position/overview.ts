@@ -8,6 +8,12 @@ export class Overview {
 		this.page = page;
 	}
 
+	async waitForComponentToBeStable() {
+		await expect(this.page.getByText('Overview')).toBeVisible({
+			timeout: positionSimulationTimeout,
+		});
+	}
+
 	async shouldHaveTokenAmount({ amount, token }: { amount: string; token: string }) {
 		await expect(this.page.getByText('In this position').locator('../h3')).toContainText(
 			`${amount} ${token}`

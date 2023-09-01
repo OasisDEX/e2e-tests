@@ -1,4 +1,4 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Ajna Earn', async () => {
 	test.skip('It should simulate creating an ajna Earn position', async ({ app }) => {

@@ -16,6 +16,12 @@ export class Setup {
 		await this.page.getByText('I understand').click();
 	}
 
+	async waitForComponentToBeStable() {
+		await expect(this.page.getByText('Historical Ratio')).toBeVisible({
+			timeout: positionSimulationTimeout,
+		});
+	}
+
 	async deposit({ token, amount }: { token: string; amount: string }) {
 		await this.page
 			.getByText(`Deposit ${token}`)
@@ -32,6 +38,12 @@ export class Setup {
 			.fill(amount);
 	}
 
+	async waitForSliderToBeEditable() {
+		await expect(async () => {
+			await expect(this.page.locator('input[type="range"]')).not.toHaveAttribute('max', '0');
+		}).toPass();
+	}
+
 	/**
 	 *
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
@@ -45,16 +57,40 @@ export class Setup {
 		const fixedDecimals = (Math.round(parseFloat(min) * 10 ** 15) / 10 ** 15).toString().slice(5);
 		const moveMIN = parseFloat(min.slice(0, 5));
 		const moveMAX = parseFloat(max) - parseFloat(step);
-		const sliderNewValue = moveMIN + Math.round((moveMAX - moveMIN) * value * 1000) / 1000;
+		const sliderNewValue = (
+			moveMIN +
+			Math.round((moveMAX - moveMIN) * value * 1000) / 1000
+		).toFixed(3);
 		const sliderNewValueString = `${sliderNewValue.toString()}${fixedDecimals}`;
 
 		await this.page.locator('input[type="range"]').fill(sliderNewValueString);
 	}
 
-	async waitForSliderToBeEditable() {
-		await expect(async () => {
-			await expect(this.page.locator('input[type="range"]')).not.toHaveAttribute('max', '0');
-		}).toPass();
+	async createSmartDeFiAccount() {
+		await this.page.getByRole('button', { name: 'Create Smart DeFi account' }).click();
+	}
+
+	async continue() {
+		await this.page.getByRole('button', { name: 'Continue' }).click();
+	}
+
+	async confirm() {
+		await this.page.getByRole('button', { name: 'Confirm' }).click();
+	}
+
+	async confirmOrRetry() {
+		await this.page
+			.getByRole('button', { name: 'Back to editing' })
+			.locator('xpath=//preceding::button[1]')
+			.click();
+	}
+
+	async shouldConfirmPositionCreation() {
+		await expect(this.page.getByText('Position was created')).toBeVisible();
+	}
+
+	async goToPosition() {
+		await this.page.getByRole('button', { name: 'Go to position' }).click();
 	}
 
 	async shouldHaveLiquidationPrice({ amount, pair }: { amount: string; pair?: string }) {
