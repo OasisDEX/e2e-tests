@@ -90,8 +90,16 @@ export class Setup {
 			.click();
 	}
 
+	async openEarnPosition1Of2() {
+		await this.page.getByRole('button', { name: 'Open Earn position (1/2)' }).click();
+	}
+
 	async shouldConfirmPositionCreation() {
 		await expect(this.page.getByText('Position was created')).toBeVisible();
+	}
+
+	async goToPositionShouldBevisible() {
+		await expect(this.page.getByRole('button', { name: 'Go to position' })).toBeVisible();
 	}
 
 	async goToPosition() {

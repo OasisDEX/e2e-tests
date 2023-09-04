@@ -61,6 +61,6 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 		}).toPass();
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible();
+		await app.position.manage.shouldBeVisible('Manage your ');
 	});
 });

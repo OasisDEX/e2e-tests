@@ -1,5 +1,13 @@
 require('dotenv').config();
 
+export const hooksTimeout: number = process.env.BASE_URL.includes('localhost') ? 120_000 : 60_000;
+
+export const testTimeout: number = process.env.BASE_URL.includes('localhost') ? 200_000 : 60_000;
+
 export const positionSimulationTimeout: number = process.env.BASE_URL.includes('localhost')
+	? 25_000
+	: 15_000;
+
+export const portfolioTimeout: number = process.env.BASE_URL.includes('localhost')
 	? 25_000
 	: 15_000;

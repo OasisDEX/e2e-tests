@@ -8,8 +8,8 @@ export class Manage {
 		this.page = page;
 	}
 
-	async shouldBeVisible() {
-		await expect(this.page.getByText('Manage your ')).toBeVisible({
+	async shouldBeVisible(header: string) {
+		await expect(this.page.getByText(header)).toBeVisible({
 			timeout: positionSimulationTimeout,
 		});
 	}
