@@ -2,6 +2,8 @@ import { expect, Page } from '@playwright/test';
 import { OrderInformation } from './orderInformation';
 import { positionSimulationTimeout } from 'utils/config';
 
+require('dotenv').config();
+
 export class Setup {
 	readonly page: Page;
 
@@ -20,6 +22,9 @@ export class Setup {
 		await expect(this.page.getByText('Historical Ratio')).toBeVisible({
 			timeout: positionSimulationTimeout,
 		});
+		if (!process.env.BASE_URL.includes('localhost')) {
+			await this.page.waitForTimeout(1_000); // UI elements load quickly and an extra timeout is needed
+		}
 	}
 
 	async deposit({ token, amount }: { token: string; amount: string }) {
