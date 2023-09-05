@@ -19,22 +19,23 @@ export default defineConfig({
 	/* Configure projects for major browsers */
 	projects: [
 		{
-			name: 'chromium',
-			use: { ...devices['Desktop Chrome'] },
-		},
-
-		{
-			name: 'no-wallet-local',
+			name: 'no-wallet',
 			testMatch: ['noWallet/**'],
 			testIgnore: ['noWallet/ajna/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
 		{
-			name: 'with-wallet-local',
-			testIgnore: ['noWallet/ajna/**', 'withWallet/ajna/**'],
+			name: 'with-wallet',
+			testMatch: ['withWallet/**'],
+			testIgnore: ['noWallet/ajna**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
+
+		// {
+		// 	name: 'chromium',
+		// 	use: { ...devices['Desktop Chrome'] },
+		// },
 
 		// {
 		// 	name: 'firefox',

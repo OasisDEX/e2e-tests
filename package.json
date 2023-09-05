@@ -14,18 +14,12 @@
 		"ethers": "^6.7.1"
 	},
 	"scripts": {
-		"test:e2e": "npx playwright test --project chromium",
-		"test:e2e:no-wallet": "npx playwright test noWallet --project chromium",
-		"test:e2e:no-wallet:local": "npx playwright test --project no-wallet-local",
-		"test:e2e:with-wallet": "npx playwright test withWallet",
-		"test:e2e:regression": "npx playwright test --grep @regression  --project chromium",
-		"test:e2e:chromium": "npx playwright test --project chromium",
-		"test:e2e:firefox": "npx playwright test --project firefox",
-		"test:e2e:webkit": "npx playwright test --project webkit",
-		"test:e2e:ten-times": "npx playwright test --repeat-each=10",
-		"test:e2e:chromium:ten-times": "npx playwright test --project chromium --repeat-each=10",
-		"test:e2e:firefox:ten-times": "npx playwright test --project firefox --repeat-each=10",
-		"test:e2e:webkit:ten-times": "npx playwright test --project webkit --repeat-each=10",
+		"test:e2e:no-wallet": "npx playwright test --project=no-wallet",
+		"test:e2e:with-wallet": "npx playwright test --project=with-wallet --workers=1",
+		"test:e2e": "yarn test:e2e:no-wallet & yarn test:e2e:with-wallet",
+		"test:e2e:no-wallet:regression": "npx playwright test --grep @regression --project=no-wallet",
+		"test:e2e:with-wallet:regression": "WORKERS=1 npx playwright test --grep @regression --project=with-wallet --workers=1",
+		"test:e2e:regression": "yarn test:e2e:no-wallet:regression & yarn test:e2e:with-wallet:regression",
 		"test:report": "npx playwright show-report"
 	}
 }

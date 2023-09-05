@@ -7,7 +7,8 @@ test.describe('Borrow', async () => {
 		await app.borrow.productHub.list.allPoolsShouldBe('Borrow');
 	});
 
-	test('It should open Borrow pool finder', async ({ app }) => {
+	// !!! Test skipped until Ajna products are enabled back
+	test.skip('It should open Borrow pool finder', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11557',

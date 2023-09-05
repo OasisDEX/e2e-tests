@@ -94,6 +94,10 @@ export class Setup {
 		await this.page.getByRole('button', { name: 'Open Earn position (1/2)' }).click();
 	}
 
+	async openBorrowPosition1Of2() {
+		await this.page.getByRole('button', { name: 'Open Borrow position (1/2)' }).click();
+	}
+
 	async shouldConfirmPositionCreation() {
 		await expect(this.page.getByText('Position was created')).toBeVisible();
 	}
