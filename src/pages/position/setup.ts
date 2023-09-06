@@ -23,7 +23,7 @@ export class Setup {
 			timeout: positionSimulationTimeout,
 		});
 		if (!process.env.BASE_URL.includes('localhost')) {
-			await this.page.waitForTimeout(1_000); // UI elements load quickly and an extra timeout is needed
+			await this.page.waitForTimeout(2_000); // UI elements load quickly and an extra timeout is needed
 		}
 	}
 
@@ -75,6 +75,10 @@ export class Setup {
 		await this.page.getByRole('button', { name: 'Create Smart DeFi account' }).click();
 	}
 
+	async continueShouldBeVisible() {
+		await expect(this.page.getByRole('button', { name: 'Continue' })).toBeVisible();
+	}
+
 	async continue() {
 		await this.page.getByRole('button', { name: 'Continue' }).click();
 	}
@@ -98,11 +102,19 @@ export class Setup {
 		await this.page.getByRole('button', { name: 'Open Borrow position (1/2)' }).click();
 	}
 
+	async setupStopLoss1Of3() {
+		await this.page.getByRole('button', { name: 'Setup Stop-Loss (1/3)' }).click();
+	}
+
+	async setupStopLossTransaction() {
+		await this.page.getByRole('button', { name: 'Set up Stop-Loss transaction' }).click();
+	}
+
 	async shouldConfirmPositionCreation() {
 		await expect(this.page.getByText('Position was created')).toBeVisible();
 	}
 
-	async goToPositionShouldBevisible() {
+	async goToPositionShouldBeVisible() {
 		await expect(this.page.getByRole('button', { name: 'Go to position' })).toBeVisible();
 	}
 

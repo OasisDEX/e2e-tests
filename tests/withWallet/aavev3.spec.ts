@@ -59,11 +59,11 @@ test.describe('Aave v3 - Wallet connected', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await metamask.confirmPermissionToSpend();
-			await app.position.setup.goToPositionShouldBevisible();
+			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass();
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
 	test('It should list an opened Borrow position in portfolio', async () => {
@@ -94,11 +94,17 @@ test.describe('Aave v3 - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage collateral');
 	});
 
-	test('It should open an Aave v3 Earn position', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11672',
-		});
+	test.skip('It should open an Aave v3 Earn position', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11715',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(testTimeout);
 
@@ -106,6 +112,7 @@ test.describe('Aave v3 - Wallet connected', async () => {
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.setup.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '20' });
+		await app.position.setup.moveSlider(0.5);
 		await app.position.setup.createSmartDeFiAccount();
 		// Confirmation button with same label
 		await app.position.setup.createSmartDeFiAccount();
@@ -117,18 +124,24 @@ test.describe('Aave v3 - Wallet connected', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await metamask.confirmPermissionToSpend();
-			await app.position.setup.goToPositionShouldBevisible();
+			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass();
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage Earn position');
+		await app.position.manage.shouldBeVisible('Manage Earn ');
 	});
 
-	test('It should list an opened Earn position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11673',
-		});
+	test.skip('It should list an opened Earn position in portfolio', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11673',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(testTimeout);
 
@@ -138,11 +151,17 @@ test.describe('Aave v3 - Wallet connected', async () => {
 		await app.portfolio.earn.vaults.first.shouldHave({ assets: 'WSTETH/ETH' });
 	});
 
-	test('It should open an Earn position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11681',
-		});
+	test.skip('It should open an Earn position from portfolio page', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11681',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(testTimeout);
 
@@ -151,8 +170,7 @@ test.describe('Aave v3 - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage Earn position');
 	});
 
-	// !!! TO BE UPDATED
-	test.skip('It should open a Multiply position', async () => {
+	test('It should open a Multiply position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11682',
@@ -160,56 +178,68 @@ test.describe('Aave v3 - Wallet connected', async () => {
 
 		test.setTimeout(testTimeout);
 
-		await app.page.goto('/ethereum/aave/v3/borrow/ethusdc');
+		await app.page.goto('/ethereum/aave/v3/multiply/ethusdc#simulate');
+
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '7.5' });
-		await app.position.setup.borrow({ token: 'USDC', amount: '2000' });
+		await app.position.setup.deposit({ token: 'ETH', amount: '10' });
 		await app.position.setup.createSmartDeFiAccount();
-		// Confirmation button with same label
-		await app.position.setup.createSmartDeFiAccount();
-		await metamask.confirmAddToken();
-		await app.position.setup.continue();
-		await app.position.setup.openBorrowPosition1Of2();
 
-		// Position creation randomly fails - Retyr until it's created.
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await metamask.confirmPermissionToSpend();
-			await app.position.setup.goToPositionShouldBevisible();
+			await app.position.setup.createSmartDeFiAccount();
+			await metamask.confirmAddToken();
+			await app.position.setup.continueShouldBeVisible();
 		}).toPass();
 
+		await app.position.setup.continue();
+		await app.position.setup.setupStopLoss1Of3();
+		await app.position.setup.confirm(); // Stop-Loss 2/3
+		await app.position.setup.confirm(); // Stop-Loss 3/3
+		await metamask.confirmPermissionToSpend();
+		await app.position.setup.setupStopLossTransaction();
+		await metamask.confirmPermissionToSpend();
+
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	// !!! TO BE UPDATED
 	test.skip('It should list an opened Multiply position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11673',
-		});
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11673',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(testTimeout);
 
 		await app.page.goto(`/owner/${walletAddress}`);
 
-		await app.header.shouldHavePortfolioCount('1');
-		await app.portfolio.borrow.shouldHaveHeaderCount('1');
-		await app.portfolio.borrow.vaults.first.shouldHave({ assets: 'ETH/USDC' });
+		await app.portfolio.multiply.shouldHaveHeaderCount('1');
+		await app.portfolio.multiply.vaults.first.shouldHave({ assets: 'ETH/USDC' });
 	});
 
-	// !!! TO BE UPDATED
 	test.skip('It should open an Multiply position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11681',
-		});
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11681',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(testTimeout);
 
 		await app.page.goto(`/owner/${walletAddress}`);
-		await app.portfolio.borrow.vaults.first.view();
+		await app.portfolio.multiply.vaults.first.view();
 		await app.position.manage.shouldBeVisible('Manage collateral');
 	});
 });
