@@ -9,7 +9,6 @@ import { App } from 'src/app';
 import { test, chromium } from '@playwright/test';
 import { initialSetup } from '@synthetixio/synpress/commands/metamask';
 import { prepareMetamask } from '@synthetixio/synpress/helpers';
-import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { setExpectInstance } from '@synthetixio/synpress/commands/playwright';
 
 export const metamaskSetUp = async () => {

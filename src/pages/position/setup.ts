@@ -110,6 +110,10 @@ export class Setup {
 		await this.page.getByRole('button', { name: 'Set up Stop-Loss transaction' }).click();
 	}
 
+	async openMultiplyPosition1Of2() {
+		await this.page.getByRole('button', { name: 'Open Multiply position (1/2)' }).click();
+	}
+
 	async shouldConfirmPositionCreation() {
 		await expect(this.page.getByText('Position was created')).toBeVisible();
 	}
