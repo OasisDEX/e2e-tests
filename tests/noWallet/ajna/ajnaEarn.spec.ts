@@ -13,6 +13,5 @@ test.describe('Ajna Earn', async () => {
 		// await app.position.setup.deposit('50');
 
 		// TODO
-		// await app.pause();
 	});
 });

@@ -43,6 +43,14 @@ export class Setup {
 			.fill(amount);
 	}
 
+	async generate({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Generate ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
 	async waitForSliderToBeEditable() {
 		await expect(async () => {
 			await expect(this.page.locator('input[type="range"]')).not.toHaveAttribute('max', '0');
@@ -94,6 +102,14 @@ export class Setup {
 			.click();
 	}
 
+	async setupProxy1Of4() {
+		await this.page.getByRole('button', { name: 'Setup Proxy (1/4)' }).click();
+	}
+
+	async createProxy2Of4() {
+		await this.page.getByRole('button', { name: 'Create Proxy (2/4)' }).click();
+	}
+
 	async openEarnPosition1Of2() {
 		await this.page.getByRole('button', { name: 'Open Earn position (1/2)' }).click();
 	}
@@ -110,8 +126,16 @@ export class Setup {
 		await this.page.getByRole('button', { name: 'Set up Stop-Loss transaction' }).click();
 	}
 
+	async addStopLoss2Of3() {
+		await this.page.getByRole('button', { name: 'Add Stop-Loss (2/3)' }).click();
+	}
+
 	async openMultiplyPosition1Of2() {
 		await this.page.getByRole('button', { name: 'Open Multiply position (1/2)' }).click();
+	}
+
+	async createVault3Of3() {
+		await this.page.getByRole('button', { name: 'Create Vault (3/3)' }).click();
 	}
 
 	async shouldConfirmPositionCreation() {

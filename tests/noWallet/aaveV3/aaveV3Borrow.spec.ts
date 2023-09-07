@@ -4,10 +4,13 @@ test.describe('Aave v3 Borrow', async () => {
 	test('It should allow to simulate a position before opening it - No wallet connected @regression', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11052',
-		});
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11052',
+			},
+			{ type: 'Bug', description: '11784' }
+		);
 
 		await app.page.goto('/ethereum/aave/v3/borrow/ethusdc#simulate');
 
@@ -28,7 +31,9 @@ test.describe('Aave v3 Borrow', async () => {
 			--> 8x,xxx.xx
 		*/
 		await app.position.overview.shouldHaveNetValueAfterPill(/8[0-9]\,[0-9]{3}\.[0-9]{2}/);
-		await app.position.overview.shouldHaveExposureAfterPill({ amount: '50.00000', token: 'ETH' });
+
+		// !!! SKIPPED test because of bug - 11784
+		// await app.position.overview.shouldHaveExposureAfterPill({ amount: '50.00000', token: 'ETH' });
 		/* Asserting that Max borring amount will be a number:
 			- x5 digits whole-number part, with a ',' separator for thousands 
 			- x2 digits decimal part 

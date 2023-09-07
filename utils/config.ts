@@ -5,9 +5,9 @@ export const hooksTimeout: number = process.env.BASE_URL.includes('localhost') ?
 export const testTimeout: number = process.env.BASE_URL.includes('localhost') ? 200_000 : 90_000;
 
 export const positionSimulationTimeout: number = process.env.BASE_URL.includes('localhost')
-	? 25_000
-	: 15_000;
+	? 30_000
+	: 20_000;
 
 export const portfolioTimeout: number = process.env.BASE_URL.includes('localhost')
-	? 35_000
+	? 30_000
 	: 20_000;

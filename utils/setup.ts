@@ -64,7 +64,14 @@ export const setup = async (app: App) => {
 	await wallet.connect(app);
 	await termsAndconditions.accept(app);
 
-	await localStorage.enableNetworkSwitcherFoks(app);
+	// 'UseNetworkSwitcherForks' flag needs to be always passed for tests with wallet and fork
+	const flags = process.env.ENABLE_FLAGS
+		? process.env.ENABLE_FLAGS.split(' ').concat('UseNetworkSwitcherForks')
+		: ['UseNetworkSwitcherForks'];
+	await localStorage.enableFlags({
+		app,
+		flags,
+	});
 
 	const resp = await tenderly.createFork();
 	const forkId = resp.data.root_transaction.fork_id;

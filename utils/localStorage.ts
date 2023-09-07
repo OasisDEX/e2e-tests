@@ -1,9 +1,11 @@
 import { App } from 'src/app';
 
-export const enableNetworkSwitcherFoks = async (app: App) => {
+export const enableFlags = async ({ app, flags }: { app: App; flags: string[] }) => {
 	const localStorage = await app.page.evaluate(() => window.localStorage);
 	const features = JSON.parse(localStorage.features);
-	features.UseNetworkSwitcherForks = true;
+
+	flags.forEach((flag) => (features[flag] = true));
+
 	await app.page.evaluate(
 		(features) => localStorage.setItem('features', JSON.stringify(features)),
 		features
