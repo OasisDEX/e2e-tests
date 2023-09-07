@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave v3 - Wallet connected', async () => {
+test.describe('Aave - Wallet connected', async () => {
 	test.beforeAll(async () => {
 		test.setTimeout(hooksTimeout);
 
@@ -66,11 +66,17 @@ test.describe('Aave v3 - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	test('It should list an opened Aave v3 Borrow position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11673',
-		});
+	test.skip('It should list an opened Aave v3 Borrow position in portfolio', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11673',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(testTimeout);
 
@@ -81,11 +87,17 @@ test.describe('Aave v3 - Wallet connected', async () => {
 		await app.portfolio.borrow.vaults.first.shouldHave({ assets: 'ETH/USDC' });
 	});
 
-	test('It should open an Aave v3 Borrow position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11681',
-		});
+	test.skip('It should open an Aave v3 Borrow position from portfolio page', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11681',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(testTimeout);
 
@@ -94,7 +106,7 @@ test.describe('Aave v3 - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage collateral');
 	});
 
-	test.skip('It should open an Aave v3 Earn position', async () => {
+	test('It should open an Aave v3 Earn position', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',

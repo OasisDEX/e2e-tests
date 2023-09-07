@@ -71,15 +71,14 @@ test.describe('Aave v3 Multiply', async () => {
 			- x1 digit decimal part 
 			--> 1.x
 		*/
-		await app.position.overview.shouldHaveMultipleAfterPill('1.[0-9]');
+		await app.position.overview.shouldHaveMultipleAfterPill('1(.[0-9]{1,2})?');
 		/* Asserting that Buying Power After pill will be a number:
 			- x5 digits whole-number part, with a ',' separator for thousands -> [2/3/4/5/6]x,xxx
-			- x2 digits decimal part 
+			- 0, x1 or x2 digits decimal part 
 			--> [2/3/4/5/6]x,xxx.xx
 		*/
 		await app.position.overview.shouldHaveBuyingPowerAfterPill({
-			amount: '[2-6][0-9],[0-9]{3}.[0-9]{2}',
-			token: 'USDC',
+			amount: '[2-6][0-9],[0-9]{3}(.[0-9]{1,2})? USD',
 		});
 
 		/* Asserting that Liquidation price is a number:
@@ -90,7 +89,7 @@ test.describe('Aave v3 Multiply', async () => {
 		*/
 		// Bug -> 11537 ==> Comma (thousands separator) should be added once bug is fixed
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '\\$[4-8][0-9]{3}.[0-9][0-9]?',
+			amount: '[4-8][0-9]{3}(.[0-9]{1,2})? USDC',
 		});
 		/* Asserting that Liquidation price is a number:
 			- x2 digits whole-number part

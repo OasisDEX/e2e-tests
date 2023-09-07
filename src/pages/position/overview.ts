@@ -90,8 +90,8 @@ export class Overview {
 		);
 	}
 
-	async shouldHaveBuyingPowerAfterPill({ amount, token }: { amount: string; token: string }) {
-		let regexObj = new RegExp(`${amount} ${token}`);
+	async shouldHaveBuyingPowerAfterPill({ amount }: { amount: string }) {
+		let regexObj = new RegExp(`${amount}`);
 
 		await expect(this.page.locator('li:has-text("Buying Power")').getByText('After')).toContainText(
 			regexObj,

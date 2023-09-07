@@ -102,6 +102,10 @@ export class Setup {
 			.click();
 	}
 
+	async setupProxy() {
+		await this.page.getByRole('button', { name: 'Setup Proxy' }).click();
+	}
+
 	async setupProxy1Of4() {
 		await this.page.getByRole('button', { name: 'Setup Proxy (1/4)' }).click();
 	}
@@ -112,6 +116,26 @@ export class Setup {
 
 	async openEarnPosition1Of2() {
 		await this.page.getByRole('button', { name: 'Open Earn position (1/2)' }).click();
+	}
+
+	async setupAllowance() {
+		await this.page.getByRole('button', { name: 'Set Allowance' }).click();
+	}
+
+	async unlimitedAllowance() {
+		await this.page.locator('label:has-text("Unlimited Allowance")').click();
+	}
+
+	async goToDeposit() {
+		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
+	}
+
+	async confirmDeposit() {
+		await this.page.getByRole('button', { exact: true, name: 'Deposit' }).nth(1).click();
+	}
+
+	async finished() {
+		await this.page.getByRole('button', { exact: true, name: 'Finished' }).click();
 	}
 
 	async openBorrowPosition1Of2() {

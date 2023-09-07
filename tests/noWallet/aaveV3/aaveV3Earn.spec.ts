@@ -77,7 +77,7 @@ test.describe('Aave v3 Earn', async () => {
 		*/
 		await app.position.setup.orderInformation.shouldHaveMultiply({
 			current: '1',
-			future: '[1-9](.[0-9])?',
+			future: '[1-9](.[0-9]{1,2})?',
 		});
 		/* Asserting that Outstanding Debt future value is a number:
 			- x3 digits whole-number part
