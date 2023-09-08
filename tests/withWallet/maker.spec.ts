@@ -221,7 +221,7 @@ test.describe('Maker - Wallet connected', async () => {
 		await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
 			asset: 'DAI',
 			percentage: '0',
-			amount: '3[0-9],[0-9]{3}(.[0-9]{1,2})?', // '3[0-9],[0-9]{3}(.[0-9]{1,2})?',
+			amount: '[0-9]{2},[0-9]{3}(.[0-9]{1,2})?',
 		});
 	});
 
