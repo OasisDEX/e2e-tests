@@ -1,4 +1,4 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Multiply page', async () => {
 	test('It should list only Multiply positions', async ({ app }) => {

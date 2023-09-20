@@ -2,6 +2,7 @@ import { Page } from '@playwright/test';
 import {
 	Borrow,
 	Earn,
+	Header,
 	Homepage,
 	Multiply,
 	PoolCreator,
@@ -16,6 +17,8 @@ export class App {
 	readonly borrow: Borrow;
 
 	readonly earn: Earn;
+
+	readonly header: Header;
 
 	readonly homepage: Homepage;
 
@@ -33,6 +36,7 @@ export class App {
 		this.page = page;
 		this.borrow = new Borrow(page);
 		this.earn = new Earn(page);
+		this.header = new Header(page);
 		this.homepage = new Homepage(page);
 		this.multiply = new Multiply(page);
 		this.poolCreator = new PoolCreator(page);

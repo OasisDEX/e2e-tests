@@ -2,6 +2,8 @@ import { expect, Page } from '@playwright/test';
 import { OrderInformation } from './orderInformation';
 import { positionSimulationTimeout } from 'utils/config';
 
+require('dotenv').config();
+
 export class Setup {
 	readonly page: Page;
 
@@ -12,8 +14,21 @@ export class Setup {
 		this.orderInformation = new OrderInformation(page);
 	}
 
+	async shouldHaveHeader(text: string) {
+		await expect.soft(this.page.getByText(text)).toBeVisible();
+	}
+
 	async acknowlegeAjnaInfo() {
 		await this.page.getByText('I understand').click();
+	}
+
+	async waitForComponentToBeStable() {
+		await expect(this.page.getByText('Historical Ratio')).toBeVisible({
+			timeout: positionSimulationTimeout,
+		});
+		if (!process.env.BASE_URL.includes('localhost')) {
+			await this.page.waitForTimeout(2_000); // UI elements load quickly and an extra timeout is needed
+		}
 	}
 
 	async deposit({ token, amount }: { token: string; amount: string }) {
@@ -32,6 +47,20 @@ export class Setup {
 			.fill(amount);
 	}
 
+	async generate({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Generate ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
+	async waitForSliderToBeEditable() {
+		await expect(async () => {
+			await expect(this.page.locator('input[type="range"]')).not.toHaveAttribute('max', '0');
+		}).toPass();
+	}
+
 	/**
 	 *
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
@@ -45,16 +74,108 @@ export class Setup {
 		const fixedDecimals = (Math.round(parseFloat(min) * 10 ** 15) / 10 ** 15).toString().slice(5);
 		const moveMIN = parseFloat(min.slice(0, 5));
 		const moveMAX = parseFloat(max) - parseFloat(step);
-		const sliderNewValue = moveMIN + Math.round((moveMAX - moveMIN) * value * 1000) / 1000;
+		const sliderNewValue = (
+			moveMIN +
+			Math.round((moveMAX - moveMIN) * value * 1000) / 1000
+		).toFixed(3);
 		const sliderNewValueString = `${sliderNewValue.toString()}${fixedDecimals}`;
 
 		await this.page.locator('input[type="range"]').fill(sliderNewValueString);
 	}
 
-	async waitForSliderToBeEditable() {
-		await expect(async () => {
-			await expect(this.page.locator('input[type="range"]')).not.toHaveAttribute('max', '0');
-		}).toPass();
+	async createSmartDeFiAccount() {
+		await this.page.getByRole('button', { name: 'Create Smart DeFi account' }).click();
+	}
+
+	async continueShouldBeVisible() {
+		await expect(this.page.getByRole('button', { name: 'Continue' })).toBeVisible();
+	}
+
+	async continue() {
+		await this.page.getByRole('button', { name: 'Continue' }).click();
+	}
+
+	async confirm() {
+		await this.page.getByRole('button', { name: 'Confirm' }).click();
+	}
+
+	async confirmOrRetry() {
+		await this.page
+			.getByRole('button', { name: 'Back to editing' })
+			.locator('xpath=//preceding::button[1]')
+			.click();
+	}
+
+	async setupProxy() {
+		await this.page.getByRole('button', { name: 'Setup Proxy' }).click();
+	}
+
+	async setupProxy1Of4() {
+		await this.page.getByRole('button', { name: 'Setup Proxy (1/4)' }).click();
+	}
+
+	async createProxy2Of4() {
+		await this.page.getByRole('button', { name: 'Create Proxy (2/4)' }).click();
+	}
+
+	async openEarnPosition1Of2() {
+		await this.page.getByRole('button', { name: 'Open Earn position (1/2)' }).click();
+	}
+
+	async setupAllowance() {
+		await this.page.getByRole('button', { name: 'Set Allowance' }).click();
+	}
+
+	async unlimitedAllowance() {
+		await this.page.locator('label:has-text("Unlimited Allowance")').click();
+	}
+
+	async goToDeposit() {
+		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
+	}
+
+	async confirmDeposit() {
+		await this.page.getByRole('button', { exact: true, name: 'Deposit' }).nth(1).click();
+	}
+
+	async finished() {
+		await this.page.getByRole('button', { exact: true, name: 'Finished' }).click();
+	}
+
+	async openBorrowPosition1Of2() {
+		await this.page.getByRole('button', { name: 'Open Borrow position (1/2)' }).click();
+	}
+
+	async setupStopLoss1Of3() {
+		await this.page.getByRole('button', { name: 'Setup Stop-Loss (1/3)' }).click();
+	}
+
+	async setupStopLossTransaction() {
+		await this.page.getByRole('button', { name: 'Set up Stop-Loss transaction' }).click();
+	}
+
+	async addStopLoss2Of3() {
+		await this.page.getByRole('button', { name: 'Add Stop-Loss (2/3)' }).click();
+	}
+
+	async openMultiplyPosition1Of2() {
+		await this.page.getByRole('button', { name: 'Open Multiply position (1/2)' }).click();
+	}
+
+	async createVault3Of3() {
+		await this.page.getByRole('button', { name: 'Create Vault (3/3)' }).click();
+	}
+
+	async shouldConfirmPositionCreation() {
+		await expect(this.page.getByText('Position was created')).toBeVisible();
+	}
+
+	async goToPositionShouldBeVisible() {
+		await expect(this.page.getByRole('button', { name: 'Go to position' })).toBeVisible();
+	}
+
+	async goToPosition() {
+		await this.page.getByRole('button', { name: 'Go to position' }).click();
 	}
 
 	async shouldHaveLiquidationPrice({ amount, pair }: { amount: string; pair?: string }) {

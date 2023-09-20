@@ -1,14 +1,51 @@
-import { expect, Locator } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { Pool } from './pool';
 
 export class ProductsList {
+	readonly page: Page;
+
 	readonly listLocator: Locator;
 
 	readonly pool: Pool;
 
-	constructor(productHubLocator: Locator) {
+	constructor(page: Page, productHubLocator: Locator) {
+		this.page = page;
 		this.listLocator = productHubLocator.getByRole('table');
-		this.pool = new Pool(this.listLocator);
+		this.pool = new Pool(this.listLocator.locator('tbody tr'));
+	}
+
+	get first() {
+		return this.nthPool(0);
+	}
+
+	nthPool(nth: number) {
+		return new Pool(this.listLocator.locator('tbody tr').nth(nth));
+	}
+
+	byPairPool(pair: string) {
+		return new Pool(
+			this.listLocator
+				.locator('[role="link"]')
+				.filter({ has: this.page.getByText(pair, { exact: true }) })
+		);
+	}
+
+	async getNumberOfPools() {
+		// Wait for 1st item to be displayed to avoid random fails
+		await this.listLocator.locator('[role="link"] td:nth-child(1)').first().waitFor();
+
+		const count = await this.listLocator.locator('tbody tr').count();
+		return count;
+	}
+
+	async getAllPairs() {
+		// Wait for 1st item to be displayed to avoid random fails
+		await this.listLocator.locator('[role="link"] td:nth-child(1)').first().waitFor();
+
+		const allPairs = await this.listLocator
+			.locator('[role="link"] td:nth-child(1)')
+			.allInnerTexts();
+		return allPairs;
 	}
 
 	async allPoolsShouldBe(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {

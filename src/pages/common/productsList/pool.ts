@@ -1,18 +1,26 @@
 import { expect, Locator } from '@playwright/test';
 
 export class Pool {
-	readonly positionLocator: Locator;
+	readonly poolLocator: Locator;
 
-	constructor(headerLocator: Locator) {
-		this.positionLocator = headerLocator.locator('h1 > div').nth(0);
+	constructor(poolLocator: Locator) {
+		this.poolLocator = poolLocator;
+	}
+
+	async open() {
+		await this.poolLocator.click();
+	}
+
+	async shouldBevisible() {
+		await expect(this.poolLocator.locator('td:nth-child(1)')).toBeVisible();
 	}
 
 	async shouldBe(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
-		await expect(this.positionLocator.locator('span').nth(0)).toContainText(positionCategory);
+		await expect(this.poolLocator.locator('span').nth(0)).toContainText(positionCategory);
 	}
 
 	async select(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
-		await this.positionLocator.click();
-		await this.positionLocator.locator(`li:has-text("${positionCategory}")`).click();
+		await this.poolLocator.click();
+		await this.poolLocator.locator(`li:has-text("${positionCategory}")`).click();
 	}
 }

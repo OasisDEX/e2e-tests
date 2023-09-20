@@ -1,4 +1,4 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Ajna Earn', async () => {
 	test.skip('It should simulate creating an ajna Earn position', async ({ app }) => {
@@ -13,6 +13,5 @@ test.describe('Ajna Earn', async () => {
 		// await app.position.setup.deposit('50');
 
 		// TODO
-		// await app.pause();
 	});
 });

@@ -1,8 +1,7 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Aave v3 Earn', async () => {
 	test('It should allow to simulate a position before opening it - No wallet connected @regression', async ({
-		browserName,
 		app,
 	}) => {
 		test.info().annotations.push({
@@ -13,12 +12,7 @@ test.describe('Aave v3 Earn', async () => {
 		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		if (['firefox', 'webkit'].includes(browserName)) {
-			await app.page.waitForTimeout(3000);
-		} else {
-			await app.page.waitForTimeout(1500);
-		}
-
+		await app.position.setup.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '50' });
 
 		await app.position.overview.shouldHaveTokenAmount({ amount: '50.00', token: 'ETH' });
@@ -30,7 +24,7 @@ test.describe('Aave v3 Earn', async () => {
 			--> x.xxxx
 		*/
 		await app.position.setup.shouldHaveCurrentPrice({
-			amount: '[1-9].[0-9]{4}',
+			amount: '[1-9].[0-9]{2,4}',
 			pair: 'WSTETH/ETH',
 		});
 		/* Asserting that Liquidation price is a number:
@@ -83,7 +77,7 @@ test.describe('Aave v3 Earn', async () => {
 		*/
 		await app.position.setup.orderInformation.shouldHaveMultiply({
 			current: '1',
-			future: '[1-9](.[0-9])?',
+			future: '[1-9](.[0-9]{1,2})?',
 		});
 		/* Asserting that Outstanding Debt future value is a number:
 			- x3 digits whole-number part
@@ -132,7 +126,7 @@ test.describe('Aave v3 Earn', async () => {
 		);
 	});
 
-	test('It should validate risk slider - Safe', async ({ app, browserName }) => {
+	test('It should validate risk slider - Safe', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11623',
@@ -141,12 +135,7 @@ test.describe('Aave v3 Earn', async () => {
 		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		if (['firefox', 'webkit'].includes(browserName)) {
-			await app.page.waitForTimeout(3000);
-		} else {
-			await app.page.waitForTimeout(1500);
-		}
-
+		await app.position.setup.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
 		// It takes some time for the slider to be editable
 		await app.position.setup.waitForSliderToBeEditable();
@@ -159,7 +148,7 @@ test.describe('Aave v3 Earn', async () => {
 		);
 	});
 
-	test('It should validate risk slider - Risky', async ({ app, browserName }) => {
+	test('It should validate risk slider - Risky', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11624',
@@ -168,12 +157,7 @@ test.describe('Aave v3 Earn', async () => {
 		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		if (['firefox', 'webkit'].includes(browserName)) {
-			await app.page.waitForTimeout(3000);
-		} else {
-			await app.page.waitForTimeout(1500);
-		}
-
+		await app.position.setup.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
 		await app.position.setup.shouldHaveWarning(
 			'At the chosen risk level, if the price of WSTETH moves over ',

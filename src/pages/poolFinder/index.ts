@@ -14,7 +14,7 @@ export class PoolFinder {
 	constructor(page: Page) {
 		this.page = page;
 		this.finderLocator = page.locator('main:has-text("using Ajna")');
-		this.list = new ProductsList(this.finderLocator);
+		this.list = new ProductsList(page, this.finderLocator);
 		this.noItems = new NoItems(page);
 	}
 

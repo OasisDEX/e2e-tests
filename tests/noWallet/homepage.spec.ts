@@ -1,4 +1,4 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Homepage', async () => {
 	test('It should list Earn positions by default', async ({ app }) => {
@@ -15,7 +15,8 @@ test.describe('Homepage', async () => {
 		})
 	);
 
-	test('It should link to pool finder - Earn', async ({ app }) => {
+	// !!! Test skipped until Ajna products are enabled back
+	test.skip('It should link to pool finder - Earn', async ({ app }) => {
 		await app.homepage.open();
 		await app.homepage.productHub.list.openPoolFinder();
 		await app.poolFinder.shouldHaveHeader('Earn');

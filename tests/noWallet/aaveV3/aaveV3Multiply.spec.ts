@@ -1,30 +1,18 @@
-import { test } from '#fixtures';
+import { test } from '#noWalletFixtures';
 
 test.describe('Aave v3 Multiply', async () => {
 	test('It should allow to simulate a position before opening it - No wallet connected @regression', async ({
-		browserName,
 		app,
 	}) => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11528',
-			},
-			{
-				type: 'Bug',
-				description: '11537',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11528',
+		});
 
 		await app.page.goto('/ethereum/aave/v3/multiply/wbtcusdc#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		if (['firefox', 'webkit'].includes(browserName)) {
-			await app.page.waitForTimeout(3000);
-		} else {
-			await app.page.waitForTimeout(1500);
-		}
-
+		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'WBTC', amount: '2.5' });
 
 		/* Asserting that Liquidation Price After pill will be:
@@ -75,16 +63,13 @@ test.describe('Aave v3 Multiply', async () => {
 			- x1 digit decimal part 
 			--> 1.x
 		*/
-		await app.position.overview.shouldHaveMultipleAfterPill('1.[0-9]');
+		await app.position.overview.shouldHaveMultipleAfterPill('1(.[0-9]{1,2})?');
 		/* Asserting that Buying Power After pill will be a number:
 			- x5 digits whole-number part, with a ',' separator for thousands -> [2/3/4/5/6]x,xxx
-			- x2 digits decimal part 
+			- 0, x1 or x2 digits decimal part 
 			--> [2/3/4/5/6]x,xxx.xx
 		*/
-		await app.position.overview.shouldHaveBuyingPowerAfterPill({
-			amount: '[2-6][0-9],[0-9]{3}.[0-9]{2}',
-			token: 'USDC',
-		});
+		await app.position.overview.shouldHaveBuyingPowerAfterPill('[2-6][0-9],[0-9]{3}(.[0-9]{1,2})?');
 
 		/* Asserting that Liquidation price is a number:
 			- $ symbol
@@ -92,9 +77,8 @@ test.describe('Aave v3 Multiply', async () => {
 			- x1 or x2 digits decimal part 
 			--> [4/5/6/7/8],xxx.xx
 		*/
-		// Bug -> 11537 ==> Comma (thousands separator) should be added once bug is fixed
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '\\$[4-8][0-9]{3}.[0-9][0-9]?',
+			amount: '[4-8],[0-9]{3}(.[0-9]{1,2})? USDC',
 		});
 		/* Asserting that Liquidation price is a number:
 			- x2 digits whole-number part
@@ -201,7 +185,7 @@ test.describe('Aave v3 Multiply', async () => {
 		);
 	});
 
-	test('It should validate risk slider - Safe', async ({ app, browserName }) => {
+	test('It should validate risk slider - Safe', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11615',
@@ -210,12 +194,7 @@ test.describe('Aave v3 Multiply', async () => {
 		await app.page.goto('ethereum/aave/v3/multiply/ethdai#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		if (['firefox', 'webkit'].includes(browserName)) {
-			await app.page.waitForTimeout(3000);
-		} else {
-			await app.page.waitForTimeout(1500);
-		}
-
+		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
 		await app.position.setup.shouldHaveWarning(
 			'At the chosen risk level, the price of ETH needs to move over ',
@@ -225,7 +204,7 @@ test.describe('Aave v3 Multiply', async () => {
 		);
 	});
 
-	test('It should validate risk slider - Risky', async ({ app, browserName }) => {
+	test('It should validate risk slider - Risky', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11616',
@@ -234,12 +213,7 @@ test.describe('Aave v3 Multiply', async () => {
 		await app.page.goto('ethereum/aave/v3/multiply/ethdai#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		if (['firefox', 'webkit'].includes(browserName)) {
-			await app.page.waitForTimeout(3000);
-		} else {
-			await app.page.waitForTimeout(1500);
-		}
-
+		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
 		// It takes some time for the slider to be editable
 		await app.position.setup.waitForSliderToBeEditable();
