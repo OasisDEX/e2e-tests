@@ -1,5 +1,5 @@
 import { test } from '#noWalletFixtures';
-import { veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 
 test.describe('Borrow', async () => {
 	test('It should list only Borrow positions', async ({ app }) => {
@@ -32,7 +32,11 @@ test.describe('Borrow', async () => {
 		test(`It should open Borrow position page for all available pairs - ${network} - ${protocol}`, async ({
 			app,
 		}) => {
-			test.setTimeout(veryLongTestTimeout);
+			test.setTimeout(
+				network === 'Ethereum' && protocol === 'Aave V3'
+					? extremelyLongTestTimeout
+					: veryLongTestTimeout
+			);
 
 			await app.borrow.open();
 
