@@ -1,21 +1,13 @@
 import { test } from '#noWalletFixtures';
 
-let actionsEnvTimeout: number;
-
 test.describe('Aave v3 Multiply', async () => {
 	test('It should allow to simulate a position before opening it - No wallet connected @regression', async ({
 		app,
 	}) => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11528',
-			},
-			{
-				type: 'Bug',
-				description: '11537',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11528',
+		});
 
 		await app.page.goto('/ethereum/aave/v3/multiply/wbtcusdc#simulate');
 
@@ -77,9 +69,7 @@ test.describe('Aave v3 Multiply', async () => {
 			- 0, x1 or x2 digits decimal part 
 			--> [2/3/4/5/6]x,xxx.xx
 		*/
-		await app.position.overview.shouldHaveBuyingPowerAfterPill({
-			amount: '[2-6][0-9],[0-9]{3}(.[0-9]{1,2})? USD',
-		});
+		await app.position.overview.shouldHaveBuyingPowerAfterPill('[2-6][0-9],[0-9]{3}(.[0-9]{1,2})?');
 
 		/* Asserting that Liquidation price is a number:
 			- $ symbol
@@ -87,9 +77,8 @@ test.describe('Aave v3 Multiply', async () => {
 			- x1 or x2 digits decimal part 
 			--> [4/5/6/7/8],xxx.xx
 		*/
-		// Bug -> 11537 ==> Comma (thousands separator) should be added once bug is fixed
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '[4-8][0-9]{3}(.[0-9]{1,2})? USDC',
+			amount: '[4-8],[0-9]{3}(.[0-9]{1,2})? USDC',
 		});
 		/* Asserting that Liquidation price is a number:
 			- x2 digits whole-number part

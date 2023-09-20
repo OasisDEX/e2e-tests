@@ -13,7 +13,6 @@ export default defineConfig({
 		baseURL: process.env.BASE_URL,
 		headless: process.env.HEADLESS === 'false' ? false : true,
 		trace: 'on-first-retry',
-		screenshot: 'only-on-failure',
 	},
 
 	/* Configure projects for major browsers */
@@ -22,7 +21,7 @@ export default defineConfig({
 			name: 'no-wallet',
 			testMatch: ['noWallet/**'],
 			testIgnore: ['noWallet/ajna/**'],
-			use: { ...devices['Desktop Chrome'] },
+			use: { ...devices['Desktop Chrome'], screenshot: 'only-on-failure' },
 		},
 
 		{

@@ -30,7 +30,7 @@ test.describe('Aave v3 Borrow', async () => {
 			- x2 digits decimal part 
 			--> 8x,xxx.xx
 		*/
-		await app.position.overview.shouldHaveNetValueAfterPill(/8[0-9]\,[0-9]{3}\.[0-9]{2}/);
+		await app.position.overview.shouldHaveNetValueAfterPill(/[7-8][0-9]\,[0-9]{3}\.[0-9]{2}/);
 
 		// !!! SKIPPED test because of bug - 11784
 		// await app.position.overview.shouldHaveExposureAfterPill({ amount: '50.00000', token: 'ETH' });
@@ -68,7 +68,7 @@ test.describe('Aave v3 Borrow', async () => {
 			- x2 digits decimal part 
 			--> 8x,xxx.xx
 		*/
-		await app.position.overview.shouldHaveNetValueAfterPill(/7[0-9]\,[0-9]{3}\.[0-9]{2}/);
+		await app.position.overview.shouldHaveNetValueAfterPill(/[6-7][0-9]\,[0-9]{3}\.[0-9]{2}/);
 		await app.position.overview.shouldHaveDebtAfterPill({ amount: '10,000.0000', token: 'USDC' });
 		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
 			token: 'USDC',

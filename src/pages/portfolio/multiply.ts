@@ -9,7 +9,7 @@ export class Multiply {
 
 	constructor(page: Page) {
 		this.page = page;
-		this.vaults = new Vaults(page.locator('h3:has-text("Summer.fi Multiply") + div'));
+		this.vaults = new Vaults(page, page.locator('h3:has-text("Summer.fi Multiply") + div'));
 	}
 
 	async shouldHaveHeaderCount(count: string) {

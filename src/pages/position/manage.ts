@@ -13,4 +13,12 @@ export class Manage {
 			timeout: positionSimulationTimeout,
 		});
 	}
+
+	async shouldHaveCollateralRatio(ratio: string) {
+		const regExp = new RegExp(`${ratio}%`);
+
+		await expect(this.page.locator('p > span:has-text("Collateral Ratio") + span')).toContainText(
+			regExp
+		);
+	}
 }

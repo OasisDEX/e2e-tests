@@ -12,6 +12,6 @@ export class ProductHub {
 	constructor(page: Page) {
 		this.productHubLocator = page.locator('#product-hub').locator('..');
 		this.header = new Header(this.productHubLocator);
-		this.list = new ProductsList(this.productHubLocator);
+		this.list = new ProductsList(page, this.productHubLocator);
 	}
 }

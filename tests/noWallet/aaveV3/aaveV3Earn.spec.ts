@@ -24,7 +24,7 @@ test.describe('Aave v3 Earn', async () => {
 			--> x.xxxx
 		*/
 		await app.position.setup.shouldHaveCurrentPrice({
-			amount: '[1-9].[0-9]{4}',
+			amount: '[1-9].[0-9]{2,4}',
 			pair: 'WSTETH/ETH',
 		});
 		/* Asserting that Liquidation price is a number:

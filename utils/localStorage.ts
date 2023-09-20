@@ -1,14 +1,25 @@
+import { expect } from '@playwright/test';
 import { App } from 'src/app';
 
 export const enableFlags = async ({ app, flags }: { app: App; flags: string[] }) => {
-	const localStorage = await app.page.evaluate(() => window.localStorage);
-	const features = JSON.parse(localStorage.features);
+	// 'ob-config-overrides' takes some time to be loaded to Local Storage
+	let localStorage: any;
+	await expect(async () => {
+		localStorage = await app.page.evaluate(() => window.localStorage);
+		expect(localStorage).toMatchObject({
+			'ob-config-overrides': expect.any(String),
+		});
+	}).toPass();
 
-	flags.forEach((flag) => (features[flag] = true));
+	const obConfigOverrides = JSON.parse(localStorage['ob-config-overrides']);
+
+	flags.forEach((flag) => (obConfigOverrides.features[flag] = true));
 
 	await app.page.evaluate(
-		(features) => localStorage.setItem('features', JSON.stringify(features)),
-		features
+		(obConfigOverrides) =>
+			localStorage.setItem('ob-config-overrides', JSON.stringify(obConfigOverrides)),
+		obConfigOverrides
 	);
+
 	await app.page.reload();
 };

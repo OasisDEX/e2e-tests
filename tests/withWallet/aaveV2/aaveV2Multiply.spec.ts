@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave - Wallet connected', async () => {
+test.describe('Aave v2 Multiply - Wallet connected', async () => {
 	test.beforeAll(async () => {
 		test.setTimeout(hooksTimeout);
 

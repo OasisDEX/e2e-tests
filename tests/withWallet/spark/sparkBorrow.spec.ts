@@ -47,7 +47,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '3' });
-		await app.position.setup.borrow({ token: 'DAI', amount: '100' });
+		await app.position.setup.borrow({ token: 'DAI', amount: '1' });
 		await app.position.setup.createSmartDeFiAccount();
 		// Confirmation button with same label
 		await app.position.setup.createSmartDeFiAccount();

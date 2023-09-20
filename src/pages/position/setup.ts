@@ -14,6 +14,10 @@ export class Setup {
 		this.orderInformation = new OrderInformation(page);
 	}
 
+	async shouldHaveHeader(text: string) {
+		await expect.soft(this.page.getByText(text)).toBeVisible();
+	}
+
 	async acknowlegeAjnaInfo() {
 		await this.page.getByText('I understand').click();
 	}
