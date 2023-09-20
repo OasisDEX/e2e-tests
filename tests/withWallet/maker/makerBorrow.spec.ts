@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { hooksTimeout, testTimeout } from 'utils/config';
+import { hooksTimeout, extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -41,7 +41,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			description: '11788, 11790',
 		});
 
-		test.setTimeout(testTimeout);
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.page.goto('/vaults/open/ETH-A');
 
@@ -82,7 +82,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			description: '11789',
 		});
 
-		test.setTimeout(testTimeout);
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.page.goto(`/owner/${walletAddress}`);
 		await app.portfolio.borrow.vaults.first.view();
