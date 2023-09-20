@@ -1,6 +1,7 @@
 import { test } from '#noWalletFixtures';
+import { longTestTimeout } from 'utils/config';
 
-test.describe('Aave v3 Multiply', async () => {
+test.describe('Aave v3 Multiply Ethereum', async () => {
 	test('It should allow to simulate a position before opening it - No wallet connected @regression', async ({
 		app,
 	}) => {
@@ -210,6 +211,8 @@ test.describe('Aave v3 Multiply', async () => {
 			description: '11616',
 		});
 
+		test.setTimeout(longTestTimeout);
+
 		await app.page.goto('ethereum/aave/v3/multiply/ethdai#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
@@ -224,5 +227,46 @@ test.describe('Aave v3 Multiply', async () => {
 			"Aave's liquidations penalty is at least ",
 			'%.'
 		);
+	});
+
+	test('It should open existent Aave V3 Multiply Ethereum vault page @regression', async ({
+		app,
+	}) => {
+		test.setTimeout(longTestTimeout);
+
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11995',
+		});
+
+		await app.page.goto('/ethereum/aave/v3/1218#overview');
+
+		await app.position.shouldHaveHeader('Aave ETH/USDC');
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '[0-9]{3}.[0-9]{2}',
+			token: 'USDC',
+		});
+		await app.position.overview.shouldHaveLoanToValue('[2-8][0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveBorrowCost('[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveBorrowCostGreaterThanZero();
+		await app.position.overview.shouldHaveNetValue({ value: '[1-8].[0-9]{2}', token: 'USDC' });
+		await app.position.overview.shouldHaveExposure({
+			amount: '0.[0-9]{5}',
+			token: 'ETH',
+		});
+		await app.position.overview.shouldHaveExposureGreaterThanZero('ETH');
+		await app.position.overview.shouldHaveDebt({
+			amount: '[4-9].[0-9]{4}',
+			token: 'USDC',
+		});
+		await app.position.overview.shouldHaveMultiple('[1-3].[0-9]{1,2}');
+		await app.position.overview.shouldHaveBuyingPower('[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveBuyingPowerGreaterThanZero();
+
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '[0-9]{3}.[0-9]{2}',
+			pair: 'USDC',
+		});
+		await app.position.setup.shouldHaveLoanToValue('[5-9][0-9].[0-9]');
 	});
 });

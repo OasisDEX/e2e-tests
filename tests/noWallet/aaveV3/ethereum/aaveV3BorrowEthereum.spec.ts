@@ -1,6 +1,6 @@
 import { test } from '#noWalletFixtures';
 
-test.describe('Aave v3 Borrow', async () => {
+test.describe('Aave v3 Borrow Ethereum', async () => {
 	test('It should allow to simulate a position before opening it - No wallet connected @regression', async ({
 		app,
 	}) => {
