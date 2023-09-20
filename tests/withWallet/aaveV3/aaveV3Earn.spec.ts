@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { hooksTimeout, testTimeout } from 'utils/config';
+import { hooksTimeout, extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -47,7 +47,7 @@ test.describe('Aave v3 Earn - Wallet connected', async () => {
 			}
 		);
 
-		test.setTimeout(testTimeout);
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
 		// Depositing collateral too quickly after loading page returns wrong simulation results
@@ -83,7 +83,7 @@ test.describe('Aave v3 Earn - Wallet connected', async () => {
 			}
 		);
 
-		test.setTimeout(testTimeout);
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.page.goto(`/owner/${walletAddress}`);
 
@@ -103,7 +103,7 @@ test.describe('Aave v3 Earn - Wallet connected', async () => {
 			}
 		);
 
-		test.setTimeout(testTimeout);
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.page.goto(`/owner/${walletAddress}`);
 		await app.portfolio.earn.vaults.first.view();

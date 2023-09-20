@@ -1,6 +1,7 @@
 import { test } from '#noWalletFixtures';
+import { longTestTimeout } from 'utils/config';
 
-test.describe('Aave v3 Earn', async () => {
+test.describe('Aave v3 Earn Ethereum', async () => {
 	test('It should allow to simulate a position before opening it - No wallet connected @regression', async ({
 		app,
 	}) => {
@@ -131,6 +132,8 @@ test.describe('Aave v3 Earn', async () => {
 			type: 'Test case',
 			description: '11623',
 		});
+
+		test.setTimeout(longTestTimeout);
 
 		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
 

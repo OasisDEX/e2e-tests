@@ -66,21 +66,28 @@ export class Setup {
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
 	async moveSlider(value: number) {
-		const step = await this.page.locator('input[type="range"]').getAttribute('step');
-		const min = await this.page.locator('input[type="range"]').getAttribute('min');
-		const max = await this.page.locator('input[type="range"]').getAttribute('max');
+		await expect(async () => {
+			const initialSliderValue = await this.page
+				.locator('input[type="range"]')
+				.getAttribute('value');
 
-		// 'fixedDecimals' is needed for Aave v3 Earn, which uses 15 decimals
-		const fixedDecimals = (Math.round(parseFloat(min) * 10 ** 15) / 10 ** 15).toString().slice(5);
-		const moveMIN = parseFloat(min.slice(0, 5));
-		const moveMAX = parseFloat(max) - parseFloat(step);
-		const sliderNewValue = (
-			moveMIN +
-			Math.round((moveMAX - moveMIN) * value * 1000) / 1000
-		).toFixed(3);
-		const sliderNewValueString = `${sliderNewValue.toString()}${fixedDecimals}`;
+			const slider = this.page.locator('input[type="range"]');
+			const sliderBoundingBox = await slider.boundingBox();
 
-		await this.page.locator('input[type="range"]').fill(sliderNewValueString);
+			// Scroll down so that slider is fully visible and next dragTo doesn't fail
+			await this.page.getByText('Connect a wallet').scrollIntoViewIfNeeded();
+
+			await slider.dragTo(slider, {
+				force: true,
+				targetPosition: {
+					x: sliderBoundingBox.width * value,
+					y: 0,
+				},
+			});
+
+			const newSliderValue = await this.page.locator('input[type="range"]').getAttribute('value');
+			expect(newSliderValue !== initialSliderValue).toBe(true);
+		}).toPass();
 	}
 
 	async createSmartDeFiAccount() {
