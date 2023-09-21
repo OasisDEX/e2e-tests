@@ -1,0 +1,39 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+jobs:
+  playwright:
+    name: 'Playwright Tests'
+    runs-on: ubuntu-latest
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Run NO-WALLET tests
+        run: BASE_URL='https://staging.summer.fi/' yarn test:e2e:no-wallet:regression
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report-no-wallet
+          path: playwright-reports/no-wallet
+          retention-days: 30
+      - name: Run WITH-WALLET tests
+        run: WALLET_ADDRESS='0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266' TENDERLY_PROJECT='e2e-automation' TENDERLY_USER='oazoapps' TENDERLY_ACCESS_KEY='BsyD7IAqXtdRTt9m22Q-pRFDWhSWvEnT' BASE_URL='https://staging.summer.fi/' yarn test:e2e:with-wallet:regression:docker
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report-with-wallet
+          path: playwright-reports/with-wallet
+          retention-days: 30
