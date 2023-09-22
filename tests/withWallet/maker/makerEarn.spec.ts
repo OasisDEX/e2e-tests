@@ -35,7 +35,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Maker Earn position', async () => {
+	test('It should open a Maker Earn position @regression', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',

@@ -36,7 +36,7 @@ test.describe.skip('Ajna - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should crete an Ajna Earn position', async () => {
+	test('It should crete an Ajna Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11657',

@@ -10,7 +10,6 @@ import { App } from 'src/app';
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -22,7 +21,7 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId, walletAddress } = await setup(app));
+		({ forkId } = await setup(app));
 	});
 
 	test.afterAll(async () => {
@@ -35,7 +34,7 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v2 Earn position', async () => {
+	test('It should open an Aave v2 Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11772',

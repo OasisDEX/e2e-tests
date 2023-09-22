@@ -27,9 +27,7 @@ test.describe('Pool finder - Borrow', async () => {
 		await app.poolFinder.shouldHaveHeader('Earn');
 	});
 
-	test('It should list only specific Borrow pool - Filtering by pool address @regression', async ({
-		app,
-	}) => {
+	test('It should list only specific Borrow pool - Filtering by pool address', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '10913',

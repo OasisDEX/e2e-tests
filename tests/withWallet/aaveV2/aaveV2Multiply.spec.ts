@@ -10,11 +10,10 @@ import { App } from 'src/app';
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave v2 Multiply - Wallet connected', async () => {
+test.describe('Aave v2 Multiply - Wallet connected @regression', async () => {
 	test.beforeAll(async () => {
 		test.setTimeout(hooksTimeout);
 
@@ -22,7 +21,7 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId, walletAddress } = await setup(app));
+		({ forkId } = await setup(app));
 	});
 
 	test.afterAll(async () => {

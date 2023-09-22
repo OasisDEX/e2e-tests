@@ -68,7 +68,9 @@ export class Overview {
 	async shouldHaveLoanToValue(percentage: string) {
 		const regExp = new RegExp(`${percentage}%`);
 		await expect(
-			this.page.getByText('Loan to Value').locator('xpath=//following-sibling::p[1]')
+			this.page
+				.getByText('Loan to Value', { exact: true })
+				.locator('xpath=//following-sibling::p[1]')
 		).toHaveText(regExp, { timeout: positionSimulationTimeout });
 	}
 

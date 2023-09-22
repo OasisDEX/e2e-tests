@@ -35,7 +35,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Borrow position', async () => {
+	test('It should open a Spark Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11811',
