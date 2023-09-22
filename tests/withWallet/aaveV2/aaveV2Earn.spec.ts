@@ -34,7 +34,7 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v2 Earn position', async () => {
+	test('It should open an Aave v2 Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11772',

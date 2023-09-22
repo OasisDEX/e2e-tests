@@ -171,7 +171,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		});
 	});
 
-	test('It should validate "Deposit <collateral>" field - No enough collateral in wallet', async ({
+	test('It should validate "Deposit <collateral>" field - No enough collateral in wallet @regression', async ({
 		app,
 	}) => {
 		test.info().annotations.push({

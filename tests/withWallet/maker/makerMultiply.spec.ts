@@ -35,7 +35,7 @@ test.describe('Maker - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Maker Multiply position', async () => {
+	test('It should open a Maker Multiply position @regression', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',
