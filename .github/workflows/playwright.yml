@@ -1,9 +1,17 @@
 name: Playwright Tests
-on:
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+
+on: 
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on. If you leave it blank the tests will run on staging environment'
+        type: string
+        required: false
+  # push:
+  #   branches: [ main, master ]
+  # pull_request:
+  #   branches: [ main, master ]
+
 jobs:
   playwright:
     name: 'Playwright Tests'
@@ -22,7 +30,7 @@ jobs:
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Run NO-WALLET tests
-        run: BASE_URL='https://staging.summer.fi/' yarn test:e2e:no-wallet:regression:ci
+        run: BASE_URL=${{ base_url }} yarn test:e2e:no-wallet:regression:ci
       - uses: actions/upload-artifact@v3
         if: always()
         with:
@@ -30,7 +38,7 @@ jobs:
           path: playwright-reports/no-wallet
           retention-days: 30
       - name: Run WITH-WALLET tests
-        run: WALLET_ADDRESS='0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266' TENDERLY_PROJECT='e2e-automation' TENDERLY_USER='oazoapps' TENDERLY_ACCESS_KEY='BsyD7IAqXtdRTt9m22Q-pRFDWhSWvEnT' BASE_URL='https://staging.summer.fi/' yarn test:e2e:with-wallet:regression:ci
+        run: WALLET_ADDRESS='0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266' TENDERLY_PROJECT='e2e-automation' TENDERLY_USER='oazoapps' TENDERLY_ACCESS_KEY='BsyD7IAqXtdRTt9m22Q-pRFDWhSWvEnT' BASE_URL=${{ base_url }} yarn test:e2e:with-wallet:regression:ci
       - uses: actions/upload-artifact@v3
         if: always()
         with:
