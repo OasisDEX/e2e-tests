@@ -37,9 +37,16 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'with-wallet',
-			testMatch: ['withWallet/**'],
+			name: 'with-wallet-aave',
+			testMatch: ['withWallet/aaveV*/**'],
 			testIgnore: ['noWallet/ajna**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-other',
+			testMatch: ['withWallet/**'],
+			testIgnore: ['noWallet/ajna**', 'withWallet/aaveV*/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 	],
@@ -50,9 +57,14 @@ const noWalletConfig: TestConfig = {
 	reporter: [['html', { open: 'never', outputFolder: 'playwright-reports/no-wallet' }]],
 };
 
-// Set reporter path for with-wallet tests
-const withWalletConfig: TestConfig = {
-	reporter: [['html', { open: 'never', outputFolder: 'playwright-reports/with-wallet' }]],
+// Set reporter path for with-wallet-aave tests
+const withWalletAaveConfig: TestConfig = {
+	reporter: [['html', { open: 'never', outputFolder: 'playwright-reports/with-wallet-aave' }]],
+};
+
+// Set reporter path for with-wallet-other tests
+const withWalletOtherConfig: TestConfig = {
+	reporter: [['html', { open: 'never', outputFolder: 'playwright-reports/with-wallet-other' }]],
 };
 
 const wallet = process.env.WITH_WALLET;
@@ -60,7 +72,7 @@ const wallet = process.env.WITH_WALLET;
 // Config object with default configuration and specific reporter path
 const config: TestConfig = {
 	...defaultConfig,
-	...(wallet ? withWalletConfig : noWalletConfig),
+	...(!wallet ? noWalletConfig : wallet === 'aave' ? withWalletAaveConfig : withWalletOtherConfig),
 };
 
 export default config;
