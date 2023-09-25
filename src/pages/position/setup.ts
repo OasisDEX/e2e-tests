@@ -1,16 +1,20 @@
 import { expect, Page } from '@playwright/test';
+import { Base } from './base';
 import { OrderInformation } from './orderInformation';
-import { positionSimulationTimeout } from 'utils/config';
+import { positionTimeout } from 'utils/config';
 
 require('dotenv').config();
 
 export class Setup {
 	readonly page: Page;
 
+	readonly base: Base;
+
 	readonly orderInformation: OrderInformation;
 
 	constructor(page: Page) {
 		this.page = page;
+		this.base = new Base(page);
 		this.orderInformation = new OrderInformation(page);
 	}
 
@@ -24,7 +28,7 @@ export class Setup {
 
 	async waitForComponentToBeStable() {
 		await expect(this.page.getByText('Historical Ratio')).toBeVisible({
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 		if (!process.env.BASE_URL.includes('localhost')) {
 			await this.page.waitForTimeout(2_000); // UI elements load quickly and an extra timeout is needed
@@ -56,38 +60,15 @@ export class Setup {
 	}
 
 	async waitForSliderToBeEditable() {
-		await expect(async () => {
-			await expect(this.page.locator('input[type="range"]')).not.toHaveAttribute('max', '0');
-		}).toPass();
+		await this.base.waitForSliderToBeEditable();
 	}
 
 	/**
 	 *
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
-	async moveSlider(value: number) {
-		await expect(async () => {
-			const initialSliderValue = await this.page
-				.locator('input[type="range"]')
-				.getAttribute('value');
-
-			const slider = this.page.locator('input[type="range"]');
-			const sliderBoundingBox = await slider.boundingBox();
-
-			// Scroll down so that slider is fully visible and next dragTo doesn't fail
-			await this.page.getByText('Connect a wallet').scrollIntoViewIfNeeded();
-
-			await slider.dragTo(slider, {
-				force: true,
-				targetPosition: {
-					x: sliderBoundingBox.width * value,
-					y: 0,
-				},
-			});
-
-			const newSliderValue = await this.page.locator('input[type="range"]').getAttribute('value');
-			expect(newSliderValue !== initialSliderValue).toBe(true);
-		}).toPass();
+	async moveSlider({ process, value }: { process: 'setup' | 'manage'; value: number }) {
+		await this.base.moveSlider({ process, value });
 	}
 
 	async createSmartDeFiAccount() {
@@ -103,7 +84,7 @@ export class Setup {
 	}
 
 	async confirm() {
-		await this.page.getByRole('button', { name: 'Confirm' }).click();
+		await this.base.confirm();
 	}
 
 	async confirmOrRetry() {
@@ -161,6 +142,12 @@ export class Setup {
 		await this.page.getByRole('button', { name: 'Set up Stop-Loss transaction' }).click();
 	}
 
+	async setupStopLossTransactionShouldBeVisible() {
+		await expect(
+			this.page.getByRole('button', { name: 'Set up Stop-Loss transaction' })
+		).toBeVisible({ timeout: positionTimeout });
+	}
+
 	async addStopLoss2Of3() {
 		await this.page.getByRole('button', { name: 'Add Stop-Loss (2/3)' }).click();
 	}
@@ -190,7 +177,7 @@ export class Setup {
 
 		await expect(this.page.locator('span:has-text("Liquidation Price") + span')).toContainText(
 			regExp,
-			{ timeout: positionSimulationTimeout } // Liquidation price takes longer to be updated
+			{ timeout: positionTimeout } // Liquidation price takes longer to be updated
 		);
 	}
 
@@ -223,7 +210,7 @@ export class Setup {
 					.getByRole('button', { name: 'Reset' })
 					.locator('..')
 					.locator('xpath=//following-sibling::div[1]')
-			).toContainText(text, { timeout: positionSimulationTimeout });
+			).toContainText(text, { timeout: positionTimeout });
 		}
 	}
 }

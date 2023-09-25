@@ -1,5 +1,5 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { positionSimulationTimeout } from 'utils/config';
+import { positionTimeout } from 'utils/config';
 
 export class OrderInformation {
 	readonly page: Page;
@@ -24,7 +24,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Buying") div:nth-child(2)')
 		).toContainText(regExp, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 
@@ -33,7 +33,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Price (impact)")')
 		).toContainText('%)', {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 
@@ -42,7 +42,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Slippage Limit")')
 		).toContainText(regExp, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 
@@ -52,7 +52,7 @@ export class OrderInformation {
 		await expect(this.orderInformationLocator.locator('li:has-text("Multiply")')).toContainText(
 			regExp,
 			{
-				timeout: positionSimulationTimeout,
+				timeout: positionTimeout,
 			}
 		);
 	}
@@ -70,7 +70,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Outstanding debt")')
 		).toContainText(regExp, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 
@@ -88,7 +88,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Total collateral")')
 		).toContainText(regExp, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 
@@ -96,7 +96,7 @@ export class OrderInformation {
 		const regExp = new RegExp(`${current}% ${future}%`);
 
 		await expect(this.orderInformationLocator.locator('li:has-text("LTV")')).toContainText(regExp, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 
@@ -106,7 +106,7 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Transaction fee")')
 		).toContainText(regExp, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 }

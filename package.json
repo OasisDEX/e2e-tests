@@ -15,8 +15,9 @@
 	},
 	"scripts": {
 		"test:e2e:no-wallet": "npx playwright test --project=no-wallet",
-		"test:e2e:with-wallet": "WITH_WALLET=true npx playwright test --project=with-wallet --workers=1",
-		"test:e2e": "yarn test:e2e:no-wallet & yarn test:e2e:with-wallet",
+		"test:e2e:with-wallet:aave": "WITH_WALLET=true npx playwright test --project=with-wallet-aave --workers=1",
+		"test:e2e:with-wallet:other": "WITH_WALLET=true npx playwright test --project=with-wallet-other --workers=1",
+		"test:e2e": "yarn test:e2e:no-wallet & yarn test:e2e:with-wallet:aave & yarn test:e2e:with-wallet:other",
 		"test:e2e:no-wallet:regression": "npx playwright test --grep @regression --project=no-wallet",
 		"test:e2e:with-wallet:aave:regression": "WITH_WALLET=aave npx playwright test --grep @regression --project=with-wallet-aave --workers=1",
 		"test:e2e:with-wallet:other:regression": "WITH_WALLET=other npx playwright test --grep @regression --project=with-wallet-other --workers=1",

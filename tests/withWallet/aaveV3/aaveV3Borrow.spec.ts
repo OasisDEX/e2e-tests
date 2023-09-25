@@ -55,7 +55,7 @@ test.describe('Aave v3 Borrow - Wallet connected', async () => {
 		await app.position.setup.continue();
 		await app.position.setup.openBorrowPosition1Of2();
 
-		// Position creation randomly fails - Retyr until it's created.
+		// Position creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await metamask.confirmPermissionToSpend();

@@ -53,7 +53,7 @@ test.describe.skip('Ajna - Wallet connected', async () => {
 		await metamask.confirmAddToken();
 		await app.position.setup.continue();
 
-		// Position creation randomly fails - Retyr until it's created.
+		// Position creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await metamask.confirmPermissionToSpend();

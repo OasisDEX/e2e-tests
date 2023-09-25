@@ -220,7 +220,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
 		// It takes some time for the slider to be editable
 		await app.position.setup.waitForSliderToBeEditable();
-		await app.position.setup.moveSlider(0.9);
+		await app.position.setup.moveSlider({ process: 'setup', value: 0.9 });
 		await app.position.setup.shouldHaveWarning(
 			'At the chosen risk level, if the price of ETH moves over ',
 			'%  with respect to DAI this Multiply position could be liquidated. ',
