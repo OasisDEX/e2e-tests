@@ -23,7 +23,7 @@ export const extremelyLongTestTimeout: number =
 export const positionTimeout: number =
 	process.env.BASE_URL.includes('localhost') || process.env.BASE_URL.includes('3000.csb.app')
 		? 50_000
-		: 30_000;
+		: 40_000;
 
 export const portfolioTimeout: number =
 	process.env.BASE_URL.includes('localhost') || process.env.BASE_URL.includes('3000.csb.app')

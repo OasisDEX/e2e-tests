@@ -68,8 +68,8 @@ export class Manage {
 		await this.page.getByRole('button', { name: currentLabel, exact: true }).click();
 	}
 
-	async selectClosePosition() {
-		await this.page.locator('li:has-text("Close position")').click();
+	async select(option: string) {
+		await this.page.locator(`li:has-text("${option}")`).click();
 	}
 
 	async closeTo(token: string) {
