@@ -3,7 +3,7 @@ import { Manage } from './manage';
 import { OrderInformation } from './orderInformation';
 import { Overview } from './overview';
 import { Setup } from './setup';
-import { positionSimulationTimeout } from 'utils/config';
+import { positionTimeout } from 'utils/config';
 
 export class Position {
 	readonly page: Page;
@@ -26,7 +26,7 @@ export class Position {
 
 	async shouldHaveHeader(text: string) {
 		await expect(this.page.locator('h1 > div').nth(0)).toContainText(text, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 }

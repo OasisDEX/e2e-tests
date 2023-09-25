@@ -1,5 +1,5 @@
 import { expect, Page } from '@playwright/test';
-import { positionSimulationTimeout } from 'utils/config';
+import { positionTimeout } from 'utils/config';
 
 export class Overview {
 	readonly page: Page;
@@ -10,7 +10,7 @@ export class Overview {
 
 	async shouldBeVisible() {
 		await expect(this.page.getByText('Overview')).toBeVisible({
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 
@@ -36,7 +36,7 @@ export class Overview {
 			await expect(
 				this.page.getByText('Liquidation Price').locator('xpath=//following-sibling::p[1]')
 			).toContainText(token);
-		}).toPass({ timeout: positionSimulationTimeout });
+		}).toPass({ timeout: positionTimeout });
 
 		await expect(
 			this.page.getByText('Liquidation Price').locator('xpath=//following-sibling::p[1]')
@@ -50,7 +50,7 @@ export class Overview {
 		const regExp = new RegExp(`${price}${token ? ` ${token}` : ''}`);
 		await expect(
 			this.page.getByText('Liquidation Price').locator('xpath=//following-sibling::p[1]')
-		).toContainText(regExp, { timeout: positionSimulationTimeout });
+		).toContainText(regExp, { timeout: positionTimeout });
 	}
 
 	/**
@@ -59,7 +59,7 @@ export class Overview {
 	async shouldHaveLiquidationPriceAfterPill(price: RegExp) {
 		await expect(
 			this.page.getByText('Liquidation Price').locator('..').getByText('After')
-		).toContainText(price, { timeout: positionSimulationTimeout });
+		).toContainText(price, { timeout: positionTimeout });
 	}
 
 	/**
@@ -71,7 +71,7 @@ export class Overview {
 			this.page
 				.getByText('Loan to Value', { exact: true })
 				.locator('xpath=//following-sibling::p[1]')
-		).toHaveText(regExp, { timeout: positionSimulationTimeout });
+		).toHaveText(regExp, { timeout: positionTimeout });
 	}
 
 	/**
@@ -80,7 +80,7 @@ export class Overview {
 	async shouldHaveLoanToValueAfterPill(percentage: RegExp) {
 		await expect(
 			this.page.getByText('Loan to Value').locator('..').getByText('After')
-		).toContainText(percentage, { timeout: positionSimulationTimeout });
+		).toContainText(percentage, { timeout: positionTimeout });
 	}
 
 	async shouldHaveBorrowCostGreaterThanZero() {
@@ -88,7 +88,7 @@ export class Overview {
 			await expect(
 				this.page.getByText('Cost to Borrow').locator('xpath=//following-sibling::p[1]')
 			).toContainText('%');
-		}).toPass({ timeout: positionSimulationTimeout });
+		}).toPass({ timeout: positionTimeout });
 
 		await expect(
 			this.page.getByText('Cost to Borrow').locator('xpath=//following-sibling::p[1]')
@@ -102,7 +102,7 @@ export class Overview {
 		const regExp = new RegExp(`${cost}%`);
 		await expect(
 			this.page.getByText('Cost to Borrow').locator('xpath=//following-sibling::p[1]')
-		).toHaveText(regExp, { timeout: positionSimulationTimeout });
+		).toHaveText(regExp, { timeout: positionTimeout });
 	}
 
 	/**
@@ -111,7 +111,7 @@ export class Overview {
 	async shouldHaveBorrowCostAfterPill(cost: RegExp) {
 		await expect(
 			this.page.getByText('Cost to Borrow').locator('..').getByText('After')
-		).toContainText(cost, { timeout: positionSimulationTimeout });
+		).toContainText(cost, { timeout: positionTimeout });
 	}
 
 	/**
@@ -121,7 +121,7 @@ export class Overview {
 		const regExp = new RegExp(`${value}${token ? ` ${token}` : ''}`);
 		await expect(
 			this.page.getByText('Net Value').locator('xpath=//following-sibling::p[1]')
-		).toHaveText(regExp, { timeout: positionSimulationTimeout });
+		).toHaveText(regExp, { timeout: positionTimeout });
 	}
 
 	/**
@@ -130,14 +130,14 @@ export class Overview {
 	async shouldHaveNetValueAfterPill(value: RegExp) {
 		await expect(this.page.getByText('Net Value').locator('..').getByText('After')).toContainText(
 			value,
-			{ timeout: positionSimulationTimeout }
+			{ timeout: positionTimeout }
 		);
 	}
 
 	async shouldHaveExposureGreaterThanZero(token: string) {
 		await expect(async () => {
 			await expect(this.page.locator('li:has-text("exposure") > p')).toContainText(token, {
-				timeout: positionSimulationTimeout,
+				timeout: positionTimeout,
 			});
 		}).toPass();
 
@@ -150,7 +150,7 @@ export class Overview {
 		let regExp = new RegExp(`${amount} ${token}`);
 
 		await expect(this.page.locator('li:has-text("exposure") > p')).toHaveText(regExp, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 
@@ -159,14 +159,14 @@ export class Overview {
 
 		await expect(this.page.locator('li:has-text("exposure")').getByText('After')).toContainText(
 			regExp,
-			{ timeout: positionSimulationTimeout }
+			{ timeout: positionTimeout }
 		);
 	}
 
 	async shouldHaveDebtGreaterThanZero(token: string) {
 		await expect(async () => {
 			await expect(this.page.locator('li:has-text(" Debt") > p')).toContainText(token, {
-				timeout: positionSimulationTimeout,
+				timeout: positionTimeout,
 			});
 		}).toPass();
 
@@ -177,7 +177,7 @@ export class Overview {
 		let regexObj = new RegExp(`${amount} ${token}`);
 
 		await expect(this.page.locator('li:has-text(" Debt") > p')).toHaveText(regexObj, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 
@@ -186,7 +186,7 @@ export class Overview {
 
 		await expect(this.page.locator('li:has-text(" Debt")').getByText('After')).toContainText(
 			regexObj,
-			{ timeout: positionSimulationTimeout }
+			{ timeout: positionTimeout }
 		);
 	}
 
@@ -194,7 +194,7 @@ export class Overview {
 		let regexObj = new RegExp(`${amount}x`);
 
 		await expect(this.page.locator('li:has-text("Multiple") > p')).toContainText(regexObj, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 
@@ -203,14 +203,14 @@ export class Overview {
 
 		await expect(this.page.locator('li:has-text("Multiple")').getByText('After')).toContainText(
 			regexObj,
-			{ timeout: positionSimulationTimeout }
+			{ timeout: positionTimeout }
 		);
 	}
 
 	async shouldHaveBuyingPowerGreaterThanZero() {
 		await expect(async () => {
 			await expect(this.page.locator('li:has-text("Buying Power") > p')).toContainText('USD', {
-				timeout: positionSimulationTimeout,
+				timeout: positionTimeout,
 			});
 		}).toPass();
 
@@ -223,7 +223,7 @@ export class Overview {
 		await expect(this.page.locator(':has-text("Buying Power") > p').nth(0)).toContainText(
 			regexObj,
 			{
-				timeout: positionSimulationTimeout,
+				timeout: positionTimeout,
 			}
 		);
 	}
@@ -233,7 +233,7 @@ export class Overview {
 
 		await expect(this.page.locator('li:has-text("Buying Power")').getByText('After')).toContainText(
 			regexObj,
-			{ timeout: positionSimulationTimeout }
+			{ timeout: positionTimeout }
 		);
 	}
 
@@ -241,7 +241,7 @@ export class Overview {
 		const regExp = new RegExp(`${amount} ${token}`);
 
 		await expect(this.page.locator('li:has-text("Total collateral")')).toContainText(regExp, {
-			timeout: positionSimulationTimeout,
+			timeout: positionTimeout,
 		});
 	}
 }

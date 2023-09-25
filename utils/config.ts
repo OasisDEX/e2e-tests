@@ -20,7 +20,7 @@ export const extremelyLongTestTimeout: number =
 		? 200_000
 		: 130_000;
 
-export const positionSimulationTimeout: number =
+export const positionTimeout: number =
 	process.env.BASE_URL.includes('localhost') || process.env.BASE_URL.includes('3000.csb.app')
 		? 50_000
 		: 30_000;

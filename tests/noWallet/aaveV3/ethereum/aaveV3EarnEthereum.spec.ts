@@ -142,7 +142,7 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
 		// It takes some time for the slider to be editable
 		await app.position.setup.waitForSliderToBeEditable();
-		await app.position.setup.moveSlider(0.5);
+		await app.position.setup.moveSlider({ process: 'setup', value: 0.5 });
 		await app.position.setup.shouldHaveWarning(
 			'At the chosen risk level, the price of WSTETH needs to move over ',
 			'% with respect to ETH for this position to be available for liquidation.',

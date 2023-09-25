@@ -60,13 +60,108 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 		await app.position.setup.continue();
 		await app.position.setup.setupStopLoss1Of3();
 		await app.position.setup.confirm(); // Stop-Loss 2/3
-		await app.position.setup.confirm(); // Stop-Loss 3/3
-		await metamask.confirmPermissionToSpend();
+
+		// Stop Loss setup randomly fails - Retry until it's setup.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry(); // Stop-Loss 3/3
+			await metamask.confirmPermissionToSpend();
+			await app.position.setup.setupStopLossTransactionShouldBeVisible();
+		}).toPass();
+
+		// Set up Stop-Loss transaction
 		await app.position.setup.setupStopLossTransaction();
 		await metamask.confirmPermissionToSpend();
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
+	});
+
+	test('It should adjust risk of an existent Aave V3 Multiply position - Up @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12055',
+		});
+
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+		const initialLoanToValue = await app.position.manage.getLoanToValue();
+
+		await app.position.manage.waitForSliderToBeEditable();
+		await app.position.manage.moveSlider({ process: 'manage', value: 0.5 });
+
+		await app.position.manage.adjustRisk();
+		await app.position.manage.confirm();
+		await metamask.confirmPermissionToSpend();
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+
+		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+	});
+
+	test('It should adjust risk of an existent Aave V3 Multiply position - Down @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12056',
+		});
+
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+		const initialLoanToValue = await app.position.manage.getLoanToValue();
+
+		await app.position.manage.waitForSliderToBeEditable();
+		await app.position.manage.moveSlider({ process: 'manage', value: 0.3 });
+
+		await app.position.manage.adjustRisk();
+		await app.position.manage.confirm();
+		await metamask.confirmPermissionToSpend();
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+
+		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+	});
+
+	test('It should close an Aave V3 Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12057',
+		});
+
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.selectClosePosition();
+		await app.position.manage.closeTo('ETH');
+		await app.position.manage.shouldHaveTokenAmountAfterClosing({
+			token: 'ETH',
+			amount: '[0-9]{1,2}.[0-9]{1,2}',
+		});
+		await app.position.manage.confirm();
+		await metamask.confirmPermissionToSpend();
+
+		await app.position.manage.shouldShowSuccessScreen();
+
+		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'USDC' });
+		await app.position.overview.shouldHaveLoanToValue('0.00');
+		await app.position.overview.shouldHaveBorrowCost('0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDC' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDC' });
+		await app.position.overview.shouldHaveMultiple('1');
+		await app.position.overview.shouldHaveBuyingPower('0.00');
 	});
 
 	test.skip('It should list an opened Aave v3 Multiply position in portfolio', async () => {
