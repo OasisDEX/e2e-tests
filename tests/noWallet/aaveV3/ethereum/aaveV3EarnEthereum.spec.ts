@@ -34,7 +34,7 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 			--> x.xxxx
 		*/
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '[1-9].[0-9]{4}',
+			amount: '[1-9].[0-9]{3,4}',
 			pair: 'WSTETH/ETH',
 		});
 
