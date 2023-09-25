@@ -76,7 +76,8 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	test('It should adjust risk of an existent Aave V3 Multiply position - Up @regression', async () => {
+	// Position sometimes logged in environment db as 'Borrow' when using fork.
+	test.skip('It should adjust risk of an existent Aave V3 Multiply position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12055',
@@ -100,12 +101,12 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-
 		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
-	test('It should adjust risk of an existent Aave V3 Multiply position - Down @regression', async () => {
+	// Position sometimes logged in environment db as 'Borrow' when using fork.
+	test.skip('It should adjust risk of an existent Aave V3 Multiply position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12056',
@@ -129,12 +130,12 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-
 		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	test('It should close an Aave V3 Multiply position @regression', async () => {
+	// Position sometimes logged in environment db as 'Borrow' when using fork.
+	test.skip('It should close an existent Aave V3 Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12057',
@@ -143,7 +144,7 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.selectClosePosition();
+		await app.position.manage.select('Close position');
 		await app.position.manage.closeTo('ETH');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
 			token: 'ETH',
