@@ -118,6 +118,10 @@ export class Setup {
 		await this.page.locator('label:has-text("Unlimited Allowance")').click();
 	}
 
+	async approveAllowance() {
+		await this.page.getByRole('button', { name: 'Approve Allowance' }).click();
+	}
+
 	async goToDeposit() {
 		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
 	}

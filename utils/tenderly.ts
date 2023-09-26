@@ -66,3 +66,23 @@ export const setDaiBalance = async ({
 		ethers.toQuantity(ethers.parseUnits(daiBalance, 'ether')),
 	]);
 };
+
+/**
+ *
+ * @param daiBalance In DAI units
+ */
+export const setWstethBalance = async ({
+	forkId,
+	rEthBalance,
+}: {
+	forkId: string;
+	rEthBalance: string;
+}) => {
+	const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
+
+	await provider.send('tenderly_setErc20Balance', [
+		'0xae78736cd615f374d3085123a210448e74fc6393',
+		WALLET_ADDRESS,
+		ethers.toQuantity(ethers.parseUnits(rEthBalance, 'ether')),
+	]);
+};
