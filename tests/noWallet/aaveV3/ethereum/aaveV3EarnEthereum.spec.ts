@@ -112,7 +112,7 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
 	});
 
-	test('It should validate "Deposit <collateral>" field - No enough collateral in wallet', async ({
+	test('It should validate "Deposit <collateral>" field - No enough collateral in wallet @regression', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
@@ -127,7 +127,7 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 		);
 	});
 
-	test('It should validate risk slider - Safe', async ({ app }) => {
+	test('It should validate risk slider - Safe @regression', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11623',
@@ -151,7 +151,7 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 		);
 	});
 
-	test('It should validate risk slider - Risky', async ({ app }) => {
+	test('It should validate risk slider - Risky @regression', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11624',

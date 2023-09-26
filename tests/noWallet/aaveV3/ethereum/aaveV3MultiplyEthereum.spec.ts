@@ -186,7 +186,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		);
 	});
 
-	test('It should validate risk slider - Safe', async ({ app }) => {
+	test('It should validate risk slider - Safe @regression', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11615',
@@ -205,7 +205,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		);
 	});
 
-	test('It should validate risk slider - Risky', async ({ app }) => {
+	test('It should validate risk slider - Risky @regression', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11616',

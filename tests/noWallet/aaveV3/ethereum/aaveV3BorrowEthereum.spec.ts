@@ -87,7 +87,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
 	});
 
-	test('It should validate "Deposit <collateral>" field - No enough collateral in wallet', async ({
+	test('It should validate "Deposit <collateral>" field - No enough collateral in wallet @regression', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
@@ -102,7 +102,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 		);
 	});
 
-	test('It should validate "Borrow <quote>" field - Over maximum borrowing amount', async ({
+	test('It should validate "Borrow <quote>" field - Over maximum borrowing amount @regression', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
