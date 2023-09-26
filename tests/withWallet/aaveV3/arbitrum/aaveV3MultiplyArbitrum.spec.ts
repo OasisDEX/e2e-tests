@@ -13,15 +13,15 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
+test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 	test.beforeAll(async () => {
 		test.setTimeout(hooksTimeout);
 
-		({ context } = await metamaskSetUp({ network: 'optimism' }));
+		({ context } = await metamaskSetUp({ network: 'arbitrum' }));
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId } = await setup({ app, network: 'optimism' }));
+		({ forkId } = await setup({ app, network: 'arbitrum' }));
 	});
 
 	test.afterAll(async () => {
@@ -34,19 +34,19 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v3 Multiply Optimism position @regression', async () => {
+	test('It should open an Aave v3 Multiply Arbitrum position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12067',
+			description: '12070',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/optimism/aave/v3/multiply/ethusdc');
+		await app.page.goto('/arbitrum/aave/v3/multiply/ethusdc');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10.12345' });
+		await app.position.setup.deposit({ token: 'ETH', amount: '8.12345' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
@@ -58,7 +58,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 
 		await app.position.setup.continue();
 		await app.position.setup.openMultiplyPosition1Of2();
-		await app.position.setup.confirm(); // Stop-Loss 2/2
+		await app.position.setup.confirm();
 		await metamask.confirmPermissionToSpend();
 
 		await app.position.setup.goToPosition();
