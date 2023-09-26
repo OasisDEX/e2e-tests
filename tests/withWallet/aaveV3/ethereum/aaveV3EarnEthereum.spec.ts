@@ -14,15 +14,15 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave v3 Earn - Wallet connected', async () => {
+test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 	test.beforeAll(async () => {
 		test.setTimeout(hooksTimeout);
 
-		({ context } = await metamaskSetUp());
+		({ context } = await metamaskSetUp({ network: 'mainnet' }));
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId, walletAddress } = await setup(app));
+		({ forkId } = await setup({ app, network: 'mainnet' }));
 	});
 
 	test.afterAll(async () => {
@@ -35,7 +35,7 @@ test.describe('Aave v3 Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v3 Earn position @regression', async () => {
+	test('It should open an Aave V3 Earn Ethereum position @regression', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',
@@ -71,7 +71,7 @@ test.describe('Aave v3 Earn - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	test.skip('It should list an opened Aave v3 Earn position in portfolio', async () => {
+	test.skip('It should list an opened Aave V3 Earn Ethereum position in portfolio', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',
@@ -91,7 +91,7 @@ test.describe('Aave v3 Earn - Wallet connected', async () => {
 		await app.portfolio.earn.vaults.first.shouldHave({ assets: 'WSTETH/ETH' });
 	});
 
-	test.skip('It should open an Aave v3 Earn position from portfolio page', async () => {
+	test.skip('It should open an Aave V3 Earn Ethereum position from portfolio page', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',

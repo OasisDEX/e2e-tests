@@ -11,7 +11,11 @@ import { initialSetup } from '@synthetixio/synpress/commands/metamask';
 import { prepareMetamask } from '@synthetixio/synpress/helpers';
 import { setExpectInstance } from '@synthetixio/synpress/commands/playwright';
 
-export const metamaskSetUp = async () => {
+export const metamaskSetUp = async ({
+	network,
+}: {
+	network: 'mainnet' | 'optimism' | 'arbitrum';
+}) => {
 	// required for synpress as it shares same expect instance as playwright
 	await setExpectInstance(expect);
 
@@ -45,7 +49,7 @@ export const metamaskSetUp = async () => {
 	// setup metamask
 	await initialSetup(chromium, {
 		secretWordsOrPrivateKey: 'test test test test test test test test test test test junk',
-		network: 'mainnet',
+		network,
 		password: 'Tester@1234',
 		enableAdvancedSettings: true,
 		enableExperimentalSettings: false,
@@ -56,7 +60,13 @@ export const metamaskSetUp = async () => {
 
 export const expect = test.expect;
 
-export const setup = async (app: App) => {
+export const setup = async ({
+	app,
+	network,
+}: {
+	app: App;
+	network: 'mainnet' | 'optimism' | 'arbitrum';
+}) => {
 	const walletAddress = await metamask.walletAddress();
 
 	await app.page.goto('');
@@ -73,13 +83,12 @@ export const setup = async (app: App) => {
 		flags,
 	});
 
-	const resp = await tenderly.createFork();
+	const resp = await tenderly.createFork({ network });
 	const forkId = resp.data.root_transaction.fork_id;
 
-	await fork.addToApp({ app, forkId });
+	await fork.addToApp({ app, forkId, network });
 
 	await tenderly.setEthBalance({ forkId, ethBalance: '15000' });
-	await tenderly.setDaiBalance({ forkId, daiBalance: '50000' });
 
 	return { forkId, walletAddress };
 };
