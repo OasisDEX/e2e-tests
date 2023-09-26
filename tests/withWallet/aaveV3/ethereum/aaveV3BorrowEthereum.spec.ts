@@ -14,15 +14,15 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave v3 Multiply - Wallet connected', async () => {
+test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 	test.beforeAll(async () => {
 		test.setTimeout(hooksTimeout);
 
-		({ context } = await metamaskSetUp());
+		({ context } = await metamaskSetUp({ network: 'mainnet' }));
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId, walletAddress } = await setup(app));
+		({ forkId } = await setup({ app, network: 'mainnet' }));
 	});
 
 	test.afterAll(async () => {
@@ -35,57 +35,50 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v3 Multiply position @regression', async () => {
+	test('It should open an Aave V3 Borrow Ethereum position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11769',
+			description: '11682',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v3/multiply/ethusdc#simulate');
-
+		await app.page.goto('/ethereum/aave/v3/borrow/ethusdc');
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
+		await app.position.setup.deposit({ token: 'ETH', amount: '7.5' });
+		await app.position.setup.borrow({ token: 'USDC', amount: '2000' });
 		await app.position.setup.createSmartDeFiAccount();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await metamask.confirmAddToken();
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass();
-
+		// Confirmation button with same label
+		await app.position.setup.createSmartDeFiAccount();
+		await metamask.confirmAddToken();
 		await app.position.setup.continue();
-		await app.position.setup.setupStopLoss1Of3();
-		await app.position.setup.confirm(); // Stop-Loss 2/3
+		await app.position.setup.openBorrowPosition1Of2();
 
-		// Stop Loss setup randomly fails - Retry until it's setup.
+		// Position creation randomly fails - Retry until it's created.
 		await expect(async () => {
-			await app.position.setup.confirmOrRetry(); // Stop-Loss 3/3
+			await app.position.setup.confirmOrRetry();
 			await metamask.confirmPermissionToSpend();
-			await app.position.setup.setupStopLossTransactionShouldBeVisible();
+			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass();
-
-		// Set up Stop-Loss transaction
-		await app.position.setup.setupStopLossTransaction();
-		await metamask.confirmPermissionToSpend();
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test.skip('It should adjust risk of an existent Aave V3 Multiply position - Up @regression', async () => {
+	// Position sometimes logged in environment db as 'Multiply' when using fork.
+	test.skip('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12055',
+			description: '12058',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
+		await app.position.manage.select('Adjust');
+
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
@@ -98,23 +91,26 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 		await app.position.manage.shouldShowSuccessScreen();
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldBeVisible('Manage collateral');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
 		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
-	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test.skip('It should adjust risk of an existent Aave V3 Multiply position - Down @regression', async () => {
+	// Position sometimes logged in environment db as 'Multiply' when using fork.
+	test.skip('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12056',
+			description: '12059',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
+		await app.position.manage.select('Adjust');
+
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
@@ -127,28 +123,29 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 		await app.position.manage.shouldShowSuccessScreen();
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldBeVisible('Manage collateral');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+
 		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test.skip('It should close an existent Aave V3 Multiply position @regression', async () => {
+	// Position sometimes logged in environment db as 'Multiply' when using fork.
+	test.skip('It should close an existent Aave V3 Borrow Ethereum position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12057',
+			description: '12060',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Close position');
 		await app.position.manage.closeTo('ETH');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
 			token: 'ETH',
-			amount: '[0-9]{1,2}.[0-9]{1,2}',
+			amount: '[0-9]{1,2}.[0-9]{2,4}',
 		});
 		await app.position.manage.confirm();
 		await metamask.confirmPermissionToSpend();
@@ -161,15 +158,13 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDC' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDC' });
-		await app.position.overview.shouldHaveMultiple('1');
-		await app.position.overview.shouldHaveBuyingPower('0.00');
 	});
 
-	test.skip('It should list an opened Aave v3 Multiply position in portfolio', async () => {
+	test.skip('It should list an opened Aave V3 Borrow Ethereum position in portfolio', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',
-				description: '11770',
+				description: '11673',
 			},
 			{
 				type: 'Bug',
@@ -181,15 +176,16 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 
 		await app.page.goto(`/owner/${walletAddress}`);
 
-		await app.portfolio.multiply.shouldHaveHeaderCount('1');
-		await app.portfolio.multiply.vaults.first.shouldHave({ assets: 'ETH/USDC' });
+		await app.header.shouldHavePortfolioCount('1');
+		await app.portfolio.borrow.shouldHaveHeaderCount('1');
+		await app.portfolio.borrow.vaults.first.shouldHave({ assets: 'ETH/USDC' });
 	});
 
-	test.skip('It should open an Aave v3 Multiply position from portfolio page', async () => {
+	test.skip('It should open an Aave V3 Borrow Ethereum position from portfolio page', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',
-				description: '11771',
+				description: '11681',
 			},
 			{
 				type: 'Bug',
@@ -200,7 +196,7 @@ test.describe('Aave v3 Multiply - Wallet connected', async () => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.page.goto(`/owner/${walletAddress}`);
-		await app.portfolio.multiply.vaults.first.view();
+		await app.portfolio.borrow.vaults.first.view();
 		await app.position.manage.shouldBeVisible('Manage collateral');
 	});
 });

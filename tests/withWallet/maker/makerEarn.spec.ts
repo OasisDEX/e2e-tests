@@ -18,11 +18,13 @@ test.describe('Maker Earn - Wallet connected', async () => {
 	test.beforeAll(async () => {
 		test.setTimeout(hooksTimeout);
 
-		({ context } = await metamaskSetUp());
+		({ context } = await metamaskSetUp({ network: 'mainnet' }));
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId, walletAddress } = await setup(app));
+		({ forkId } = await setup({ app, network: 'mainnet' }));
+
+		await tenderly.setDaiBalance({ forkId, daiBalance: '50000' });
 	});
 
 	test.afterAll(async () => {

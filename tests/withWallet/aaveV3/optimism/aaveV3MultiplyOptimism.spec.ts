@@ -13,15 +13,15 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave v2 Multiply - Wallet connected @regression', async () => {
+test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 	test.beforeAll(async () => {
 		test.setTimeout(hooksTimeout);
 
-		({ context } = await metamaskSetUp({ network: 'mainnet' }));
+		({ context } = await metamaskSetUp({ network: 'optimism' }));
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId } = await setup({ app, network: 'mainnet' }));
+		({ forkId } = await setup({ app, network: 'optimism' }));
 	});
 
 	test.afterAll(async () => {
@@ -34,19 +34,19 @@ test.describe('Aave v2 Multiply - Wallet connected @regression', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v2 Multiply position', async () => {
+	test('It should open an Aave v3 Multiply Optimism position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11773',
+			description: '12067',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v2/multiply/ethusdc#simulate');
+		await app.page.goto('/optimism/aave/v3/multiply/ethusdc');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
+		await app.position.setup.deposit({ token: 'ETH', amount: '10.12345' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.

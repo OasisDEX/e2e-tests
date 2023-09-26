@@ -8,10 +8,6 @@ const { TENDERLY_USER, TENDERLY_PROJECT, TENDERLY_ACCESS_KEY, WALLET_ADDRESS } =
 
 const TENDERLY_FORK_API = `https://api.tenderly.co/api/v1/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT}/fork`;
 
-const body = {
-	network_id: '1',
-};
-
 const request = axios.create({
 	baseURL: 'https://api.tenderly.co/api/v1',
 	headers: {
@@ -20,8 +16,10 @@ const request = axios.create({
 	},
 });
 
-export const createFork = async () => {
-	return await request.post(TENDERLY_FORK_API, body);
+export const createFork = async ({ network }: { network: 'mainnet' | 'optimism' | 'arbitrum' }) => {
+	const network_id = network === 'mainnet' ? '1' : network === 'optimism' ? '10' : '42161';
+
+	return await request.post(TENDERLY_FORK_API, { network_id });
 };
 
 export const deleteFork = async (forkId: string) => {
