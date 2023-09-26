@@ -36,43 +36,60 @@ const defaultConfig: PlaywrightTestConfig = {
 			},
 		},
 
+		// {
+		// 	name: 'with-wallet-aave',
+		// 	testMatch: ['withWallet/aaveV*/**'],
+		// 	testIgnore: ['noWallet/ajna**'],
+		// 	use: { ...devices['Desktop Chrome'] },
+		// },
+
 		{
-			name: 'with-wallet-aave',
-			testMatch: ['withWallet/aaveV*/**'],
-			testIgnore: ['noWallet/ajna**'],
+			name: 'with-wallet-maker-and-spark',
+			testMatch: ['withWallet/maker/**', 'withWallet/spark/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
 		{
-			name: 'with-wallet-other',
-			testMatch: ['withWallet/**'],
-			testIgnore: ['noWallet/ajna**', 'withWallet/aaveV*/**'],
+			name: 'with-wallet-aave-ethereum',
+			testMatch: ['withWallet/aaveV2/**', 'withWallet/aaveV3/ethereum/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-aave-arbitrum-and-optimism',
+			testMatch: ['withWallet/aaveV3/arbitrum/**', 'withWallet/aaveV3/optimism/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 	],
 };
 
-// Set reporter path for no-wallet tests
-const noWalletConfig: TestConfig = {
-	reporter: [['html', { open: 'never', outputFolder: 'playwright-reports/no-wallet' }]],
-};
+// // Set reporter path for no-wallet tests
+// const noWalletConfig: TestConfig = {
+// 	reporter: [['html', { open: 'never', outputFolder: 'playwright-reports/no-wallet' }]],
+// };
 
-// Set reporter path for with-wallet-aave tests
-const withWalletAaveConfig: TestConfig = {
-	reporter: [['html', { open: 'never', outputFolder: 'playwright-reports/with-wallet-aave' }]],
-};
+// // Set reporter path for with-wallet-aave tests
+// const withWalletAaveConfig: TestConfig = {
+// 	reporter: [['html', { open: 'never', outputFolder: 'playwright-reports/with-wallet-aave' }]],
+// };
 
-// Set reporter path for with-wallet-other tests
-const withWalletOtherConfig: TestConfig = {
-	reporter: [['html', { open: 'never', outputFolder: 'playwright-reports/with-wallet-other' }]],
-};
+// // Set reporter path for with-wallet-other tests
+// const withWalletOtherConfig: TestConfig = {
+// 	reporter: [['html', { open: 'never', outputFolder: 'playwright-reports/with-wallet-other' }]],
+// };
 
-const wallet = process.env.WITH_WALLET;
+// const wallet = process.env.WITH_WALLET;
 
 // Config object with default configuration and specific reporter path
+// const config: TestConfig = {
+// 	...defaultConfig,
+// 	...(!wallet ? noWalletConfig : wallet === 'aave' ? withWalletAaveConfig : withWalletOtherConfig),
+// };
 const config: TestConfig = {
 	...defaultConfig,
-	...(!wallet ? noWalletConfig : wallet === 'aave' ? withWalletAaveConfig : withWalletOtherConfig),
+	reporter: [
+		['html', { open: 'never', outputFolder: `playwright-reports/${process.env.REPORT_FOLDER}` }],
+	],
 };
 
 export default config;
