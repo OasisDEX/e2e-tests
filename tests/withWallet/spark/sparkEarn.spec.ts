@@ -36,7 +36,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test.only('It should open a Spark Earn position @regression', async () => {
+	test('It should open a Spark Earn position @regression', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',
