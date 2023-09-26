@@ -22,7 +22,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId } = await setup({ app, network: 'mainnet' }));
+		({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 	});
 
 	test.afterAll(async () => {
@@ -67,7 +67,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Multiply' when using fork.
-	test.skip('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Up @regression', async () => {
+	test.skip('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Up', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12058',
@@ -99,7 +99,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Multiply' when using fork.
-	test.skip('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Down @regression', async () => {
+	test.skip('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Down', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12059',
@@ -132,7 +132,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Multiply' when using fork.
-	test.skip('It should close an existent Aave V3 Borrow Ethereum position @regression', async () => {
+	test.skip('It should close an existent Aave V3 Borrow Ethereum position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12060',

@@ -10,7 +10,6 @@ import { App } from 'src/app';
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -36,7 +35,7 @@ test.describe.skip('Ajna - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should crete an Ajna Earn position @regression', async () => {
+	test('It should crete an Ajna Earn position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11657',

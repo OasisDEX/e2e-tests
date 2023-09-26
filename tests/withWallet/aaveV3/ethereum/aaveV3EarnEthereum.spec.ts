@@ -22,7 +22,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId } = await setup({ app, network: 'mainnet' }));
+		({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 	});
 
 	test.afterAll(async () => {
