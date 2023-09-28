@@ -17,6 +17,16 @@ export class Base {
 		return parseFloat(value.slice(0, -1));
 	}
 
+	async getLendingPrice(): Promise<number> {
+		const value = await this.page.locator('span:has-text("lending price") + span').innerText();
+		return parseFloat(value);
+	}
+
+	async getMaxLTV(): Promise<number> {
+		const value = await this.page.locator('span:has-text("Max LTV") + span').innerText();
+		return parseFloat(value.slice(0, -1));
+	}
+
 	async waitForSliderToBeEditable() {
 		await expect(async () => {
 			await expect(this.page.locator('input[type="range"]')).not.toHaveAttribute('max', '0');
@@ -27,7 +37,7 @@ export class Base {
 	 *
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
-	async moveSlider({ process, value }: { process: 'setup' | 'manage'; value: number }) {
+	async moveSlider({ process, value }: { process?: 'setup' | 'manage'; value: number }) {
 		await expect(async () => {
 			const initialSliderValue = await this.page
 				.locator('input[type="range"]')
@@ -37,9 +47,11 @@ export class Base {
 			const sliderBoundingBox = await slider.boundingBox();
 
 			// Scroll down so that slider is fully visible and next dragTo doesn't fail
-			await this.page
-				.getByText(process === 'setup' ? 'Connect a wallet' : 'Adjust Risk')
-				.scrollIntoViewIfNeeded();
+			if (process) {
+				await this.page
+					.getByText(process === 'setup' ? 'Connect a wallet' : 'Adjust Risk')
+					.scrollIntoViewIfNeeded();
+			}
 
 			await slider.dragTo(slider, {
 				force: true,

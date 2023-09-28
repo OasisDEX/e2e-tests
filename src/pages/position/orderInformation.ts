@@ -109,4 +109,73 @@ export class OrderInformation {
 			timeout: positionTimeout,
 		});
 	}
+
+	async shouldHaveAmountToLend({
+		current,
+		future,
+		token,
+	}: {
+		current: string;
+		future: string;
+		token: string;
+	}) {
+		const regExp = new RegExp(`${current} ${token}${future} ${token}`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Amount to Lend")')
+		).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
+	}
+
+	async shouldHaveNetAPY({ current, future }: { current: string; future: string }) {
+		const regExp = new RegExp(`${current}%${future}%`);
+
+		await expect(this.orderInformationLocator.locator('li:has-text("Net APY")')).toContainText(
+			regExp,
+			{
+				timeout: positionTimeout,
+			}
+		);
+	}
+
+	async shouldHaveLendingPrice({
+		current,
+		future,
+		tokensPair,
+	}: {
+		current: string;
+		future: string;
+		tokensPair: string;
+	}) {
+		const regExp = new RegExp(`${current} ${tokensPair}${future} ${tokensPair}`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Lending Price")')
+		).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
+	}
+
+	async shouldHaveMaxLTV({ current, future }: { current: string; future: string }) {
+		const regExp = new RegExp(`${current}%${future}%`);
+
+		await expect(this.orderInformationLocator.locator('li:has-text("Max LTV")')).toContainText(
+			regExp,
+			{
+				timeout: positionTimeout,
+			}
+		);
+	}
+
+	async shouldHaveDepositFee({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
+
+		await expect(this.orderInformationLocator.locator('li:has-text("Deposit fee")')).toContainText(
+			regExp,
+			{
+				timeout: positionTimeout,
+			}
+		);
+	}
 }
