@@ -13,7 +13,10 @@ export const enableFlags = async ({ app, flags }: { app: App; flags: string[] })
 
 	const obConfigOverrides = JSON.parse(localStorage['ob-config-overrides']);
 
-	flags.forEach((flag) => (obConfigOverrides.features[flag] = true));
+	flags.forEach((flag) => {
+		const flagValues: string[] = flag.split(':');
+		obConfigOverrides.features[flagValues[0]] = flagValues[1] === 'true';
+	});
 
 	await app.page.evaluate(
 		(obConfigOverrides) =>

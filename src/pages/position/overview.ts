@@ -24,11 +24,18 @@ export class Overview {
 		);
 	}
 
-	async shouldHavePrev30daysNetValue({ token, wholePart }: { token: string; wholePart: string }) {
-		const regExp = new RegExp(`${wholePart}.[0-9]{2} ${token}`);
+	async shouldHavePrev30daysNetValue({ token, amount }: { token: string; amount: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
-			this.page.getByText('Previous 90 days*').locator('xpath=//preceding::p[1]')
+			this.page.getByText('Previous 30 days*').locator('xpath=//following-sibling::p[2]')
 		).toContainText(regExp);
+	}
+
+	async shouldHaveProjectedEarnings30days({ token, amount }: { token: string; amount: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
+		await expect(
+			this.page.getByText('Projected earnings per 30d').locator('xpath=//following-sibling::p[1]')
+		).toContainText(regExp, { timeout: positionTimeout });
 	}
 
 	async shouldHaveLiquidationPriceGreaterThanZero(token: string) {

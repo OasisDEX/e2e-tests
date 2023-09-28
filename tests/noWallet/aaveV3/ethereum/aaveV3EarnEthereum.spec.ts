@@ -2,7 +2,7 @@ import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Aave v3 Earn Ethereum', async () => {
-	test('It should allow to simulate a position before opening it - No wallet connected @regression', async ({
+	test('It should allow to simulate an Aave V3 Earn position before opening it - No wallet connected @regression', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
@@ -17,7 +17,10 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 		await app.position.setup.deposit({ token: 'ETH', amount: '50' });
 
 		await app.position.overview.shouldHaveTokenAmount({ amount: '50.00', token: 'ETH' });
-		await app.position.overview.shouldHavePrev30daysNetValue({ token: 'ETH', wholePart: '50' });
+		await app.position.overview.shouldHavePrev30daysNetValue({
+			token: 'ETH',
+			amount: '50.[0-9]{2}',
+		});
 
 		/* Asserting that Current price is a number:
 			- x1 digit whole-number part
@@ -142,7 +145,7 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
 		// It takes some time for the slider to be editable
 		await app.position.setup.waitForSliderToBeEditable();
-		await app.position.setup.moveSlider({ process: 'setup', value: 0.5 });
+		await app.position.setup.moveSlider({ protocol: 'Aave V3', value: 0.5 });
 		await app.position.setup.shouldHaveWarning(
 			'At the chosen risk level, the price of WSTETH needs to move over ',
 			'% with respect to ETH for this position to be available for liquidation.',

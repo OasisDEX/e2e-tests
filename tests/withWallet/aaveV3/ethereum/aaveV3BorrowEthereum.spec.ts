@@ -83,7 +83,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ process: 'manage', value: 0.5 });
+		await app.position.manage.moveSlider({ protocol: 'Aave V3', value: 0.5 });
 
 		await app.position.manage.adjustRisk();
 		await app.position.manage.confirm();
@@ -115,7 +115,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ process: 'manage', value: 0.3 });
+		await app.position.manage.moveSlider({ protocol: 'Aave V3', value: 0.3 });
 
 		await app.position.manage.adjustRisk();
 		await app.position.manage.confirm();
