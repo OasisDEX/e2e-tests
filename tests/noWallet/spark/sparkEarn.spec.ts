@@ -1,4 +1,4 @@
-import { test } from '#noWalletFixtures';
+import { expect, test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Spark Earn', async () => {
@@ -9,7 +9,11 @@ test.describe('Spark Earn', async () => {
 			type: 'Test case',
 			description: '11991',
 		});
-		await app.page.goto('/ethereum/spark/v3/1417#overview');
+
+		await expect(async () => {
+			await app.page.goto('/ethereum/spark/v3/1417');
+			await app.position.overview.shouldBeVisible();
+		}).toPass();
 
 		await app.position.shouldHaveHeader('Spark WSTETH/ETH');
 		await app.position.overview.shouldHaveLiquidationPrice({
