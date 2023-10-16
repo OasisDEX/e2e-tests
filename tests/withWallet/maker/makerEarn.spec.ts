@@ -15,7 +15,8 @@ let walletAddress: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Maker Earn - Wallet connected', async () => {
-	test.beforeAll(async () => {
+	// 'beforeEach` should be changed to 'beforeAll' if skipped tests are enabled
+	test.beforeEach(async () => {
 		test.setTimeout(hooksTimeout);
 
 		({ context } = await metamaskSetUp({ network: 'mainnet' }));

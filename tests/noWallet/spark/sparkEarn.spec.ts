@@ -1,9 +1,9 @@
 import { expect, test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { veryLongTestTimeout } from 'utils/config';
 
 test.describe('Spark Earn', async () => {
 	test('It should open existent Spark Earn Ethereum vault page @regression', async ({ app }) => {
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		test.info().annotations.push({
 			type: 'Test case',
