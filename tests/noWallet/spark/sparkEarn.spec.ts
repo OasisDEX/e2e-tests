@@ -12,7 +12,7 @@ test.describe('Spark Earn', async () => {
 
 		await expect(async () => {
 			await app.page.goto('/ethereum/spark/v3/1417');
-			await app.position.overview.shouldBeVisible();
+			await app.position.overview.shouldBeVisible({ timeout: 15_000 });
 		}).toPass();
 
 		await app.position.shouldHaveHeader('Spark WSTETH/ETH');

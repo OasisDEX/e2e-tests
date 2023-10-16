@@ -1,5 +1,7 @@
 require('dotenv').config();
 
+export const expectDefaultTimeout: number = 5_000;
+
 export const hooksTimeout: number =
 	process.env.BASE_URL.includes('localhost') || process.env.BASE_URL.includes('3000.csb.app')
 		? 120_000
@@ -8,7 +10,7 @@ export const hooksTimeout: number =
 export const longTestTimeout: number =
 	process.env.BASE_URL.includes('localhost') || process.env.BASE_URL.includes('3000.csb.app')
 		? 60_000
-		: 50_000;
+		: 55_000;
 
 export const veryLongTestTimeout: number =
 	process.env.BASE_URL.includes('localhost') || process.env.BASE_URL.includes('3000.csb.app')

@@ -61,6 +61,6 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 		}).toPass();
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage Earn ');
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 });

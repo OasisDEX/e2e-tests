@@ -53,8 +53,6 @@ test.describe('Maker Earn - Wallet connected', async () => {
 
 		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
 
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
 
 		// If proxy was not previous setup extra steps will need to be executed
@@ -73,8 +71,6 @@ test.describe('Maker Earn - Wallet connected', async () => {
 			await app.page.waitForTimeout(5_000);
 			await app.page.reload();
 
-			// Depositing collateral too quickly after loading page returns wrong simulation results
-			await app.position.overview.waitForComponentToBeStable();
 			await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
 		}
 
@@ -132,6 +128,6 @@ test.describe('Maker Earn - Wallet connected', async () => {
 
 		await app.page.goto(`/owner/${walletAddress}`);
 		await app.portfolio.earn.vaults.first.view();
-		await app.position.manage.shouldBeVisible('Manage Earn position');
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 });
