@@ -14,7 +14,7 @@ let forkId: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
-	test.beforeAll(async () => {
+	test.beforeEach(async () => {
 		test.setTimeout(hooksTimeout);
 
 		({ context } = await metamaskSetUp({ network: 'arbitrum' }));
