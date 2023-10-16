@@ -12,7 +12,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 			{ type: 'Bug', description: '11784' }
 		);
 
-		await app.page.goto('/ethereum/aave/v3/borrow/ethusdc#simulate');
+		await app.page.goto('/ethereum/aave/v3/borrow/ethusdc');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
