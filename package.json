@@ -28,7 +28,7 @@
 		"with-wallet:maker-and-spark:regression": "REPORT_FOLDER=with-wallet-maker-and-spark npx playwright test --grep @regression --project=with-wallet-maker-and-spark --workers=1",
 		"with-wallet:all:regression": "yarn with-wallet:aave:ethereum:regression & yarn with-wallet:aave:arbitrum-and-optimism:regression & yarn with-wallet:ajna:regression & yarn with-wallet:maker-and-spark:regression",
 		"test:e2e:regression": "yarn no-wallet:regression & yarn with-wallet:all:regression",
-		"ci:no-wallet:regression": "WORKERS='5' FULLY_PARALLEL='true' yarn no-wallet:regression",
+		"ci:no-wallet:regression": "WORKERS='5' FULLY_PARALLEL='true' RETRIES='2' yarn no-wallet:regression",
 		"ci:with-wallet:aave:ethereum:regression": "xvfb-run yarn with-wallet:aave:ethereum:regression",
 		"ci:with-wallet:aave:arbitrum-and-optimism:regression": "xvfb-run yarn with-wallet:aave:arbitrum-and-optimism:regression",
 		"ci:with-wallet:ajna:regression": "xvfb-run yarn with-wallet:ajna:regression",
