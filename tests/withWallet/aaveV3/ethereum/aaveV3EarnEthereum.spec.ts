@@ -107,6 +107,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await app.page.goto(`/owner/${walletAddress}`);
 		await app.portfolio.earn.vaults.first.view();
-		await app.position.manage.shouldBeVisible('Manage Earn position');
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 });

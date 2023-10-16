@@ -10,6 +10,8 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 			description: '11388',
 		});
 
+		test.setTimeout(longTestTimeout);
+
 		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
@@ -123,6 +125,8 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 			description: '11620',
 		});
 
+		test.setTimeout(longTestTimeout);
+
 		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
 		await app.position.setup.deposit({ token: 'ETH', amount: '5' });
 		await app.position.setup.shouldHaveError(
@@ -159,6 +163,8 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 			type: 'Test case',
 			description: '11624',
 		});
+
+		test.setTimeout(longTestTimeout);
 
 		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
 

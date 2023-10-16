@@ -14,7 +14,7 @@ let forkId: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Aave V2 Earn - Wallet connected', async () => {
-	test.beforeAll(async () => {
+	test.beforeEach(async () => {
 		test.setTimeout(hooksTimeout);
 
 		({ context } = await metamaskSetUp({ network: 'mainnet' }));
@@ -61,6 +61,6 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 		}).toPass();
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage Earn ');
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 });

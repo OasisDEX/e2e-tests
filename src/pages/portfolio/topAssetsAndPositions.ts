@@ -5,7 +5,7 @@ export class TopAssetsAndPositions {
 	readonly locator: Locator;
 
 	constructor(page: Page) {
-		this.locator = page.locator('div:has-text("assets and positions") + div');
+		this.locator = page.locator(':has-text("assets and positions") + div');
 	}
 
 	async shouldHaveAsset({
@@ -24,14 +24,16 @@ export class TopAssetsAndPositions {
 		});
 
 		if (percentage) {
-			await expect(assetLocator.locator('xpath=//following-sibling::div[1]')).toHaveText(
+			await expect(assetLocator.locator('xpath=//following-sibling::span[1]')).toHaveText(
 				`${percentage}%`
 			);
 		}
 
 		if (amount) {
 			const regExp = new RegExp(`\\(\\$${amount}\\)`);
-			await expect(assetLocator.locator('xpath=//following-sibling::div[2]')).toContainText(regExp);
+			await expect(assetLocator.locator('xpath=//following-sibling::span[2]')).toContainText(
+				regExp
+			);
 		}
 	}
 }

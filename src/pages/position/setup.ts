@@ -229,7 +229,7 @@ export class Setup {
 	async shouldHaveMaxBorrowingAmount({ amount, token }: { amount: string; token: string }) {
 		const regExp = new RegExp('Max ' + amount + ' ' + token);
 		await expect(
-			this.page.locator(`div:has-text("Borrow ${token}") + div:has-text("Max")`)
+			this.page.locator(`span:has-text("Borrow ${token}") + span:has-text("Max")`)
 		).toContainText(regExp);
 	}
 

@@ -34,7 +34,7 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should allow to simulate an Ajna Earn position before opening it - Wallet connected', async () => {
+	test('It should allow to simulate an Ajna Earn position before opening it - Wallet connected @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12105',
@@ -95,7 +95,7 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 		});
 	});
 
-	test('It should allow to simulate risk adjustment (Down) with slider in an Ajna Earn position before opening it - Wallet connected', async () => {
+	test('It should allow to simulate risk adjustment (Down) with slider in an Ajna Earn position before opening it - Wallet connected @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12109',
@@ -140,7 +140,7 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 		});
 	});
 
-	test('It should allow to simulate risk adjustment (Up) with slider in an Ajna Earn position before opening it - Wallet connected', async () => {
+	test('It should allow to simulate risk adjustment (Up) with slider in an Ajna Earn position before opening it - Wallet connected @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12110',
@@ -176,7 +176,7 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 		});
 	});
 
-	test('It should open an Ajna Earn position', async () => {
+	test('It should open an Ajna Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11657',
