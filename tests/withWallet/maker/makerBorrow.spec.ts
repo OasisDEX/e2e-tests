@@ -15,7 +15,7 @@ let walletAddress: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Maker Borrow - Wallet connected', async () => {
-	test.beforeAll(async () => {
+	test.beforeEach(async () => {
 		test.setTimeout(hooksTimeout);
 
 		({ context } = await metamaskSetUp({ network: 'mainnet' }));
