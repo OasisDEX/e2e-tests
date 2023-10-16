@@ -14,7 +14,7 @@ let forkId: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Aave v2 Multiply - Wallet connected @regression', async () => {
-	test.beforeAll(async () => {
+	test.beforeEach(async () => {
 		test.setTimeout(hooksTimeout);
 
 		({ context } = await metamaskSetUp({ network: 'mainnet' }));
@@ -58,8 +58,13 @@ test.describe('Aave v2 Multiply - Wallet connected @regression', async () => {
 
 		await app.position.setup.continue();
 		await app.position.setup.openMultiplyPosition1Of2();
-		await app.position.setup.confirm(); // Stop-Loss 2/2
-		await metamask.confirmPermissionToSpend();
+
+		// Position creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await metamask.confirmPermissionToSpend();
+			await app.position.setup.goToPositionShouldBeVisible();
+		}).toPass();
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
