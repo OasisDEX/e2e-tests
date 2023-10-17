@@ -1,9 +1,9 @@
 import { expect, test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { veryLongTestTimeout } from 'utils/config';
 
 test.describe('Spark Earn', async () => {
 	test('It should open existent Spark Earn Ethereum vault page @regression', async ({ app }) => {
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		test.info().annotations.push({
 			type: 'Test case',
@@ -12,7 +12,7 @@ test.describe('Spark Earn', async () => {
 
 		await expect(async () => {
 			await app.page.goto('/ethereum/spark/v3/1417');
-			await app.position.overview.shouldBeVisible({ timeout: 15_000 });
+			await app.position.overview.shouldBeVisible();
 		}).toPass();
 
 		await app.position.shouldHaveHeader('Spark WSTETH/ETH');

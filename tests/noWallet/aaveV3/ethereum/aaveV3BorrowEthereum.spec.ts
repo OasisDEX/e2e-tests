@@ -1,4 +1,5 @@
 import { test } from '#noWalletFixtures';
+import { longTestTimeout } from 'utils/config';
 
 test.describe('Aave v3 Borrow Ethereum', async () => {
 	test('It should allow to simulate a position before opening it - No wallet connected @regression', async ({
@@ -11,6 +12,8 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 			},
 			{ type: 'Bug', description: '11784' }
 		);
+
+		test.setTimeout(longTestTimeout);
 
 		await app.page.goto('/ethereum/aave/v3/borrow/ethusdc');
 

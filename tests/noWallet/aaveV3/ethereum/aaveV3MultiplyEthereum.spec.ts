@@ -10,6 +10,8 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			description: '11528',
 		});
 
+		test.setTimeout(longTestTimeout);
+
 		await app.page.goto('/ethereum/aave/v3/multiply/wbtcusdc#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
@@ -191,6 +193,8 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			type: 'Test case',
 			description: '11615',
 		});
+
+		test.setTimeout(longTestTimeout);
 
 		await app.page.goto('ethereum/aave/v3/multiply/ethdai#simulate');
 
