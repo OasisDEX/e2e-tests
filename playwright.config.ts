@@ -19,7 +19,7 @@ const defaultConfig: PlaywrightTestConfig = {
 	forbidOnly: !!process.env.CI,
 
 	use: {
-		baseURL: process.env.BASE_URL,
+		baseURL: process.env.BASE_URL ?? 'https://staging.summer.fi',
 		headless: process.env.HEADLESS === 'false' ? false : true,
 		trace: 'on-first-retry',
 	},
