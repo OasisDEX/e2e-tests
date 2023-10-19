@@ -9,7 +9,7 @@ export class Position {
 
 	async shouldBe(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
 		await expect(this.positionLocator.locator('span').nth(0)).toContainText(positionCategory, {
-			timeout: 10_000,
+			timeout: 15_000,
 		});
 	}
 

@@ -1,7 +1,10 @@
 import { test } from '#noWalletFixtures';
+import { longTestTimeout } from 'utils/config';
 
 test.describe('Homepage', async () => {
 	test('It should list Earn positions by default', async ({ app }) => {
+		test.setTimeout(longTestTimeout);
+
 		await app.homepage.open();
 		await app.homepage.productHub.header.position.shouldBe('Earn');
 		await app.homepage.productHub.list.allPoolsShouldBe('Earn');

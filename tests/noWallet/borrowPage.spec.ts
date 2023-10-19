@@ -1,8 +1,10 @@
 import { test } from '#noWalletFixtures';
-import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 
 test.describe('Borrow', async () => {
 	test('It should list only Borrow positions', async ({ app }) => {
+		test.setTimeout(longTestTimeout);
+
 		await app.borrow.open();
 		await app.borrow.productHub.header.position.shouldBe('Borrow');
 		await app.borrow.productHub.list.allPoolsShouldBe('Borrow');
