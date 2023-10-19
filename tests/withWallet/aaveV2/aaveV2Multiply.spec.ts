@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave v2 Multiply - Wallet connected @regression', async () => {
+test.describe('Aave v2 Multiply - Wallet connected', async () => {
 	test.beforeEach(async () => {
 		test.setTimeout(hooksTimeout);
 
@@ -34,7 +34,7 @@ test.describe('Aave v2 Multiply - Wallet connected @regression', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v2 Multiply position', async () => {
+	test('It should open an Aave v2 Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11773',

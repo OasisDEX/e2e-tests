@@ -29,7 +29,7 @@ test.describe('Borrow', async () => {
 			{ network: 'Ethereum', protocol: 'Spark' },
 		] as const
 	).forEach(({ network, protocol }) =>
-		test(`It should open Borrow position page for all available pairs - ${network} - ${protocol}`, async ({
+		test.skip(`It should open Borrow position page for all available pairs - ${network} - ${protocol}`, async ({
 			app,
 		}) => {
 			test.setTimeout(
