@@ -75,7 +75,6 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		await app.position.overview.shouldHaveBuyingPowerAfterPill('[2-6][0-9],[0-9]{3}(.[0-9]{1,2})?');
 
 		/* Asserting that Liquidation price is a number:
-			- $ symbol
 			- x4 digits whole-number part, with a ',' separator for thousands -> [4/5/6/7/8],xxx
 			- x1 or x2 digits decimal part 
 			--> [4/5/6/7/8],xxx.xx
@@ -88,7 +87,6 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			- x1 digit decimal part 
 			--> xx.x
 		*/
-		// Bug -> 11537 ==> Comma (thousands separator) should be added once bug is fixed
 		await app.position.setup.shouldHaveLoanToValue('[1-4][0-9].[0-9]');
 
 		/* Asserting that Buying amount in token value is a number:
@@ -162,8 +160,8 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			current: '0.00',
 			future: '[1-2][0-9].[0-9]{2}',
 		});
-		/* Asserting that LTV future value is a number:
-			- x2 digit2 whole-number part -> [2/3/4]x
+		/* Asserting that Transaction Fee is a number:
+			- x2 digits whole-number part -> [2/3/4]x
 			- x2 digits decimal part 
 			--> [2/3/4]x.xx
 		*/
