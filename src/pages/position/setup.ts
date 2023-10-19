@@ -1,7 +1,7 @@
 import { expect, Page } from '@playwright/test';
 import { Base } from './base';
 import { OrderInformation } from './orderInformation';
-import { positionTimeout } from 'utils/config';
+import { baseUrl, positionTimeout } from 'utils/config';
 
 require('dotenv').config();
 
@@ -42,7 +42,7 @@ export class Setup {
 		await expect(this.page.getByText('Historical Ratio')).toBeVisible({
 			timeout: positionTimeout,
 		});
-		if (!process.env.BASE_URL.includes('localhost')) {
+		if (!baseUrl.includes('localhost') && !baseUrl.includes('3000.csb.app')) {
 			await this.page.waitForTimeout(2_000); // UI elements load quickly and an extra timeout is needed
 		}
 	}
