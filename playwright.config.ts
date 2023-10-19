@@ -1,5 +1,6 @@
 require('dotenv').config();
 import { devices, type PlaywrightTestConfig, type ReporterDescription } from '@playwright/test';
+import { baseUrl } from 'utils/config';
 
 // Config to hold extra property
 interface TestConfig extends PlaywrightTestConfig {
@@ -19,7 +20,7 @@ const defaultConfig: PlaywrightTestConfig = {
 	forbidOnly: !!process.env.CI,
 
 	use: {
-		baseURL: process.env.BASE_URL ?? 'https://staging.summer.fi',
+		baseURL: baseUrl,
 		headless: process.env.HEADLESS === 'false' ? false : true,
 		trace: 'on-first-retry',
 	},
