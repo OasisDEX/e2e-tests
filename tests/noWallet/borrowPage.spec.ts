@@ -1,7 +1,7 @@
 import { test } from '#noWalletFixtures';
 import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 
-test.describe('Borrow', async () => {
+test.describe('Borrow page', async () => {
 	test('It should list only Borrow positions', async ({ app }) => {
 		test.setTimeout(longTestTimeout);
 
