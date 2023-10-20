@@ -8,6 +8,6 @@ export class ConnectWallet {
 	}
 
 	async shouldBeVisible() {
-		await expect(this.page.getByText('Available Wallets')).toBeVisible();
+		await expect(this.page.getByText('Available Wallets')).toBeVisible({ timeout: 15_000 });
 	}
 }

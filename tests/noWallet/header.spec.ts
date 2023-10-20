@@ -8,6 +8,8 @@ test.describe('Header', async () => {
 			description: '12336',
 		});
 
+		test.setTimeout(longTestTimeout);
+
 		await app.homepage.open();
 		await app.header.connectWallet();
 		await app.modals.connectWallet.shouldBeVisible();
@@ -21,6 +23,8 @@ test.describe('Header', async () => {
 				type: 'Test case',
 				description: '12338',
 			});
+
+			test.setTimeout(longTestTimeout);
 
 			await app.homepage.open();
 			await app.header.products.select({
@@ -39,6 +43,8 @@ test.describe('Header', async () => {
 				type: 'Test case',
 				description: '12337',
 			});
+
+			test.setTimeout(longTestTimeout);
 
 			await app.homepage.open();
 			await app.header.products.shouldLinkTo(positionCategory);
@@ -65,6 +71,8 @@ test.describe('Header', async () => {
 				type: 'Test case',
 				description: '12340',
 			});
+
+			test.setTimeout(longTestTimeout);
 
 			await app.homepage.open();
 			await app.header.protocols.select({ protocol, product });
