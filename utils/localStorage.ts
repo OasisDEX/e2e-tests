@@ -26,3 +26,12 @@ export const enableFlags = async ({ app, flags }: { app: App; flags: string[] })
 
 	await app.page.reload();
 };
+
+export const rejectCookies = async (app: App) => {
+	await app.page.evaluate(() =>
+		window.localStorage.setItem(
+			'cookieSettings',
+			'{"accepted":false,"enabledCookies":{"marketing":false,"analytics":false},"version":"ver-26.06.2023"}'
+		)
+	);
+};

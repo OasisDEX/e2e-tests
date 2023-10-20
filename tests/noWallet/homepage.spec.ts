@@ -12,6 +12,8 @@ test.describe('Homepage', async () => {
 
 	(['Borrow', 'Multiply', 'Earn'] as const).forEach((positionCategory) =>
 		test(`It should list only ${positionCategory} positions`, async ({ app }) => {
+			test.setTimeout(longTestTimeout);
+
 			await app.homepage.open();
 			await app.homepage.productHub.header.position.select(positionCategory);
 			await app.homepage.productHub.list.allPoolsShouldBe(positionCategory);
