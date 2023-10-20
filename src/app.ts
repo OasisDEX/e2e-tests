@@ -1,4 +1,5 @@
 import { Page } from '@playwright/test';
+import { Modals } from './modals';
 import {
 	Borrow,
 	Earn,
@@ -22,6 +23,8 @@ export class App {
 
 	readonly homepage: Homepage;
 
+	readonly modals: Modals;
+
 	readonly multiply: Multiply;
 
 	readonly poolCreator: PoolCreator;
@@ -38,6 +41,7 @@ export class App {
 		this.earn = new Earn(page);
 		this.header = new Header(page);
 		this.homepage = new Homepage(page);
+		this.modals = new Modals(page);
 		this.multiply = new Multiply(page);
 		this.poolCreator = new PoolCreator(page);
 		this.poolFinder = new PoolFinder(page);
