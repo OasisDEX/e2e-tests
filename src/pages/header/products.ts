@@ -1,5 +1,4 @@
 import { expect, Locator, Page } from '@playwright/test';
-import { portfolioTimeout } from 'utils/config';
 
 export class Products {
 	readonly page: Page;
