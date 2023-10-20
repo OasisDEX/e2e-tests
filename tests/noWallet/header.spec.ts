@@ -44,4 +44,32 @@ test.describe('Header', async () => {
 			await app.header.products.shouldLinkTo(positionCategory);
 		})
 	);
+
+	(
+		[
+			{ protocol: 'Aave', product: 'Borrow' },
+			{ protocol: 'Aave', product: 'Multiply' },
+			{ protocol: 'Aave', product: 'Earn' },
+			{ protocol: 'Maker', product: 'Borrow' },
+			{ protocol: 'Maker', product: 'Multiply' },
+			{ protocol: 'Maker', product: 'Earn' },
+			{ protocol: 'Spark', product: 'Borrow' },
+			{ protocol: 'Spark', product: 'Multiply' },
+			{ protocol: 'Spark', product: 'Earn' },
+		] as const
+	).forEach(({ protocol, product }) =>
+		test(`It should open ${product} page and list only ${protocol} ${product} positions`, async ({
+			app,
+		}) => {
+			test.info().annotations.push({
+				type: 'Test case',
+				description: '12340',
+			});
+
+			await app.homepage.open();
+			await app.header.protocols.select({ protocol, product });
+			await app.borrow.productHub.header.position.shouldBe(product);
+			await app.borrow.productHub.list.allPoolsShouldBe(product);
+		})
+	);
 });
