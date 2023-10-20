@@ -2,7 +2,7 @@ import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Homepage', async () => {
-	test('It should open connect-wallet popup', async ({ app }) => {
+	test('It should open connect-wallet popup - Homepage', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12333',
