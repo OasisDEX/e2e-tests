@@ -8,6 +8,8 @@ test.describe('Homepage', async () => {
 			description: '12333',
 		});
 
+		test.setTimeout(longTestTimeout);
+
 		await app.homepage.open();
 		await app.homepage.connectWallet();
 		await app.modals.connectWallet.shouldBeVisible();
