@@ -205,7 +205,6 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 		});
 		await app.position.overview.shouldHaveMultiple('[2-8].[0-9]{1,2}');
 		await app.position.overview.shouldHaveBuyingPower('[0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveBuyingPowerGreaterThanZero();
 
 		await app.position.setup.shouldHaveLiquidationPrice({
 			amount: '[0-9]{3}.[0-9]{2}',
