@@ -14,4 +14,8 @@ export class Homepage {
 	async open() {
 		await this.page.goto('/');
 	}
+
+	async connectWallet() {
+		await this.page.getByText('Connect a wallet').click();
+	}
 }

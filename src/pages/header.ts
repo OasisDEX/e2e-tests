@@ -4,7 +4,7 @@ import { portfolioTimeout } from 'utils/config';
 export class Header {
 	readonly page: Page;
 
-	headerLocator: Locator;
+	readonly headerLocator: Locator;
 
 	constructor(page: Page) {
 		this.page = page;
