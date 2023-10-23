@@ -75,9 +75,9 @@ export const setup = async ({
 	await termsAndconditions.accept(app);
 
 	// 'UseNetworkSwitcherForks' flag needs to be always passed for tests with wallet and fork
-	const flags = process.env.ENABLE_FLAGS
-		? process.env.ENABLE_FLAGS.split(' ').concat('UseNetworkSwitcherForks:true')
-		: ['UseNetworkSwitcherForks:true'];
+	const flags = process.env.FLAGS
+		? process.env.FLAGS.split(' ').concat('UseNetworkSwitcherForks:true')
+		: ['UseNetworkSwitcherForks:true', 'BaseNetworkEnabled:true'];
 	await localStorage.enableFlags({
 		app,
 		flags,

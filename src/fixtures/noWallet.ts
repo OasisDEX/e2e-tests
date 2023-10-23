@@ -12,8 +12,10 @@ export const test = base.extend<MyFixtures>({
 
 		await app.page.goto('');
 		await rejectCookies(app);
-		if (process.env.ENABLE_FLAGS) {
-			await enableFlags({ app, flags: process.env.ENABLE_FLAGS.split(' ') });
+		if (process.env.FLAGS) {
+			await enableFlags({ app, flags: process.env.FLAGS.split(' ') });
+		} else {
+			enableFlags({ app, flags: ['BaseNetworkEnabled'] });
 		}
 
 		await use(app);
