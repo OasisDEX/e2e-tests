@@ -15,17 +15,6 @@ let walletAddress: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
-	// 'beforeEach` should be changed to 'beforeAll' if skipped tests are enabled
-	test.beforeEach(async () => {
-		test.setTimeout(hooksTimeout);
-
-		({ context } = await metamaskSetUp({ network: 'mainnet' }));
-		let page = await context.newPage();
-		app = new App(page);
-
-		({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-	});
-
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -44,11 +33,21 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v3/multiply/ethusdc#simulate');
+		await test.step('Test setup', async () => {
+			({ context } = await metamaskSetUp({ network: 'mainnet' }));
+			let page = await context.newPage();
+			app = new App(page);
+
+			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+
+			await tenderly.setDaiBalance({ forkId, daiBalance: '30000' });
+		});
+
+		await app.page.goto('/ethereum/aave/v3/multiply/daiwbtc');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
+		await app.position.setup.deposit({ token: 'DAI', amount: '15000.1234' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
@@ -59,26 +58,31 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		}).toPass();
 
 		await app.position.setup.continue();
-		await app.position.setup.setupStopLoss1Of3();
-		await app.position.setup.confirm(); // Stop-Loss 2/3
 
-		// Stop Loss setup randomly fails - Retry until it's setup.
+		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
-			await app.position.setup.confirmOrRetry(); // Stop-Loss 3/3
-			await metamask.confirmPermissionToSpend();
-			await app.position.setup.setupStopLossTransactionShouldBeVisible();
+			await app.position.setup.setupAllowance();
+			await app.position.setup.approveAllowance();
+			await metamask.confirmAddToken();
+			await app.position.setup.continueShouldBeVisible();
 		}).toPass();
 
-		// Set up Stop-Loss transaction
-		await app.position.setup.setupStopLossTransaction();
-		await metamask.confirmPermissionToSpend();
+		await app.position.setup.continue();
+
+		await app.position.setup.openMultiplyPosition1Of2();
+
+		// Position creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await metamask.confirmPermissionToSpend();
+			await app.position.setup.goToPositionShouldBeVisible();
+		}).toPass();
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await app.position.manage.shouldBeVisible('Manage multiply');
 	});
 
-	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test.skip('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12055',
@@ -102,12 +106,12 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
 	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test.skip('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12056',
@@ -131,12 +135,12 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
 	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test.skip('It should close an existent Aave V3 Multiply Ethereum position', async () => {
+	test('It should close an existent Aave V3 Multiply Ethereum position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12057',
