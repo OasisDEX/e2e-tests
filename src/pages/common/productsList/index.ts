@@ -1,5 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { Pool } from './pool';
+import { step } from '#noWalletFixtures';
 
 export class ProductsList {
 	readonly page: Page;
@@ -30,6 +31,7 @@ export class ProductsList {
 		);
 	}
 
+	@step
 	async getNumberOfPools() {
 		// Wait for 1st item to be displayed to avoid random fails
 		await this.listLocator.locator('[role="link"] td:nth-child(1)').first().waitFor();
@@ -38,6 +40,7 @@ export class ProductsList {
 		return count;
 	}
 
+	@step
 	async getAllPairs() {
 		// Wait for 1st item to be displayed to avoid random fails
 		await this.listLocator.locator('[role="link"] td:nth-child(1)').first().waitFor();
@@ -48,6 +51,7 @@ export class ProductsList {
 		return allPairs;
 	}
 
+	@step
 	async allPoolsShouldBe(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
 		// Wait for 1st item to be displayed to avoid random fails
 		await this.listLocator.locator('[role="link"] button').first().waitFor();
@@ -61,6 +65,7 @@ export class ProductsList {
 		}
 	}
 
+	@step
 	async allPoolsCollateralShouldContain(token: string) {
 		// Wait for 1st item to be displayed to avoid random fails
 		await this.listLocator.locator('[role="link"] td:nth-child(1)').first().waitFor();
@@ -74,6 +79,7 @@ export class ProductsList {
 		}
 	}
 
+	@step
 	async allPoolsQuoteShouldContain(token: string) {
 		// Wait for 1st item to be displayed to avoid random fails
 		await this.listLocator.locator('[role="link"] td:nth-child(1)').first().waitFor();
@@ -87,6 +93,7 @@ export class ProductsList {
 		}
 	}
 
+	@step
 	async shouldHavePoolsCount(count: number) {
 		// Wait for 1st item to be displayed to avoid random fails
 		await this.listLocator.locator('[role="link"]').first().waitFor();
@@ -94,6 +101,7 @@ export class ProductsList {
 		expect(await this.listLocator.locator('[role="link"]').count()).toEqual(count);
 	}
 
+	@step
 	async shouldHaveOneOrMorePools() {
 		// Wait for 1st item to be displayed to avoid random fails
 		await this.listLocator.locator('[role="link"]').first().waitFor();
@@ -101,12 +109,14 @@ export class ProductsList {
 		expect(await this.listLocator.locator('[role="link"]').count()).toBeGreaterThanOrEqual(1);
 	}
 
+	@step
 	async shouldHaveTokensPair(pair: string) {
 		await expect(this.listLocator.locator('[role="link"] td:nth-child(1)').nth(0)).toContainText(
 			pair
 		);
 	}
 
+	@step
 	async openPoolFinder() {
 		await this.listLocator.getByRole('button', { name: 'Search custom pools' }).click();
 	}

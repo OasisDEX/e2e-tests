@@ -1,5 +1,6 @@
 import { Page } from '@playwright/test';
 import { ProductHub } from '../productHub';
+import { step } from '#noWalletFixtures';
 
 export class Borrow {
 	readonly page: Page;
@@ -11,6 +12,7 @@ export class Borrow {
 		this.productHub = new ProductHub(page);
 	}
 
+	@step
 	async open() {
 		await this.page.goto('/borrow');
 	}
