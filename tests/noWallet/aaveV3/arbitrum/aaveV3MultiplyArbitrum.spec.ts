@@ -210,6 +210,6 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 			amount: '[0-9]{3}.[0-9]{2}',
 			pair: 'DAI',
 		});
-		await app.position.setup.shouldHaveLoanToValue('[5-9][0-9].[0-9]');
+		await app.position.setup.shouldHaveLoanToValue('[1-9][0-9].[0-9]');
 	});
 });

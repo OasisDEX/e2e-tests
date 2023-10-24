@@ -96,7 +96,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12055',
@@ -125,7 +125,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12056',
