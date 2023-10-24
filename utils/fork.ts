@@ -23,8 +23,8 @@ export const addToApp = async ({
 		.fill(`https://rpc.tenderly.co/fork/${forkId}`);
 	await app.page
 		.locator(
-			`input[placeholder="21${
-				network === 'mainnet' ? '37' : network === 'optimism' ? '40' : '38'
+			`input[placeholder="${
+				network === 'mainnet' ? '1' : network === 'optimism' ? '10' : '42161'
 			}"]`
 		)
 		.fill(network === 'mainnet' ? '1' : network === 'optimism' ? '10' : '42161');

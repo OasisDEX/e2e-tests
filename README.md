@@ -61,7 +61,7 @@ You can also use these other environment variables:
 | TIMEOUT | 30000 | Timeout for each test in milliseconds. Note that some timeouts have been defined in `./utils/config.ts` file, so this TIMEOUT variable might not have any effect in some cases. |
 | RETRIES | 0 | The maximum number of retry attempts given to failed tests. By default failing tests are not retried. |
 | HEADLESS | true | Whether to run browser in headless mode. Note that **with wallet** tests can run **only** in headed mode, so this variable will be applied only to **no wallet tests**. |
-| ENABLE_FLAGS | '' | You can pass one or more flags to enable hidden features in staging and dev environments. To pass more than one flag separate them with an empty space: `'flag1:true flag2:false'` |
+| FLAGS | '' | You can pass one or more flags to enable hidden features in staging and dev environments. To pass more than one flag separate them with an empty space: `'flag1:true flag2:false'` |
 
 ## Browsers
 For now the tests have been setup so that they run only on desktop Chrome.

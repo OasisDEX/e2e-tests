@@ -58,8 +58,13 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		await app.position.setup.continue();
 		await app.position.setup.openMultiplyPosition1Of2();
-		await app.position.setup.confirm();
-		await metamask.confirmPermissionToSpend();
+
+		// Position creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await metamask.confirmPermissionToSpend();
+			await app.position.setup.goToPositionShouldBeVisible();
+		}).toPass();
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
