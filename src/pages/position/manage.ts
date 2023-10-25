@@ -118,7 +118,7 @@ export class Manage {
 			this.page
 				.getByText(`${token} after closing`)
 				.locator('..')
-				.locator('xpath=//following-sibling::div[1]')
+				.locator('xpath=//following-sibling::span[1]')
 				.filter({ hasText: regExp }),
 			`Token amount (${token} - ${amount}) should be visible`
 		).toBeVisible({ timeout: positionTimeout });
