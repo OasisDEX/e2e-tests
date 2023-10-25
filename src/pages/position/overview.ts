@@ -1,3 +1,4 @@
+import { step } from '#noWalletFixtures';
 import { expect, Page } from '@playwright/test';
 import { positionTimeout } from 'utils/config';
 
@@ -14,16 +15,19 @@ export class Overview {
 		});
 	}
 
+	@step
 	async waitForComponentToBeStable() {
 		await this.shouldBeVisible();
 	}
 
+	@step
 	async shouldHaveTokenAmount({ amount, token }: { amount: string; token: string }) {
 		await expect(this.page.getByText('In this position').locator('../h3')).toContainText(
 			`${amount} ${token}`
 		);
 	}
 
+	@step
 	async shouldHavePrev30daysNetValue({ token, amount }: { token: string; amount: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
@@ -31,6 +35,7 @@ export class Overview {
 		).toContainText(regExp);
 	}
 
+	@step
 	async shouldHaveProjectedEarnings30days({ token, amount }: { token: string; amount: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
@@ -38,6 +43,7 @@ export class Overview {
 		).toContainText(regExp, { timeout: positionTimeout });
 	}
 
+	@step
 	async shouldHaveLiquidationPriceGreaterThanZero(token: string) {
 		await expect(async () => {
 			await expect(
@@ -53,6 +59,7 @@ export class Overview {
 	/**
 	 	@param price - It must be regExp string representing the the whole amount
 	*/
+	@step
 	async shouldHaveLiquidationPrice({ price, token }: { price: string; token?: string }) {
 		const regExp = new RegExp(`${price}${token ? ` ${token}` : ''}`);
 		await expect(
@@ -63,6 +70,7 @@ export class Overview {
 	/**
 	 	@param price - It must be regExp representing the the whole amount
 	*/
+	@step
 	async shouldHaveLiquidationPriceAfterPill(price: RegExp) {
 		await expect(
 			this.page.getByText('Liquidation Price').locator('..').getByText('After')
@@ -72,6 +80,7 @@ export class Overview {
 	/**
 	 	@param price - It must be regExp representing the the whole amount
 	*/
+	@step
 	async shouldHaveLoanToValue(percentage: string) {
 		const regExp = new RegExp(`${percentage}%`);
 		await expect(
@@ -84,12 +93,14 @@ export class Overview {
 	/**
 	 	@param price - It must be regExp representing the the whole amount
 	*/
+	@step
 	async shouldHaveLoanToValueAfterPill(percentage: RegExp) {
 		await expect(
 			this.page.getByText('Loan to Value').locator('..').getByText('After')
 		).toContainText(percentage, { timeout: positionTimeout });
 	}
 
+	@step
 	async shouldHaveBorrowCostGreaterThanZero() {
 		await expect(async () => {
 			await expect(
@@ -105,6 +116,7 @@ export class Overview {
 	/**
 	 	@param cost - It must be regExp representing the the whole amount
 	*/
+	@step
 	async shouldHaveBorrowCost(cost: string) {
 		const regExp = new RegExp(`${cost}%`);
 		await expect(
@@ -115,6 +127,7 @@ export class Overview {
 	/**
 	 	@param cost - It must be regExp representing the the whole amount
 	*/
+	@step
 	async shouldHaveBorrowCostAfterPill(cost: RegExp) {
 		await expect(
 			this.page.getByText('Cost to Borrow').locator('..').getByText('After')
@@ -124,6 +137,7 @@ export class Overview {
 	/**
 	 	@param value - It must be regExp representing the the whole amount
 	*/
+	@step
 	async shouldHaveNetValue({ value, token }: { value: string; token?: string }) {
 		const regExp = new RegExp(`${value}${token ? ` ${token}` : ''}`);
 		await expect(
@@ -134,6 +148,7 @@ export class Overview {
 	/**
 	 	@param value - It must be regExp representing the the whole amount
 	*/
+	@step
 	async shouldHaveNetValueAfterPill(value: RegExp) {
 		await expect(this.page.getByText('Net Value').locator('..').getByText('After')).toContainText(
 			value,
@@ -141,6 +156,7 @@ export class Overview {
 		);
 	}
 
+	@step
 	async shouldHaveExposureGreaterThanZero(token: string) {
 		await expect(async () => {
 			await expect(this.page.locator('li:has-text("exposure") > p')).toContainText(token, {
@@ -153,6 +169,7 @@ export class Overview {
 		);
 	}
 
+	@step
 	async shouldHaveExposure({ amount, token }: { amount: string; token: string }) {
 		let regExp = new RegExp(`${amount} ${token}`);
 
@@ -161,6 +178,7 @@ export class Overview {
 		});
 	}
 
+	@step
 	async shouldHaveExposureAfterPill({ amount, token }: { amount: string; token: string }) {
 		let regExp = new RegExp(`${amount} ${token}`);
 
@@ -170,6 +188,7 @@ export class Overview {
 		);
 	}
 
+	@step
 	async shouldHaveDebtGreaterThanZero(token: string) {
 		await expect(async () => {
 			await expect(this.page.locator('li:has-text(" Debt") > p')).toContainText(token, {
@@ -180,6 +199,7 @@ export class Overview {
 		await expect(this.page.locator('li:has-text(" Debt") > p')).not.toHaveText(`0.0000 ${token}`);
 	}
 
+	@step
 	async shouldHaveDebt({ amount, token }: { amount: string; token: string }) {
 		let regexObj = new RegExp(`${amount} ${token}`);
 
@@ -188,6 +208,7 @@ export class Overview {
 		});
 	}
 
+	@step
 	async shouldHaveDebtAfterPill({ amount, token }: { amount: string; token: string }) {
 		let regexObj = new RegExp(`${amount} ${token}`);
 
@@ -197,6 +218,7 @@ export class Overview {
 		);
 	}
 
+	@step
 	async shouldHaveMultiple(amount: string) {
 		let regexObj = new RegExp(`${amount}x`);
 
@@ -205,6 +227,7 @@ export class Overview {
 		});
 	}
 
+	@step
 	async shouldHaveMultipleAfterPill(amount: string) {
 		let regexObj = new RegExp(`${amount}x`);
 
@@ -214,6 +237,7 @@ export class Overview {
 		);
 	}
 
+	@step
 	async shouldHaveBuyingPowerGreaterThanZero() {
 		await expect(async () => {
 			await expect(this.page.locator('li:has-text("Buying Power") > p')).toContainText('USD', {
@@ -224,6 +248,7 @@ export class Overview {
 		await expect(this.page.locator('li:has-text("Buying Power") > p')).not.toHaveText('0.00 USD');
 	}
 
+	@step
 	async shouldHaveBuyingPower(amount: string) {
 		let regexObj = new RegExp(`${amount}`);
 
@@ -235,6 +260,7 @@ export class Overview {
 		);
 	}
 
+	@step
 	async shouldHaveBuyingPowerAfterPill(amount: string) {
 		let regexObj = new RegExp(`${amount} USD`);
 
@@ -244,6 +270,7 @@ export class Overview {
 		);
 	}
 
+	@step
 	async shouldHaveTotalCollateral({ amount, token }: { amount: string; token: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 

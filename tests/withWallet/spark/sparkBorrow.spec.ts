@@ -52,14 +52,18 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.setup.createSmartDeFiAccount();
 		// Confirmation button with same label
 		await app.position.setup.createSmartDeFiAccount();
-		await metamask.confirmAddToken();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
 		await app.position.setup.continue();
 		await app.position.setup.openBorrowPosition1Of2();
 
 		// Position creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await metamask.confirmPermissionToSpend();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass();
 
