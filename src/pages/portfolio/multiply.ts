@@ -1,6 +1,7 @@
 import { expect, Page } from '@playwright/test';
 import { Vaults } from './vaults';
 import { portfolioTimeout } from 'utils/config';
+import { step } from '#noWalletFixtures';
 
 export class Multiply {
 	readonly page: Page;
@@ -12,9 +13,13 @@ export class Multiply {
 		this.vaults = new Vaults(page, page.locator('h3:has-text("Summer.fi Multiply") + div'));
 	}
 
+	@step
 	async shouldHaveHeaderCount(count: string) {
-		await expect(this.page.getByText('Summer.fi Multiply')).toContainText(count, {
-			timeout: portfolioTimeout,
-		});
+		await expect(this.page.getByRole('heading', { name: 'Summer.fi Multiply' })).toContainText(
+			count,
+			{
+				timeout: portfolioTimeout,
+			}
+		);
 	}
 }

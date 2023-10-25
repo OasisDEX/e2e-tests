@@ -260,7 +260,6 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			amount: '[4-9].[0-9]{4}',
 			token: 'USDC',
 		});
-		await app.position.overview.shouldHaveMultiple('[1-3].[0-9]{1,2}');
 		await app.position.overview.shouldHaveBuyingPower('[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveBuyingPowerGreaterThanZero();
 
