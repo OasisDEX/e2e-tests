@@ -72,7 +72,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await app.page.reload();
 
 		await app.page.goto(`/owner/${walletAddress}`);
-		await app.portfolio.borrow.vaults.first.shouldHave({ assets: 'ETH-A' });
+		await app.portfolio.vaults.first.shouldHave({ assets: 'ETH-A' });
 	});
 
 	// Skipping test as Maker position pages don't open when using forks
