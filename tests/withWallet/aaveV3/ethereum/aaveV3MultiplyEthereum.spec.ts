@@ -53,7 +53,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.createSmartDeFiAccount();
-			await metamask.confirmAddToken();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass();
 
@@ -63,7 +65,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await expect(async () => {
 			await app.position.setup.setupAllowance();
 			await app.position.setup.approveAllowance();
-			await metamask.confirmAddToken();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass();
 
@@ -74,7 +78,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		// Position creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await metamask.confirmPermissionToSpend();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass();
 
@@ -182,7 +188,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.page.goto(`/owner/${walletAddress}`);
 
 		await app.portfolio.multiply.shouldHaveHeaderCount('1');
-		await app.portfolio.multiply.vaults.first.shouldHave({ assets: 'DAI/WBTC' });
+		await app.portfolio.vaults.first.shouldHave({ assets: 'DAI/WBTC' });
 	});
 
 	test('It should open an Aave v3 Multiply Ethereum position from portfolio page', async () => {
