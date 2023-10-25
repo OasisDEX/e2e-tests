@@ -254,7 +254,7 @@ export class Setup {
 
 	@step
 	async goToPosition() {
-		await this.page.getByRole('button', { name: 'Go to position' }).click();
+		await this.page.getByRole('button', { name: 'Go to position' }).click({ clickCount: 2 });
 	}
 
 	@step
