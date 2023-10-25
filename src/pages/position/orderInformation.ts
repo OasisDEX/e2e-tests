@@ -28,6 +28,26 @@ export class OrderInformation {
 		});
 	}
 
+	async shouldHaveFlashloanAmount({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Flashloan Amount")')
+		).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
+	}
+
+	async shouldHaveFlashloanProviderLiquidity({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Flashloan Provider Liquidity")')
+		).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
+	}
+
 	async shouldHavePriceImpact({ amount, percentage }: { amount: string; percentage: string }) {
 		const regExp = new RegExp(`${amount} \\(${percentage}%\\)`);
 		await expect(
