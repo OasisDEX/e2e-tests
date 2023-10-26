@@ -11,8 +11,14 @@ export class Networks {
 		currentFilter,
 		networks,
 	}: {
-		currentFilter: 'All networks' | 'Clear selection' | 'Ethereum' | 'Arbitrum' | 'Optimism';
-		networks: ('Clear selecrtion' | 'Ethereum' | 'Arbitrum' | 'Optimism')[];
+		currentFilter:
+			| 'All networks'
+			| 'Clear selection'
+			| 'Ethereum'
+			| 'Arbitrum'
+			| 'Optimism'
+			| 'Base';
+		networks: ('Clear selecrtion' | 'Ethereum' | 'Arbitrum' | 'Optimism' | ' Base')[];
 	}) {
 		await this.productHubLocator.getByText(currentFilter).locator('..').click();
 

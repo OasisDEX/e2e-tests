@@ -71,7 +71,7 @@ jobs:
           name: playwright-report-with-wallet-aave-ethereum
           path: playwright-reports/with-wallet-aave-ethereum
           retention-days: 30
-  with-wallet-aave-arbitrum-and-optimism-tests:
+  with-wallet-aave-other-tests:
     name: 'With wallet - Aave - Arbitrum & Optimism'
     runs-on: ubuntu-latest
     env:
@@ -100,12 +100,12 @@ jobs:
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
           FLAGS=${{ inputs.flags}} \
-          yarn nightly:with-wallet:aave:arbitrum-and-optimism
+          yarn nightly:with-wallet:aave:other
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report-with-wallet-aave-arbitrum-and-optimism
-          path: playwright-reports/with-wallet-aave-arbitrum-and-optimism
+          name: playwright-report-with-wallet-aave-other
+          path: playwright-reports/with-wallet-aave-other
           retention-days: 30
   with-wallet-maker-and-spark-tests:
     name: 'With wallet - Maker & Spark'

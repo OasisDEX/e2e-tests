@@ -10,18 +10,19 @@ import { App } from 'src/app';
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Wallet connected', async () => {
+test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 	test.beforeEach(async () => {
 		test.setTimeout(hooksTimeout);
 
-		({ context } = await metamaskSetUp({ network: 'mainnet' }));
+		({ context } = await metamaskSetUp({ network: 'base' }));
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId } = await setup({ app, network: 'mainnet' }));
+		({ forkId, walletAddress } = await setup({ app, network: 'base' }));
 	});
 
 	test.afterAll(async () => {
@@ -34,42 +35,41 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Multiply position @regression', async () => {
+	test('It should open an Aave V3 Borrow Base position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12463',
+			description: '12473',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/ethereum/spark/v3/multiply/ethdai');
-
+		await app.page.goto('/base/aave/v3/borrow/ethusdbc#simulate');
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
+		await app.position.setup.deposit({ token: 'ETH', amount: '9.12345' });
+		await app.position.setup.borrow({ token: 'USDBC', amount: '2000' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.createSmartDeFiAccount();
-			await metamask.confirmAddToken();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass();
 
 		await app.position.setup.continue();
-		await app.position.setup.setupStopLoss1Of3();
-		await app.position.setup.confirm(); // Stop-Loss 2/3
+		await app.position.setup.openBorrowPosition1Of2();
 
-		// Stop Loss setup randomly fails - Retry until it's setup.
+		// Position creation randomly fails - Retry until it's created.
 		await expect(async () => {
-			await app.position.setup.confirmOrRetry(); // Stop-Loss 3/3
-			await metamask.confirmPermissionToSpend();
-			await app.position.setup.setupStopLossTransactionShouldBeVisible();
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass();
-
-		// Set up Stop-Loss transaction
-		await app.position.setup.setupStopLossTransaction();
-		await metamask.confirmPermissionToSpend();
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');

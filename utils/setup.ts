@@ -14,7 +14,7 @@ import { setExpectInstance } from '@synthetixio/synpress/commands/playwright';
 export const metamaskSetUp = async ({
 	network,
 }: {
-	network: 'mainnet' | 'optimism' | 'arbitrum';
+	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 }) => {
 	// required for synpress as it shares same expect instance as playwright
 	await setExpectInstance(expect);
@@ -65,7 +65,7 @@ export const setup = async ({
 	network,
 }: {
 	app: App;
-	network: 'mainnet' | 'optimism' | 'arbitrum';
+	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 }) => {
 	const walletAddress = await metamask.walletAddress();
 

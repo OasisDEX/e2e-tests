@@ -92,7 +92,7 @@ For running **with wallet** tests also set `WALLET_ADDRESS`, `TENDERLY_PROJECT`,
 After running one or more tests you can run the following commands to open one or more test reports in the browser:
 - `yarn test:report:no-wallet`
 - `yarn test:report:with-wallet:aave:ethereum`
-- `yarn test:report:with-wallet:aave:arbitrum-and-optimism`
+- `yarn test:report:with-wallet:aave:other`
 - `yarn test:report:with-wallet:maker-and-spark`  
 
 ## Tags 
@@ -107,6 +107,6 @@ A project is a logical group of tests running with the same configuration. For n
 
 At the moment we are using the following projects:
 - `no-wallet`
-- `with-wallet-aave-arbitrum-and-optimism'`
+- `with-wallet-aave-other'`
 - `with-wallet-aave-ethereum`
 - `with-wallet-maker-and-spark`

@@ -16,8 +16,18 @@ const request = axios.create({
 	},
 });
 
-export const createFork = async ({ network }: { network: 'mainnet' | 'optimism' | 'arbitrum' }) => {
-	const network_id = network === 'mainnet' ? '1' : network === 'optimism' ? '10' : '42161';
+export const createFork = async ({
+	network,
+}: {
+	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+}) => {
+	const network_ids = {
+		mainnet: '1',
+		optimism: '10',
+		arbitrum: '42161',
+		base: '8453',
+	};
+	const network_id = network_ids[network];
 
 	return await request.post(TENDERLY_FORK_API, { network_id });
 };
@@ -69,7 +79,7 @@ export const setDaiBalance = async ({
 
 /**
  *
- * @param daiBalance In DAI units
+ * @param rEthBalance In rETH units
  */
 export const setWstethBalance = async ({
 	forkId,
@@ -84,5 +94,25 @@ export const setWstethBalance = async ({
 		'0xae78736cd615f374d3085123a210448e74fc6393',
 		WALLET_ADDRESS,
 		ethers.toQuantity(ethers.parseUnits(rEthBalance, 'ether')),
+	]);
+};
+
+/**
+ *
+ * @param cbEthBalance In cbETH units
+ */
+export const setCbEthBalance = async ({
+	forkId,
+	cbEthBalance,
+}: {
+	forkId: string;
+	cbEthBalance: string;
+}) => {
+	const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
+
+	await provider.send('tenderly_setErc20Balance', [
+		'0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22',
+		WALLET_ADDRESS,
+		ethers.toQuantity(ethers.parseUnits(cbEthBalance, 'ether')),
 	]);
 };

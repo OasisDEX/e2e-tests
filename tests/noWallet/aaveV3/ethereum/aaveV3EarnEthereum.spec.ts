@@ -2,7 +2,7 @@ import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Aave v3 Earn Ethereum', async () => {
-	test('It should allow to simulate an Aave V3 Earn position before opening it - No wallet connected @regression', async ({
+	test('It should allow to simulate an Aave V3 Ethereum Earn position before opening it - No wallet connected @regression', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
