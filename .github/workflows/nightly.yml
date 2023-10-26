@@ -60,7 +60,7 @@ jobs:
           path: playwright-reports/with-wallet-aave-ethereum
           retention-days: 30
   with-wallet-aave-aother-tests:
-    name: 'With wallet - Aave - Arbitrum & Optimism'
+    name: 'With wallet - Aave - Arbitrum, Optimism & Base'
     runs-on: ubuntu-latest
     env:
       WALLET_ADDRESS: ${{ secrets.WALLET_ADDRESS }}
@@ -80,7 +80,7 @@ jobs:
         run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Run With wallet Aave Arbitrum and Optimism tests
+      - name: Run With wallet Aave Arbitrum, Optimism and Base tests
         run: |
           WALLET_ADDRESS=${{ secrets.WALLET_ADDRESS }} \
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \

@@ -1,3 +1,4 @@
+import { step } from '#noWalletFixtures';
 import { Locator, Page } from '@playwright/test';
 
 type Protocol = 'Aave' | 'Maker' | 'Spark';
@@ -13,10 +14,12 @@ export class Protocols {
 		this.headerLocator = headerLocator;
 	}
 
+	@step
 	async open() {
 		await this.headerLocator.getByText('Protocols', { exact: true }).hover();
 	}
 
+	@step
 	async hoverOver(protocol: Protocol) {
 		const protocolDescription = {
 			Aave: 'Borrow, Multiply and Earn on multiple tokens with the top liquidity protocol.',
@@ -26,6 +29,7 @@ export class Protocols {
 		await this.headerLocator.getByText(protocolDescription[protocol]).hover();
 	}
 
+	@step
 	async select({ protocol, product }: { protocol: Protocol; product: Product }) {
 		const menuOptionLocator = {
 			AaveBorrow: this.headerLocator.getByText(

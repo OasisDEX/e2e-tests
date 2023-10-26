@@ -12,7 +12,7 @@ const defaultConfig: PlaywrightTestConfig = {
 	testDir: './tests',
 	fullyParallel: process.env.FULLY_PARALLEL === 'true' ? true : false,
 	timeout: process.env.TIMEOUT ? parseInt(process.env.TIMEOUT) : 30_000,
-	retries: process.env.RETRIES ? parseInt(process.env.RETRIES) : 1,
+	retries: process.env.RETRIES ? parseInt(process.env.RETRIES) : 2,
 	workers: process.env.WORKERS ? parseInt(process.env.WORKERS) : 1,
 	reporter: [['html', { open: 'never' }]],
 
@@ -22,7 +22,8 @@ const defaultConfig: PlaywrightTestConfig = {
 	use: {
 		baseURL: baseUrl,
 		headless: process.env.HEADLESS === 'false' ? false : true,
-		trace: 'on-first-retry',
+		screenshot: 'only-on-failure',
+		video: 'retain-on-failure',
 	},
 
 	/* Configure projects for major browsers */
@@ -33,7 +34,7 @@ const defaultConfig: PlaywrightTestConfig = {
 			testIgnore: ['noWallet/ajna/**'],
 			use: {
 				...devices['Desktop Chrome'],
-				screenshot: 'only-on-failure',
+				// screenshot: 'only-on-failure',
 			},
 		},
 
