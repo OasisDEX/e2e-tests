@@ -117,7 +117,7 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
 	});
 
-	test('It should validate "Deposit <collateral>" field - No enough collateral in wallet @regression', async ({
+	test('It should validate "Deposit <collateral>" field - No enough collateral in wallet', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
