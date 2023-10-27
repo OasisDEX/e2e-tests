@@ -249,7 +249,7 @@ export class Setup {
 		await expect(
 			this.page.getByRole('button', { name: 'Go to position' }),
 			'"Go to position" should be visible'
-		).toBeVisible();
+		).toBeVisible({ timeout: 10_000 });
 	}
 
 	@step

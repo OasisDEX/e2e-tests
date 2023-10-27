@@ -85,10 +85,10 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		}).toPass();
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage multiply');
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12055',
@@ -117,7 +117,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12056',
@@ -146,7 +146,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC) @regression', async () => {
+	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12057',

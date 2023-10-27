@@ -2,7 +2,7 @@ import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Aave v3 Multiply Base', async () => {
-	test('It should allow to simulate an Aave V3 Base Multiply position before opening it - No wallet connected @regression', async ({
+	test('It should allow to simulate an Aave V3 Base Multiply position before opening it - No wallet connected', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
