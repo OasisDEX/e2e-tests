@@ -22,6 +22,7 @@ const defaultConfig: PlaywrightTestConfig = {
 	use: {
 		baseURL: baseUrl,
 		headless: process.env.HEADLESS === 'false' ? false : true,
+		trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 		video: 'retain-on-failure',
 	},

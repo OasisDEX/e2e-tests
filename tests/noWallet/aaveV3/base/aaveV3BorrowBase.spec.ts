@@ -2,7 +2,7 @@ import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Aave v3 Borrow Base', async () => {
-	test('It should allow to simulate an Aave V3 Borrow Base position before opening it - No wallet connected', async ({
+	test('It should allow to simulate an Aave V3 Borrow Base position before opening it - No wallet connected @regression', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
