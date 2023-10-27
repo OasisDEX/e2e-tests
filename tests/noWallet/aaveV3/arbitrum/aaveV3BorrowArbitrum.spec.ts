@@ -12,7 +12,7 @@ test.describe('Aave v3 Borrow Arbitrum', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/arbitrum/aave/v3/borrow/ethusdc');
+		await app.page.goto('/arbitrum/aave/v3/borrow/ethusdc#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();

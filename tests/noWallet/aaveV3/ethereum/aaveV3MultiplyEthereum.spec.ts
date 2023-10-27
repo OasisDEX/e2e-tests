@@ -179,7 +179,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			description: '11614',
 		});
 
-		await app.page.goto('ethereum/aave/v3/multiply/rethusdc');
+		await app.page.goto('/ethereum/aave/v3/multiply/rethusdc#simulate');
 		await app.position.setup.deposit({ token: 'RETH', amount: '5' });
 		await app.position.setup.shouldHaveError(
 			'You cannot deposit more collateral than the amount in your wallet'
@@ -194,7 +194,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('ethereum/aave/v3/multiply/ethdai#simulate');
+		await app.page.goto('/ethereum/aave/v3/multiply/ethdai#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -215,7 +215,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('ethereum/aave/v3/multiply/ethdai#simulate');
+		await app.page.goto('/ethereum/aave/v3/multiply/ethdai#simulate');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
