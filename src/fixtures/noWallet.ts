@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test';
 import { App } from '../app';
-import { updateFlags, rejectCookies } from 'utils/localStorage';
+import { updateFlagsAndRejectCookies } from 'utils/localStorage';
 
 type MyFixtures = {
 	app: App;
@@ -13,11 +13,10 @@ export const test = base.extend<MyFixtures>({
 		await app.page.goto('');
 		await app.homepage.shouldBeVisible();
 
-		await rejectCookies(app);
 		if (process.env.FLAGS) {
-			await updateFlags({ app, flags: process.env.FLAGS.split(' ') });
+			await updateFlagsAndRejectCookies({ app, flags: process.env.FLAGS.split(' ') });
 		} else {
-			updateFlags({ app, flags: ['BaseNetworkEnabled'] });
+			updateFlagsAndRejectCookies({ app, flags: ['BaseNetworkEnabled'] });
 		}
 
 		await use(app);

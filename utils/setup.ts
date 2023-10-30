@@ -72,13 +72,11 @@ export const setup = async ({
 	await app.page.goto('');
 	await app.homepage.shouldBeVisible();
 
-	await localStorage.rejectCookies(app);
-
 	// 'UseNetworkSwitcherForks' flag needs to be always passed for tests with wallet and fork
 	const flags = process.env.FLAGS
 		? process.env.FLAGS.split(' ').concat('UseNetworkSwitcherForks:true')
 		: ['UseNetworkSwitcherForks:true'];
-	await localStorage.updateFlags({
+	await localStorage.updateFlagsAndRejectCookies({
 		app,
 		flags,
 	});
