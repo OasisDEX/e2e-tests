@@ -1,3 +1,4 @@
+import { step } from '#noWalletFixtures';
 import { expect, Locator, Page } from '@playwright/test';
 import { portfolioTimeout } from 'utils/config';
 
@@ -8,6 +9,7 @@ export class TopAssetsAndPositions {
 		this.locator = page.locator(':has-text("assets and positions") + div');
 	}
 
+	@step
 	async shouldHaveAsset({
 		asset,
 		percentage,
@@ -19,7 +21,7 @@ export class TopAssetsAndPositions {
 	}) {
 		const assetLocator = this.locator.getByText(asset, { exact: true });
 
-		await expect(assetLocator).toBeVisible({
+		await expect(assetLocator, `${asset} should be visible`).toBeVisible({
 			timeout: portfolioTimeout,
 		});
 

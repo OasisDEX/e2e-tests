@@ -1,6 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { Header } from './header';
 import { ProductsList } from '../../common/productsList';
+import { step } from '#noWalletFixtures';
 
 export class ProductHub {
 	readonly productHubLocator: Locator;
@@ -15,6 +16,7 @@ export class ProductHub {
 		this.list = new ProductsList(page, this.productHubLocator);
 	}
 
+	@step
 	async shouldLinkTo(page: 'Borrow' | 'Earn' | 'Multiply') {
 		await expect(this.productHubLocator.locator('a:has-text("View all")')).toHaveAttribute(
 			'href',
@@ -22,6 +24,7 @@ export class ProductHub {
 		);
 	}
 
+	@step
 	async viewAll() {
 		await this.productHubLocator.getByText('View all').click();
 	}

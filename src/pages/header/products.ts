@@ -1,3 +1,4 @@
+import { step } from '#noWalletFixtures';
 import { expect, Locator, Page } from '@playwright/test';
 
 export class Products {
@@ -10,14 +11,17 @@ export class Products {
 		this.headerLocator = headerLocator;
 	}
 
+	@step
 	async open() {
 		await this.headerLocator.getByText('Products').hover();
 	}
 
+	@step
 	async hoverOver(product: 'Earn' | 'Multiply' | 'Borrow' | 'Swap & Bridge') {
 		await this.headerLocator.getByText(product, { exact: true }).nth(0).hover();
 	}
 
+	@step
 	async shouldLinkTo(product: 'Borrow' | 'Earn' | 'Multiply') {
 		await this.open();
 		await this.hoverOver(product);
@@ -26,6 +30,7 @@ export class Products {
 		).toHaveAttribute('href', `/${product.toLocaleLowerCase()}`);
 	}
 
+	@step
 	async select({
 		product,
 		menuOption,

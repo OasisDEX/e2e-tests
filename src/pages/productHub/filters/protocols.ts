@@ -1,3 +1,4 @@
+import { step } from '#noWalletFixtures';
 import { Locator } from '@playwright/test';
 
 export class Protocols {
@@ -7,6 +8,7 @@ export class Protocols {
 		this.productHubLocator = productHubLocator;
 	}
 
+	@step
 	async select({
 		currentFilter,
 		protocols,

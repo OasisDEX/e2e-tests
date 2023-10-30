@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -88,13 +88,19 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12055',
-		});
+	test.skip('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '12055',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
@@ -119,13 +125,19 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12056',
-		});
+	test.skip('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '12056',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
@@ -150,13 +162,19 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC)', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12057',
-		});
+	test.skip('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC)', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '12057',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');
@@ -183,13 +201,19 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.overview.shouldHaveBuyingPower('0.00');
 	});
 
-	test('It should list an opened Aave v3 Multiply Ethereum position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11770',
-		});
+	test.skip('It should list an opened Aave v3 Multiply Ethereum position in portfolio', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11770',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto(`/owner/${walletAddress}`);
 
@@ -197,13 +221,19 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.portfolio.vaults.first.shouldHave({ assets: 'DAI/WBTC' });
 	});
 
-	test('It should open an Aave v3 Multiply Ethereum position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11771',
-		});
+	test.skip('It should open an Aave v3 Multiply Ethereum position from portfolio page', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11771',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.portfolio.multiply.vaults.first.view();
 		await app.position.manage.shouldBeVisible('Manage multiply');

@@ -1,3 +1,4 @@
+import { step } from '#noWalletFixtures';
 import { expect, Page } from '@playwright/test';
 
 export class Base {
@@ -7,26 +8,31 @@ export class Base {
 		this.page = page;
 	}
 
+	@step
 	async getLiquidationPrice(): Promise<number> {
 		const value = await this.page.locator('span:has-text("Liquidation Price") + span').innerText();
 		return parseFloat(value.slice(0, value.indexOf(' ')));
 	}
 
+	@step
 	async getLoanToValue(): Promise<number> {
 		const value = await this.page.locator('span:has-text("Loan to Value") + span').innerText();
 		return parseFloat(value.slice(0, -1));
 	}
 
+	@step
 	async getLendingPrice(): Promise<number> {
 		const value = await this.page.locator('span:has-text("lending price") + span').innerText();
 		return parseFloat(value);
 	}
 
+	@step
 	async getMaxLTV(): Promise<number> {
 		const value = await this.page.locator('span:has-text("Max LTV") + span').innerText();
 		return parseFloat(value.slice(0, -1));
 	}
 
+	@step
 	async waitForSliderToBeEditable() {
 		await expect(async () => {
 			await expect(this.page.locator('input[type="range"]')).not.toHaveAttribute('max', '0');
@@ -37,6 +43,7 @@ export class Base {
 	 *
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
+	@step
 	async moveSlider({ process, value }: { process?: 'setup' | 'manage'; value: number }) {
 		await expect(async () => {
 			const initialSliderValue = await this.page
@@ -66,6 +73,7 @@ export class Base {
 		}).toPass();
 	}
 
+	@step
 	async confirm() {
 		await this.page.getByRole('button', { name: 'Confirm' }).click();
 	}

@@ -1,6 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { ProductsList } from '../common/productsList';
 import { NoItems } from './noItems';
+import { step } from '#noWalletFixtures';
 
 export class PoolFinder {
 	readonly page: Page;
@@ -18,14 +19,17 @@ export class PoolFinder {
 		this.noItems = new NoItems(page);
 	}
 
+	@step
 	async open(positionCategory: 'borrow' | 'earn') {
 		await this.page.goto(`/ajna/pool-finder/${positionCategory}`);
 	}
 
+	@step
 	async shouldHaveHeader(positionCategory: 'Borrow' | 'Earn') {
 		await expect(this.finderLocator.locator('h1 span').nth(0)).toHaveText(positionCategory);
 	}
 
+	@step
 	async shouldLinkToBlog(positionCategory: 'Borrow' | 'Earn') {
 		const element = this.finderLocator.getByRole('link', { name: `Summer.fi ${positionCategory}` });
 
@@ -36,11 +40,13 @@ export class PoolFinder {
 		await expect(element).toHaveAttribute('target', '_blank');
 	}
 
+	@step
 	async selectPositionCategory(positionCategory: 'Borrow' | 'Earn') {
 		await this.finderLocator.locator('h1 > div').click();
 		await this.finderLocator.locator(`h1 li:has-text("${positionCategory}")`).click();
 	}
 
+	@step
 	async filterBy({
 		filter,
 		value,
