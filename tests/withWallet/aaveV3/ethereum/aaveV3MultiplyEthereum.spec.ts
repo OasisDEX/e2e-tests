@@ -105,7 +105,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.adjustRisk();
 		await app.position.manage.confirm();
-		await metamask.confirmPermissionToSpend();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
 		await app.position.manage.shouldShowSuccessScreen();
 		await app.position.manage.ok();
 
@@ -134,7 +136,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.adjustRisk();
 		await app.position.manage.confirm();
-		await metamask.confirmPermissionToSpend();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
 		await app.position.manage.shouldShowSuccessScreen();
 		await app.position.manage.ok();
 
@@ -162,7 +166,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			amount: '[0-2].[0-9]{1,4}',
 		});
 		await app.position.manage.confirm();
-		await metamask.confirmPermissionToSpend();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
 
 		await app.position.manage.shouldShowSuccessScreen();
 		await app.position.manage.ok();

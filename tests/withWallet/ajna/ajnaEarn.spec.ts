@@ -192,7 +192,9 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.createSmartDeFiAccount();
-			await metamask.confirmAddToken();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass();
 
@@ -201,7 +203,9 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 		// Position creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await metamask.confirmPermissionToSpend();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass();
 

@@ -52,14 +52,18 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		await app.position.setup.createSmartDeFiAccount();
 		// Confirmation button with same label
 		await app.position.setup.createSmartDeFiAccount();
-		await metamask.confirmAddToken();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
 		await app.position.setup.continue();
 		await app.position.setup.openBorrowPosition1Of2();
 
 		// Position creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await metamask.confirmPermissionToSpend();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass();
 
@@ -88,7 +92,9 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.adjustRisk();
 		await app.position.manage.confirm();
-		await metamask.confirmPermissionToSpend();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
 		await app.position.manage.shouldShowSuccessScreen();
 		await app.position.manage.ok();
 
@@ -120,7 +126,9 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.adjustRisk();
 		await app.position.manage.confirm();
-		await metamask.confirmPermissionToSpend();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
 		await app.position.manage.shouldShowSuccessScreen();
 		await app.position.manage.ok();
 
@@ -149,7 +157,9 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			amount: '[0-9]{1,2}.[0-9]{2,4}',
 		});
 		await app.position.manage.confirm();
-		await metamask.confirmPermissionToSpend();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
 
 		await app.position.manage.shouldShowSuccessScreen();
 

@@ -11,7 +11,7 @@ export class Overview {
 
 	async shouldBeVisible() {
 		await expect(this.page.locator('p:has-text("Overview")')).toBeVisible({
-			timeout: 25_000,
+			timeout: positionTimeout,
 		});
 	}
 

@@ -66,7 +66,9 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		if (buttonLabel.includes('Setup Proxy')) {
 			await app.position.setup.setupProxy();
 			await app.position.setup.setupProxy(); // Thre are 2x Setup Proxy screens
-			await metamask.confirmAddToken();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
 
 			// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
 			await app.page.waitForTimeout(5_000);
@@ -78,11 +80,15 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await app.position.setup.setupAllowance();
 		await app.position.setup.unlimitedAllowance();
 		await app.position.setup.setupAllowance();
-		await metamask.confirmAddToken();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
 
 		await app.position.setup.goToDeposit();
 		await app.position.setup.confirmDeposit();
-		await metamask.confirmAddToken();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
 
 		await app.page.goto(`/owner/${walletAddress}`);
 		await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
