@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { App } from 'src/app';
 
-export const enableFlags = async ({ app, flags }: { app: App; flags: string[] }) => {
+export const updateFlags = async ({ app, flags }: { app: App; flags: string[] }) => {
 	// 'ob-config-overrides' takes some time to be loaded to Local Storage
 	let localStorage: any;
 	await expect(async () => {

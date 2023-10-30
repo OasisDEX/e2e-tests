@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { ProductHub } from './productHub';
 
 export class Homepage {
@@ -13,6 +13,12 @@ export class Homepage {
 
 	async open() {
 		await this.page.goto('/');
+	}
+
+	async shouldBeVisible() {
+		await expect(this.page.getByText('The best place to Borrow and Earn in DeFi')).toBeVisible({
+			timeout: 10_000,
+		});
 	}
 
 	async connectWallet() {
