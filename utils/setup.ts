@@ -70,6 +70,7 @@ export const setup = async ({
 	const walletAddress = await metamask.walletAddress();
 
 	await app.page.goto('');
+	await app.homepage.shouldBeVisible();
 
 	await localStorage.rejectCookies(app);
 
@@ -77,7 +78,7 @@ export const setup = async ({
 	const flags = process.env.FLAGS
 		? process.env.FLAGS.split(' ').concat('UseNetworkSwitcherForks:true')
 		: ['UseNetworkSwitcherForks:true'];
-	await localStorage.enableFlags({
+	await localStorage.updateFlags({
 		app,
 		flags,
 	});
