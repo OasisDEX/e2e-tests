@@ -18,10 +18,6 @@ test.describe('Aave v3 Earn Base', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'CBETH', amount: '16.12345' });
 
-		//
-		await app.pause();
-		//
-
 		/* Asserting that Liquidation Price After pill will be:
 			- x1 digits whole-number part --> x
 			- x2 digits decimal part 
