@@ -51,7 +51,9 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await app.position.setup.generate({ token: 'DAI', amount: '10000' });
 		await app.position.setup.setupProxy1Of4();
 		await app.position.setup.createProxy2Of4();
-		await metamask.confirmAddToken();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
 
 		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
 		await app.page.waitForTimeout(5_000);
@@ -65,7 +67,9 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await app.position.setup.confirm();
 		await app.position.setup.addStopLoss2Of3();
 		await app.position.setup.createVault3Of3();
-		await metamask.confirmAddToken();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
 
 		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
 		await app.page.waitForTimeout(5_000);

@@ -52,14 +52,18 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.createSmartDeFiAccount();
-			await metamask.confirmAddToken();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass();
 
 		await app.position.setup.continue();
 		await app.position.setup.openMultiplyPosition1Of2();
-		await app.position.setup.confirm(); // Stop-Loss 2/2
-		await metamask.confirmPermissionToSpend();
+		await app.position.setup.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
