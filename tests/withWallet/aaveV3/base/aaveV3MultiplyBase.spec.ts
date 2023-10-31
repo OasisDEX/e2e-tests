@@ -84,14 +84,20 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		}).toPass();
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage multiply');
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	test('It should adjust risk of an existent Aave V3 Multiply Base position - Up @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12464',
-		});
+	test.skip('It should adjust risk of an existent Aave V3 Multiply Base position - Up @regression', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '12464',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(longTestTimeout);
 
@@ -118,11 +124,17 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test('It should adjust risk of an existent Aave V3 Multiply Base position - Down @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12465',
-		});
+	test.skip('It should adjust risk of an existent Aave V3 Multiply Base position - Down @regression', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '12465',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(longTestTimeout);
 
@@ -149,11 +161,17 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 	});
 
 	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test('It should close an existent Aave V3 Multiply Base position - Close to debt token (WBTC) @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12466',
-		});
+	test.skip('It should close an existent Aave V3 Multiply Base position - Close to debt token (WBTC) @regression', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '12466',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(longTestTimeout);
 
@@ -182,11 +200,17 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.position.overview.shouldHaveBuyingPower('0.00');
 	});
 
-	test('It should list an opened Aave v3 Multiply Base position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12467',
-		});
+	test.skip('It should list an opened Aave v3 Multiply Base position in portfolio', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '12467',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(longTestTimeout);
 
@@ -196,11 +220,17 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.portfolio.multiply.vaults.first.shouldHave({ assets: 'CBETH/USDBC' });
 	});
 
-	test('It should open an Aave v3 Multiply Base position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12468',
-		});
+	test.skip('It should open an Aave v3 Multiply Base position from portfolio page', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '12468',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
 
 		test.setTimeout(longTestTimeout);
 

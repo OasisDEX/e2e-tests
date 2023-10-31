@@ -4,6 +4,7 @@ import { Earn } from './earn';
 import { Multiply } from './multiply';
 import { TopAssetsAndPositions } from './topAssetsAndPositions';
 import { Vaults } from './vaults';
+import { step } from '#noWalletFixtures';
 
 export class Portfolio {
 	readonly page: Page;
@@ -27,6 +28,7 @@ export class Portfolio {
 		this.vaults = new Vaults(page, page.locator('h3:has-text("Summer.fi") + div'));
 	}
 
+	@step
 	async open(wallet?: string) {
 		await this.page.goto(`/owner/${wallet ?? ''}`);
 	}

@@ -1,3 +1,4 @@
+import { step } from '#noWalletFixtures';
 import { expect, Locator, Page } from '@playwright/test';
 import { positionTimeout } from 'utils/config';
 
@@ -11,6 +12,7 @@ export class OrderInformation {
 		this.orderInformationLocator = page.getByRole('list').filter({ hasText: 'Order information' }); // locator('ul:has-text("Order information")');
 	}
 
+	@step
 	async shouldHaveBuyingAmount({
 		tokenAmount,
 		token,
@@ -28,6 +30,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHaveFlashloanAmount({ amount, token }: { amount: string; token: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 
@@ -38,6 +41,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHaveFlashloanProviderLiquidity({ amount, token }: { amount: string; token: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 
@@ -48,6 +52,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHavePriceImpact({ amount, percentage }: { amount: string; percentage: string }) {
 		const regExp = new RegExp(`${amount} \\(${percentage}%\\)`);
 		await expect(
@@ -57,6 +62,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHaveSlippageLimit(amount: string) {
 		const regExp = new RegExp(`${amount}%`);
 		await expect(
@@ -66,6 +72,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHaveMultiply({ current, future }: { current: string; future: string }) {
 		const regExp = new RegExp(`${current}x${future}x`);
 
@@ -76,6 +83,8 @@ export class OrderInformation {
 			}
 		);
 	}
+
+	@step
 	async shouldHaveOutstandingDebt({
 		token,
 		current,
@@ -94,6 +103,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHaveTotalCollateral({
 		token,
 		current,
@@ -112,6 +122,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHaveLTV({ current, future }: { current: string; future: string }) {
 		const regExp = new RegExp(`${current}% ${future}%`);
 
@@ -120,6 +131,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHaveTransactionFee({ fee, token }: { fee: string; token?: string }) {
 		const regExp = new RegExp(`${fee}${token ? ` ${token}` : ''} \\+ \\(n/a\\)`);
 
@@ -130,6 +142,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHaveAmountToLend({
 		current,
 		future,
@@ -148,6 +161,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHaveNetAPY({ current, future }: { current: string; future: string }) {
 		const regExp = new RegExp(`${current}%${future}%`);
 
@@ -159,6 +173,7 @@ export class OrderInformation {
 		);
 	}
 
+	@step
 	async shouldHaveLendingPrice({
 		current,
 		future,
@@ -177,6 +192,7 @@ export class OrderInformation {
 		});
 	}
 
+	@step
 	async shouldHaveMaxLTV({ current, future }: { current: string; future: string }) {
 		const regExp = new RegExp(`${current}%${future}%`);
 
@@ -188,6 +204,7 @@ export class OrderInformation {
 		);
 	}
 
+	@step
 	async shouldHaveDepositFee({ amount, token }: { amount: string; token: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 

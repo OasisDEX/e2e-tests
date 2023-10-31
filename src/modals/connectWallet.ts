@@ -1,3 +1,4 @@
+import { step } from '#noWalletFixtures';
 import { expect, Page } from '@playwright/test';
 
 export class ConnectWallet {
@@ -7,7 +8,11 @@ export class ConnectWallet {
 		this.page = page;
 	}
 
+	@step
 	async shouldBeVisible() {
-		await expect(this.page.getByText('Available Wallets')).toBeVisible({ timeout: 15_000 });
+		await expect(
+			this.page.getByText('Available Wallets'),
+			'"Available Wallets" should be visible'
+		).toBeVisible({ timeout: 15_000 });
 	}
 }

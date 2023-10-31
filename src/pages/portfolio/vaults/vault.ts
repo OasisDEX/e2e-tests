@@ -1,3 +1,4 @@
+import { step } from '#noWalletFixtures';
 import { expect, Locator } from '@playwright/test';
 import { portfolioTimeout } from 'utils/config';
 
@@ -8,6 +9,7 @@ export class Vault {
 		this.vaultLocator = vaultLocator;
 	}
 
+	@step
 	async shouldHave(args: { assets?: string }) {
 		if (args.assets) {
 			await expect(
@@ -16,8 +18,12 @@ export class Vault {
 		}
 	}
 
+	@step
 	async view() {
-		await expect(this.vaultLocator.getByRole('button', { name: 'View' })).toBeVisible({
+		await expect(
+			this.vaultLocator.getByRole('button', { name: 'View' }),
+			'"View" should be visible'
+		).toBeVisible({
 			timeout: portfolioTimeout,
 		});
 		await this.vaultLocator.getByRole('button', { name: 'View' }).click();

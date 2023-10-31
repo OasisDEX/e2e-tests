@@ -2,6 +2,7 @@ import { expect, Locator, Page } from '@playwright/test';
 import { portfolioTimeout } from 'utils/config';
 import { Products } from './products';
 import { Protocols } from './protocols';
+import { step } from '#noWalletFixtures';
 
 export class Header {
 	readonly page: Page;
@@ -19,12 +20,14 @@ export class Header {
 		this.protocols = new Protocols(page, this.headerLocator);
 	}
 
+	@step
 	async shouldHavePortfolioCount(count: string) {
 		await expect(this.headerLocator.getByText('Portfolio')).toContainText(count, {
 			timeout: portfolioTimeout,
 		});
 	}
 
+	@step
 	async connectWallet() {
 		await this.headerLocator.getByText('Connect Wallet').click();
 	}
