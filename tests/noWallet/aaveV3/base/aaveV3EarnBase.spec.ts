@@ -118,7 +118,7 @@ test.describe('Aave v3 Earn Base', async () => {
 			--> xx.xxxxx or xxx.xxxxx or xxxx.xxxxx
 		*/
 		await app.position.setup.orderInformation.shouldHaveFlashloanProviderLiquidity({
-			amount: '[0-9]{3,4}.[0-9]{5}',
+			amount: '([1-9],)?[0-9]{3}.[0-9]{5}',
 			token: 'WETH',
 		});
 		/* Asserting that Price impact amount is a number:
