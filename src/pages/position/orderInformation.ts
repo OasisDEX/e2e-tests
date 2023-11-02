@@ -29,9 +29,7 @@ export class OrderInformation {
 		);
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Buying") div:nth-child(2)')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -40,9 +38,7 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Flashloan Amount")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -51,9 +47,7 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Flashloan Provider Liquidity")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -61,9 +55,7 @@ export class OrderInformation {
 		const regExp = new RegExp(`${amount} \\(${percentage}%\\)`);
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Price (impact)")')
-		).toContainText('%)', {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -71,9 +63,7 @@ export class OrderInformation {
 		const regExp = new RegExp(`${amount}%`);
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Slippage Limit")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -81,10 +71,7 @@ export class OrderInformation {
 		const regExp = new RegExp(`${current}x${future}x`);
 
 		await expect(this.orderInformationLocator.locator('li:has-text("Multiply")')).toContainText(
-			regExp,
-			{
-				timeout: positionTimeout,
-			}
+			regExp
 		);
 	}
 
@@ -93,10 +80,7 @@ export class OrderInformation {
 		const regExp = new RegExp(`${current}x${future}x`);
 
 		await expect(this.orderInformationLocator.locator('li:has-text("Multiple")')).toContainText(
-			regExp,
-			{
-				timeout: positionTimeout,
-			}
+			regExp
 		);
 	}
 
@@ -114,9 +98,7 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Outstanding debt")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -133,18 +115,14 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Total collateral")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
 	async shouldHaveLTV({ current, future }: { current: string; future: string }) {
 		const regExp = new RegExp(`${current}% ${future}%`);
 
-		await expect(this.orderInformationLocator.locator('li:has-text("LTV")')).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		await expect(this.orderInformationLocator.locator('li:has-text("LTV")')).toContainText(regExp);
 	}
 
 	@step
@@ -153,9 +131,7 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Transaction fee")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -172,9 +148,7 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Amount to Lend")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -182,10 +156,7 @@ export class OrderInformation {
 		const regExp = new RegExp(`${current}%${future}%`);
 
 		await expect(this.orderInformationLocator.locator('li:has-text("Net APY")')).toContainText(
-			regExp,
-			{
-				timeout: positionTimeout,
-			}
+			regExp
 		);
 	}
 
@@ -203,9 +174,7 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Lending Price")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -213,10 +182,7 @@ export class OrderInformation {
 		const regExp = new RegExp(`${current}%${future}%`);
 
 		await expect(this.orderInformationLocator.locator('li:has-text("Max LTV")')).toContainText(
-			regExp,
-			{
-				timeout: positionTimeout,
-			}
+			regExp
 		);
 	}
 
@@ -225,10 +191,7 @@ export class OrderInformation {
 		const regExp = new RegExp(`${amount} ${token}`);
 
 		await expect(this.orderInformationLocator.locator('li:has-text("Deposit fee")')).toContainText(
-			regExp,
-			{
-				timeout: positionTimeout,
-			}
+			regExp
 		);
 	}
 
@@ -236,9 +199,7 @@ export class OrderInformation {
 	async shouldHaveTotalDeposit({ amount, token }: { amount: string; token: string }) {
 		await expect(
 			this.orderInformationLocator.locator(`li:has-text("Total ${token} deposit")`)
-		).toContainText(amount, {
-			timeout: positionTimeout,
-		});
+		).toContainText(amount);
 	}
 
 	@step
@@ -247,9 +208,7 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Estimated transaction cost")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -257,9 +216,7 @@ export class OrderInformation {
 		const regExp = new RegExp(amount);
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Total SDAI convert")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -276,9 +233,7 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator(`li:has-text("Total ${token} exposure")`)
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step
@@ -287,9 +242,7 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Collateral Ratio")')
-		).toContainText(regExp, {
-			timeout: positionTimeout,
-		});
+		).toContainText(regExp);
 	}
 
 	@step

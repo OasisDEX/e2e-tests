@@ -13,7 +13,7 @@ test.describe('Maker', async () => {
 		}) => {
 			test.info().annotations.push({
 				type: 'Test case',
-				description: 'xxxxx',
+				description: '12335',
 			});
 
 			await app.page.goto(url);

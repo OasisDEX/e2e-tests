@@ -100,14 +100,11 @@ export class Overview {
 		).toHaveText(regExp, { timeout: positionTimeout });
 	}
 
-	/**
-	 	@param price - It must be regExp representing the the whole amount
-	*/
-	@step
-	async shouldHaveLoanToValueAfterPill(percentage: RegExp) {
+	async shouldHaveLoanToValueAfterPill(percentage: string) {
+		const regExp = new RegExp(percentage);
 		await expect(
 			this.page.getByText('Loan to Value').locator('..').getByText('After')
-		).toContainText(percentage, { timeout: positionTimeout });
+		).toContainText(regExp);
 	}
 
 	@step
@@ -123,9 +120,6 @@ export class Overview {
 		).not.toHaveText('0.00%');
 	}
 
-	/**
-	 	@param cost - It must be regExp representing the the whole amount
-	*/
 	@step
 	async shouldHaveBorrowCost(cost: string) {
 		const regExp = new RegExp(`${cost}%`);
@@ -134,14 +128,12 @@ export class Overview {
 		).toHaveText(regExp, { timeout: positionTimeout });
 	}
 
-	/**
-	 	@param cost - It must be regExp representing the the whole amount
-	*/
 	@step
-	async shouldHaveBorrowCostAfterPill(cost: RegExp) {
+	async shouldHaveBorrowCostAfterPill(cost: string) {
+		const regExp = new RegExp(cost);
 		await expect(
 			this.page.getByText('Cost to Borrow').locator('..').getByText('After')
-		).toContainText(cost, { timeout: positionTimeout });
+		).toContainText(regExp);
 	}
 
 	/**
@@ -190,8 +182,7 @@ export class Overview {
 		let regExp = new RegExp(`${amount} ${token}`);
 
 		await expect(this.page.locator('li:has-text("exposure")').getByText('After')).toContainText(
-			regExp,
-			{ timeout: positionTimeout }
+			regExp
 		);
 	}
 
@@ -220,8 +211,7 @@ export class Overview {
 		let regexObj = new RegExp(`${amount} ${token}`);
 
 		await expect(this.page.locator('li:has-text(" Debt")').getByText('After')).toContainText(
-			regexObj,
-			{ timeout: positionTimeout }
+			regexObj
 		);
 	}
 
@@ -239,8 +229,7 @@ export class Overview {
 		let regexObj = new RegExp(`${amount}x`);
 
 		await expect(this.page.locator('li:has-text("Multiple")').getByText('After')).toContainText(
-			regexObj,
-			{ timeout: positionTimeout }
+			regexObj
 		);
 	}
 
@@ -280,7 +269,7 @@ export class Overview {
 			? this.page.getByText('Buying Power').locator('..')
 			: this.page.locator('li:has-text("Buying Power")');
 
-		await expect(locator.getByText('After')).toContainText(regexObj, { timeout: positionTimeout });
+		await expect(locator.getByText('After')).toContainText(regexObj);
 	}
 
 	@step

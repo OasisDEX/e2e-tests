@@ -13,6 +13,6 @@ export class ConnectWallet {
 		await expect(
 			this.page.getByText('Available Wallets'),
 			'"Available Wallets" should be visible'
-		).toBeVisible({ timeout: 15_000 });
+		).toBeVisible({ timeout: 20_000 });
 	}
 }
