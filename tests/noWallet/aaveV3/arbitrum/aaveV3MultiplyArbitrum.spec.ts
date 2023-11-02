@@ -23,9 +23,7 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 			- x2 digits decimal part 
 			--> [4/5/6/7/8/9],xxx.xx
 		*/
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill(
-			/1[0-9]{2}\,[0-9]{3}\.[0-9]{2}/
-		);
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('1[0-9]{2},[0-9]{3}.[0-9]{2}');
 		/* Asserting that Loan to Value After pill will be a percentage:
 			- x2 digits whole-number part --> [1/2/3/4]x
 			- x2 digits decimal part 
@@ -44,7 +42,7 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 			- x2 digits decimal part 
 			--> [2-88],xxx.xx
 		*/
-		await app.position.overview.shouldHaveNetValueAfterPill(/[2-8]\,[0-9]{3}\.[0-9]{2}/);
+		await app.position.overview.shouldHaveNetValueAfterPill('[2-8],[0-9]{3}.[0-9]{2}');
 		/* Asserting that Total Exposure After pill will be a number:
 			- x4 digit whole-number part -> [1/2/3/4]
 			- x4 digits decimal part 
@@ -74,7 +72,9 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 			- 0, x1 or x2 digits decimal part 
 			--> [1-7]x,xxx.xx
 		*/
-		await app.position.overview.shouldHaveBuyingPowerAfterPill('[1-7],[0-9]{3}(.[0-9]{1,2})?');
+		await app.position.overview.shouldHaveBuyingPowerAfterPill({
+			amount: '[1-7],[0-9]{3}(.[0-9]{1,2})?',
+		});
 
 		/* Asserting that Liquidation price is a number:
      		- x6 digits whole-number part, with a ',' separator for thousands -> 1xx,xxx

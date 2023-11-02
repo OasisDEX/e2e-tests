@@ -1,8 +1,10 @@
 import { expect, Page } from '@playwright/test';
+import { step } from '#noWalletFixtures';
 import { Base } from './base';
 import { OrderInformation } from './orderInformation';
 import { baseUrl, positionTimeout } from 'utils/config';
-import { step } from '#noWalletFixtures';
+import { Dsr } from './dsr';
+import { VaultChanges } from './vaultChanges';
 
 require('dotenv').config();
 
@@ -11,12 +13,18 @@ export class Setup {
 
 	readonly base: Base;
 
+	readonly dsr: Dsr;
+
 	readonly orderInformation: OrderInformation;
+
+	readonly vaultChanges: VaultChanges;
 
 	constructor(page: Page) {
 		this.page = page;
 		this.base = new Base(page);
+		this.dsr = new Dsr(page);
 		this.orderInformation = new OrderInformation(page);
+		this.vaultChanges = new VaultChanges(page);
 	}
 
 	@step
@@ -303,5 +311,35 @@ export class Setup {
 					.locator('xpath=//following-sibling::div[1]')
 			).toContainText(text, { timeout: positionTimeout });
 		}
+	}
+
+	@step
+	async depositDSR() {
+		await this.page.getByRole('button', { name: 'Deposit' }).nth(1).click();
+	}
+
+	@step
+	async depositDsrShouldBeVisible() {
+		await expect(
+			this.page.getByRole('button', { name: 'Deposit' }).nth(1),
+			'"Deposit" black button should be visible'
+		).toBeVisible();
+	}
+
+	@step
+	async setAllowanceShouldBeVisible() {
+		await expect(
+			this.page.getByRole('button', { name: 'Set Allowance' }),
+			'"Set Allowance" black button should be visible'
+		).toBeVisible();
+	}
+
+	@step
+	async shouldHaveCollateralRatio({ current, future }: { current: string; future: string }) {
+		const regExp = new RegExp(`${current}%${future}%`);
+
+		await expect(this.page.locator('p > span:has-text("Collateral Ratio") + span')).toContainText(
+			regExp
+		);
 	}
 }
