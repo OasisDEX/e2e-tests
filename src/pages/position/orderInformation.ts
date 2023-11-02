@@ -17,12 +17,16 @@ export class OrderInformation {
 		tokenAmount,
 		token,
 		dollarsAmount,
+		protocol,
 	}: {
 		tokenAmount: string;
 		token: string;
 		dollarsAmount: string;
+		protocol?: 'Maker';
 	}) {
-		const regExp = new RegExp(`${tokenAmount} ${token} \\$${dollarsAmount}`);
+		const regExp = new RegExp(
+			`${tokenAmount} ${token} ${protocol ? '\\(' : ''}\\$${dollarsAmount}${protocol ? '\\)' : ''}`
+		);
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Buying") div:nth-child(2)')
 		).toContainText(regExp, {
@@ -77,6 +81,18 @@ export class OrderInformation {
 		const regExp = new RegExp(`${current}x${future}x`);
 
 		await expect(this.orderInformationLocator.locator('li:has-text("Multiply")')).toContainText(
+			regExp,
+			{
+				timeout: positionTimeout,
+			}
+		);
+	}
+
+	@step
+	async shouldHaveMultiple({ current, future }: { current: string; future: string }) {
+		const regExp = new RegExp(`${current}x${future}x`);
+
+		await expect(this.orderInformationLocator.locator('li:has-text("Multiple")')).toContainText(
 			regExp,
 			{
 				timeout: positionTimeout,
@@ -214,5 +230,74 @@ export class OrderInformation {
 				timeout: positionTimeout,
 			}
 		);
+	}
+
+	@step
+	async shouldHaveTotalDeposit({ amount, token }: { amount: string; token: string }) {
+		await expect(
+			this.orderInformationLocator.locator(`li:has-text("Total ${token} deposit")`)
+		).toContainText(amount, {
+			timeout: positionTimeout,
+		});
+	}
+
+	@step
+	async shouldHaveEstimatedTransactionCost({ fee, token }: { fee: string; token?: string }) {
+		const regExp = new RegExp(`${fee}${token ? ` ${token}` : ''}`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Estimated transaction cost")')
+		).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
+	}
+
+	@step
+	async shouldHaveTotalSdaiToConvert(amount: string) {
+		const regExp = new RegExp(amount);
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Total SDAI convert")')
+		).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
+	}
+
+	@step
+	async shouldHaveTotalExposure({
+		token,
+		current,
+		future,
+	}: {
+		token: string;
+		current: string;
+		future: string;
+	}) {
+		const regExp = new RegExp(`${current} ${token}${future} ${token}`);
+
+		await expect(
+			this.orderInformationLocator.locator(`li:has-text("Total ${token} exposure")`)
+		).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
+	}
+
+	@step
+	async shouldHaveCollateralRatio({ current, future }: { current: string; future: string }) {
+		const regExp = new RegExp(`${current}%${future}%`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Collateral Ratio")')
+		).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
+	}
+
+	@step
+	async shouldHaveFees(fee: string) {
+		const regExp = new RegExp(`${fee} \\+\\(n/a\\)`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Fees + (max gas fee)")')
+		).toContainText(regExp);
 	}
 }

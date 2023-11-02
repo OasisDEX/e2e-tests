@@ -40,6 +40,14 @@ export class Overview {
 	}
 
 	@step
+	async shouldHaveNext30daysNetValue({ token, amount }: { token: string; amount: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
+		await expect(
+			this.page.getByText('Next 30 days').locator('xpath=//following-sibling::p[2]')
+		).toContainText(regExp);
+	}
+
+	@step
 	async shouldHaveProjectedEarnings30days({ token, amount }: { token: string; amount: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
@@ -71,14 +79,12 @@ export class Overview {
 		).toContainText(regExp, { timeout: positionTimeout });
 	}
 
-	/**
-	 	@param price - It must be regExp representing the the whole amount
-	*/
 	@step
-	async shouldHaveLiquidationPriceAfterPill(price: RegExp) {
+	async shouldHaveLiquidationPriceAfterPill(price: string) {
+		const regExp = new RegExp(price);
 		await expect(
 			this.page.getByText('Liquidation Price').locator('..').getByText('After')
-		).toContainText(price, { timeout: positionTimeout });
+		).toContainText(regExp, { timeout: positionTimeout });
 	}
 
 	/**
@@ -149,14 +155,11 @@ export class Overview {
 		).toHaveText(regExp, { timeout: positionTimeout });
 	}
 
-	/**
-	 	@param value - It must be regExp representing the the whole amount
-	*/
 	@step
-	async shouldHaveNetValueAfterPill(value: RegExp) {
+	async shouldHaveNetValueAfterPill(value: string) {
+		const regExp = new RegExp(value);
 		await expect(this.page.getByText('Net Value').locator('..').getByText('After')).toContainText(
-			value,
-			{ timeout: positionTimeout }
+			regExp
 		);
 	}
 
@@ -265,13 +268,19 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveBuyingPowerAfterPill(amount: string) {
-		let regexObj = new RegExp(`${amount} USD`);
+	async shouldHaveBuyingPowerAfterPill({
+		amount,
+		protocol,
+	}: {
+		amount: string;
+		protocol?: 'Maker';
+	}) {
+		let regexObj = new RegExp(`${protocol ? '\\$' : ''}${amount}${protocol ? '' : ' USD'}`);
+		const locator = protocol
+			? this.page.getByText('Buying Power').locator('..')
+			: this.page.locator('li:has-text("Buying Power")');
 
-		await expect(this.page.locator('li:has-text("Buying Power")').getByText('After')).toContainText(
-			regexObj,
-			{ timeout: positionTimeout }
-		);
+		await expect(locator.getByText('After')).toContainText(regexObj, { timeout: positionTimeout });
 	}
 
 	@step
@@ -281,5 +290,48 @@ export class Overview {
 		await expect(this.page.locator('li:has-text("Total collateral")')).toContainText(regExp, {
 			timeout: positionTimeout,
 		});
+	}
+
+	@step
+	async shouldHaveCollateralLockedAfterPill(collateral: string) {
+		const regExp = new RegExp(collateral);
+		await expect(
+			this.page.getByText('Collateral Locked').locator('..').getByText('After')
+		).toContainText(regExp, { timeout: positionTimeout });
+	}
+
+	@step
+	async shouldHaveAvailableToWithdraw({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
+		await expect(
+			this.page.locator('li:has-text("Available to Withdraw")').getByText('After')
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveAvailableToGenerate({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
+		await expect(
+			this.page.locator('li:has-text("Available to Generate")').getByText('After')
+		).toContainText(regExp);
+	}
+
+	/**
+	 	@param price - It must be regExp representing the the whole amount
+	*/
+	@step
+	async shouldHaveCollateralizationRatio(percentage: string) {
+		const regExp = new RegExp(percentage);
+		await expect(
+			this.page.getByText('Collateralization Ratio').locator('..').getByText('After')
+		).toContainText(regExp, { timeout: positionTimeout });
+	}
+
+	@step
+	async shouldHaveVaultDaiDebt(amount: string) {
+		const regExp = new RegExp(`${amount} DAI`);
+		await expect(
+			this.page.locator('li:has-text("Vault Dai Debt")').getByText('After')
+		).toContainText(regExp);
 	}
 }

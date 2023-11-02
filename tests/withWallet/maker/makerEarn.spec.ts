@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { hooksTimeout, extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -15,19 +15,6 @@ let walletAddress: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Maker Earn - Wallet connected', async () => {
-	// 'beforeEach` should be changed to 'beforeAll' if skipped tests are enabled
-	test.beforeEach(async () => {
-		test.setTimeout(hooksTimeout);
-
-		({ context } = await metamaskSetUp({ network: 'mainnet' }));
-		let page = await context.newPage();
-		app = new App(page);
-
-		({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-
-		await tenderly.setDaiBalance({ forkId, daiBalance: '50000' });
-	});
-
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -42,7 +29,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',
-				description: '11800, 11802',
+				description: '11800',
 			},
 			{
 				type: 'Bug',
@@ -52,11 +39,21 @@ test.describe('Maker Earn - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
+		await test.step('Test setup', async () => {
+			({ context } = await metamaskSetUp({ network: 'mainnet' }));
+			let page = await context.newPage();
+			app = new App(page);
 
+			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+
+			await tenderly.setDaiBalance({ forkId, daiBalance: '50000' });
+			await tenderly.setSdaiBalance({ forkId, sDaiBalance: '100000' });
+		});
+
+		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
 		await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
 
-		// If proxy was not previous setup extra steps will need to be executed
+		// If proxy was not previously setup extra steps will need to be executed
 		const button = app.page
 			.getByText('Set up DSR strategy')
 			.locator('../../..')
@@ -95,6 +92,70 @@ test.describe('Maker Earn - Wallet connected', async () => {
 			asset: 'DAI',
 			percentage: '0',
 			amount: '[0-9]{2},[0-9]{3}(.[0-9]{1,2})?',
+		});
+	});
+
+	test('It should allow to simulate a Maker Earn position before opening it - Deposit @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12543, 12557',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
+		await app.position.setup.deposit({ token: 'DAI', amount: '10000.12' });
+
+		await app.position.overview.shouldHaveTokenAmount({ amount: '10,000.12', token: 'DAI' });
+		await app.position.overview.shouldHaveNext30daysNetValue({
+			token: 'DAI',
+			amount: '10,[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.setup.orderInformation.shouldHaveTotalDeposit({
+			token: 'DAI',
+			amount: '10,000.12',
+		});
+		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
+			fee: '\\$[0-9].[0-9]{2}',
+		});
+		await app.position.setup.depositDsrShouldBeVisible();
+
+		await app.position.setup.dsr.mintSdai();
+		await app.position.overview.shouldHaveTokenAmount({ amount: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveNext30daysNetValue({
+			token: 'DAI',
+			amount: '0.00',
+		});
+		await app.position.setup.orderInformation.shouldHaveTotalDeposit({
+			token: 'DAI',
+			amount: '10,000.12',
+		});
+		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
+			fee: 'n/a',
+		});
+		await app.position.setup.setAllowanceShouldBeVisible();
+	});
+
+	test('It should allow to simulate a Maker Earn position before opening it - Convert @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12556',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.position.setup.dsr.convert();
+		await app.position.setup.dsr.convertSdaiToDai('7000.12');
+
+		await app.position.overview.shouldHaveTokenAmount({ amount: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveNext30daysNetValue({
+			token: 'DAI',
+			amount: '0.00',
+		});
+
+		await app.position.setup.orderInformation.shouldHaveTotalSdaiToConvert('7,000.12');
+		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
+			fee: '\\$[0-9].[0-9]{2}',
 		});
 	});
 

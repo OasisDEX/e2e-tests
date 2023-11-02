@@ -15,7 +15,6 @@ let walletAddress: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Spark Borrow - Wallet connected', async () => {
-	// 'beforeEach` should be changed to 'beforeAll' if skipped tests are enabled
 	test.beforeEach(async () => {
 		test.setTimeout(hooksTimeout);
 

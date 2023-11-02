@@ -23,7 +23,7 @@ test.describe('Aave v3 Earn Base', async () => {
 			- x2 digits decimal part 
 			--> x.xx
 		*/
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill(/[0-9]\.[0-9]{2}/);
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9].[0-9]{2}');
 		/* Asserting that Loan to Value After pill will be a percentage:
 			- x2 digits whole-number part --> [1/2/3/4/5]x
 			- x2 digits decimal part 
@@ -41,7 +41,7 @@ test.describe('Aave v3 Earn Base', async () => {
 			- x2 digits decimal part 
 			--> xx.xx
 		*/
-		await app.position.overview.shouldHaveNetValueAfterPill(/[0-9]{2}\.[0-9]{2}/);
+		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2}.[0-9]{2}');
 		/* Asserting that Total Exposure After pill will be a number:
 			- x2 digit whole-number part -> xx
 			- x5 digits decimal part 
@@ -70,7 +70,9 @@ test.describe('Aave v3 Earn Base', async () => {
 			- x4 or x5 digits whole-number part, with a ',' separator for thousands -> xx,xxx or x,xxx
 			- 0, x1 or x2 digits decimal part 
 		*/
-		await app.position.overview.shouldHaveBuyingPowerAfterPill('[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?');
+		await app.position.overview.shouldHaveBuyingPowerAfterPill({
+			amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
+		});
 
 		/* Asserting that Liquidation price is a number:
      		- x6 digits whole-number part, with a ',' separator for thousands -> 1xx,xxx

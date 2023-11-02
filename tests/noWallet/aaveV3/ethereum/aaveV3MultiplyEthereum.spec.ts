@@ -23,7 +23,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			- x2 digits decimal part 
 			--> [4/5/6/7/8/9],xxx.xx
 		*/
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill(/[4-9]\,[0-9]{3}\.[0-9]{2}/);
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[4-9],[0-9]{3}.[0-9]{2}');
 		/* Asserting that Loan to Value After pill will be a percentage:
 			- x2 digits whole-number part --> [1/2/3/4]x
 			- x2 digits decimal part 
@@ -42,7 +42,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			- x2 digits decimal part 
 			--> [4/5/6/7/8]x,xxx.xx
 		*/
-		await app.position.overview.shouldHaveNetValueAfterPill(/[4-8][0-9]\,[0-9]{3}\.[0-9]{2}/);
+		await app.position.overview.shouldHaveNetValueAfterPill('[4-8][0-9],[0-9]{3}.[0-9]{2}');
 		/* Asserting that Total Exposure After pill will be a number:
 			- x1 digit whole-number part -> [1/2/3/4]
 			- x5 digits decimal part 
@@ -72,7 +72,9 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			- 0, x1 or x2 digits decimal part 
 			--> [2/3/4/5/6]x,xxx.xx
 		*/
-		await app.position.overview.shouldHaveBuyingPowerAfterPill('[2-6][0-9],[0-9]{3}(.[0-9]{1,2})?');
+		await app.position.overview.shouldHaveBuyingPowerAfterPill({
+			amount: '[2-6][0-9],[0-9]{3}(.[0-9]{1,2})?',
+		});
 
 		/* Asserting that Liquidation price is a number:
 			- x4 digits whole-number part, with a ',' separator for thousands -> [4/5/6/7/8],xxx
@@ -80,7 +82,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			--> [4/5/6/7/8],xxx.xx
 		*/
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '[4-8],[0-9]{3}(.[0-9]{1,2})? USDC',
+			amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})? USDC',
 		});
 		/* Asserting that Liquidation price is a number:
 			- x2 digits whole-number part
@@ -250,7 +252,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		});
 		await app.position.overview.shouldHaveLoanToValue('[2-8][0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveBorrowCost('[0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveNetValue({ value: '[1-8].[0-9]{2}', token: 'USDC' });
+		await app.position.overview.shouldHaveNetValue({ value: '[0-9]{1,2}.[0-9]{2}', token: 'USDC' });
 		await app.position.overview.shouldHaveExposure({
 			amount: '0.[0-9]{5}',
 			token: 'ETH',

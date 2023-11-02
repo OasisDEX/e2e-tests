@@ -30,7 +30,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 			- x2 digits decimal part 
 			--> 8x,xxx.xx
 		*/
-		await app.position.overview.shouldHaveNetValueAfterPill(/[0-9]{2,3}\,[0-9]{3}\.[0-9]{2}/);
+		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2,3},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveExposureAfterPill({ amount: '50.00000', token: 'ETH' });
 		/* Asserting that Max borring amount will be a number:
 			- x5 digits whole-number part, with a ',' separator for thousands 
@@ -54,7 +54,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 			- x2 digits decimal part 
 			--> xxx.xx
 		*/
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill(/[1-9][0-9]{2}\.[0-9]{2}/);
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[1-9][0-9]{2}.[0-9]{2}');
 		/* Asserting that Loan to Value After pill will be a percentage:
 			- x2 digits whole-number part
 			- x2 digits decimal part 
@@ -66,7 +66,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 			- x2 digits decimal part 
 			--> 8x,xxx.xx
 		*/
-		await app.position.overview.shouldHaveNetValueAfterPill(/[5-9][0-9]\,[0-9]{3}\.[0-9]{2}/);
+		await app.position.overview.shouldHaveNetValueAfterPill('[5-9][0-9],[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveDebtAfterPill({ amount: '10,000.0000', token: 'USDC' });
 		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
 			token: 'USDC',
