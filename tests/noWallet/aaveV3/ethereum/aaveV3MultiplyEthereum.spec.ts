@@ -29,14 +29,14 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			- x2 digits decimal part 
 			--> [1/2/3/4]x.xx%%
 		*/
-		await app.position.overview.shouldHaveLoanToValueAfterPill(/[1-4][0-9]\.[0-9]{2}%/);
+		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-4][0-9].[0-9]{2}%');
 		/* Asserting that Borrow Cost After pill will be a percentage:
 			- positive 
 			- x1 digit whole-number part
 			- x2 digits decimal part 
 			--> x.xx%
 		*/
-		await app.position.overview.shouldHaveBorrowCostAfterPill(/^[0-9]\.[0-9]{2}/);
+		await app.position.overview.shouldHaveBorrowCostAfterPill('[0-9].[0-9]{2}');
 		/* Asserting that Net Value After pill will be a number:
 			- x5 digits whole-number part, with a ',' separator for thousands -> [4/5/67/8]x,xxx
 			- x2 digits decimal part 
