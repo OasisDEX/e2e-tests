@@ -1,4 +1,4 @@
-import { test } from '#noWalletFixtures';
+import { expect, test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Aave v2 Multiply', async () => {
@@ -71,5 +71,65 @@ test.describe('Aave v2 Multiply', async () => {
 			fee: '[0-9]{1,2}.[0-9]{2}',
 			token: 'USDC',
 		});
+	});
+
+	test('It should allow to simulate an Aave V2 Multiply position before opening it - Adjust risk - Up and Down  - No wallet connected @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12599',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.page.goto('/ethereum/aave/v2/multiply/wBTCusdc#simulate');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'WBTC', amount: '1.12345' });
+
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9],[0-9]{3}.[0-9]{2}');
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '[0-9],[0-9]{3}(.[0-9]{1,2})? USDC',
+		});
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+		const initialLoanToValue = await app.position.manage.getLoanToValue();
+
+		// RISK UP
+		await app.position.setup.moveSlider({ value: 0.5 });
+
+		// Wait for simulation to update with new risk
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '...',
+			exactAmount: true,
+		});
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '[0-9]{2},[0-9]{3}(.[0-9]{1,2})? USDC',
+		});
+
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{2},[0-9]{3}.[0-9]{2}');
+		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+
+		// RISK DOWN
+		await app.position.setup.moveSlider({ value: 0.1 });
+
+		// Wait for simulation to update with new risk
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '...',
+			exactAmount: true,
+		});
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})? USDC',
+		});
+
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{2}');
+		const updatedLiqPrice2 = await app.position.manage.getLiquidationPrice();
+		const updatedLoanToValue2 = await app.position.manage.getLoanToValue();
+		expect(updatedLiqPrice2).toBeLessThan(updatedLiqPrice);
+		expect(updatedLoanToValue2).toBeLessThan(updatedLoanToValue);
 	});
 });

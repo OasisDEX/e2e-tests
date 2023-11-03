@@ -59,14 +59,8 @@ export class Manage {
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
 	@step
-	async moveSlider({
-		protocol,
-		value,
-	}: {
-		protocol: 'Aave V2' | 'Aave V3' | 'Ajna' | 'Maker' | 'Spark';
-		value: number;
-	}) {
-		if (protocol === 'Ajna') {
+	async moveSlider({ protocol, value }: { protocol?: 'Ajna'; value: number }) {
+		if (protocol) {
 			await this.base.moveSlider({ value });
 		} else {
 			await this.base.moveSlider({ process: 'manage', value });

@@ -1,4 +1,4 @@
-import { test } from '#noWalletFixtures';
+import { expect, test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Aave v2 Earn', async () => {
@@ -64,5 +64,57 @@ test.describe('Aave v2 Earn', async () => {
 			future: '[0-9]{2,3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
+	});
+
+	test('It should allow to simulate an Aave V2 Earn position before opening it - Adjust risk - Down and Up  - No wallet connected @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12601',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.page.goto('/ethereum/aave/v2/earn/stETHeth#simulate');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.setup.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'ETH', amount: '19' });
+
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '0.[0-9]([0-9]{2,3})? STETH/ETH',
+		});
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+
+		// RISK DOWN
+		await app.position.setup.moveSlider({ value: 0.5 });
+
+		// Wait for simulation to update with new risk
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '...',
+			exactAmount: true,
+		});
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '0.[0-9]([0-9]{2,3})? STETH/ETH',
+		});
+
+		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+
+		// RISK UP
+		await app.position.setup.moveSlider({ value: 0.8 });
+
+		// Wait for simulation to update with new risk
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '...',
+			exactAmount: true,
+		});
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '0.[0-9]([0-9]{2,3})? STETH/ETH',
+		});
+
+		const updatedLiqPrice2 = await app.position.manage.getLiquidationPrice();
+		expect(updatedLiqPrice2).toBeGreaterThan(updatedLiqPrice);
 	});
 });

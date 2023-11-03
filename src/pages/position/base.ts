@@ -11,7 +11,7 @@ export class Base {
 	@step
 	async getLiquidationPrice(): Promise<number> {
 		const value = await this.page.locator('span:has-text("Liquidation Price") + span').innerText();
-		return parseFloat(value.slice(0, value.indexOf(' ')));
+		return parseFloat(value.slice(0, value.indexOf(' ')).replace(',', ''));
 	}
 
 	@step
