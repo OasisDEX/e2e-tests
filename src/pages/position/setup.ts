@@ -111,14 +111,8 @@ export class Setup {
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
 	@step
-	async moveSlider({
-		protocol,
-		value,
-	}: {
-		protocol: 'Aave V2' | 'Aave V3' | 'Ajna' | 'Maker' | 'Spark';
-		value: number;
-	}) {
-		if (protocol === 'Ajna') {
+	async moveSlider({ protocol, value }: { protocol?: 'Ajna'; value: number }) {
+		if (protocol) {
 			await this.base.moveSlider({ value });
 		} else {
 			await this.base.moveSlider({ process: 'setup', value });
@@ -266,13 +260,27 @@ export class Setup {
 	}
 
 	@step
-	async shouldHaveLiquidationPrice({ amount, pair }: { amount: string; pair?: string }) {
-		const regExp = new RegExp(`${amount}${pair ? ` ${pair}` : ''}`);
+	async shouldHaveLiquidationPrice({
+		amount,
+		pair,
+		exactAmount,
+	}: {
+		amount: string;
+		pair?: string;
+		exactAmount?: boolean;
+	}) {
+		if (exactAmount) {
+			await expect(this.page.locator('span:has-text("Liquidation Price") + span')).toHaveText(
+				amount
+			);
+		} else {
+			const regExp = new RegExp(`${amount}${pair ? ` ${pair}` : ''}`);
 
-		await expect(this.page.locator('span:has-text("Liquidation Price") + span')).toContainText(
-			regExp,
-			{ timeout: positionTimeout } // Liquidation price takes longer to be updated
-		);
+			await expect(this.page.locator('span:has-text("Liquidation Price") + span')).toContainText(
+				regExp,
+				{ timeout: positionTimeout } // Liquidation price takes longer to be updated
+			);
+		}
 	}
 
 	@step
