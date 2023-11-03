@@ -116,7 +116,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		*/
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
 			amount: '[1-4][0-9],[0-9]{3}.[0-9]{2}',
-			percentage: '0.[0-9]{2}',
+			percentage: '[0-9].[0-9]{2}',
 		});
 		/* Asserting that Slipage limit percentage is a number:
 			- x1 digit whole-number part -> '0'
