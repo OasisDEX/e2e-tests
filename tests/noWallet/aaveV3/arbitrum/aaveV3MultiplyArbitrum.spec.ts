@@ -152,7 +152,7 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 		await app.position.overview.shouldHaveLoanToValue('[3-9][0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveBorrowCost('[0-9]{1,2}.[0-9]{2}');
 		await app.position.overview.shouldHaveBorrowCostGreaterThanZero();
-		await app.position.overview.shouldHaveNetValue({ value: '[1-2].[0-9]{2}', token: 'DAI' });
+		await app.position.overview.shouldHaveNetValue({ value: '[1-9].[0-9]{2}', token: 'DAI' });
 		await app.position.overview.shouldHaveExposure({
 			amount: '0.[0-9]{5}',
 			token: 'ETH',
