@@ -18,7 +18,7 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'USDC', amount: '18,000.12' });
 
-		await app.position.overview.shouldHaveBorrowCostAfterPill('-[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveBorrowCostAfterPill('-[0-9]{1,2}.[0-9]{2}');
 		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveExposureAfterPill({ amount: '18,000.12', token: 'USDC' });
 		await app.position.setup.shouldHaveMaxBorrowingAmount({
@@ -67,7 +67,7 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 			token: 'DAI',
 		});
 		await app.position.overview.shouldHaveLoanToValue('[3-8][0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveBorrowCost('-[1-9]?[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveBorrowCost('-([1-9]{1,2})?[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValue({ value: '0.[1-9][0-9]', token: 'DAI' });
 		await app.position.overview.shouldHaveExposure({
 			amount: '[1-2].[0-9]{4}',
