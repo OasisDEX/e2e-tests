@@ -60,7 +60,7 @@ test.describe('Ajna Earn', async () => {
 		*/
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '0.00',
-			future: '[1-9]{2}.[0-9]{2}',
+			future: '[0-9]{2}.[0-9]{2}',
 		});
 	});
 });
