@@ -75,6 +75,66 @@ test.describe('Spark Earn', async () => {
 		});
 	});
 
+	test('It should allow to simulate a Spark Earn position before opening it - Adjust risk - Up and Down  - No wallet connected @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12713',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.page.goto('/ethereum/spark/v3/earn/retheth#simulate');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'RETH', amount: '60.12345' });
+
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('0.[0-9]{2}');
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '0.[0-9]{3,4} ETH',
+		});
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+		const initialLoanToValue = await app.position.manage.getLoanToValue();
+
+		// RISK UP
+		await app.position.setup.moveSlider({ value: 0.5 });
+
+		// Wait for simulation to update with new risk
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '...',
+			exactAmount: true,
+		});
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '0.[0-9]{3,4} ETH',
+		});
+
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('0.[0-9]{2}');
+		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+
+		// RISK DOWN
+		await app.position.setup.moveSlider({ value: 0.1 });
+
+		// Wait for simulation to update with new risk
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '...',
+			exactAmount: true,
+		});
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '0.[0-9]{3,4} ETH',
+		});
+
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('0.[0-9]{2}');
+		const updatedLiqPrice2 = await app.position.manage.getLiquidationPrice();
+		const updatedLoanToValue2 = await app.position.manage.getLoanToValue();
+		expect(updatedLiqPrice2).toBeLessThan(updatedLiqPrice);
+		expect(updatedLoanToValue2).toBeLessThan(updatedLoanToValue);
+	});
+
 	test('It should open existent Spark Earn Ethereum vault page @regression', async ({ app }) => {
 		test.setTimeout(veryLongTestTimeout);
 

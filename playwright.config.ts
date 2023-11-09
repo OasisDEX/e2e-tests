@@ -35,7 +35,14 @@ const defaultConfig: PlaywrightTestConfig = {
 			testIgnore: ['noWallet/ajna/**'],
 			use: {
 				...devices['Desktop Chrome'],
-				// screenshot: 'only-on-failure',
+			},
+		},
+
+		{
+			name: 'no-wallet-ajna',
+			testMatch: ['noWallet/ajna/**'],
+			use: {
+				...devices['Desktop Chrome'],
 			},
 		},
 
