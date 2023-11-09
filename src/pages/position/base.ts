@@ -15,8 +15,11 @@ export class Base {
 	}
 
 	@step
-	async getLoanToValue(): Promise<number> {
-		const value = await this.page.locator('span:has-text("Loan to Value") + span').innerText();
+	async getLoanToValue(protocol?: 'Ajna'): Promise<number> {
+		const ltvLocator = protocol
+			? 'span:has-text("Loan to Value") + span span'
+			: 'span:has-text("Loan to Value") + span';
+		const value = await this.page.locator(ltvLocator).innerText();
 		return parseFloat(value.slice(0, -1));
 	}
 

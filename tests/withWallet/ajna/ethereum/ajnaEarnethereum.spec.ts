@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Ajna Earn - Wallet connected', async () => {
+test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 	test.beforeAll(async () => {
 		test.setTimeout(hooksTimeout);
 
@@ -34,7 +34,7 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should allow to simulate an Ajna Earn position before opening it - Wallet connected @regression', async () => {
+	test('It should allow to simulate an Ajna Ethereum Earn position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12105',
@@ -51,51 +51,27 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 			amount: '0.0[0-9]{3}',
 		});
 
-		/* Asserting that current Amount to lend in token value is 0.00 ETH
-		    Asserting that future Amount to lend in token value is a number:
-			- x1 or x2 digits whole-number part
-			- x4 digits decimal part 
-			--> x.xxxx ETH or xx.xxxx ETH
-		*/
 		await app.position.setup.orderInformation.shouldHaveAmountToLend({
 			current: '0.00',
 			future: '[0-9]{1,2}.[0-9]{4}',
 			token: 'ETH',
 		});
-		/* Asserting that current Net APY value is 0.00%
-		    Asserting that future Net APY value is a percentage:
-			- x1 digit whole-number part
-			- x2 digits decimal part 
-			--> x.xx%
-		*/
 		await app.position.setup.orderInformation.shouldHaveNetAPY({
 			current: '0.00',
 			future: '[0-5].[0-9]{2}',
 		});
-		/* Asserting that current LendingPrice in tokens pair value is 0.00 CBETH/ETH
-		    Asserting that future LendingPrice in tokens pair value is a number:
-			- x1 digit whole-number part
-			- x4 digits decimal part 
-			--> x.xxxx CBETH/ETH
-		*/
 		await app.position.setup.orderInformation.shouldHaveLendingPrice({
 			current: '0.00',
 			future: '[0-5].[0-9]{4}',
 			tokensPair: 'CBETH/ETH',
 		});
-		/* Asserting that current Max LTV value is 0.00%
-		    Asserting that future Max LTV value is a percentage:
-			- x2 digits whole-number part
-			- x2 digits decimal part 
-			--> xx.xx%
-		*/
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '0.00',
 			future: '[0-9]{2}.[0-9]{2}',
 		});
 	});
 
-	test('It should allow to simulate risk adjustment (Down) with slider in an Ajna Earn position before opening it - Wallet connected @regression', async () => {
+	test('It should allow to simulate risk adjustment (Down) with slider in an Ajna Ethereum Earn position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12109',
@@ -119,28 +95,17 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 		expect(updatedLendingPrice).toBeLessThan(initialLendingPrice);
 		expect(updatedMaxLTV).toBeLessThan(initialMaxLTV);
 
-		/* Asserting that current Max LTV value is 0.00%
-		    Asserting that future Max LTV value is a percentage:
-			- x2 digits whole-number part
-			- x2 digits decimal part 
-			--> xx.xx%
-		*/
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '0.00',
 			future: updatedMaxLTV.toFixed(2),
 		});
-		/* Asserting that Deposit Fee value is a number:
-			- starting with '0.00'
-			- with x2 extra decimal digits 
-			--> 0.00xx ETH
-		*/
 		await app.position.setup.orderInformation.shouldHaveDepositFee({
 			amount: '0.00[0-9]{2}',
 			token: 'ETH',
 		});
 	});
 
-	test('It should allow to simulate risk adjustment (Up) with slider in an Ajna Earn position before opening it - Wallet connected @regression', async () => {
+	test('It should allow to simulate risk adjustment (Up) with slider in an Ajna Ethereum Earn position before opening it - Wallet connected @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12110',
@@ -164,19 +129,13 @@ test.describe('Ajna Earn - Wallet connected', async () => {
 		expect(updatedLendingPrice).toBeGreaterThan(initialLendingPrice);
 		expect(updatedMaxLTV).toBeGreaterThan(initialMaxLTV);
 
-		/* Asserting that current Max LTV value is 0.00%
-		    Asserting that future Max LTV value is a percentage:
-			- x2 digits whole-number part
-			- x2 digits decimal part 
-			--> xx.xx%
-		*/
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '0.00',
 			future: updatedMaxLTV.toFixed(2),
 		});
 	});
 
-	test('It should open an Ajna Earn position @regression', async () => {
+	test('It should open an Ajna Ethereum Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11657',

@@ -350,4 +350,21 @@ export class Setup {
 			regExp
 		);
 	}
+
+	@step
+	async shouldHaveOriginationFee({
+		token,
+		tokenAmount,
+		dollarsAmount,
+	}: {
+		token: string;
+		tokenAmount: string;
+		dollarsAmount: string;
+	}) {
+		const regExp = new RegExp(`${tokenAmount} ${token} \\(\\$${dollarsAmount}\\)`);
+
+		await expect(this.page.locator('p > span:has-text("Origination Fee") + span')).toContainText(
+			regExp
+		);
+	}
 }
