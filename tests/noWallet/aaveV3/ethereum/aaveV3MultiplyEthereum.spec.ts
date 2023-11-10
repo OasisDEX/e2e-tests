@@ -23,7 +23,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		await app.position.overview.shouldHaveBorrowCostAfterPill('[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValueAfterPill('[4-8][0-9],[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveExposureAfterPill({
-			amount: '[1-4].[0-9]{5}',
+			amount: '[2-4].[0-9]{5}',
 			token: 'WBTC',
 		});
 		await app.position.overview.shouldHaveDebtAfterPill({

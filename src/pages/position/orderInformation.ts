@@ -22,10 +22,12 @@ export class OrderInformation {
 		tokenAmount: string;
 		token: string;
 		dollarsAmount: string;
-		protocol?: 'Maker';
+		protocol?: 'Maker' | 'Ajna';
 	}) {
 		const regExp = new RegExp(
-			`${tokenAmount} ${token} ${protocol ? '\\(' : ''}\\$${dollarsAmount}${protocol ? '\\)' : ''}`
+			`${tokenAmount} ${token}${
+				protocol === 'Maker' ? ' \\(' : protocol === 'Ajna' ? '\\(' : ' '
+			}\\$${dollarsAmount}${protocol ? '\\)' : ''}`
 		);
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Buying") div:nth-child(2)')
@@ -51,8 +53,18 @@ export class OrderInformation {
 	}
 
 	@step
-	async shouldHavePriceImpact({ amount, percentage }: { amount: string; percentage: string }) {
-		const regExp = new RegExp(`${amount} \\(${percentage}%\\)`);
+	async shouldHavePriceImpact({
+		amount,
+		percentage,
+		protocol,
+		pair,
+	}: {
+		amount: string;
+		percentage: string;
+		protocol?: 'Ajna';
+		pair?: string;
+	}) {
+		const regExp = new RegExp(`${amount} ${protocol ? `${pair}` : ''}\\(${percentage}%\\)`);
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Price (impact)")')
 		).toContainText(regExp);
@@ -102,6 +114,21 @@ export class OrderInformation {
 	}
 
 	@step
+	async shouldHaveDebt({
+		token,
+		current,
+		future,
+	}: {
+		token: string;
+		current: string;
+		future: string;
+	}) {
+		const regExp = new RegExp(`${current} ${token}${future} ${token}`);
+
+		await expect(this.orderInformationLocator.locator('li:has-text("Debt")')).toContainText(regExp);
+	}
+
+	@step
 	async shouldHaveTotalCollateral({
 		token,
 		current,
@@ -119,10 +146,20 @@ export class OrderInformation {
 	}
 
 	@step
-	async shouldHaveLTV({ current, future }: { current: string; future: string }) {
-		const regExp = new RegExp(`${current}% ${future}%`);
+	async shouldHaveLTV({
+		current,
+		future,
+		protocol,
+	}: {
+		current: string;
+		future: string;
+		protocol?: 'Ajna';
+	}) {
+		const regExp = new RegExp(`${current}%${protocol ? '' : ' '}${future}%`);
 
-		await expect(this.orderInformationLocator.locator('li:has-text("LTV")')).toContainText(regExp);
+		await expect(this.orderInformationLocator.locator('li:has-text("LTV")').first()).toContainText(
+			regExp
+		);
 	}
 
 	@step
@@ -251,6 +288,74 @@ export class OrderInformation {
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Fees + (max gas fee)")')
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveCollateralLocked({
+		current,
+		future,
+		token,
+	}: {
+		current: string;
+		future: string;
+		token: string;
+	}) {
+		const regExp = new RegExp(`${current} ${token}${future} ${token}`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Collateral Locked")')
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveLiquidationPrice({
+		current,
+		future,
+		pair,
+	}: {
+		current: string;
+		future: string;
+		pair: string;
+	}) {
+		const regExp = new RegExp(`${current} ${pair}${future} ${pair}`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Liquidation Price")')
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveAvailableToWithdraw({
+		current,
+		future,
+		token,
+	}: {
+		current: string;
+		future: string;
+		token: string;
+	}) {
+		const regExp = new RegExp(`${current} ${token}${future} ${token}`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Available to Withdraw")')
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveAvailableToBorrow({
+		current,
+		future,
+		token,
+	}: {
+		current: string;
+		future: string;
+		token: string;
+	}) {
+		const regExp = new RegExp(`${current} ${token}${future} ${token}`);
+
+		await expect(
+			this.orderInformationLocator.locator('li:has-text("Available to Borrow")')
 		).toContainText(regExp);
 	}
 }

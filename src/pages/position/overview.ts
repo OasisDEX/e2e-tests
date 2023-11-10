@@ -100,6 +100,7 @@ export class Overview {
 		).toHaveText(regExp, { timeout: positionTimeout });
 	}
 
+	@step
 	async shouldHaveLoanToValueAfterPill(percentage: string) {
 		const regExp = new RegExp(percentage);
 		await expect(
@@ -207,12 +208,22 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveDebtAfterPill({ amount, token }: { amount: string; token: string }) {
+	async shouldHaveDebtAfterPill({
+		amount,
+		token,
+		protocol,
+	}: {
+		amount: string;
+		token: string;
+		protocol?: 'Ajna';
+	}) {
+		const debtElement = protocol
+			? this.page.getByText('Position debt').locator('..')
+			: this.page.locator('li:has-text(" Debt")');
+
 		let regexObj = new RegExp(`${amount} ${token}`);
 
-		await expect(this.page.locator('li:has-text(" Debt")').getByText('After')).toContainText(
-			regexObj
-		);
+		await expect(debtElement.getByText('After')).toContainText(regexObj);
 	}
 
 	@step
@@ -302,6 +313,14 @@ export class Overview {
 		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
 			this.page.locator('li:has-text("Available to Generate")').getByText('After')
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveAvailableToBorrow({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
+		await expect(
+			this.page.locator('li:has-text("Available to borrow")').getByText('After')
 		).toContainText(regExp);
 	}
 

@@ -26,7 +26,10 @@ export class Manage {
 	}
 
 	@step
-	async getLoanToValue(): Promise<number> {
+	async getLoanToValue(protocol?: 'Ajna'): Promise<number> {
+		if (protocol) {
+			return await this.base.getLoanToValue('Ajna');
+		}
 		return await this.base.getLoanToValue();
 	}
 
