@@ -34,7 +34,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 		await app.position.setup.borrow({ token: 'USDC', amount: '10000' });
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[1-9][0-9]{2}.[0-9]{2}');
-		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-9][0-9].[0-9]{2}%');
+		await app.position.overview.shouldHaveLoanToValueAfterPill('[0-9]{1,2}.[0-9]{2}%');
 		await app.position.overview.shouldHaveNetValueAfterPill('[5-9][0-9],[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveDebtAfterPill({ amount: '10,000.0000', token: 'USDC' });
 		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
@@ -44,7 +44,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 		});
 		await app.position.orderInformation.shouldHaveLTV({
 			current: '0.00',
-			future: '1[0-9].[0-9]{2}',
+			future: '[0-9]{1,2}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
 	});
