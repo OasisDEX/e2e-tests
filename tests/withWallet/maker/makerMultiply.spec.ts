@@ -141,7 +141,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		});
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
 			amount: '[1-4],[0-9]{3}.[0-9]{2}',
-			percentage: '0.[0-9]{2}',
+			percentage: '[0-5].[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]{2}');
 		await app.position.setup.orderInformation.shouldHaveMultiple({

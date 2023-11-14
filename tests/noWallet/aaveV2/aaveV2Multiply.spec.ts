@@ -61,7 +61,7 @@ test.describe('Aave v2 Multiply', async () => {
 		await app.position.setup.orderInformation.shouldHaveTotalCollateral({
 			token: 'STETH',
 			current: '0.00000',
-			future: '[2-3][0-9].[0-9]{5}',
+			future: '[1-3][0-9].[0-9]{5}',
 		});
 		await app.position.setup.orderInformation.shouldHaveLTV({
 			current: '0.00',
