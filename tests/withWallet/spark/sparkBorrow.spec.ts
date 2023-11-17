@@ -35,7 +35,8 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Borrow position @regression', async () => {
+	// Skipped while liquidity is equal to $0.00
+	test.skip('It should open a Spark Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11811',

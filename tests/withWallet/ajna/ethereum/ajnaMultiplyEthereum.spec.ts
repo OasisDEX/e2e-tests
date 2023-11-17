@@ -22,7 +22,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		app = new App(page);
 
 		({ forkId } = await setup({ app, network: 'mainnet' }));
-		await tenderly.setWstethBalance({ forkId, rEthBalance: '1000' });
+		await tenderly.setRethBalance({ forkId, rEthBalance: '100' });
 	});
 
 	test.afterAll(async () => {

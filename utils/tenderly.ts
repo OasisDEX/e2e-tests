@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { JsonRpcProvider } from '@ethersproject/providers';
-import { ethers } from 'ethers';
+import { ethers, JsonRpcProvider } from 'ethers';
+import { IAccountGuardAbi, IAccountImplementationAbi } from './abis';
 
 require('dotenv').config();
 
@@ -101,7 +101,7 @@ export const setSdaiBalance = async ({
  *
  * @param rEthBalance In rETH units
  */
-export const setWstethBalance = async ({
+export const setRethBalance = async ({
 	forkId,
 	rEthBalance,
 }: {
@@ -114,6 +114,26 @@ export const setWstethBalance = async ({
 		'0xae78736cd615f374d3085123a210448e74fc6393',
 		WALLET_ADDRESS,
 		ethers.toQuantity(ethers.parseUnits(rEthBalance, 'ether')),
+	]);
+};
+
+/**
+ *
+ * @param wstEthBalance In wstETH units
+ */
+export const setWstethBalance = async ({
+	forkId,
+	wstEthBalance,
+}: {
+	forkId: string;
+	wstEthBalance: string;
+}) => {
+	const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
+
+	await provider.send('tenderly_setErc20Balance', [
+		'0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+		WALLET_ADDRESS,
+		ethers.toQuantity(ethers.parseUnits(wstEthBalance, 'ether')),
 	]);
 };
 
@@ -135,4 +155,33 @@ export const setCbEthBalance = async ({
 		WALLET_ADDRESS,
 		ethers.toQuantity(ethers.parseUnits(cbEthBalance, 'ether')),
 	]);
+};
+
+/**
+ *
+ * @param account Addres of the proxy to take ownershipt of
+ * @param newOwner New wallet address
+ */
+export const changeAccountOwner = async ({
+	account,
+	newOwner,
+	forkId,
+}: {
+	account: string;
+	newOwner: string;
+	forkId: string;
+}): Promise<boolean> => {
+	const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
+	const accountInterface = new ethers.Interface(IAccountImplementationAbi);
+	const guardInterface = new ethers.Interface(IAccountGuardAbi);
+	const contract = new ethers.Contract(account, accountInterface, provider);
+	const guard = await contract.guard();
+	const owner = await contract.owner();
+	const encoded = guardInterface.encodeFunctionData('changeOwner', [newOwner, account]);
+	try {
+		await provider.send('eth_sendTransaction', [{ from: owner, to: guard, input: encoded }]);
+		return true;
+	} catch (error) {
+		return false;
+	}
 };
