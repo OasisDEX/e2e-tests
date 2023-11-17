@@ -89,7 +89,29 @@ export const setup = async ({
 
 	await fork.addToApp({ app, forkId, network });
 
-	await tenderly.setEthBalance({ forkId, ethBalance: '15000' });
+	await tenderly.setEthBalance({ forkId, ethBalance: '100' });
 
 	return { forkId, walletAddress };
+};
+
+export const setupNewFork = async ({
+	app,
+	network,
+}: {
+	app: App;
+	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+}) => {
+	await app.page.evaluate(() => window.localStorage.removeItem('ForkNetwork'));
+
+	await app.page.goto('');
+	await app.homepage.shouldBeVisible();
+
+	const resp = await tenderly.createFork({ network });
+	const forkId = resp.data.root_transaction.fork_id;
+
+	await fork.addToApp({ app, forkId, network });
+
+	await tenderly.setEthBalance({ forkId, ethBalance: '100' });
+
+	return { forkId };
 };

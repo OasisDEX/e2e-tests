@@ -88,26 +88,28 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	test.skip('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12055',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12055',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
+
+		await tenderly.changeAccountOwner({
+			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.page.goto('/ethereum/aave/v3/1218#overview');
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.5 });
+		await app.position.manage.moveSlider({ value: 0.9 });
 
 		await app.position.manage.adjustRisk();
 		await app.position.manage.confirm();
@@ -120,22 +122,15 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
-	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test.skip('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12056',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12056',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
 
@@ -157,31 +152,25 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test.skip('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC)', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12057',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC)', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12057',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');
-		await app.position.manage.closeTo('WBTC');
+
+		await app.position.manage.closeTo('ETH');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'WBTC',
-			amount: '[0-2].[0-9]{1,4}',
+			token: 'ETH',
+			amount: '0.[0-9]{1,4}',
 		});
 		await app.position.manage.confirm();
 		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
@@ -191,12 +180,13 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.shouldShowSuccessScreen();
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'DAI' });
+		await app.page.goto('/ethereum/aave/v3/1218');
+		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'USDC' });
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'DAI' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.0000', token: 'DAI' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'WBTC' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDC' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDC' });
 		await app.position.overview.shouldHaveMultiple('1');
 		await app.position.overview.shouldHaveBuyingPower('0.00');
 	});
