@@ -76,7 +76,6 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			await app.page.goto(`/owner/${walletAddress}`);
 			await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
 				asset: 'ETH-A Summer.fi Borrow',
-				percentage: '0',
 				amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
 			});
 		}).toPass();

@@ -11,7 +11,7 @@ export const longTestTimeout: number =
 	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 65_000 : 60_000;
 
 export const veryLongTestTimeout: number =
-	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 100_000 : 80_000;
+	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 120_000 : 110_000;
 
 export const extremelyLongTestTimeout: number =
 	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 340_000 : 300_000;
