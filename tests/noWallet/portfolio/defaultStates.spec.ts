@@ -43,16 +43,6 @@ test.describe('Default states - Wallet not connected', async () => {
 		});
 	});
 
-	test('It should allow user to connect wallet from "wallet address" top banner - Wallet not connected @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12874',
-		});
-
-		await app.portfolio.connectWallet();
-		await app.modals.connectWallet.shouldBeVisible();
-	});
-
 	test('It should show wallet address @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
@@ -78,5 +68,15 @@ test.describe('Default states - Wallet not connected', async () => {
 		});
 
 		await app.portfolio.positions.shouldBeVisible();
+	});
+
+	test('It should allow user to connect wallet from "wallet address" top banner - Wallet not connected @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12874',
+		});
+
+		await app.portfolio.connectWallet();
+		await app.modals.connectWallet.shouldBeVisible();
 	});
 });
