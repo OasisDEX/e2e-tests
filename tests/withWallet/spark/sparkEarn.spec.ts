@@ -164,7 +164,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',
-				description: '11715',
+				description: '12089',
 			},
 			{
 				type: 'Bug',

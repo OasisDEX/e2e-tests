@@ -1,35 +1,94 @@
-import { Page } from '@playwright/test';
-import { Borrow } from './borrow';
-import { Earn } from './earn';
-import { Multiply } from './multiply';
-import { TopAssetsAndPositions } from './topAssetsAndPositions';
-import { Vaults } from './vaults';
+import { expect, Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
+import { Wallet } from './wallet';
+import { Positions } from './positions';
 
 export class Portfolio {
 	readonly page: Page;
 
-	readonly borrow: Borrow;
+	readonly positions: Positions;
 
-	readonly earn: Earn;
-
-	readonly multiply: Multiply;
-
-	readonly topAssetsAndPositions: TopAssetsAndPositions;
-
-	readonly vaults: Vaults;
+	readonly wallet: Wallet;
 
 	constructor(page: Page) {
 		this.page = page;
-		this.borrow = new Borrow(page);
-		this.earn = new Earn(page);
-		this.multiply = new Multiply(page);
-		this.topAssetsAndPositions = new TopAssetsAndPositions(page);
-		this.vaults = new Vaults(page, page.locator('h3:has-text("Summer.fi") + div'));
+		this.positions = new Positions(page);
+		this.wallet = new Wallet(page);
 	}
 
 	@step
 	async open(wallet?: string) {
-		await this.page.goto(`/owner/${wallet ?? ''}`);
+		await this.page.goto(`/portfolio/${wallet ?? ''}`);
+	}
+
+	@step
+	async shouldHaveViewingWalletBanner({
+		shortenedAddress,
+		description,
+	}: {
+		shortenedAddress: string;
+		description: string;
+	}) {
+		await expect(
+			this.page.getByText(`You are viewing the wallet of ${shortenedAddress}`, { exact: true }),
+			`"You are viewing the wallet of ${shortenedAddress}" should be visible`
+		).toBeVisible();
+		await expect(
+			this.page.getByText(description, { exact: true }),
+			`"${description}" should be visible`
+		).toBeVisible();
+	}
+
+	@step
+	async connectWallet() {
+		await this.page
+			.getByText('Connect your wallet to see what positions you could open')
+			.locator('../..')
+			.getByRole('button', { name: 'Connect a wallet' })
+			.click();
+	}
+
+	@step
+	async shouldHaveWalletAddress(address: string) {
+		await expect(
+			this.page.getByText(address, { exact: true }).locator('..'),
+			`"${address}" should be visible`
+		).toBeVisible();
+	}
+
+	@step
+	async shouldLinktoEtherscan(address: string) {
+		await expect(this.page.getByRole('link', { name: 'View on Etherscan' })).toHaveAttribute(
+			'href',
+			`https://etherscan.io/address/${address}`
+		);
+	}
+
+	@step
+	async shouldHaveTotalValue(value: string) {
+		await expect(this.page.locator('span:has-text("Total Value")').locator('..')).toContainText(
+			value
+		);
+	}
+
+	@step
+	async shouldHaveSummerfiPortfolio(value: string) {
+		await expect(
+			this.page.locator('span:has-text("Summer.fi Portfolio")').locator('..')
+		).toContainText(value);
+	}
+
+	@step
+	async shouldHaveTotalSupplied(value: string) {
+		await expect(this.page.locator('span:has-text("Total Supplied")').locator('..')).toContainText(
+			value
+		);
+	}
+
+	@step
+	async shouldHaveTotalBorrowed(value: string) {
+		await expect(this.page.locator('span:has-text("Total Borrowed")').locator('..')).toContainText(
+			value
+		);
 	}
 }
