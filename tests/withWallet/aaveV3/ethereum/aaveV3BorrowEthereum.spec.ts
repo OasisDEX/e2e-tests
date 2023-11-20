@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { hooksTimeout, extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -15,16 +15,6 @@ let walletAddress: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
-	test.beforeEach(async () => {
-		test.setTimeout(hooksTimeout);
-
-		({ context } = await metamaskSetUp({ network: 'mainnet' }));
-		let page = await context.newPage();
-		app = new App(page);
-
-		({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-	});
-
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -42,6 +32,14 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
+
+		await test.step('Test setup', async () => {
+			({ context } = await metamaskSetUp({ network: 'mainnet' }));
+			let page = await context.newPage();
+			app = new App(page);
+
+			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+		});
 
 		await app.page.goto('/ethereum/aave/v3/borrow/ethusdc');
 		// Depositing collateral too quickly after loading page returns wrong simulation results
@@ -70,17 +68,24 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	// Position sometimes logged in environment db as 'Multiply' when using fork.
-	test.skip('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Up', async () => {
+	test('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12058',
 		});
 
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
+
+		await tenderly.changeAccountOwner({
+			account: '0x683ab4100c253ddca342772501775bb87340551b',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.page.goto('/ethereum/aave/v3/1277#overview');
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage CBETH' });
 		await app.position.manage.select('Adjust');
 
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
@@ -98,25 +103,23 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage CBETH' });
+		await app.position.manage.select('Adjust');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
 		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
-	// Position sometimes logged in environment db as 'Multiply' when using fork.
-	test.skip('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Down', async () => {
+	test('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12059',
 		});
 
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
-		await app.position.manage.select('Adjust');
-
+		await app.position.manage.shouldBeVisible('Manage Borrow position');
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
@@ -132,6 +135,8 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage CBETH' });
+		await app.position.manage.select('Adjust');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
 
@@ -139,21 +144,21 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	// Position sometimes logged in environment db as 'Multiply' when using fork.
-	test.skip('It should close an existent Aave V3 Borrow Ethereum position', async () => {
+	test('It should close an existent Aave V3 Borrow Ethereum position - Close to collateral token (CBETH) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12060',
 		});
 
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
+		await app.position.manage.shouldBeVisible('Manage Borrow position');
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');
-		await app.position.manage.closeTo('ETH');
+		await app.position.manage.closeTo('CBETH');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'ETH',
-			amount: '[0-9]{1,2}.[0-9]{2,4}',
+			token: 'CBETH',
+			amount: '0.[0-9]{3,4}',
 		});
 		await app.position.manage.confirm();
 		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
@@ -161,13 +166,15 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		});
 
 		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'USDC' });
+		await app.page.goto('/ethereum/aave/v3/1277#overview');
+		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'ETH' });
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDC' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDC' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'CBETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'ETH' });
 	});
 
 	test.skip('It should list an opened Aave V3 Borrow Ethereum position in portfolio', async () => {
@@ -184,11 +191,11 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto(`/owner/${walletAddress}`);
+		// await app.page.goto(`/owner/${walletAddress}`);
 
-		await app.header.shouldHavePortfolioCount('1');
-		await app.portfolio.borrow.shouldHaveHeaderCount('1');
-		await app.portfolio.borrow.vaults.first.shouldHave({ assets: 'ETH/USDC' });
+		// await app.header.shouldHavePortfolioCount('1');
+		// await app.portfolio.borrow.shouldHaveHeaderCount('1');
+		// await app.portfolio.borrow.vaults.first.shouldHave({ assets: 'ETH/USDC' });
 	});
 
 	test.skip('It should open an Aave V3 Borrow Ethereum position from portfolio page', async () => {
@@ -205,8 +212,8 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto(`/owner/${walletAddress}`);
-		await app.portfolio.borrow.vaults.first.view();
-		await app.position.manage.shouldBeVisible('Manage collateral');
+		// await app.page.goto(`/owner/${walletAddress}`);
+		// await app.portfolio.borrow.vaults.first.view();
+		// await app.position.manage.shouldBeVisible('Manage collateral');
 	});
 });

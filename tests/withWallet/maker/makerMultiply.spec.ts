@@ -84,6 +84,11 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 			await metamask.confirmAddToken();
 		});
 
+		/* 
+			!!!
+			TO BE UPDATED now that /owner page has been removed
+			!!!
+		*/
 		/**
 		 * !!! Skiping final steps because of BUG 10547
 		 * // Wait for 5 seconds and reload page | Issue with Maker and staging/forks
@@ -175,8 +180,8 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto(`/owner/${walletAddress}`);
-		await app.portfolio.multiply.vaults.first.view();
-		await app.position.manage.shouldBeVisible('Manage collateral');
+		// await app.page.goto(`/owner/${walletAddress}`);
+		// await app.portfolio.multiply.vaults.first.view();
+		// await app.position.manage.shouldBeVisible('Manage collateral');
 	});
 });

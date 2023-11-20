@@ -101,8 +101,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
-	// Skipped while liquidity is equal to $0.00
-	test.skip('It should open a Spark Multiply position @regression', async () => {
+	test('It should open a Spark Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12463',

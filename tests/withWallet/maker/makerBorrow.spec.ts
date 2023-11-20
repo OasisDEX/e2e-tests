@@ -72,13 +72,18 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
 		await app.page.waitForTimeout(5_000);
 
-		await expect(async () => {
-			await app.page.goto(`/owner/${walletAddress}`);
-			await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
-				asset: 'ETH-A Summer.fi Borrow',
-				amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
-			});
-		}).toPass();
+		/* 
+			!!!
+			TO BE UPDATED now that /owner page has been removed
+			!!!
+		*/
+		// await expect(async () => {
+		// 	await app.page.goto(`/owner/${walletAddress}`);
+		// 	await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
+		// 		asset: 'ETH-A Summer.fi Borrow',
+		// 		amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
+		// 	});
+		// }).toPass();
 	});
 
 	test('It should allow to simulate a Maker Borrow position before opening it @regression', async () => {
@@ -147,8 +152,8 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto(`/owner/${walletAddress}`);
-		await app.portfolio.borrow.vaults.first.view();
-		await app.position.manage.shouldBeVisible('Manage collateral');
+		// await app.page.goto(`/owner/${walletAddress}`);
+		// await app.portfolio.borrow.vaults.first.view();
+		// await app.position.manage.shouldBeVisible('Manage collateral');
 	});
 });
