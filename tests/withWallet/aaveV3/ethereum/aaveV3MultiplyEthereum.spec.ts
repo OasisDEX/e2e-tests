@@ -1,5 +1,5 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp } from 'utils/setup';
+import { expect, metamaskSetUp, setupNewFork } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
@@ -133,6 +133,19 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		});
 
 		test.setTimeout(veryLongTestTimeout);
+		// New fork needed to be able to close a Multiply position
+		await test.step('Test setup - New fork', async () => {
+			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
+			await tenderly.setEthBalance({ forkId, ethBalance: '100' });
+		});
+
+		await tenderly.changeAccountOwner({
+			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.page.goto('/ethereum/aave/v3/1218#overview');
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
@@ -163,6 +176,19 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		});
 
 		test.setTimeout(veryLongTestTimeout);
+		// New fork needed to be able to close a Multiply position
+		await test.step('Test setup - New fork', async () => {
+			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
+			await tenderly.setEthBalance({ forkId, ethBalance: '100' });
+		});
+
+		await tenderly.changeAccountOwner({
+			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.page.goto('/ethereum/aave/v3/1218#overview');
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');

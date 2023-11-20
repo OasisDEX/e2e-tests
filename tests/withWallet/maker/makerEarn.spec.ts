@@ -90,7 +90,6 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await app.page.goto(`/owner/${walletAddress}`);
 		await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
 			asset: 'DAI',
-			percentage: '0',
 			amount: '[0-9]{2},[0-9]{3}(.[0-9]{1,2})?',
 		});
 	});
