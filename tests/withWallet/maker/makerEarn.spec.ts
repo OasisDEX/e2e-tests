@@ -87,11 +87,16 @@ test.describe('Maker Earn - Wallet connected', async () => {
 			await metamask.confirmAddToken();
 		});
 
-		await app.page.goto(`/owner/${walletAddress}`);
-		await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
-			asset: 'DAI',
-			amount: '[0-9]{2},[0-9]{3}(.[0-9]{1,2})?',
-		});
+		/* 
+			!!!
+			TO BE UPDATED now that /owner page has been removed
+			!!!
+		*/
+		// await app.page.goto(`/owner/${walletAddress}`);
+		// await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
+		// 	asset: 'DAI',
+		// 	amount: '[0-9]{2},[0-9]{3}(.[0-9]{1,2})?',
+		// });
 	});
 
 	test('It should allow to simulate a Maker Earn position before opening it - Deposit @regression', async () => {
@@ -172,10 +177,10 @@ test.describe('Maker Earn - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto(`/owner/${walletAddress}`);
+		// await app.page.goto(`/owner/${walletAddress}`);
 
-		await app.portfolio.earn.shouldHaveHeaderCount('1');
-		await app.portfolio.earn.vaults.first.shouldHave({ assets: 'DAI' });
+		// await app.portfolio.earn.shouldHaveHeaderCount('1');
+		// await app.portfolio.earn.vaults.first.shouldHave({ assets: 'DAI' });
 	});
 
 	// Skipping test as Maker position pages don't open when using forks and also because of BUG 10547
@@ -193,8 +198,8 @@ test.describe('Maker Earn - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto(`/owner/${walletAddress}`);
-		await app.portfolio.earn.vaults.first.view();
-		await app.position.manage.shouldBeVisible('Manage ');
+		// await app.page.goto(`/owner/${walletAddress}`);
+		// await app.portfolio.earn.vaults.first.view();
+		// await app.position.manage.shouldBeVisible('Manage ');
 	});
 });

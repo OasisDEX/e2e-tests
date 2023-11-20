@@ -109,9 +109,13 @@ export const setupNewFork = async ({
 	const resp = await tenderly.createFork({ network });
 	const forkId = resp.data.root_transaction.fork_id;
 
-	await fork.addToApp({ app, forkId, network });
+	await expect(async () => {
+		await app.page.goto('');
+		await app.header.useCasesShouldBeVisible();
+		await app.header.connectWalletShouldNotBeVisible();
+	}).toPass();
 
-	await tenderly.setEthBalance({ forkId, ethBalance: '100' });
+	await fork.addToApp({ app, forkId, network });
 
 	return { forkId };
 };

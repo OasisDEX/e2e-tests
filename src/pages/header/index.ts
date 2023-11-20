@@ -28,6 +28,16 @@ export class Header {
 	}
 
 	@step
+	async useCasesShouldBeVisible() {
+		await expect(this.headerLocator.getByText('Use Cases')).toBeVisible();
+	}
+
+	@step
+	async connectWalletShouldNotBeVisible() {
+		await expect(this.headerLocator.getByText('Connect Wallet')).not.toBeVisible();
+	}
+
+	@step
 	async connectWallet() {
 		await this.headerLocator.getByText('Connect Wallet').click();
 	}
