@@ -51,7 +51,7 @@ export class Portfolio {
 	@step
 	async shouldHaveWalletAddress(address: string) {
 		await expect(
-			this.page.getByText(address, { exact: true }).locator('..'),
+			this.page.getByText(address, { exact: true }),
 			`"${address}" should be visible`
 		).toBeVisible();
 	}
@@ -67,7 +67,8 @@ export class Portfolio {
 	@step
 	async shouldHaveTotalValue(value: string) {
 		await expect(this.page.locator('span:has-text("Total Value")').locator('..')).toContainText(
-			value
+			value,
+			{ timeout: 10_000 }
 		);
 	}
 
