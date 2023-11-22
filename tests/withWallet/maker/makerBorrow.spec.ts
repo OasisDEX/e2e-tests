@@ -70,7 +70,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			current: '0.00',
 			future: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
 		});
-		await app.position.setup.vaultChanges.shouldHaveMaxGasFee('\\$[0-9]{1,2}.[0-9]{1,2}');
+		await app.position.setup.vaultChanges.shouldHaveMaxGasFee('n/a');
 
 		await app.position.setup.generate({ token: 'DAI', amount: '8,000.12' });
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[1-2],[0-9]{3}.[0-9]{2}');

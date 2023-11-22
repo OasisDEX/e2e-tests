@@ -58,7 +58,7 @@ test.describe('Default states - Wallet not connected', async () => {
 			description: '12849',
 		});
 
-		await app.portfolio.shouldLinktoEtherscan('0x8Af4F3fbC5446a3fc0474859B78fA5f4554D4510');
+		await app.portfolio.shouldLinktoEtherscan('0x8af4f3fbc5446a3fc0474859b78fa5f4554d4510');
 	});
 
 	test('It should show "Positions" tab by default @regression', async () => {

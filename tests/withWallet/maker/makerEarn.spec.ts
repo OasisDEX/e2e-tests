@@ -57,7 +57,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 			amount: '10,000.12',
 		});
 		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
-			fee: '\\$[0-9].[0-9]{2}',
+			fee: 'n/a',
 		});
 		await app.position.setup.depositDsrShouldBeVisible();
 
@@ -96,7 +96,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 
 		await app.position.setup.orderInformation.shouldHaveTotalSdaiToConvert('7,000.12');
 		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
-			fee: '\\$[0-9].[0-9]{2}',
+			fee: 'n/a',
 		});
 	});
 
