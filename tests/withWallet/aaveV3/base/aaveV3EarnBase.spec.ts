@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { hooksTimeout, extremelyLongTestTimeout } from 'utils/config';
+import { hooksTimeout, extremelyLongTestTimeout, baseUrl } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -14,6 +14,8 @@ let forkId: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
+	test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
+
 	test.beforeEach(async () => {
 		test.setTimeout(hooksTimeout);
 

@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { baseUrl, extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -25,17 +25,11 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Maker Earn position @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11800',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+	test('It should allow to simulate a Maker Earn position before opening it - Deposit @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12543, 12557',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -49,63 +43,6 @@ test.describe('Maker Earn - Wallet connected', async () => {
 			await tenderly.setDaiBalance({ forkId, daiBalance: '50000' });
 			await tenderly.setSdaiBalance({ forkId, sDaiBalance: '100000' });
 		});
-
-		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
-		await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
-
-		// If proxy was not previously setup extra steps will need to be executed
-		const button = app.page
-			.getByText('Set up DSR strategy')
-			.locator('../../..')
-			.locator('div:nth-child(3) > button');
-		await expect(button).toBeVisible();
-		const buttonLabel = await button.innerText();
-		if (buttonLabel.includes('Setup Proxy')) {
-			await app.position.setup.setupProxy();
-			await app.position.setup.setupProxy(); // Thre are 2x Setup Proxy screens
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-
-			// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
-			await app.page.waitForTimeout(5_000);
-			await app.page.reload();
-
-			await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
-		}
-
-		await app.position.setup.setupAllowance();
-		await app.position.setup.unlimitedAllowance();
-		await app.position.setup.setupAllowance();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
-
-		await app.position.setup.goToDeposit();
-		await app.position.setup.confirmDeposit();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
-
-		/* 
-			!!!
-			TO BE UPDATED now that /owner page has been removed
-			!!!
-		*/
-		// await app.page.goto(`/owner/${walletAddress}`);
-		// await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
-		// 	asset: 'DAI',
-		// 	amount: '[0-9]{2},[0-9]{3}(.[0-9]{1,2})?',
-		// });
-	});
-
-	test('It should allow to simulate a Maker Earn position before opening it - Deposit @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12543, 12557',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
 		await app.position.setup.deposit({ token: 'DAI', amount: '10000.12' });
@@ -161,6 +98,71 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
 			fee: '\\$[0-9].[0-9]{2}',
 		});
+	});
+
+	test('It should open a Maker Earn position @regression', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '11800',
+			},
+			{
+				type: 'Bug',
+				description: '10547',
+			}
+		);
+
+		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
+
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
+		await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
+
+		// If proxy was not previously setup extra steps will need to be executed
+		const button = app.page
+			.getByText('Set up DSR strategy')
+			.locator('../../..')
+			.locator('div:nth-child(3) > button');
+		await expect(button).toBeVisible();
+		const buttonLabel = await button.innerText();
+		if (buttonLabel.includes('Setup Proxy')) {
+			await app.position.setup.setupProxy();
+			await app.position.setup.setupProxy(); // Thre are 2x Setup Proxy screens
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+
+			// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
+			await app.page.waitForTimeout(5_000);
+			await app.page.reload();
+
+			await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
+		}
+
+		await app.position.setup.setupAllowance();
+		await app.position.setup.unlimitedAllowance();
+		await app.position.setup.setupAllowance();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
+
+		await app.position.setup.goToDeposit();
+		await app.position.setup.confirmDeposit();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
+
+		/* 
+			!!!
+			TO BE UPDATED now that /owner page has been removed
+			!!!
+		*/
+		// await app.page.goto(`/owner/${walletAddress}`);
+		// await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
+		// 	asset: 'DAI',
+		// 	amount: '[0-9]{2},[0-9]{3}(.[0-9]{1,2})?',
+		// });
 	});
 
 	test.skip('It should list an opened Maker Earn position in portfolio', async () => {

@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { baseUrl, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -101,53 +101,6 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
-	test('It should open a Spark Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12463',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		await app.page.goto('/ethereum/spark/v3/multiply/ethdai');
-
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
-		await app.position.setup.createSmartDeFiAccount();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass();
-
-		await app.position.setup.continue();
-		await app.position.setup.setupStopLoss1Of3();
-		await app.position.setup.confirm(); // Stop-Loss 2/3
-
-		// Stop Loss setup randomly fails - Retry until it's setup.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry(); // Stop-Loss 3/3
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.setupStopLossTransactionShouldBeVisible();
-		}).toPass();
-
-		// Set up Stop-Loss transaction
-		await app.position.setup.setupStopLossTransaction();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
-	});
-
 	test('It should close an existent Spark Earn position - Close to debt token (ETH)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
@@ -194,5 +147,54 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'ETH' });
 		await app.position.overview.shouldHaveMultiple('1');
 		await app.position.overview.shouldHaveBuyingPower('0.00');
+	});
+
+	test('It should open a Spark Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12463',
+		});
+
+		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
+
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await app.page.goto('/ethereum/spark/v3/multiply/ethdai');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
+		await app.position.setup.createSmartDeFiAccount();
+
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.createSmartDeFiAccount();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass();
+
+		await app.position.setup.continue();
+		await app.position.setup.setupStopLoss1Of3();
+		await app.position.setup.confirm(); // Stop-Loss 2/3
+
+		// Stop Loss setup randomly fails - Retry until it's setup.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry(); // Stop-Loss 3/3
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.setup.setupStopLossTransactionShouldBeVisible();
+		}).toPass();
+
+		// Set up Stop-Loss transaction
+		await app.position.setup.setupStopLossTransaction();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+
+		await app.position.setup.goToPosition();
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 });

@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { hooksTimeout, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { hooksTimeout, extremelyLongTestTimeout, veryLongTestTimeout, baseUrl } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -171,6 +171,8 @@ test.describe('Spark Earn - Wallet connected', async () => {
 				description: '10547',
 			}
 		);
+
+		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
 
