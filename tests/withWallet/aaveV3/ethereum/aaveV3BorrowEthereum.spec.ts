@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { baseUrl, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -30,6 +30,8 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			type: 'Test case',
 			description: '11682',
 		});
+
+		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -74,7 +76,19 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			description: '12058',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		if (baseUrl.includes('staging') || baseUrl.includes('//summer.fi')) {
+			test.setTimeout(extremelyLongTestTimeout);
+
+			await test.step('Test setup', async () => {
+				({ context } = await metamaskSetUp({ network: 'mainnet' }));
+				let page = await context.newPage();
+				app = new App(page);
+
+				({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+			});
+		} else {
+			test.setTimeout(veryLongTestTimeout);
+		}
 
 		await tenderly.changeAccountOwner({
 			account: '0x683ab4100c253ddca342772501775bb87340551b',

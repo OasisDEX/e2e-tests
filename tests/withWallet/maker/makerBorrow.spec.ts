@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { baseUrl, extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -25,10 +25,10 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Maker Borrow position @regression', async () => {
+	test('It should allow to simulate a Maker Borrow position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11788, 11790',
+			description: '12572',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -40,59 +40,6 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 		});
-
-		await app.page.goto('/vaults/open/ETH-A');
-
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '15.12345' });
-		await app.position.setup.generate({ token: 'DAI', amount: '10000' });
-		await app.position.setup.setupProxy1Of4();
-		await app.position.setup.createProxy2Of4();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
-
-		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
-		await app.page.waitForTimeout(5_000);
-		await app.page.reload();
-
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '15.12345' });
-		await app.position.setup.generate({ token: 'DAI', amount: '10000' });
-
-		await app.position.setup.confirm();
-		await app.position.setup.addStopLoss2Of3();
-		await app.position.setup.createVault3Of3();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
-
-		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
-		await app.page.waitForTimeout(5_000);
-
-		/* 
-			!!!
-			TO BE UPDATED now that /owner page has been removed
-			!!!
-		*/
-		// await expect(async () => {
-		// 	await app.page.goto(`/owner/${walletAddress}`);
-		// 	await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
-		// 		asset: 'ETH-A Summer.fi Borrow',
-		// 		amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
-		// 	});
-		// }).toPass();
-	});
-
-	test('It should allow to simulate a Maker Borrow position before opening it @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12572',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/vaults/open/ETH-C');
 
@@ -141,6 +88,59 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			current: '0.00',
 			future: '8,000.12',
 		});
+	});
+
+	test('It should open a Maker Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11788, 11790',
+		});
+
+		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
+
+		await app.page.goto('/vaults/open/ETH-A');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'ETH', amount: '15.12345' });
+		await app.position.setup.generate({ token: 'DAI', amount: '10000' });
+		await app.position.setup.setupProxy1Of4();
+		await app.position.setup.createProxy2Of4();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
+
+		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
+		await app.page.waitForTimeout(5_000);
+		await app.page.reload();
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'ETH', amount: '15.12345' });
+		await app.position.setup.generate({ token: 'DAI', amount: '10000' });
+
+		await app.position.setup.confirm();
+		await app.position.setup.addStopLoss2Of3();
+		await app.position.setup.createVault3Of3();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
+
+		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
+		await app.page.waitForTimeout(5_000);
+
+		/* 
+			!!!
+			TO BE UPDATED now that /owner page has been removed
+			!!!
+		*/
+		// await expect(async () => {
+		// 	await app.page.goto(`/owner/${walletAddress}`);
+		// 	await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
+		// 		asset: 'ETH-A Summer.fi Borrow',
+		// 		amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
+		// 	});
+		// }).toPass();
 	});
 
 	// Skipping test as Maker position pages don't open when using forks
