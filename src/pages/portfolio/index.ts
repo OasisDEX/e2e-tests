@@ -1,7 +1,7 @@
 import { expect, Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
-import { Wallet } from './wallet';
 import { Positions } from './positions';
+import { Wallet } from './wallet';
 
 export class Portfolio {
 	readonly page: Page;

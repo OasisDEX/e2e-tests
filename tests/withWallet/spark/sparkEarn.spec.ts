@@ -29,7 +29,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		'Adjust risk up' for /ethereum/spark/v3/1417#overview 
 		not working with changeAccountOwner()
 	*/
-	test.skip('It should adjust risk of an existent Spark Earn position - Up', async () => {
+	test.skip('It should adjust risk of an existent Spark Earn position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12892',
@@ -77,7 +77,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
-	test('It should adjust risk of an existent Spark Earn position - Down', async () => {
+	test('It should adjust risk of an existent Spark Earn position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12893',
@@ -126,7 +126,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	test('It should close an existent Spark Earn position - Close to collateral token (WSTETH)', async () => {
+	test('It should close an existent Spark Earn position - Close to collateral token (WSTETH) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12894',

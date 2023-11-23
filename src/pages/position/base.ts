@@ -43,7 +43,6 @@ export class Base {
 	}
 
 	/**
-	 *
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
 	@step
