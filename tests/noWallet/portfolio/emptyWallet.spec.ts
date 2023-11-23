@@ -24,11 +24,30 @@ test.describe('Empty wallet - Wallet not connected', async () => {
 			updateFlagsAndRejectCookies({ app, flags: ['BaseNetworkEnabled'] });
 		}
 
-		await app.portfolio.open('0x8Af4F3fbC5446a3fc0474859B78fA5f4554D4510#wallet');
+		await app.portfolio.open('0x8Af4F3fbC5446a3fc0474859B78fA5f4554D4510');
 	});
 
 	test.afterAll(async () => {
 		await app.page.close();
+	});
+
+	test('It should show no positions in Positions tab @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13023',
+		});
+
+		await app.portfolio.positions.shouldNotHavePositions();
+	});
+
+	test('It should show no assets in Wallet tab @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12750',
+		});
+
+		await app.portfolio.open('0x8Af4F3fbC5446a3fc0474859B78fA5f4554D4510#wallet');
+		await app.portfolio.wallet.shouldNotHaveAssets();
 	});
 
 	test('It should show "0.00" for all headline fields @regression', async () => {
@@ -41,14 +60,5 @@ test.describe('Empty wallet - Wallet not connected', async () => {
 		await app.portfolio.shouldHaveSummerfiPortfolio('$0.00');
 		await app.portfolio.shouldHaveTotalSupplied('$0.00');
 		await app.portfolio.shouldHaveTotalBorrowed('$0.00');
-	});
-
-	test('It should show no assets in wallet tab @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12750',
-		});
-
-		await app.portfolio.wallet.shouldNotHaveAssets();
 	});
 });

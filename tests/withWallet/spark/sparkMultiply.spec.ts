@@ -25,7 +25,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should adjust risk of an existent Spark Multiply position - Down', async () => {
+	test('It should adjust risk of an existent Spark Multiply position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12896',
@@ -71,7 +71,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	test('It should adjust risk of an existent Spark Multiply position - Up', async () => {
+	test('It should adjust risk of an existent Spark Multiply position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12898',
@@ -101,7 +101,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
-	test('It should close an existent Spark Earn position - Close to debt token (ETH)', async () => {
+	test('It should close an existent Spark Earn position - Close to debt token (ETH) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12897',
