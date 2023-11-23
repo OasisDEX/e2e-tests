@@ -67,7 +67,7 @@ test.describe('Default states - Wallet not connected', async () => {
 			description: '12751',
 		});
 
-		await app.portfolio.positions.shouldBeVisible();
+		await app.portfolio.positions.shouldNotHavePositions();
 	});
 
 	test('It should allow user to connect wallet from "wallet address" top banner - Wallet not connected @regression', async () => {

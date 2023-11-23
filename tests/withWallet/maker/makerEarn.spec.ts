@@ -59,7 +59,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
 			fee: 'n/a',
 		});
-		await app.position.setup.depositDsrShouldBeVisible();
+		await app.position.setup.setupProxyShouldBeVisible();
 
 		await app.position.setup.dsr.mintSdai();
 		await app.position.overview.shouldHaveTokenAmount({ amount: '0.00', token: 'DAI' });
@@ -96,7 +96,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 
 		await app.position.setup.orderInformation.shouldHaveTotalSdaiToConvert('7,000.12');
 		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
-			fee: 'n/a',
+			fee: '\\$[0-9]{1,2}.[0-9]{1,2}',
 		});
 	});
 
