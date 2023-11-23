@@ -12,11 +12,11 @@ export class Positions {
 	}
 
 	@step
-	async shouldBeVisible() {
+	async shouldNotHavePositions() {
 		await expect(
-			this.page.getByText('Show empty positions', { exact: true }),
-			'"Show empty positions" should be visible'
-		).toBeVisible();
+			this.page.getByText('There are no positions for this wallet'),
+			'"There are no positions for this wallet" should be visible'
+		).toBeVisible({ timeout: 10_000 });
 	}
 
 	@step
