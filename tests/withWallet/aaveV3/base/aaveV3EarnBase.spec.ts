@@ -88,4 +88,6 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
+
+	// Risk UP -> 13035
 });

@@ -183,7 +183,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC) @regression', async () => {
+	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (ETH) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12057',

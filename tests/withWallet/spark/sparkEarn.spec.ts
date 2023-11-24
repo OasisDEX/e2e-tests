@@ -30,10 +30,16 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		not working with changeAccountOwner()
 	*/
 	test.skip('It should adjust risk of an existent Spark Earn position - Up @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12892',
-		});
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '12892',
+			},
+			{
+				type: 'Bug',
+				description: '13044',
+			}
+		);
 
 		test.setTimeout(extremelyLongTestTimeout);
 
