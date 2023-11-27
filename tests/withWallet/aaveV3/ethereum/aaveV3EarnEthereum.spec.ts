@@ -25,10 +25,10 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should adjust risk of an existent Aave V3 Earn Ethereum position - Up @regression', async () => {
+	test('It should deposit extra collateral on an existent Aave V3 Ethereum Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '13060',
+			description: '13078',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -53,26 +53,40 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
 
-		await test.step('Adding some collateral to empty position', async () => {
-			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-			await app.position.manage.select('Manage collateral');
-			await app.position.manage.enter({ token: 'WSTETH', amount: '20' });
-			await expect(async () => {
-				await app.position.setup.setupAllowance();
-				await app.position.setup.approveAllowance();
-				await test.step('Metamask: ConfirmAddToken', async () => {
-					await metamask.confirmAddToken();
-				});
-				await app.position.setup.continueShouldBeVisible();
-			}).toPass();
-			await app.position.setup.continue();
-			await app.position.manage.confirm();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Manage collateral');
+		await app.position.manage.enter({ token: 'WSTETH', amount: '20' });
+		await expect(async () => {
+			await app.position.setup.setupAllowance();
+			await app.position.setup.approveAllowance();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
 			});
-			await app.position.manage.shouldShowSuccessScreen();
-			await app.position.manage.ok();
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass();
+		await app.position.setup.continue();
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
 		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveNetValue({
+			value: '[0-9]{2}.[0-9]{2}ETH',
+		});
+		await app.position.overview.shouldHaveTotalCollateral({ amount: '20.00000', token: 'WSTETH' });
+	});
+
+	test('It should adjust risk of an existent Aave V3 Earn Ethereum position - Up @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13060',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Earn position');
 
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 

@@ -25,10 +25,10 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should adjust risk of an existent Aave V3 Borrow Base position - Up @regression', async () => {
+	test('It should deposit extra collateral on an existent Aave V3 Borrow Base position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '13065',
+			description: '13035',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -50,17 +50,29 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await app.page.goto('/base/aave/v3/2#overview');
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.enter({ token: 'ETH', amount: '15' });
 
-		await test.step('Adding some collateral to empty position', async () => {
-			await app.position.manage.enter({ token: 'ETH', amount: '15' });
-
-			await app.position.manage.confirm();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-			await app.position.manage.ok();
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
 		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveNetValue({
+			value: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			token: 'USDBC',
+		});
+		await app.position.overview.shouldHaveExposure({ amount: '15.00000', token: 'ETH' });
+	});
+
+	test('It should adjust risk of an existent Aave V3 Borrow Base position - Up @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13065',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Adjust');
