@@ -25,11 +25,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	/* 
-		'Adjust risk up' for /ethereum/spark/v3/1417#overview 
-		not working with changeAccountOwner()
-	*/
-	test.skip('It should adjust risk of an existent Spark Earn position - Up @regression', async () => {
+	test('It should adjust risk of an existent Spark Earn position - Up @regression', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',
@@ -66,7 +62,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.9 });
+		await app.position.manage.moveSlider({ value: 0.6 });
 
 		await app.position.manage.adjustRisk();
 		await app.position.manage.confirm();
@@ -89,26 +85,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 			description: '12893',
 		});
 
-		// TO BE UPDATED if previous test is enabled
-		// test.setTimeout(veryLongTestTimeout);
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// TO BE REMOVED if previous test is enabled
-		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'mainnet' }));
-			let page = await context.newPage();
-			app = new App(page);
-
-			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-		});
-
-		await tenderly.changeAccountOwner({
-			account: '0x6be31243e0ffa8f42d1f64834eca2ab6dc8f7498',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.page.goto('/ethereum/spark/v3/1417#overview');
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
