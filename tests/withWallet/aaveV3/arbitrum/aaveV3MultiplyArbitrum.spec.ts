@@ -133,6 +133,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		});
 
 		test.setTimeout(veryLongTestTimeout);
+
 		// New fork needed to be able to close a Multiply position
 		await test.step('Test setup - New fork', async () => {
 			({ forkId } = await setupNewFork({ app, network: 'arbitrum' }));

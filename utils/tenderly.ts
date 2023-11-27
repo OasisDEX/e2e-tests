@@ -159,6 +159,26 @@ export const setCbEthBalance = async ({
 
 /**
  *
+ * @param wbtcBalance In cbETH units
+ */
+export const setWbtcBalance = async ({
+	forkId,
+	wbtcBalance,
+}: {
+	forkId: string;
+	wbtcBalance: string;
+}) => {
+	const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
+
+	await provider.send('tenderly_setErc20Balance', [
+		'0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+		WALLET_ADDRESS,
+		ethers.toQuantity(ethers.parseUnits(wbtcBalance, 'ether')),
+	]);
+};
+
+/**
+ *
  * @param account Addres of the proxy to take ownershipt of
  * @param newOwner New wallet address
  */

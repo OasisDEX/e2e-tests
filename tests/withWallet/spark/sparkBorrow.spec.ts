@@ -1,5 +1,5 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp } from 'utils/setup';
+import { expect, metamaskSetUp, setupNewFork } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
@@ -176,6 +176,158 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
+	});
+
+	test('It should deposit extra collateral on an existent Spark Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11406',
+		});
+
+		test.setTimeout(extremelyLongTestTimeout);
+
+		// New fork needed
+		await test.step('Test setup - New fork', async () => {
+			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
+			await tenderly.setEthBalance({ forkId, ethBalance: '20' });
+			await tenderly.setWbtcBalance({ forkId, wbtcBalance: '2' });
+		});
+
+		await tenderly.changeAccountOwner({
+			account: '0x648dd9e11414db57097903a3ed98f773af61ef09',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.page.goto('/ethereum/spark/v3/1669#overview');
+		await app.position.manage.shouldBeVisible('Manage collateral');
+
+		await app.position.manage.enter({ token: 'WBTC', amount: '1' });
+
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.setupAllowance();
+			await app.position.setup.approveAllowance();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass();
+
+		await app.position.setup.continue();
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveNetValue({
+			value: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			token: 'DAI',
+		});
+		await app.position.overview.shouldHaveExposure({ amount: '1.00000', token: 'WBTC' });
+	});
+
+	test('It should adjust risk of an existent Spark Borrow position - Up (WBTC/DAI) @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13050',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
+		await app.position.manage.select('Adjust');
+
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+		const initialLoanToValue = await app.position.manage.getLoanToValue();
+
+		await app.position.manage.waitForSliderToBeEditable();
+		await app.position.manage.moveSlider({ value: 0.6 });
+
+		await app.position.manage.adjustRisk();
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
+		await app.position.manage.select('Adjust');
+		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+	});
+
+	test('It should adjust risk of an existent Spark Borrow position - Down (WBTC/DAI) @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13051',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Borrow position');
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+		const initialLoanToValue = await app.position.manage.getLoanToValue();
+
+		await app.position.manage.waitForSliderToBeEditable();
+		await app.position.manage.moveSlider({ value: 0.3 });
+
+		await app.position.manage.adjustRisk();
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
+		await app.position.manage.select('Adjust');
+		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+
+		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+	});
+
+	test('It should close an existent Spark Borrow position - Close to collateral token (WBTC) @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13077',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Borrow position');
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Close position');
+		await app.position.manage.closeTo('WBTC');
+		await app.position.manage.shouldHaveTokenAmountAfterClosing({
+			token: 'WBTC',
+			amount: '0.[0-9]{3,4}',
+		});
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.page.goto('/ethereum/spark/v3/1669#overview');
+		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveLoanToValue('0.00');
+		await app.position.overview.shouldHaveBorrowCost('0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'WBTC' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
 	});
 
 	test.skip('It should list an opened Spark Borrow position in portfolio', async () => {
