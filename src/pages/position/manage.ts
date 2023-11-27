@@ -120,4 +120,13 @@ export class Manage {
 			`Token amount (${token} - ${amount}) should be visible`
 		).toBeVisible({ timeout: positionTimeout });
 	}
+
+	@step
+	async enter({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Enter ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
 }
