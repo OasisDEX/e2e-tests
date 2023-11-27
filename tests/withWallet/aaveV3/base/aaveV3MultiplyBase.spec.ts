@@ -15,8 +15,6 @@ let walletAddress: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
-	test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -27,10 +25,10 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v3 Multiply Base position @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Base position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12463',
+			description: '12465',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -41,9 +39,112 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			app = new App(page);
 
 			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
-
-			await tenderly.setCbEthBalance({ forkId, cbEthBalance: '50' });
 		});
+
+		await tenderly.changeAccountOwner({
+			account: '0xf5922d700883214f689efe190a978ac51c50e6b1',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.page.goto('/base/aave/v3/17#overview');
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+		const initialLoanToValue = await app.position.manage.getLoanToValue();
+
+		await app.position.manage.waitForSliderToBeEditable();
+		await app.position.manage.moveSlider({ value: 0.2 });
+
+		await app.position.manage.adjustRisk();
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+	});
+
+	test('It should adjust risk of an existent Aave V3 Multiply Base position - Up @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12464',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+		const initialLoanToValue = await app.position.manage.getLoanToValue();
+
+		await app.position.manage.waitForSliderToBeEditable();
+		await app.position.manage.moveSlider({ value: 0.7 });
+
+		await app.position.manage.adjustRisk();
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+	});
+
+	test('It should close an existent Aave V3 Multiply Base position - Close to debt token (USDBC) @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12466',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Close position');
+		await app.position.manage.closeTo('USDBC');
+
+		await app.position.manage.shouldHaveTokenAmountAfterClosing({
+			token: 'USDBC',
+			amount: '[0-9]{1,2}.[0-9]{1,2}',
+		});
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'USDBC' });
+		await app.position.overview.shouldHaveLoanToValue('0.00');
+		await app.position.overview.shouldHaveBorrowCost('0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDBC' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDBC' });
+		await app.position.overview.shouldHaveMultiple('1');
+		await app.position.overview.shouldHaveBuyingPower('0.00');
+	});
+
+	test('It should open an Aave v3 Multiply Base position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12463',
+		});
+
+		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
+
+		test.setTimeout(extremelyLongTestTimeout);
+		await tenderly.setCbEthBalance({ forkId, cbEthBalance: '50' });
 
 		await app.page.goto('/base/aave/v3/multiply/cbethusdbc');
 
@@ -87,119 +188,6 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
-	});
-
-	test.skip('It should adjust risk of an existent Aave V3 Multiply Base position - Up @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12464',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
-
-		test.setTimeout(longTestTimeout);
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.5 });
-
-		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
-	});
-
-	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test.skip('It should adjust risk of an existent Aave V3 Multiply Base position - Down @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12465',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
-
-		test.setTimeout(longTestTimeout);
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.3 });
-
-		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
-	});
-
-	// Position sometimes logged in environment db as 'Borrow' when using fork.
-	test.skip('It should close an existent Aave V3 Multiply Base position - Close to debt token (WBTC) @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12466',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
-
-		test.setTimeout(longTestTimeout);
-
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Close position');
-		await app.position.manage.closeTo('CBETH');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'CBETH',
-			amount: '[0-9]{1,2}.[0-9]{1,2}',
-		});
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-
-		await app.position.manage.shouldShowSuccessScreen();
-		await app.position.manage.ok();
-
-		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'USDBC' });
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDBC' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'CBETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDBC' });
-		await app.position.overview.shouldHaveMultiple('1');
-		await app.position.overview.shouldHaveBuyingPower('0.00');
 	});
 
 	test.skip('It should list an opened Aave v3 Multiply Base position in portfolio', async () => {
