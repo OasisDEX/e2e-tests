@@ -229,6 +229,88 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.overview.shouldHaveExposure({ amount: '1.00000', token: 'WBTC' });
 	});
 
+	test('It should withdraw some collateral from an existent Spark Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13113',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.overview.shouldHaveExposure({ amount: '1.00000', token: 'WBTC' });
+
+		await app.position.manage.withdrawCollateral();
+		await app.position.manage.enter({ token: 'WBTC', amount: '0.1' });
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveExposure({ amount: '0.90000', token: 'WBTC' });
+	});
+
+	test('It should borrow more debt from an existing Spark Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13114',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
+		await app.position.manage.select('Manage debt');
+		await app.position.manage.enter({ token: 'DAI', amount: '5000' });
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveDebt({ amount: '5,000.0000', token: 'DAI' });
+	});
+
+	test('It should pay back some debt from an existing Spark Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13115',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
+		await app.position.manage.select('Manage debt');
+		await app.position.manage.payBackDebt();
+		await app.position.manage.enter({ token: 'DAI', amount: '3000' });
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.setupAllowance();
+			await app.position.setup.approveAllowance();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass();
+		await app.position.setup.continue();
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveDebt({ amount: '2,000.[0-9]{4}', token: 'DAI' });
+	});
+
 	test('It should adjust risk of an existent Spark Borrow position - Up (WBTC/DAI) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
@@ -342,7 +424,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			}
 		);
 
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// await app.page.goto(`/owner/${walletAddress}`);
 
@@ -363,7 +445,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			}
 		);
 
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// await app.page.goto(`/owner/${walletAddress}`);
 		// await app.portfolio.borrow.vaults.first.view();
