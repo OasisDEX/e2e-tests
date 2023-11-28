@@ -144,10 +144,14 @@ export class Setup {
 
 	@step
 	async confirmOrRetry() {
-		await this.page
-			.getByRole('button', { name: 'Back to editing' })
-			.locator('xpath=//preceding::button[1]')
-			.click();
+		const confirm = this.page.getByRole('button', { name: 'Confirm' });
+		const retry = this.page.getByRole('button', { name: 'Retry' });
+
+		if (await confirm.isVisible()) {
+			await confirm.click();
+		} else if (await retry.isVisible()) {
+			await retry.click();
+		}
 	}
 
 	@step
