@@ -25,7 +25,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should deposit extra collateral on an existent Aave V3 Ethereum Earn position @regression', async () => {
+	test('It should deposit extra collateral on an existing Aave V3 Ethereum Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13078',
@@ -78,7 +78,81 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.overview.shouldHaveTotalCollateral({ amount: '20.00000', token: 'WSTETH' });
 	});
 
-	test('It should adjust risk of an existent Aave V3 Earn Ethereum position - Up @regression', async () => {
+	test('It should withdraw some collateral from an existing Aave V3 Ethereum Earn position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13109',
+		});
+
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Earn position');
+		await app.position.overview.shouldHaveTotalCollateral({ amount: '20.00000', token: 'WSTETH' });
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Manage collateral');
+		await app.position.manage.withdrawCollateral();
+		await app.position.manage.enter({ token: 'WSTETH', amount: '5' });
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveTotalCollateral({ amount: '15.00000', token: 'WSTETH' });
+	});
+
+	test('It should borrow more debt from an existing Aave V3 Ethereum Earn position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13108',
+		});
+
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Earn position');
+		await app.position.overview.shouldHaveDebt({ amount: '0.00000', token: 'ETH' });
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Manage debt');
+		await app.position.manage.enter({ token: 'ETH', amount: '5' });
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveDebt({ amount: '5.00000', token: 'ETH' });
+	});
+
+	test('It should pay back some debt from an existing Aave V3 Ethereum Earn position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13110',
+		});
+
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Earn position');
+		await app.position.overview.shouldHaveDebt({ amount: '5.00000', token: 'ETH' });
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Manage debt');
+		await app.position.manage.payBackDebt();
+		await app.position.manage.enter({ token: 'ETH', amount: '2' });
+		await app.position.manage.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.manage.shouldShowSuccessScreen();
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveDebt({ amount: '3.00000', token: 'ETH' });
+	});
+
+	test('It should adjust risk of an existing Aave V3 Earn Ethereum position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13060',
@@ -106,7 +180,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
 	});
 
-	test('It should adjust risk of an existent Aave V3 Earn Ethereum position - Down @regression', async () => {
+	test('It should adjust risk of an existing Aave V3 Earn Ethereum position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13061',
@@ -133,7 +207,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
 	});
 
-	test('It should close an existent Aave V3 Earn Ethereum position - Close to debt token (ETH) @regression', async () => {
+	test('It should close an existing Aave V3 Earn Ethereum position - Close to debt token (ETH) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13062',

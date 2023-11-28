@@ -129,4 +129,14 @@ export class Manage {
 			.getByPlaceholder(`0 ${token}`)
 			.fill(amount);
 	}
+
+	@step
+	async withdrawCollateral() {
+		await this.page.getByRole('button', { name: 'Withdraw collateral' }).click();
+	}
+
+	@step
+	async payBackDebt() {
+		await this.page.getByRole('button', { name: 'Pay back debt' }).click();
+	}
 }
