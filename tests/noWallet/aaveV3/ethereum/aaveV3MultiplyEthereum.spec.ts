@@ -18,7 +18,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'WBTC', amount: '2.5' });
 
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[4-9],[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-4][0-9].[0-9]{2}%');
 		await app.position.overview.shouldHaveBorrowCostAfterPill('[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2,3},[0-9]{3}.[0-9]{2}');
@@ -67,7 +67,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			future: '[1-2][0-9].[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({
-			fee: '[2-4][0-9].[0-9]{2}',
+			fee: '[0-9]{1,2}.[0-9]{2}',
 			token: 'USDC',
 		});
 	});

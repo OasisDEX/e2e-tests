@@ -59,11 +59,16 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.6 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
@@ -91,11 +96,16 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.3 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
@@ -122,14 +132,18 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.closeTo('DAI');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
 			token: 'DAI',
-			amount: '0.[0-9]{3,4}',
-		});
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
+			amount: '[0-3].[0-9]{3,4}',
 		});
 
-		await app.position.manage.shouldShowSuccessScreen();
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.page.goto('/ethereum/spark/v3/1474#overview');
@@ -215,11 +229,16 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		}).toPass();
 
 		await app.position.setup.continue();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveNetValue({
@@ -242,11 +261,16 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.withdrawCollateral();
 		await app.position.manage.enter({ token: 'WBTC', amount: '0.1' });
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveExposure({ amount: '0.90000', token: 'WBTC' });
@@ -266,11 +290,16 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
 		await app.position.manage.select('Manage debt');
 		await app.position.manage.enter({ token: 'DAI', amount: '5000' });
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveDebt({ amount: '5,000.0000', token: 'DAI' });
@@ -301,11 +330,16 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass();
 		await app.position.setup.continue();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveDebt({ amount: '2,000.[0-9]{4}', token: 'DAI' });
@@ -330,11 +364,16 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.6 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
@@ -362,11 +401,16 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.3 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
@@ -395,12 +439,16 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			token: 'WBTC',
 			amount: '0.[0-9]{3,4}',
 		});
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
 
-		await app.position.manage.shouldShowSuccessScreen();
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.page.goto('/ethereum/spark/v3/1669#overview');

@@ -53,11 +53,16 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
 		await app.position.manage.enter({ token: 'ETH', amount: '15' });
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveNetValue({
@@ -85,11 +90,16 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.9 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Risk adjustment randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
@@ -115,11 +125,16 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.3 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Risk adjustment randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');

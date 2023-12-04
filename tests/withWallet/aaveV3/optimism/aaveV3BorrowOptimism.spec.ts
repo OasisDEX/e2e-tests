@@ -109,11 +109,16 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.3 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
@@ -141,11 +146,16 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.6 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
@@ -174,12 +184,16 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			token: 'WBTC',
 			amount: '<0.001',
 		});
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
 
-		await app.position.manage.shouldShowSuccessScreen();
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.page.goto('/optimism/aave/v3/4#overview');

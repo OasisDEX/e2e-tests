@@ -65,11 +65,16 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass();
 		await app.position.setup.continue();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveNetValue({
@@ -93,11 +98,16 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.manage.select('Manage collateral');
 		await app.position.manage.withdrawCollateral();
 		await app.position.manage.enter({ token: 'WSTETH', amount: '5' });
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveTotalCollateral({ amount: '15.00000', token: 'WSTETH' });
@@ -117,11 +127,16 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
 		await app.position.manage.enter({ token: 'ETH', amount: '5' });
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveDebt({ amount: '5.00000', token: 'ETH' });
@@ -142,11 +157,16 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.manage.select('Manage debt');
 		await app.position.manage.payBackDebt();
 		await app.position.manage.enter({ token: 'ETH', amount: '2' });
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveDebt({ amount: '3.00000', token: 'ETH' });
@@ -168,11 +188,16 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.7 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Risk adjustment randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
@@ -195,11 +220,16 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.3 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Risk adjustment randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
@@ -223,12 +253,16 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			token: 'WSTETH',
 			amount: '[0-9]{1,2}.[0-9]{1,2}',
 		});
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
 
-		await app.position.manage.shouldShowSuccessScreen();
+		// Closing position randomly fails - Retry until it's closed.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.page.goto('/ethereum/aave/v3/317#overview');

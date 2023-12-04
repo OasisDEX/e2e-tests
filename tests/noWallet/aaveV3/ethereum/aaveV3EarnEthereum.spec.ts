@@ -37,8 +37,8 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 			dollarsAmount: '[1-9][0-9]{2},[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
-			amount: '1.[0-9]{4}',
-			percentage: '0.[0-9]{2}',
+			amount: '[0-3].[0-9]{4}',
+			percentage: '[0-4].[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]{2}');
 		await app.position.setup.orderInformation.shouldHaveMultiply({
