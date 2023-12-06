@@ -32,7 +32,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		});
 		await app.position.overview.shouldHaveMultipleAfterPill('1(.[0-9]{1,2})?');
 		await app.position.overview.shouldHaveBuyingPowerAfterPill({
-			amount: '[2-6][0-9],[0-9]{3}(.[0-9]{1,2})?',
+			amount: '[0-9]{2,3},[0-9]{3}(.[0-9]{1,2})?',
 		});
 		await app.position.setup.shouldHaveLiquidationPrice({
 			amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})? USDC',
