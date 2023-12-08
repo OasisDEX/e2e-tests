@@ -126,11 +126,16 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.9 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Transaction randomly fails - Retry until it's completed.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
@@ -169,11 +174,16 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.3 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Transaction randomly fails - Retry until it's completed.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
@@ -212,12 +222,16 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			token: 'ETH',
 			amount: '0.[0-9]{1,4}',
 		});
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
 
-		await app.position.manage.shouldShowSuccessScreen();
+		// Transaction randomly fails - Retry until it's completed.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass();
+
 		await app.position.manage.ok();
 
 		await app.page.goto('/ethereum/aave/v3/1218');
