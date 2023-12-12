@@ -2,13 +2,6 @@
 # FROM --platform=linux/amd64 synthetixio/docker-e2e:18.16-ubuntu
 FROM synthetixio/docker-node:18.16-ubuntu
 
-# Sets argument as environmental variable
-ENV BASE_URL=https://staging.summer.fi
-ENV WALLET_ADDRESS=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
-ENV TENDERLY_PROJECT=e2e-automation
-ENV TENDERLY_USER=oazoapps
-ENV TENDERLY_ACCESS_KEY=BsyD7IAqXtdRTt9m22Q-pRFDWhSWvEnT
-
 # Set the work directory for the application
 WORKDIR /app
 
