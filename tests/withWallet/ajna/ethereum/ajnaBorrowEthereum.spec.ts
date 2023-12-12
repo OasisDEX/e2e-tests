@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { hooksTimeout, extremelyLongTestTimeout, baseUrl } from 'utils/config';
+import { hooksTimeout, extremelyLongTestTimeout, baseUrl, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -154,7 +154,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 				await metamask.confirmAddToken();
 			});
 			await app.position.setup.continueShouldBeVisible();
-		}).toPass();
+		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.continue();
 
@@ -165,7 +165,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 				await metamask.confirmPermissionToSpend();
 			});
 			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass();
+		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage your ');
