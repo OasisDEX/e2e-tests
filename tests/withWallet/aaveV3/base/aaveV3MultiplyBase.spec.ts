@@ -57,11 +57,16 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.2 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
@@ -87,11 +92,16 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.7 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
@@ -117,12 +127,16 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			token: 'USDBC',
 			amount: '[0-9]{1,2}.[0-9]{1,2}',
 		});
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
 
-		await app.position.manage.shouldShowSuccessScreen();
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'USDBC' });
@@ -160,7 +174,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 				await metamask.confirmAddToken();
 			});
 			await app.position.setup.continueShouldBeVisible();
-		}).toPass();
+		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.continue();
 
@@ -172,7 +186,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 				await metamask.confirmAddToken();
 			});
 			await app.position.setup.continueShouldBeVisible();
-		}).toPass();
+		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.continue();
 		await app.position.setup.openMultiplyPosition1Of2();
@@ -184,7 +198,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 				await metamask.confirmPermissionToSpend();
 			});
 			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass();
+		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');

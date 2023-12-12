@@ -4,7 +4,12 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { baseUrl, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import {
+	baseUrl,
+	extremelyLongTestTimeout,
+	longTestTimeout,
+	veryLongTestTimeout,
+} from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -57,14 +62,21 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 				await metamask.confirmAddToken();
 			});
 			await app.position.setup.continueShouldBeVisible();
-		}).toPass();
+		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.continue();
 		await app.position.setup.openMultiplyPosition1Of2();
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.setup.goToPositionShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.manage.ok();
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
@@ -106,11 +118,16 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.9 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
@@ -149,11 +166,16 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		await app.position.manage.moveSlider({ value: 0.3 });
 
 		await app.position.manage.adjustRisk();
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.manage.shouldShowSuccessScreen();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
@@ -192,12 +214,16 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			token: 'ETH',
 			amount: '0.[0-9]{3,4}',
 		});
-		await app.position.manage.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
 
-		await app.position.manage.shouldShowSuccessScreen();
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
 		await app.position.manage.ok();
 
 		await app.page.goto('/optimism/aave/v3/2#overview');

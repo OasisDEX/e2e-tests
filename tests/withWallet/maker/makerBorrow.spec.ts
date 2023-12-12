@@ -140,7 +140,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		// 		asset: 'ETH-A Summer.fi Borrow',
 		// 		amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
 		// 	});
-		// }).toPass();
+		// }).toPass({ timeout: longTestTimeout });
 	});
 
 	// Skipping test as Maker position pages don't open when using forks

@@ -4,7 +4,12 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { baseUrl, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import {
+	baseUrl,
+	extremelyLongTestTimeout,
+	longTestTimeout,
+	veryLongTestTimeout,
+} from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -64,7 +69,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 				await metamask.confirmPermissionToSpend();
 			});
 			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass();
+		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
@@ -117,7 +122,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 				await metamask.confirmPermissionToSpend();
 			});
 			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass();
+		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.manage.ok();
 
@@ -154,7 +159,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 				await metamask.confirmPermissionToSpend();
 			});
 			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass();
+		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.manage.ok();
 
@@ -192,7 +197,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 				await metamask.confirmPermissionToSpend();
 			});
 			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass();
+		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.manage.ok();
 
