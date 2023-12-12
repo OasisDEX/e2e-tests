@@ -4,7 +4,7 @@
 	"description": "E2E tests automation for oasis-borrow",
 	"main": "index.js",
 	"author": "juan-langa <juan@oazoapps.com>",
-	"license": "MIT",
+	"license": "Apache-2.0",
 	"devDependencies": {
 		"@ethersproject/providers": "^5.7.2",
 		"@playwright/test": "^1.37.1",
