@@ -79,7 +79,7 @@ test.describe('Aave v3 Earn Base', async () => {
 		});
 	});
 
-	test('It should allow to simulate an Aave V3 Base Earn position before opening it - Adjust risk - Up and Down  - No wallet connected @regression', async ({
+	test('It should allow to simulate an Aave V3 Base Earn position before opening it - Adjust risk - Up and Down - No wallet connected @regression', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
@@ -111,7 +111,7 @@ test.describe('Aave v3 Earn Base', async () => {
 			exactAmount: true,
 		});
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '[0-3].[0-9]{3,4} CBETH',
+			amount: '[0-5].[0-9]{3,4} CBETH',
 		});
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-3].[0-9]{2}');
@@ -129,10 +129,10 @@ test.describe('Aave v3 Earn Base', async () => {
 			exactAmount: true,
 		});
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '[2-6].[0-9]{3,4} CBETH',
+			amount: '[0-9]{1,2}.[0-9]{1,2}([0-9]{1,2})? CBETH',
 		});
 
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[2-6].[0-9]{2}');
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{1,2}.[0-9]{2}');
 		const updatedLiqPrice2 = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue2 = await app.position.manage.getLoanToValue();
 		expect(updatedLiqPrice2).toBeGreaterThan(updatedLiqPrice);

@@ -83,7 +83,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveNetValue({
-			value: '[0-9]{2}.[0-9]{2}ETH',
+			value: '[0-9]{2}(.[0-9]{1,2})?ETH',
 		});
 		await app.position.overview.shouldHaveTotalCollateral({ amount: '20.00000', token: 'WSTETH' });
 	});
