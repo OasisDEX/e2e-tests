@@ -7,6 +7,7 @@
 	"license": "Apache-2.0",
 	"devDependencies": {
 		"@ethersproject/providers": "^5.7.2",
+		"@inquirer/prompts": "^3.3.0",
 		"@playwright/test": "^1.37.1",
 		"@synthetixio/synpress": "^3.7.2-beta.7",
 		"axios": "^1.6.0",
@@ -55,6 +56,10 @@
 		"test:report:with-wallet:aave:ethereum": "npx playwright show-report playwright-reports/with-wallet-aave-ethereum",
 		"test:report:with-wallet:aave:other": "npx playwright show-report playwright-reports/with-wallet-aave-other",
 		"test:report:with-wallet:ajna": "npx playwright show-report playwright-reports/with-wallet-ajna",
-		"test:report:with-wallet:maker-and-spark": "npx playwright show-report playwright-reports/with-wallet-maker-and-spark"
+		"test:report:with-wallet:maker-and-spark": "npx playwright show-report playwright-reports/with-wallet-maker-and-spark",
+		"//-10a": "---------------------------------------------------------------",
+		"//-10b": "---------------------- MANUAL TESTING UTILS --------------------------------",
+		"//-10c": "---------------------------------------------------------------",
+		"create-fork": "npx ts-node utilsManualTesting/createfork.ts"
 	}
 }
