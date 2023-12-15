@@ -16,6 +16,7 @@ import { App } from 'src/app';
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -27,8 +28,8 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		let page = await context.newPage();
 		app = new App(page);
 
-		({ forkId } = await setup({ app, network: 'mainnet' }));
-		await tenderly.setRethBalance({ forkId, rEthBalance: '100' });
+		({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+		await tenderly.setRethBalance({ forkId, walletAddress, rEthBalance: '100' });
 	});
 
 	test.afterAll(async () => {

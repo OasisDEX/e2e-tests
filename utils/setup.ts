@@ -89,7 +89,7 @@ export const setup = async ({
 
 	await fork.addToApp({ app, forkId, network });
 
-	await tenderly.setEthBalance({ forkId, ethBalance: '100' });
+	await tenderly.setEthBalance({ forkId, walletAddress, ethBalance: '100' });
 
 	return { forkId, walletAddress };
 };

@@ -158,7 +158,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
-		await tenderly.setCbEthBalance({ forkId, cbEthBalance: '50' });
+		await tenderly.setCbEthBalanceBase({ forkId, walletAddress, cbEthBalance: '50' });
 
 		await app.page.goto('/base/aave/v3/multiply/cbethusdbc');
 

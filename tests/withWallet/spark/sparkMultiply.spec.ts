@@ -127,7 +127,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		// New fork needed to be able to close a Multiply position
 		await test.step('Test setup - New fork', async () => {
 			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
-			await tenderly.setEthBalance({ forkId, ethBalance: '100' });
+			await tenderly.setEthBalance({ forkId, walletAddress, ethBalance: '100' });
 		});
 
 		await tenderly.changeAccountOwner({

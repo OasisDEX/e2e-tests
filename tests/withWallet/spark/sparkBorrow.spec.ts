@@ -44,13 +44,8 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			app = new App(page);
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-		});
 
-		// New fork needed
-		await test.step('Test setup - New fork', async () => {
-			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
-			await tenderly.setEthBalance({ forkId, ethBalance: '20' });
-			await tenderly.setWbtcBalance({ forkId, wbtcBalance: '2' });
+			await tenderly.setWbtcBalance({ forkId, walletAddress, wbtcBalance: '2' });
 		});
 
 		await tenderly.changeAccountOwner({
@@ -61,7 +56,6 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.page.goto('/ethereum/spark/v3/1669#overview');
 		await app.position.manage.shouldBeVisible('Manage collateral');
-
 		await app.position.manage.enter({ token: 'WBTC', amount: '1' });
 
 		// Setting up allowance  randomly fails - Retry until it's set.

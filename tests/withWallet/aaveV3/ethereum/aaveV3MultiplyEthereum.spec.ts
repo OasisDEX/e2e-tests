@@ -47,7 +47,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 
-			await tenderly.setDaiBalance({ forkId, daiBalance: '30000' });
+			await tenderly.setDaiBalance({ forkId, walletAddress, daiBalance: '30000' });
 		});
 
 		await app.page.goto('/ethereum/aave/v3/multiply/daiwbtc');
@@ -160,7 +160,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		// New fork needed to be able to close a Multiply position
 		await test.step('Test setup - New fork', async () => {
 			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
-			await tenderly.setEthBalance({ forkId, ethBalance: '100' });
+			await tenderly.setEthBalance({ forkId, walletAddress, ethBalance: '100' });
 		});
 
 		await tenderly.changeAccountOwner({
@@ -208,7 +208,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		// New fork needed to be able to close a Multiply position
 		await test.step('Test setup - New fork', async () => {
 			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
-			await tenderly.setEthBalance({ forkId, ethBalance: '100' });
+			await tenderly.setEthBalance({ forkId, walletAddress, ethBalance: '100' });
 		});
 
 		await tenderly.changeAccountOwner({
