@@ -36,6 +36,50 @@ export const deleteFork = async (forkId: string) => {
 	return await request.delete(`${TENDERLY_FORK_API}/${forkId}`);
 };
 
+const mainnetTokenAddresses = {
+	DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
+	SDAI: '0x83F20F44975D03b1b09e64809B757c47f942BEeA',
+	RETH: '0xae78736cd615f374d3085123a210448e74fc6393',
+	WSTETH: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+	CBETH: '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
+	WBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+};
+
+/**
+ *
+ * @param balance In token units
+ */
+export const setTokenBalance = async ({
+	forkId,
+	token,
+	balance,
+	walletAddress,
+}: {
+	forkId: string;
+	token: 'ETH' | 'DAI' | 'SDAI' | 'RETH' | 'WSTETH' | 'CBETH' | 'WBTC';
+	balance: string;
+	walletAddress?: string;
+}) => {
+	const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
+
+	const WALLETS = walletAddress ? [walletAddress] : [WALLET_ADDRESS];
+
+	if (token === 'ETH') {
+		await provider.send('tenderly_setBalance', [
+			WALLETS,
+			ethers.toQuantity(ethers.parseUnits(balance, 'ether')),
+		]);
+	} else {
+		await provider.send('tenderly_setErc20Balance', [
+			mainnetTokenAddresses[token],
+			walletAddress,
+			token.includes('BTC')
+				? ethers.toQuantity(ethers.parseUnits(balance, 8))
+				: ethers.toQuantity(ethers.parseUnits(balance, 'ether')),
+		]);
+	}
+};
+
 /**
  *
  * @param ethBalance In ETH units
@@ -43,13 +87,15 @@ export const deleteFork = async (forkId: string) => {
 export const setEthBalance = async ({
 	forkId,
 	ethBalance,
+	walletAddress,
 }: {
 	forkId: string;
 	ethBalance: string;
+	walletAddress?: string;
 }) => {
 	const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
 
-	const WALLETS = [WALLET_ADDRESS];
+	const WALLETS = walletAddress ? [walletAddress] : [WALLET_ADDRESS];
 
 	await provider.send('tenderly_setBalance', [
 		WALLETS,
