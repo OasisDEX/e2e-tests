@@ -1,6 +1,10 @@
 import { input, rawlist } from '@inquirer/prompts';
 import * as tenderly from '../utils/tenderly';
 
+type Tokens = 'CBETH' | 'DAI' | 'ETH' | 'USDC' | 'RETH' | 'SDAI' | 'WBTC' | 'WSTETH';
+
+let walletAddress: string;
+
 (async () => {
 	const network: 'mainnet' | 'optimism' | 'arbitrum' | 'base' = await rawlist({
 		message: 'Select a network',
@@ -11,79 +15,40 @@ import * as tenderly from '../utils/tenderly';
 			{ name: 'Optimism', value: 'optimism' },
 		],
 	});
-	let walletAddress: string;
+
+	const tokens = Object.keys(tenderly.tokenAddresses[network]) as Tokens[];
 
 	const resp = await tenderly.createFork({ network });
 	const forkId = resp.data.root_transaction.fork_id;
+
+	walletAddress = await input({ message: 'Enter your wallet address: ' });
+
+	await tenderly.setTokenBalance({
+		forkId,
+		network,
+		token: 'ETH',
+		balance: tenderly.tokenBalances['ETH'],
+		walletAddress: walletAddress,
+	});
+
+	for (const token of tokens) {
+		await tenderly.setTokenBalance({
+			forkId,
+			network,
+			token,
+			balance: tenderly.tokenBalances[token],
+			walletAddress: walletAddress,
+		});
+	}
+
 	console.log(`Selected network: ${network}`);
-
-	if (network === 'mainnet') {
-		walletAddress = await input({ message: 'Enter your wallet address: ' });
-		console.log(`Wallet address: ${walletAddress}`);
-
-		// When using 'Promise.all()' some of the transactions randomly fail
-		await tenderly.setTokenBalance({
-			forkId,
-			network,
-			token: 'ETH',
-			balance: '5000',
-			walletAddress,
-		});
-		await tenderly.setTokenBalance({
-			forkId,
-			network,
-			token: 'DAI',
-			balance: '200000',
-			walletAddress,
-		});
-		await tenderly.setTokenBalance({
-			forkId,
-			network,
-			token: 'SDAI',
-			balance: '200000',
-			walletAddress,
-		});
-		await tenderly.setTokenBalance({
-			forkId,
-			network,
-			token: 'RETH',
-			balance: '5000',
-			walletAddress,
-		});
-		await tenderly.setTokenBalance({
-			forkId,
-			network,
-			token: 'WSTETH',
-			balance: '5000',
-			walletAddress,
-		});
-		await tenderly.setTokenBalance({
-			forkId,
-			network,
-			token: 'CBETH',
-			balance: '5000',
-			walletAddress,
-		});
-		await tenderly.setTokenBalance({
-			forkId,
-			network,
-			token: 'WBTC',
-			balance: '10',
-			walletAddress,
-		});
-	}
-
-	if (network === 'mainnet') {
-		console.log('-------------------------------------');
-		console.log('Tokens and balance:');
-		console.log('ETH - 5000');
-		console.log('RETH - 5000');
-		console.log('WSTETH - 5000');
-		console.log('CBETH - 5000');
-		console.log('DAI - 200000');
-		console.log('SDAI - 200000');
-		console.log('WBTC - 10');
-		console.log('-------------------------------------');
-	}
+	console.log(`Wallet address: ${walletAddress}`);
+	console.log('-------------------------------------');
+	console.log('*** FUNDS ***');
+	console.log(`ETH - ${tenderly.tokenBalances['ETH']}`);
+	tokens.forEach((token) => {
+		console.log(`${token} - ${tenderly.tokenBalances[token]}`);
+	});
+	console.log('-------------------------------------');
 	console.log('Fork RPC: ', `https://rpc.tenderly.co/fork/${forkId}`);
 })();
