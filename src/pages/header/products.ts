@@ -23,10 +23,15 @@ export class Products {
 
 	@step
 	async shouldLinkTo(product: 'Borrow' | 'Earn' | 'Multiply') {
+		const description = {
+			Borrow: 'Get liquidity from your crypto assets without selling',
+			Earn: 'Earn the best yields on your favourite crypto assets',
+			Multiply: 'Get increased exposure to your most valued crypto assets in one transaction',
+		};
 		await this.open();
 		await this.hoverOver(product);
 		await expect(
-			this.headerLocator.locator(`a:has-text("View all ${product} strategies")`)
+			this.headerLocator.getByRole('link').filter({ hasText: description[product] })
 		).toHaveAttribute('href', `/${product.toLocaleLowerCase()}`);
 	}
 
