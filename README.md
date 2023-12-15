@@ -58,7 +58,6 @@ The following environment variables are **mandatory** for **with wallet** tests:
 
 | Variable | Description |
 | --- | --- |
-| WALLET_ADDRESS | You'll need to use a test wallet for running the tests. |
 | TENDERLY_PROJECT | Your project in Tenderly. Or create a new one. |
 | TENDERLY_USER | Your user in Tenderly. Or create a new one. |
 | TENDERLY_ACCESS_KEY | Your access key in Tenderly. Create one if you don't have any. |
@@ -83,7 +82,7 @@ For now the tests have been setup so that they run only on desktop Chrome.
 
 1. Create `.env` file.
 
-2. For running **with wallet** tests, set `WALLET_ADDRESS`, `TENDERLY_PROJECT`, `TENDERLY_USER` and `TENDERLY_ACCESS_KEY` variables.
+2. For running **with wallet** tests, set `TENDERLY_PROJECT`, `TENDERLY_USER` and `TENDERLY_ACCESS_KEY` variables in `.env` file.
 
 3. Run tests by running, for example:
 - Run all tests:

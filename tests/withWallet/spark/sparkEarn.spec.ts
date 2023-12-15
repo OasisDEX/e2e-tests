@@ -51,7 +51,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 
-			await tenderly.setDaiBalance({ forkId, daiBalance: '30000' });
+			await tenderly.setDaiBalance({ forkId, walletAddress, daiBalance: '30000' });
 		});
 
 		await tenderly.changeAccountOwner({
@@ -178,7 +178,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await tenderly.setRethBalance({ forkId, rEthBalance: '100' });
+		await tenderly.setRethBalance({ forkId, walletAddress, rEthBalance: '100' });
 
 		await app.page.goto('/ethereum/spark/v3/earn/retheth#simulate');
 
