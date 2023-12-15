@@ -1,9 +1,29 @@
 import * as tenderly from '../utils/tenderly';
 
+type Networks = 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+
 const { NETWORK, WALLET_ADDRESS } = process.env;
+let network: Networks;
+switch (NETWORK) {
+	case 'mainnet':
+	default:
+		network = 'mainnet';
+		break;
+	case 'arbitrum':
+		network = 'arbitrum';
+		break;
+	case 'base':
+		network = 'base';
+		break;
+	case 'optimism':
+		network = 'optimism';
+		break;
+}
+
+let walletAddress: string = WALLET_ADDRESS;
 
 (async () => {
-	const resp = await tenderly.createFork({ network: NETWORK });
+	const resp = await tenderly.createFork({ network });
 	const forkId = resp.data.root_transaction.fork_id;
 
 	if (NETWORK === 'mainnet') {
@@ -11,7 +31,7 @@ const { NETWORK, WALLET_ADDRESS } = process.env;
 			forkId,
 			token: 'ETH',
 			balance: '5000',
-			walletAddress: WALLET_ADDRESS,
+			walletAddress: walletAddress,
 		});
 		await tenderly.setTokenBalance({
 			forkId,
@@ -23,7 +43,7 @@ const { NETWORK, WALLET_ADDRESS } = process.env;
 			forkId,
 			token: 'SDAI',
 			balance: '200000',
-			walletAddress: WALLET_ADDRESS,
+			walletAddress: walletAddress,
 		});
 		await tenderly.setTokenBalance({
 			forkId,
