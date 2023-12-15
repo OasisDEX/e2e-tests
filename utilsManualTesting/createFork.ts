@@ -15,9 +15,11 @@ import * as tenderly from '../utils/tenderly';
 
 	const resp = await tenderly.createFork({ network });
 	const forkId = resp.data.root_transaction.fork_id;
+	console.log(`Selected network: ${network}`);
 
 	if (network === 'mainnet') {
 		walletAddress = await input({ message: 'Enter your wallet address: ' });
+		console.log(`Wallet address: ${walletAddress}`);
 
 		// When using 'Promise.all()' some of the transactions randomly fail
 		await tenderly.setTokenBalance({ forkId, token: 'ETH', balance: '5000', walletAddress });
@@ -29,9 +31,7 @@ import * as tenderly from '../utils/tenderly';
 		await tenderly.setTokenBalance({ forkId, token: 'WBTC', balance: '10', walletAddress });
 	}
 
-	console.log(`Selected network: ${network}`);
 	if (network === 'mainnet') {
-		console.log(`Wallet address: ${walletAddress}`);
 		console.log('-------------------------------------');
 		console.log('Tokens and balance:');
 		console.log('ETH - 5000');
