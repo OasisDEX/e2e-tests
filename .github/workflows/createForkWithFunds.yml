@@ -23,6 +23,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Install TypeScript and ts-node
+        run: npm install typescript ts-node
       - name: Install dependencies
         run: yarn
       - name: Run create-fork

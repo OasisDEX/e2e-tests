@@ -12,8 +12,7 @@
 		"@synthetixio/synpress": "^3.7.2-beta.7",
 		"axios": "^1.6.0",
 		"dotenv": "^16.3.1",
-		"ethers": "^6.7.1",
-		"ts-node": "^10.9.2"
+		"ethers": "^6.7.1"
 	},
 	"scripts": {
 		"no-wallet": "REPORT_FOLDER=no-wallet npx playwright test --project=no-wallet",
