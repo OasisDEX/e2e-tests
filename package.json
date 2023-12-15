@@ -60,6 +60,7 @@
 		"//-10a": "---------------------------------------------------------------",
 		"//-10b": "---------------------- MANUAL TESTING UTILS --------------------------------",
 		"//-10c": "---------------------------------------------------------------",
-		"create-fork": "npx ts-node utilsManualTesting/createfork.ts"
+		"create-fork": "npx ts-node utilsManualTesting/createFork.ts",
+		"create-fork-github": "npx ts-node utilsManualTesting/createForkGithub.ts"
 	}
 }

@@ -1,0 +1,29 @@
+name: Create fork and add funds to wallet
+
+on: 
+  workflow_dispatch:
+    inputs:
+      network:
+        description: 'Which network do you want to fork?'
+        type: string
+        default: 'mainnet'
+        required: true
+      wallet:
+        description: 'Which wallet do you want to add funds to?'
+        type: string
+        default: ''
+        required: true
+
+jobs:
+  create-for-with-funds:
+    name: 'Create fork and add funds'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Run create-fork
+        run: NETWORK=${{ inputs.network }} WALLET_ADDRESS=${{ inputs.wallet}} yarn create-fork-github
