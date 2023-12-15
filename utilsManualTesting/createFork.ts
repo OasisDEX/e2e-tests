@@ -22,13 +22,55 @@ import * as tenderly from '../utils/tenderly';
 		console.log(`Wallet address: ${walletAddress}`);
 
 		// When using 'Promise.all()' some of the transactions randomly fail
-		await tenderly.setTokenBalance({ forkId, token: 'ETH', balance: '5000', walletAddress });
-		await tenderly.setTokenBalance({ forkId, token: 'DAI', balance: '200000', walletAddress });
-		await tenderly.setTokenBalance({ forkId, token: 'SDAI', balance: '200000', walletAddress });
-		await tenderly.setTokenBalance({ forkId, token: 'RETH', balance: '5000', walletAddress });
-		await tenderly.setTokenBalance({ forkId, token: 'WSTETH', balance: '5000', walletAddress });
-		await tenderly.setTokenBalance({ forkId, token: 'CBETH', balance: '5000', walletAddress });
-		await tenderly.setTokenBalance({ forkId, token: 'WBTC', balance: '10', walletAddress });
+		await tenderly.setTokenBalance({
+			forkId,
+			network,
+			token: 'ETH',
+			balance: '5000',
+			walletAddress,
+		});
+		await tenderly.setTokenBalance({
+			forkId,
+			network,
+			token: 'DAI',
+			balance: '200000',
+			walletAddress,
+		});
+		await tenderly.setTokenBalance({
+			forkId,
+			network,
+			token: 'SDAI',
+			balance: '200000',
+			walletAddress,
+		});
+		await tenderly.setTokenBalance({
+			forkId,
+			network,
+			token: 'RETH',
+			balance: '5000',
+			walletAddress,
+		});
+		await tenderly.setTokenBalance({
+			forkId,
+			network,
+			token: 'WSTETH',
+			balance: '5000',
+			walletAddress,
+		});
+		await tenderly.setTokenBalance({
+			forkId,
+			network,
+			token: 'CBETH',
+			balance: '5000',
+			walletAddress,
+		});
+		await tenderly.setTokenBalance({
+			forkId,
+			network,
+			token: 'WBTC',
+			balance: '10',
+			walletAddress,
+		});
 	}
 
 	if (network === 'mainnet') {
