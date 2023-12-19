@@ -44,31 +44,17 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			app = new App(page);
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-
-			await tenderly.setWbtcBalance({ forkId, walletAddress, wbtcBalance: '2' });
 		});
 
 		await tenderly.changeAccountOwner({
-			account: '0x648dd9e11414db57097903a3ed98f773af61ef09',
+			account: '0x3dc0f12ff0452cab029c3c185c9dc9061d1515c8',
 			newOwner: walletAddress,
 			forkId,
 		});
 
-		await app.page.goto('/ethereum/spark/v3/1669#overview');
+		await app.page.goto('/ethereum/spark/v3/1474#overview');
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.enter({ token: 'WBTC', amount: '1' });
-
-		// Setting up allowance  randomly fails - Retry until it's set.
-		await expect(async () => {
-			await app.position.setup.setupAllowance();
-			await app.position.setup.approveAllowance();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
+		await app.position.manage.deposit({ token: 'ETH', amount: '20' });
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {
@@ -85,7 +71,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			value: '[0-9]{2},[0-9]{3}.[0-9]{2}',
 			token: 'DAI',
 		});
-		await app.position.overview.shouldHaveExposure({ amount: '1.00000', token: 'WBTC' });
+		await app.position.overview.shouldHaveExposure({ amount: '20.[0-9]{5}', token: 'ETH' });
 	});
 
 	test('It should withdraw some collateral from an existent Spark Borrow position @regression', async () => {
@@ -97,10 +83,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.overview.shouldHaveExposure({ amount: '1.00000', token: 'WBTC' });
+		await app.position.overview.shouldHaveExposure({ amount: '20.[0-9]{5}', token: 'ETH' });
 
 		await app.position.manage.withdrawCollateral();
-		await app.position.manage.enter({ token: 'WBTC', amount: '0.1' });
+		await app.position.manage.withdraw({ token: 'ETH', amount: '5' });
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {
@@ -113,7 +99,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveExposure({ amount: '0.90000', token: 'WBTC' });
+		await app.position.overview.shouldHaveExposure({ amount: '15.[0-9]{5}', token: 'ETH' });
 	});
 
 	test('It should borrow more debt from an existing Spark Borrow position @regression', async () => {
@@ -125,11 +111,11 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '[0-9].[0-9]{4}', token: 'DAI' });
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Manage debt');
-		await app.position.manage.enter({ token: 'DAI', amount: '5000' });
+		await app.position.manage.borrow({ token: 'DAI', amount: '5000' });
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {
@@ -142,7 +128,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveDebt({ amount: '5,000.0000', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '5,[0-9]{3}.[0-9]{4}', token: 'DAI' });
 	});
 
 	test('It should pay back some debt from an existing Spark Borrow position @regression', async () => {
@@ -154,18 +140,18 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '5,[0-9]{3}.[0-9]{4}', token: 'DAI' });
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Manage debt');
 		await app.position.manage.payBackDebt();
-		await app.position.manage.enter({ token: 'DAI', amount: '3000' });
+		await app.position.manage.payback({ token: 'DAI', amount: '3000' });
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
 			await app.position.setup.setupAllowance();
 			await app.position.setup.approveAllowance();
 			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
+				await metamask.confirmAddToken({});
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
@@ -182,10 +168,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveDebt({ amount: '2,000.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '[2-3],[0-9]{3}.[0-9]{4}', token: 'DAI' });
 	});
 
-	test('It should adjust risk of an existent Spark Borrow position - Up (WBTC/DAI) @regression', async () => {
+	test('It should adjust risk of an existent Spark Borrow position - Up (ETH/DAI) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13050',
@@ -194,7 +180,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Adjust');
 
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
@@ -217,7 +203,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Adjust');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
@@ -225,7 +211,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
-	test('It should adjust risk of an existent Spark Borrow position - Down (WBTC/DAI) @regression', async () => {
+	test('It should adjust risk of an existent Spark Borrow position - Down (ETH/DAI) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13051',
@@ -254,7 +240,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage WBTC' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Adjust');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
@@ -263,7 +249,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	test('It should close an existent Spark Borrow position - Close to collateral token (WBTC) @regression', async () => {
+	test('It should close an existent Spark Borrow position - Close to collateral token (ETH) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13077',
@@ -274,10 +260,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage Borrow position');
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');
-		await app.position.manage.closeTo('WBTC');
+		await app.position.manage.closeTo('ETH');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'WBTC',
-			amount: '0.[0-9]{3,4}',
+			token: 'ETH',
+			amount: '[0-9]{1,2}.[0-9]{1,2}([0-9]{1,2})?',
 		});
 
 		// Confirm action randomly fails - Retry until it's applied.
@@ -291,12 +277,12 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.page.goto('/ethereum/spark/v3/1669#overview');
+		await app.page.goto('/ethereum/spark/v3/1474#overview');
 		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'DAI' });
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
 		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'DAI' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'WBTC' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
 	});
 
@@ -321,7 +307,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.closeTo('DAI');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
 			token: 'DAI',
-			amount: '[0-3].[0-9]{3,4}',
+			amount: '[0-9]{2},[0-9]{3}.[0-9]{1,2}([0-9]{1,2})?',
 		});
 
 		// Confirm action randomly fails - Retry until it's applied.

@@ -131,12 +131,48 @@ export class Manage {
 	}
 
 	@step
+	async deposit({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Deposit ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
+	@step
+	async withdraw({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Withdraw ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
+	@step
+	async borrow({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Borrow ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
+	@step
+	async payback({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Payback ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
+	@step
 	async withdrawCollateral() {
-		await this.page.getByRole('button', { name: 'Withdraw collateral' }).click();
+		await this.page.getByRole('button', { name: 'Withdraw' }).click();
 	}
 
 	@step
 	async payBackDebt() {
-		await this.page.getByRole('button', { name: 'Pay back debt' }).click();
+		await this.page.getByRole('button', { name: 'Payback' }).click();
 	}
 }

@@ -60,7 +60,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
-		await app.position.manage.enter({ token: 'WSTETH', amount: '20' });
+		await app.position.manage.deposit({ token: 'WSTETH', amount: '20' });
 		await expect(async () => {
 			await app.position.setup.setupAllowance();
 			await app.position.setup.approveAllowance();
@@ -102,7 +102,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
 		await app.position.manage.withdrawCollateral();
-		await app.position.manage.enter({ token: 'WSTETH', amount: '5' });
+		await app.position.manage.withdraw({ token: 'WSTETH', amount: '5' });
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {
@@ -131,7 +131,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
-		await app.position.manage.enter({ token: 'ETH', amount: '5' });
+		await app.position.manage.borrow({ token: 'ETH', amount: '5' });
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {
@@ -161,7 +161,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
 		await app.position.manage.payBackDebt();
-		await app.position.manage.enter({ token: 'ETH', amount: '2' });
+		await app.position.manage.payback({ token: 'ETH', amount: '2' });
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {

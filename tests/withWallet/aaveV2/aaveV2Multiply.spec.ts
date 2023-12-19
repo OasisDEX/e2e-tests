@@ -57,7 +57,7 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
-		await app.position.manage.enter({ token: 'ETH', amount: '15' });
+		await app.position.manage.deposit({ token: 'ETH', amount: '15' });
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {

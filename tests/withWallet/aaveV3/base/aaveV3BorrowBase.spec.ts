@@ -55,7 +55,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await app.page.goto('/base/aave/v3/2#overview');
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.enter({ token: 'ETH', amount: '15' });
+		await app.position.manage.deposit({ token: 'ETH', amount: '15' });
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {
