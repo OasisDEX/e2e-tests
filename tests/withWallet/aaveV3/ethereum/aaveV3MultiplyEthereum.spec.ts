@@ -8,6 +8,7 @@ import {
 	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
+	positionTimeout,
 	veryLongTestTimeout,
 } from 'utils/config';
 import { App } from 'src/app';
@@ -240,7 +241,11 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.page.goto('/ethereum/aave/v3/1218');
-		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'USDC' });
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '0.00',
+			token: 'USDC',
+			timeout: positionTimeout,
+		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
 		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDC' });

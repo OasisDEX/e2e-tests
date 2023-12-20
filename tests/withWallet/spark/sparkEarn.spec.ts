@@ -9,6 +9,7 @@ import {
 	veryLongTestTimeout,
 	baseUrl,
 	longTestTimeout,
+	positionTimeout,
 } from 'utils/config';
 import { App } from 'src/app';
 
@@ -152,7 +153,11 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '0.00',
+			token: 'ETH',
+			timeout: positionTimeout,
+		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
 		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });

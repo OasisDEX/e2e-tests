@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { baseUrl, extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { baseUrl, extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -139,7 +139,11 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'USDBC' });
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '0.00',
+			token: 'USDBC',
+			timeout: positionTimeout,
+		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
 		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDBC' });

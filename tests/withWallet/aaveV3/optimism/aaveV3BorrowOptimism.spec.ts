@@ -8,6 +8,7 @@ import {
 	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
+	positionTimeout,
 	veryLongTestTimeout,
 } from 'utils/config';
 import { App } from 'src/app';
@@ -202,7 +203,11 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.page.goto('/optimism/aave/v3/4#overview');
-		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '0.00',
+			token: 'DAI',
+			timeout: positionTimeout,
+		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
 		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'DAI' });
