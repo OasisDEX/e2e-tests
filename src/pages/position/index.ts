@@ -31,4 +31,11 @@ export class Position {
 			timeout: positionTimeout,
 		});
 	}
+
+	@step
+	async shouldHaveTab(text: string) {
+		await expect(this.page.getByRole('button', { name: text })).toBeVisible({
+			timeout: positionTimeout,
+		});
+	}
 }
