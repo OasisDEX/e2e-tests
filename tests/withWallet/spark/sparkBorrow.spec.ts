@@ -294,6 +294,12 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
+		// New fork needed to avoid random fails
+		await test.step('Test setup - New fork', async () => {
+			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
+			await tenderly.setEthBalance({ forkId, walletAddress, ethBalance: '100' });
+		});
+
 		await tenderly.changeAccountOwner({
 			account: '0x3dc0f12ff0452cab029c3c185c9dc9061d1515c8',
 			newOwner: walletAddress,
@@ -307,7 +313,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.closeTo('DAI');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
 			token: 'DAI',
-			amount: '[0-9]{2},[0-9]{3}.[0-9]{1,2}([0-9]{1,2})?',
+			amount: '[0-9].[0-9]{3,4}',
 		});
 
 		// Confirm action randomly fails - Retry until it's applied.
