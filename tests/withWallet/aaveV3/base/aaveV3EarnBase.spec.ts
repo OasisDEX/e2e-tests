@@ -9,6 +9,7 @@ import {
 	baseUrl,
 	veryLongTestTimeout,
 	longTestTimeout,
+	positionTimeout,
 } from 'utils/config';
 import { App } from 'src/app';
 
@@ -148,7 +149,11 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.page.goto('/base/aave/v3/18#overview');
-		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00', token: 'CBETH' });
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '0.00',
+			token: 'CBETH',
+			timeout: positionTimeout,
+		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
 		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'CBETH' });

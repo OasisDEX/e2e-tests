@@ -1,6 +1,6 @@
 import { step } from '#noWalletFixtures';
 import { expect, Page } from '@playwright/test';
-import { positionTimeout } from 'utils/config';
+import { expectDefaultTimeout, positionTimeout } from 'utils/config';
 
 export class Overview {
 	readonly page: Page;
@@ -72,11 +72,16 @@ export class Overview {
 	 	@param price - It must be regExp string representing the the whole amount
 	*/
 	@step
-	async shouldHaveLiquidationPrice({ price, token }: { price: string; token?: string }) {
+	async shouldHaveLiquidationPrice(
+		{ price, token, timeout }: { price: string; token?: string; timeout?: number } = {
+			price: '',
+			timeout: expectDefaultTimeout,
+		}
+	) {
 		const regExp = new RegExp(`${price}${token ? ` ${token}` : ''}`);
 		await expect(
 			this.page.getByText('Liquidation Price').locator('xpath=//following-sibling::p[1]')
-		).toContainText(regExp, { timeout: positionTimeout });
+		).toContainText(regExp, { timeout });
 	}
 
 	@step
