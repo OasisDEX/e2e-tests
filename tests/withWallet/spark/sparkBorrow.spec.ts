@@ -53,8 +53,17 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/ethereum/spark/v3/1474#overview');
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.deposit({ token: 'ETH', amount: '20' });
+		// Wait for all position data to be loaded
+		await app.position.shouldHaveTab('Protection ON');
+		// Wait for gas to be estimated
+		await expect(async () => {
+			await app.position.manage.deposit({ token: 'ETH', amount: '0' });
+			await app.position.manage.deposit({ token: 'ETH', amount: '20' });
+			await app.position.setup.orderInformation.shouldHaveTransactionFee({
+				fee: '0',
+				gas: '[0-9].[0-9]{4,5}',
+			});
+		}).toPass({ intervals: [1_000, 10_000, 10_000], timeout: 30_000 });
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {

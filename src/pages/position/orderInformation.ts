@@ -163,8 +163,19 @@ export class OrderInformation {
 	}
 
 	@step
-	async shouldHaveTransactionFee({ fee, token }: { fee: string; token?: string }) {
-		const regExp = new RegExp(`${fee}${token ? ` ${token}` : ''} \\+ \\(n/a\\)`);
+	async shouldHaveTransactionFee({
+		fee,
+		token,
+		gas,
+	}: {
+		fee: string;
+		token?: string;
+		gas?: string;
+	}) {
+		// const regExp = new RegExp(`${fee}${token ? ` ${token}` : ''} \\+ \\(n/a\\)`);
+		const regExp = new RegExp(
+			`${fee}${token ? ` ${token}` : ''}${gas ? ` \\+ \\(${gas} ETH\\)` : ''}`
+		);
 
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Transaction fee")')
