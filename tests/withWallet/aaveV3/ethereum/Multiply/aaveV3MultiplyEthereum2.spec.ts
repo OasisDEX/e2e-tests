@@ -138,4 +138,77 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveDebt({ amount: '30,[0-9]{3}.[0-9]{4}', token: 'DAI' });
 	});
+
+	test('It should Borrow and Deposit in a single tx on an existing Aave V3 Multiply Ethereum position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13666',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.overview.shouldHaveExposure({ amount: '4[1-2].[0-9]{5}', token: 'RETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '30,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Manage debt');
+		await app.position.manage.borrow({ token: 'DAI', amount: '20000' });
+		await app.position.manage.deposit({ token: 'RETH', amount: '15' });
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveExposure({
+			amount: '5[6-7].[0-9]{5}',
+			token: 'RETH',
+			timeout: positionTimeout,
+		});
+		await app.position.overview.shouldHaveDebt({ amount: '50,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+	});
+
+	test('It should Pay back and Withdraw in a single tx on an existing Aave V3 Multiply Ethereum position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13667',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.overview.shouldHaveExposure({ amount: '5[6-7].[0-9]{5}', token: 'RETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '50,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Manage debt');
+		await app.position.manage.payBackDebt();
+		await app.position.manage.payback({ token: 'DAI', amount: '42000' });
+		await app.position.manage.withdraw({ token: 'RETH', amount: '30' });
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveExposure({
+			amount: '2[6-7].[0-9]{5}',
+			token: 'RETH',
+			timeout: positionTimeout,
+		});
+		await app.position.overview.shouldHaveDebt({ amount: '8,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+	});
 });
