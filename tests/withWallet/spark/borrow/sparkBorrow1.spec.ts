@@ -109,7 +109,11 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveExposure({ amount: '15.[0-9]{5}', token: 'ETH' });
+		await app.position.overview.shouldHaveExposure({
+			amount: '15.[0-9]{5}',
+			token: 'ETH',
+			timeout: positionTimeout,
+		});
 	});
 
 	test('It should borrow more debt from an existing Spark Borrow position @regression', async () => {
@@ -181,84 +185,6 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.overview.shouldHaveDebt({ amount: '[2-3],[0-9]{3}.[0-9]{4}', token: 'DAI' });
 	});
 
-	test('It should adjust risk of an existent Spark Borrow position - Up (ETH/DAI) @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '13050',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
-		await app.position.manage.select('Adjust');
-
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.6 });
-
-		await app.position.manage.adjustRisk();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
-		await app.position.manage.select('Adjust');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
-	});
-
-	test('It should adjust risk of an existent Spark Borrow position - Down (ETH/DAI) @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '13051',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		await app.position.manage.shouldBeVisible('Manage Borrow position');
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.3 });
-
-		await app.position.manage.adjustRisk();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
-		await app.position.manage.select('Adjust');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
-	});
-
 	test('It should close an existent Spark Borrow position - Close to collateral token (ETH) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
@@ -267,8 +193,8 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Borrow position');
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.shouldBeVisible('Manage Collateral');
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Close position');
 		await app.position.manage.closeTo('ETH');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({

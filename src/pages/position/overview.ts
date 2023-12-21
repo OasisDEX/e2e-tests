@@ -175,11 +175,17 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveExposure({ amount, token }: { amount: string; token: string }) {
+	async shouldHaveExposure(
+		{ amount, token, timeout }: { amount: string; token: string; timeout?: number } = {
+			amount: '',
+			token: '',
+			timeout: expectDefaultTimeout,
+		}
+	) {
 		let regExp = new RegExp(`${amount} ${token}`);
 
 		await expect(this.page.locator('li:has-text("exposure") > p')).toHaveText(regExp, {
-			timeout: positionTimeout,
+			timeout,
 		});
 	}
 
