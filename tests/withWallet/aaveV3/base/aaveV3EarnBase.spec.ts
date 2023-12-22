@@ -6,7 +6,6 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
 	extremelyLongTestTimeout,
-	baseUrl,
 	veryLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -31,10 +30,10 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should adjust risk of an existent Aave V3 Earn Base position - Down @regression', async () => {
+	test('It should open an Aave V3 Earn Base position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '13069',
+			description: '12471',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -49,13 +48,56 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			await tenderly.setCbEthBalanceBase({ forkId, walletAddress, cbEthBalance: '20' });
 		});
 
-		await tenderly.changeAccountOwner({
-			account: '0x773aa707436b0ea8829f1aae6dcfbe3ba8508a3e',
-			newOwner: walletAddress,
-			forkId,
+		await app.page.goto('/base/aave/v3/earn/cbetheth#simulate');
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'CBETH', amount: '5' });
+		await app.position.setup.createSmartDeFiAccount();
+
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.createSmartDeFiAccount();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.setupAllowance();
+			await app.position.setup.approveAllowance();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+		await app.position.setup.openMultiplyPosition1Of2();
+
+		// Position creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.setup.goToPositionShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.goToPosition();
+		await app.position.manage.shouldBeVisible('Manage ');
+	});
+
+	test('It should adjust risk of an existent Aave V3 Earn Base position - Down @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13069',
 		});
 
-		await app.page.goto('/base/aave/v3/18#overview');
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
 
@@ -63,7 +105,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.3 });
+		await app.position.manage.moveSlider({ value: 0.1 });
 
 		await app.position.manage.adjustRisk();
 
@@ -161,58 +203,5 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'ETH' });
 		await app.position.overview.shouldHaveMultiple('1');
 		await app.position.overview.shouldHaveBuyingPower('0.00');
-	});
-
-	test('It should open an Aave V3 Earn Base position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12471',
-		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		await app.page.goto('/base/aave/v3/earn/cbetheth#simulate');
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'CBETH', amount: '20' });
-		await app.position.setup.createSmartDeFiAccount();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-
-		// Setting up allowance  randomly fails - Retry until it's set.
-		await expect(async () => {
-			await app.position.setup.setupAllowance();
-			await app.position.setup.approveAllowance();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-		await app.position.setup.openMultiplyPosition1Of2();
-
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
 	});
 });

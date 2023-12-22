@@ -6,7 +6,6 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
 	extremelyLongTestTimeout,
-	baseUrl,
 	veryLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -31,10 +30,10 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should deposit extra collateral on an existent Aave V3 Borrow Base position @regression', async () => {
+	test('It should open an Aave V3 Borrow Base position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '13035',
+			description: '12473',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -47,16 +46,48 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
 		});
 
-		await tenderly.changeAccountOwner({
-			account: '0x94a7bf1ba459f3895e3936c4c6bc32eea266fc21',
-			newOwner: walletAddress,
-			forkId,
+		await app.page.goto('/base/aave/v3/borrow/ethusdbc#simulate');
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'ETH', amount: '9.12345' });
+		await app.position.setup.borrow({ token: 'USDBC', amount: '2000' });
+		await app.position.setup.createSmartDeFiAccount();
+
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.createSmartDeFiAccount();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+		await app.position.setup.openBorrowPosition1Of2();
+
+		// Position creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.setup.goToPositionShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.goToPosition();
+		await app.position.manage.shouldBeVisible('Manage collateral');
+	});
+
+	test('It should deposit extra collateral on an existent Aave V3 Borrow Base position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13035',
 		});
 
-		await app.page.goto('/base/aave/v3/2#overview');
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.deposit({ token: 'ETH', amount: '15' });
+		await app.position.manage.deposit({ token: 'ETH', amount: '1' });
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {
@@ -73,7 +104,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			value: '[0-9]{2},[0-9]{3}.[0-9]{2}',
 			token: 'USDBC',
 		});
-		await app.position.overview.shouldHaveExposure({ amount: '15.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveExposure({ amount: '10.[0-9]{5}', token: 'ETH' });
 	});
 
 	test('It should adjust risk of an existent Aave V3 Borrow Base position - Up @regression', async () => {
@@ -91,7 +122,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.7 });
+		await app.position.manage.moveSlider({ value: 0.4 });
 
 		await app.position.manage.adjustRisk();
 
@@ -128,7 +159,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.3 });
+		await app.position.manage.moveSlider({ value: 0.2 });
 
 		await app.position.manage.adjustRisk();
 
@@ -192,47 +223,5 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDBC' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDBC' });
-	});
-
-	test('It should open an Aave V3 Borrow Base position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12473',
-		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		await app.page.goto('/base/aave/v3/borrow/ethusdbc#simulate');
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '9.12345' });
-		await app.position.setup.borrow({ token: 'USDBC', amount: '2000' });
-		await app.position.setup.createSmartDeFiAccount();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-		await app.position.setup.openBorrowPosition1Of2();
-
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
 	});
 });

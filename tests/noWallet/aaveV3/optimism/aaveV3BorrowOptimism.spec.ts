@@ -49,7 +49,7 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
 	});
 
-	test('It should open existent Aave V3 Borrow Optimism vault page @regression', async ({
+	test('It should open an existing Aave V3 Borrow Optimism vault page @regression', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);

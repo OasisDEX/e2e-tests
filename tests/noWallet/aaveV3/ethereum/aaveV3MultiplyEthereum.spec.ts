@@ -192,7 +192,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		);
 	});
 
-	test('It should open existent Aave V3 Multiply Ethereum vault page @regression', async ({
+	test('It should open an existing Aave V3 Multiply Ethereum vault page @regression', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);
