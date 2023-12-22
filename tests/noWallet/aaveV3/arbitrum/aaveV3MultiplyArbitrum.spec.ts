@@ -132,7 +132,7 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 		expect(updatedLoanToValue2).toBeLessThan(updatedLoanToValue);
 	});
 
-	test('It should open existent Aave V3 Multiply Arbitrum vault page @regression', async ({
+	test('It should open an existing Aave V3 Multiply Arbitrum vault page @regression', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);

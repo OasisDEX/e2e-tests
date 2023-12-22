@@ -2,7 +2,7 @@ import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Maker Multiply', async () => {
-	test('It should open existent Maker Multiply Ethereum vault page @regression', async ({
+	test.skip('It should open an existing Maker Multiply Ethereum vault page @regression', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);

@@ -135,7 +135,7 @@ test.describe('Spark Earn', async () => {
 		expect(updatedLoanToValue2).toBeLessThan(updatedLoanToValue);
 	});
 
-	test('It should open existent Spark Earn Ethereum vault page @regression', async ({ app }) => {
+	test('It should open an existing Spark Earn Ethereum vault page @regression', async ({ app }) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		test.info().annotations.push({
