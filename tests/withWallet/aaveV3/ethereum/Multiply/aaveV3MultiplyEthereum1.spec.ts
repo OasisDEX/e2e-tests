@@ -5,7 +5,6 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
-	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -36,8 +35,6 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			type: 'Test case',
 			description: '11769',
 		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -96,25 +93,56 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
+	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC) @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12057',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Close position');
+
+		await app.position.manage.closeTo('WBTC');
+		await app.position.manage.shouldHaveTokenAmountAfterClosing({
+			token: 'WBTC',
+			amount: '[0-1].[0-9]{3,4}',
+		});
+
+		// Transaction randomly fails - Retry until it's completed.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.manage.ok();
+
+		await app.page.goto('/ethereum/aave/v3/1782#overview');
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '0.00',
+			token: 'DAI',
+			timeout: positionTimeout,
+		});
+		await app.position.overview.shouldHaveLoanToValue('0.00');
+		await app.position.overview.shouldHaveBorrowCost('0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.0000', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'WBTC' });
+		await app.position.overview.shouldHaveMultiple('1');
+		await app.position.overview.shouldHaveBuyingPower('0.00');
+	});
+
 	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12055',
 		});
 
-		if (baseUrl.includes('staging') || baseUrl.includes('//summer.fi')) {
-			test.setTimeout(extremelyLongTestTimeout);
-
-			await test.step('Test setup', async () => {
-				({ context } = await metamaskSetUp({ network: 'mainnet' }));
-				let page = await context.newPage();
-				app = new App(page);
-
-				({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-			});
-		} else {
-			test.setTimeout(veryLongTestTimeout);
-		}
+		test.setTimeout(veryLongTestTimeout);
 
 		await tenderly.changeAccountOwner({
 			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
@@ -199,7 +227,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (ETH) @regression', async () => {
+	test('It should close an existent Aave V3 Multiply Ethereum position - Close to collateral token (ETH) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12057',
