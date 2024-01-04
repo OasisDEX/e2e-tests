@@ -5,7 +5,6 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
-	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -37,23 +36,26 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			description: '11682',
 		});
 
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'mainnet' }));
-			let page = await context.newPage();
-			app = new App(page);
+		({ context } = await metamaskSetUp({ network: 'mainnet' }));
+		let page = await context.newPage();
+		app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+		({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+		await tenderly.setTokenBalance({
+			forkId,
+			network: 'mainnet',
+			walletAddress,
+			token: 'CBETH',
+			balance: '50',
 		});
 
-		await app.page.goto('/ethereum/aave/v3/borrow/ethusdc');
+		await app.page.goto('/ethereum/aave/v3/borrow/cbetheth#simulate');
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '7.5' });
-		await app.position.setup.borrow({ token: 'USDC', amount: '2000' });
+		await app.position.setup.deposit({ token: 'CBETH', amount: '7.5' });
+		await app.position.setup.borrow({ token: 'ETH', amount: '3' });
 		await app.position.setup.createSmartDeFiAccount();
 		// Confirmation button with same label
 		await app.position.setup.createSmartDeFiAccount();
@@ -61,6 +63,19 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			await metamask.confirmAddToken();
 		});
 		await app.position.setup.continue();
+
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.setupAllowance();
+			await app.position.setup.approveAllowance();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+
 		await app.position.setup.openBorrowPosition1Of2();
 
 		// Position creation randomly fails - Retry until it's created.
@@ -73,7 +88,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await app.position.manage.shouldBeVisible('Manage collateral');
 	});
 
 	test('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Up @regression', async () => {
@@ -82,27 +97,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			description: '12058',
 		});
 
-		if (baseUrl.includes('staging') || baseUrl.includes('//summer.fi')) {
-			test.setTimeout(extremelyLongTestTimeout);
-
-			await test.step('Test setup', async () => {
-				({ context } = await metamaskSetUp({ network: 'mainnet' }));
-				let page = await context.newPage();
-				app = new App(page);
-
-				({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-			});
-		} else {
-			test.setTimeout(veryLongTestTimeout);
-		}
-
-		await tenderly.changeAccountOwner({
-			account: '0x683ab4100c253ddca342772501775bb87340551b',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.page.goto('/ethereum/aave/v3/1277#overview');
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
 		await app.position.manage.openManageOptions({ currentLabel: 'Manage CBETH' });
@@ -112,7 +107,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.5 });
+		await app.position.manage.moveSlider({ value: 0.6 });
 
 		await app.position.manage.adjustRisk();
 
@@ -188,7 +183,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		await app.position.manage.closeTo('CBETH');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
 			token: 'CBETH',
-			amount: '0.[0-9]{3,4}',
+			amount: '[4-7].[0-9]{3,4}',
 		});
 
 		// Confirm action randomly fails - Retry until it's applied.
@@ -202,7 +197,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.page.goto('/ethereum/aave/v3/1277#overview');
+		await app.page.goto('/ethereum/aave/v3/1822#overview');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
 			token: 'ETH',
