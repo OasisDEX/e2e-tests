@@ -177,7 +177,10 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
+		// Getting position page url before closing position
 		await app.position.manage.shouldBeVisible('Manage Borrow position');
+		const positionPage = app.page.url();
+
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');
 		await app.position.manage.closeTo('CBETH');
@@ -197,7 +200,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.page.goto('/ethereum/aave/v3/1822#overview');
+		await app.page.goto(positionPage);
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
 			token: 'ETH',
