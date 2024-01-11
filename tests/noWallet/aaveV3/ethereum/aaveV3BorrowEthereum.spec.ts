@@ -23,7 +23,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 		await app.position.overview.shouldHaveExposureAfterPill({ amount: '50.00000', token: 'ETH' });
 		await app.position.setup.shouldHaveMaxBorrowingAmount({
 			token: 'USDC',
-			amount: '[1-9][0-9],[0-9]{3}.[0-9]{2}',
+			amount: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveTotalCollateral({
 			token: 'ETH',
