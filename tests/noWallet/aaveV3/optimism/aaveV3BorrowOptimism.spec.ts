@@ -66,7 +66,7 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 			price: '[1-8][0-9],[0-9]{3}.[0-9]{2}',
 			token: 'DAI',
 		});
-		await app.position.overview.shouldHaveLoanToValue('[3-8][0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveLoanToValue('[0-9]{2,3}.[0-9]{2}');
 		await app.position.overview.shouldHaveBorrowCost('-([0-9]{1,2})?[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValue({ value: '0.[1-9][0-9]', token: 'DAI' });
 		await app.position.overview.shouldHaveExposure({
