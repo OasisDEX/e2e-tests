@@ -32,15 +32,6 @@ const defaultConfig: PlaywrightTestConfig = {
 		{
 			name: 'no-wallet',
 			testMatch: ['noWallet/**'],
-			testIgnore: ['noWallet/ajna/**'],
-			use: {
-				...devices['Desktop Chrome'],
-			},
-		},
-
-		{
-			name: 'no-wallet-ajna',
-			testMatch: ['noWallet/ajna/**'],
 			use: {
 				...devices['Desktop Chrome'],
 			},

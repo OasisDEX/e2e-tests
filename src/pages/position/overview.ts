@@ -312,6 +312,14 @@ export class Overview {
 	}
 
 	@step
+	async shouldHaveCollateralDepositedAfterPill(collateral: string) {
+		const regExp = new RegExp(collateral);
+		await expect(
+			this.page.getByText('Collateral Deposited').locator('..').getByText('After')
+		).toContainText(regExp, { timeout: positionTimeout });
+	}
+
+	@step
 	async shouldHaveAvailableToWithdraw({ amount, token }: { amount: string; token: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
