@@ -16,7 +16,6 @@
 	},
 	"scripts": {
 		"no-wallet": "REPORT_FOLDER=no-wallet npx playwright test --project=no-wallet",
-		"no-wallet:ajna": "REPORT_FOLDER=no-wallet npx playwright test --project=no-wallet-ajna",
 		"with-wallet:aave:ethereum": "REPORT_FOLDER=with-wallet-aave-ethereum npx playwright test --project=with-wallet-aave-ethereum --workers=1",
 		"with-wallet:aave:other": "REPORT_FOLDER=with-wallet-aave-other npx playwright test --project=with-wallet-aave-other --workers=1",
 		"with-wallet:ajna": "REPORT_FOLDER=with-wallet-ajna npx playwright test --project=with-wallet-ajna --workers=1",

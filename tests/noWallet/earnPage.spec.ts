@@ -10,8 +10,7 @@ test.describe('Earn page', async () => {
 		await app.earn.productHub.list.allPoolsShouldBe('Earn');
 	});
 
-	// !!! Test skipped until Ajna products are enabled back
-	test.skip('It should open Earn pool finder', async ({ app }) => {
+	test('It should open Earn pool finder', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11556',
