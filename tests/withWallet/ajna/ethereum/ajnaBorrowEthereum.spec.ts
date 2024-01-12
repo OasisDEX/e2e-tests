@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { hooksTimeout, extremelyLongTestTimeout, baseUrl, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -64,7 +64,8 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
 			token: 'USDC',
 		});
-		await app.position.setup.shouldHaveMaxBorrowingAmount({
+
+		await app.position.setup.shouldHaveMinBorrowingAmount({
 			token: 'USDC',
 			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
 		});
@@ -153,8 +154,8 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		await app.page.goto('/ethereum/ajna/borrow/WSTETH-ETH#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'WSTETH', amount: '5' });
-		await app.position.setup.borrow({ token: 'ETH', amount: '4' });
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '10' });
+		await app.position.setup.borrow({ token: 'ETH', amount: '7' });
 
 		await app.position.setup.createSmartDeFiAccount();
 

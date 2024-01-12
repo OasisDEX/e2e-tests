@@ -21,7 +21,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-4][0-9].[0-9]{2}%');
 		await app.position.overview.shouldHaveBorrowCostAfterPill('[0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2,3},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveNetValueAfterPill('2.[0-9]{2}');
 		await app.position.overview.shouldHaveExposureAfterPill({
 			amount: '[2-4].[0-9]{5}',
 			token: 'WBTC',
@@ -211,7 +211,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		});
 		await app.position.overview.shouldHaveLoanToValue('[2-8][0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveBorrowCost('[0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveNetValue({ value: '[0-9]{1,2}.[0-9]{2}', token: 'USDC' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.[0-9]{2}', token: 'ETH' });
 		await app.position.overview.shouldHaveExposure({
 			amount: '0.[0-9]{5}',
 			token: 'ETH',

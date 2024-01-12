@@ -79,8 +79,8 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveNetValue({
-			value: '[0-9]{2},[0-9]{3}.[0-9]{2}',
-			token: 'DAI',
+			value: '[0-9]{2}.[0-9]{2}',
+			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveExposure({ amount: '20.[0-9]{5}', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '15,[0-9]{3}.[0-9]{4}', token: 'DAI' });
@@ -130,8 +130,8 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveNetValue({
-			value: '[0-9]{2},[0-9]{3}.[0-9]{2}',
-			token: 'DAI',
+			value: '[0-9]{2}.[0-9]{2}',
+			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveExposure({ amount: '15.[0-9]{5}', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '10,[0-9]{3}.[0-9]{4}', token: 'DAI' });

@@ -45,7 +45,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 				network: 'mainnet',
 				walletAddress,
 				token: 'WBTC',
-				balance: '2',
+				balance: '5',
 			});
 		});
 
@@ -158,7 +158,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.setup.deposit({ token: 'WBTC', amount: '0.8' });
+		await app.position.setup.deposit({ token: 'WBTC', amount: '2' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.

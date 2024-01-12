@@ -18,7 +18,7 @@ test.describe('Spark Borrow', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'WSTETH', amount: '19.12345' });
 
-		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveNetValueAfterPill('19.12');
 		await app.position.overview.shouldHaveExposureAfterPill({
 			amount: '19.12345',
 			token: 'WSTETH',
@@ -38,7 +38,7 @@ test.describe('Spark Borrow', async () => {
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('1,[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-9][0-9].[0-9]{2}%');
 		await app.position.overview.shouldHaveBorrowCostAfterPill('[1-9].[0-9]{2}');
-		await app.position.overview.shouldHaveNetValueAfterPill('[1-3][0-9],[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveNetValueAfterPill('1[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveDebtAfterPill({ amount: '20,000.1234', token: 'DAI' });
 		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
 			token: 'DAI',

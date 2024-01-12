@@ -277,16 +277,10 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 	});
 
 	test('It should open an Aave V3 Earn Ethereum position @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11715',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11672',
+		});
 
 		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
