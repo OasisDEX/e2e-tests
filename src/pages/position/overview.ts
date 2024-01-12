@@ -284,12 +284,15 @@ export class Overview {
 		protocol,
 	}: {
 		amount: string;
-		protocol?: 'Maker';
+		protocol?: 'Maker' | 'Ajna';
 	}) {
 		let regexObj = new RegExp(`${protocol ? '\\$' : ''}${amount}${protocol ? '' : ' USD'}`);
-		const locator = protocol
-			? this.page.getByText('Buying Power').locator('..')
-			: this.page.locator('li:has-text("Buying Power")');
+		const locator =
+			protocol === 'Maker'
+				? this.page.getByText('Buying Power').locator('..')
+				: protocol === 'Ajna'
+				? this.page.locator('li:has-text("Buying Power")').locator('div')
+				: this.page.locator('li:has-text("Buying Power")');
 
 		await expect(locator.getByText('After')).toContainText(regexObj);
 	}
