@@ -142,7 +142,11 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveDebt({ amount: '5,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({
+			amount: '5,[0-9]{3}.[0-9]{4}',
+			token: 'DAI',
+			timeout: positionTimeout,
+		});
 	});
 
 	test('It should pay back some debt from an existing Spark Borrow position @regression', async () => {
@@ -182,7 +186,11 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveDebt({ amount: '[2-3],[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({
+			amount: '[2-3],[0-9]{3}.[0-9]{4}',
+			token: 'DAI',
+			timeout: positionTimeout,
+		});
 	});
 
 	test('It should close an existent Spark Borrow position - Close to collateral token (ETH) @regression', async () => {

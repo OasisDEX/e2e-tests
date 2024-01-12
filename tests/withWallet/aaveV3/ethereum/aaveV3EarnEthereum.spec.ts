@@ -9,6 +9,7 @@ import {
 	baseUrl,
 	veryLongTestTimeout,
 	longTestTimeout,
+	positionTimeout,
 } from 'utils/config';
 import { App } from 'src/app';
 
@@ -144,7 +145,11 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveDebt({ amount: '5.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({
+			amount: '5.00000',
+			token: 'ETH',
+			timeout: positionTimeout,
+		});
 	});
 
 	test('It should pay back some debt from an existing Aave V3 Ethereum Earn position @regression', async () => {
@@ -174,7 +179,11 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveDebt({ amount: '3.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({
+			amount: '3.00000',
+			token: 'ETH',
+			timeout: positionTimeout,
+		});
 	});
 
 	test('It should adjust risk of an existing Aave V3 Earn Ethereum position - Up @regression', async () => {

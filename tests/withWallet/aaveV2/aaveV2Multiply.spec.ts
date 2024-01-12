@@ -6,7 +6,6 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
 	extremelyLongTestTimeout,
-	baseUrl,
 	veryLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -199,9 +198,7 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 			description: '11773',
 		});
 
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/ethereum/aave/v2/multiply/ethusdc#simulate');
 

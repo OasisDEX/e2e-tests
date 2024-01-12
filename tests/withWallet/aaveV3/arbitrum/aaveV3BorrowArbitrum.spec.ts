@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { hooksTimeout, extremelyLongTestTimeout, baseUrl, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -14,18 +14,6 @@ let forkId: string;
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
-	test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-	test.beforeEach(async () => {
-		test.setTimeout(hooksTimeout);
-
-		({ context } = await metamaskSetUp({ network: 'arbitrum' }));
-		let page = await context.newPage();
-		app = new App(page);
-
-		({ forkId } = await setup({ app, network: 'arbitrum' }));
-	});
-
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -43,6 +31,14 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
+
+		await test.step('Test setup', async () => {
+			({ context } = await metamaskSetUp({ network: 'arbitrum' }));
+			let page = await context.newPage();
+			app = new App(page);
+
+			({ forkId } = await setup({ app, network: 'arbitrum' }));
+		});
 
 		await app.page.goto('/arbitrum/aave/v3/borrow/ethusdc');
 		// Depositing collateral too quickly after loading page returns wrong simulation results
@@ -68,6 +64,6 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await app.position.manage.shouldBeVisible('Manage collateral');
 	});
 });

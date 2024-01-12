@@ -210,12 +210,16 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveDebt({ amount, token }: { amount: string; token: string }) {
+	async shouldHaveDebt(
+		{ amount, token, timeout }: { amount: string; token: string; timeout?: number } = {
+			amount: '',
+			token: '',
+			timeout: expectDefaultTimeout,
+		}
+	) {
 		let regexObj = new RegExp(`${amount} ${token}`);
 
-		await expect(this.page.locator('li:has-text(" Debt") > p')).toHaveText(regexObj, {
-			timeout: positionTimeout,
-		});
+		await expect(this.page.locator('li:has-text(" Debt") > p')).toHaveText(regexObj, { timeout });
 	}
 
 	@step
