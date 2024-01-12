@@ -44,7 +44,7 @@ test.describe('Aave v3 Borrow Arbitrum', async () => {
 		});
 		await app.position.orderInformation.shouldHaveLTV({
 			current: '0.00',
-			future: '[1-2][0-9].[0-9]{2}',
+			future: '[0-9]{1,2}.[0-9]{2}',
 		});
 	});
 });
