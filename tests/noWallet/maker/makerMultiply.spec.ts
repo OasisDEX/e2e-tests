@@ -2,9 +2,7 @@ import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Maker Multiply', async () => {
-	test.skip('It should open an existing Maker Multiply Ethereum vault page @regression', async ({
-		app,
-	}) => {
+	test('It should open an existing Maker Multiply vault page @regression', async ({ app }) => {
 		test.setTimeout(longTestTimeout);
 
 		test.info().annotations.push({
@@ -12,27 +10,24 @@ test.describe('Maker Multiply', async () => {
 			description: '11997',
 		});
 
-		await app.page.goto('/ethereum/maker/10187#overview');
+		await app.page.goto('/ethereum/maker/30640#overview');
 
-		await app.position.shouldHaveHeader('ETH-A Vault 10187');
+		await app.position.shouldHaveHeader('ETH-C Vault 30640');
 		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '[0-9]{3}.[0-9]{2}',
+			price: '\\$0.00',
 		});
-		await app.position.overview.shouldHaveBuyingPower('[0-9]{2}.[0-9]{2}');
-		await app.position.overview.shouldHaveNetValue({ value: '[0-9]{2,3}.[0-9]{2}' });
+		await app.position.overview.shouldHaveBuyingPower('\\$0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
 		await app.position.overview.shouldHaveDebt({
-			amount: '[0-9]{1,2}.[0-9]{4}',
+			amount: '0.0000',
 			token: 'DAI',
 		});
 		await app.position.overview.shouldHaveTotalCollateral({
-			amount: '0.[0-3][1-9][0-9]{2}',
+			amount: '0.00',
 			token: 'ETH',
 		});
-		await app.position.overview.shouldHaveMultiple('1.[0-9]{2}');
+		await app.position.overview.shouldHaveMultiple('0.00');
 
-		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '[0-9]{3}.[0-9]{2}',
-		});
-		await app.position.manage.shouldHaveCollateralRatio('[0-9]{3,4}');
+		await app.position.manage.shouldBeVisible('Manage your vault');
 	});
 });

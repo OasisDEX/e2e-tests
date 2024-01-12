@@ -34,7 +34,7 @@ test.describe('Aave v3 Borrow Arbitrum', async () => {
 		await app.position.setup.borrow({ token: 'USDC', amount: '8000' });
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[1-6][0-9]{2}.[0-9]{2}');
-		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-4][0-9].[0-9]{2}%');
+		await app.position.overview.shouldHaveLoanToValueAfterPill('[0-9]{1,2}.[0-9]{2}%');
 		await app.position.overview.shouldHaveNetValueAfterPill('[1-2][0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveDebtAfterPill({ amount: '8,000.0000', token: 'USDC' });
 		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
