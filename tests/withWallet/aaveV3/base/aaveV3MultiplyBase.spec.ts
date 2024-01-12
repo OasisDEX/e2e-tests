@@ -146,7 +146,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDBC' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDBC' });
 		await app.position.overview.shouldHaveMultiple('1');

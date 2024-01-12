@@ -309,6 +309,14 @@ export class Setup {
 	}
 
 	@step
+	async shouldHaveMinBorrowingAmount({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp('From ' + amount + ' ' + token);
+		await expect(
+			this.page.locator(`span:has-text("Borrow ${token}") + span:has-text("From")`)
+		).toContainText(regExp);
+	}
+
+	@step
 	async shouldHaveMaxBorrowingAmount({ amount, token }: { amount: string; token: string }) {
 		const regExp = new RegExp('Max ' + amount + ' ' + token);
 		await expect(
