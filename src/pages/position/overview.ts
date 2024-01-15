@@ -327,7 +327,13 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveAvailableToWithdraw({ amount, token }: { amount: string; token: string }) {
+	async shouldHaveAvailableToWithdrawAfterPill({
+		amount,
+		token,
+	}: {
+		amount: string;
+		token: string;
+	}) {
 		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
 			this.page.locator('li:has-text("Available to Withdraw")').getByText('After')
@@ -343,7 +349,7 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveAvailableToBorrow({ amount, token }: { amount: string; token: string }) {
+	async shouldHaveAvailableToBorrowAfterPill({ amount, token }: { amount: string; token: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
 			this.page.locator('li:has-text("Available to borrow")').getByText('After')

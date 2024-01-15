@@ -47,7 +47,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '10.12345' });
 		await app.position.overview.shouldHaveCollateralLockedAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{2}');
-		await app.position.overview.shouldHaveAvailableToWithdraw({
+		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
 			amount: '[0-9]{1,2}.[0-9]{5}',
 			token: 'ETH',
 		});

@@ -49,74 +49,74 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/ajna/borrow/WBTC-USDC#setup');
+		await app.page.goto('/ethereum/ajna/borrow/RETH-ETH#setup');
 
 		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'WBTC', amount: '0.12345' });
+		await app.position.setup.deposit({ token: 'RETH', amount: '10.12345' });
 
-		await app.position.overview.shouldHaveCollateralDepositedAfterPill('0.1234 WBTC');
+		await app.position.overview.shouldHaveCollateralDepositedAfterPill('10.12 RETH');
 		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
-		await app.position.overview.shouldHaveAvailableToWithdraw({
-			amount: '0.1234',
-			token: 'WBTC',
+		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
+			amount: '10.12',
+			token: 'RETH',
 		});
-		await app.position.overview.shouldHaveAvailableToBorrow({
-			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
-			token: 'USDC',
+		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
+			amount: '[0-9]{1,2}.[0-9]{2}',
+			token: 'ETH',
 		});
 
-		await app.position.setup.shouldHaveMinBorrowingAmount({
-			token: 'USDC',
-			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+		await app.position.setup.shouldHaveMaxBorrowingAmount({
+			token: 'ETH',
+			amount: '[0-9]{1,2}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveCollateralLocked({
-			token: 'WBTC',
+			token: 'RETH',
 			current: '0.00',
-			future: '0.1234',
+			future: '10.12',
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
-			current: '[0-9]{1,2}.[0-9]{2}',
-			future: '[0-9]{1,2}.[0-9]{2}',
+			current: '[0-9]{2,3}.[0-9]{2}',
+			future: '[0-9]{2,3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToWithdraw({
-			token: 'WBTC',
+			token: 'RETH',
 			current: '0.00',
-			future: '0.1234',
+			future: '10.12',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
-			token: 'USDC',
+			token: 'ETH',
 			current: '0.00',
-			future: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+			future: '[0-9]{1,2}.[0-9]{2}',
 		});
 
-		await app.position.setup.borrow({ token: 'USDC', amount: '2000.12' });
+		await app.position.setup.borrow({ token: 'ETH', amount: '8.12345' });
 
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill(
-			'[0-9]{1,2},[0-9]{3}.[0-9]{2} WBTC/USDC'
-		);
-		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-9][0-9].[0-9]{2}%');
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-3].[0-9]{3,4} RETH/ETH');
+		await app.position.overview.shouldHaveLoanToValueAfterPill('[4-9][0-9].[0-9]{1,2}%');
 		await app.position.overview.shouldHaveDebtAfterPill({
 			protocol: 'Ajna',
-			amount: '2,000.12',
-			token: 'USDC',
+			amount: '8.1234',
+			token: 'ETH',
 		});
-		await app.position.overview.shouldHaveAvailableToWithdraw({
-			amount: '0.0[0-9]{3}',
-			token: 'WBTC',
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
+			amount: '[1-5].[0-9]{3,4}',
+			token: 'RETH',
 		});
-		await app.position.overview.shouldHaveAvailableToBorrow({
-			amount: '[1-9],[0-9]{3}.[0-9]{2}',
-			token: 'USDC',
+		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
+			amount: '[1-5].[0-9]{3,4}',
+			token: 'ETH',
 		});
+
 		await app.position.setup.shouldHaveOriginationFee({
-			token: 'USDC',
-			tokenAmount: '[0-9].[0-9]{4}',
+			token: 'ETH',
+			tokenAmount: '0.[0-9]{4}',
 			dollarsAmount: '[0-9]{1,2}(.[0-9]{1,2})?',
 		});
 		await app.position.orderInformation.shouldHaveLiquidationPrice({
-			pair: 'WBTC/USDC',
+			pair: 'RETH/ETH',
 			current: '0.00',
-			future: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}',
+			future: '[0-2].[0-9]{3,4}',
 		});
 		await app.position.orderInformation.shouldHaveLTV({
 			protocol: 'Ajna',
@@ -124,23 +124,23 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			future: '[1-9][0-9].[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
-			current: '[2-9][0-9].[0-9]{2}',
-			future: '[2-9][0-9].[0-9]{2}',
+			current: '[0-9]{2,3}.[0-9]{2}',
+			future: '[0-9]{2,3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveDebt({
-			token: 'USDC',
+			token: 'ETH',
 			current: '0.00',
-			future: '2,0[0-9]{2}.[0-9]{2}',
+			future: '8.[0-9]{3,4}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToWithdraw({
-			token: 'WBTC',
+			token: 'RETH',
 			current: '0.00',
-			future: '0.0[0-9]{3}',
+			future: '[0-5].[0-9]{3,4}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
-			token: 'USDC',
+			token: 'ETH',
 			current: '0.00',
-			future: '[1-9],[0-9]{3}.[0-9]{2}',
+			future: '[0-5].[0-9]{3,4}',
 		});
 	});
 

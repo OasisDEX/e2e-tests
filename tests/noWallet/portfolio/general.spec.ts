@@ -58,7 +58,7 @@ test.describe('Default states - Wallet not connected', async () => {
 		let firstPositionNetValue: number;
 		let fourthPositionNetValue: number;
 
-		// Positions hould be sorted by High-to-Low Net Value by default
+		// Positions should be sorted by High-to-Low Net Value by default
 		await app.portfolio.positions.shouldHaveSortByLable('Sort by');
 		firstPositionNetValue = await app.portfolio.positions.getNthNetValue(1);
 		fourthPositionNetValue = await app.portfolio.positions.getNthNetValue(4);
