@@ -5,7 +5,6 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
-	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -36,8 +35,6 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			type: 'Test case',
 			description: '12070',
 		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -87,20 +84,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			description: '12905',
 		});
 
-		// Condition needed until FORK database collision is fixed
-		if (baseUrl.includes('staging') || baseUrl.includes('//summer.fi')) {
-			test.setTimeout(extremelyLongTestTimeout);
-
-			await test.step('Test setup', async () => {
-				({ context } = await metamaskSetUp({ network: 'arbitrum' }));
-				let page = await context.newPage();
-				app = new App(page);
-
-				({ forkId, walletAddress } = await setup({ app, network: 'arbitrum' }));
-			});
-		} else {
-			test.setTimeout(veryLongTestTimeout);
-		}
+		test.setTimeout(veryLongTestTimeout);
 
 		await tenderly.changeAccountOwner({
 			account: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',

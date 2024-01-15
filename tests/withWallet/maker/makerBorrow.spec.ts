@@ -1,16 +1,15 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp } from 'utils/setup';
+import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { baseUrl, extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -38,7 +37,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+			({ forkId } = await setup({ app, network: 'mainnet' }));
 		});
 
 		await app.page.goto('/vaults/open/ETH-C');
@@ -96,7 +95,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			description: '11788, 11790',
 		});
 
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/vaults/open/ETH-A');
 
@@ -126,14 +125,13 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			await metamask.confirmAddToken();
 		});
 
-		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
-		await app.page.waitForTimeout(5_000);
-
 		/* 
 			!!!
 			TO BE UPDATED now that /owner page has been removed
 			!!!
 		*/
+		// // Wait for 5 seconds and reload page | Issue with Maker and staging/forks
+		// await app.page.waitForTimeout(5_000);
 		// await expect(async () => {
 		// 	await app.page.goto(`/owner/${walletAddress}`);
 		// 	await app.portfolio.topAssetsAndPositions.shouldHaveAsset({

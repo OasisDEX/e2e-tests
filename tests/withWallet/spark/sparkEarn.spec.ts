@@ -7,7 +7,6 @@ import { setup } from 'utils/setup';
 import {
 	extremelyLongTestTimeout,
 	veryLongTestTimeout,
-	baseUrl,
 	longTestTimeout,
 	positionTimeout,
 } from 'utils/config';
@@ -179,9 +178,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 			}
 		);
 
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await tenderly.setRethBalance({ forkId, walletAddress, rEthBalance: '100' });
 

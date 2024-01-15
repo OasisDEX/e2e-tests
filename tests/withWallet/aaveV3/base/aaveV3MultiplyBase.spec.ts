@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { baseUrl, extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -158,8 +158,6 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			type: 'Test case',
 			description: '12463',
 		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
 		await tenderly.setCbEthBalanceBase({ forkId, walletAddress, cbEthBalance: '50' });
