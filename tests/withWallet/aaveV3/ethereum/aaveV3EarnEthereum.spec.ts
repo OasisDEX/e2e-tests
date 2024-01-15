@@ -6,7 +6,6 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
 	extremelyLongTestTimeout,
-	baseUrl,
 	veryLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -290,8 +289,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			type: 'Test case',
 			description: '11672',
 		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
 

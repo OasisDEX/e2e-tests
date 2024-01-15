@@ -4,13 +4,12 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { baseUrl, extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -38,7 +37,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+			({ forkId } = await setup({ app, network: 'mainnet' }));
 		});
 
 		await app.page.goto('/vaults/open-multiply/WSTETH-A');
@@ -110,9 +109,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 			}
 		);
 
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/vaults/open-multiply/ETH-B');
 
