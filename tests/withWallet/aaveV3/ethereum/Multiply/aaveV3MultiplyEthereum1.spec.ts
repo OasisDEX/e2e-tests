@@ -258,7 +258,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.closeTo('ETH');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
 			token: 'ETH',
-			amount: '0.[0-9]{1,4}',
+			amount: '0.[0-9]{3,4}',
 		});
 
 		// Transaction randomly fails - Retry until it's completed.
