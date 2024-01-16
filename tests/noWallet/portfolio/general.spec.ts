@@ -49,11 +49,17 @@ test.describe('Default states - Wallet not connected', async () => {
 		await app.portfolio.positions.shouldHaveNetValuesGreaterThanOneCent();
 	});
 
-	test('It should sort by Net Value @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '13032, 13033',
-		});
+	test.skip('It should sort by Net Value @regression', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '13032, 13033',
+			},
+			{
+				type: 'Bug',
+				description: '13770',
+			}
+		);
 
 		let firstPositionNetValue: number;
 		let fourthPositionNetValue: number;

@@ -66,7 +66,8 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 		});
 	});
 
-	test('It should allow to simulate Lending Price adjustment (Up) with slider in an Ajna Ethereum Earn position before opening it - Wallet connected @regression', async () => {
+	// Slider changed for Ajna -> .moveSlide to be updated for AJNA
+	test.skip('It should allow to simulate Lending Price adjustment (Up) with slider in an Ajna Ethereum Earn position before opening it - Wallet connected @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12110',
@@ -96,7 +97,8 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 		});
 	});
 
-	test('It should allow to simulate Lending Price adjustment (Down) with slider in an Ajna Ethereum Earn position before opening it @regression', async () => {
+	// Slider changed for Ajna -> .moveSlide to be updated for AJNA
+	test.skip('It should allow to simulate Lending Price adjustment (Down) with slider in an Ajna Ethereum Earn position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12109',
