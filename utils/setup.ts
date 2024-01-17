@@ -91,6 +91,11 @@ export const setup = async ({
 
 	await tenderly.setEthBalance({ forkId, walletAddress, ethBalance: '100' });
 
+	// Logging forkId and walletAddress for debugging purposes
+	//  - Info displayed in 'Attachments > stdout' section of playwright reports
+	console.log('+++ Foork Id: ', forkId);
+	console.log('+++ Wallet Address: ', walletAddress);
+
 	return { forkId, walletAddress };
 };
 
