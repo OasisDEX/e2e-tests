@@ -120,6 +120,25 @@ export class Setup {
 	}
 
 	@step
+	async showLendingPriceEditor({ pair }: { pair: string }) {
+		await this.page.getByText(`Or enter specific ${pair} Lending Price`).click();
+	}
+
+	@step
+	async updateLendingPrice({
+		collateralToken,
+		adjust,
+	}: {
+		collateralToken: string;
+		adjust: 'up' | 'down';
+	}) {
+		await this.page
+			.locator(`:has-text("Input ${collateralToken} Lending Price") + div > button`)
+			.nth(adjust === 'down' ? 0 : 1)
+			.click();
+	}
+
+	@step
 	async createSmartDeFiAccount() {
 		await this.page.getByRole('button', { name: 'Create Smart DeFi account' }).click();
 	}
