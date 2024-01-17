@@ -66,23 +66,22 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 		});
 	});
 
-	// Slider changed for Ajna -> .moveSlide to be updated for AJNA
-	test.skip('It should allow to simulate Lending Price adjustment (Up) with slider in an Ajna Ethereum Earn position before opening it - Wallet connected @regression', async () => {
+	test('It should allow to simulate Lending Price adjustment (Up) in an Ajna Ethereum Earn position before opening it - Wallet connected @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12110',
 		});
 
-		// Set a low lending price as baseline to avoid test flakyness
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.3 });
-		await app.position.setup.shouldHaveButtonDisabled('Create Smart DeFi account');
-		await app.position.setup.shouldHaveButtonEnabled('Create Smart DeFi account');
-
 		const initialLendingPrice = await app.position.setup.getLendingPrice();
 		const initialMaxLTV = await app.position.setup.getMaxLTV();
 
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.7 });
+		await app.position.setup.showLendingPriceEditor({ pair: 'WSTETH/ETH' });
+		await app.position.setup.updateLendingPrice({
+			collateralToken: 'ETH',
+			adjust: 'up',
+		});
 
+		// Wait for simulation to update with new risk
 		await app.position.setup.shouldHaveButtonDisabled('Create Smart DeFi account');
 		await app.position.setup.shouldHaveButtonEnabled('Create Smart DeFi account');
 
@@ -97,8 +96,7 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 		});
 	});
 
-	// Slider changed for Ajna -> .moveSlide to be updated for AJNA
-	test.skip('It should allow to simulate Lending Price adjustment (Down) with slider in an Ajna Ethereum Earn position before opening it @regression', async () => {
+	test('It should allow to simulate Lending Price adjustment (Down) in an Ajna Ethereum Earn position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12109',
@@ -107,8 +105,12 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 		const initialLendingPrice = await app.position.setup.getLendingPrice();
 		const initialMaxLTV = await app.position.setup.getMaxLTV();
 
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.2 });
+		await app.position.setup.updateLendingPrice({
+			collateralToken: 'ETH',
+			adjust: 'down',
+		});
 
+		// Wait for simulation to update with new risk
 		await app.position.setup.shouldHaveButtonDisabled('Create Smart DeFi account');
 		await app.position.setup.shouldHaveButtonEnabled('Create Smart DeFi account');
 
