@@ -44,8 +44,8 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 				forkId,
 				network: 'mainnet',
 				walletAddress,
-				token: 'WBTC',
-				balance: '5',
+				token: 'WSTETH',
+				balance: '30',
 			});
 		});
 
@@ -129,8 +129,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.5 });
 
 		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveButtonDisabled('Create Smart DeFi account');
-		await app.position.setup.shouldHaveButtonEnabled('Create Smart DeFi account');
+		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'WBTC/DAI' });
 
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue('Ajna');
@@ -141,8 +140,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.3 });
 
 		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveButtonDisabled('Create Smart DeFi account');
-		await app.position.setup.shouldHaveButtonEnabled('Create Smart DeFi account');
+		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'WBTC/DAI' });
 
 		const updatedLiqPrice2 = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue2 = await app.position.manage.getLoanToValue('Ajna');
@@ -158,7 +156,10 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.setup.deposit({ token: 'WBTC', amount: '2' });
+		await app.page.goto('/ethereum/ajna/multiply/WSTETH-ETH#setup');
+		await app.position.setup.acknowlegeAjnaInfo();
+
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '28' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
