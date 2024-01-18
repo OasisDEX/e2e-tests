@@ -5,7 +5,6 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
-	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -179,9 +178,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			description: '12463',
 		});
 
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/ethereum/spark/v3/multiply/ethdai');
 
