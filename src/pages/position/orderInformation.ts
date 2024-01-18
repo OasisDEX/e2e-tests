@@ -153,7 +153,7 @@ export class OrderInformation {
 	}: {
 		current: string;
 		future: string;
-		protocol?: 'Ajna';
+		protocol?: 'Ajna' | 'Morpho Blue';
 	}) {
 		const regExp = new RegExp(`${current}%${protocol ? '' : ' '}${future}%`);
 

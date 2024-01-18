@@ -103,7 +103,7 @@ jobs:
           name: playwright-report-with-wallet-aave-other
           path: playwright-reports/with-wallet-aave-other
           retention-days: 30
-  with-wallet-ajna-tests:
+  with-wallet-ajna-and-morphoblue-tests:
     name: 'With wallet - Ajna'
     runs-on: ubuntu-latest
     env:
@@ -130,12 +130,12 @@ jobs:
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
           FLAGS=${{ inputs.flags}} \
-          yarn ci:with-wallet:ajna:regression
+          yarn ci:with-wallet:ajna-and-morphoblue:regression
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report-with-wallet-ajna
-          path: playwright-reports/with-wallet-ajna
+          name: playwright-report-with-wallet-ajna-and-morphoblue
+          path: playwright-reports/with-wallet-ajna-and-morphoblue
           retention-days: 30
   
   with-wallet-maker-and-spark-tests:
