@@ -211,4 +211,47 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveDebt({ amount: '8,[0-9]{3}.[0-9]{4}', token: 'DAI' });
 	});
+
+	test('It should close an existent Aave V3 Multiply Ethereum position - Close to collateral token (RETH) @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12057',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Close position');
+
+		await app.position.manage.closeTo('RETH');
+		await app.position.manage.shouldHaveTokenAmountAfterClosing({
+			token: 'RETH',
+			amount: '[0-9]{2}.[0-9]{1,2}',
+		});
+
+		// Transaction randomly fails - Retry until it's completed.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.manage.ok();
+
+		await app.page.goto('/ethereum/aave/v3/1276#overview');
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '0.00',
+			token: 'DAI',
+			timeout: positionTimeout,
+		});
+		await app.position.overview.shouldHaveLoanToValue('0.00');
+		await app.position.overview.shouldHaveBorrowCost('0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'RETH' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'RETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
+		await app.position.overview.shouldHaveMultiple('1');
+		await app.position.overview.shouldHaveBuyingPower('0.00');
+	});
 });
