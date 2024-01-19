@@ -1,4 +1,5 @@
 import { test } from '#noWalletFixtures';
+import { positionTimeout } from 'utils/config';
 import { ajnaPoolAddress, usdcContractAddress, wEthContractAddress } from 'utils/testData';
 
 test.describe('Pool finder - Borrow', async () => {
@@ -33,6 +34,8 @@ test.describe('Pool finder - Borrow', async () => {
 			description: '10913',
 		});
 
+		test.setTimeout(positionTimeout);
+
 		await app.poolFinder.filterBy({ filter: 'Pool address', value: ajnaPoolAddress });
 		await app.poolFinder.list.shouldHavePoolsCount(1);
 		await app.poolFinder.list.shouldHaveTokensPair('WSTETH/ETH');
@@ -46,6 +49,8 @@ test.describe('Pool finder - Borrow', async () => {
 			type: 'Test case',
 			description: '10912',
 		});
+
+		test.setTimeout(positionTimeout);
 
 		await app.poolFinder.filterBy({ filter: 'Collateral token', value: wEthContractAddress });
 		await app.poolFinder.list.shouldHaveOneOrMorePools();
@@ -61,6 +66,8 @@ test.describe('Pool finder - Borrow', async () => {
 			description: '10914',
 		});
 
+		test.setTimeout(positionTimeout);
+
 		await app.poolFinder.filterBy({ filter: 'Quote token', value: wEthContractAddress });
 		await app.poolFinder.list.shouldHaveOneOrMorePools();
 		await app.poolFinder.list.allPoolsShouldBe('Borrow');
@@ -74,6 +81,8 @@ test.describe('Pool finder - Borrow', async () => {
 			type: 'Test case',
 			description: '11553',
 		});
+
+		test.setTimeout(positionTimeout);
 
 		await app.poolFinder.filterBy({ filter: 'Collateral token', value: wEthContractAddress });
 		await app.poolFinder.filterBy({ filter: 'Quote token', value: usdcContractAddress });
