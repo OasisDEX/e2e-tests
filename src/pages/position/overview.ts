@@ -219,7 +219,9 @@ export class Overview {
 	) {
 		let regexObj = new RegExp(`${amount} ${token}`);
 
-		await expect(this.page.locator('li:has-text(" Debt") > p')).toHaveText(regexObj, { timeout });
+		await expect(this.page.locator('li:has-text(" Debt") > p').nth(0)).toHaveText(regexObj, {
+			timeout,
+		});
 	}
 
 	@step
@@ -306,6 +308,15 @@ export class Overview {
 		const regExp = new RegExp(`${amount} ${token}`);
 
 		await expect(this.page.locator('li:has-text("Total collateral")')).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
+	}
+
+	@step
+	async shouldHaveCollateralDeposited({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp(`${amount}${token}`);
+
+		await expect(this.page.locator('li:has-text("Collateral Deposited")')).toContainText(regExp, {
 			timeout: positionTimeout,
 		});
 	}

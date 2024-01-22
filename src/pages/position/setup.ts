@@ -217,6 +217,18 @@ export class Setup {
 	}
 
 	@step
+	async approveAllowanceOrRetry() {
+		const approve = this.page.getByRole('button', { name: 'Approve Allowance' });
+		const retry = this.page.getByRole('button', { name: 'Retry Allowance approval' });
+
+		if (await approve.isVisible()) {
+			await approve.click();
+		} else if (await retry.isVisible()) {
+			await retry.click();
+		}
+	}
+
+	@step
 	async goToDeposit() {
 		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
 	}
