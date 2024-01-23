@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -156,16 +156,22 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 
 		await app.position.setup.continue();
 
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
+		// ======================================================================
 
+		// UI sometimes gets stuck after confirming position creation
+		//   - 'Reload' added to avoid flakines
+
+		await app.position.setup.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.setup.shouldShowCreatingPosition();
+
+		await app.page.reload();
 		await app.position.setup.goToPosition();
+
+		// ======================================================================
+
 		await app.position.manage.shouldBeVisible('Manage your Morpho Borrow');
 	});
 
@@ -175,28 +181,34 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 			description: 'xxxx',
 		});
 
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.deposit({ token: 'WSTETH', amount: '10' });
 		await app.position.manage.borrow({ token: 'USDC', amount: '10000' });
 		await app.position.setup.confirm();
 
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
+		// ============================================================
 
-		await app.position.setup.continue();
+		// UI sometimes gets stuck after confirming position update
+		//   - 'Reload' added to avoid flakines
+		await app.position.setup.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.setup.shouldShowUpdatingPosition();
+		await app.page.reload();
+
+		// ============================================================
 
 		await app.position.overview.shouldHaveNetValue({
 			value: '[3-4][0-9],[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.overview.shouldHaveCollateralDeposited({ amount: '20.00', token: 'WSTETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '18,[0-9]{3}.[0-9]{1,2}', token: 'USDC' });
+		await app.position.overview.shouldHaveDebt({
+			amount: '18,[0-9]{3}.[0-9]{1,2}',
+			token: 'USDC',
+			protocol: 'Morpho Blue',
+		});
 	});
 
 	test('It should Withdraw and Pay back in a single tx on an existing Morpho Blue Borrow position @regression', async () => {
@@ -205,22 +217,36 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 			description: 'xxxx',
 		});
 
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
+		await app.position.manage.withdrawCollateral();
 		await app.position.manage.withdraw({ token: 'WSTETH', amount: '5' });
 		await app.position.manage.payback({ token: 'USDC', amount: '5000' });
-		await app.position.setup.confirm();
 
-		// Confirm action randomly fails - Retry until it's applied.
+		await app.position.setup.setTokenAllowance('USDC');
+		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
+			await app.position.setup.approveAllowanceOrRetry();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.continue();
+
+		// ============================================================
+
+		// UI sometimes gets stuck after confirming position update
+		//   - 'Reload' added to avoid flakines
+		await app.position.setup.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.setup.shouldShowUpdatingPosition();
+		await app.page.reload();
+
+		// ============================================================
 
 		await app.position.overview.shouldHaveNetValue({
 			value: '[2-3][0-9],[0-9]{3}.[0-9]{2}',
@@ -229,6 +255,7 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 		await app.position.overview.shouldHaveDebt({
 			amount: '1[2-3],[0-9]{3}.[0-9]{1,2}',
 			token: 'USDC',
+			protocol: 'Morpho Blue',
 		});
 	});
 });
