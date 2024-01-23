@@ -258,4 +258,85 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 			protocol: 'Morpho Blue',
 		});
 	});
+
+	test('It should Borrow and Deposit in a single tx on an existing Morpho Blue Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxxx',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
+		await app.position.manage.select('Manage debt');
+
+		await app.position.manage.borrow({ token: 'USDC', amount: '10000' });
+		await app.position.manage.deposit({ token: 'WSTETH', amount: '10' });
+
+		await app.position.setup.confirm();
+
+		// ============================================================
+
+		// UI sometimes gets stuck after confirming position update
+		//   - 'Reload' added to avoid flakines
+		await app.position.setup.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.setup.shouldShowUpdatingPosition();
+		await app.page.reload();
+
+		// ============================================================
+
+		await app.position.overview.shouldHaveNetValue({
+			value: '[3-5][0-9],[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '25.00', token: 'WSTETH' });
+		await app.position.overview.shouldHaveDebt({
+			amount: '23,[0-9]{3}.[0-9]{1,2}',
+			token: 'USDC',
+			protocol: 'Morpho Blue',
+		});
+	});
+
+	test('It should Pay back and Withdraw in a single tx on an existing Morpho Blue Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxxx',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
+		await app.position.manage.select('Manage debt');
+
+		await app.position.manage.payBackDebt();
+		await app.position.manage.payback({ token: 'USDC', amount: '5000' });
+		await app.position.manage.withdraw({ token: 'WSTETH', amount: '5' });
+
+		await app.position.setup.confirm();
+
+		// ============================================================
+
+		// UI sometimes gets stuck after confirming position update
+		//   - 'Reload' added to avoid flakines
+		await app.position.setup.confirm();
+		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+			await metamask.confirmPermissionToSpend();
+		});
+		await app.position.setup.shouldShowUpdatingPosition();
+		await app.page.reload();
+
+		// ============================================================
+
+		await app.position.overview.shouldHaveNetValue({
+			value: '[2-4][0-9],[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '20.00', token: 'WSTETH' });
+		await app.position.overview.shouldHaveDebt({
+			amount: '18,[0-9]{3}.[0-9]{1,2}',
+			token: 'USDC',
+			protocol: 'Morpho Blue',
+		});
+	});
 });
