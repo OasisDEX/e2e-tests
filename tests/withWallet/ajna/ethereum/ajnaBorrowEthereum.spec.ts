@@ -191,7 +191,6 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.goToPosition();
-		await app.position.setup.continue();
 		await app.position.manage.shouldBeVisible('Manage your Ajna Borrow Position');
 	});
 });

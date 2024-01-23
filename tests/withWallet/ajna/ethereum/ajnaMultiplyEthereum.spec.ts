@@ -45,7 +45,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 				network: 'mainnet',
 				walletAddress,
 				token: 'WSTETH',
-				balance: '30',
+				balance: '100',
 			});
 		});
 
@@ -159,7 +159,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		await app.page.goto('/ethereum/ajna/multiply/WSTETH-ETH#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
 
-		await app.position.setup.deposit({ token: 'WSTETH', amount: '28' });
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '50' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
@@ -194,7 +194,6 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.goToPosition();
-		await app.position.setup.continue();
 		await app.position.manage.shouldBeVisible('Manage your Ajna Multiply Position');
 	});
 });
