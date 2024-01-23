@@ -229,6 +229,11 @@ export class Setup {
 	}
 
 	@step
+	async setTokenAllowance(token: string) {
+		await this.page.getByRole('button', { name: `Set ${token} allowance` }).click();
+	}
+
+	@step
 	async goToDeposit() {
 		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
 	}
@@ -417,5 +422,19 @@ export class Setup {
 		await expect(this.page.locator('p > span:has-text("Origination Fee") + span')).toContainText(
 			regExp
 		);
+	}
+
+	@step
+	async shouldShowCreatingPosition() {
+		await expect
+			.soft(this.page.getByText('Creating your '), `"Creating your position" should be visible`)
+			.toBeVisible();
+	}
+
+	@step
+	async shouldShowUpdatingPosition() {
+		await expect
+			.soft(this.page.getByText('Updating your '), `"Updating your position" should be visible`)
+			.toBeVisible();
 	}
 }
