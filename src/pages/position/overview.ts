@@ -216,7 +216,7 @@ export class Overview {
 			token,
 			timeout,
 			protocol,
-		}: { amount: string; token: string; timeout?: number; protocol?: 'Morpho Blue' } = {
+		}: { amount: string; token: string; timeout?: number; protocol?: 'Ajna' | 'Morpho Blue' } = {
 			amount: '',
 			token: '',
 			timeout: expectDefaultTimeout,
@@ -343,6 +343,18 @@ export class Overview {
 	}
 
 	@step
+	async shouldHaveAvailableToWithdraw({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
+
+		await expect(this.page.locator('li:has-text("Available to Withdraw") p')).toContainText(
+			regExp,
+			{
+				timeout: positionTimeout,
+			}
+		);
+	}
+
+	@step
 	async shouldHaveAvailableToWithdrawAfterPill({
 		amount,
 		token,
@@ -362,6 +374,15 @@ export class Overview {
 		await expect(
 			this.page.locator('li:has-text("Available to Generate")').getByText('After')
 		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveAvailableToBorrow({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp(`${amount} ${token}`);
+
+		await expect(this.page.locator('li:has-text("Available to Borrow") p')).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
 	}
 
 	@step
