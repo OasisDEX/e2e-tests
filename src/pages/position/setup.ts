@@ -308,6 +308,15 @@ export class Setup {
 	}
 
 	@step
+	async getNewPositionId() {
+		const id = await this.page
+			.getByRole('button', { name: 'Go to position' })
+			.locator('..')
+			.getAttribute('href');
+		return id;
+	}
+
+	@step
 	async shouldHaveLiquidationPrice({
 		amount,
 		pair,

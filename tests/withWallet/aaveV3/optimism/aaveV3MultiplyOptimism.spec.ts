@@ -74,12 +74,11 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
-
-		// Logging position page (with position id) for debugging purposes
-		//  - Info displayed in 'Attachments > stdout' section of playwright reports
-		console.log('+++ Position page: ', app.page.url());
-
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 	});
 
