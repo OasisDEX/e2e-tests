@@ -216,15 +216,17 @@ export class Overview {
 			token,
 			timeout,
 			protocol,
-		}: { amount: string; token: string; timeout?: number; protocol?: 'Ajna' | 'Morpho Blue' } = {
+		}: { amount: string; token: string; timeout?: number; protocol?: 'Ajna' } = {
 			amount: '',
 			token: '',
 			timeout: expectDefaultTimeout,
 		}
 	) {
-		let regexObj = new RegExp(`${amount}${protocol ? `${token}` : ` ${token}`}`);
+		let regexObj = new RegExp(`${amount}.*${token}`);
 
-		await expect(this.page.locator('li:has-text(" Debt") > p').nth(0)).toHaveText(regexObj, {
+		await expect(
+			this.page.locator(`li:has-text("${protocol ? 'Position Debt' : ' Debt'}") > p`).nth(0)
+		).toHaveText(regexObj, {
 			timeout,
 		});
 	}
