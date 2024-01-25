@@ -228,6 +228,10 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
 	});

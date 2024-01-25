@@ -215,6 +215,11 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			await metamask.confirmPermissionToSpend();
 		});
 
+		// Logging position ID for debugging purposes
+		await app.position.setup.goToPositionShouldBeVisible();
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
 	});

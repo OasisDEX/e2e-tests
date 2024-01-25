@@ -159,8 +159,8 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		await app.page.goto('/ethereum/ajna/borrow/WSTETH-ETH#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'WSTETH', amount: '10' });
-		await app.position.setup.borrow({ token: 'ETH', amount: '7' });
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '20' });
+		await app.position.setup.borrow({ token: 'ETH', amount: '15' });
 
 		await app.position.setup.createSmartDeFiAccount();
 
@@ -231,9 +231,9 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '25.00', token: 'WSTETH' });
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '35.00', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({
-			amount: '17.[0-9]{2}([0-9]{1,2})?',
+			amount: '25.[0-9]{2}([0-9]{1,2})?',
 			token: 'ETH',
 			protocol: 'Ajna',
 		});
@@ -266,9 +266,9 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '15.00', token: 'WSTETH' });
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '25.00', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({
-			amount: '12.[0-9]{2}([0-9]{1,2})?',
+			amount: '20.[0-9]{2}([0-9]{1,2})?',
 			token: 'ETH',
 			protocol: 'Ajna',
 		});
@@ -303,9 +303,9 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '35.00', token: 'WSTETH' });
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '45.00', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({
-			amount: '27.[0-9]{2}([0-9]{1,2})?',
+			amount: '35.[0-9]{2}([0-9]{1,2})?',
 			token: 'ETH',
 			protocol: 'Ajna',
 		});
@@ -341,9 +341,9 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '20.00', token: 'WSTETH' });
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '30.00', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({
-			amount: '7.[0-9]{2}([0-9]{1,2})?',
+			amount: '15.[0-9]{2}([0-9]{1,2})?',
 			token: 'ETH',
 			protocol: 'Ajna',
 		});
