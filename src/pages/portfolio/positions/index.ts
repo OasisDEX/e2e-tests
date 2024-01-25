@@ -142,4 +142,35 @@ export class Positions {
 
 		return parseFloat(netValue.slice(1).replace('<', ''));
 	}
+
+	@step
+	async getNumberOfPositions() {
+		const noPositions = this.page.getByText('There are no positions for this wallet');
+		const positionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
+
+		let noPositionsCount: number;
+		let positionsCount: {
+			emptyPositionsCount: number;
+			positionsListedCount: number;
+		} = { emptyPositionsCount: 0, positionsListedCount: 0 };
+
+		// Wait for positions panel to fully load
+		await expect(async () => {
+			noPositionsCount = await noPositions.count();
+			positionsCount.positionsListedCount = await positionsListed.count();
+			expect(noPositionsCount + positionsCount.positionsListedCount).toBeGreaterThan(0);
+		}).toPass();
+
+		if (noPositionsCount === 1) {
+			return positionsCount;
+		}
+
+		const regExp = new RegExp('Show.*empty positions');
+		const emptyPositionsText = await this.page.getByText(regExp).innerText();
+		positionsCount.emptyPositionsCount = parseInt(
+			emptyPositionsText.substring(4, emptyPositionsText.indexOf('empty'))
+		);
+
+		return positionsCount;
+	}
 }
