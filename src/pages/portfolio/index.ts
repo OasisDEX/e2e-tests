@@ -2,6 +2,7 @@ import { expect, Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
 import { Positions } from './positions';
 import { Wallet } from './wallet';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class Portfolio {
 	readonly page: Page;
@@ -19,6 +20,11 @@ export class Portfolio {
 	@step
 	async open(wallet?: string) {
 		await this.page.goto(`/portfolio/${wallet ?? ''}`);
+	}
+
+	@step
+	async openOnProduction(wallet?: string) {
+		await this.page.goto(`https://summer.fi/portfolio/${wallet ?? ''}`);
 	}
 
 	@step
@@ -40,6 +46,12 @@ export class Portfolio {
 	}
 
 	@step
+	async getReasonsValue() {
+		const value = await this.page.getByText('worth of reasons to open').locator('span').innerText();
+		return value;
+	}
+
+	@step
 	async connectWallet() {
 		await this.page
 			.getByText('Connect your wallet to see what positions you could open')
@@ -49,11 +61,16 @@ export class Portfolio {
 	}
 
 	@step
-	async shouldHaveWalletAddress(address: string) {
+	async shouldHaveWalletAddress(
+		{ address, timeout }: { address: string; timeout?: number } = {
+			address: '',
+			timeout: expectDefaultTimeout,
+		}
+	) {
 		await expect(
 			this.page.getByText(address, { exact: true }),
 			`"${address}" should be visible`
-		).toBeVisible();
+		).toBeVisible({ timeout });
 	}
 
 	@step
@@ -73,10 +90,22 @@ export class Portfolio {
 	}
 
 	@step
+	async getTotalValue() {
+		const value = await this.page.locator('span:has-text("Total Value") + h2').innerText();
+		return value;
+	}
+
+	@step
 	async shouldHaveSummerfiPortfolio(value: string) {
 		await expect(
 			this.page.locator('span:has-text("Summer.fi Portfolio")').locator('..')
 		).toContainText(value);
+	}
+
+	@step
+	async getPortfolioValue() {
+		const value = await this.page.locator('span:has-text("Summer.fi Portfolio") + h2').innerText();
+		return value;
 	}
 
 	@step
@@ -87,9 +116,55 @@ export class Portfolio {
 	}
 
 	@step
+	async getTotalSupplied() {
+		const value = await this.page.locator('span:has-text("Total Supplied") + h2').innerText();
+		return value;
+	}
+
+	@step
 	async shouldHaveTotalBorrowed(value: string) {
 		await expect(this.page.locator('span:has-text("Total Borrowed")').locator('..')).toContainText(
 			value
 		);
+	}
+
+	@step
+	async getTotalBorrowed() {
+		const value = await this.page.locator('span:has-text("Total Borrowed") + h2').innerText();
+		return value;
+	}
+
+	@step
+	async getPortfolioData() {
+		let data: {
+			reasons: string;
+			totalValue: string;
+			portfolioValue: string;
+			totalSupplied: string;
+			totalBorrowed: string;
+			emptyPositionsCount: number;
+			positionsListedCount: number;
+		} = {
+			reasons: '',
+			totalValue: '',
+			portfolioValue: '',
+			totalSupplied: '',
+			totalBorrowed: '',
+			emptyPositionsCount: 0,
+			positionsListedCount: 0,
+		};
+
+		data.reasons = await this.getReasonsValue();
+		data.totalValue = await this.getTotalValue();
+		data.portfolioValue = await this.getPortfolioValue();
+		data.totalSupplied = await this.getTotalSupplied();
+		data.totalBorrowed = await this.getTotalBorrowed();
+
+		const { emptyPositionsCount, positionsListedCount } =
+			await this.positions.getNumberOfPositions();
+		data.emptyPositionsCount = emptyPositionsCount;
+		data.positionsListedCount = positionsListedCount;
+
+		return data;
 	}
 }

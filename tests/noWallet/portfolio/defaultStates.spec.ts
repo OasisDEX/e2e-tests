@@ -49,7 +49,7 @@ test.describe('Default states - Wallet not connected', async () => {
 			description: '12848',
 		});
 
-		await app.portfolio.shouldHaveWalletAddress('0x8af4...d4510');
+		await app.portfolio.shouldHaveWalletAddress({ address: '0x8af4...d4510' });
 	});
 
 	test(`It should link to wallet's etherscan @regression`, async () => {
