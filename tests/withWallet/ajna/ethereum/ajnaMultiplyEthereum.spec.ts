@@ -164,7 +164,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		await app.page.goto('/ethereum/ajna/multiply/WSTETH-ETH#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
 
-		await app.position.setup.deposit({ token: 'WSTETH', amount: '50' });
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '70' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
@@ -219,7 +219,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.8 });
+		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.6 });
 
 		await app.position.manage.confirm();
 
