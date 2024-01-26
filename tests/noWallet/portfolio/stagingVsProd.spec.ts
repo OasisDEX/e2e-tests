@@ -1,18 +1,16 @@
 import { expect, test } from '#noWalletFixtures';
 import { longTestTimeout, portfolioTimeout } from 'utils/config';
+import { comparePositionsData, shortenAddress } from 'utils/general';
 
 test.describe('Staging vs Production - Wallet not connected', async () => {
 	/* 
 		Overview values -- DONE
 		Number of positions -- DONE
-		Position types -- TO BE DONE
+		Position types and pools -- DONE
 		Assets -- TO BE DONE
 		TO BE ADDED: 0x458F04fEAB592Cd28f29A9926f86292A9Ef20600
 			--> This wallet doesn't have any active positions. but has some empty ones
 	*/
-
-	const shortenAddress = (address: string) =>
-		`${address.slice(0, 6)}...${address.slice(-5)}`.toLowerCase();
 
 	[
 		'0x000009818d53763C701bA86586152c667Ac3AcdB',
@@ -34,7 +32,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 			test.setTimeout(longTestTimeout);
 
 			// STAGING - 1st log
-			await app.portfolio.open(walletAddress);
+			await app.portfolio.loadPortfolioPageAndPositions({ environment: 'staging', walletAddress });
 			await app.portfolio.shouldHaveWalletAddress({
 				address: shortenAddress(walletAddress),
 				timeout: portfolioTimeout,
@@ -42,7 +40,10 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 			const stagingData1 = await app.portfolio.getPortfolioData();
 
 			// PRODUCTION
-			await app.portfolio.openOnProduction(walletAddress);
+			await app.portfolio.loadPortfolioPageAndPositions({
+				environment: 'production',
+				walletAddress,
+			});
 			await app.portfolio.shouldHaveWalletAddress({
 				address: shortenAddress(walletAddress),
 				timeout: portfolioTimeout,
@@ -50,7 +51,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 			const productionData = await app.portfolio.getPortfolioData();
 
 			// STAGING - 2nd log (Portfolio data is updated from time to time)
-			await app.portfolio.open(walletAddress);
+			await app.portfolio.loadPortfolioPageAndPositions({ environment: 'staging', walletAddress });
 			await app.portfolio.shouldHaveWalletAddress({
 				address: shortenAddress(walletAddress),
 				timeout: portfolioTimeout,
@@ -59,9 +60,22 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 
 			// Check that productionData is equal to either stagingData1 or stagingData2
 			for (const property in productionData) {
-				expect([stagingData1[property], stagingData2[property]]).toContain(
-					productionData[property]
-				);
+				if (property === 'positionsListedData') {
+					expect(
+						comparePositionsData(
+							stagingData1.positionsListedData,
+							productionData.positionsListedData
+						) ||
+							comparePositionsData(
+								stagingData2.positionsListedData,
+								productionData.positionsListedData
+							)
+					).toBeTruthy();
+				} else {
+					expect([stagingData1[property], stagingData2[property]]).toContain(
+						productionData[property]
+					);
+				}
 			}
 		})
 	);
