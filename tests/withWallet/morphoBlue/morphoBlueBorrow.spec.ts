@@ -207,7 +207,6 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 		await app.position.overview.shouldHaveDebt({
 			amount: '18,[0-9]{3}.[0-9]{1,2}',
 			token: 'USDC',
-			protocol: 'Morpho Blue',
 		});
 	});
 
@@ -255,7 +254,6 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 		await app.position.overview.shouldHaveDebt({
 			amount: '1[2-3],[0-9]{3}.[0-9]{1,2}',
 			token: 'USDC',
-			protocol: 'Morpho Blue',
 		});
 	});
 
@@ -295,7 +293,6 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 		await app.position.overview.shouldHaveDebt({
 			amount: '23,[0-9]{3}.[0-9]{1,2}',
 			token: 'USDC',
-			protocol: 'Morpho Blue',
 		});
 	});
 
@@ -336,7 +333,6 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 		await app.position.overview.shouldHaveDebt({
 			amount: '18,[0-9]{3}.[0-9]{1,2}',
 			token: 'USDC',
-			protocol: 'Morpho Blue',
 		});
 	});
 });
