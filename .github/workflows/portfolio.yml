@@ -23,7 +23,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run NO-WALLET tests
-        run: FLAGS=${{ inputs.flags}} yarn nightly:no-wallet
+        run: FLAGS=${{ inputs.flags}} yarn portfolio:staging-vs-production
       - uses: actions/upload-artifact@v3
         if: always()
         with:
