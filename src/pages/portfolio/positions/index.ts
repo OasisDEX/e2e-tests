@@ -173,4 +173,34 @@ export class Positions {
 
 		return positionsCount;
 	}
+
+	@step
+	async getPositionsData() {
+		const positionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
+		const positionsListedCount: number = await positionsListed.count();
+
+		let positionsData: {
+			id: string;
+			pool: string;
+			type: string;
+		}[] = [];
+
+		for (let index = 0; index < positionsListedCount; index++) {
+			const positionData: {
+				id: string;
+				pool: string;
+				type: string;
+			} = { id: '', pool: '', type: '' };
+
+			const positionId = await positionsListed.nth(index).locator('span').nth(2).innerText();
+			positionData.id = positionId.slice(10);
+
+			positionData.pool = await positionsListed.nth(index).locator('span').nth(1).innerText();
+			positionData.type = await positionsListed.nth(index).locator('span').nth(0).innerText();
+
+			positionsData.push(positionData);
+		}
+
+		return positionsData;
+	}
 }

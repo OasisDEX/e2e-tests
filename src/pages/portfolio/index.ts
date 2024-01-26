@@ -2,7 +2,7 @@ import { expect, Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
 import { Positions } from './positions';
 import { Wallet } from './wallet';
-import { expectDefaultTimeout } from 'utils/config';
+import { expectDefaultTimeout, portfolioTimeout } from 'utils/config';
 
 export class Portfolio {
 	readonly page: Page;
@@ -135,6 +135,42 @@ export class Portfolio {
 	}
 
 	@step
+	async shouldHavePositionsPanelWithoutErrors() {
+		const noPositions = this.page.getByText('There are no positions for this wallet');
+		const positionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
+		const errorLoadingPositions = this.page.getByText('error trying to load positions');
+
+		await expect(async () => {
+			const noPositionsCount = await noPositions.count();
+			const positionsListedCount = await positionsListed.count();
+			const errorLoadingPositionsCount = await errorLoadingPositions.count();
+
+			expect(noPositionsCount + positionsListedCount + errorLoadingPositionsCount).toBeGreaterThan(
+				0
+			);
+			expect(errorLoadingPositionsCount).toEqual(0);
+		}).toPass();
+	}
+
+	@step
+	async loadPortfolioPageAndPositions({
+		environment,
+		walletAddress,
+	}: {
+		environment: 'staging' | 'production';
+		walletAddress: string;
+	}) {
+		await expect(async () => {
+			if (environment === 'staging') {
+				await this.open(walletAddress);
+			} else {
+				await this.openOnProduction(walletAddress);
+			}
+			await this.shouldHavePositionsPanelWithoutErrors();
+		}).toPass({ timeout: portfolioTimeout * 2 });
+	}
+
+	@step
 	async getPortfolioData() {
 		let data: {
 			reasons: string;
@@ -144,6 +180,11 @@ export class Portfolio {
 			totalBorrowed: string;
 			emptyPositionsCount: number;
 			positionsListedCount: number;
+			positionsListedData: {
+				id: string;
+				pool: string;
+				type: string;
+			}[];
 		} = {
 			reasons: '',
 			totalValue: '',
@@ -152,6 +193,7 @@ export class Portfolio {
 			totalBorrowed: '',
 			emptyPositionsCount: 0,
 			positionsListedCount: 0,
+			positionsListedData: [],
 		};
 
 		data.reasons = await this.getReasonsValue();
@@ -164,6 +206,7 @@ export class Portfolio {
 			await this.positions.getNumberOfPositions();
 		data.emptyPositionsCount = emptyPositionsCount;
 		data.positionsListedCount = positionsListedCount;
+		data.positionsListedData = await this.positions.getPositionsData();
 
 		return data;
 	}
