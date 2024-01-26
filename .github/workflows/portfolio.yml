@@ -1,0 +1,32 @@
+name: Portfolio - Staging vs Production
+
+on: 
+  workflow_dispatch:
+    inputs:
+      flags:
+        description: 'Flags to enable / disable. For example: "flag1:true flag2:false"'
+        type: string
+        default: ''
+        required: false
+
+jobs:
+  no-wallet-tests:
+    name: 'Portfolio - Staging vs Production'
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.37.1-jammy
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Run NO-WALLET tests
+        run: FLAGS=${{ inputs.flags}} yarn nightly:no-wallet
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report-no-wallet-portfolio
+          path: playwright-reports/no-wallet-portfolio
+          retention-days: 30

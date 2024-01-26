@@ -38,6 +38,14 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'no-wallet-portfolio',
+			testMatch: ['noWallet/portfolio/stagingVsProd.spec.ts'],
+			use: {
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
 			name: 'with-wallet-aave-other',
 			testMatch: [
 				'withWallet/aaveV3/arbitrum/**',
