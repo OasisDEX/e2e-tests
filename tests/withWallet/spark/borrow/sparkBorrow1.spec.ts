@@ -318,16 +318,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 	});
 
 	test.skip('It should list an opened Spark Borrow position in portfolio', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11813',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11813',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
 
@@ -339,16 +333,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 	});
 
 	test.skip('It should open an Spark Borrow position from portfolio page', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11812',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11812',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
 

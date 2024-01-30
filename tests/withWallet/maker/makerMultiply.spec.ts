@@ -98,16 +98,10 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 	});
 
 	test('It should open a Maker Multiply position @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11797, 11798',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11797, 11798',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
 
@@ -166,16 +160,10 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 	// Skipping test as Maker position pages don't open when using forks  and also because of BUG 10547
 	test.skip('It should open a Maker Multiply position from portfolio page', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11799',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11799',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 

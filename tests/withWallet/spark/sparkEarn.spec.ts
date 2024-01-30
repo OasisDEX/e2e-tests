@@ -167,16 +167,10 @@ test.describe('Spark Earn - Wallet connected', async () => {
 	});
 
 	test('It should open a Spark Earn position @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12089',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12089',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
 

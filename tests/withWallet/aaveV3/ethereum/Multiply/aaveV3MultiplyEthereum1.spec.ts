@@ -236,16 +236,10 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	test.skip('It should list an opened Aave v3 Multiply Ethereum position in portfolio', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11770',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11770',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
 
@@ -256,16 +250,10 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	test.skip('It should open an Aave v3 Multiply Ethereum position from portfolio page', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11771',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11771',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
 

@@ -101,16 +101,10 @@ test.describe('Maker Earn - Wallet connected', async () => {
 	});
 
 	test('It should open a Maker Earn position @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11800',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11800',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
 
@@ -164,16 +158,10 @@ test.describe('Maker Earn - Wallet connected', async () => {
 	});
 
 	test.skip('It should list an opened Maker Earn position in portfolio', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11802',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11802',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -185,16 +173,10 @@ test.describe('Maker Earn - Wallet connected', async () => {
 
 	// Skipping test as Maker position pages don't open when using forks and also because of BUG 10547
 	test.skip('It should open a Maker Earn position from portfolio page', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11801',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11801',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
