@@ -5,7 +5,6 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
-	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -17,6 +16,7 @@ let context: BrowserContext;
 let app: App;
 let forkId: string;
 let walletAddress: string;
+let positionId: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -31,10 +31,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should deposit extra collateral on an existent Spark Borrow position @regression', async () => {
+	test('It should open a Spark Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11406',
+			description: '11811',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -47,16 +47,45 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 		});
 
-		await tenderly.changeAccountOwner({
-			account: '0x3dc0f12ff0452cab029c3c185c9dc9061d1515c8',
-			newOwner: walletAddress,
-			forkId,
+		await app.page.goto('/ethereum/spark/v3/borrow/ethdai#simulate');
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'ETH', amount: '3' });
+		await app.position.setup.borrow({ token: 'DAI', amount: '1000' });
+		await app.position.setup.createSmartDeFiAccount();
+		// Confirmation button with same label
+		await app.position.setup.createSmartDeFiAccount();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
+		await app.position.setup.continue();
+		await app.position.setup.openBorrowPosition1Of2();
+
+		// Position creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.setup.goToPositionShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		// Logging position ID for debugging purposes
+		positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
+		await app.position.setup.goToPosition();
+		await app.position.manage.shouldBeVisible('Manage ');
+	});
+
+	test('It should deposit extra collateral on an existing Spark Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11406',
 		});
 
-		await app.page.goto('/ethereum/spark/v3/1474#overview');
-		// Wait for all position data to be loaded
-		await app.position.shouldHaveTab('Protection ON');
-		// Wait for gas to be estimated
+		test.setTimeout(longTestTimeout);
+
 		await expect(async () => {
 			await app.position.manage.deposit({ token: 'ETH', amount: '0' });
 			await app.position.manage.deposit({ token: 'ETH', amount: '20' });
@@ -78,13 +107,13 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveNetValue({
-			value: '20.00',
+			value: '2[0-3].[0-9]{2}',
 			token: 'ETH',
 		});
-		await app.position.overview.shouldHaveExposure({ amount: '20.[0-9]{5}', token: 'ETH' });
+		await app.position.overview.shouldHaveExposure({ amount: '23.00000', token: 'ETH' });
 	});
 
-	test('It should withdraw some collateral from an existent Spark Borrow position @regression', async () => {
+	test('It should withdraw some collateral from an existing Spark Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13113',
@@ -93,7 +122,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.overview.shouldHaveExposure({ amount: '20.[0-9]{5}', token: 'ETH' });
+		await app.position.overview.shouldHaveExposure({ amount: '23.00000', token: 'ETH' });
 
 		await app.position.manage.withdrawCollateral();
 		await app.position.manage.withdraw({ token: 'ETH', amount: '5' });
@@ -110,7 +139,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveExposure({
-			amount: '15.[0-9]{5}',
+			amount: '18.00000',
 			token: 'ETH',
 			timeout: positionTimeout,
 		});
@@ -125,7 +154,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.overview.shouldHaveDebt({ amount: '[0-9].[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '1,[0-9]{3}.[0-9]{4}', token: 'DAI' });
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Manage debt');
@@ -143,7 +172,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveDebt({
-			amount: '5,[0-9]{3}.[0-9]{4}',
+			amount: '6,[0-9]{3}.[0-9]{4}',
 			token: 'DAI',
 			timeout: positionTimeout,
 		});
@@ -158,7 +187,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.overview.shouldHaveDebt({ amount: '5,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '6,[0-9]{3}.[0-9]{4}', token: 'DAI' });
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Manage debt');
@@ -187,13 +216,13 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveDebt({
-			amount: '[2-3],[0-9]{3}.[0-9]{4}',
+			amount: '3,[0-9]{3}.[0-9]{4}',
 			token: 'DAI',
 			timeout: positionTimeout,
 		});
 	});
 
-	test('It should close an existent Spark Borrow position - Close to collateral token (ETH) @regression', async () => {
+	test('It should close an existing Spark Borrow position - Close to collateral token (ETH) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13077',
@@ -221,7 +250,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.page.goto('/ethereum/spark/v3/1474#overview');
+		await app.page.goto(positionId);
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
 			token: 'DAI',
@@ -234,7 +263,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
 	});
 
-	test('It should close an existent Spark Borrow position - Close to debt token (DAI) @regression', async () => {
+	test('It should close an existing Spark Borrow position - Close to debt token (DAI) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13052',
@@ -286,47 +315,6 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
-	});
-
-	test('It should open a Spark Borrow position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11811',
-		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		await app.page.goto('/ethereum/spark/v3/borrow/ethdai#simulate');
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '3' });
-		await app.position.setup.borrow({ token: 'DAI', amount: '1' });
-		await app.position.setup.createSmartDeFiAccount();
-		// Confirmation button with same label
-		await app.position.setup.createSmartDeFiAccount();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
-		await app.position.setup.continue();
-		await app.position.setup.openBorrowPosition1Of2();
-
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		// Logging position ID for debugging purposes
-		const positionId = await app.position.setup.getNewPositionId();
-		console.log('+++ Position ID: ', positionId);
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
 	test.skip('It should list an opened Spark Borrow position in portfolio', async () => {
