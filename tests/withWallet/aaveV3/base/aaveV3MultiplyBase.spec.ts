@@ -211,16 +211,10 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 	});
 
 	test.skip('It should list an opened Aave v3 Multiply Base position in portfolio', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12467',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12467',
+		});
 
 		test.setTimeout(longTestTimeout);
 
@@ -231,16 +225,10 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 	});
 
 	test.skip('It should open an Aave v3 Multiply Base position from portfolio page', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12468',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12468',
+		});
 
 		test.setTimeout(longTestTimeout);
 
