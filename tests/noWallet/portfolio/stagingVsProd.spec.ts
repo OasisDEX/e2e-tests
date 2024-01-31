@@ -8,15 +8,13 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 		Number of positions -- DONE
 		Position types and pools -- DONE
 		Assets -- TO BE DONE
-		TO BE ADDED: 0x458F04fEAB592Cd28f29A9926f86292A9Ef20600
-			--> This wallet doesn't have any active positions. but has some empty ones
 	*/
 
 	[
+		'0x458F04fEAB592Cd28f29A9926f86292A9Ef20600',
+		'0x9C3c6cF9D29Ab9E9e14503dbfC9aD8bB2A0E37EF',
 		'0x000009818d53763C701bA86586152c667Ac3AcdB',
 		'0xae362a72935dac355be989bf490a7d929f88c295',
-		'0x29eee8966452208ebd6b1cd047c15bd1aec50e88',
-		'0x9C3c6cF9D29Ab9E9e14503dbfC9aD8bB2A0E37EF',
 		'0x280dEd1b7e430BeD0Cbb0Aace452Fd2ADEf2b581',
 		'0x83664B8a83b9845Ac7b177DF86d0F5BF3b7739AD',
 		'0x39Cc77F88C7CFE2139066a7e987746e2Cd3bAd38',
@@ -33,6 +31,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 
 			// STAGING - 1st log
 			await app.portfolio.loadPortfolioPageAndPositions({ environment: 'staging', walletAddress });
+			await app.portfolio.positions.showEmptyPositions();
 			await app.portfolio.shouldHaveWalletAddress({
 				address: shortenAddress(walletAddress),
 				timeout: portfolioTimeout,
@@ -44,6 +43,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 				environment: 'production',
 				walletAddress,
 			});
+			await app.portfolio.positions.showEmptyPositions();
 			await app.portfolio.shouldHaveWalletAddress({
 				address: shortenAddress(walletAddress),
 				timeout: portfolioTimeout,
@@ -52,6 +52,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 
 			// STAGING - 2nd log (Portfolio data is updated from time to time)
 			await app.portfolio.loadPortfolioPageAndPositions({ environment: 'staging', walletAddress });
+			await app.portfolio.positions.showEmptyPositions();
 			await app.portfolio.shouldHaveWalletAddress({
 				address: shortenAddress(walletAddress),
 				timeout: portfolioTimeout,

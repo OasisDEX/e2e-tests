@@ -136,7 +136,7 @@ export class Portfolio {
 
 	@step
 	async shouldHavePositionsPanelWithoutErrors() {
-		const noPositions = this.page.getByText('There are no positions for this wallet');
+		const noPositions = this.page.getByText('There are no positions');
 		const positionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
 		const errorLoadingPositions = this.page.getByText('error trying to load positions');
 
