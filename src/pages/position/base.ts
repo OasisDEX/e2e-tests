@@ -75,6 +75,44 @@ export class Base {
 		}).toPass();
 	}
 
+	/**
+	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
+	 */
+	@step
+	async moveSliderAutomations({ process, value }: { process?: 'setup' | 'manage'; value: number }) {
+		await expect(async () => {
+			const initialSliderValue = await this.page
+				.locator('input[type="range"]')
+				.nth(0)
+				.getAttribute('value');
+
+			const slider = this.page.locator('input[type="range"]').nth(0);
+			const sliderBoundingBox = await slider.boundingBox();
+
+			// Scroll down so that slider is fully visible and next dragTo doesn't fail
+			if (process) {
+				await this.page
+					.getByText(process === 'setup' ? 'Connect a wallet' : 'Adjust Risk')
+					.scrollIntoViewIfNeeded();
+			}
+
+			await slider.dragTo(slider, {
+				force: true,
+				targetPosition: {
+					x: sliderBoundingBox.width * value,
+					y: 0,
+				},
+			});
+
+			const newSliderValue = await this.page
+				.locator('input[type="range"]')
+				.nth(0)
+				.getAttribute('value');
+
+			expect(newSliderValue !== initialSliderValue).toBe(true);
+		}).toPass();
+	}
+
 	@step
 	async confirm() {
 		await this.page.getByRole('button', { name: 'Confirm' }).click();

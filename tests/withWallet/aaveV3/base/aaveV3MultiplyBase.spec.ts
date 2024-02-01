@@ -210,6 +210,63 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
+	test.skip('It should set Auto-Buy on an Aave v3 Multiply Base position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12463',
+		});
+
+		test.setTimeout(extremelyLongTestTimeout);
+
+		// ==================================================
+		// ==================================================
+
+		await test.step('Test setup', async () => {
+			({ context } = await metamaskSetUp({ network: 'base' }));
+			let page = await context.newPage();
+			app = new App(page);
+
+			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
+		});
+
+		await tenderly.changeAccountOwner({
+			account: '0xf5922d700883214f689efe190a978ac51c50e6b1',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.page.goto('/base/aave/v3/17#overview');
+		// ==================================================
+		// ==================================================
+
+		await app.position.openTab('Optimization');
+		await app.position.optimization.setupAutoBuy();
+
+		//
+		await app.pause();
+		//
+		await app.position.optimization.adjustAutoBuyTrigger({ value: 0.05 });
+		//
+		// await app.pause();
+		//
+		await app.position.optimization.setNoThreshold();
+		//
+		await app.pause();
+		//
+		await app.position.optimization.addAutoBuy();
+
+		// await app.pause();
+
+		// Automation setup randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.setup.finishedShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+	});
+
 	test.skip('It should list an opened Aave v3 Multiply Base position in portfolio', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
