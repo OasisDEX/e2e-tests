@@ -249,6 +249,14 @@ export class Setup {
 	}
 
 	@step
+	async finishedShouldBeVisible() {
+		await expect(
+			this.page.getByRole('button', { exact: true, name: 'Finished' }),
+			'"Finished" should be visible'
+		).toBeVisible();
+	}
+
+	@step
 	async openBorrowPosition1Of2() {
 		await this.page.getByRole('button', { name: 'Open Borrow position (1/2)' }).click();
 	}
@@ -267,7 +275,7 @@ export class Setup {
 	async setupStopLossTransactionShouldBeVisible() {
 		await expect(
 			this.page.getByRole('button', { name: 'Set up Stop-Loss transaction' }),
-			'"Set up Stop-Loss transaction", should be visible'
+			'"Set up Stop-Loss transaction" should be visible'
 		).toBeVisible({ timeout: positionTimeout });
 	}
 
