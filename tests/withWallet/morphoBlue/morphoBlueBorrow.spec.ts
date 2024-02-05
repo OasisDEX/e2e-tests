@@ -128,7 +128,7 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('ethereum/morphoblue/borrow/WSTETH-USDC#setup');
+		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
 		await app.position.setup.deposit({ token: 'WSTETH', amount: '10' });
 		await app.position.setup.borrow({ token: 'USDC', amount: '8000.12' });
 
