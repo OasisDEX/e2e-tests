@@ -22,11 +22,11 @@ export class OrderInformation {
 		tokenAmount: string;
 		token: string;
 		dollarsAmount: string;
-		protocol?: 'Maker' | 'Ajna';
+		protocol?: 'Maker' | 'Ajna' | 'Morpho Blue';
 	}) {
 		const regExp = new RegExp(
 			`${tokenAmount} ${token}${
-				protocol === 'Maker' ? ' \\(' : protocol === 'Ajna' ? '\\(' : ' '
+				protocol === 'Maker' ? ' \\(' : ['Ajna', 'Morpho Blue'].includes(protocol) ? '\\(' : ' '
 			}\\$${dollarsAmount}${protocol ? '\\)' : ''}`
 		);
 		await expect(
@@ -61,7 +61,7 @@ export class OrderInformation {
 	}: {
 		amount: string;
 		percentage: string;
-		protocol?: 'Ajna';
+		protocol?: 'Ajna' | 'Morpho Blue';
 		pair?: string;
 	}) {
 		const regExp = new RegExp(`${amount} ${protocol ? `${pair}` : ''}\\(${percentage}%\\)`);
