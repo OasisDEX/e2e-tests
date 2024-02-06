@@ -111,7 +111,7 @@ export class Setup {
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
 	@step
-	async moveSlider({ protocol, value }: { protocol?: 'Ajna'; value: number }) {
+	async moveSlider({ protocol, value }: { protocol?: 'Ajna' | 'Morpho Blue'; value: number }) {
 		if (protocol) {
 			await this.base.moveSlider({ value });
 		} else {

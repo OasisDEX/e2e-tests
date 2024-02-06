@@ -216,7 +216,7 @@ export class Overview {
 			token,
 			timeout,
 			protocol,
-		}: { amount: string; token: string; timeout?: number; protocol?: 'Ajna' } = {
+		}: { amount: string; token: string; timeout?: number; protocol?: 'Ajna' | 'Morpho Blue' } = {
 			amount: '',
 			token: '',
 			timeout: expectDefaultTimeout,
@@ -239,7 +239,7 @@ export class Overview {
 	}: {
 		amount: string;
 		token: string;
-		protocol?: 'Ajna';
+		protocol?: 'Ajna' | 'Morpho Blue';
 	}) {
 		const debtElement = protocol
 			? this.page.getByText('Position debt').locator('..')
@@ -297,13 +297,13 @@ export class Overview {
 		protocol,
 	}: {
 		amount: string;
-		protocol?: 'Maker' | 'Ajna';
+		protocol?: 'Maker' | 'Ajna' | 'Morpho Blue';
 	}) {
 		let regexObj = new RegExp(`${protocol ? '\\$' : ''}${amount}${protocol ? '' : ' USD'}`);
 		const locator =
 			protocol === 'Maker'
 				? this.page.getByText('Buying Power').locator('..')
-				: protocol === 'Ajna'
+				: ['Ajna', 'Morpho Blue'].includes(protocol)
 				? this.page.locator('li:has-text("Buying Power")').locator('div')
 				: this.page.locator('li:has-text("Buying Power")');
 

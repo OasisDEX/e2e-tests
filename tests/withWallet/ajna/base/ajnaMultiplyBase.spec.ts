@@ -119,7 +119,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		});
 	});
 
-	test('It should allow to simulate risk adjustment (Up & Down) with slider in an Ajna Multiply position before opening it @regression', async () => {
+	test('It should allow to simulate risk adjustment (Up & Down) with slider in an Ajna Base Multiply position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -151,7 +151,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		expect(updatedLoanToValue2).toBeLessThan(updatedLoanToValue);
 	});
 
-	test('It should open an Ajna Ethreum Multiply position @regression', async () => {
+	test('It should open an Ajna Base Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
