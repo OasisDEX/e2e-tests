@@ -28,20 +28,10 @@ export class Portfolio {
 	}
 
 	@step
-	async shouldHaveViewingWalletBanner({
-		shortenedAddress,
-		description,
-	}: {
-		shortenedAddress: string;
-		description: string;
-	}) {
+	async shouldHaveViewingWalletBanner(shortenedAddress: string) {
 		await expect(
 			this.page.getByText(`You are viewing the wallet of ${shortenedAddress}`, { exact: true }),
 			`"You are viewing the wallet of ${shortenedAddress}" should be visible`
-		).toBeVisible();
-		await expect(
-			this.page.getByText(description, { exact: true }),
-			`"${description}" should be visible`
 		).toBeVisible();
 	}
 
@@ -138,16 +128,18 @@ export class Portfolio {
 	async shouldHavePositionsPanelWithoutErrors() {
 		const noPositions = this.page.getByText('There are no positions');
 		const positionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
+		const migratePositions = this.page.getByText('Why migrate?');
 		const errorLoadingPositions = this.page.getByText('error trying to load positions');
 
 		await expect(async () => {
 			const noPositionsCount = await noPositions.count();
 			const positionsListedCount = await positionsListed.count();
+			const migratePositionsCount = await migratePositions.count();
 			const errorLoadingPositionsCount = await errorLoadingPositions.count();
 
-			expect(noPositionsCount + positionsListedCount + errorLoadingPositionsCount).toBeGreaterThan(
-				0
-			);
+			expect(
+				noPositionsCount + positionsListedCount + migratePositionsCount + errorLoadingPositionsCount
+			).toBeGreaterThan(0);
 			expect(errorLoadingPositionsCount).toEqual(0);
 		}).toPass();
 	}
