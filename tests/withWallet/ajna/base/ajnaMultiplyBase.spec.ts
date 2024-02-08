@@ -102,7 +102,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 			current: '1.00',
 			future: '1(.[0-9]{1,2})?',
 		});
-		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.50');
+		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.05');
 		await app.position.setup.orderInformation.shouldHaveDebt({
 			token: 'ETH',
 			current: '0.00',
@@ -162,7 +162,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await app.page.goto('/base/ajna/multiply/ETH-USDC');
 		await app.position.setup.acknowlegeAjnaInfo();
 
-		await app.position.setup.deposit({ token: 'ETH', amount: '20' });
+		await app.position.setup.deposit({ token: 'ETH', amount: '15' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
@@ -206,7 +206,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.6 });
+		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.3 });
 
 		await app.position.manage.confirm();
 
@@ -243,7 +243,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.5 });
+		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.15 });
 
 		await app.position.manage.confirm();
 
