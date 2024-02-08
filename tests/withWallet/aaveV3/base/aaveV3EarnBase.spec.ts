@@ -92,7 +92,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await app.position.manage.shouldBeVisible('Manage Earn position');
 	});
 
 	test('It should adjust risk of an existent Aave V3 Earn Base position - Down @regression', async () => {
