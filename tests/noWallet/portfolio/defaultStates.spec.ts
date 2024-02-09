@@ -18,7 +18,11 @@ test.describe('Default states - Wallet not connected', async () => {
 		await app.page.goto('');
 		await app.homepage.shouldBeVisible();
 
-		await updateFlagsAndRejectCookies({ app, flags: process.env.FLAGS.split(' ') });
+		await updateFlagsAndRejectCookies({
+			app,
+			featuresFlags: process.env.FLAGS_FEATURES.split(' '),
+			automationMinNetValueFlags: process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(''),
+		});
 
 		await app.portfolio.open('0x8Af4F3fbC5446a3fc0474859B78fA5f4554D4510');
 	});

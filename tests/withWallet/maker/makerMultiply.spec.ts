@@ -37,7 +37,11 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({ app, network: 'mainnet' }));
+			({ forkId } = await setup({
+				app,
+				network: 'mainnet',
+				extraFeaturesFlags: 'MakerTenderly:true',
+			}));
 		});
 
 		await app.page.goto('/vaults/open-multiply/WSTETH-A');
@@ -136,26 +140,16 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		}
 
 		await app.position.setup.confirm();
-		await app.position.setup.addStopLoss2Of3();
+		await app.position.setup.continueWithoutStopLoss();
 		await app.position.setup.createVault3Of3();
 		await test.step('Metamask: ConfirmAddToken', async () => {
 			await metamask.confirmAddToken();
 		});
 
-		/* 
-			!!!
-			TO BE UPDATED now that /owner page has been removed
-			!!!
-		*/
-		/**
-		 * !!! Skiping final steps because of BUG 10547
-		 * // Wait for 5 seconds and reload page | Issue with Maker and staging/forks
-		 * await app.page.waitForTimeout(5_000);
-		 * await app.page.reload();
-		 *
-		 * await app.page.goto(`/owner/${walletAddress}`);
-		 * await app.portfolio.multiply.vaults.first.shouldHave({ assets: 'ETH-B' });
-		 */
+		await app.position.setup.goToVault();
+		await app.position.manage.shouldBeVisible('Manage your vault');
+		// Verify that it has beenopened as 'Mu;tiply' type
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 	});
 
 	// Skipping test as Maker position pages don't open when using forks  and also because of BUG 10547

@@ -13,10 +13,14 @@ export const test = base.extend<MyFixtures>({
 		await app.page.goto('');
 		await app.homepage.shouldBeVisible();
 
-		if (process.env.FLAGS) {
-			await updateFlagsAndRejectCookies({ app, flags: process.env.FLAGS.split(' ') });
+		if (process.env.FLAGS_FEATURES || process.env.FLAGS_AUTOMATION_MIN_NET_VALUE) {
+			await updateFlagsAndRejectCookies({
+				app,
+				featuresFlags: process.env.FLAGS_FEATURES.split(' '),
+				automationMinNetValueFlags: process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(' '),
+			});
 		} else {
-			updateFlagsAndRejectCookies({ app, flags: ['BaseNetworkEnabled'] });
+			updateFlagsAndRejectCookies({ app });
 		}
 
 		await use(app);

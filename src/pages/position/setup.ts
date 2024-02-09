@@ -262,6 +262,11 @@ export class Setup {
 	}
 
 	@step
+	async continueWithoutStopLoss() {
+		await this.page.getByText('Continue without Stop-Loss').click();
+	}
+
+	@step
 	async setupStopLoss1Of3() {
 		await this.page.getByRole('button', { name: 'Setup Stop-Loss (1/3)' }).click();
 	}
@@ -313,6 +318,11 @@ export class Setup {
 	@step
 	async goToPosition() {
 		await this.page.getByRole('button', { name: 'Go to position' }).click({ clickCount: 2 });
+	}
+
+	@step
+	async goToVault() {
+		await this.page.getByRole('button', { name: 'Go to Vault' }).click({ clickCount: 2 });
 	}
 
 	@step

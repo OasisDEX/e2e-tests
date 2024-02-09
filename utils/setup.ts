@@ -60,12 +60,17 @@ export const metamaskSetUp = async ({
 
 export const expect = test.expect;
 
+/**
+ * @param extraFeaturesFlags should be a string, for example, 'flag1:true flag2:false'
+ */
 export const setup = async ({
 	app,
 	network,
+	extraFeaturesFlags,
 }: {
 	app: App;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+	extraFeaturesFlags?: string;
 }) => {
 	const walletAddress = await metamask.walletAddress();
 
@@ -73,12 +78,23 @@ export const setup = async ({
 	await app.homepage.shouldBeVisible();
 
 	// 'UseNetworkSwitcherForks' flag needs to be always passed for tests with wallet and fork
-	const flags = process.env.FLAGS
-		? process.env.FLAGS.split(' ').concat('UseNetworkSwitcherForks:true')
+	const featuresFlags = process.env.FLAGS_FEATURES
+		? extraFeaturesFlags
+			? extraFeaturesFlags
+					.split(' ')
+					.concat(process.env.FLAGS_FEATURES.split(' '))
+					.concat('UseNetworkSwitcherForks:true')
+			: process.env.FLAGS_FEATURES.split(' ').concat('UseNetworkSwitcherForks:true')
 		: ['UseNetworkSwitcherForks:true'];
+
+	const automationMinNetValueFlags = process.env.FLAGS_AUTOMATION_MIN_NET_VALUE
+		? process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(' ')
+		: [];
+
 	await localStorage.updateFlagsAndRejectCookies({
 		app,
-		flags,
+		featuresFlags,
+		automationMinNetValueFlags,
 	});
 
 	await wallet.connect(app);
