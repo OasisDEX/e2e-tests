@@ -8,8 +8,8 @@ on:
         type: string
         default: 'https://staging.summer.fi'
         required: true
-      flags:
-        description: 'Flags to enable / disable. For example: "flag1:true flag2:false"'
+      flags_features:
+        description: 'Features Flags to enable / disable. For example: "flag1:true flag2:false"'
         type: string
         default: ''
         required: false
@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run NO-WALLET tests
-        run: BASE_URL=${{ inputs.base_url }} FLAGS=${{ inputs.flags}} yarn ci:no-wallet:regression
+        run: BASE_URL=${{ inputs.base_url }} FLAGS_FEATURES=${{ inputs.flags_features}} yarn ci:no-wallet:regression
       - uses: actions/upload-artifact@v3
         if: always()
         with:
@@ -61,7 +61,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
-          FLAGS=${{ inputs.flags}} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
           yarn ci:with-wallet:aave:ethereum:regression
       - uses: actions/upload-artifact@v3
         if: always()
@@ -95,7 +95,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
-          FLAGS=${{ inputs.flags}} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
           yarn ci:with-wallet:aave:other:regression
       - uses: actions/upload-artifact@v3
         if: always()
@@ -129,7 +129,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
-          FLAGS=${{ inputs.flags}} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
           yarn ci:with-wallet:ajna-and-morphoblue:regression
       - uses: actions/upload-artifact@v3
         if: always()
@@ -164,7 +164,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
-          FLAGS=${{ inputs.flags}} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
           yarn ci:with-wallet:maker-and-spark:regression
       - uses: actions/upload-artifact@v3
         if: always()

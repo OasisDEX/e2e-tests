@@ -3,10 +3,12 @@ import { App } from 'src/app';
 
 export const updateFlagsAndRejectCookies = async ({
 	app,
-	flags,
+	featuresFlags,
+	automationMinNetValueFlags,
 }: {
 	app: App;
-	flags: string[];
+	featuresFlags?: string[];
+	automationMinNetValueFlags?: string[];
 }) => {
 	// 'ob-config-overrides' takes some time to be loaded to Local Storage
 	let localStorage: any;
@@ -25,16 +27,28 @@ export const updateFlagsAndRejectCookies = async ({
 
 		const obConfigOverrides = JSON.parse(localStorage['ob-config-overrides']);
 
-		flags.forEach((flag) => {
-			const flagValues: string[] = flag.split(':');
-			obConfigOverrides.features[flagValues[0]] = flagValues[1] === 'true';
-		});
+		if (featuresFlags) {
+			featuresFlags.forEach((flag) => {
+				const flagValues: string[] = flag.split(':');
+				obConfigOverrides.features[flagValues[0]] = flagValues[1] === 'true';
+			});
+		}
 
-		await app.page.evaluate(
-			(obConfigOverrides) =>
-				localStorage.setItem('ob-config-overrides', JSON.stringify(obConfigOverrides)),
-			obConfigOverrides
-		);
+		if (automationMinNetValueFlags) {
+			automationMinNetValueFlags.forEach((flag) => {
+				const flagValues: string[] = flag.split(':');
+				obConfigOverrides.parameters.automation.minNetValueUSD[flagValues[0]][flagValues[1]] =
+					flagValues[2];
+			});
+		}
+
+		if (featuresFlags || automationMinNetValueFlags) {
+			await app.page.evaluate(
+				(obConfigOverrides) =>
+					localStorage.setItem('ob-config-overrides', JSON.stringify(obConfigOverrides)),
+				obConfigOverrides
+			);
+		}
 	}).toPass();
 
 	await app.page.reload();
