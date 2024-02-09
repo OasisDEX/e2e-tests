@@ -7,7 +7,6 @@ import { setup } from 'utils/setup';
 import {
 	extremelyLongTestTimeout,
 	veryLongTestTimeout,
-	baseUrl,
 	longTestTimeout,
 	positionTimeout,
 } from 'utils/config';
@@ -168,20 +167,12 @@ test.describe('Spark Earn - Wallet connected', async () => {
 	});
 
 	test('It should open a Spark Earn position @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12089',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12089',
+		});
 
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await tenderly.setRethBalance({ forkId, walletAddress, rEthBalance: '100' });
 
@@ -216,6 +207,10 @@ test.describe('Spark Earn - Wallet connected', async () => {
 			});
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
+
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');

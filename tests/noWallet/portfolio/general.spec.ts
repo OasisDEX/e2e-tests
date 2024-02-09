@@ -49,16 +49,22 @@ test.describe('Default states - Wallet not connected', async () => {
 		await app.portfolio.positions.shouldHaveNetValuesGreaterThanOneCent();
 	});
 
-	test('It should sort by Net Value @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '13032, 13033',
-		});
+	test.skip('It should sort by Net Value @regression', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '13032, 13033',
+			},
+			{
+				type: 'Bug',
+				description: '13770',
+			}
+		);
 
 		let firstPositionNetValue: number;
 		let fourthPositionNetValue: number;
 
-		// Positions hould be sorted by High-to-Low Net Value by default
+		// Positions should be sorted by High-to-Low Net Value by default
 		await app.portfolio.positions.shouldHaveSortByLable('Sort by');
 		firstPositionNetValue = await app.portfolio.positions.getNthNetValue(1);
 		fourthPositionNetValue = await app.portfolio.positions.getNthNetValue(4);

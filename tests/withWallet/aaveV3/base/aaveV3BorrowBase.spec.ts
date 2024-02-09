@@ -15,7 +15,6 @@ import { App } from 'src/app';
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -43,7 +42,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
+			({ forkId } = await setup({ app, network: 'base' }));
 		});
 
 		await app.page.goto('/base/aave/v3/borrow/ethusdbc#simulate');
@@ -74,6 +73,10 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage collateral');
 	});
@@ -101,8 +104,8 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveNetValue({
-			value: '[0-9]{2},[0-9]{3}.[0-9]{2}',
-			token: 'USDBC',
+			value: '[0-9]{1,2}.[0-9]{2}',
+			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveExposure({ amount: '10.[0-9]{5}', token: 'ETH' });
 	});
@@ -220,7 +223,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDBC' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDBC' });
 	});

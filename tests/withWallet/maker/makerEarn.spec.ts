@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { baseUrl, extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -101,20 +101,12 @@ test.describe('Maker Earn - Wallet connected', async () => {
 	});
 
 	test('It should open a Maker Earn position @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11800',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11800',
+		});
 
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
 		await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
@@ -166,16 +158,10 @@ test.describe('Maker Earn - Wallet connected', async () => {
 	});
 
 	test.skip('It should list an opened Maker Earn position in portfolio', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11802',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11802',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -187,16 +173,10 @@ test.describe('Maker Earn - Wallet connected', async () => {
 
 	// Skipping test as Maker position pages don't open when using forks and also because of BUG 10547
 	test.skip('It should open a Maker Earn position from portfolio page', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11801',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11801',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 

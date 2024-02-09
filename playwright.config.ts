@@ -32,15 +32,14 @@ const defaultConfig: PlaywrightTestConfig = {
 		{
 			name: 'no-wallet',
 			testMatch: ['noWallet/**'],
-			testIgnore: ['noWallet/ajna/**'],
 			use: {
 				...devices['Desktop Chrome'],
 			},
 		},
 
 		{
-			name: 'no-wallet-ajna',
-			testMatch: ['noWallet/ajna/**'],
+			name: 'no-wallet-portfolio',
+			testMatch: ['noWallet/portfolio/stagingVsProd.spec.ts'],
 			use: {
 				...devices['Desktop Chrome'],
 			},
@@ -63,8 +62,8 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'with-wallet-ajna',
-			testMatch: ['withWallet/ajna/**'],
+			name: 'with-wallet-ajna-and-morphoblue',
+			testMatch: ['withWallet/ajna/**', 'withWallet/morphoBlue/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 

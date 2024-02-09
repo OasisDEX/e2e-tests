@@ -87,8 +87,12 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await app.position.manage.shouldBeVisible('Manage Earn position');
 	});
 
 	test('It should adjust risk of an existent Aave V3 Earn Base position - Down @regression', async () => {
@@ -198,7 +202,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'CBETH' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'CBETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'ETH' });
 		await app.position.overview.shouldHaveMultiple('1');

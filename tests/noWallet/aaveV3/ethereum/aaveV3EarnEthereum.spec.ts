@@ -16,12 +16,12 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.setup.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '50' });
+		await app.position.setup.deposit({ token: 'ETH', amount: '40' });
 
-		await app.position.overview.shouldHaveTokenAmount({ amount: '50.00', token: 'ETH' });
+		await app.position.overview.shouldHaveTokenAmount({ amount: '40.00', token: 'ETH' });
 		await app.position.overview.shouldHavePrev30daysNetValue({
 			token: 'ETH',
-			amount: '50.[0-9]{2}',
+			amount: '40.[0-9]{2}',
 		});
 		await app.position.setup.shouldHaveCurrentPrice({
 			amount: '[1-9].[0-9]{2,4}',

@@ -5,7 +5,6 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
-	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -36,8 +35,6 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			type: 'Test case',
 			description: '12069',
 		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -72,6 +69,10 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
@@ -82,19 +83,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			description: '12912',
 		});
 
-		if (baseUrl.includes('staging') || baseUrl.includes('//summer.fi')) {
-			test.setTimeout(extremelyLongTestTimeout);
-
-			await test.step('Test setup', async () => {
-				({ context } = await metamaskSetUp({ network: 'optimism' }));
-				let page = await context.newPage();
-				app = new App(page);
-
-				({ forkId, walletAddress } = await setup({ app, network: 'optimism' }));
-			});
-		} else {
-			test.setTimeout(veryLongTestTimeout);
-		}
+		test.setTimeout(veryLongTestTimeout);
 
 		await tenderly.changeAccountOwner({
 			account: '0x1a7ab3359598aa32dbd04edbfa95600f43d89f14',

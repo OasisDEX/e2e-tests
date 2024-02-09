@@ -4,12 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import {
-	extremelyLongTestTimeout,
-	longTestTimeout,
-	positionTimeout,
-	veryLongTestTimeout,
-} from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -19,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
+test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -30,10 +25,10 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should allow to simulate an Ajna Ethereum Borrow position before opening it @regression', async () => {
+	test('It should allow to simulate a Morpho Blue Borrow position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12732',
+			description: 'xxxxxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -50,21 +45,16 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 				network: 'mainnet',
 				walletAddress,
 				token: 'WSTETH',
-				balance: '100',
+				balance: '30',
 			});
 		});
 
-		await app.page.goto('/ethereum/ajna/borrow/RETH-ETH#setup');
+		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-ETH#setup');
 
-		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'RETH', amount: '10.12345' });
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '10.12345' });
 
-		await app.position.overview.shouldHaveCollateralDepositedAfterPill('10.12 RETH');
+		await app.position.overview.shouldHaveCollateralDepositedAfterPill('10.12 WSTETH');
 		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
-		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
-			amount: '10.12',
-			token: 'RETH',
-		});
 		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
 			amount: '[0-9]{1,2}.[0-9]{2}',
 			token: 'ETH',
@@ -75,16 +65,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			amount: '[0-9]{1,2}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveCollateralLocked({
-			token: 'RETH',
-			current: '0.00',
-			future: '10.12',
-		});
-		await app.position.setup.orderInformation.shouldHaveMaxLTV({
-			current: '[0-9]{2,3}.[0-9]{2}',
-			future: '[0-9]{2,3}.[0-9]{2}',
-		});
-		await app.position.setup.orderInformation.shouldHaveAvailableToWithdraw({
-			token: 'RETH',
+			token: 'WSTETH',
 			current: '0.00',
 			future: '10.12',
 		});
@@ -96,41 +77,31 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		await app.position.setup.borrow({ token: 'ETH', amount: '8.12345' });
 
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-3].[0-9]{3,4} RETH/ETH');
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-1].[0-9]{3,4} WSTETH/ETH');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[4-9][0-9].[0-9]{1,2}%');
 		await app.position.overview.shouldHaveDebtAfterPill({
-			protocol: 'Ajna',
 			amount: '8.1234',
 			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
-			amount: '[1-5].[0-9]{3,4}',
-			token: 'RETH',
+			amount: '[0-4].[0-9]{3,4}',
+			token: 'WSTETH',
 		});
 		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
-			amount: '[1-5].[0-9]{3,4}',
+			amount: '[0-4].[0-9]{3,4}',
 			token: 'ETH',
 		});
 
-		await app.position.setup.shouldHaveOriginationFee({
-			token: 'ETH',
-			tokenAmount: '0.[0-9]{4}',
-			dollarsAmount: '[0-9]{1,2}(.[0-9]{1,2})?',
-		});
 		await app.position.orderInformation.shouldHaveLiquidationPrice({
-			pair: 'RETH/ETH',
+			pair: 'WSTETH/ETH',
 			current: '0.00',
 			future: '[0-2].[0-9]{3,4}',
 		});
 		await app.position.orderInformation.shouldHaveLTV({
-			protocol: 'Ajna',
+			protocol: 'Morpho Blue',
 			current: '0.00',
 			future: '[1-9][0-9].[0-9]{2}',
-		});
-		await app.position.setup.orderInformation.shouldHaveMaxLTV({
-			current: '[0-9]{2,3}.[0-9]{2}',
-			future: '[0-9]{2,3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveDebt({
 			token: 'ETH',
@@ -138,7 +109,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			future: '8.[0-9]{3,4}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToWithdraw({
-			token: 'RETH',
+			token: 'WSTETH',
 			current: '0.00',
 			future: '[0-5].[0-9]{3,4}',
 		});
@@ -149,18 +120,17 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should open an Ajna Ethereum Borrow position @regression', async () => {
+	test('It should open a Morpho Blue Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12103',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/ethereum/ajna/borrow/WSTETH-ETH#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'WSTETH', amount: '20' });
-		await app.position.setup.borrow({ token: 'ETH', amount: '15' });
+		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '10' });
+		await app.position.setup.borrow({ token: 'USDC', amount: '8000.12' });
 
 		await app.position.setup.createSmartDeFiAccount();
 
@@ -177,7 +147,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
-			await app.position.setup.approveAllowance();
+			await app.position.setup.approveAllowanceOrRetry();
 			await test.step('Metamask: ConfirmAddToken', async () => {
 				await metamask.confirmAddToken();
 			});
@@ -202,20 +172,19 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		// ======================================================================
 
-		await app.position.manage.shouldBeVisible('Manage your Ajna Borrow Position');
+		await app.position.manage.shouldBeVisible('Manage your Morpho Borrow');
 	});
 
-	test('It should Deposit and Borrow in a single tx form an existing Ajna Ethereum Borrow position @regression', async () => {
+	test('It should Deposit and Borrow in a single tx on an existing Morpho Blue Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: 'xxxxx',
+			description: 'xxxx',
 		});
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.setup.deposit({ token: 'WSTETH', amount: '15' });
-		await app.position.setup.borrow({ token: 'ETH', amount: '10' });
-
+		await app.position.manage.deposit({ token: 'WSTETH', amount: '10' });
+		await app.position.manage.borrow({ token: 'USDC', amount: '10000' });
 		await app.position.setup.confirm();
 
 		// ============================================================
@@ -231,27 +200,39 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '35.00', token: 'WSTETH' });
+		await app.position.overview.shouldHaveNetValue({
+			value: '[3-4][0-9],[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '20.00', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({
-			amount: '25.[0-9]{2}([0-9]{1,2})?',
-			token: 'ETH',
-			protocol: 'Ajna',
+			amount: '18,[0-9]{3}.[0-9]{1,2}',
+			token: 'USDC',
 		});
 	});
 
-	test('It should Withdraw and Pay back in a single tx form an existing Ajna Ethereum Borrow position @regression', async () => {
+	test('It should Withdraw and Pay back in a single tx on an existing Morpho Blue Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: 'xxxxx',
+			description: 'xxxx',
 		});
 
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.withdrawCollateral();
-		await app.position.manage.withdraw({ token: 'WSTETH', amount: '10' });
-		await app.position.manage.payback({ token: 'ETH', amount: '5' });
+		await app.position.manage.withdraw({ token: 'WSTETH', amount: '5' });
+		await app.position.manage.payback({ token: 'USDC', amount: '5000' });
 
-		await app.position.setup.confirm();
+		await app.position.setup.setTokenAllowance('USDC');
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.approveAllowanceOrRetry();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
 
 		// ============================================================
 
@@ -266,15 +247,17 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '25.00', token: 'WSTETH' });
+		await app.position.overview.shouldHaveNetValue({
+			value: '[2-3][0-9],[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '15.00', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({
-			amount: '20.[0-9]{2}([0-9]{1,2})?',
-			token: 'ETH',
-			protocol: 'Ajna',
+			amount: '1[2-3],[0-9]{3}.[0-9]{1,2}',
+			token: 'USDC',
 		});
 	});
 
-	test('It should Borrow and Deposit in a single tx on an existing Ajna Ethereum Borrow position @regression', async () => {
+	test('It should Borrow and Deposit in a single tx on an existing Morpho Blue Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxx',
@@ -285,8 +268,8 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
 		await app.position.manage.select('Manage debt');
 
-		await app.position.manage.borrow({ token: 'ETH', amount: '15' });
-		await app.position.manage.deposit({ token: 'WSTETH', amount: '20' });
+		await app.position.manage.borrow({ token: 'USDC', amount: '10000' });
+		await app.position.manage.deposit({ token: 'WSTETH', amount: '10' });
 
 		await app.position.setup.confirm();
 
@@ -303,15 +286,17 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '45.00', token: 'WSTETH' });
+		await app.position.overview.shouldHaveNetValue({
+			value: '[3-5][0-9],[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '25.00', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({
-			amount: '35.[0-9]{2}([0-9]{1,2})?',
-			token: 'ETH',
-			protocol: 'Ajna',
+			amount: '23,[0-9]{3}.[0-9]{1,2}',
+			token: 'USDC',
 		});
 	});
 
-	test('It should Pay back and Withdraw in a single tx on an existing Ajna Ethereum Borrow position @regression', async () => {
+	test('It should Pay back and Withdraw in a single tx on an existing Morpho Blue Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxx',
@@ -323,8 +308,8 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await app.position.manage.select('Manage debt');
 
 		await app.position.manage.payBackDebt();
-		await app.position.manage.payback({ token: 'ETH', amount: '20' });
-		await app.position.manage.withdraw({ token: 'WSTETH', amount: '15' });
+		await app.position.manage.payback({ token: 'USDC', amount: '5000' });
+		await app.position.manage.withdraw({ token: 'WSTETH', amount: '5' });
 
 		await app.position.setup.confirm();
 
@@ -341,57 +326,13 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '30.00', token: 'WSTETH' });
+		await app.position.overview.shouldHaveNetValue({
+			value: '[2-4][0-9],[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '20.00', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({
-			amount: '15.[0-9]{2}([0-9]{1,2})?',
-			token: 'ETH',
-			protocol: 'Ajna',
+			amount: '18,[0-9]{3}.[0-9]{1,2}',
+			token: 'USDC',
 		});
-	});
-
-	test('It should Close to collateral an existing Ajna Ethereum Borrow position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxxx',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
-		await app.position.manage.select('Close position');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'WSTETH',
-			amount: '[0-9]{1,2}.[0-9]{1,2}',
-		});
-
-		await app.position.setup.confirm();
-
-		// ============================================================
-
-		// UI sometimes gets stuck after confirming position update
-		//   - 'Reload' added to avoid flakines
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.setup.shouldShowUpdatingPosition();
-		await app.page.reload();
-
-		// ============================================================
-
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'WSTETH' });
-		await app.position.overview.shouldHaveDebt({
-			amount: '0.00',
-			token: 'ETH',
-			protocol: 'Ajna',
-		});
-		await app.position.overview.shouldHaveNetValue({ value: '0.00' });
-		await app.position.overview.shouldHaveAvailableToWithdraw({ token: 'WSTETH', amount: '0.00' });
-		await app.position.overview.shouldHaveAvailableToBorrow({ token: 'ETH', amount: '0.00' });
 	});
 });

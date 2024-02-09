@@ -5,7 +5,6 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
-	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -36,8 +35,6 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			type: 'Test case',
 			description: '12067',
 		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -77,10 +74,12 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
-		await app.position.manage.ok();
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
 	});
 
 	test('It should adjust risk of an existent Aave V3 Multiply Optimism position - Up @regression', async () => {
@@ -89,19 +88,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			description: '12909',
 		});
 
-		if (baseUrl.includes('staging') || baseUrl.includes('//summer.fi')) {
-			test.setTimeout(extremelyLongTestTimeout);
-
-			await test.step('Test setup', async () => {
-				({ context } = await metamaskSetUp({ network: 'optimism' }));
-				let page = await context.newPage();
-				app = new App(page);
-
-				({ forkId, walletAddress } = await setup({ app, network: 'optimism' }));
-			});
-		} else {
-			test.setTimeout(veryLongTestTimeout);
-		}
+		test.setTimeout(veryLongTestTimeout);
 
 		await tenderly.changeAccountOwner({
 			account: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
@@ -235,7 +222,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDC' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDC' });
 		await app.position.overview.shouldHaveMultiple('1');

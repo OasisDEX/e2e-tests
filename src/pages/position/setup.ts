@@ -111,12 +111,31 @@ export class Setup {
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
 	@step
-	async moveSlider({ protocol, value }: { protocol?: 'Ajna'; value: number }) {
+	async moveSlider({ protocol, value }: { protocol?: 'Ajna' | 'Morpho Blue'; value: number }) {
 		if (protocol) {
 			await this.base.moveSlider({ value });
 		} else {
 			await this.base.moveSlider({ process: 'setup', value });
 		}
+	}
+
+	@step
+	async showLendingPriceEditor({ pair }: { pair: string }) {
+		await this.page.getByText(`Or enter specific ${pair} Lending Price`).click();
+	}
+
+	@step
+	async updateLendingPrice({
+		collateralToken,
+		adjust,
+	}: {
+		collateralToken: string;
+		adjust: 'up' | 'down';
+	}) {
+		await this.page
+			.locator(`:has-text("Input ${collateralToken} Lending Price") + div > button`)
+			.nth(adjust === 'down' ? 0 : 1)
+			.click();
 	}
 
 	@step
@@ -198,6 +217,23 @@ export class Setup {
 	}
 
 	@step
+	async approveAllowanceOrRetry() {
+		const approve = this.page.getByRole('button', { name: 'Approve Allowance' });
+		const retry = this.page.getByRole('button', { name: 'Retry Allowance approval' });
+
+		if (await approve.isVisible()) {
+			await approve.click();
+		} else if (await retry.isVisible()) {
+			await retry.click();
+		}
+	}
+
+	@step
+	async setTokenAllowance(token: string) {
+		await this.page.getByRole('button', { name: `Set ${token} allowance` }).click();
+	}
+
+	@step
 	async goToDeposit() {
 		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
 	}
@@ -210,6 +246,14 @@ export class Setup {
 	@step
 	async finished() {
 		await this.page.getByRole('button', { exact: true, name: 'Finished' }).click();
+	}
+
+	@step
+	async finishedShouldBeVisible() {
+		await expect(
+			this.page.getByRole('button', { exact: true, name: 'Finished' }),
+			'"Finished" should be visible'
+		).toBeVisible();
 	}
 
 	@step
@@ -231,7 +275,7 @@ export class Setup {
 	async setupStopLossTransactionShouldBeVisible() {
 		await expect(
 			this.page.getByRole('button', { name: 'Set up Stop-Loss transaction' }),
-			'"Set up Stop-Loss transaction", should be visible'
+			'"Set up Stop-Loss transaction" should be visible'
 		).toBeVisible({ timeout: positionTimeout });
 	}
 
@@ -272,6 +316,15 @@ export class Setup {
 	}
 
 	@step
+	async getNewPositionId() {
+		const id = await this.page
+			.getByRole('button', { name: 'Go to position' })
+			.locator('..')
+			.getAttribute('href');
+		return id;
+	}
+
+	@step
 	async shouldHaveLiquidationPrice({
 		amount,
 		pair,
@@ -306,6 +359,14 @@ export class Setup {
 	async shouldHaveCurrentPrice({ amount, pair }: { amount: string; pair: string }) {
 		const regExp = new RegExp(`${amount} ${pair}`);
 		await expect(this.page.locator('span:has-text("Current Price") + span')).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveMinBorrowingAmount({ amount, token }: { amount: string; token: string }) {
+		const regExp = new RegExp('From ' + amount + ' ' + token);
+		await expect(
+			this.page.locator(`span:has-text("Borrow ${token}") + span:has-text("From")`)
+		).toContainText(regExp);
 	}
 
 	@step
@@ -378,5 +439,19 @@ export class Setup {
 		await expect(this.page.locator('p > span:has-text("Origination Fee") + span')).toContainText(
 			regExp
 		);
+	}
+
+	@step
+	async shouldShowCreatingPosition() {
+		await expect
+			.soft(this.page.getByText('Creating your '), `"Creating your position" should be visible`)
+			.toBeVisible();
+	}
+
+	@step
+	async shouldShowUpdatingPosition() {
+		await expect
+			.soft(this.page.getByText('Updating your '), `"Updating your position" should be visible`)
+			.toBeVisible();
 	}
 }

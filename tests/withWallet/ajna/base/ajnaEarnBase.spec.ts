@@ -4,16 +4,17 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
+test.describe('Ajna Base Earn - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -24,26 +25,34 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should allow to simulate an Ajna Ethereum Earn position before opening it @regression', async () => {
+	test('It should allow to simulate an Ajna Base Earn position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12105',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'mainnet' }));
+			({ context } = await metamaskSetUp({ network: 'base' }));
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({ app, network: 'mainnet' }));
+			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'base',
+				token: 'USDC',
+				balance: '50000',
+			});
 		});
 
-		await app.page.goto('/ethereum/ajna/earn/WSTETH-ETH#setup');
+		await app.page.goto('/base/ajna/earn/CBETH-ETH#setup');
 
 		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'ETH', amount: '9.12345' });
+		await app.position.setup.deposit({ token: 'ETH', amount: '10' });
 
 		await app.position.overview.shouldHaveProjectedEarnings30days({
 			token: 'ETH',
@@ -52,13 +61,13 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 
 		await app.position.setup.orderInformation.shouldHaveAmountToLend({
 			current: '0.00',
-			future: '9.[0-9]{4}',
+			future: '10.00',
 			token: 'ETH',
 		});
 		await app.position.setup.orderInformation.shouldHaveLendingPrice({
 			current: '0.00',
-			future: '[0-9]{1,2}.[0-9]{4}',
-			tokensPair: 'WSTETH/ETH',
+			future: '[0-5].[0-9]{4}',
+			tokensPair: 'CBETH/ETH',
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '0.00',
@@ -66,45 +75,16 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 		});
 	});
 
-	test('It should allow to simulate Lending Price adjustment (Up) in an Ajna Ethereum Earn position before opening it - Wallet connected @regression', async () => {
+	test('It should allow to simulate Lending Price adjustment (Down) in an Ajna Base Earn position before opening it - Wallet connected @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12110',
+			description: 'xxx',
 		});
 
 		const initialLendingPrice = await app.position.setup.getLendingPrice();
 		const initialMaxLTV = await app.position.setup.getMaxLTV();
 
-		await app.position.setup.showLendingPriceEditor({ pair: 'WSTETH/ETH' });
-		await app.position.setup.updateLendingPrice({
-			collateralToken: 'ETH',
-			adjust: 'up',
-		});
-
-		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveButtonDisabled('Create Smart DeFi account');
-		await app.position.setup.shouldHaveButtonEnabled('Create Smart DeFi account');
-
-		const updatedLendingPrice = await app.position.manage.getLendingPrice();
-		const updatedMaxLTV = await app.position.manage.getMaxLTV();
-		expect(updatedLendingPrice).toBeGreaterThan(initialLendingPrice);
-		expect(updatedMaxLTV).toBeGreaterThan(initialMaxLTV);
-
-		await app.position.setup.orderInformation.shouldHaveMaxLTV({
-			current: '0.00',
-			future: updatedMaxLTV.toFixed(2),
-		});
-	});
-
-	test('It should allow to simulate Lending Price adjustment (Down) in an Ajna Ethereum Earn position before opening it @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12109',
-		});
-
-		const initialLendingPrice = await app.position.setup.getLendingPrice();
-		const initialMaxLTV = await app.position.setup.getMaxLTV();
-
+		await app.position.setup.showLendingPriceEditor({ pair: 'CBETH/ETH' });
 		await app.position.setup.updateLendingPrice({
 			collateralToken: 'ETH',
 			adjust: 'down',
@@ -125,22 +105,62 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 		});
 	});
 
-	test('It should open an Ajna Ethereum Earn position @regression', async () => {
+	test('It should allow to simulate Lending Price adjustment (Up) in an Ajna Base Earn position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11657',
+			description: 'xxx',
 		});
 
-		test.setTimeout(extremelyLongTestTimeout);
+		const initialLendingPrice = await app.position.setup.getLendingPrice();
+		const initialMaxLTV = await app.position.setup.getMaxLTV();
 
-		await app.page.goto('/ethereum/ajna/earn/RETH-ETH#setup');
+		await app.position.setup.updateLendingPrice({
+			collateralToken: 'ETH',
+			adjust: 'up',
+		});
+
+		// Wait for simulation to update with new risk
+		await app.position.setup.shouldHaveButtonDisabled('Create Smart DeFi account');
+		await app.position.setup.shouldHaveButtonEnabled('Create Smart DeFi account');
+
+		const updatedLendingPrice = await app.position.manage.getLendingPrice();
+		const updatedMaxLTV = await app.position.manage.getMaxLTV();
+		expect(updatedLendingPrice).toBeGreaterThan(initialLendingPrice);
+		expect(updatedMaxLTV).toBeGreaterThan(initialMaxLTV);
+
+		await app.position.setup.orderInformation.shouldHaveMaxLTV({
+			current: '0.00',
+			future: updatedMaxLTV.toFixed(2),
+		});
+	});
+
+	test('It should open an Ajna Base Earn position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.page.goto('/base/ajna/earn/ETH-USDC#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'ETH', amount: '20' });
+		await app.position.setup.deposit({ token: 'USDC', amount: '5000' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.createSmartDeFiAccount();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.approveAllowance();
 			await test.step('Metamask: ConfirmAddToken', async () => {
 				await metamask.confirmAddToken();
 			});

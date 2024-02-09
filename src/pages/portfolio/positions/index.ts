@@ -142,4 +142,92 @@ export class Positions {
 
 		return parseFloat(netValue.slice(1).replace('<', ''));
 	}
+
+	@step
+	async getNumberOfPositions() {
+		const noPositions = this.page.getByText('There are no positions for this wallet');
+		const positionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
+		const migratePositions = this.page.getByText('Why migrate?');
+
+		let noPositionsCount: number;
+		let positionsCount: {
+			emptyPositionsCount: number;
+			positionsListedCount: number;
+			migratePositionsCount: number;
+		} = { emptyPositionsCount: 0, positionsListedCount: 0, migratePositionsCount: 0 };
+
+		// Wait for positions panel to fully load
+		await expect(async () => {
+			noPositionsCount = await noPositions.count();
+			positionsCount.positionsListedCount = await positionsListed.count();
+			positionsCount.migratePositionsCount = await migratePositions.count();
+			expect(
+				noPositionsCount +
+					positionsCount.positionsListedCount +
+					positionsCount.migratePositionsCount
+			).toBeGreaterThan(0);
+		}).toPass();
+
+		if (noPositionsCount === 1) {
+			return positionsCount;
+		}
+
+		const regExp = new RegExp('Show.*empty positions');
+		const emptyPositionsText = await this.page.getByText(regExp).innerText();
+		positionsCount.emptyPositionsCount = parseInt(
+			emptyPositionsText.substring(4, emptyPositionsText.indexOf('empty'))
+		);
+
+		return positionsCount;
+	}
+
+	@step
+	async getPositionsData() {
+		let positionsData: {
+			id: string;
+			pool: string;
+			type: string;
+			protocol: string;
+		}[] = [];
+
+		const positionData: {
+			id: string;
+			pool: string;
+			type: string;
+			protocol: string;
+		} = { id: '', pool: '', type: '', protocol: '' };
+
+		const summerPositionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
+		const summerPositionsListedCount: number = await summerPositionsListed.count();
+
+		for (let index = 0; index < summerPositionsListedCount; index++) {
+			const positionId = await summerPositionsListed.nth(index).locator('span').nth(2).innerText();
+			positionData.id = positionId.slice(10);
+
+			positionData.pool = await summerPositionsListed.nth(index).locator('span').nth(1).innerText();
+			positionData.type = await summerPositionsListed.nth(index).locator('span').nth(0).innerText();
+
+			positionsData.push(positionData);
+		}
+
+		const migratePositionsListed = this.page.getByRole('link').filter({ hasText: 'Why migrate?' });
+		const migratePositionsListedCount: number = await migratePositionsListed.count();
+
+		for (let index = 0; index < migratePositionsListedCount; index++) {
+			positionData.pool = await migratePositionsListed
+				.nth(index)
+				.locator('span')
+				.nth(1)
+				.innerText();
+			positionData.protocol = await migratePositionsListed
+				.nth(index)
+				.locator('span')
+				.nth(2)
+				.innerText();
+
+			positionsData.push(positionData);
+		}
+
+		return positionsData;
+	}
 }

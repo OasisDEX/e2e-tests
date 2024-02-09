@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { baseUrl, extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -146,7 +146,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDBC' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDBC' });
 		await app.position.overview.shouldHaveMultiple('1');
@@ -158,8 +158,6 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			type: 'Test case',
 			description: '12463',
 		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
 		await tenderly.setCbEthBalanceBase({ forkId, walletAddress, cbEthBalance: '50' });
@@ -204,21 +202,19 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
 	test.skip('It should list an opened Aave v3 Multiply Base position in portfolio', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12467',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12467',
+		});
 
 		test.setTimeout(longTestTimeout);
 
@@ -229,16 +225,10 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 	});
 
 	test.skip('It should open an Aave v3 Multiply Base position from portfolio page', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '12468',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12468',
+		});
 
 		test.setTimeout(longTestTimeout);
 

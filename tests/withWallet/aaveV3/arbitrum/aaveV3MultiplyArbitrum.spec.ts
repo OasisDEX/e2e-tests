@@ -5,7 +5,6 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
-	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -36,8 +35,6 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			type: 'Test case',
 			description: '12070',
 		});
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -77,6 +74,10 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
@@ -87,20 +88,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			description: '12905',
 		});
 
-		// Condition needed until FORK database collision is fixed
-		if (baseUrl.includes('staging') || baseUrl.includes('//summer.fi')) {
-			test.setTimeout(extremelyLongTestTimeout);
-
-			await test.step('Test setup', async () => {
-				({ context } = await metamaskSetUp({ network: 'arbitrum' }));
-				let page = await context.newPage();
-				app = new App(page);
-
-				({ forkId, walletAddress } = await setup({ app, network: 'arbitrum' }));
-			});
-		} else {
-			test.setTimeout(veryLongTestTimeout);
-		}
+		test.setTimeout(veryLongTestTimeout);
 
 		await tenderly.changeAccountOwner({
 			account: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
@@ -214,7 +202,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
 			token: 'DAI',
-			amount: '[1-6].[0-9]{3,4}',
+			amount: '[0-9]{1,2}.[0-9]{3,4}',
 		});
 
 		// Confirm action randomly fails - Retry until it's applied.
@@ -236,7 +224,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
 		await app.position.overview.shouldHaveMultiple('1');

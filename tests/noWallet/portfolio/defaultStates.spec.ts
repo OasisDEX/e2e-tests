@@ -37,10 +37,7 @@ test.describe('Default states - Wallet not connected', async () => {
 			description: '12873',
 		});
 
-		await app.portfolio.shouldHaveViewingWalletBanner({
-			shortenedAddress: '0x8af4...d4510',
-			description: 'Connect your wallet to see what positions you could open',
-		});
+		await app.portfolio.shouldHaveViewingWalletBanner('0x8af4...d4510');
 	});
 
 	test('It should show wallet address @regression', async () => {
@@ -49,7 +46,7 @@ test.describe('Default states - Wallet not connected', async () => {
 			description: '12848',
 		});
 
-		await app.portfolio.shouldHaveWalletAddress('0x8af4...d4510');
+		await app.portfolio.shouldHaveWalletAddress({ address: '0x8af4...d4510' });
 	});
 
 	test(`It should link to wallet's etherscan @regression`, async () => {

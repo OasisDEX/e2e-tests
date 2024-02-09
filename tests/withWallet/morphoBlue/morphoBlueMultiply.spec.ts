@@ -4,12 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import {
-	extremelyLongTestTimeout,
-	veryLongTestTimeout,
-	longTestTimeout,
-	positionTimeout,
-} from 'utils/config';
+import { veryLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -19,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
+test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -30,13 +25,13 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should allow to simulate an Ajna Ethereum Multiply position before opening it @regression', async () => {
+	test('It should allow to simulate a Morpho Blue Multiply position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12729',
+			description: 'xxx',
 		});
 
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await test.step('Test setup', async () => {
 			({ context } = await metamaskSetUp({ network: 'mainnet' }));
@@ -54,51 +49,50 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/ajna/multiply/WBTC-DAI#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'WBTC', amount: '0.654321' });
+		await app.page.goto('/ethereum/morphoblue/multiply/WSTETH-USDC#setup');
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '15.12345' });
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill(
-			'[0-9]{1,2},[0-9]{3}.[0-9]{2} WBTC/DAI'
+			'[0-9]{3}.[0-9]{2} WSTETH/USDC'
 		);
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[0-9]{1,2}.[0-9]{2}%');
-		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{2},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveBuyingPowerAfterPill({
-			amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
-			protocol: 'Ajna',
+			amount: '[0-9]{2},[0-9]{3}(.[0-9]{1,2})?',
+			protocol: 'Morpho Blue',
 		});
 		await app.position.overview.shouldHaveExposureAfterPill({
-			amount: '[0-1].[0-9]{3,4}',
-			token: 'WBTC',
+			amount: '1[5-7].[0-9]{1,2}',
+			token: 'WSTETH',
 		});
 		await app.position.overview.shouldHaveDebtAfterPill({
 			amount: '[1-9],[0-9]{3}.[0-9]{2}',
-			token: 'DAI',
-			protocol: 'Ajna',
+			token: 'USDC',
+			protocol: 'Morpho Blue',
 		});
 		await app.position.overview.shouldHaveMultipleAfterPill('1(.[0-9]{1,2})?');
 
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})? WBTC/DAI',
+			amount: '[0-9]{3}(.[0-9]{1,2})? WSTETH/USDC',
 		});
-		// Ajna LTV displays both current and future values: 0.00% -> 10.00%
+		// Morphho Blue LTV displays both current and future values: 0.00% -> 10.00%
 		await app.position.setup.shouldHaveLoanToValue('0.00%10.00');
 		await app.position.setup.orderInformation.shouldHaveBuyingAmount({
-			tokenAmount: '0.[0-9]{4}',
-			token: 'WBTC',
-			dollarsAmount: '[1-9],[0-9]{3}.[0-9]{2}',
-			protocol: 'Ajna',
+			tokenAmount: '[0-2].[0-9]{4}',
+			token: 'WSTETH',
+			dollarsAmount: '([1-9]{1,2},)?[0-9]{3}.[0-9]{2}',
+			protocol: 'Morpho Blue',
 		});
 		await app.position.setup.orderInformation.shouldHaveTotalExposure({
-			token: 'WBTC',
+			token: 'WSTETH',
 			current: '0.00',
-			future: '[0-1].[0-9]{3,4}',
+			future: '1[5-7].[0-9]{1,2}',
 		});
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
-			amount: '[2-9][0-9],[0-9]{3}.[0-9]{2}',
+			amount: '[1-5],[0-9]{3}.[0-9]{2}',
 			percentage: '[0-9].[0-9]{2}',
-			protocol: 'Ajna',
-			pair: 'WBTC/DAI',
+			protocol: 'Morpho Blue',
+			pair: 'WSTETH/USDC',
 		});
 		await app.position.setup.orderInformation.shouldHaveMultiple({
 			current: '1.00',
@@ -106,65 +100,60 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		});
 		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.50');
 		await app.position.setup.orderInformation.shouldHaveDebt({
-			token: 'DAI',
+			token: 'USDC',
 			current: '0.00',
 			future: '[1-9],[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveLTV({
 			current: '0.00',
-			future: '[1-2][0-9].[0-9]{2}',
-			protocol: 'Ajna',
-		});
-		await app.position.setup.orderInformation.shouldHaveMaxLTV({
-			current: '[0-9]{2}.[0-9]{2}',
-			future: '[0-9]{2}.[0-9]{2}',
+			future: '[0-9]{1,2}.[0-9]{2}',
+			protocol: 'Morpho Blue',
 		});
 	});
 
-	test('It should allow to simulate risk adjustment (Up & Down) with slider in an Ajna Ethereum Multiply position before opening it @regression', async () => {
+	test('It should allow to simulate risk adjustment (Up & Down) with slider in a Morpho Blue Multiply position before opening it @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12730',
+			description: 'xxx',
 		});
 
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue('Ajna');
+		const initialLoanToValue = await app.position.manage.getLoanToValue('Morpho Blue');
 
 		// RISK UP
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.5 });
+		await app.position.setup.moveSlider({ protocol: 'Morpho Blue', value: 0.5 });
 
 		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'WBTC/DAI' });
+		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'WSTETH/USDC' });
 
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue('Ajna');
+		const updatedLoanToValue = await app.position.manage.getLoanToValue('Morpho Blue');
 		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 
 		// RISK DOWN
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.3 });
+		await app.position.setup.moveSlider({ protocol: 'Morpho Blue', value: 0.3 });
 
 		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'WBTC/DAI' });
+		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'WSTETH/USDC' });
 
 		const updatedLiqPrice2 = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue2 = await app.position.manage.getLoanToValue('Ajna');
+		const updatedLoanToValue2 = await app.position.manage.getLoanToValue('Morpho Blue');
 		expect(updatedLiqPrice2).toBeLessThan(updatedLiqPrice);
 		expect(updatedLoanToValue2).toBeLessThan(updatedLoanToValue);
 	});
 
-	test('It should open an Ajna Ethereum Multiply position @regression', async () => {
+	test('It should open a Morpho Blue Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12104',
+			description: 'xxx',
 		});
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.page.goto('/ethereum/ajna/multiply/WSTETH-ETH#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.page.goto('/ethereum/morphoblue/multiply/WSTETH-ETH#setup');
 
-		await app.position.setup.deposit({ token: 'WSTETH', amount: '70' });
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '30.12345' });
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
@@ -205,10 +194,10 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 
 		// ======================================================================
 
-		await app.position.manage.shouldBeVisible('Manage your Ajna Multiply Position');
+		await app.position.manage.shouldBeVisible('Manage your Morpho Multiply');
 	});
 
-	test('It should adjust risk of an existing Ajna Ethereum Multiply position - Up @regression', async () => {
+	test('It should adjust risk of an existing Morpho Blue Multiply position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -219,7 +208,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.6 });
+		await app.position.setup.moveSlider({ protocol: 'Morpho Blue', value: 0.6 });
 
 		await app.position.manage.confirm();
 
@@ -238,14 +227,14 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 
 		// ======================================================================
 
-		await app.position.manage.shouldBeVisible('Manage your Ajna Multiply Position');
+		await app.position.manage.shouldBeVisible('Manage your Morpho Multiply');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
 		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});
 
-	test('It should adjust risk of an existing Ajna Ethereum Multiply position - Down @regression', async () => {
+	test('It should adjust risk of an existing Morpho Blue Multiply position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxx',
@@ -256,7 +245,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.5 });
+		await app.position.setup.moveSlider({ protocol: 'Morpho Blue', value: 0.5 });
 
 		await app.position.manage.confirm();
 
@@ -275,14 +264,14 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 
 		// ======================================================================
 
-		await app.position.manage.shouldBeVisible('Manage your Ajna Multiply Position');
+		await app.position.manage.shouldBeVisible('Manage your Morpho Multiply');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
 		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	test('It should Close to collateral an existing Ajna Ethereum Multiply position @regression', async () => {
+	test('It should Close to collateral an existing Morpho Blue Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxx',
@@ -323,7 +312,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		await app.position.overview.shouldHaveDebt({
 			amount: '0.00',
 			token: 'ETH',
-			protocol: 'Ajna',
+			protocol: 'Morpho Blue',
 		});
 		await app.position.overview.shouldHaveMultiple('1.00');
 	});

@@ -87,6 +87,10 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage collateral');
 	});
@@ -208,22 +212,16 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'CBETH' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'CBETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'ETH' });
 	});
 
 	test.skip('It should list an opened Aave V3 Borrow Ethereum position in portfolio', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11673',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11673',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -235,16 +233,10 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 	});
 
 	test.skip('It should open an Aave V3 Borrow Ethereum position from portfolio page', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11681',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11681',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 

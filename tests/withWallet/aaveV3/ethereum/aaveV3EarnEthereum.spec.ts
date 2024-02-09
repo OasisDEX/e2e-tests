@@ -6,9 +6,9 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
 	extremelyLongTestTimeout,
-	baseUrl,
 	veryLongTestTimeout,
 	longTestTimeout,
+	positionTimeout,
 } from 'utils/config';
 import { App } from 'src/app';
 
@@ -144,7 +144,11 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveDebt({ amount: '5.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({
+			amount: '5.00000',
+			token: 'ETH',
+			timeout: positionTimeout,
+		});
 	});
 
 	test('It should pay back some debt from an existing Aave V3 Ethereum Earn position @regression', async () => {
@@ -174,7 +178,11 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveDebt({ amount: '3.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({
+			amount: '3.00000',
+			token: 'ETH',
+			timeout: positionTimeout,
+		});
 	});
 
 	test('It should adjust risk of an existing Aave V3 Earn Ethereum position - Up @regression', async () => {
@@ -277,18 +285,10 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 	});
 
 	test('It should open an Aave V3 Earn Ethereum position @regression', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11715',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
-
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11672',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -314,21 +314,19 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
 	test.skip('It should list an opened Aave V3 Earn Ethereum position in portfolio', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11673',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11673',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
@@ -339,16 +337,10 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 	});
 
 	test.skip('It should open an Aave V3 Earn Ethereum position from portfolio page', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11681',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11681',
+		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 

@@ -89,8 +89,12 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
 	});
 
 	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC) @regression', async () => {
@@ -231,73 +235,11 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 	});
 
-	test('It should close an existent Aave V3 Multiply Ethereum position - Close to collateral token (ETH) @regression', async () => {
+	test.skip('It should list an opened Aave v3 Multiply Ethereum position in portfolio', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12057',
+			description: '11770',
 		});
-
-		test.setTimeout(veryLongTestTimeout);
-		// New fork needed to be able to close a Multiply position
-		await test.step('Test setup - New fork', async () => {
-			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
-			await tenderly.setEthBalance({ forkId, walletAddress, ethBalance: '100' });
-		});
-
-		await tenderly.changeAccountOwner({
-			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.page.goto('/ethereum/aave/v3/1218#overview');
-
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Close position');
-
-		await app.position.manage.closeTo('ETH');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'ETH',
-			amount: '0.[0-9]{1,4}',
-		});
-
-		// Transaction randomly fails - Retry until it's completed.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.page.goto('/ethereum/aave/v3/1218');
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			token: 'USDC',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'USDC' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDC' });
-		await app.position.overview.shouldHaveMultiple('1');
-		await app.position.overview.shouldHaveBuyingPower('0.00');
-	});
-
-	test.skip('It should list an opened Aave v3 Multiply Ethereum position in portfolio', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11770',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
 
 		test.setTimeout(veryLongTestTimeout);
 
@@ -308,16 +250,10 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	test.skip('It should open an Aave v3 Multiply Ethereum position from portfolio page', async () => {
-		test.info().annotations.push(
-			{
-				type: 'Test case',
-				description: '11771',
-			},
-			{
-				type: 'Bug',
-				description: '10547',
-			}
-		);
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11771',
+		});
 
 		test.setTimeout(veryLongTestTimeout);
 

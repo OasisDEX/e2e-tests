@@ -5,7 +5,6 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import {
-	baseUrl,
 	extremelyLongTestTimeout,
 	longTestTimeout,
 	positionTimeout,
@@ -166,7 +165,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
 		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
 		await app.position.overview.shouldHaveMultiple('1');
@@ -179,9 +178,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			description: '12463',
 		});
 
-		test.skip(baseUrl.includes('staging') || baseUrl.includes('//summer.fi'));
-
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/ethereum/spark/v3/multiply/ethdai');
 
@@ -217,6 +214,11 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
 			await metamask.confirmPermissionToSpend();
 		});
+
+		// Logging position ID for debugging purposes
+		await app.position.setup.goToPositionShouldBeVisible();
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage ');

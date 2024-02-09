@@ -89,6 +89,39 @@ jobs:
           name: playwright-report-with-wallet-aave-other
           path: playwright-reports/with-wallet-aave-other
           retention-days: 30
+  with-wallet-ajna-and-morphoblue-tests:
+    name: 'With wallet - Ajna & Morpho Blue'
+    runs-on: ubuntu-latest
+    env:
+      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
+      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Run With wallet Ajna & Morpho Blue tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          FLAGS='MorphoBlue:true' \
+          yarn nightly:with-wallet:ajna-and-morphoblue
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report-with-wallet-ajna-and-morphoblue
+          path: playwright-reports/with-wallet-ajna-and-morphoblue
+          retention-days: 30
   with-wallet-maker-and-spark-tests:
     name: 'With wallet - Maker & Spark'
     runs-on: ubuntu-latest
