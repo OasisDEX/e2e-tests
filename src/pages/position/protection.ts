@@ -2,7 +2,7 @@ import { step } from '#noWalletFixtures';
 import { expect, Page } from '@playwright/test';
 import { Base } from './base';
 
-export class Optimization {
+export class Protection {
 	readonly page: Page;
 
 	readonly base: Base;
@@ -13,13 +13,16 @@ export class Optimization {
 	}
 
 	@step
-	async setupAutoBuy() {
-		await this.page.getByRole('button', { name: 'Setup Auto-Buy' }).click();
+	async setupAutoSell() {
+		const locator = this.page.getByRole('button', { name: 'Setup Auto-Sell' });
+		expect(locator).toBeVisible();
+		await this.page.waitForTimeout(1000);
+		await locator.click();
 	}
 
 	@step
-	async adjustAutoBuyTrigger({ value }: { value: number }) {
-		await this.base.moveSliderAutomations({ automation: 'AutoBuy', value });
+	async adjustAutoSellTrigger({ value }: { value: number }) {
+		await this.base.moveSliderAutomations({ automation: 'AutoSell', value });
 	}
 
 	@step
@@ -38,7 +41,7 @@ export class Optimization {
 	}
 
 	@step
-	async addAutoBuy() {
-		await this.page.getByRole('button', { name: 'Add Auto-Buy' }).click();
+	async addAutoSell() {
+		await this.page.getByRole('button', { name: 'Add Auto-Sell' }).click();
 	}
 }

@@ -5,6 +5,7 @@ import { Manage } from './manage';
 import { Optimization } from './optimization';
 import { OrderInformation } from './orderInformation';
 import { Overview } from './overview';
+import { Protection } from './protection';
 import { Setup } from './setup';
 
 export class Position {
@@ -18,6 +19,8 @@ export class Position {
 
 	readonly overview: Overview;
 
+	readonly protection: Protection;
+
 	readonly setup: Setup;
 
 	constructor(page: Page) {
@@ -26,6 +29,7 @@ export class Position {
 		this.optimization = new Optimization(page);
 		this.orderInformation = new OrderInformation(page);
 		this.overview = new Overview(page);
+		this, (this.protection = new Protection(page));
 		this.setup = new Setup(page);
 	}
 

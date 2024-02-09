@@ -79,38 +79,49 @@ export class Base {
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
 	@step
-	async moveSliderAutomations({ process, value }: { process?: 'setup' | 'manage'; value: number }) {
+	async moveSliderAutomations({
+		automation,
+		value,
+	}: {
+		automation: 'AutoSell' | 'AutoBuy';
+		value: number;
+	}) {
 		await expect(async () => {
-			const initialSliderValue = await this.page
+			const triggerSlider = this.page
 				.locator('input[type="range"]')
-				.nth(0)
-				.getAttribute('value');
+				.nth(automation === 'AutoBuy' ? 0 : 1);
 
-			const slider = this.page.locator('input[type="range"]').nth(0);
-			const sliderBoundingBox = await slider.boundingBox();
+			const initialSliderValue = await triggerSlider.getAttribute('value');
 
-			// Scroll down so that slider is fully visible and next dragTo doesn't fail
-			if (process) {
-				await this.page
-					.getByText(process === 'setup' ? 'Connect a wallet' : 'Adjust Risk')
-					.scrollIntoViewIfNeeded();
-			}
+			const triggerSliderBoundingBox = await triggerSlider.boundingBox();
 
-			await slider.dragTo(slider, {
+			await triggerSlider.dragTo(triggerSlider, {
 				force: true,
 				targetPosition: {
-					x: sliderBoundingBox.width * value,
+					x: triggerSliderBoundingBox.width * value,
 					y: 0,
 				},
 			});
 
-			const newSliderValue = await this.page
-				.locator('input[type="range"]')
-				.nth(0)
-				.getAttribute('value');
+			const newSliderValue = await triggerSlider.getAttribute('value');
 
 			expect(newSliderValue !== initialSliderValue).toBe(true);
 		}).toPass();
+	}
+
+	@step
+	async setNoThreshold() {
+		await this.page.locator('span > span:has-text("Set No Threshold")').click();
+	}
+
+	@step
+	async setThreshold() {
+		await this.page.locator('span:has-text("Set Threshold")').click();
+	}
+
+	@step
+	async shouldHaveMessage(text: string) {
+		await expect(this.page.getByText(text), `"text" should be visible`).toBeVisible();
 	}
 
 	@step
