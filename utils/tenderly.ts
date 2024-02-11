@@ -7,6 +7,7 @@ require('dotenv').config();
 const { TENDERLY_USER, TENDERLY_PROJECT, TENDERLY_ACCESS_KEY } = process.env;
 
 const TENDERLY_FORK_API = `https://api.tenderly.co/api/v1/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT}/fork`;
+const TENDERLY_SIMULATIONS_API = `https://api.tenderly.co/api/v1/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT}/simulations?page=1&perPage=20`;
 
 const request = axios.create({
 	baseURL: 'https://api.tenderly.co/api/v1',
@@ -15,6 +16,21 @@ const request = axios.create({
 		'Content-Type': 'application/json',
 	},
 });
+
+export const getSimulations = async () => {
+	return await request.get(TENDERLY_SIMULATIONS_API);
+};
+// fetch(
+// 	'https://api.tenderly.co/api/v1/account/juanjo/project/project/simulations?page=1&perPage=20',
+// 	{
+// 		headers: {
+// 			'X-Access-Key': '${TENDERLY_ACCESS_KEY}',
+// 			'content-type': 'application/json',
+// 		},
+// 		body: null,
+// 		method: 'GET',
+// 	}
+// );
 
 export const createFork = async ({
 	network,
