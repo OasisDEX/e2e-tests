@@ -158,7 +158,6 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await app.position.manage.select('Adjust');
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-
 		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 	});

@@ -214,8 +214,12 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+
+		// Wait for Liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+		}).toPass();
 	});
 
 	test('It should adjust risk of an existing Aave V3 Earn Ethereum position - Down @regression', async () => {
@@ -246,8 +250,12 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+
+		// Wait for Liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+		}).toPass();
 	});
 
 	test('It should close an existing Aave V3 Earn Ethereum position - Close to debt token (ETH) @regression', async () => {

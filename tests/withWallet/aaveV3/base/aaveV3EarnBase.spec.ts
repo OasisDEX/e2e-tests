@@ -125,10 +125,14 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+
+		// Wait for Liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should adjust risk of an existent Aave V3 Earn Base position - Up @regression', async () => {
@@ -160,10 +164,14 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+
+		// Wait for Liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should close an existent Aave V3 Earn Base position - Close to debt token (ETH) @regression', async () => {

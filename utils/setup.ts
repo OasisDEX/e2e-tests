@@ -105,7 +105,7 @@ export const setup = async ({
 
 	await fork.addToApp({ app, forkId, network });
 
-	await tenderly.setEthBalance({ forkId, walletAddress, ethBalance: '100' });
+	await tenderly.setTokenBalance({ forkId, walletAddress, network, token: 'ETH', balance: '100' });
 
 	// Logging forkId and walletAddress for debugging purposes
 	//  - Info displayed in 'Attachments > stdout' section of playwright reports
@@ -122,6 +122,7 @@ export const setupNewFork = async ({
 	app: App;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 }) => {
+	const walletAddress = await metamask.walletAddress();
 	await app.page.evaluate(() => window.localStorage.removeItem('ForkNetwork'));
 
 	await app.page.goto('');
@@ -137,6 +138,8 @@ export const setupNewFork = async ({
 	}).toPass();
 
 	await fork.addToApp({ app, forkId, network });
+
+	await tenderly.setTokenBalance({ forkId, walletAddress, network, token: 'ETH', balance: '100' });
 
 	return { forkId };
 };

@@ -51,7 +51,13 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 
-			await tenderly.setDaiBalance({ forkId, walletAddress, daiBalance: '30000' });
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'DAI',
+				balance: '30000',
+			});
 		});
 
 		await tenderly.changeAccountOwner({
@@ -83,10 +89,14 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+
+		// Wait for Liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should adjust risk of an existent Spark Earn position - Down @regression', async () => {
@@ -118,10 +128,14 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Earn position');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+
+		// Wait for Liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should close an existent Spark Earn position - Close to collateral token (WSTETH) @regression', async () => {
