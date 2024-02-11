@@ -45,7 +45,13 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 
-			await tenderly.setDaiBalance({ forkId, walletAddress, daiBalance: '30000' });
+			await tenderly.setTokenBalance({
+				forkId,
+				network: 'mainnet',
+				walletAddress,
+				token: 'DAI',
+				balance: '30000',
+			});
 		});
 
 		await app.page.goto('/ethereum/aave/v3/multiply/daiwbtc');
@@ -181,10 +187,14 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+
+		// Wait for Liquidation price and LTV to be updated.
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down @regression', async () => {
