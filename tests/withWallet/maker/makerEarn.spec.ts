@@ -40,8 +40,20 @@ test.describe('Maker Earn - Wallet connected', async () => {
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 
-			await tenderly.setDaiBalance({ forkId, walletAddress, daiBalance: '50000' });
-			await tenderly.setSdaiBalance({ forkId, walletAddress, sDaiBalance: '100000' });
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'DAI',
+				balance: '50000',
+			});
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'SDAI',
+				balance: '100000',
+			});
 		});
 
 		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);

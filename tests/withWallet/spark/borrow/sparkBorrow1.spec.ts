@@ -274,7 +274,6 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		// New fork needed to avoid random fails
 		await test.step('Test setup - New fork', async () => {
 			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
-			await tenderly.setEthBalance({ forkId, walletAddress, ethBalance: '100' });
 		});
 
 		await tenderly.changeAccountOwner({

@@ -207,7 +207,6 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		// New fork needed to be able to close a Multiply position
 		await test.step('Test setup - New fork', async () => {
 			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
-			await tenderly.setEthBalance({ forkId, walletAddress, ethBalance: '100' });
 		});
 
 		await tenderly.changeAccountOwner({
@@ -239,10 +238,14 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+
+		// Wait for Liquidation price and LTV to be updated.
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test.skip('It should list an opened Aave v3 Multiply Ethereum position in portfolio', async () => {
