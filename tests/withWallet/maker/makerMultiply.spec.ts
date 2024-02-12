@@ -148,8 +148,8 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 		await app.position.setup.goToVault();
 		await app.position.manage.shouldBeVisible('Manage your vault');
-		// Verify that it has beenopened as 'Mu;tiply' type
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		// Verify that it has beenopened as 'Multiply' type
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 	});
 
 	// Skipping test as Maker position pages don't open when using forks  and also because of BUG 10547

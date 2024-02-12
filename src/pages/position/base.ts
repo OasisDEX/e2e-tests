@@ -121,7 +121,7 @@ export class Base {
 
 	@step
 	async shouldHaveMessage(text: string) {
-		await expect(this.page.getByText(text), `"text" should be visible`).toBeVisible();
+		await expect(this.page.getByText(text), `"${text}" should be visible`).toBeVisible();
 	}
 
 	@step

@@ -74,7 +74,8 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		// Verify that positionhas been logged as Borrow
+		await app.position.manage.shouldHaveButton({ label: 'Manage ETH' });
 	});
 
 	test('It should adjust risk of an existent Aave V3 Borrow Optimism position - Down @regression', async () => {
@@ -116,13 +117,15 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage DAI' });
-		await app.position.manage.select('Adjust');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+
+		// Wait for liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should adjust risk of an existent Aave V3 Borrow Optimism position - Up @regression', async () => {
@@ -153,13 +156,15 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage DAI' });
-		await app.position.manage.select('Adjust');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+
+		// Wait for liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should close an existent Aave V3 Borrow Optimism position - Close to collateral token (DAI) @regression', async () => {
@@ -170,7 +175,6 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Borrow position');
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');
 		await app.position.manage.closeTo('WBTC');

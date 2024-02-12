@@ -78,14 +78,13 @@ export const setup = async ({
 	await app.homepage.shouldBeVisible();
 
 	// 'UseNetworkSwitcherForks' flag needs to be always passed for tests with wallet and fork
-	const featuresFlags = process.env.FLAGS_FEATURES
-		? extraFeaturesFlags
-			? extraFeaturesFlags
-					.split(' ')
-					.concat(process.env.FLAGS_FEATURES.split(' '))
-					.concat('UseNetworkSwitcherForks:true')
-			: process.env.FLAGS_FEATURES.split(' ').concat('UseNetworkSwitcherForks:true')
-		: ['UseNetworkSwitcherForks:true'];
+	const featuresFlags = ['UseNetworkSwitcherForks:true'];
+	if (extraFeaturesFlags) {
+		featuresFlags.push(...extraFeaturesFlags.split(' '));
+	}
+	if (process.env.FLAGS_FEATURES) {
+		featuresFlags.push(...process.env.FLAGS_FEATURES.split(' '));
+	}
 
 	const automationMinNetValueFlags = process.env.FLAGS_AUTOMATION_MIN_NET_VALUE
 		? process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(' ')

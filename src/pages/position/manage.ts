@@ -1,5 +1,5 @@
 import { expect, Page } from '@playwright/test';
-import { positionTimeout } from 'utils/config';
+import { expectDefaultTimeout, positionTimeout } from 'utils/config';
 import { Base } from './base';
 import { step } from '#noWalletFixtures';
 
@@ -90,6 +90,19 @@ export class Manage {
 	@step
 	async ok() {
 		await this.page.getByRole('button', { name: 'OK', exact: true }).click();
+	}
+
+	@step
+	async shouldHaveButton(
+		{ label, timeout }: { label: string; timeout?: number } = {
+			label: '',
+			timeout: expectDefaultTimeout,
+		}
+	) {
+		await expect(
+			this.page.getByRole('button', { name: label, exact: true }),
+			`Options button should read "${label}"`
+		).toBeVisible({ timeout });
 	}
 
 	@step
