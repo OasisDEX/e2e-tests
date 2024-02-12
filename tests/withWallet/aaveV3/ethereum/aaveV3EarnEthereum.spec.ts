@@ -45,7 +45,13 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 
-			await tenderly.setWstethBalance({ forkId, walletAddress, wstEthBalance: '20' });
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'WSTETH',
+				balance: '20',
+			});
 		});
 
 		await tenderly.changeAccountOwner({

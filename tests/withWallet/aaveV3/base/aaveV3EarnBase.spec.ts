@@ -45,7 +45,13 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 
 			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
 
-			await tenderly.setCbEthBalanceBase({ forkId, walletAddress, cbEthBalance: '20' });
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'base',
+				token: 'CBETH',
+				balance: '20',
+			});
 		});
 
 		await app.page.goto('/base/aave/v3/earn/cbetheth#simulate');
