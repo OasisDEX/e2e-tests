@@ -78,7 +78,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.shouldHaveButton({ label: 'Manage ETH', timeout: positionTimeout });
 	});
 
 	test('It should deposit extra collateral on an existent Aave V3 Borrow Base position @regression', async () => {
@@ -87,7 +87,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			description: '13035',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
 		await app.position.manage.shouldBeVisible('Manage collateral');
 		await app.position.manage.deposit({ token: 'ETH', amount: '1' });
@@ -116,10 +116,9 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			description: '13065',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
-		await app.position.manage.select('Adjust');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
@@ -140,13 +139,15 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
-		await app.position.manage.select('Adjust');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+
+		// Wait for liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should adjust risk of an existent Aave V3 Borrow Base position - Down @regression', async () => {
@@ -157,7 +158,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Borrow position');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
@@ -177,14 +178,15 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
-		await app.position.manage.select('Adjust');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+		// Wait for liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should close an existent Aave V3 Borrow Base position - Close to collateral token (CBETH) @regression', async () => {
@@ -195,7 +197,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Borrow position');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');
 		await app.position.manage.closeTo('ETH');

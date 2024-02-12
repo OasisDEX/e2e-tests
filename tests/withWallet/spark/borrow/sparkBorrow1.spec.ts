@@ -75,7 +75,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await app.position.manage.shouldHaveButton({ label: 'Manage ETH', timeout: positionTimeout });
 	});
 
 	test('It should deposit extra collateral on an existing Spark Borrow position @regression', async () => {
@@ -121,9 +121,11 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 		await app.position.overview.shouldHaveExposure({ amount: '23.00000', token: 'ETH' });
 
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Manage collateral');
 		await app.position.manage.withdrawCollateral();
 		await app.position.manage.withdraw({ token: 'ETH', amount: '5' });
 
@@ -153,10 +155,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 		await app.position.overview.shouldHaveDebt({ amount: '1,[0-9]{3}.[0-9]{4}', token: 'DAI' });
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
 		await app.position.manage.borrow({ token: 'DAI', amount: '5000' });
 
@@ -186,10 +188,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 		await app.position.overview.shouldHaveDebt({ amount: '6,[0-9]{3}.[0-9]{4}', token: 'DAI' });
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
 		await app.position.manage.payBackDebt();
 		await app.position.manage.payback({ token: 'DAI', amount: '3000' });
@@ -230,8 +232,8 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');
 		await app.position.manage.closeTo('ETH');
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
@@ -283,7 +285,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/ethereum/spark/v3/1474#overview');
-		await app.position.manage.shouldBeVisible('Manage Collateral');
+		await app.position.manage.shouldHaveButton({ label: 'Manage ETH', timeout: positionTimeout });
 		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
 		await app.position.manage.select('Close position');
 		await app.position.manage.closeTo('DAI');

@@ -88,11 +88,11 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 		await app.position.overview.shouldHaveExposure({ amount: '30.[0-9]{5}', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '20,[0-9]{3}.[0-9]{4}', token: 'DAI' });
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
 		await app.position.manage.payBackDebt();
 		await app.position.manage.payback({ token: 'DAI', amount: '5000' });
@@ -135,9 +135,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
-		await app.position.manage.select('Adjust');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
@@ -158,12 +156,14 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
-		await app.position.manage.select('Adjust');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+
+		// Waitfor liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		}).toPass();
 	});
 });
