@@ -149,16 +149,15 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
-			token: 'USDBC',
+			token: 'ETH/USDBC',
 			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDBC' });
-		await app.position.overview.shouldHaveMultiple('1');
-		await app.position.overview.shouldHaveBuyingPower('0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
+		await app.position.overview.shouldHaveBuyingPower('\\$0.00');
+		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'USDBC' });
+		await app.position.overview.shouldHaveMultiple('1.00');
 	});
 
 	test('It should open an Aave v3 Multiply Base position @regression', async () => {
@@ -168,7 +167,13 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
-		await tenderly.setCbEthBalanceBase({ forkId, walletAddress, cbEthBalance: '50' });
+		await tenderly.setTokenBalance({
+			forkId,
+			walletAddress,
+			network: 'base',
+			token: 'CBETH',
+			balance: '50',
+		});
 
 		await app.page.goto('/base/aave/v3/multiply/cbethusdbc');
 

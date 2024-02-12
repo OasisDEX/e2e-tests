@@ -44,7 +44,13 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			app = new App(page);
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-			await tenderly.setRethBalance({ forkId, walletAddress, rEthBalance: '100' });
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'RETH',
+				balance: '100',
+			});
 		});
 
 		await tenderly.changeAccountOwner({

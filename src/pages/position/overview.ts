@@ -78,7 +78,8 @@ export class Overview {
 			timeout: expectDefaultTimeout,
 		}
 	) {
-		const regExp = new RegExp(`${price}${token ? ` ${token}` : ''}`);
+		const regExp = new RegExp(`${token ? `${price}.*${token}` : price}`);
+
 		await expect(
 			this.page.getByText('Liquidation Price').locator('xpath=//following-sibling::p[1]')
 		).toContainText(regExp, { timeout });
