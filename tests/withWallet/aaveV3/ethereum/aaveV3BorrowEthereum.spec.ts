@@ -127,13 +127,15 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage CBETH' });
-		await app.position.manage.select('Adjust');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+
+		// Wait for liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Down @regression', async () => {
@@ -144,7 +146,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Borrow position');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
@@ -164,14 +166,15 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage CBETH' });
-		await app.position.manage.select('Adjust');
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 
-		expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+		// Wait for liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+		}).toPass();
 	});
 
 	test('It should close an existent Aave V3 Borrow Ethereum position - Close to collateral token (CBETH) @regression', async () => {
@@ -183,7 +186,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		// Getting position page url before closing position
-		await app.position.manage.shouldBeVisible('Manage Borrow position');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 		const positionPage = app.page.url();
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -206,16 +209,16 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.page.goto(positionPage);
+
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
-			token: 'ETH',
+			token: 'CBETH/ETH',
 			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'CBETH' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'CBETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'ETH' });
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'CBETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.0', token: 'ETH' });
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
 	});
 
 	test.skip('It should list an opened Aave V3 Borrow Ethereum position in portfolio', async () => {

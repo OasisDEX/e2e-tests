@@ -38,7 +38,11 @@ test.describe('Maker Earn - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+			({ forkId, walletAddress } = await setup({
+				app,
+				network: 'mainnet',
+				extraFeaturesFlags: 'MakerTenderly:true',
+			}));
 
 			await tenderly.setTokenBalance({
 				forkId,
@@ -156,17 +160,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await test.step('Metamask: ConfirmAddToken', async () => {
 			await metamask.confirmAddToken();
 		});
-
-		/* 
-			!!!
-			TO BE UPDATED now that /owner page has been removed
-			!!!
-		*/
-		// await app.page.goto(`/owner/${walletAddress}`);
-		// await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
-		// 	asset: 'DAI',
-		// 	amount: '[0-9]{2},[0-9]{3}(.[0-9]{1,2})?',
-		// });
+		await app.position.setup.shouldShowSuccessScreen();
 	});
 
 	test.skip('It should list an opened Maker Earn position in portfolio', async () => {

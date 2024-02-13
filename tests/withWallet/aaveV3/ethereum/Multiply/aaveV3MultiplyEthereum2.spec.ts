@@ -91,11 +91,11 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveExposure({
-			amount: '50.[0-9]{5}',
+			amount: '50.[0-9]{2}',
 			token: 'RETH',
 			timeout: positionTimeout,
 		});
-		await app.position.overview.shouldHaveDebt({ amount: '40,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '40,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 	});
 
 	test('It should Withdraw and Pay back in a single tx on an existing Aave V3 Multiply Ethereum position @regression', async () => {
@@ -106,9 +106,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		await app.position.overview.shouldHaveExposure({ amount: '50.[0-9]{5}', token: 'RETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '40,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+		await app.position.overview.shouldHaveExposure({ amount: '50.[0-9]{2}', token: 'RETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '40,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
@@ -138,11 +138,11 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveExposure({
-			amount: '4[1-2].[0-9]{5}',
+			amount: '4[1-2].[0-9]{2}',
 			token: 'RETH',
 			timeout: positionTimeout,
 		});
-		await app.position.overview.shouldHaveDebt({ amount: '30,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '30,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 	});
 
 	test('It should Borrow and Deposit in a single tx on an existing Aave V3 Multiply Ethereum position @regression', async () => {
@@ -153,9 +153,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		await app.position.overview.shouldHaveExposure({ amount: '4[1-2].[0-9]{5}', token: 'RETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '30,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+		await app.position.overview.shouldHaveExposure({ amount: '4[1-2].[0-9]{2}', token: 'RETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '30,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
@@ -174,11 +174,11 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveExposure({
-			amount: '5[6-7].[0-9]{5}',
+			amount: '5[6-7].[0-9]{2}',
 			token: 'RETH',
 			timeout: positionTimeout,
 		});
-		await app.position.overview.shouldHaveDebt({ amount: '50,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '50,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 	});
 
 	test('It should Pay back and Withdraw in a single tx on an existing Aave V3 Multiply Ethereum position @regression', async () => {
@@ -189,9 +189,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		await app.position.overview.shouldHaveExposure({ amount: '5[6-7].[0-9]{5}', token: 'RETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '50,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+		await app.position.overview.shouldHaveExposure({ amount: '5[6-7].[0-9]{2}', token: 'RETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '50,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
@@ -211,11 +211,11 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveExposure({
-			amount: '2[6-7].[0-9]{5}',
+			amount: '2[6-7].[0-9]{2}',
 			token: 'RETH',
 			timeout: positionTimeout,
 		});
-		await app.position.overview.shouldHaveDebt({ amount: '8,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '8,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 	});
 
 	test('It should close an existent Aave V3 Multiply Ethereum position - Close to collateral token (RETH) @regression', async () => {
@@ -253,11 +253,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'RETH' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'RETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
-		await app.position.overview.shouldHaveMultiple('1');
-		await app.position.overview.shouldHaveBuyingPower('0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'RETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveMultiple('1.00');
 	});
 });

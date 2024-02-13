@@ -106,11 +106,14 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveNetValue({
-			value: '2[0-3].[0-9]{2}',
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '23.00',
 			token: 'ETH',
+			timeout: positionTimeout,
 		});
-		await app.position.overview.shouldHaveExposure({ amount: '23.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveNetValue({
+			value: '\\$[0-9]{2,3},[0-9]{3}.[0-9]{2}',
+		});
 	});
 
 	test('It should withdraw some collateral from an existing Spark Borrow position @regression', async () => {
@@ -122,7 +125,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
-		await app.position.overview.shouldHaveExposure({ amount: '23.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '23.00', token: 'ETH' });
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
@@ -140,8 +143,8 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveExposure({
-			amount: '18.00000',
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '18.00',
 			token: 'ETH',
 			timeout: positionTimeout,
 		});
@@ -156,7 +159,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
-		await app.position.overview.shouldHaveDebt({ amount: '1,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '1,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
@@ -174,7 +177,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveDebt({
-			amount: '6,[0-9]{3}.[0-9]{4}',
+			amount: '6,[0-9]{3}.[0-9]{2}',
 			token: 'DAI',
 			timeout: positionTimeout,
 		});
@@ -189,7 +192,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
-		await app.position.overview.shouldHaveDebt({ amount: '6,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '6,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
@@ -218,7 +221,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveDebt({
-			amount: '3,[0-9]{3}.[0-9]{4}',
+			amount: '3,[0-9]{3}.[0-9]{2}',
 			token: 'DAI',
 			timeout: positionTimeout,
 		});
@@ -259,10 +262,9 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
 	});
 
 	test('It should close an existing Spark Borrow position - Close to debt token (DAI) @regression', async () => {
@@ -311,11 +313,11 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			token: 'DAI',
 			timeout: positionTimeout,
 		});
+
 		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'DAI' });
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
 	});
 
 	test.skip('It should list an opened Spark Borrow position in portfolio', async () => {

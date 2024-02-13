@@ -37,7 +37,11 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({ app, network: 'mainnet' }));
+			({ forkId } = await setup({
+				app,
+				network: 'mainnet',
+				extraFeaturesFlags: 'MakerTenderly:true',
+			}));
 		});
 
 		await app.page.goto('/vaults/open/ETH-C');
@@ -119,26 +123,16 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await app.position.setup.generate({ token: 'DAI', amount: '10000' });
 
 		await app.position.setup.confirm();
-		await app.position.setup.addStopLoss2Of3();
+		await app.position.setup.continueWithoutStopLoss();
 		await app.position.setup.createVault3Of3();
 		await test.step('Metamask: ConfirmAddToken', async () => {
 			await metamask.confirmAddToken();
 		});
 
-		/* 
-			!!!
-			TO BE UPDATED now that /owner page has been removed
-			!!!
-		*/
-		// // Wait for 5 seconds and reload page | Issue with Maker and staging/forks
-		// await app.page.waitForTimeout(5_000);
-		// await expect(async () => {
-		// 	await app.page.goto(`/owner/${walletAddress}`);
-		// 	await app.portfolio.topAssetsAndPositions.shouldHaveAsset({
-		// 		asset: 'ETH-A Summer.fi Borrow',
-		// 		amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
-		// 	});
-		// }).toPass({ timeout: longTestTimeout });
+		await app.position.setup.goToVault();
+		await app.position.manage.shouldBeVisible('Manage your vault');
+		// Verify that it has beenopened as 'Borrow' type
+		await app.position.manage.shouldHaveButton({ label: 'ETH' });
 	});
 
 	// Skipping test as Maker position pages don't open when using forks

@@ -233,7 +233,11 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '35.00', token: 'CBETH' });
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '35.00',
+			token: 'CBETH',
+			timeout: positionTimeout,
+		});
 		await app.position.overview.shouldHaveDebt({
 			amount: '25.[0-9]{2}([0-9]{1,2})?',
 			token: 'ETH',
@@ -268,7 +272,11 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '25.00', token: 'CBETH' });
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '25.00',
+			token: 'CBETH',
+			timeout: positionTimeout,
+		});
 		await app.position.overview.shouldHaveDebt({
 			amount: '20.[0-9]{2}([0-9]{1,2})?',
 			token: 'ETH',
@@ -305,7 +313,11 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '45.00', token: 'CBETH' });
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '45.00',
+			token: 'CBETH',
+			timeout: positionTimeout,
+		});
 		await app.position.overview.shouldHaveDebt({
 			amount: '35.[0-9]{2}([0-9]{1,2})?',
 			token: 'ETH',
@@ -343,7 +355,11 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		// ============================================================
 
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '30.00', token: 'CBETH' });
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '30.00',
+			token: 'CBETH',
+			timeout: positionTimeout,
+		});
 		await app.position.overview.shouldHaveDebt({
 			amount: '15.[0-9]{2}([0-9]{1,2})?',
 			token: 'ETH',
