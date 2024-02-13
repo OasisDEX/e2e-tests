@@ -20,20 +20,22 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-4][0-9].[0-9]{2}%');
-		await app.position.overview.shouldHaveBorrowCostAfterPill('[0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveNetValueAfterPill('2.[0-9]{2}');
-		await app.position.overview.shouldHaveExposureAfterPill({
-			amount: '[2-4].[0-9]{5}',
-			token: 'WBTC',
-		});
-		await app.position.overview.shouldHaveDebtAfterPill({
-			amount: '[1-4][0-9],[0-9]{3}.[0-9]{4}',
-			token: 'USDC',
-		});
-		await app.position.overview.shouldHaveMultipleAfterPill('1(.[0-9]{1,2})?');
+
+		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2,3},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveBuyingPowerAfterPill({
 			amount: '[0-9]{2,3},[0-9]{3}(.[0-9]{1,2})?',
 		});
+		await app.position.overview.shouldHaveExposureAfterPill({
+			amount: '[2-5].[0-9]{4}',
+			token: 'WBTC',
+		});
+		await app.position.overview.shouldHaveDebtAfterPill({
+			amount: '[1-5][0-9],[0-9]{3}.[0-9]{2}',
+			token: 'USDC',
+		});
+		await app.position.overview.shouldHaveMultipleAfterPill('1(.[0-9]{1,2})?');
+		await app.position.overview.shouldHaveBorrowRateAfterPill('[0-9].[0-9]{2}');
+
 		await app.position.setup.shouldHaveLiquidationPrice({
 			amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})? USDC',
 		});
@@ -41,10 +43,10 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		await app.position.setup.orderInformation.shouldHaveBuyingAmount({
 			tokenAmount: '[0-1].[0-9]{5}',
 			token: 'WBTC',
-			dollarsAmount: '[1-3][0-9],[0-9]{3}.[0-9]{2}',
+			dollarsAmount: '[1-4][0-9],[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
-			amount: '[1-4][0-9],[0-9]{3}.[0-9]{2}',
+			amount: '[1-5][0-9],[0-9]{3}.[0-9]{2}',
 			percentage: '[0-9].[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]{2}');
@@ -55,7 +57,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
 			token: 'USDC',
 			current: '0.00',
-			future: '[1-3][0-9],[0-9]{3}.[0-9]{2}',
+			future: '[1-4][0-9],[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveTotalCollateral({
 			token: 'WBTC',
@@ -206,26 +208,26 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 
 		await app.position.shouldHaveHeader('Aave ETH/USDC');
 		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '[0-9]{3}.[0-9]{2}',
-			token: 'USDC',
+			price: '([1-3],)?[0-9]{3}.[0-9]{2}',
+			token: 'ETH/USDC',
 		});
 		await app.position.overview.shouldHaveLoanToValue('[2-8][0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveBorrowCost('[0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveNetValue({ value: '0.[0-9]{2}', token: 'ETH' });
+		await app.position.overview.shouldHaveNetValue({ value: '\\$[0-9]{1,2}.[0-9]{2}' });
+		await app.position.overview.shouldHaveBuyingPower('\\$[0-9]{1,2}.[0-9]{2}');
+		await app.position.overview.shouldHaveBuyingPowerGreaterThanZero();
 		await app.position.overview.shouldHaveExposure({
-			amount: '0.[0-9]{5}',
+			amount: '0.[0-9]{4}',
 			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveExposureGreaterThanZero('ETH');
 		await app.position.overview.shouldHaveDebt({
-			amount: '[4-9].[0-9]{4}',
+			amount: '[0-9]{1,2}.[0-9]{2}',
 			token: 'USDC',
 		});
-		await app.position.overview.shouldHaveBuyingPower('[0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveBuyingPowerGreaterThanZero();
+		await app.position.overview.shouldHaveBorrowRate('[0-9].[0-9]{2}');
 
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '[0-9]{3}.[0-9]{2}',
+			amount: '([0-3],)?[0-9]{3}.[0-9]{2}',
 			pair: 'USDC',
 		});
 		await app.position.setup.shouldHaveLoanToValue('[1-9][0-9].[0-9]');

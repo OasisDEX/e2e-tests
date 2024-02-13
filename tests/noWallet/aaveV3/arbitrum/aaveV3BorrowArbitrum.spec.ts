@@ -18,7 +18,7 @@ test.describe('Aave v3 Borrow Arbitrum', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '30' });
 
-		await app.position.overview.shouldHaveBorrowCostAfterPill('-[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveBorrowRateAfterPill('-[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValueAfterPill('[2-3][0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveExposureAfterPill({ amount: '30.00000', token: 'ETH' });
 		await app.position.setup.shouldHaveMaxBorrowingAmount({

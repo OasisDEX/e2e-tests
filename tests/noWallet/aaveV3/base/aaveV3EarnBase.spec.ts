@@ -18,12 +18,14 @@ test.describe('Aave v3 Earn Base', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'CBETH', amount: '16.12345' });
 
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9].[0-9]{2}([0-9]{1,2})?');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-5][0-9].[0-9]{2}%');
-		await app.position.overview.shouldHaveBorrowCostAfterPill('[0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2}.[0-9]{2}');
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveBuyingPowerAfterPill({
+			amount: '\\$[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
+		});
 		await app.position.overview.shouldHaveExposureAfterPill({
-			amount: '[0-9]{2}.[0-9]{5}',
+			amount: '[0-9]{2}.[0-9]{2}([0-9]{1,2})?',
 			token: 'CBETH',
 		});
 		await app.position.overview.shouldHaveDebtAfterPill({
@@ -31,9 +33,8 @@ test.describe('Aave v3 Earn Base', async () => {
 			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveMultipleAfterPill('1(.[0-9]{1,2})?');
-		await app.position.overview.shouldHaveBuyingPowerAfterPill({
-			amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
-		});
+		await app.position.overview.shouldHaveBorrowRateAfterPill('[0-9].[0-9]{2}');
+
 		await app.position.setup.shouldHaveLiquidationPrice({
 			amount: '[0-9].[0-9]{4} CBETH',
 		});

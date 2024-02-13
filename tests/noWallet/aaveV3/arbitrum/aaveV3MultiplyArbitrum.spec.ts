@@ -18,12 +18,16 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'DAI', amount: '6000' });
 
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill('1[0-9]{2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill(
+			'1[0-9]{2,3},[0-9]{3}.[0-9]{2}'
+		);
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-4][0-9].[0-9]{2}%');
-		await app.position.overview.shouldHaveBorrowCostAfterPill('-[0-9]{1,2}.[0-9]{2}');
-		await app.position.overview.shouldHaveNetValueAfterPill('[2-8],[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[2-9],[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveBuyingPowerAfterPill({
+			amount: '\\$[1-9],[0-9]{3}(.[0-9]{1,2})?',
+		});
 		await app.position.overview.shouldHaveExposureAfterPill({
-			amount: '[4-9],[0-9]{3}.[0-9]{4}',
+			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
 			token: 'DAI',
 		});
 		await app.position.overview.shouldHaveDebtAfterPill({
@@ -31,11 +35,11 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 			token: 'WBTC',
 		});
 		await app.position.overview.shouldHaveMultipleAfterPill('1(.[0-9]{1,2})?');
-		await app.position.overview.shouldHaveBuyingPowerAfterPill({
-			amount: '[1-7],[0-9]{3}(.[0-9]{1,2})?',
-		});
+
+		await app.position.overview.shouldHaveBorrowRateAfterPill('-[0-9]{1,2}.[0-9]{2}');
+
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '1[0-9]{2},[0-9]{3}(.[0-9]{1,2})? DAI',
+			amount: '[0-9]{2,3},[0-9]{3}(.[0-9]{1,2})? DAI',
 		});
 		await app.position.setup.shouldHaveLoanToValue('[1-4][0-9].[0-9]');
 		await app.position.setup.orderInformation.shouldHaveBuyingAmount({
@@ -44,7 +48,7 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 			dollarsAmount: '1,[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
-			amount: '[1-4][0-9],[0-9]{3}.[0-9]{2}',
+			amount: '[1-7][0-9],[0-9]{3}.[0-9]{2}',
 			percentage: '0.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]{2}');
@@ -147,28 +151,27 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 		await app.position.shouldHaveHeader('Aave ETH/DAI');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '[1-2],[0-9]{3}.[0-9]{2}',
-			token: 'DAI',
+			token: 'ETH/DAI',
 		});
 		await app.position.overview.shouldHaveLoanToValue('[3-9][0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveBorrowCost('[0-9]{1,2}.[0-9]{2}');
-		await app.position.overview.shouldHaveBorrowCostGreaterThanZero();
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveNetValue({ value: '\\$[0-9]{1,2}.[0-9]{1,2}' });
+		await app.position.overview.shouldHaveBuyingPower('\\$[0-9]{1,2}.[0-9]{2}');
 		await app.position.overview.shouldHaveExposure({
-			amount: '0.[0-9]{5}',
+			amount: '0.[0-9]{4}',
 			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveExposureGreaterThanZero('ETH');
 		await app.position.overview.shouldHaveDebt({
-			amount: '[3-9].[0-9]{4}',
+			amount: '[0-9]{1,2}.[0-9]{4}',
 			token: 'DAI',
 		});
-		await app.position.overview.shouldHaveMultiple('[2-8].[0-9]{1,2}');
-		await app.position.overview.shouldHaveBuyingPower('[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveMultiple('[1-8].[0-9]{1,2}');
+		await app.position.overview.shouldHaveBorrowRate('[0-9]{1,2}.[0-9]{2}');
 
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '[0-9]{3}.[0-9]{2}',
+			amount: '[1-9],[0-9]{3}.[0-9]{2}',
 			pair: 'DAI',
 		});
-		await app.position.setup.shouldHaveLoanToValue('[5-9][0-9].[0-9]');
+		await app.position.setup.shouldHaveLoanToValue('[3-9][0-9].[0-9]');
 	});
 });

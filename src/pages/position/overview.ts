@@ -128,19 +128,19 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveBorrowCost(cost: string) {
-		const regExp = new RegExp(`${cost}%`);
-		await expect(
-			this.page.getByText('Cost to Borrow').locator('xpath=//following-sibling::p[1]')
-		).toHaveText(regExp, { timeout: positionTimeout });
+	async shouldHaveBorrowRate(rate: string) {
+		const regExp = new RegExp(rate);
+		await expect(this.page.locator('li:has-text("Borrow Rate")')).toHaveText(regExp, {
+			timeout: positionTimeout,
+		});
 	}
 
 	@step
-	async shouldHaveBorrowCostAfterPill(cost: string) {
-		const regExp = new RegExp(cost);
-		await expect(
-			this.page.getByText('Cost to Borrow').locator('..').getByText('After')
-		).toContainText(regExp);
+	async shouldHaveBorrowRateAfterPill(rate: string) {
+		const regExp = new RegExp(rate);
+		await expect(this.page.locator('li:has-text("Borrow Rate")').getByText('After')).toContainText(
+			regExp
+		);
 	}
 
 	/**
@@ -197,17 +197,6 @@ export class Overview {
 		await expect(this.page.locator('li:has-text("exposure")').getByText('After')).toContainText(
 			regExp
 		);
-	}
-
-	@step
-	async shouldHaveDebtGreaterThanZero(token: string) {
-		await expect(async () => {
-			await expect(this.page.locator('li:has-text(" Debt") > p')).toContainText(token, {
-				timeout: positionTimeout,
-			});
-		}).toPass();
-
-		await expect(this.page.locator('li:has-text(" Debt") > p')).not.toHaveText(`0.0000 ${token}`);
 	}
 
 	@step
@@ -272,17 +261,17 @@ export class Overview {
 	@step
 	async shouldHaveBuyingPowerGreaterThanZero() {
 		await expect(async () => {
-			await expect(this.page.locator('li:has-text("Buying Power") > p')).toContainText('USD', {
+			await expect(this.page.locator(':has-text("Buying Power") > p').nth(0)).toContainText('$', {
 				timeout: positionTimeout,
 			});
 		}).toPass();
 
-		await expect(this.page.locator('li:has-text("Buying Power") > p')).not.toHaveText('0.00 USD');
+		await expect(this.page.locator(':has-text("Buying Power") > p').nth(0)).not.toHaveText('$0.00');
 	}
 
 	@step
 	async shouldHaveBuyingPower(amount: string) {
-		let regexObj = new RegExp(`${amount}`);
+		let regexObj = new RegExp(amount);
 
 		await expect(this.page.locator(':has-text("Buying Power") > p').nth(0)).toContainText(regexObj);
 	}
@@ -295,7 +284,7 @@ export class Overview {
 		amount: string;
 		protocol?: 'Maker' | 'Ajna' | 'Morpho Blue';
 	}) {
-		let regexObj = new RegExp(`${protocol ? '\\$' : ''}${amount}${protocol ? '' : ' USD'}`);
+		let regexObj = new RegExp(amount);
 		const locator =
 			protocol === 'Maker'
 				? this.page.getByText('Buying Power').locator('..')
