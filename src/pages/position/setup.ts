@@ -464,4 +464,11 @@ export class Setup {
 			.soft(this.page.getByText('Updating your '), `"Updating your position" should be visible`)
 			.toBeVisible();
 	}
+
+	@step
+	async shouldShowSuccessScreen() {
+		await expect(this.page.getByText('Success'), '"Success" should be visible').toBeVisible({
+			timeout: positionTimeout,
+		});
+	}
 }

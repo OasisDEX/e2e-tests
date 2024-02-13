@@ -101,6 +101,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 	});
 
 	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC) @regression', async () => {
@@ -113,6 +114,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		// Getting position page url before closing position
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 		const positionPage = app.page.url();
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -138,16 +140,14 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.page.goto(positionPage);
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
-			token: 'DAI',
+			token: 'WBTC/DAI',
 			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'DAI' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.0000', token: 'DAI' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'WBTC' });
-		await app.position.overview.shouldHaveMultiple('1');
-		await app.position.overview.shouldHaveBuyingPower('0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'WBTC' });
+		await app.position.overview.shouldHaveMultiple('1.00');
 	});
 
 	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up @regression', async () => {
@@ -166,7 +166,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		await app.page.goto('/ethereum/aave/v3/1218#overview');
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust', timeout: positionTimeout });
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
@@ -186,7 +186,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust', timeout: positionTimeout });
 
 		// Wait for Liquidation price and LTV to be updated.
 		await expect(async () => {
@@ -217,7 +217,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		await app.page.goto('/ethereum/aave/v3/1218#overview');
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust', timeout: positionTimeout });
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
@@ -237,7 +237,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldHaveButton({ label: 'Adjust', timeout: positionTimeout });
 
 		// Wait for Liquidation price and LTV to be updated.
 		await expect(async () => {

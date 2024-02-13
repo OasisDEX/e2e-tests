@@ -321,11 +321,21 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveCollateralDeposited({ amount, token }: { amount: string; token: string }) {
+	async shouldHaveCollateralDeposited(
+		{
+			amount,
+			token,
+			timeout,
+		}: {
+			amount: string;
+			token: string;
+			timeout?: number;
+		} = { amount: '', token: '', timeout: expectDefaultTimeout }
+	) {
 		const regExp = new RegExp(`${amount}${token}`);
 
 		await expect(this.page.locator('li:has-text("Collateral Deposited")')).toContainText(regExp, {
-			timeout: positionTimeout,
+			timeout,
 		});
 	}
 

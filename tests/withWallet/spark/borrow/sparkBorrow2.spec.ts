@@ -79,11 +79,13 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveNetValue({
-			value: '[0-9]{2}.[0-9]{2}',
+			value: '\\$[0-9]{2,3},[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '20.[0-9]{2}',
 			token: 'ETH',
 		});
-		await app.position.overview.shouldHaveExposure({ amount: '20.[0-9]{5}', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '15,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '15,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 	});
 
 	test('It should Withdraw and Pay back in a single transaction from an existing Spark Borrow position @regression', async () => {
@@ -95,8 +97,11 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
-		await app.position.overview.shouldHaveExposure({ amount: '20.[0-9]{5}', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '15,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '20.[0-9]{2}',
+			token: 'ETH',
+		});
+		await app.position.overview.shouldHaveDebt({ amount: '15,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage Collateral');
@@ -126,17 +131,15 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 
 		await app.position.manage.ok();
 
-		await app.position.overview.shouldHaveExposure({
-			amount: '15.[0-9]{5}',
+		await app.position.overview.shouldHaveNetValue({
+			value: '\\$[0-9]{2,3},[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '15.[0-9]{2}',
 			token: 'ETH',
 			timeout: positionTimeout,
 		});
-		await app.position.overview.shouldHaveNetValue({
-			value: '[0-9]{2}.[0-9]{2}',
-			token: 'ETH',
-		});
-		await app.position.overview.shouldHaveExposure({ amount: '15.[0-9]{5}', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '10,[0-9]{3}.[0-9]{4}', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '10,[0-9]{3}.[0-9]{2}', token: 'DAI' });
 	});
 
 	test('It should adjust risk of an existent Spark Borrow position - Down (ETH/DAI) @regression', async () => {
