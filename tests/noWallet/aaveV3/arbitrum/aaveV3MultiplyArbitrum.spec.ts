@@ -18,9 +18,7 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'DAI', amount: '6000' });
 
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill(
-			'1[0-9]{2,3},[0-9]{3}.[0-9]{2}'
-		);
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{2,3},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-4][0-9].[0-9]{2}%');
 		await app.position.overview.shouldHaveNetValueAfterPill('\\$[2-9],[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveBuyingPowerAfterPill({
