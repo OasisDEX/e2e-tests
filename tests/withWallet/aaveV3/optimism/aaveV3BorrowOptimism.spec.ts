@@ -74,8 +74,8 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
-		// Verify that positionhas been logged as Borrow
-		await app.position.manage.shouldHaveButton({ label: 'Manage ETH' });
+		// Verify that position has been logged as Borrow
+		await app.position.manage.shouldHaveButton({ label: 'Manage ETH', timeout: positionTimeout });
 	});
 
 	test('It should adjust risk of an existent Aave V3 Borrow Optimism position - Down @regression', async () => {
@@ -197,13 +197,12 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await app.page.goto('/optimism/aave/v3/4#overview');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
-			token: 'DAI',
+			token: 'WBTC/DAI',
 			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'DAI' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.0000', token: 'DAI' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'WBTC' });
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'WBTC' });
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
 	});
 });

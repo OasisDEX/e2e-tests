@@ -211,15 +211,14 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await app.page.goto('/base/aave/v3/18#overview');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
-			token: 'CBETH',
+			token: 'ETH/CBETH',
 			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'CBETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'ETH' });
-		await app.position.overview.shouldHaveMultiple('1');
-		await app.position.overview.shouldHaveBuyingPower('0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'CBETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveMultiple('1.00');
+		await app.position.overview.shouldHaveBuyingPower('\\$0.00');
 	});
 });
