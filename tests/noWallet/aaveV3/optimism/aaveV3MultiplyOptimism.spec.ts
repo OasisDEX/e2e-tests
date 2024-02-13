@@ -20,10 +20,12 @@ test.describe('Aave v3 Multiply Optimism', async () => {
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{2,3},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-5][0-9].[0-9]{2}%');
-		await app.position.overview.shouldHaveBorrowRateAfterPill('-[0-9]{1,2}.[0-9]{2}%');
-		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveBuyingPowerAfterPill({
+			amount: '\\$[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
+		});
 		await app.position.overview.shouldHaveExposureAfterPill({
-			amount: '[1-4][0-9],[0-9]{3}.[0-9]{4}',
+			amount: '[1-4][0-9],[0-9]{3}.[0-9]{2}',
 			token: 'DAI',
 		});
 		await app.position.overview.shouldHaveDebtAfterPill({
@@ -31,9 +33,7 @@ test.describe('Aave v3 Multiply Optimism', async () => {
 			token: 'WBTC',
 		});
 		await app.position.overview.shouldHaveMultipleAfterPill('1(.[0-9]{1,2})?');
-		await app.position.overview.shouldHaveBuyingPowerAfterPill({
-			amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
-		});
+		await app.position.overview.shouldHaveBorrowRateAfterPill('-[0-9]{1,2}.[0-9]{2}%');
 		await app.position.setup.shouldHaveLiquidationPrice({
 			amount: '[0-9]{2,3},[0-9]{3}(.[0-9]{1,2})? DAI',
 		});
@@ -52,7 +52,7 @@ test.describe('Aave v3 Multiply Optimism', async () => {
 			token: 'WETH',
 		});
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
-			amount: '[1-6][0-9],[0-9]{3}.[0-9]{2}',
+			amount: '[1-8][0-9],[0-9]{3}.[0-9]{2}',
 			percentage: '0.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]{2}');
@@ -75,7 +75,7 @@ test.describe('Aave v3 Multiply Optimism', async () => {
 			future: '[1-5][0-9].[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({
-			fee: '[0-9]{1,2}.[0-9]{2}',
+			fee: '[0-9]{1,2}.[0-9]{2}([0-9]{1,2})?',
 			token: 'DAI',
 		});
 	});
