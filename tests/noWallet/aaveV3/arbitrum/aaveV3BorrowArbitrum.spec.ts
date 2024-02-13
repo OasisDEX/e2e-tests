@@ -18,12 +18,12 @@ test.describe('Aave v3 Borrow Arbitrum', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '30' });
 
+		await app.position.overview.shouldHaveCollateralDepositedAfterPill('30.00');
 		await app.position.overview.shouldHaveBorrowRateAfterPill('-[0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveNetValueAfterPill('[2-3][0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveExposureAfterPill({ amount: '30.00000', token: 'ETH' });
+		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2,3},[0-9]{3}.[0-9]{2}');
 		await app.position.setup.shouldHaveMaxBorrowingAmount({
 			token: 'USDC',
-			amount: '[1-9][0-9],[0-9]{3}.[0-9]{2}',
+			amount: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveTotalCollateral({
 			token: 'ETH',
@@ -35,8 +35,8 @@ test.describe('Aave v3 Borrow Arbitrum', async () => {
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[1-6][0-9]{2}.[0-9]{2}');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[0-9]{1,2}.[0-9]{2}%');
-		await app.position.overview.shouldHaveNetValueAfterPill('[1-2][0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveDebtAfterPill({ amount: '8,000.0000', token: 'USDC' });
+		await app.position.overview.shouldHaveDebtAfterPill({ amount: '8,000.00', token: 'USDC' });
+		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2,3},[0-9]{3}.[0-9]{2}');
 		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
 			token: 'USDC',
 			current: '0.00',
