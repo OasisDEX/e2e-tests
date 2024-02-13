@@ -284,12 +284,7 @@ export class Overview {
 	async shouldHaveBuyingPower(amount: string) {
 		let regexObj = new RegExp(`${amount}`);
 
-		await expect(this.page.locator(':has-text("Buying Power") > p').nth(0)).toContainText(
-			regexObj,
-			{
-				timeout: positionTimeout,
-			}
-		);
+		await expect(this.page.locator(':has-text("Buying Power") > p').nth(0)).toContainText(regexObj);
 	}
 
 	@step

@@ -200,6 +200,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 
 		await app.page.goto('/optimism/aave/v3/2#overview');
 
+		await app.position.manage.shouldHaveButton({ label: 'Adjust', timeout: positionTimeout });
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');
 
@@ -227,11 +228,10 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveBorrowCost('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00', token: 'ETH' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00000', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.0000', token: 'USDC' });
-		await app.position.overview.shouldHaveMultiple('1');
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'USDC' });
+		await app.position.overview.shouldHaveMultiple('1.00');
 		await app.position.overview.shouldHaveBuyingPower('0.00');
 	});
 });
