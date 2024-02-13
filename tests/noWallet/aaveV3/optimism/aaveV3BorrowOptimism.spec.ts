@@ -18,9 +18,9 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'USDC', amount: '18,000.12' });
 
-		await app.position.overview.shouldHaveBorrowCostAfterPill('-[0-9]{1,2}.[0-9]{2}');
-		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{2}');
-		await app.position.overview.shouldHaveExposureAfterPill({ amount: '18,000.12', token: 'USDC' });
+		await app.position.overview.shouldHaveBorrowRateAfterPill('-[0-9]{1,2}.[0-9]{2}');
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveCollateralDepositedAfterPill('18,000.12');
 		await app.position.setup.shouldHaveMaxBorrowingAmount({
 			token: 'WBTC',
 			amount: '0.[0-9]{4}',
@@ -35,8 +35,8 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{2,3},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-5][0-9].[0-9]{2}%');
-		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveDebtAfterPill({ amount: '0.1234', token: 'WBTC' });
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
 		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
 			token: 'WBTC',
 			current: '0.00',
@@ -64,18 +64,18 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 		await app.position.shouldHaveHeader('Aave DAI/WBTC');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '[1-8][0-9],[0-9]{3}.[0-9]{2}',
-			token: 'DAI',
+			token: 'WBTC/DAI',
 		});
 		await app.position.overview.shouldHaveLoanToValue('[0-9]{2,3}.[0-9]{2}');
-		await app.position.overview.shouldHaveBorrowCost('-([0-9]{1,2})?[0-9].[0-9]{2}');
-		await app.position.overview.shouldHaveNetValue({ value: '0.[1-9][0-9]', token: 'DAI' });
-		await app.position.overview.shouldHaveExposure({
+		await app.position.overview.shouldHaveCollateralDeposited({
 			amount: '[1-2].[0-9]{4}',
 			token: 'DAI',
 		});
 		await app.position.overview.shouldHaveDebt({
-			amount: '0.0000',
+			amount: '0.00([0-9]{1,2})?',
 			token: 'WBTC',
 		});
+		await app.position.overview.shouldHaveBorrowRate('-([0-9]{1,2})?[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.[0-9]{1,2}' });
 	});
 });

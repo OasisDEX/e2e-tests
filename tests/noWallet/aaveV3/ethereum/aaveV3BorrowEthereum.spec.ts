@@ -18,7 +18,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 		await app.position.overview.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '50' });
 
-		await app.position.overview.shouldHaveBorrowCostAfterPill('-[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveBorrowRateAfterPill('-[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValueAfterPill('50.00');
 		await app.position.overview.shouldHaveExposureAfterPill({ amount: '50.00000', token: 'ETH' });
 		await app.position.setup.shouldHaveMaxBorrowingAmount({

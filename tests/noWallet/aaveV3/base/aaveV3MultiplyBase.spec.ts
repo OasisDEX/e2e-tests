@@ -20,7 +20,7 @@ test.describe('Aave v3 Multiply Base', async () => {
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[1-9][0-9]{2}.[0-9]{2}');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-5][0-9].[0-9]{2}%');
-		await app.position.overview.shouldHaveBorrowCostAfterPill('[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveBorrowRateAfterPill('[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValueAfterPill('1[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveExposureAfterPill({
 			amount: '[1-5][0-9].[0-9]{5}',
