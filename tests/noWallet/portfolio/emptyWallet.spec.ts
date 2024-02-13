@@ -18,10 +18,15 @@ test.describe('Empty wallet - Wallet not connected', async () => {
 		await app.page.goto('');
 		await app.homepage.shouldBeVisible();
 
+		const featuresFlags = process.env.FLAGS_FEATURES ? process.env.FLAGS_FEATURES.split(' ') : null;
+		const automationMinNetValueFlags = process.env.FLAGS_AUTOMATION_MIN_NET_VALUE
+			? process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(' ')
+			: null;
+
 		await updateFlagsAndRejectCookies({
 			app,
-			featuresFlags: process.env.FLAGS_FEATURES.split(' '),
-			automationMinNetValueFlags: process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(''),
+			featuresFlags,
+			automationMinNetValueFlags,
 		});
 
 		await app.portfolio.open('0x8Af4F3fbC5446a3fc0474859B78fA5f4554D4510');
