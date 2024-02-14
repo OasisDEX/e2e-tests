@@ -67,10 +67,12 @@ export const setup = async ({
 	app,
 	network,
 	extraFeaturesFlags,
+	automationMinNetValueFlags,
 }: {
 	app: App;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 	extraFeaturesFlags?: string;
+	automationMinNetValueFlags?: string;
 }) => {
 	const walletAddress = await metamask.walletAddress();
 
@@ -86,14 +88,17 @@ export const setup = async ({
 		featuresFlags.push(...process.env.FLAGS_FEATURES.split(' '));
 	}
 
-	const automationMinNetValueFlags = process.env.FLAGS_AUTOMATION_MIN_NET_VALUE
-		? process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(' ')
+	const setupAutomationMinNetValueFlags: string[] = automationMinNetValueFlags
+		? automationMinNetValueFlags.split(' ')
 		: [];
+	if (process.env.FLAGS_AUTOMATION_MIN_NET_VALUE) {
+		setupAutomationMinNetValueFlags.push(...process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(' '));
+	}
 
 	await localStorage.updateFlagsAndRejectCookies({
 		app,
 		featuresFlags,
-		automationMinNetValueFlags,
+		automationMinNetValueFlags: setupAutomationMinNetValueFlags,
 	});
 
 	await wallet.connect(app);

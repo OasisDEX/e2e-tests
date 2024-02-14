@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ethers, JsonRpcProvider } from 'ethers';
 import { IAccountGuardAbi, IAccountImplementationAbi } from './abis';
+import { expect } from '@playwright/test';
 
 require('dotenv').config();
 
@@ -38,6 +39,12 @@ export const deleteFork = async (forkId: string) => {
 
 export const getSimulations = async (forkId: string) => {
 	return await request.get(`${TENDERLY_FORK_API}/${forkId}/transactions?page=1&perPage=20`);
+};
+
+export const verifyTxReceiptStatusSuccess = async (forkId: string) => {
+	const resp = await getSimulations(forkId);
+	const autoBuyTxReceiptStatus = await resp.data.fork_transactions[0].receipt.status;
+	expect(autoBuyTxReceiptStatus).toEqual('0x1');
 };
 
 export const tokenAddresses = {
