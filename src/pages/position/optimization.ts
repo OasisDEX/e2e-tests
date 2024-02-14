@@ -14,7 +14,7 @@ export class Optimization {
 
 	@step
 	async setupAutoBuy() {
-		await this.page.getByRole('button', { name: 'Setup Auto-Buy' }).click();
+		await this.page.getByRole('button', { name: 'Setup Auto-Buy' }).click({ clickCount: 2 });
 	}
 
 	@step
