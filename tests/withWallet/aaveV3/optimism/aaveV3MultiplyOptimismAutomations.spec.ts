@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
+test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -25,7 +25,7 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should set Auto-Buy on an Aave v3 Mainnet Multiply position @regression', async () => {
+	test('It should set Auto-Buy on an Aave v3 Optimism Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -34,24 +34,24 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'mainnet' }));
+			({ context } = await metamaskSetUp({ network: 'optimism' }));
 			let page = await context.newPage();
 			app = new App(page);
 
 			({ forkId, walletAddress } = await setup({
 				app,
-				network: 'mainnet',
-				automationMinNetValueFlags: 'mainnet:aavev3:0.001',
+				network: 'optimism',
+				automationMinNetValueFlags: 'optimism:aavev3:0.001',
 			}));
 		});
 
 		await tenderly.changeAccountOwner({
-			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			account: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
 			newOwner: walletAddress,
 			forkId,
 		});
 
-		await app.page.goto('/ethereum/aave/v3/1218#overview');
+		await app.page.goto('/optimism/aave/v3/2#overview');
 
 		await app.position.openTab('Optimization');
 		await app.position.optimization.setupAutoBuy();
@@ -88,7 +88,7 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 		});
 	});
 
-	test('It should set Auto-Sell on an Aave v3 Mainnet Multiply position @regression', async () => {
+	test('It should set Auto-Sell on an Aave v3 Optimism Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

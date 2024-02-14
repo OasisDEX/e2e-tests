@@ -17,7 +17,7 @@ export class Protection {
 		const locator = this.page.getByRole('button', { name: 'Setup Auto-Sell' });
 		expect(locator).toBeVisible();
 		await this.page.waitForTimeout(1000);
-		await locator.click();
+		await locator.click({ clickCount: 2 });
 	}
 
 	@step

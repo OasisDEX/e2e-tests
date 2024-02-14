@@ -94,8 +94,6 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			description: 'xxx',
 		});
 
-		test.setTimeout(longTestTimeout);
-
 		await app.position.openTab('Protection');
 		await app.position.protection.setupAutoSell();
 		await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
