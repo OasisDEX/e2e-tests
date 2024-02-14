@@ -2,7 +2,7 @@ import { expect, test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Aave v2 Earn', async () => {
-	test('It should allow to simulate an Aave V2 Earn position before opening it - No wallet connected @regression', async ({
+	test('It should allow to simulate an Aave V2 Earn position before opening it - No wallet connected', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
@@ -66,7 +66,7 @@ test.describe('Aave v2 Earn', async () => {
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
 	});
 
-	test('It should allow to simulate an Aave V2 Earn position before opening it - Adjust risk - Down and Up  - No wallet connected @regression', async ({
+	test('It should allow to simulate an Aave V2 Earn position before opening it - Adjust risk - Down and Up  - No wallet connected', async ({
 		app,
 	}) => {
 		test.info().annotations.push({

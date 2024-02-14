@@ -47,6 +47,12 @@ export const verifyTxReceiptStatusSuccess = async (forkId: string) => {
 	expect(autoBuyTxReceiptStatus).toEqual('0x1');
 };
 
+export const getTxCount = async (forkId: string) => {
+	const resp = await getSimulations(forkId);
+	const txCount: number = resp.data.fork_transactions.length;
+	return txCount;
+};
+
 export const tokenAddresses = {
 	mainnet: {
 		AJNA: '0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079',

@@ -54,7 +54,7 @@ test.describe('Default states - Wallet not connected', async () => {
 		await app.portfolio.shouldHaveWalletAddress({ address: '0x8af4...d4510' });
 	});
 
-	test(`It should link to wallet's etherscan @regression`, async () => {
+	test(`It should link to wallet's etherscan`, async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12849',
@@ -63,7 +63,7 @@ test.describe('Default states - Wallet not connected', async () => {
 		await app.portfolio.shouldLinktoEtherscan('0x8af4f3fbc5446a3fc0474859b78fa5f4554d4510');
 	});
 
-	test('It should show "Positions" tab by default @regression', async () => {
+	test('It should show "Positions" tab by default', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12751',
