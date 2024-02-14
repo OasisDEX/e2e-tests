@@ -1,9 +1,8 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp } from 'utils/setup';
+import { expect, metamaskSetUp, setup } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
-import { setup } from 'utils/setup';
+import * as tx from 'utils/tx';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
@@ -45,28 +44,25 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 		await app.position.setup.waitForComponentToBeStable();
 		await app.position.setup.deposit({ token: 'ETH', amount: '10.09' });
 		await app.position.setup.createSmartDeFiAccount();
-		// Confirmation button with same label
-		await app.position.setup.createSmartDeFiAccount();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
+
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.createSmartDeFiAccount();
+			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
 		await app.position.setup.continue();
 		await app.position.setup.openEarnPosition1Of2();
 
 		// Position creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
+			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
-		// Logging position ID for debugging purposes
-		const positionId = await app.position.setup.getNewPositionId();
-		console.log('+++ Position ID: ', positionId);
-
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage Earn position');
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 });

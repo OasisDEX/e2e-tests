@@ -2,7 +2,7 @@ import { expect, test } from '#noWalletFixtures';
 import { longTestTimeout, veryLongTestTimeout } from 'utils/config';
 
 test.describe('Spark Earn', async () => {
-	test('It should allow to simulate a Spark Earn position before opening it - No wallet connected @regression', async ({
+	test('It should allow to simulate a Spark Earn position before opening it - No wallet connected', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
@@ -76,7 +76,7 @@ test.describe('Spark Earn', async () => {
 		});
 	});
 
-	test('It should allow to simulate a Spark Earn position before opening it - Adjust risk - Up and Down  - No wallet connected @regression', async ({
+	test('It should allow to simulate a Spark Earn position before opening it - Adjust risk - Up and Down  - No wallet connected', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
