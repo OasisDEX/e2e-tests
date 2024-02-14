@@ -121,7 +121,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue('Morpho Blue');
 
 		// RISK UP
-		await app.position.setup.moveSlider({ protocol: 'Morpho Blue', value: 0.5 });
+		await app.position.setup.moveSlider({ protocol: 'Morpho', value: 0.5 });
 
 		// Wait for simulation to update with new risk
 		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'WSTETH/USDC' });
@@ -132,7 +132,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
 
 		// RISK DOWN
-		await app.position.setup.moveSlider({ protocol: 'Morpho Blue', value: 0.3 });
+		await app.position.setup.moveSlider({ protocol: 'Morpho', value: 0.3 });
 
 		// Wait for simulation to update with new risk
 		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'WSTETH/USDC' });
@@ -153,46 +153,12 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 
 		await app.page.goto('/ethereum/morphoblue/multiply/WSTETH-ETH#setup');
 
-		await app.position.setup.deposit({ token: 'WSTETH', amount: '30.12345' });
-		await app.position.setup.createSmartDeFiAccount();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-
-		// Setting up allowance  randomly fails - Retry until it's set.
-		await expect(async () => {
-			await app.position.setup.approveAllowance();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-
-		// ======================================================================
-
-		// UI sometimes gets stuck after confirming position creation
-		//   - 'Reload' added to avoid flakines
-
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
+		await app.position.openNewMultiplyPosition({
+			forkId,
+			deposit: { token: 'WSTETH', amount: '30.12345' },
 		});
-		await app.position.setup.shouldShowCreatingPosition();
 
-		await app.page.reload();
 		await app.position.setup.goToPosition();
-
-		// ======================================================================
 
 		await app.position.manage.shouldBeVisible('Manage your Morpho Multiply');
 	});
@@ -205,37 +171,11 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.setup.moveSlider({ protocol: 'Morpho Blue', value: 0.6 });
-
-		await app.position.manage.confirm();
-
-		// ======================================================================
-
-		// UI sometimes gets stuck after confirming position creation
-		//   - 'Reload' added to avoid flakines
-
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
+		await app.position.adjustRiskOnExistingMultiplyPosition_UP({
+			protocol: 'Morpho',
+			forkId,
+			newSliderPosition: 0.6,
 		});
-		await app.position.setup.shouldShowUpdatingPosition();
-
-		await app.page.reload();
-
-		// ======================================================================
-
-		await app.position.manage.shouldBeVisible('Manage your Morpho Multiply');
-
-		// Wait for Liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
-		}).toPass();
 	});
 
 	test('It should adjust risk of an existing Morpho Blue Multiply position - Down @regression', async () => {
@@ -246,37 +186,11 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.setup.moveSlider({ protocol: 'Morpho Blue', value: 0.5 });
-
-		await app.position.manage.confirm();
-
-		// ======================================================================
-
-		// UI sometimes gets stuck after confirming position creation
-		//   - 'Reload' added to avoid flakines
-
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
+		await app.position.adjustRiskOnExistingMultiplyPosition_DOWN({
+			protocol: 'Morpho',
+			forkId,
+			newSliderPosition: 0.5,
 		});
-		await app.position.setup.shouldShowUpdatingPosition();
-
-		await app.page.reload();
-
-		// ======================================================================
-
-		await app.position.manage.shouldBeVisible('Manage your Morpho Multiply');
-
-		// Wait for Liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
-		}).toPass();
 	});
 
 	test('It should Close to collateral an existing Morpho Blue Multiply position @regression', async () => {
