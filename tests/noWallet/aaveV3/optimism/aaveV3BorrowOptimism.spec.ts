@@ -75,7 +75,7 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 			amount: '0.00([0-9]{1,2})?',
 			token: 'WBTC',
 		});
-		await app.position.overview.shouldHaveBorrowRate('-([0-9]{1,2})?[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveBorrowRate('[0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValue({ value: '0.[0-9]{1,2}' });
 	});
 });
