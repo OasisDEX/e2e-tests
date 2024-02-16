@@ -19,7 +19,7 @@ export const addToApp = async ({
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 }) => {
 	// Adding fork to app
-	await app.page.locator('header > div > div:nth-child(2) > button').click();
+	await app.page.locator('header > div > div > button').nth(0).click();
 	await app.page.getByRole('button', { name: 'Fork settings' }).click();
 	await app.page
 		.locator(`input[placeholder="http://localhost:854${networks[network].locator}"]`)
