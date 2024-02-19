@@ -101,7 +101,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage Earn position');
 	});
 
-	test('It should adjust risk of an existent Aave V3 Earn Base position - Down @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Earn Base position - Down', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13069',
@@ -141,7 +141,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should adjust risk of an existent Aave V3 Earn Base position - Up @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Earn Base position - Up', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13070',
@@ -180,7 +180,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should close an existent Aave V3 Earn Base position - Close to debt token (ETH) @regression', async () => {
+	test('It should close an existent Aave V3 Earn Base position - Close to debt token (ETH)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13071',
