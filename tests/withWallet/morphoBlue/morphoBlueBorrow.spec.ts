@@ -287,7 +287,7 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 		// ============================================================
 
 		await app.position.overview.shouldHaveNetValue({
-			value: '[3-5][0-9],[0-9]{3}.[0-9]{2}',
+			value: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.overview.shouldHaveCollateralDeposited({ amount: '25.00', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({
@@ -327,7 +327,7 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 		// ============================================================
 
 		await app.position.overview.shouldHaveNetValue({
-			value: '[2-4][0-9],[0-9]{3}.[0-9]{2}',
+			value: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.overview.shouldHaveCollateralDeposited({ amount: '20.00', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({

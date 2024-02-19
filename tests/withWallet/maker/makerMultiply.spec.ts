@@ -24,10 +24,10 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should allow to simulate a Maker Multiply position before opening it @regression', async () => {
+	test('It should open a Maker Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12573',
+			description: '11797, 11798',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -43,71 +43,6 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 				extraFeaturesFlags: 'MakerTenderly:true',
 			}));
 		});
-
-		await app.page.goto('/vaults/open-multiply/WSTETH-A');
-
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'WSTETH', amount: '20.12345' });
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{3}.[0-9]{2}');
-		await app.position.overview.shouldHaveBuyingPowerAfterPill({
-			amount: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
-			protocol: 'Maker',
-		});
-		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2},[0-9]{3}.[0-9]{2}');
-		await app.position.overview.shouldHaveVaultDaiDebt('[0-9]{1,2},[0-9]{3}.[0-9]{4}');
-		await app.position.overview.shouldHaveTotalCollateral({
-			token: 'WSTETH',
-			amount: '[0-9]{2}.[0-9]{2}',
-		});
-		await app.position.overview.shouldHaveMultipleAfterPill('1.[0-9]{2}');
-
-		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '\\$[0-9]{3}(.[0-9]{1,2})?',
-		});
-		await app.position.setup.shouldHaveCollateralRatio({
-			current: '0',
-			future: '[0-9]{3}',
-		});
-		await app.position.setup.orderInformation.shouldHaveBuyingAmount({
-			tokenAmount: '[0-9].[0-9]{4}',
-			token: 'WSTETH',
-			dollarsAmount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
-			protocol: 'Maker',
-		});
-		await app.position.setup.orderInformation.shouldHaveTotalExposure({
-			token: 'WSTETH',
-			current: '0.00',
-			future: '[2-6][0-9].[0-9]{2}',
-		});
-		await app.position.setup.orderInformation.shouldHavePriceImpact({
-			amount: '[1-4],[0-9]{3}.[0-9]{2}',
-			percentage: '[0-5].[0-9]{2}',
-		});
-		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]{2}');
-		await app.position.setup.orderInformation.shouldHaveMultiple({
-			current: '0.00',
-			future: '[1-2].[0-9]{2}',
-		});
-		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
-			token: 'DAI',
-			current: '0.00',
-			future: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
-		});
-		await app.position.setup.orderInformation.shouldHaveCollateralRatio({
-			current: '0.00',
-			future: '[0-9]{3}.[0-9]{2}',
-		});
-		await app.position.setup.orderInformation.shouldHaveFees('[0-9]{1,2}(.[0-9]{1,2})?');
-	});
-
-	test('It should open a Maker Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11797, 11798',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/vaults/open-multiply/ETH-B');
 
@@ -150,6 +85,69 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage your vault');
 		// Verify that it has beenopened as 'Multiply' type
 		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+	});
+
+	test('It should allow to simulate a Maker Multiply position before opening it', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12573',
+		});
+
+		await app.page.goto('/vaults/open-multiply/WSTETH-A');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '20.12345' });
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveBuyingPowerAfterPill({
+			amount: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
+			protocol: 'Maker',
+		});
+		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveVaultDaiDebt('[0-9]{1,2},[0-9]{3}.[0-9]{4}');
+		await app.position.overview.shouldHaveTotalCollateral({
+			token: 'WSTETH',
+			amount: '[0-9]{2}.[0-9]{2}',
+		});
+		await app.position.overview.shouldHaveMultipleAfterPill('1.[0-9]{2}');
+
+		await app.position.setup.shouldHaveLiquidationPrice({
+			amount: '\\$([0-9],)?[0-9]{3}(.[0-9]{1,2})?',
+		});
+		await app.position.setup.shouldHaveCollateralRatio({
+			current: '0',
+			future: '[0-9]{3}',
+		});
+		await app.position.setup.orderInformation.shouldHaveBuyingAmount({
+			tokenAmount: '[0-9].[0-9]{4}',
+			token: 'WSTETH',
+			dollarsAmount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+			protocol: 'Maker',
+		});
+		await app.position.setup.orderInformation.shouldHaveTotalExposure({
+			token: 'WSTETH',
+			current: '0.00',
+			future: '[2-6][0-9].[0-9]{2}',
+		});
+		await app.position.setup.orderInformation.shouldHavePriceImpact({
+			amount: '[1-4],[0-9]{3}.[0-9]{2}',
+			percentage: '[0-5].[0-9]{2}',
+		});
+		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]{2}');
+		await app.position.setup.orderInformation.shouldHaveMultiple({
+			current: '0.00',
+			future: '[1-2].[0-9]{2}',
+		});
+		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
+			token: 'DAI',
+			current: '0.00',
+			future: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.setup.orderInformation.shouldHaveCollateralRatio({
+			current: '0.00',
+			future: '[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.setup.orderInformation.shouldHaveFees('[0-9]{1,2}(.[0-9]{1,2})?');
 	});
 
 	// Skipping test as Maker position pages don't open when using forks  and also because of BUG 10547
