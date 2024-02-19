@@ -13,15 +13,16 @@ export const test = base.extend<MyFixtures>({
 		await app.page.goto('');
 		await app.homepage.shouldBeVisible();
 
-		if (process.env.FLAGS_FEATURES || process.env.FLAGS_AUTOMATION_MIN_NET_VALUE) {
-			await updateFlagsAndRejectCookies({
-				app,
-				featuresFlags: process.env.FLAGS_FEATURES.split(' '),
-				automationMinNetValueFlags: process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(' '),
-			});
-		} else {
-			updateFlagsAndRejectCookies({ app });
-		}
+		const featuresFlags = process.env.FLAGS_FEATURES ? process.env.FLAGS_FEATURES.split(' ') : null;
+		const automationMinNetValueFlags = process.env.FLAGS_AUTOMATION_MIN_NET_VALUE
+			? process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(' ')
+			: null;
+
+		await updateFlagsAndRejectCookies({
+			app,
+			featuresFlags,
+			automationMinNetValueFlags,
+		});
 
 		await use(app);
 
