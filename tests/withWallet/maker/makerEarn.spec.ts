@@ -25,10 +25,10 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should allow to simulate a Maker Earn position before opening it - Deposit @regression', async () => {
+	test('It should open a Maker Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12543, 12557',
+			description: '11800',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -59,70 +59,6 @@ test.describe('Maker Earn - Wallet connected', async () => {
 				balance: '100000',
 			});
 		});
-
-		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
-		await app.position.setup.deposit({ token: 'DAI', amount: '10000.12' });
-
-		await app.position.overview.shouldHaveTokenAmount({ amount: '10,000.12', token: 'DAI' });
-		await app.position.overview.shouldHaveNext30daysNetValue({
-			token: 'DAI',
-			amount: '10,[0-9]{3}.[0-9]{2}',
-		});
-		await app.position.setup.orderInformation.shouldHaveTotalDeposit({
-			token: 'DAI',
-			amount: '10,000.12',
-		});
-		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
-			fee: 'n/a',
-		});
-		await app.position.setup.setupProxyShouldBeVisible();
-
-		await app.position.setup.dsr.mintSdai();
-		await app.position.overview.shouldHaveTokenAmount({ amount: '0.00', token: 'DAI' });
-		await app.position.overview.shouldHaveNext30daysNetValue({
-			token: 'DAI',
-			amount: '0.00',
-		});
-		await app.position.setup.orderInformation.shouldHaveTotalDeposit({
-			token: 'DAI',
-			amount: '10,000.12',
-		});
-		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
-			fee: 'n/a',
-		});
-		await app.position.setup.setAllowanceShouldBeVisible();
-	});
-
-	test('It should allow to simulate a Maker Earn position before opening it - Convert @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12556',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await app.position.setup.dsr.convert();
-		await app.position.setup.dsr.convertSdaiToDai('7000.12');
-
-		await app.position.overview.shouldHaveTokenAmount({ amount: '0.00', token: 'DAI' });
-		await app.position.overview.shouldHaveNext30daysNetValue({
-			token: 'DAI',
-			amount: '0.00',
-		});
-
-		await app.position.setup.orderInformation.shouldHaveTotalSdaiToConvert('7,000.12');
-		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
-			fee: '\\$[0-9]{1,2}.[0-9]{1,2}',
-		});
-	});
-
-	test('It should open a Maker Earn position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11800',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
 		await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
@@ -161,6 +97,67 @@ test.describe('Maker Earn - Wallet connected', async () => {
 			await metamask.confirmAddToken();
 		});
 		await app.position.setup.shouldShowSuccessScreen();
+	});
+
+	test('It should allow to simulate a Maker Earn position before opening it - Deposit', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12543, 12557',
+		});
+
+		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
+		await app.position.setup.deposit({ token: 'DAI', amount: '10000.12' });
+
+		await app.position.overview.shouldHaveTokenAmount({ amount: '10,000.12', token: 'DAI' });
+		await app.position.overview.shouldHaveNext30daysNetValue({
+			token: 'DAI',
+			amount: '10,[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.setup.orderInformation.shouldHaveTotalDeposit({
+			token: 'DAI',
+			amount: '10,000.12',
+		});
+		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
+			fee: '\\$[0-9]{1,2}.[0-9]{2}',
+		});
+
+		await app.position.setup.dsr.mintSdai();
+		await app.position.overview.shouldHaveTokenAmount({ amount: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveNext30daysNetValue({
+			token: 'DAI',
+			amount: '0.00',
+		});
+		await app.position.setup.orderInformation.shouldHaveTotalDeposit({
+			token: 'DAI',
+			amount: '10,000.12',
+		});
+		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
+			fee: 'n/a',
+		});
+		await app.position.setup.setAllowanceShouldBeVisible();
+	});
+
+	test('It should allow to simulate a Maker Earn position before opening it - Convert', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12556',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.position.setup.dsr.convert();
+		await app.position.setup.dsr.convertSdaiToDai('7000.12');
+
+		await app.position.overview.shouldHaveTokenAmount({ amount: '0.00', token: 'DAI' });
+		await app.position.overview.shouldHaveNext30daysNetValue({
+			token: 'DAI',
+			amount: '0.00',
+		});
+
+		await app.position.setup.orderInformation.shouldHaveTotalSdaiToConvert('7,000.12');
+		await app.position.setup.orderInformation.shouldHaveEstimatedTransactionCost({
+			fee: '\\$[0-9]{1,2}.[0-9]{1,2}',
+		});
 	});
 
 	test.skip('It should list an opened Maker Earn position in portfolio', async () => {

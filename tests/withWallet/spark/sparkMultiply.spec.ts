@@ -30,10 +30,10 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should adjust risk of an existent Spark Multiply position - Down @regression', async () => {
+	test('It should open a Spark Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12896',
+			description: '12463',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -44,147 +44,14 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			app = new App(page);
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-		});
-
-		await tenderly.changeAccountOwner({
-			account: '0x302a28d7968824f386f278a72368856bc4d82ba4',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.page.goto('/ethereum/spark/v3/1467#overview');
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.1 });
-
-		await app.position.manage.adjustRisk();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'SDAI',
+				balance: '50000',
 			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-
-		// Wait for Liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
-		}).toPass();
-	});
-
-	test('It should adjust risk of an existent Spark Multiply position - Up @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12898',
 		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.8 });
-
-		await app.position.manage.adjustRisk();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-
-		// Wait for Liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
-		}).toPass();
-	});
-
-	test('It should close an existent Spark Earn position - Close to collateral token (ETH) @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12897',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// New fork needed to be able to close a Multiply position
-		await test.step('Test setup - New fork', async () => {
-			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
-		});
-
-		await tenderly.changeAccountOwner({
-			account: '0x302a28d7968824f386f278a72368856bc4d82ba4',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.page.goto('/ethereum/spark/v3/1467#overview');
-
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Close position');
-
-		await app.position.manage.closeTo('ETH');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'ETH',
-			amount: '0.[0-9]{1,4}',
-		});
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			token: 'DAI',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
-		await app.position.overview.shouldHaveBuyingPower('\\$0.00');
-		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'DAI' });
-		await app.position.overview.shouldHaveMultiple('1.00');
-	});
-
-	test('It should open a Spark Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12463',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/ethereum/spark/v3/multiply/ethdai');
 
@@ -227,7 +94,182 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
+		await app.position.manage.shouldBeVisible('Manage ');
+	});
+
+	test('It should Deposit and Borrow in a single tx on an existing Spark Multiply position', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13659',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await tenderly.changeAccountOwner({
+			account: '0xb585a1bae38dc735988cc75278aecae786e6a5d6',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.page.goto('/ethereum/spark/v3/1448#overview');
+
+		// Wait for all position data to be loaded
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Manage collateral');
+
+		await app.position.manage.deposit({ token: 'SDAI', amount: '10000' });
+		await app.position.manage.borrow({ token: 'ETH', amount: '2' });
+
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.setupAllowance();
+			await app.position.setup.approveAllowance();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken({});
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+		await app.position.setup.continue();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveNetValue({
+			value: '\\$[2-7],[0-9]{3}.[0-9]{2}',
+		});
+		await app.position.overview.shouldHaveExposure({
+			amount: '10,[0-9]{3}.[0-9]{2}',
+			token: 'SDAI',
+		});
+		await app.position.overview.shouldHaveDebt({ amount: '2.[0-9]{3,4}', token: 'ETH' });
+	});
+
+	test('It should adjust risk of an existent Spark Multiply position - Down', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12896',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+		const initialLoanToValue = await app.position.manage.getLoanToValue();
+
+		await app.position.manage.waitForSliderToBeEditable();
+		await app.position.manage.moveSlider({ value: 0.1 });
+
+		await app.position.manage.adjustRisk();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.manage.ok();
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+
+		// Wait for Liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+		}).toPass();
+	});
+
+	test('It should adjust risk of an existent Spark Multiply position - Up', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12898',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+		const initialLoanToValue = await app.position.manage.getLoanToValue();
+
+		await app.position.manage.waitForSliderToBeEditable();
+		await app.position.manage.moveSlider({ value: 0.8 });
+
+		await app.position.manage.adjustRisk();
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.manage.ok();
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+
+		// Wait for Liq price to update
+		await expect(async () => {
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue();
+			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+		}).toPass();
+	});
+
+	test('It should close an existent Spark Earn position - Close to collateral token (ETH', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12897',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Close position');
+		await app.position.manage.closeTo('ETH');
+
+		await app.position.manage.shouldHaveTokenAmountAfterClosing({
+			token: 'ETH',
+			amount: '[0-9].[0-9]{1,4}',
+		});
+
+		// Confirm action randomly fails - Retry until it's applied.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.manage.shouldShowSuccessScreen();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.manage.ok();
+
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '0.00',
+			token: 'SDAI',
+			timeout: positionTimeout,
+		});
+		await app.position.overview.shouldHaveLoanToValue('0.00');
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
+		await app.position.overview.shouldHaveBuyingPower('\\$0.00');
+		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'SDAI' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveMultiple('1.00');
 	});
 });
