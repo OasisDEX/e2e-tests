@@ -96,7 +96,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		await app.position.manage.shouldHaveButton({ label: 'Manage CBETH', timeout: positionTimeout });
 	});
 
-	test('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Up @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Up', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12058',
@@ -138,7 +138,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Down @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Borrow Ethereum position - Down', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12059',
@@ -177,7 +177,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should close an existent Aave V3 Borrow Ethereum position - Close to collateral token (CBETH) @regression', async () => {
+	test('It should close an existent Aave V3 Borrow Ethereum position - Close to collateral token (CBETH)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12060',

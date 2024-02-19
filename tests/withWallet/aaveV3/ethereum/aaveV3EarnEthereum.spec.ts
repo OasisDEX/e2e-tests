@@ -30,10 +30,10 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should deposit extra collateral on an existing Aave V3 Ethereum Earn position @regression', async () => {
+	test('It should open an Aave V3 Earn Ethereum position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '13078',
+			description: '11672',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -53,6 +53,44 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 				balance: '20',
 			});
 		});
+
+		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.setup.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'ETH', amount: '20' });
+		await app.position.setup.createSmartDeFiAccount();
+		// Confirmation button with same label
+		await app.position.setup.createSmartDeFiAccount();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
+		await app.position.setup.continue();
+		await app.position.setup.openEarnPosition1Of2();
+
+		// Position creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.setup.goToPositionShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
+		await app.position.setup.goToPosition();
+		await app.position.manage.shouldBeVisible('Manage ');
+	});
+
+	test('It should deposit extra collateral on an existing Aave V3 Ethereum Earn position', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13078',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
 
 		await tenderly.changeAccountOwner({
 			account: '0xa15c24213cc3403daee3043c7bf6bddbb44d6251',
@@ -94,7 +132,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.overview.shouldHaveTotalCollateral({ amount: '20.00000', token: 'WSTETH' });
 	});
 
-	test('It should withdraw some collateral from an existing Aave V3 Ethereum Earn position @regression', async () => {
+	test('It should withdraw some collateral from an existing Aave V3 Ethereum Earn position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13109',
@@ -124,7 +162,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.overview.shouldHaveTotalCollateral({ amount: '15.00000', token: 'WSTETH' });
 	});
 
-	test('It should borrow more debt from an existing Aave V3 Ethereum Earn position @regression', async () => {
+	test('It should borrow more debt from an existing Aave V3 Ethereum Earn position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13108',
@@ -157,7 +195,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		});
 	});
 
-	test('It should pay back some debt from an existing Aave V3 Ethereum Earn position @regression', async () => {
+	test('It should pay back some debt from an existing Aave V3 Ethereum Earn position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13110',
@@ -191,7 +229,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		});
 	});
 
-	test('It should adjust risk of an existing Aave V3 Earn Ethereum position - Up @regression', async () => {
+	test('It should adjust risk of an existing Aave V3 Earn Ethereum position - Up', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13060',
@@ -228,7 +266,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should adjust risk of an existing Aave V3 Earn Ethereum position - Down @regression', async () => {
+	test('It should adjust risk of an existing Aave V3 Earn Ethereum position - Down', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13061',
@@ -264,7 +302,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should close an existing Aave V3 Earn Ethereum position - Close to debt token (ETH) @regression', async () => {
+	test('It should close an existing Aave V3 Earn Ethereum position - Close to debt token (ETH)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13062',
@@ -296,44 +334,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await app.position.overview.shouldHaveNetValue({ value: '0ETH' });
 		await app.position.overview.shouldHaveTotalCollateral({ amount: '0.00000', token: 'WSTETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.00000', token: 'ETH' });
-	});
-
-	test('It should open an Aave V3 Earn Ethereum position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11672',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		await app.page.goto('/ethereum/aave/v3/earn/wstetheth#simulate');
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.setup.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '20' });
-		await app.position.setup.createSmartDeFiAccount();
-		// Confirmation button with same label
-		await app.position.setup.createSmartDeFiAccount();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
-		await app.position.setup.continue();
-		await app.position.setup.openEarnPosition1Of2();
-
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		// Logging position ID for debugging purposes
-		const positionId = await app.position.setup.getNewPositionId();
-		console.log('+++ Position ID: ', positionId);
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
 	test.skip('It should list an opened Aave V3 Earn Ethereum position in portfolio', async () => {
