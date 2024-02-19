@@ -25,7 +25,7 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should allow to simulate an Ajna Base Earn position before opening it @regression', async () => {
+	test('It should open an Ajna Base Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -48,99 +48,6 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 				balance: '50000',
 			});
 		});
-
-		await app.page.goto('/base/ajna/earn/CBETH-ETH#setup');
-
-		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10' });
-
-		await app.position.overview.shouldHaveProjectedEarnings30days({
-			token: 'ETH',
-			amount: '0.0[0-9]{3}',
-		});
-
-		await app.position.setup.orderInformation.shouldHaveAmountToLend({
-			current: '0.00',
-			future: '10.00',
-			token: 'ETH',
-		});
-		await app.position.setup.orderInformation.shouldHaveLendingPrice({
-			current: '0.00',
-			future: '[0-5].[0-9]{4}',
-			tokensPair: 'CBETH/ETH',
-		});
-		await app.position.setup.orderInformation.shouldHaveMaxLTV({
-			current: '0.00',
-			future: '[0-9]{1,2}.[0-9]{2}',
-		});
-	});
-
-	test('It should allow to simulate Lending Price adjustment (Down) in an Ajna Base Earn position before opening it - Wallet connected @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		const initialLendingPrice = await app.position.setup.getLendingPrice();
-		const initialMaxLTV = await app.position.setup.getMaxLTV();
-
-		await app.position.setup.showLendingPriceEditor({ pair: 'CBETH/ETH' });
-		await app.position.setup.updateLendingPrice({
-			collateralToken: 'ETH',
-			adjust: 'down',
-		});
-
-		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveButtonDisabled('Create Smart DeFi account');
-		await app.position.setup.shouldHaveButtonEnabled('Create Smart DeFi account');
-
-		const updatedLendingPrice = await app.position.manage.getLendingPrice();
-		const updatedMaxLTV = await app.position.manage.getMaxLTV();
-		expect(updatedLendingPrice).toBeLessThan(initialLendingPrice);
-		expect(updatedMaxLTV).toBeLessThan(initialMaxLTV);
-
-		await app.position.setup.orderInformation.shouldHaveMaxLTV({
-			current: '0.00',
-			future: updatedMaxLTV.toFixed(2),
-		});
-	});
-
-	test('It should allow to simulate Lending Price adjustment (Up) in an Ajna Base Earn position before opening it @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		const initialLendingPrice = await app.position.setup.getLendingPrice();
-		const initialMaxLTV = await app.position.setup.getMaxLTV();
-
-		await app.position.setup.updateLendingPrice({
-			collateralToken: 'ETH',
-			adjust: 'up',
-		});
-
-		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveButtonDisabled('Create Smart DeFi account');
-		await app.position.setup.shouldHaveButtonEnabled('Create Smart DeFi account');
-
-		const updatedLendingPrice = await app.position.manage.getLendingPrice();
-		const updatedMaxLTV = await app.position.manage.getMaxLTV();
-		expect(updatedLendingPrice).toBeGreaterThan(initialLendingPrice);
-		expect(updatedMaxLTV).toBeGreaterThan(initialMaxLTV);
-
-		await app.position.setup.orderInformation.shouldHaveMaxLTV({
-			current: '0.00',
-			future: updatedMaxLTV.toFixed(2),
-		});
-	});
-
-	test('It should open an Ajna Base Earn position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/base/ajna/earn/ETH-USDC#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
@@ -180,5 +87,96 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 
 		await app.position.setup.goToPosition();
 		await app.position.manage.shouldBeVisible('Manage your Ajna Earn Position');
+	});
+
+	test('It should allow to simulate an Ajna Base Earn position before opening it', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.page.goto('/base/ajna/earn/CBETH-ETH#setup');
+
+		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.deposit({ token: 'ETH', amount: '10' });
+
+		await app.position.overview.shouldHaveProjectedEarnings30days({
+			token: 'ETH',
+			amount: '0.0[0-9]{3}',
+		});
+
+		await app.position.setup.orderInformation.shouldHaveAmountToLend({
+			current: '0.00',
+			future: '10.00',
+			token: 'ETH',
+		});
+		await app.position.setup.orderInformation.shouldHaveLendingPrice({
+			current: '0.00',
+			future: '[0-5].[0-9]{4}',
+			tokensPair: 'CBETH/ETH',
+		});
+		await app.position.setup.orderInformation.shouldHaveMaxLTV({
+			current: '0.00',
+			future: '[0-9]{1,2}.[0-9]{2}',
+		});
+	});
+
+	test('It should allow to simulate Lending Price adjustment (Down) in an Ajna Base Earn position before opening it', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		const initialLendingPrice = await app.position.setup.getLendingPrice();
+		const initialMaxLTV = await app.position.setup.getMaxLTV();
+
+		await app.position.setup.showLendingPriceEditor({ pair: 'CBETH/ETH' });
+		await app.position.setup.updateLendingPrice({
+			collateralToken: 'ETH',
+			adjust: 'down',
+		});
+
+		// Wait for simulation to update with new risk
+		await app.position.setup.shouldHaveButtonDisabled('Confirm');
+		await app.position.setup.shouldHaveButtonEnabled('Confirm');
+
+		const updatedLendingPrice = await app.position.manage.getLendingPrice();
+		const updatedMaxLTV = await app.position.manage.getMaxLTV();
+		expect(updatedLendingPrice).toBeLessThan(initialLendingPrice);
+		expect(updatedMaxLTV).toBeLessThan(initialMaxLTV);
+
+		await app.position.setup.orderInformation.shouldHaveMaxLTV({
+			current: '0.00',
+			future: updatedMaxLTV.toFixed(2),
+		});
+	});
+
+	test('It should allow to simulate Lending Price adjustment (Up) in an Ajna Base Earn position before opening it', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		const initialLendingPrice = await app.position.setup.getLendingPrice();
+		const initialMaxLTV = await app.position.setup.getMaxLTV();
+
+		await app.position.setup.updateLendingPrice({
+			collateralToken: 'ETH',
+			adjust: 'up',
+		});
+
+		// Wait for simulation to update with new risk
+		await app.position.setup.shouldHaveButtonDisabled('Confirm');
+		await app.position.setup.shouldHaveButtonEnabled('Confirm');
+
+		const updatedLendingPrice = await app.position.manage.getLendingPrice();
+		const updatedMaxLTV = await app.position.manage.getMaxLTV();
+		expect(updatedLendingPrice).toBeGreaterThan(initialLendingPrice);
+		expect(updatedMaxLTV).toBeGreaterThan(initialMaxLTV);
+
+		await app.position.setup.orderInformation.shouldHaveMaxLTV({
+			current: '0.00',
+			future: updatedMaxLTV.toFixed(2),
+		});
 	});
 });
