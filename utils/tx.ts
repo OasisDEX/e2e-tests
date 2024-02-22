@@ -1,4 +1,4 @@
-import test, { expect } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from './tenderly';
 
