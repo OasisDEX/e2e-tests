@@ -75,6 +75,21 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
+		await app.page.goto('/arbitrum/aave/v3/1#overview');
+
 		await automations.testRegularStopLoss({ app, forkId });
+	});
+
+	test('It should set Trailing Stop-Loss on an Aave v3 Arbitrum Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.page.goto('/arbitrum/aave/v3/1#overview');
+
+		await automations.testTrailingStopLoss({ app, forkId });
 	});
 });

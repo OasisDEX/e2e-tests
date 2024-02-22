@@ -75,6 +75,21 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
+		await app.page.goto('/optimism/aave/v3/2#overview');
+
 		await automations.testRegularStopLoss({ app, forkId });
+	});
+
+	test('It should set Trailing Stop-Loss on an Aave v3 Optimism Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.page.goto('/optimism/aave/v3/2#overview');
+
+		await automations.testTrailingStopLoss({ app, forkId });
 	});
 });

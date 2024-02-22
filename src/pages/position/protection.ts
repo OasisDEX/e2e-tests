@@ -1,6 +1,7 @@
 import { step } from '#noWalletFixtures';
 import { expect, Page } from '@playwright/test';
 import { Base } from './base';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class Protection {
 	readonly page: Page;
@@ -13,9 +14,14 @@ export class Protection {
 	}
 
 	@step
-	async setup({ protection }: { protection: 'Auto-Sell' | 'Stop-Loss' }) {
-		const locator = this.page.getByRole('button', { name: protection });
-		expect(locator).toBeVisible();
+	async setup(
+		{ protection, timeout }: { protection: 'Auto-Sell' | 'Stop-Loss'; timeout?: number } = {
+			protection: 'Auto-Sell',
+			timeout: expectDefaultTimeout,
+		}
+	) {
+		const locator = this.page.getByRole('button', { name: `Setup ${protection}`, exact: true });
+		expect(locator).toBeVisible({ timeout });
 		await this.page.waitForTimeout(1000);
 		await locator.click({ clickCount: 2 });
 	}

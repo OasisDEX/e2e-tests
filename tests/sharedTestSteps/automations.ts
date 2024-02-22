@@ -1,14 +1,14 @@
 import { test, expect } from '@playwright/test';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
-import { longTestTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 
 export class Automations {}
 
 export const testRegularStopLoss = async ({ app, forkId }: { app: App; forkId: string }) => {
 	await app.position.openTab('Protection');
 
-	await app.position.protection.setup({ protection: 'Stop-Loss' });
+	await app.position.protection.setup({ protection: 'Stop-Loss', timeout: positionTimeout });
 	await app.position.protection.selectStopLoss('Regular Stop-Loss');
 	await app.position.protection.addStopLoss('Regular');
 
@@ -26,9 +26,30 @@ export const testRegularStopLoss = async ({ app, forkId }: { app: App; forkId: s
 	});
 };
 
+export const testTrailingStopLoss = async ({ app, forkId }: { app: App; forkId: string }) => {
+	await app.position.openTab('Protection');
+
+	await app.position.protection.setup({ protection: 'Stop-Loss', timeout: positionTimeout });
+	await app.position.protection.selectStopLoss('Trailing Stop-Loss');
+	await app.position.protection.addStopLoss('Trailing');
+
+	// Pause needed to avoid random fails
+	await app.page.waitForTimeout(5000);
+
+	await app.position.protection.addStopLossProtection();
+
+	// Automation setup randomly fails - Retry until it's set.
+	await test.step('Confirm automation setup', async () => {
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+		}).toPass({ timeout: longTestTimeout });
+	});
+};
+
 export const testAutoSell = async ({ app, forkId }: { app: App; forkId: string }) => {
 	await app.position.openTab('Protection');
-	await app.position.protection.setup({ protection: 'Auto-Sell' });
+	await app.position.protection.setup({ protection: 'Auto-Sell', timeout: positionTimeout });
 	await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
 	await app.position.protection.shouldHaveMessage(
 		'Please enter a minimum sell price or select Set No Threshold'
