@@ -30,12 +30,7 @@ export const testTrailingStopLoss = async ({ app, forkId }: { app: App; forkId: 
 	await app.position.openTab('Protection');
 
 	await app.position.protection.setup({ protection: 'Stop-Loss', timeout: positionTimeout });
-	await app.position.protection.selectStopLoss('Trailing Stop-Loss');
 	await app.position.protection.addStopLoss('Trailing');
-
-	// Pause needed to avoid random fails
-	await app.page.waitForTimeout(5000);
-
 	await app.position.protection.addStopLossProtection();
 
 	// Automation setup randomly fails - Retry until it's set.

@@ -111,11 +111,19 @@ export class Setup {
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
 	@step
-	async moveSlider({ protocol, value }: { protocol?: 'Ajna' | 'Morpho'; value: number }) {
+	async moveSlider({
+		value,
+		protocol,
+		withWallet,
+	}: {
+		value: number;
+		protocol?: 'Ajna' | 'Morpho';
+		withWallet?: boolean;
+	}) {
 		if (protocol) {
 			await this.base.moveSlider({ value });
 		} else {
-			await this.base.moveSlider({ process: 'setup', value });
+			await this.base.moveSlider({ value, process: 'setup', withWallet });
 		}
 	}
 

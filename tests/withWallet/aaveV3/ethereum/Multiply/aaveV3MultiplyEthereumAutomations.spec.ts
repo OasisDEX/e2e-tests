@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import * as automations from '#sharedTestSteps/automations';
 import { setup } from 'utils/setup';
-import { longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -31,7 +31,7 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 			description: 'xxx',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await test.step('Test setup', async () => {
 			({ context } = await metamaskSetUp({ network: 'mainnet' }));
@@ -87,6 +87,12 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 		});
 
 		test.setTimeout(longTestTimeout);
+
+		await tenderly.changeAccountOwner({
+			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			newOwner: walletAddress,
+			forkId,
+		});
 
 		await app.page.goto('/ethereum/aave/v3/1218#overview');
 
