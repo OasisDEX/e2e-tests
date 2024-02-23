@@ -6,7 +6,6 @@
             "#noWalletFixtures": ["./src/fixtures/noWallet.ts"],
             "#walletUtils": ["./utils/wallet.ts"],
             "#termsAndConditions": ["./utils/termsAndConditions.ts"],
-            "#sharedTestSteps/automations": ["./tests/sharedTestSteps/automations.ts"],
         }
     }
 }
