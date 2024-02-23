@@ -3,7 +3,7 @@ import { expect, metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
-import * as automations from '../../../sharedTestSteps/automations';
+import * as automations from 'tests/sharedTestSteps/automations';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
