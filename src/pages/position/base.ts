@@ -46,7 +46,15 @@ export class Base {
 	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
 	 */
 	@step
-	async moveSlider({ process, value }: { process?: 'setup' | 'manage'; value: number }) {
+	async moveSlider({
+		value,
+		withWallet,
+		process,
+	}: {
+		value: number;
+		withWallet?: boolean;
+		process?: 'setup' | 'manage';
+	}) {
 		await expect(async () => {
 			const initialSliderValue = await this.page
 				.locator('input[type="range"]')
@@ -56,7 +64,7 @@ export class Base {
 			const sliderBoundingBox = await slider.boundingBox();
 
 			// Scroll down so that slider is fully visible and next dragTo doesn't fail
-			if (process) {
+			if (!withWallet && process) {
 				await this.page
 					.getByText(process === 'setup' ? 'Connect a wallet' : 'Adjust Risk')
 					.scrollIntoViewIfNeeded();
@@ -93,14 +101,13 @@ export class Base {
 
 			const initialSliderValue = await triggerSlider.getAttribute('value');
 
-			const triggerSliderBoundingBox = await triggerSlider.boundingBox();
+			const sliderOffsetWidth = await triggerSlider.evaluate((el) => {
+				return el.getBoundingClientRect().width;
+			});
 
-			await triggerSlider.dragTo(triggerSlider, {
+			await triggerSlider.click({
 				force: true,
-				targetPosition: {
-					x: triggerSliderBoundingBox.width * value,
-					y: 0,
-				},
+				position: { x: sliderOffsetWidth * value, y: 0 },
 			});
 
 			const newSliderValue = await triggerSlider.getAttribute('value');

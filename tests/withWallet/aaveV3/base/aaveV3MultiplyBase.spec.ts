@@ -25,10 +25,10 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should adjust risk of an existent Aave V3 Multiply Base position - Down @regression', async () => {
+	test('It should open an Aave v3 Multiply Base position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12465',
+			description: '12463',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -39,7 +39,71 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			app = new App(page);
 
 			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'base',
+				token: 'CBETH',
+				balance: '50',
+			});
 		});
+
+		await app.page.goto('/base/aave/v3/multiply/cbethusdbc');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'CBETH', amount: '14.12345' });
+		await app.position.setup.createSmartDeFiAccount();
+
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.createSmartDeFiAccount();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.setupAllowance();
+			await app.position.setup.approveAllowance();
+			await test.step('Metamask: ConfirmAddToken', async () => {
+				await metamask.confirmAddToken();
+			});
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+		await app.position.setup.openMultiplyPosition1Of2();
+
+		// Position creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
+				await metamask.confirmPermissionToSpend();
+			});
+			await app.position.setup.goToPositionShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		// Logging position ID for debugging purposes
+		const positionId = await app.position.setup.getNewPositionId();
+		console.log('+++ Position ID: ', positionId);
+
+		await app.position.setup.goToPosition();
+		await app.position.manage.shouldBeVisible('Manage ');
+	});
+
+	test('It should adjust risk of an existent Aave V3 Multiply Base position - Down @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '12465',
+		});
+
+		test.setTimeout(longTestTimeout);
 
 		await tenderly.changeAccountOwner({
 			account: '0xf5922d700883214f689efe190a978ac51c50e6b1',
@@ -158,69 +222,6 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'ETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'USDBC' });
 		await app.position.overview.shouldHaveMultiple('1.00');
-	});
-
-	test('It should open an Aave v3 Multiply Base position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12463',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-		await tenderly.setTokenBalance({
-			forkId,
-			walletAddress,
-			network: 'base',
-			token: 'CBETH',
-			balance: '50',
-		});
-
-		await app.page.goto('/base/aave/v3/multiply/cbethusdbc');
-
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'CBETH', amount: '14.12345' });
-		await app.position.setup.createSmartDeFiAccount();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-
-		// Setting up allowance  randomly fails - Retry until it's set.
-		await expect(async () => {
-			await app.position.setup.setupAllowance();
-			await app.position.setup.approveAllowance();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-		await app.position.setup.openMultiplyPosition1Of2();
-
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		// Logging position ID for debugging purposes
-		const positionId = await app.position.setup.getNewPositionId();
-		console.log('+++ Position ID: ', positionId);
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
 	test.skip('It should list an opened Aave v3 Multiply Base position in portfolio', async () => {

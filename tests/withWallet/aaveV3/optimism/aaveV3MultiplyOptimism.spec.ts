@@ -63,7 +63,9 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.continue();
-		await app.position.setup.openMultiplyPosition1Of2();
+
+		await app.position.setup.setupStopLoss1Of3();
+		await app.position.setup.continueWithoutStopLoss();
 
 		// Confirm action randomly fails - Retry until it's applied.
 		await expect(async () => {
@@ -79,7 +81,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
+		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
 	test('It should adjust risk of an existent Aave V3 Multiply Optimism position - Up @regression', async () => {
