@@ -1,10 +1,10 @@
 import { BrowserContext, test } from '@playwright/test';
 import { expect, metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
+import * as tx from 'utils/tx';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -57,29 +57,32 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 			.locator('div:nth-child(3) > button')
 			.nth(1);
 		await expect(button).toBeVisible();
+
 		const buttonLabel = await button.innerText();
-		if (buttonLabel.includes('Setup Proxy')) {
-			await app.position.setup.setupProxy1Of4();
-			await app.position.setup.createProxy2Of4();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
 
-			// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
-			await app.page.waitForTimeout(5_000);
-			await app.page.reload();
+		await app.position.setup.setupProxy1Of4();
 
-			// Depositing collateral too quickly after loading page returns wrong simulation results
-			await app.position.overview.waitForComponentToBeStable();
-			await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
-		}
+		await expect(async () => {
+			await app.position.setup.createOrRetry();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+		}).toPass();
+
+		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
+		await app.page.waitForTimeout(5_000);
+		await app.page.reload();
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		await app.position.overview.waitForComponentToBeStable();
+		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
 
 		await app.position.setup.confirm();
 		await app.position.setup.continueWithoutStopLoss();
-		await app.position.setup.createVault3Of3();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
+
+		await expect(async () => {
+			await app.position.setup.createOrRetry();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await app.position.setup.goToVaultShouldBeVisible();
+		}).toPass();
 
 		await app.position.setup.goToVault();
 		await app.position.manage.shouldBeVisible('Manage your vault');

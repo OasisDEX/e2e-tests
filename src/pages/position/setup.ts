@@ -308,6 +308,18 @@ export class Setup {
 	}
 
 	@step
+	async createOrRetry() {
+		const create = this.page.getByRole('button', { name: 'Create' });
+		const retry = this.page.getByRole('button', { name: 'Retry' });
+
+		if (await create.isVisible()) {
+			await create.click();
+		} else if (await retry.isVisible()) {
+			await retry.click();
+		}
+	}
+
+	@step
 	async shouldConfirmPositionCreation() {
 		await expect(
 			this.page.getByText('Position was created'),
@@ -331,6 +343,14 @@ export class Setup {
 	@step
 	async goToVault() {
 		await this.page.getByRole('button', { name: 'Go to Vault' }).click({ clickCount: 2 });
+	}
+
+	@step
+	async goToVaultShouldBeVisible() {
+		await expect(
+			this.page.getByRole('button', { name: 'Go to Vault' }),
+			'"Go to Vault" should be visible'
+		).toBeVisible();
 	}
 
 	@step

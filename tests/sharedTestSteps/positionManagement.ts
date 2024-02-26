@@ -41,16 +41,17 @@ export const openPosition = async ({
 		await app.position.setup.continue();
 	}
 
-	// ======================================================================
+	// Position creation randomly fails - Retry until it's created.
+	await expect(async () => {
+		await app.position.setup.confirmOrRetry();
+		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+		await app.position.setup.shouldShowCreatingPosition();
+	}).toPass({ timeout: longTestTimeout });
 
 	// UI sometimes gets stuck after confirming position creation
 	//   - 'Reload' added to avoid flakines
-
-	await app.position.setup.confirm();
-	await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmPermissionToSpend' });
-	await app.position.setup.shouldShowCreatingPosition();
-
 	await app.page.reload();
+
 	await app.position.setup.goToPosition();
 
 	// ======================================================================
@@ -76,12 +77,15 @@ export const adjustRisk = async ({
 
 	await app.position.manage.confirm();
 
+	// Position creation randomly fails - Retry until it's created.
+	await expect(async () => {
+		await app.position.setup.confirmOrRetry();
+		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+		await app.position.setup.shouldShowUpdatingPosition();
+	}).toPass({ timeout: longTestTimeout });
+
 	// UI sometimes gets stuck after confirming position creation
 	//   - 'Reload' added to avoid flakines
-	await app.position.setup.confirm();
-	await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmPermissionToSpend' });
-	await app.position.setup.shouldShowUpdatingPosition();
-
 	await app.page.reload();
 
 	// Wait for Liq price to update
@@ -126,13 +130,15 @@ export const close = async ({
 
 	await app.position.setup.confirm();
 
-	// ============================================================
+	// Position creation randomly fails - Retry until it's created.
+	await expect(async () => {
+		await app.position.setup.confirmOrRetry();
+		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+		await app.position.setup.shouldShowUpdatingPosition();
+	}).toPass({ timeout: longTestTimeout });
 
 	// UI sometimes gets stuck after confirming position update
 	//   - 'Reload' added to avoid flakines
-	await app.position.setup.confirm();
-	await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmPermissionToSpend' });
-	await app.position.setup.shouldShowUpdatingPosition();
 	await app.page.reload();
 
 	// ============================================================
@@ -173,16 +179,58 @@ export const depositAndBorrow = async ({
 
 	await app.position.setup.confirm();
 
-	// ============================================================
+	// Position creation randomly fails - Retry until it's created.
+	await expect(async () => {
+		await app.position.setup.confirmOrRetry();
+		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+		await app.position.setup.shouldShowUpdatingPosition();
+	}).toPass({ timeout: longTestTimeout });
 
 	// UI sometimes gets stuck after confirming position update
 	//   - 'Reload' added to avoid flakines
-	await app.position.setup.confirm();
-	await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmPermissionToSpend' });
-	await app.position.setup.shouldShowUpdatingPosition();
 	await app.page.reload();
 
-	// ============================================================
+	await app.position.overview.shouldHaveCollateralDeposited({
+		timeout: positionTimeout,
+		...expectedCollateralDeposited,
+	});
+	await app.position.overview.shouldHaveDebt({
+		protocol: 'Ajna',
+		...expectedDebt,
+	});
+};
+
+export const withdrawAndPayBack = async ({
+	app,
+	forkId,
+	withdraw,
+	payback,
+	expectedCollateralDeposited,
+	expectedDebt,
+}: {
+	app: App;
+	forkId: string;
+	withdraw: { token: string; amount: string };
+	payback: { token: string; amount: string };
+	expectedCollateralDeposited: { token: string; amount: string };
+	expectedDebt: { token: string; amount: string };
+}) => {
+	await app.position.manage.withdrawCollateral();
+	await app.position.manage.withdraw(withdraw);
+	await app.position.manage.payback(payback);
+
+	await app.position.setup.confirm();
+
+	// Position creation randomly fails - Retry until it's created.
+	await expect(async () => {
+		await app.position.setup.confirmOrRetry();
+		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+		await app.position.setup.shouldShowUpdatingPosition();
+	}).toPass({ timeout: longTestTimeout });
+
+	// UI sometimes gets stuck after confirming position update
+	//   - 'Reload' added to avoid flakines
+	await app.page.reload();
 
 	await app.position.overview.shouldHaveCollateralDeposited({
 		timeout: positionTimeout,
