@@ -104,21 +104,25 @@ export const adjustRisk = async ({
 };
 
 export const close = async ({
-	app,
 	forkId,
+	app,
+	positionType,
 	closeTo,
 	collateralToken,
 	debtToken,
 	tokenAmountAfterClosing,
 }: {
-	app: App;
 	forkId: string;
+	app: App;
+	positionType?: 'Multiply' | 'Borrow' | 'Earn';
 	closeTo: 'collateral' | 'debt';
 	collateralToken: string;
 	debtToken: string;
 	tokenAmountAfterClosing: string;
 }) => {
-	await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+	await app.position.manage.openManageOptions({
+		currentLabel: positionType === 'Borrow' ? collateralToken : 'Adjust',
+	});
 	await app.position.manage.select('Close position');
 	if (closeTo === 'debt') {
 		await app.position.manage.closeTo(debtToken);
@@ -149,14 +153,21 @@ export const close = async ({
 	});
 	await app.position.overview.shouldHaveLoanToValue('0.00');
 	await app.position.overview.shouldHaveNetValue({ value: '0.00' });
-	await app.position.overview.shouldHaveBuyingPower('0.00');
-	await app.position.overview.shouldHaveExposure({ token: collateralToken, amount: '0.00' });
 	await app.position.overview.shouldHaveDebt({
 		amount: '0.00',
 		token: debtToken,
 		protocol: 'Ajna',
 	});
-	await app.position.overview.shouldHaveMultiple('1.00');
+
+	if (positionType === 'Borrow') {
+		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'RETH' });
+		await app.position.overview.shouldHaveAvailableToWithdraw({ token: 'RETH', amount: '0.00' });
+		await app.position.overview.shouldHaveAvailableToBorrow({ token: 'ETH', amount: '0.00' });
+	} else {
+		await app.position.overview.shouldHaveExposure({ token: collateralToken, amount: '0.00' });
+		await app.position.overview.shouldHaveBuyingPower('0.00');
+		await app.position.overview.shouldHaveMultiple('1.00');
+	}
 };
 
 export const depositAndBorrow = async ({
@@ -215,7 +226,6 @@ export const withdrawAndPayBack = async ({
 	expectedCollateralDeposited: { token: string; amount: string };
 	expectedDebt: { token: string; amount: string };
 }) => {
-	await app.position.manage.withdrawCollateral();
 	await app.position.manage.withdraw(withdraw);
 	await app.position.manage.payback(payback);
 
