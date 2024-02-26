@@ -1,11 +1,11 @@
 import { BrowserContext, test } from '@playwright/test';
 import { expect, metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -52,37 +52,11 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await app.page.goto('/base/ajna/multiply/ETH-USDC');
 		await app.position.setup.acknowlegeAjnaInfo();
 
-		await app.position.setup.deposit({ token: 'ETH', amount: '15' });
-		await app.position.setup.createSmartDeFiAccount();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-
-		// ======================================================================
-
-		// UI sometimes gets stuck after confirming position creation
-		//   - 'Reload' added to avoid flakines
-
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '15' },
 		});
-		await app.position.setup.shouldShowCreatingPosition();
-
-		await app.page.reload();
-		await app.position.setup.goToPosition();
-
-		// ======================================================================
-
-		await app.position.manage.shouldBeVisible('Manage your Ajna Multiply Position');
 	});
 
 	test('It should adjust risk of an existing Ajna Base Multiply position - Up @regression', async () => {
@@ -93,37 +67,12 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.3 });
-
-		await app.position.manage.confirm();
-
-		// ======================================================================
-
-		// UI sometimes gets stuck after confirming position creation
-		//   - 'Reload' added to avoid flakines
-
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
+		await adjustRisk({
+			forkId,
+			app,
+			risk: 'up',
+			newSliderPosition: 0.3,
 		});
-		await app.position.setup.shouldShowUpdatingPosition();
-
-		await app.page.reload();
-
-		// ======================================================================
-
-		await app.position.manage.shouldBeVisible('Manage your Ajna Multiply Position');
-
-		// Wait for Liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
-		}).toPass();
 	});
 
 	test('It should adjust risk of an existing Ajna Base Multiply position - Down @regression', async () => {
@@ -134,37 +83,12 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.15 });
-
-		await app.position.manage.confirm();
-
-		// ======================================================================
-
-		// UI sometimes gets stuck after confirming position creation
-		//   - 'Reload' added to avoid flakines
-
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
+		await adjustRisk({
+			forkId,
+			app,
+			risk: 'down',
+			newSliderPosition: 0.15,
 		});
-		await app.position.setup.shouldShowUpdatingPosition();
-
-		await app.page.reload();
-
-		// ======================================================================
-
-		await app.position.manage.shouldBeVisible('Manage your Ajna Multiply Position');
-
-		// Wait for Liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
-		}).toPass();
 	});
 
 	test('It should Close to debt an existing Ajna Base Multiply position @regression', async () => {
@@ -175,43 +99,14 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Close position');
-		await app.position.manage.closeTo('USDC');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'USDC',
-			amount: '[0-9]{2},[0-9]{3}.[0-9]{1,2}',
+		await close({
+			forkId,
+			app,
+			closeTo: 'debt',
+			collateralToken: 'ETH',
+			debtToken: 'USDC',
+			tokenAmountAfterClosing: '[0-9]{2},[0-9]{3}.[0-9]{1,2}',
 		});
-
-		await app.position.setup.confirm();
-
-		// ============================================================
-
-		// UI sometimes gets stuck after confirming position update
-		//   - 'Reload' added to avoid flakines
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.setup.shouldShowUpdatingPosition();
-		await app.page.reload();
-
-		// ============================================================
-
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00' });
-		await app.position.overview.shouldHaveBuyingPower('0.00');
-		await app.position.overview.shouldHaveExposure({ token: 'ETH', amount: '0.00' });
-		await app.position.overview.shouldHaveDebt({
-			amount: '0.00',
-			token: 'USDC',
-			protocol: 'Ajna',
-		});
-		await app.position.overview.shouldHaveMultiple('1.00');
 	});
 
 	test('It should allow to simulate an Ajna Base Multiply position before opening it', async () => {
