@@ -1,11 +1,11 @@
 import { BrowserContext, test } from '@playwright/test';
 import { expect, metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -51,42 +51,8 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 
 		await app.page.goto('/base/ajna/earn/ETH-USDC#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'USDC', amount: '5000' });
-		await app.position.setup.createSmartDeFiAccount();
 
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-
-		// Setting up allowance  randomly fails - Retry until it's set.
-		await expect(async () => {
-			await app.position.setup.approveAllowance();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage your Ajna Earn Position');
+		await openPosition({ app, forkId, deposit: { token: 'USDC', amount: '5000' } });
 	});
 
 	test('It should allow to simulate an Ajna Base Earn position before opening it', async () => {

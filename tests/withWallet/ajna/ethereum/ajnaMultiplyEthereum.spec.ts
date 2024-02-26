@@ -1,16 +1,11 @@
 import { BrowserContext, test } from '@playwright/test';
 import { expect, metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import {
-	extremelyLongTestTimeout,
-	veryLongTestTimeout,
-	longTestTimeout,
-	positionTimeout,
-} from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -49,21 +44,15 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 				forkId,
 				network: 'mainnet',
 				walletAddress,
-				token: 'WSTETH',
+				token: 'RETH',
 				balance: '100',
 			});
 		});
 
-		await app.page.goto('/ethereum/ajna/multiply/WSTETH-ETH#setup');
+		await app.page.goto('/ethereum/ajna/multiply/RETH-ETH#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
 
-		await app.position.openNewMultiplyPosition({
-			forkId,
-			deposit: { token: 'WSTETH', amount: '70' },
-		});
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage your Ajna Multiply Position');
+		await openPosition({ app, forkId, deposit: { token: 'RETH', amount: '20' } });
 	});
 
 	test('It should adjust risk of an existing Ajna Ethereum Multiply position - Up @regression', async () => {
@@ -74,9 +63,10 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.adjustRiskOnExistingMultiplyPosition_UP({
-			protocol: 'Ajna',
+		await adjustRisk({
 			forkId,
+			app,
+			risk: 'up',
 			newSliderPosition: 0.6,
 		});
 	});
@@ -89,9 +79,10 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.adjustRiskOnExistingMultiplyPosition_DOWN({
-			protocol: 'Ajna',
+		await adjustRisk({
 			forkId,
+			app,
+			risk: 'down',
 			newSliderPosition: 0.5,
 		});
 	});
@@ -104,42 +95,14 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Close position');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'WSTETH',
-			amount: '[0-9]{1,2}.[0-9]{1,2}',
+		await close({
+			forkId,
+			app,
+			closeTo: 'collateral',
+			collateralToken: 'RETH',
+			debtToken: 'ETH',
+			tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{1,2}',
 		});
-
-		await app.position.setup.confirm();
-
-		// ============================================================
-
-		// UI sometimes gets stuck after confirming position update
-		//   - 'Reload' added to avoid flakines
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.setup.shouldShowUpdatingPosition();
-		await app.page.reload();
-
-		// ============================================================
-
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '0.00' });
-		await app.position.overview.shouldHaveBuyingPower('0.00');
-		await app.position.overview.shouldHaveExposure({ token: 'WSTETH', amount: '0.00' });
-		await app.position.overview.shouldHaveDebt({
-			amount: '0.00',
-			token: 'ETH',
-			protocol: 'Ajna',
-		});
-		await app.position.overview.shouldHaveMultiple('1.00');
 	});
 
 	test('It should allow to simulate an Ajna Ethereum Multiply position before opening it', async () => {
