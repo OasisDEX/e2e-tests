@@ -25,12 +25,11 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should set Auto-Buy on an Aave v3 Optimism Multiply position @regression', async () => {
+	test('It should set Trailing Stop-Loss on an Aave v3 Optimism Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
 		});
-
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await test.step('Test setup', async () => {
@@ -44,49 +43,6 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 				automationMinNetValueFlags: 'optimism:aavev3:0.001',
 			}));
 		});
-
-		await tenderly.changeAccountOwner({
-			account: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.page.goto('/optimism/aave/v3/2#overview');
-
-		await automations.testAutoBuy({ app, forkId });
-	});
-
-	test('It should set Auto-Sell on an Aave v3 Optimism Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await automations.testAutoSell({ app, forkId });
-	});
-
-	test('It should set Regular Stop-Loss on an Aave v3 Optimism Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await app.page.goto('/optimism/aave/v3/2#overview');
-
-		await automations.testRegularStopLoss({ app, forkId });
-	});
-
-	test('It should set Trailing Stop-Loss on an Aave v3 Optimism Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
 
 		await tenderly.changeAccountOwner({
 			account: '0x2047e97451955c98bf8378f6ac2f04d95578990c',

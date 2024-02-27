@@ -21,7 +21,7 @@ export class Protection {
 		}
 	) {
 		const locator = this.page.getByRole('button', { name: `Setup ${protection}`, exact: true });
-		expect(locator).toBeVisible({ timeout });
+		expect(locator, '"Set up <automation>" button should be visible').toBeVisible({ timeout });
 		await this.page.waitForTimeout(1000);
 		await locator.click({ clickCount: 2 });
 	}

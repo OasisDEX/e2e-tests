@@ -10,18 +10,18 @@ export class Overview {
 	}
 
 	@step
-	async shouldBeVisible() {
+	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(
 			this.page.locator('p:has-text("Overview")'),
 			'"Overview" should be visible'
 		).toBeVisible({
-			timeout: positionTimeout,
+			timeout: args?.timeout ?? positionTimeout,
 		});
 	}
 
 	@step
-	async waitForComponentToBeStable() {
-		await this.shouldBeVisible();
+	async waitForComponentToBeStable(args?: { timeout: number }) {
+		await this.shouldBeVisible({ timeout: args?.timeout });
 	}
 
 	@step

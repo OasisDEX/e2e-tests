@@ -1,14 +1,17 @@
 import { test, expect } from '@playwright/test';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
-import { longTestTimeout, positionTimeout } from 'utils/config';
+import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 
 export class Automations {}
 
 export const testRegularStopLoss = async ({ app, forkId }: { app: App; forkId: string }) => {
 	await app.position.openTab('Protection');
 
-	await app.position.protection.setup({ protection: 'Stop-Loss', timeout: positionTimeout });
+	await app.position.protection.setup({
+		protection: 'Stop-Loss',
+		timeout: expectDefaultTimeout * 3,
+	});
 	await app.position.protection.selectStopLoss('Regular Stop-Loss');
 	await app.position.protection.addStopLoss('Regular');
 
@@ -29,7 +32,10 @@ export const testRegularStopLoss = async ({ app, forkId }: { app: App; forkId: s
 export const testTrailingStopLoss = async ({ app, forkId }: { app: App; forkId: string }) => {
 	await app.position.openTab('Protection');
 
-	await app.position.protection.setup({ protection: 'Stop-Loss', timeout: positionTimeout });
+	await app.position.protection.setup({
+		protection: 'Stop-Loss',
+		timeout: expectDefaultTimeout * 3,
+	});
 	await app.position.protection.addStopLoss('Trailing');
 	await app.position.protection.addStopLossProtection();
 
@@ -44,7 +50,10 @@ export const testTrailingStopLoss = async ({ app, forkId }: { app: App; forkId: 
 
 export const testAutoSell = async ({ app, forkId }: { app: App; forkId: string }) => {
 	await app.position.openTab('Protection');
-	await app.position.protection.setup({ protection: 'Auto-Sell', timeout: positionTimeout });
+	await app.position.protection.setup({
+		protection: 'Auto-Sell',
+		timeout: expectDefaultTimeout * 3,
+	});
 	await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
 	await app.position.protection.shouldHaveMessage(
 		'Please enter a minimum sell price or select Set No Threshold'
