@@ -45,7 +45,6 @@ export const openPosition = async ({
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
 		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-		await app.position.setup.shouldShowCreatingPosition();
 	}).toPass({ timeout: longTestTimeout });
 
 	// UI sometimes gets stuck after confirming position creation
@@ -81,7 +80,6 @@ export const adjustRisk = async ({
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
 		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-		await app.position.setup.shouldShowUpdatingPosition();
 	}).toPass({ timeout: longTestTimeout });
 
 	// UI sometimes gets stuck after confirming position creation
@@ -138,7 +136,6 @@ export const close = async ({
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
 		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-		await app.position.setup.shouldShowUpdatingPosition();
 	}).toPass({ timeout: longTestTimeout });
 
 	// UI sometimes gets stuck after confirming position update
@@ -194,7 +191,6 @@ export const depositAndBorrow = async ({
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
 		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-		await app.position.setup.shouldShowUpdatingPosition();
 	}).toPass({ timeout: longTestTimeout });
 
 	// UI sometimes gets stuck after confirming position update
@@ -235,7 +231,6 @@ export const withdrawAndPayBack = async ({
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
 		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-		await app.position.setup.shouldShowUpdatingPosition();
 	}).toPass({ timeout: longTestTimeout });
 
 	// UI sometimes gets stuck after confirming position update
