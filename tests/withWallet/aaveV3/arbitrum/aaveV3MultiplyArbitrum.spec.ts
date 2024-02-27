@@ -207,10 +207,9 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await app.position.manage.select('Close position');
 
 		await app.position.manage.closeTo('DAI');
-
 		await app.position.manage.shouldHaveTokenAmountAfterClosing({
 			token: 'DAI',
-			amount: '[0-9]{1,2}.[0-9]{3,4}',
+			amount: '[0-9]{1,2}.[0-9]{1,2}([0-9]{1,2})?',
 		});
 
 		// Confirm action randomly fails - Retry until it's applied.

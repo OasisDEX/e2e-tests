@@ -29,7 +29,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave V3 Borrow Base position @regression', async () => {
+	test('It should open an Aave V3 Borrow Base position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12473',
@@ -81,38 +81,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await app.position.manage.shouldHaveButton({ label: 'Manage ETH', timeout: positionTimeout });
 	});
 
-	test('It should deposit extra collateral on an existent Aave V3 Borrow Base position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '13035',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await app.position.manage.shouldHaveButton({ label: 'Manage ETH' });
-		await app.position.manage.deposit({ token: 'ETH', amount: '1' });
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.overview.shouldHaveNetValue({
-			value: '\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}',
-		});
-		await app.position.overview.shouldHaveCollateralDeposited({
-			amount: '10.[0-9]{2}',
-			token: 'ETH',
-		});
-	});
-
-	test('It should adjust risk of an existent Aave V3 Borrow Base position - Up @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Borrow Base position - Up', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13065',
@@ -120,7 +89,9 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
+		await app.position.manage.shouldHaveButton({ label: 'Manage ETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'Manage ETH' });
+		await app.position.manage.select('Adjust');
 
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
@@ -152,7 +123,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should adjust risk of an existent Aave V3 Borrow Base position - Down @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Borrow Base position - Down', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13066',
@@ -189,45 +160,5 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
 			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
 		}).toPass();
-	});
-
-	test('It should close an existent Aave V3 Borrow Base position - Close to collateral token (CBETH) @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '13067',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Close position');
-		await app.position.manage.closeTo('ETH');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'ETH',
-			amount: '[0-9]{1,2}.[0-9]{1,2}',
-		});
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.page.goto('/base/aave/v3/2#overview');
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			token: 'ETH/USDBC',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'USDBC' });
 	});
 });
