@@ -46,9 +46,8 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			({ forkId, walletAddress } = await setup({ app, network: 'optimism' }));
 		});
 
-		await app.page.goto('/optimism/aave/v3/borrow/ethusdc');
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
+		await app.position.openPage('/optimism/aave/v3/borrow/ethusdc');
+
 		await app.position.setup.deposit({ token: 'ETH', amount: '6.12345' });
 		await app.position.setup.borrow({ token: 'USDC', amount: '2000' });
 		await app.position.setup.createSmartDeFiAccount();

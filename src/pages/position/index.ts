@@ -1,5 +1,5 @@
 import { expect, Page } from '@playwright/test';
-import { positionTimeout } from 'utils/config';
+import { expectDefaultTimeout, positionTimeout } from 'utils/config';
 import * as tx from 'utils/tx';
 import { step } from '#noWalletFixtures';
 import { Manage } from './manage';
@@ -32,6 +32,14 @@ export class Position {
 		this.overview = new Overview(page);
 		this, (this.protection = new Protection(page));
 		this.setup = new Setup(page);
+	}
+
+	@step
+	async openPage(url: string) {
+		await expect(async () => {
+			await this.page.goto(url);
+			await this.overview.waitForComponentToBeStable({ timeout: expectDefaultTimeout * 3 });
+		}).toPass();
 	}
 
 	@step
