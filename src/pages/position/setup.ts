@@ -123,7 +123,7 @@ export class Setup {
 		if (protocol) {
 			await this.base.moveSlider({ value });
 		} else {
-			await this.base.moveSlider({ value, process: 'setup', withWallet });
+			await this.base.moveSlider({ value, process: 'set up', withWallet });
 		}
 	}
 
@@ -184,19 +184,19 @@ export class Setup {
 	@step
 	async setupProxyShouldBeVisible() {
 		await expect(
-			this.page.getByRole('button', { name: 'Setup Proxy' }),
-			'"Setup Proxy" black button should be visible'
+			this.page.getByRole('button', { name: 'Set up Proxy' }),
+			'"Set up Proxy" black button should be visible'
 		).toBeVisible();
 	}
 
 	@step
 	async setupProxy() {
-		await this.page.getByRole('button', { name: 'Setup Proxy' }).click();
+		await this.page.getByRole('button', { name: 'Set up Proxy' }).click();
 	}
 
 	@step
 	async setupProxy1Of4() {
-		await this.page.getByRole('button', { name: 'Setup Proxy (1/4)' }).click();
+		await this.page.getByRole('button', { name: 'Set up Proxy (1/4)' }).click();
 	}
 
 	@step
@@ -276,7 +276,7 @@ export class Setup {
 
 	@step
 	async setupStopLoss1Of3() {
-		await this.page.getByRole('button', { name: 'Setup Stop-Loss (1/3)' }).click();
+		await this.page.getByRole('button', { name: 'Set up Stop-Loss (1/3)' }).click();
 	}
 
 	@step

@@ -14,7 +14,7 @@ export class Optimization {
 
 	@step
 	async setupAutoBuy() {
-		const locator = this.page.getByRole('button', { name: 'Setup Auto-Buy' });
+		const locator = this.page.getByRole('button', { name: 'Set up Auto-Buy' });
 		expect(locator).toBeVisible();
 		await this.page.waitForTimeout(1000);
 		await locator.click({ clickCount: 2 });

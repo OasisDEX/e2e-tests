@@ -157,9 +157,15 @@ export const close = async ({
 	});
 
 	if (positionType === 'Borrow') {
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'RETH' });
-		await app.position.overview.shouldHaveAvailableToWithdraw({ token: 'RETH', amount: '0.00' });
-		await app.position.overview.shouldHaveAvailableToBorrow({ token: 'ETH', amount: '0.00' });
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '0.00',
+			token: collateralToken,
+		});
+		await app.position.overview.shouldHaveAvailableToWithdraw({
+			token: collateralToken,
+			amount: '0.00',
+		});
+		await app.position.overview.shouldHaveAvailableToBorrow({ token: debtToken, amount: '0.00' });
 	} else {
 		await app.position.overview.shouldHaveExposure({ token: collateralToken, amount: '0.00' });
 		await app.position.overview.shouldHaveBuyingPower('0.00');

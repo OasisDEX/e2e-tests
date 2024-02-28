@@ -53,7 +53,7 @@ export class Base {
 	}: {
 		value: number;
 		withWallet?: boolean;
-		process?: 'setup' | 'manage';
+		process?: 'set up' | 'manage';
 	}) {
 		await expect(async () => {
 			const initialSliderValue = await this.page
@@ -66,7 +66,7 @@ export class Base {
 			// Scroll down so that slider is fully visible and next dragTo doesn't fail
 			if (!withWallet && process) {
 				await this.page
-					.getByText(process === 'setup' ? 'Connect a wallet' : 'Adjust Risk')
+					.getByText(process === 'set up' ? 'Connect a wallet' : 'Adjust Risk')
 					.scrollIntoViewIfNeeded();
 			}
 
