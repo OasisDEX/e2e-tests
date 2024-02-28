@@ -108,7 +108,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await app.position.shouldHaveTab('Protection OFF');
 
 		await app.position.manage.deposit({ token: 'DAI', amount: '50000' });
-		await app.position.manage.borrow({ token: 'WBTC', amount: '0.7' });
+		await app.position.manage.borrow({ token: 'WBTC', amount: '0.1' });
 
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
@@ -137,7 +137,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			token: 'DAI',
 			timeout: positionTimeout,
 		});
-		await app.position.overview.shouldHaveDebt({ amount: '0.7[0-9]{2,3}', token: 'WBTC' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.1[0-9]{2,3}', token: 'WBTC' });
 	});
 
 	test('It should adjust risk of an existent Aave V3 Borrow Optimism position - Down', async () => {
