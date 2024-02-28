@@ -1,12 +1,16 @@
 import { BrowserContext, test } from '@playwright/test';
 import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, positionTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { depositAndBorrow, openPosition } from 'tests/sharedTestSteps/positionManagement';
+import {
+	close,
+	depositAndBorrow,
+	openPosition,
+	withdrawAndPayBack,
+} from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -91,33 +95,17 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.withdrawCollateral();
-		await app.position.manage.withdraw({ token: 'CBETH', amount: '10' });
-		await app.position.manage.payback({ token: 'ETH', amount: '5' });
 
-		await app.position.setup.confirm();
-
-		// ============================================================
-
-		// UI sometimes gets stuck after confirming position update
-		//   - 'Reload' added to avoid flakines
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.setup.shouldShowUpdatingPosition();
-		await app.page.reload();
-
-		// ============================================================
-
-		await app.position.overview.shouldHaveCollateralDeposited({
-			amount: '25.00',
-			token: 'CBETH',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveDebt({
-			amount: '20.[0-9]{2}([0-9]{1,2})?',
-			token: 'ETH',
-			protocol: 'Ajna',
+		await withdrawAndPayBack({
+			app,
+			forkId,
+			withdraw: { token: 'CBETH', amount: '10' },
+			payback: { token: 'ETH', amount: '5' },
+			expectedCollateralDeposited: {
+				amount: '25.00',
+				token: 'CBETH',
+			},
+			expectedDebt: { amount: '20.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -132,33 +120,16 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'CBETH' });
 		await app.position.manage.select('Manage debt');
 
-		await app.position.manage.borrow({ token: 'ETH', amount: '15' });
-		await app.position.manage.deposit({ token: 'CBETH', amount: '20' });
-
-		await app.position.setup.confirm();
-
-		// ============================================================
-
-		// UI sometimes gets stuck after confirming position update
-		//   - 'Reload' added to avoid flakines
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.setup.shouldShowUpdatingPosition();
-		await app.page.reload();
-
-		// ============================================================
-
-		await app.position.overview.shouldHaveCollateralDeposited({
-			amount: '45.00',
-			token: 'CBETH',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveDebt({
-			amount: '35.[0-9]{2}([0-9]{1,2})?',
-			token: 'ETH',
-			protocol: 'Ajna',
+		await depositAndBorrow({
+			app,
+			forkId,
+			borrow: { token: 'ETH', amount: '15' },
+			deposit: { token: 'CBETH', amount: '20' },
+			expectedCollateralDeposited: {
+				amount: '45.00',
+				token: 'CBETH',
+			},
+			expectedDebt: { amount: '35.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -174,33 +145,17 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.position.manage.select('Manage debt');
 
 		await app.position.manage.payBackDebt();
-		await app.position.manage.payback({ token: 'ETH', amount: '20' });
-		await app.position.manage.withdraw({ token: 'CBETH', amount: '15' });
 
-		await app.position.setup.confirm();
-
-		// ============================================================
-
-		// UI sometimes gets stuck after confirming position update
-		//   - 'Reload' added to avoid flakines
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.setup.shouldShowUpdatingPosition();
-		await app.page.reload();
-
-		// ============================================================
-
-		await app.position.overview.shouldHaveCollateralDeposited({
-			amount: '30.00',
-			token: 'CBETH',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveDebt({
-			amount: '15.[0-9]{2}([0-9]{1,2})?',
-			token: 'ETH',
-			protocol: 'Ajna',
+		await withdrawAndPayBack({
+			app,
+			forkId,
+			payback: { token: 'ETH', amount: '20' },
+			withdraw: { token: 'CBETH', amount: '15' },
+			expectedCollateralDeposited: {
+				amount: '30.00',
+				token: 'CBETH',
+			},
+			expectedDebt: { amount: '15.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -212,42 +167,15 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'CBETH' });
-		await app.position.manage.select('Close position');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'CBETH',
-			amount: '[0-9]{1,2}.[0-9]{1,2}',
+		await close({
+			app,
+			forkId,
+			positionType: 'Borrow',
+			closeTo: 'collateral',
+			collateralToken: 'CBETH',
+			debtToken: 'ETH',
+			tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{1,2}',
 		});
-
-		await app.position.setup.confirm();
-
-		// ============================================================
-
-		// UI sometimes gets stuck after confirming position update
-		//   - 'Reload' added to avoid flakines
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.setup.shouldShowUpdatingPosition();
-		await app.page.reload();
-
-		// ============================================================
-
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'CBETH' });
-		await app.position.overview.shouldHaveDebt({
-			amount: '0.00',
-			token: 'ETH',
-			protocol: 'Ajna',
-		});
-		await app.position.overview.shouldHaveNetValue({ value: '0.00' });
-		await app.position.overview.shouldHaveAvailableToWithdraw({ token: 'CBETH', amount: '0.00' });
-		await app.position.overview.shouldHaveAvailableToBorrow({ token: 'ETH', amount: '0.00' });
 	});
 
 	test('It should allow to simulate an Ajna Base Borrow position before opening it', async () => {
