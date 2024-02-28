@@ -25,7 +25,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should set Auto-Buy on an Aave v3 Arbitrum Multiply position @regression', async () => {
+	test('It should set Trailing Stop-Loss on an Aave v3 Arbitrum Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -51,50 +51,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/arbitrum/aave/v3/1#overview');
-
-		await automations.testAutoBuy({ app, forkId });
-	});
-
-	test('It should set Auto-Sell on an Aave v3 Arbitrum Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await automations.testAutoSell({ app, forkId });
-	});
-
-	test('It should set Regular Stop-Loss on an Aave v3 Arbitrum Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await app.page.goto('/arbitrum/aave/v3/1#overview');
-
-		await automations.testRegularStopLoss({ app, forkId });
-	});
-
-	test('It should set Trailing Stop-Loss on an Aave v3 Arbitrum Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await tenderly.changeAccountOwner({
-			account: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.page.goto('/arbitrum/aave/v3/1#overview');
+		await app.position.openPage('/arbitrum/aave/v3/1#overview');
 
 		await automations.testTrailingStopLoss({ app, forkId });
 	});

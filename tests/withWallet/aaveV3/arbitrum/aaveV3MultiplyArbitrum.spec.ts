@@ -98,7 +98,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/arbitrum/aave/v3/1#overview');
+		await app.position.openPage('/arbitrum/aave/v3/1#overview');
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
@@ -150,7 +150,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/arbitrum/aave/v3/1#overview');
+		await app.position.openPage('/arbitrum/aave/v3/1#overview');
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
@@ -201,7 +201,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/arbitrum/aave/v3/1#overview');
+		await app.position.openPage('/arbitrum/aave/v3/1#overview');
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Close position');
