@@ -108,7 +108,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await app.position.shouldHaveTab('Protection OFF');
 
 		await app.position.manage.deposit({ token: 'DAI', amount: '50000' });
-		await app.position.manage.borrow({ token: 'WBTC', amount: '0.1' });
+		await app.position.manage.borrow({ token: 'WBTC', amount: '0.3' });
 
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
@@ -137,7 +137,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			token: 'DAI',
 			timeout: positionTimeout,
 		});
-		await app.position.overview.shouldHaveDebt({ amount: '0.1[0-9]{2,3}', token: 'WBTC' });
+		await app.position.overview.shouldHaveDebt({ amount: '0.3[0-9]{2,3}', token: 'WBTC' });
 	});
 
 	test('It should adjust risk of an existent Aave V3 Borrow Optimism position - Down', async () => {
@@ -147,20 +147,6 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		});
 
 		test.setTimeout(veryLongTestTimeout);
-
-		await tenderly.setTokenBalance({
-			forkId,
-			network: 'optimism',
-			walletAddress,
-			token: 'DAI',
-			balance: '100000',
-		});
-
-		await tenderly.changeAccountOwner({
-			account: '0x1a7ab3359598aa32dbd04edbfa95600f43d89f14',
-			newOwner: walletAddress,
-			forkId,
-		});
 
 		await app.page.goto('/optimism/aave/v3/4#overview');
 
@@ -172,7 +158,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.3 });
+		await app.position.manage.moveSlider({ value: 0.1 });
 
 		await app.position.manage.adjustRisk();
 
