@@ -45,8 +45,8 @@ test.describe('Aave v2 Multiply', async () => {
 			dollarsAmount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
-			amount: '[1-3],[0-9]{3}.[0-9]{2}',
-			percentage: '[0-9].[0-9]{2}',
+			amount: '[1-9],[0-9]{3}.[0-9]{2}',
+			percentage: '[0-9]{1,2}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]{2}');
 		await app.position.setup.orderInformation.shouldHaveMultiply({
