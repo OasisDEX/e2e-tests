@@ -48,20 +48,32 @@ export const testTrailingStopLoss = async ({ app, forkId }: { app: App; forkId: 
 	});
 };
 
-export const testAutoSell = async ({ app, forkId }: { app: App; forkId: string }) => {
+export const testAutoSell = async ({
+	app,
+	forkId,
+	strategy,
+}: {
+	app: App;
+	forkId: string;
+	strategy?: 'short';
+}) => {
 	await app.position.openTab('Protection');
 	await app.position.protection.setup({
 		protection: 'Auto-Sell',
 		timeout: expectDefaultTimeout * 3,
 	});
+
 	await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
-	await app.position.protection.shouldHaveMessage(
-		'Please enter a minimum sell price or select Set No Threshold'
-	);
-	await app.position.protection.setNoThreshold();
-	await app.position.protection.shouldHaveMessage(
-		'You are setting an auto sell trigger with no minimum sell price threshold'
-	);
+
+	if (!strategy) {
+		await app.position.protection.shouldHaveMessage(
+			'Please enter a minimum sell price or select Set No Threshold'
+		);
+		await app.position.protection.setNoThreshold();
+		await app.position.protection.shouldHaveMessage(
+			'You are setting an auto sell trigger with no minimum sell price threshold'
+		);
+	}
 
 	// Pause needed to avoid random fails
 	await app.page.waitForTimeout(5000);
@@ -77,20 +89,30 @@ export const testAutoSell = async ({ app, forkId }: { app: App; forkId: string }
 	});
 };
 
-export const testAutoBuy = async ({ app, forkId }: { app: App; forkId: string }) => {
+export const testAutoBuy = async ({
+	app,
+	forkId,
+	strategy,
+}: {
+	app: App;
+	forkId: string;
+	strategy?: 'short';
+}) => {
 	await app.position.openTab('Optimization');
 	await app.position.optimization.setupAutoBuy();
 
 	await app.position.optimization.adjustAutoBuyTrigger({ value: 0.2 });
 
-	await app.position.optimization.shouldHaveMessage(
-		'Please enter a maximum buy price or select Set No Threshold'
-	);
+	if (!strategy) {
+		await app.position.optimization.shouldHaveMessage(
+			'Please enter a maximum buy price or select Set No Threshold'
+		);
 
-	await app.position.optimization.setNoThreshold();
-	await app.position.optimization.shouldHaveMessage(
-		'You are setting an auto buy trigger with no maximum buy price threshold'
-	);
+		await app.position.optimization.setNoThreshold();
+		await app.position.optimization.shouldHaveMessage(
+			'You are setting an auto buy trigger with no maximum buy price threshold'
+		);
+	}
 
 	// Pause needed to avoid random fails
 	await app.page.waitForTimeout(4000);
