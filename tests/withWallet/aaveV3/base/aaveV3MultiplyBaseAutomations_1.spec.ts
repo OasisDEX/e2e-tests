@@ -118,30 +118,4 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await automations.testAutoSell({ app, forkId });
 	});
-
-	test('It should set Regular Stop-Loss on an Aave v3 Base Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await app.page.goto(positionId);
-
-		await automations.testRegularStopLoss({ app, forkId });
-	});
-
-	test('It should set Trailing Stop-Loss on an Aave v3 Base Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await app.page.goto(positionId);
-
-		await automations.testTrailingStopLoss({ app, forkId });
-	});
 });

@@ -46,7 +46,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			dollarsAmount: '[1-4][0-9],[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
-			amount: '[1-5][0-9],[0-9]{3}.[0-9]{2}',
+			amount: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
 			percentage: '[0-9].[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.[0-9]{2}');

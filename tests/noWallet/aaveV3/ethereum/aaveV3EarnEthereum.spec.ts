@@ -16,12 +16,12 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.setup.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '40' });
+		await app.position.setup.deposit({ token: 'ETH', amount: '10' });
 
-		await app.position.overview.shouldHaveTokenAmount({ amount: '40.00', token: 'ETH' });
+		await app.position.overview.shouldHaveTokenAmount({ amount: '10.00', token: 'ETH' });
 		await app.position.overview.shouldHavePrev30daysNetValue({
 			token: 'ETH',
-			amount: '40.[0-9]{2}',
+			amount: '10.[0-9]{2}',
 		});
 		await app.position.setup.shouldHaveCurrentPrice({
 			amount: '[1-9].[0-9]{2,4}',
@@ -32,9 +32,9 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 			pair: 'WSTETH/ETH',
 		});
 		await app.position.setup.orderInformation.shouldHaveBuyingAmount({
-			tokenAmount: '[1-9][0-9]{2}.[0-9]{5}',
+			tokenAmount: '[0-9]{2,3}.[0-9]{5}',
 			token: 'WSTETH',
-			dollarsAmount: '[1-9][0-9]{2},[0-9]{3}.[0-9]{2}',
+			dollarsAmount: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
 			amount: '[0-3].[0-9]{4}',
@@ -48,16 +48,16 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 		await app.position.setup.orderInformation.shouldHaveOutstandingDebt({
 			token: 'ETH',
 			current: '0.00000',
-			future: '[1-9][0-9]{2}.[0-9]{5}',
+			future: '[0-9]{2,3}.[0-9]{5}',
 		});
 		await app.position.setup.orderInformation.shouldHaveTotalCollateral({
 			token: 'WSTETH',
 			current: '0.00000',
-			future: '[1-9][0-9]{2}.[0-9]{5}',
+			future: '[0-9]{2,3}.[0-9]{5}',
 		});
 		await app.position.setup.orderInformation.shouldHaveLTV({
 			current: '0.00',
-			future: '[1-9][0-9].[0-9]{2}',
+			future: '[0-9]{2,3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveTransactionFee({ fee: '0' });
 	});
