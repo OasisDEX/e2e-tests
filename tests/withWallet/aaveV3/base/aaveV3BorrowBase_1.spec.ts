@@ -79,8 +79,8 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		const positionId = await app.position.setup.getNewPositionId();
 		console.log('+++ Position ID: ', positionId);
 
+		await app.position.setup.goToPosition();
 		// +++ Skipping 'position type'verificationdue to 'db collision' being back
-		// await app.position.setup.goToPosition();
 		// await app.position.manage.shouldHaveButton({ label: 'Manage ETH', timeout: positionTimeout });
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
