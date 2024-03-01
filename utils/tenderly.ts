@@ -81,6 +81,7 @@ export const tokenAddresses = {
 	},
 	optimism: {
 		DAI: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+		OP: '0x4200000000000000000000000000000000000042',
 		RETH: '0x9Bcef72be871e61ED4fBbc7630889beE758eb81D',
 		USDC: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
 		WBTC: '0x68f180fcCe6836688e9084f035309E29Bf0A2095',
@@ -94,6 +95,7 @@ export const tokenBalances = {
 	DAI: '200000',
 	ETH: '1000',
 	GHO: '10000',
+	OP: '100000',
 	RETH: '1000',
 	SDAI: '200000',
 	TBTC: '10000',

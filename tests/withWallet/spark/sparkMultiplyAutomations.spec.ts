@@ -26,7 +26,7 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should Deposit and Borrow in a single tx on an existing Spark Multiply position', async () => {
+	test('It should Deposit and Borrow in a single tx on an existing Spark Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13659',

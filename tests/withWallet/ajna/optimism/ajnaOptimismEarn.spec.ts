@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
+test.describe('Ajna Optimism Earn & Borrow - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -25,7 +25,7 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Ajna Arbitrum Earn position @regression', async () => {
+	test('It should open an Ajna Optimism Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -34,36 +34,36 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'arbitrum' }));
+			({ context } = await metamaskSetUp({ network: 'optimism' }));
 			let page = await context.newPage();
 			app = new App(page);
 
 			({ forkId, walletAddress } = await setup({
 				app,
-				network: 'arbitrum',
+				network: 'optimism',
 			}));
 
 			await tenderly.setTokenBalance({
 				forkId,
 				walletAddress,
-				network: 'arbitrum',
-				token: 'WBTC',
-				balance: '5',
+				network: 'optimism',
+				token: 'DAI',
+				balance: '100000',
 			});
 		});
 
-		await app.page.goto('/arbitrum/ajna/earn/USDC-WBTC#setup');
+		await app.page.goto('/optimism/ajna/earn/OP-ETH#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '1' },
+			deposit: { token: 'ETH', amount: '10' },
 			adjustRisk: { value: 0.8 },
 		});
 	});
 
-	test('It should allow to simulate an Ajna Arbitrum Earn position before opening it', async () => {
+	test('It should allow to simulate an Ajna Optimism Earn position before opening it', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -71,24 +71,24 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/arbitrum/ajna/earn/RETH-ETH#setup');
+		await app.page.goto('/optimism/ajna/earn/WBTC-DAI#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10' });
+		await app.position.setup.deposit({ token: 'DAI', amount: '20000' });
 
 		await app.position.overview.shouldHaveProjectedEarnings30days({
-			token: 'ETH',
-			amount: '0.0[0-9]{3}',
+			token: 'DAI',
+			amount: '[0-9]{2,3}.[0-9]{2}',
 		});
 
 		await app.position.setup.orderInformation.shouldHaveAmountToLend({
 			current: '0.00',
-			future: '10.00',
-			token: 'ETH',
+			future: '20,000.00',
+			token: 'DAI',
 		});
 		await app.position.setup.orderInformation.shouldHaveLendingPrice({
 			current: '0.00',
-			future: '0.[0-9]{3,4}',
-			tokensPair: 'RETH/ETH',
+			future: '[0-9]{3}.[0-9]{2}',
+			tokensPair: 'WBTC/DAI',
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '0.00',
@@ -105,15 +105,15 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 		const initialLendingPrice = await app.position.setup.getLendingPrice();
 		const initialMaxLTV = await app.position.setup.getMaxLTV();
 
-		await app.position.setup.showLendingPriceEditor({ pair: 'RETH/ETH' });
+		await app.position.setup.showLendingPriceEditor({ pair: 'WBTC/DAI' });
 		await app.position.setup.updateLendingPrice({
-			collateralToken: 'ETH',
+			collateralToken: 'DAI',
 			adjust: 'up',
 		});
 
 		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveButtonDisabled('Confirm');
-		await app.position.setup.shouldHaveButtonEnabled('Confirm');
+		await app.position.setup.shouldHaveButtonDisabled('Set DAI allowance');
+		await app.position.setup.shouldHaveButtonEnabled('Set DAI allowance');
 
 		const updatedLendingPrice = await app.position.manage.getLendingPrice();
 		const updatedMaxLTV = await app.position.manage.getMaxLTV();
@@ -136,13 +136,13 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 		const initialMaxLTV = await app.position.setup.getMaxLTV();
 
 		await app.position.setup.updateLendingPrice({
-			collateralToken: 'ETH',
+			collateralToken: 'DAI',
 			adjust: 'down',
 		});
 
 		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveButtonDisabled('Confirm');
-		await app.position.setup.shouldHaveButtonEnabled('Confirm');
+		await app.position.setup.shouldHaveButtonDisabled('Set DAI allowance');
+		await app.position.setup.shouldHaveButtonEnabled('Set DAI allowance');
 
 		const updatedLendingPrice = await app.position.manage.getLendingPrice();
 		const updatedMaxLTV = await app.position.manage.getMaxLTV();
