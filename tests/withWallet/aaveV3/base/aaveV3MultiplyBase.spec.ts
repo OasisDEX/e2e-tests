@@ -11,6 +11,7 @@ let context: BrowserContext;
 let app: App;
 let forkId: string;
 let walletAddress: string;
+let positionId: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -90,7 +91,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		}).toPass({ timeout: longTestTimeout });
 
 		// Logging position ID for debugging purposes
-		const positionId = await app.position.setup.getNewPositionId();
+		positionId = await app.position.setup.getNewPositionId();
 		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
@@ -105,13 +106,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await tenderly.changeAccountOwner({
-			account: '0xf5922d700883214f689efe190a978ac51c50e6b1',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.page.goto('/base/aave/v3/17#overview');
+		await app.page.goto(positionId);
 
 		await app.position.manage.shouldBeVisible('Manage Multiply position');
 		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
@@ -213,13 +208,13 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
-			token: 'ETH/USDBC',
+			token: 'CBETH/USDBC',
 			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
 		await app.position.overview.shouldHaveBuyingPower('\\$0.00');
-		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'ETH' });
+		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'CBETH' });
 		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'USDBC' });
 		await app.position.overview.shouldHaveMultiple('1.00');
 	});

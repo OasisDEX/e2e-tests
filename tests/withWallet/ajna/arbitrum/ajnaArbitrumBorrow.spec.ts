@@ -68,7 +68,7 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Deposit and Borrow in a single tx form an existing Ajna Base Borrow position @regression', async () => {
+	test('It should Deposit and Borrow in a single tx form an existing Ajna Arbitrum Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxxx',
@@ -89,7 +89,7 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Withdraw and Pay back in a single tx form an existing Ajna Base Borrow position @regression', async () => {
+	test('It should Withdraw and Pay back in a single tx form an existing Ajna Arbitrum Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxxx',
@@ -112,7 +112,7 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Borrow and Deposit in a single tx on an existing Ajna Base Borrow position @regression', async () => {
+	test('It should Borrow and Deposit in a single tx on an existing Ajna Arbitrum Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxx',
@@ -136,7 +136,7 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Pay back and Withdraw in a single tx on an existing Ajna Base Borrow position @regression', async () => {
+	test('It should Pay back and Withdraw in a single tx on an existing Ajna Arbitrum Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxx',
@@ -163,7 +163,7 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 	});
 
 	// !! tx failing with very low liquidity - To re-test when liquidity rises
-	test.skip('It should Close to collateral an existing Ajna Base Borrow position @regression', async () => {
+	test.skip('It should Close to collateral an existing Ajna Arbitrum Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxx',
