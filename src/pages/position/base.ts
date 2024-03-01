@@ -116,6 +116,31 @@ export class Base {
 		}).toPass();
 	}
 
+	/**
+	 * @param value should be between '0' and '1' both included | 0: far left | 1: far right
+	 */
+	@step
+	async moveSliderOmni({ value }: { value: number }) {
+		await expect(async () => {
+			const sliderRail = this.page.locator('.rc-slider-rail');
+			const sliderPill = this.page.locator('[role="slider"]');
+
+			const initialPillValue = await sliderPill.getAttribute('aria-valuenow');
+
+			const sliderOffsetWidth = await sliderRail.evaluate((el) => {
+				return el.getBoundingClientRect().width;
+			});
+
+			await sliderRail.click({
+				force: true,
+				position: { x: sliderOffsetWidth * value, y: 0 },
+			});
+
+			const newPillValue = await sliderPill.getAttribute('aria-valuenow');
+			expect(newPillValue !== initialPillValue).toBe(true);
+		}).toPass();
+	}
+
 	@step
 	async setNoThreshold() {
 		await this.page.locator('span > span:has-text("Set No Threshold")').click();

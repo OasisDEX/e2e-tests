@@ -3,32 +3,46 @@ import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { longTestTimeout, positionTimeout } from 'utils/config';
 
+/**
+ *
+ * @param adjustRisk should be between '0' and '1' both included | 0: far left in slider | 1: far right
+ */
 export const openPosition = async ({
 	app,
 	forkId,
 	deposit,
 	borrow,
+	existingDPM,
+	adjustRisk,
 }: {
 	app: App;
 	forkId: string;
 	deposit: { token: string; amount: string };
 	borrow?: { token: string; amount: string };
+	existingDPM?: boolean;
+	adjustRisk?: { value: number };
 }) => {
 	await app.position.setup.deposit(deposit);
 	if (borrow) {
 		await app.position.setup.borrow(borrow);
 	}
-
-	await app.position.setup.createSmartDeFiAccount();
-
-	// Smart DeFi Acount creation randomly fails - Retry until it's created.
-	await expect(async () => {
+	if (adjustRisk) {
+		await app.position.setup.moveSliderOmni({ value: adjustRisk.value });
+	}
+	if (!existingDPM) {
 		await app.position.setup.createSmartDeFiAccount();
-		await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
-		await app.position.setup.continueShouldBeVisible();
-	}).toPass({ timeout: longTestTimeout });
 
-	await app.position.setup.continue();
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.createSmartDeFiAccount();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+	} else if (deposit.token !== 'ETH') {
+		await app.position.setup.setTokenAllowance(deposit.token);
+	}
 
 	if (deposit.token !== 'ETH') {
 		// Setting up allowance  randomly fails - Retry until it's set.

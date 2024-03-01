@@ -127,6 +127,15 @@ export class Setup {
 		}
 	}
 
+	/**
+	 *
+	 * @param adjustRisk should be between '0' and '1' both included | 0: far left in slider | 1: far right
+	 */
+	@step
+	async moveSliderOmni({ value }: { value: number }) {
+		await this.base.moveSliderOmni({ value });
+	}
+
 	@step
 	async showLendingPriceEditor({ pair }: { pair: string }) {
 		await this.page.getByText(`Or enter specific ${pair} Lending Price`).click();
@@ -143,7 +152,7 @@ export class Setup {
 		await this.page
 			.locator(`:has-text("Input ${collateralToken} Lending Price") + div > button`)
 			.nth(adjust === 'down' ? 0 : 1)
-			.click();
+			.click({ clickCount: 5 });
 	}
 
 	@step

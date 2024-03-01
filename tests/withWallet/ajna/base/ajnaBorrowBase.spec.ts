@@ -3,7 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	close,
@@ -60,8 +60,8 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '20' },
-			borrow: { token: 'ETH', amount: '15' },
+			deposit: { token: 'CBETH', amount: '2' },
+			borrow: { token: 'ETH', amount: '1' },
 		});
 	});
 
@@ -71,18 +71,18 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			description: 'xxxxx',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
 		await depositAndBorrow({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '15' },
-			borrow: { token: 'ETH', amount: '10' },
+			deposit: { token: 'CBETH', amount: '2' },
+			borrow: { token: 'ETH', amount: '1' },
 			expectedCollateralDeposited: {
-				amount: '35.00',
+				amount: '4.00',
 				token: 'CBETH',
 			},
-			expectedDebt: { amount: '25.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '2.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -92,20 +92,20 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			description: 'xxxxx',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
 		await app.position.manage.withdrawCollateral();
 
 		await withdrawAndPayBack({
 			app,
 			forkId,
-			withdraw: { token: 'CBETH', amount: '10' },
-			payback: { token: 'ETH', amount: '5' },
+			withdraw: { token: 'CBETH', amount: '1' },
+			payback: { token: 'ETH', amount: '1' },
 			expectedCollateralDeposited: {
-				amount: '25.00',
+				amount: '3.00',
 				token: 'CBETH',
 			},
-			expectedDebt: { amount: '20.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '1.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -115,7 +115,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			description: 'xxxx',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'CBETH' });
 		await app.position.manage.select('Manage debt');
@@ -123,13 +123,13 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await depositAndBorrow({
 			app,
 			forkId,
-			borrow: { token: 'ETH', amount: '15' },
-			deposit: { token: 'CBETH', amount: '20' },
+			borrow: { token: 'ETH', amount: '1' },
+			deposit: { token: 'CBETH', amount: '2' },
 			expectedCollateralDeposited: {
-				amount: '45.00',
+				amount: '5.00',
 				token: 'CBETH',
 			},
-			expectedDebt: { amount: '35.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '2.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -139,7 +139,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			description: 'xxxx',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'CBETH' });
 		await app.position.manage.select('Manage debt');
@@ -149,13 +149,13 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await withdrawAndPayBack({
 			app,
 			forkId,
-			payback: { token: 'ETH', amount: '20' },
-			withdraw: { token: 'CBETH', amount: '15' },
+			payback: { token: 'ETH', amount: '1' },
+			withdraw: { token: 'CBETH', amount: '3' },
 			expectedCollateralDeposited: {
-				amount: '30.00',
+				amount: '2.00',
 				token: 'CBETH',
 			},
-			expectedDebt: { amount: '15.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '1.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -165,7 +165,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			description: 'xxxx',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
 		await close({
 			app,

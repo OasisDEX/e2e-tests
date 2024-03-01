@@ -72,7 +72,9 @@ export class Manage {
 
 	@step
 	async adjustRisk() {
-		await this.page.getByRole('button', { name: 'Adjust Risk' }).click();
+		await this.page
+			.getByRole('button', { name: 'Adjust Risk' })
+			.click({ timeout: expectDefaultTimeout * 3 });
 	}
 
 	@step
