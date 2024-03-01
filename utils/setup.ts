@@ -109,7 +109,7 @@ export const setup = async ({
 
 	await fork.addToApp({ app, forkId, network });
 
-	await tenderly.setTokenBalance({ forkId, walletAddress, network, token: 'ETH', balance: '100' });
+	await tenderly.setTokenBalance({ forkId, walletAddress, network, token: 'ETH', balance: '1000' });
 
 	// Logging forkId and walletAddress for debugging purposes
 	//  - Info displayed in 'Attachments > stdout' section of playwright reports

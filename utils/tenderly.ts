@@ -44,7 +44,7 @@ export const getSimulations = async (forkId: string) => {
 export const verifyTxReceiptStatusSuccess = async (forkId: string) => {
 	const resp = await getSimulations(forkId);
 	const autoBuyTxReceiptStatus = await resp.data.fork_transactions[0].receipt.status;
-	expect(autoBuyTxReceiptStatus, 'tx status should be succes').toEqual('0x1');
+	expect(autoBuyTxReceiptStatus, 'tx status should be success').toEqual('0x1');
 };
 
 export const getTxCount = async (forkId: string) => {

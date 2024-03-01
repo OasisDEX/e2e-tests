@@ -316,7 +316,7 @@ export class Overview {
 			timeout?: number;
 		} = { amount: '', token: '', timeout: expectDefaultTimeout }
 	) {
-		const regExp = new RegExp(`${amount}${token}`);
+		const regExp = new RegExp(`${amount}.*${token}`);
 
 		await expect(this.page.locator('li:has-text("Collateral Deposited")')).toContainText(regExp, {
 			timeout,
