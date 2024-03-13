@@ -60,8 +60,8 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'RETH', amount: '20' },
-			borrow: { token: 'ETH', amount: '15' },
+			deposit: { token: 'RETH', amount: '2' },
+			borrow: { token: 'ETH', amount: '1.5' },
 		});
 	});
 
@@ -76,13 +76,13 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await depositAndBorrow({
 			app,
 			forkId,
-			deposit: { token: 'RETH', amount: '15' },
-			borrow: { token: 'ETH', amount: '10' },
+			deposit: { token: 'RETH', amount: '1.5' },
+			borrow: { token: 'ETH', amount: '1' },
 			expectedCollateralDeposited: {
-				amount: '35.00',
+				amount: '3.50',
 				token: 'RETH',
 			},
-			expectedDebt: { amount: '25.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '2.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -99,13 +99,13 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await withdrawAndPayBack({
 			app,
 			forkId,
-			withdraw: { token: 'RETH', amount: '10' },
-			payback: { token: 'ETH', amount: '5' },
+			withdraw: { token: 'RETH', amount: '1' },
+			payback: { token: 'ETH', amount: '0.5' },
 			expectedCollateralDeposited: {
-				amount: '25.00',
+				amount: '2.50',
 				token: 'RETH',
 			},
-			expectedDebt: { amount: '20.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '2.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -123,13 +123,13 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await depositAndBorrow({
 			app,
 			forkId,
-			borrow: { token: 'ETH', amount: '15' },
-			deposit: { token: 'RETH', amount: '20' },
+			borrow: { token: 'ETH', amount: '1.5' },
+			deposit: { token: 'RETH', amount: '2' },
 			expectedCollateralDeposited: {
-				amount: '45.00',
+				amount: '4.50',
 				token: 'RETH',
 			},
-			expectedDebt: { amount: '35.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '3.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -149,13 +149,13 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await withdrawAndPayBack({
 			app,
 			forkId,
-			payback: { token: 'ETH', amount: '20' },
-			withdraw: { token: 'RETH', amount: '15' },
+			payback: { token: 'ETH', amount: '2' },
+			withdraw: { token: 'RETH', amount: '1.5' },
 			expectedCollateralDeposited: {
-				amount: '30.00',
+				amount: '3.00',
 				token: 'RETH',
 			},
-			expectedDebt: { amount: '15.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '1.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -185,6 +185,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/ethereum/ajna/borrow/RETH-ETH#setup');
+		await app.position.setup.openNewPosition();
 
 		await app.position.setup.acknowlegeAjnaInfo();
 		await app.position.setup.deposit({ token: 'RETH', amount: '10.12345' });
@@ -202,7 +203,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		await app.position.setup.shouldHaveMaxBorrowingAmount({
 			token: 'ETH',
-			amount: '[0-9]{1,2}.[0-9]{2}',
+			amount: '[0-9]{1,2}.[0-9]{2}([0-9]{1,2})?',
 		});
 		await app.position.setup.orderInformation.shouldHaveCollateralLocked({
 			token: 'RETH',
@@ -221,25 +222,25 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
 			token: 'ETH',
 			current: '0.00',
-			future: '[0-9]{1,2}.[0-9]{2}',
+			future: '[0-9]{1,2}.[0-9]{2}([0-9]{1,2})?',
 		});
 
-		await app.position.setup.borrow({ token: 'ETH', amount: '8.12345' });
+		await app.position.setup.borrow({ token: 'ETH', amount: '1.12345' });
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-3].[0-9]{3,4} RETH/ETH');
-		await app.position.overview.shouldHaveLoanToValueAfterPill('[4-9][0-9].[0-9]{1,2}%');
+		await app.position.overview.shouldHaveLoanToValueAfterPill('[0-9]{1,2}.[0-9]{1,2}%');
 		await app.position.overview.shouldHaveDebtAfterPill({
 			protocol: 'Ajna',
-			amount: '8.1234',
+			amount: '1.1234',
 			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
-			amount: '[1-5].[0-9]{3,4}',
+			amount: '[5-9].[0-9]{3,4}',
 			token: 'RETH',
 		});
 		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
-			amount: '[1-5].[0-9]{3,4}',
+			amount: '[2-9].[0-9]{3,4}',
 			token: 'ETH',
 		});
 
@@ -256,7 +257,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await app.position.orderInformation.shouldHaveLTV({
 			protocol: 'Ajna',
 			current: '0.00',
-			future: '[1-9][0-9].[0-9]{2}',
+			future: '[0-9]{1,2}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '[0-9]{2,3}.[0-9]{2}',
@@ -265,17 +266,17 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveDebt({
 			token: 'ETH',
 			current: '0.00',
-			future: '8.[0-9]{3,4}',
+			future: '1.[0-9]{3,4}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToWithdraw({
 			token: 'RETH',
 			current: '0.00',
-			future: '[0-5].[0-9]{3,4}',
+			future: '[5-9].[0-9]{3,4}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
 			token: 'ETH',
 			current: '0.00',
-			future: '[0-5].[0-9]{3,4}',
+			future: '[2-9].[0-9]{3,4}',
 		});
 	});
 });

@@ -2,7 +2,7 @@ import { expect, Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
 import { Base } from './base';
 import { OrderInformation } from './orderInformation';
-import { baseUrl, positionTimeout } from 'utils/config';
+import { baseUrl, expectDefaultTimeout, positionTimeout } from 'utils/config';
 import { Dsr } from './dsr';
 import { VaultChanges } from './vaultChanges';
 
@@ -507,5 +507,12 @@ export class Setup {
 		await expect(this.page.getByText('Success'), '"Success" should be visible').toBeVisible({
 			timeout: positionTimeout,
 		});
+	}
+
+	@step
+	async openNewPosition() {
+		await this.page
+			.getByRole('button', { name: 'Open new position' })
+			.click({ clickCount: 2, timeout: expectDefaultTimeout * 3 });
 	}
 }
