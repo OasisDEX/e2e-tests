@@ -61,6 +61,7 @@ export const tokenAddresses = {
 		GHO: '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f',
 		RETH: '0xae78736cd615f374d3085123a210448e74fc6393',
 		SDAI: '0x83F20F44975D03b1b09e64809B757c47f942BEeA',
+		// STETH: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
 		TBTC: '0x18084fbA666a33d37592fA2633fD49a74DD93a88',
 		USDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 		WBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
@@ -98,6 +99,7 @@ export const tokenBalances = {
 	OP: '100000',
 	RETH: '1000',
 	SDAI: '200000',
+	STETH: '1000',
 	TBTC: '10000',
 	USDC: '200000',
 	WBTC: '10',
@@ -118,7 +120,7 @@ export const setTokenBalance = async ({
 }: {
 	forkId: string;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
-	token: 'CBETH' | 'DAI' | 'ETH' | 'USDC' | 'RETH' | 'SDAI' | 'WBTC' | 'WSTETH';
+	token: 'CBETH' | 'DAI' | 'ETH' | 'USDC' | 'RETH' | 'SDAI' | 'WBTC' | 'WSTETH' | 'STETH';
 	balance: string;
 	walletAddress: string;
 }) => {

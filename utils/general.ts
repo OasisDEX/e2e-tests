@@ -9,6 +9,7 @@ export const comparePositionsData = (stagingPositions, productionPositions) => {
 		);
 		if (!positionResult) {
 			console.log('+++ Inconsistent Position Data - Staging: ', stagingPosition);
+			console.log('+++ Inconsistent Position Data - Production: ', productionPositions[0]);
 		}
 		return positionResult;
 	});

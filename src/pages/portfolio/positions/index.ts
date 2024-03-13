@@ -5,6 +5,13 @@ import { FeaturedFor } from './featuredFor';
 
 type ProductTypes = 'All products' | 'Borrow' | 'Earn' | 'Multiply' | 'Migrate';
 
+type PositionData = {
+	id: string;
+	pool: string;
+	type: string;
+	protocol: string;
+};
+
 export class Positions {
 	readonly page: Page;
 
@@ -190,21 +197,19 @@ export class Positions {
 			protocol: string;
 		}[] = [];
 
-		const positionData: {
-			id: string;
-			pool: string;
-			type: string;
-			protocol: string;
-		} = { id: '', pool: '', type: '', protocol: '' };
-
 		const summerPositionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
 		const summerPositionsListedCount: number = await summerPositionsListed.count();
 
 		for (let index = 0; index < summerPositionsListedCount; index++) {
-			const positionId = await summerPositionsListed.nth(index).locator('span').nth(2).innerText();
-			positionData.id = positionId.slice(10);
+			const positionData: PositionData = { id: '', pool: '', type: '', protocol: '' };
 
-			positionData.pool = await summerPositionsListed.nth(index).locator('span').nth(1).innerText();
+			const positionIdLocator = summerPositionsListed
+				.nth(index)
+				.locator('span:has-text("Position #")');
+			const positionIdText = await positionIdLocator.innerText();
+			positionData.id = positionIdText.slice(10);
+
+			positionData.pool = await positionIdLocator.locator('xpath=//preceding::*[1]').innerText();
 			positionData.type = await summerPositionsListed.nth(index).locator('span').nth(0).innerText();
 
 			positionsData.push(positionData);
@@ -214,15 +219,18 @@ export class Positions {
 		const migratePositionsListedCount: number = await migratePositionsListed.count();
 
 		for (let index = 0; index < migratePositionsListedCount; index++) {
+			const positionData: PositionData = { id: '', pool: '', type: '', protocol: '' };
+
 			positionData.pool = await migratePositionsListed
 				.nth(index)
 				.locator('span')
 				.nth(1)
+				.locator('xpath=//preceding::*[1]')
 				.innerText();
 			positionData.protocol = await migratePositionsListed
 				.nth(index)
 				.locator('span')
-				.nth(2)
+				.nth(1)
 				.innerText();
 
 			positionsData.push(positionData);
