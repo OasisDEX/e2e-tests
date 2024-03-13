@@ -51,7 +51,7 @@ export class Overview {
 	async shouldHaveProjectedEarnings30days({ token, amount }: { token: string; amount: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
-			this.page.getByText('Projected earnings per 30d').locator('xpath=//following-sibling::p[1]')
+			this.page.getByText('Projected earnings per 30d').locator('xpath=//following-sibling::*[1]')
 		).toContainText(regExp, { timeout: positionTimeout });
 	}
 

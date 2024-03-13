@@ -49,18 +49,18 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 				forkId,
 				network: 'base',
 				walletAddress,
-				token: 'CBETH',
+				token: 'WSTETH',
 				balance: '100',
 			});
 		});
 
-		await app.page.goto('/base/ajna/borrow/CBETH-ETH#setup');
+		await app.page.goto('/base/ajna/borrow/WSTETH-ETH#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '2' },
+			deposit: { token: 'WSTETH', amount: '2' },
 			borrow: { token: 'ETH', amount: '1' },
 		});
 	});
@@ -76,11 +76,11 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await depositAndBorrow({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '2' },
+			deposit: { token: 'WSTETH', amount: '2' },
 			borrow: { token: 'ETH', amount: '1' },
 			expectedCollateralDeposited: {
 				amount: '4.00',
-				token: 'CBETH',
+				token: 'WSTETH',
 			},
 			expectedDebt: { amount: '2.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
@@ -99,11 +99,11 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await withdrawAndPayBack({
 			app,
 			forkId,
-			withdraw: { token: 'CBETH', amount: '1' },
+			withdraw: { token: 'WSTETH', amount: '1' },
 			payback: { token: 'ETH', amount: '1' },
 			expectedCollateralDeposited: {
 				amount: '3.00',
-				token: 'CBETH',
+				token: 'WSTETH',
 			},
 			expectedDebt: { amount: '1.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
@@ -117,17 +117,17 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'CBETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
 		await app.position.manage.select('Manage debt');
 
 		await depositAndBorrow({
 			app,
 			forkId,
 			borrow: { token: 'ETH', amount: '1' },
-			deposit: { token: 'CBETH', amount: '2' },
+			deposit: { token: 'WSTETH', amount: '2' },
 			expectedCollateralDeposited: {
 				amount: '5.00',
-				token: 'CBETH',
+				token: 'WSTETH',
 			},
 			expectedDebt: { amount: '2.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
@@ -141,7 +141,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'CBETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
 		await app.position.manage.select('Manage debt');
 
 		await app.position.manage.payBackDebt();
@@ -150,10 +150,10 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			app,
 			forkId,
 			payback: { token: 'ETH', amount: '1' },
-			withdraw: { token: 'CBETH', amount: '3' },
+			withdraw: { token: 'WSTETH', amount: '3' },
 			expectedCollateralDeposited: {
 				amount: '2.00',
-				token: 'CBETH',
+				token: 'WSTETH',
 			},
 			expectedDebt: { amount: '1.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
@@ -172,7 +172,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			forkId,
 			positionType: 'Borrow',
 			closeTo: 'collateral',
-			collateralToken: 'CBETH',
+			collateralToken: 'WSTETH',
 			debtToken: 'ETH',
 			tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{1,2}',
 		});

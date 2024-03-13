@@ -225,7 +225,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.3 });
+		await app.position.manage.moveSlider({ value: 0.05 });
 
 		await app.position.manage.adjustRisk();
 
