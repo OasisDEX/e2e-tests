@@ -41,19 +41,13 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 				walletAddress,
 			});
 			await app.portfolio.positions.showEmptyPositions();
-			await app.portfolio.shouldHaveWalletAddress({
-				address: shortenAddress(walletAddress),
-				timeout: portfolioTimeout,
-			});
+			await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
 			const productionData = await app.portfolio.getPortfolioData();
 
 			// STAGING - 2nd log (Portfolio data is updated from time to time)
 			await app.portfolio.loadPortfolioPageAndPositions({ environment: 'staging', walletAddress });
 			await app.portfolio.positions.showEmptyPositions();
-			await app.portfolio.shouldHaveWalletAddress({
-				address: shortenAddress(walletAddress),
-				timeout: portfolioTimeout,
-			});
+			await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
 			const stagingData2 = await app.portfolio.getPortfolioData();
 
 			// Check that productionData is equal to either stagingData1 or stagingData2
