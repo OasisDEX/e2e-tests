@@ -13,8 +13,8 @@ export class Optimization {
 	}
 
 	@step
-	async setupAutoBuy() {
-		const locator = this.page.getByRole('button', { name: 'Set up Auto-Buy' });
+	async setupOptimization(optimization: 'Auto-Buy' | 'Auto Take Profit') {
+		const locator = this.page.getByRole('button', { name: `Set up ${optimization}` });
 		expect(locator).toBeVisible();
 		await this.page.waitForTimeout(1000);
 		await locator.click({ clickCount: 2 });
@@ -41,7 +41,10 @@ export class Optimization {
 	}
 
 	@step
-	async addAutoBuy() {
-		await this.page.getByRole('button', { name: 'Add Auto-Buy' }).click();
+	async add(optimization: 'Auto-Buy' | 'Auto Take Profit') {
+		if (optimization === 'Auto Take Profit') {
+			await this.page.getByRole('button', { name: `Add ${optimization}` }).scrollIntoViewIfNeeded();
+		}
+		await this.page.getByRole('button', { name: `Add ${optimization}` }).click();
 	}
 }

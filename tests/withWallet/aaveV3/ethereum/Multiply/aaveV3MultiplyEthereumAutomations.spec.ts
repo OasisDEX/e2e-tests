@@ -98,4 +98,17 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 
 		await automations.testTrailingStopLoss({ app, forkId });
 	});
+
+	test('It should set Partial Take Profit on an Aave v3 Mainnet Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.page.goto('/ethereum/aave/v3/1218#overview');
+
+		await automations.testPartialTakeProfit({ app, forkId });
+	});
 });

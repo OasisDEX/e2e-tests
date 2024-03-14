@@ -99,7 +99,7 @@ export const testAutoBuy = async ({
 	strategy?: 'short';
 }) => {
 	await app.position.openTab('Optimization');
-	await app.position.optimization.setupAutoBuy();
+	await app.position.optimization.setupOptimization('Auto-Buy');
 
 	await app.position.optimization.adjustAutoBuyTrigger({ value: 0.2 });
 
@@ -117,7 +117,7 @@ export const testAutoBuy = async ({
 	// Pause needed to avoid random fails
 	await app.page.waitForTimeout(4000);
 
-	await app.position.optimization.addAutoBuy();
+	await app.position.optimization.add('Auto-Buy');
 
 	// Automation setup randomly fails - Retry until it's set.
 	await test.step('Confirm automation setup', async () => {
@@ -125,6 +125,26 @@ export const testAutoBuy = async ({
 			await app.position.setup.confirmOrRetry();
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
 			await app.position.setup.finishedShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+	});
+};
+
+export const testPartialTakeProfit = async ({ app, forkId }: { app: App; forkId: string }) => {
+	await app.position.openTab('Optimization');
+
+	await app.position.optimization.setupOptimization('Auto Take Profit');
+
+	// Long pause needed to avoid random fails
+	await app.page.waitForTimeout(10000);
+
+	await app.position.optimization.add('Auto Take Profit');
+
+	// Automation setup randomly fails - Retry until it's set.
+	await test.step('Confirm automation setup', async () => {
+		await expect(async () => {
+			await app.position.setup.confirmOrRetry();
+			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+			await app.position.setup.finishedShouldBeVisible('Auto Take Profit');
 		}).toPass({ timeout: longTestTimeout });
 	});
 };
