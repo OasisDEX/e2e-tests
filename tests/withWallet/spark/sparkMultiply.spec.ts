@@ -118,7 +118,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
 
-		await app.position.manage.deposit({ token: 'SDAI', amount: '10000' });
+		await app.position.manage.deposit({ token: 'SDAI', amount: '30000' });
 		await app.position.manage.borrow({ token: 'ETH', amount: '2' });
 
 		// Setting up allowance  randomly fails - Retry until it's set.
@@ -144,10 +144,10 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await app.position.manage.ok();
 
 		await app.position.overview.shouldHaveNetValue({
-			value: '\\$[2-7],[0-9]{3}.[0-9]{2}',
+			value: '\\$[0-9]{2},[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.overview.shouldHaveExposure({
-			amount: '10,[0-9]{3}.[0-9]{2}',
+			amount: '30,[0-9]{3}.[0-9]{2}',
 			token: 'SDAI',
 		});
 		await app.position.overview.shouldHaveDebt({ amount: '2.[0-9]{3,4}', token: 'ETH' });
@@ -166,7 +166,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.1 });
+		await app.position.manage.moveSlider({ value: 0.05 });
 
 		await app.position.manage.adjustRisk();
 
@@ -205,7 +205,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		const initialLoanToValue = await app.position.manage.getLoanToValue();
 
 		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.8 });
+		await app.position.manage.moveSlider({ value: 0.6 });
 
 		await app.position.manage.adjustRisk();
 
@@ -231,7 +231,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should close an existent Spark Earn position - Close to collateral token (ETH', async () => {
+	test('It should close an existent Spark Earn position - Close to debt token (ETH', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12897',

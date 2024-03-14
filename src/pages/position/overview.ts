@@ -43,7 +43,7 @@ export class Overview {
 	async shouldHaveNext30daysNetValue({ token, amount }: { token: string; amount: string }) {
 		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
-			this.page.getByText('Next 30 days').locator('xpath=//following-sibling::p[2]')
+			this.page.getByText('Next 30 days').locator('xpath=//following-sibling::*[2]')
 		).toContainText(regExp);
 	}
 

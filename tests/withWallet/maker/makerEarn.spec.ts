@@ -70,7 +70,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 			.locator('div:nth-child(3) > button');
 		await expect(button).toBeVisible();
 		const buttonLabel = await button.innerText();
-		if (buttonLabel.includes('Setup Proxy')) {
+		if (buttonLabel.includes('Set up Proxy')) {
 			await app.position.setup.setupProxy();
 			await app.position.setup.setupProxy(); // Thre are 2x Setup Proxy screens
 			await test.step('Metamask: ConfirmAddToken', async () => {

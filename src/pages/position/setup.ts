@@ -193,14 +193,14 @@ export class Setup {
 	@step
 	async setupProxyShouldBeVisible() {
 		await expect(
-			this.page.getByRole('button', { name: 'Setup Proxy' }),
+			this.page.getByRole('button', { name: 'Set up Proxy' }),
 			'"Set up Proxy" black button should be visible'
 		).toBeVisible();
 	}
 
 	@step
 	async setupProxy() {
-		await this.page.getByRole('button', { name: 'Setup Proxy' }).click();
+		await this.page.getByRole('button', { name: 'Set up Proxy' }).click();
 	}
 
 	@step
