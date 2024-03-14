@@ -266,11 +266,18 @@ export class Setup {
 	}
 
 	@step
-	async finishedShouldBeVisible() {
-		await expect(
-			this.page.getByRole('button', { exact: true, name: 'Finished' }),
-			'"Finished" should be visible'
-		).toBeVisible();
+	async finishedShouldBeVisible(feature?: 'Auto Take Profit') {
+		if (feature) {
+			await expect(
+				this.page.getByText('You have successfully set up an Auto Take Profit'),
+				'Success message should be visible'
+			).toBeVisible();
+		} else {
+			await expect(
+				this.page.getByRole('button', { exact: true, name: 'Finished' }),
+				'"Finished" should be visible'
+			).toBeVisible();
+		}
 	}
 
 	@step
