@@ -85,7 +85,8 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	test('It should deposit extra collateral on an existent Aave V3 Borrow Base position', async () => {
+	// Skipped because of DB collision issue on staging
+	test.skip('It should deposit extra collateral on an existent Aave V3 Borrow Base position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13035',
@@ -116,7 +117,8 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		});
 	});
 
-	test('It should close an existent Aave V3 Borrow Base position - Close to collateral token (CBETH)', async () => {
+	// Skipped because of DB collision issue on staging
+	test.skip('It should close an existent Aave V3 Borrow Base position - Close to collateral token (CBETH)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13067',

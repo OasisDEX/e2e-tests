@@ -83,7 +83,8 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	test('It should adjust risk of an existent Aave V3 Borrow Base position - Up', async () => {
+	// Skipped because of DB collision issue on staging
+	test.skip('It should adjust risk of an existent Aave V3 Borrow Base position - Up', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13065',
@@ -125,7 +126,8 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should adjust risk of an existent Aave V3 Borrow Base position - Down', async () => {
+	// Skipped because of DB collision issue on staging
+	test.skip('It should adjust risk of an existent Aave V3 Borrow Base position - Down', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13066',
