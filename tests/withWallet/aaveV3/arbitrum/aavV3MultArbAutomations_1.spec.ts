@@ -75,7 +75,8 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/arbitrum/aave/v3/1#overview');
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(2000);
 
 		await automations.testRegularStopLoss({ app, forkId });
 	});

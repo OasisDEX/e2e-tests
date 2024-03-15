@@ -89,7 +89,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await app.position.overview.shouldHaveLoanToValue('[0-9]{2}.[0-9]{1,2}');
 	});
 
 	test('It should set Regular Stop-Loss on an Aave v3 Base Multiply position @regression', async () => {
@@ -99,8 +99,6 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		});
 
 		test.setTimeout(longTestTimeout);
-
-		await app.page.goto(positionId);
 
 		await automations.testRegularStopLoss({ app, forkId });
 	});

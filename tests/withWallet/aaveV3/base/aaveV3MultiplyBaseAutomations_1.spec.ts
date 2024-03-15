@@ -3,6 +3,7 @@ import { expect, metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
+import * as tx from 'utils/tx';
 import * as automations from 'tests/sharedTestSteps/automations';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
@@ -79,9 +80,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await expect(async () => {
 			// Set up Stop-Loss transaction
 			await app.position.setup.setupStopLossTransaction();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
+			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
 			await app.position.setup.goToPositionShouldBeVisible();
 		}).toPass();
 
@@ -89,7 +88,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		console.log('+++ Position ID: ', positionId);
 
 		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await app.position.overview.shouldHaveLoanToValue('[0-9]{2}.[0-9]{1,2}');
 	});
 
 	test('It should set Auto-Buy on an Aave v3 Base Multiply position @regression', async () => {
@@ -99,8 +98,6 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		});
 
 		test.setTimeout(longTestTimeout);
-
-		await app.page.goto(positionId);
 
 		// Wait for all position data to be loaded
 		await app.position.shouldHaveTab('Protection OFF');

@@ -98,7 +98,8 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.position.manage.shouldBeVisible('Manage ');
 	});
 
-	test('It should adjust risk of an existent Aave V3 Multiply Base position - Down @regression', async () => {
+	// Skipped because of DB collision issue on staging
+	test.skip('It should adjust risk of an existent Aave V3 Multiply Base position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12465',
@@ -139,7 +140,8 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should adjust risk of an existent Aave V3 Multiply Base position - Up @regression', async () => {
+	// Skipped because of DB collision issue on staging
+	test.skip('It should adjust risk of an existent Aave V3 Multiply Base position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12464',
@@ -178,7 +180,8 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		}).toPass();
 	});
 
-	test('It should close an existent Aave V3 Multiply Base position - Close to debt token (USDBC) @regression', async () => {
+	// Skipped because of DB collision issue on staging
+	test.skip('It should close an existent Aave V3 Multiply Base position - Close to debt token (USDBC) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12466',
