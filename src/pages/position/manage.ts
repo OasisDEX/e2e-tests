@@ -173,7 +173,7 @@ export class Manage {
 	}
 
 	@step
-	async payback({ token, amount }: { token: string; amount: string }) {
+	async payBack({ token, amount }: { token: string; amount: string }) {
 		await this.page
 			.getByText(`Pay back ${token}`)
 			.locator('../..')
@@ -189,5 +189,15 @@ export class Manage {
 	@step
 	async payBackDebt() {
 		await this.page.getByRole('button', { name: 'Pay back' }).click();
+	}
+
+	@step
+	async withdrawDebt() {
+		await this.page.getByRole('button', { name: 'Withdraw' }).click();
+	}
+
+	@step
+	async reduceDebt() {
+		await this.page.getByRole('button', { name: 'Reduce Debt' }).click();
 	}
 }

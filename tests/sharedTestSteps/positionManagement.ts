@@ -3,6 +3,8 @@ import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { longTestTimeout, positionTimeout } from 'utils/config';
 
+type ActionData = { token: string; amount: string };
+
 /**
  *
  * @param adjustRisk should be between '0' and '1' both included | 0: far left in slider | 1: far right
@@ -14,13 +16,15 @@ export const openPosition = async ({
 	borrow,
 	existingDPM,
 	adjustRisk,
+	omni,
 }: {
 	app: App;
 	forkId: string;
-	deposit: { token: string; amount: string };
-	borrow?: { token: string; amount: string };
+	deposit: ActionData;
+	borrow?: ActionData;
 	existingDPM?: boolean;
 	adjustRisk?: { value: number };
+	omni?: { network: 'ethereum' | 'arbitrum' | 'base' | 'optimism' };
 }) => {
 	await app.position.setup.deposit(deposit);
 	if (borrow) {
@@ -61,30 +65,45 @@ export const openPosition = async ({
 		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
 	}).toPass({ timeout: longTestTimeout });
 
-	// UI sometimes gets stuck after confirming position creation
-	//   - 'Reload' added to avoid flakines
-	await app.page.reload();
-
-	await app.position.setup.goToPosition();
-
-	// ======================================================================
-
-	await app.position.manage.shouldBeVisible('Manage ');
+	if (omni) {
+		await app.position.setup.goToPositionShouldBeVisible();
+		const positionId = await app.position.setup.getNewPositionId();
+		//
+		await app.page.waitForTimeout(10_000);
+		//
+		await expect(async () => {
+			await app.page.goto(positionId.replace(omni.network, `${omni.network}/omni`));
+			await app.position.overview.shouldBeVisible();
+		}).toPass();
+	} else {
+		// UI sometimes gets stuck after confirming position creation
+		//   - 'Reload' added to avoid flakines
+		await app.page.reload();
+		await app.position.setup.goToPosition();
+		await app.position.overview.shouldBeVisible();
+	}
 };
 
 export const adjustRisk = async ({
 	forkId,
 	app,
+	earnPosition,
+	shortPosition,
 	risk,
 	newSliderPosition,
 }: {
 	forkId: string;
 	app: App;
+	earnPosition?: boolean;
+	shortPosition?: boolean;
 	risk: 'up' | 'down';
 	newSliderPosition: number;
 }) => {
-	const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-	const initialLoanToValue = await app.position.manage.getLoanToValue();
+	const initialLiqPrice: number = await app.position.manage.getLiquidationPrice();
+	let initialLoanToValue: number;
+	if (!earnPosition) {
+		initialLoanToValue = await app.position.manage.getLoanToValue();
+	}
 
 	await app.position.setup.moveSlider({ protocol: 'Ajna', value: newSliderPosition });
 
@@ -98,19 +117,35 @@ export const adjustRisk = async ({
 
 	// UI sometimes gets stuck after confirming position creation
 	//   - 'Reload' added to avoid flakines
+	await app.page.waitForTimeout(3_000);
 	await app.page.reload();
 
 	// Wait for Liq price to update
 	await expect(async () => {
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue();
+		const updatedLiqPrice: number = await app.position.manage.getLiquidationPrice();
+		let updatedLoanToValue: number;
+		if (!earnPosition) {
+			updatedLoanToValue = await app.position.manage.getLoanToValue();
+		}
 
 		if (risk === 'up') {
-			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+			if (shortPosition) {
+				expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+			} else {
+				expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			}
+			if (!earnPosition) {
+				expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+			}
 		} else {
-			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+			if (shortPosition) {
+				expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			} else {
+				expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
+			}
+			if (!earnPosition) {
+				expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
+			}
 		}
 	}, 'New Liq. Price and LTV should be higher/lower than original ones').toPass();
 };
@@ -162,7 +197,9 @@ export const close = async ({
 		price: '0.00',
 		timeout: positionTimeout,
 	});
-	await app.position.overview.shouldHaveLoanToValue('0.00');
+	if (positionType !== 'Earn') {
+		await app.position.overview.shouldHaveLoanToValue('0.00');
+	}
 	await app.position.overview.shouldHaveNetValue({ value: '0.00' });
 	await app.position.overview.shouldHaveDebt({
 		amount: '0.00',
@@ -182,70 +219,65 @@ export const close = async ({
 		await app.position.overview.shouldHaveAvailableToBorrow({ token: debtToken, amount: '0.00' });
 	} else {
 		await app.position.overview.shouldHaveExposure({ token: collateralToken, amount: '0.00' });
-		await app.position.overview.shouldHaveBuyingPower('0.00');
-		await app.position.overview.shouldHaveMultiple('1.00');
+		if (positionType !== 'Earn') {
+			await app.position.overview.shouldHaveBuyingPower('0.00');
+			await app.position.overview.shouldHaveMultiple('1.00');
+		}
 	}
 };
 
-export const depositAndBorrow = async ({
+export const manageDebtOrCollateral = async ({
 	app,
 	forkId,
+	protocol,
+	allowanceNotNeeded,
 	deposit,
-	borrow,
-	expectedCollateralDeposited,
-	expectedDebt,
-}: {
-	app: App;
-	forkId: string;
-	deposit: { token: string; amount: string };
-	borrow: { token: string; amount: string };
-	expectedCollateralDeposited: { token: string; amount: string };
-	expectedDebt: { token: string; amount: string };
-}) => {
-	await app.position.setup.deposit(deposit);
-	await app.position.setup.borrow(borrow);
-
-	await app.position.setup.confirm();
-
-	// Position creation randomly fails - Retry until it's created.
-	await expect(async () => {
-		await app.position.setup.confirmOrRetry();
-		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-	}).toPass({ timeout: longTestTimeout });
-
-	// UI sometimes gets stuck after confirming position update
-	//   - 'Reload' added to avoid flakines
-	await app.page.reload();
-
-	await app.position.overview.shouldHaveCollateralDeposited({
-		timeout: positionTimeout,
-		...expectedCollateralDeposited,
-	});
-	await app.position.overview.shouldHaveDebt({
-		protocol: 'Ajna',
-		...expectedDebt,
-	});
-};
-
-export const withdrawAndPayBack = async ({
-	app,
-	forkId,
 	withdraw,
-	payback,
+	borrow,
+	payBack,
 	expectedCollateralDeposited,
+	expectedCollateralExposure,
 	expectedDebt,
 }: {
 	app: App;
 	forkId: string;
-	withdraw: { token: string; amount: string };
-	payback: { token: string; amount: string };
-	expectedCollateralDeposited: { token: string; amount: string };
-	expectedDebt: { token: string; amount: string };
+	protocol?: 'Aave V2' | 'Aave V3' | 'Spark';
+	allowanceNotNeeded?: boolean;
+	deposit?: ActionData;
+	withdraw?: ActionData;
+	borrow?: ActionData;
+	payBack?: ActionData;
+	expectedCollateralDeposited?: { token: string; amount: string };
+	expectedCollateralExposure?: { token: string; amount: string };
+	expectedDebt?: { token: string; amount: string };
 }) => {
-	await app.position.manage.withdraw(withdraw);
-	await app.position.manage.payback(payback);
+	if (deposit) {
+		await app.position.manage.deposit(deposit);
+	}
+	if (withdraw) {
+		await app.position.manage.withdraw(withdraw);
+	}
+	if (borrow) {
+		await app.position.manage.borrow(borrow);
+	}
+	if (payBack) {
+		await app.position.manage.payBack(payBack);
+	}
 
-	await app.position.setup.confirm();
+	if (
+		!allowanceNotNeeded &&
+		((deposit && deposit?.token !== 'ETH') || (payBack && payBack?.token !== 'ETH'))
+	) {
+		await app.position.setup.setTokenAllowance(deposit ? deposit?.token : payBack?.token);
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.approveAllowance();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+	}
 
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
@@ -253,16 +285,31 @@ export const withdrawAndPayBack = async ({
 		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
 	}).toPass({ timeout: longTestTimeout });
 
-	// UI sometimes gets stuck after confirming position update
-	//   - 'Reload' added to avoid flakines
-	await app.page.reload();
+	if (protocol) {
+		await app.position.setup.continue();
+	} else {
+		// // UI sometimes gets stuck after confirming position update
+		// //   - 'Reload' added to avoid flakines
+		await app.page.reload();
+	}
 
-	await app.position.overview.shouldHaveCollateralDeposited({
-		timeout: positionTimeout,
-		...expectedCollateralDeposited,
-	});
-	await app.position.overview.shouldHaveDebt({
-		protocol: 'Ajna',
-		...expectedDebt,
-	});
+	if (expectedCollateralDeposited) {
+		await app.position.overview.shouldHaveCollateralDeposited({
+			timeout: positionTimeout,
+			...expectedCollateralDeposited,
+		});
+	}
+	if (expectedCollateralExposure) {
+		await app.position.overview.shouldHaveExposure({
+			timeout: positionTimeout,
+			...expectedCollateralExposure,
+		});
+	}
+	if (expectedDebt) {
+		await app.position.overview.shouldHaveDebt({
+			timeout: positionTimeout,
+			protocol: 'Ajna',
+			...expectedDebt,
+		});
+	}
 };

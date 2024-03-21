@@ -59,11 +59,13 @@ export const tokenAddresses = {
 		CBETH: '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
 		DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
 		GHO: '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f',
+		PYUSD: '0x6c3ea9036406852006290770BEdFcAbA0e23A0e8',
 		RETH: '0xae78736cd615f374d3085123a210448e74fc6393',
 		SDAI: '0x83F20F44975D03b1b09e64809B757c47f942BEeA',
 		// STETH: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
 		TBTC: '0x18084fbA666a33d37592fA2633fD49a74DD93a88',
 		USDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+		USDT: '0xdac17f958d2ee523a2206206994597c13d831ec7',
 		WBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 		WETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 		WSTETH: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
@@ -98,11 +100,13 @@ export const tokenBalances = {
 	ETH: '1000',
 	GHO: '10000',
 	OP: '100000',
+	PYUSD: '200000',
 	RETH: '1000',
 	SDAI: '200000',
 	STETH: '1000',
 	TBTC: '10000',
 	USDC: '200000',
+	USDT: '200000',
 	WBTC: '10',
 	WETH: '1000',
 	WSTETH: '1000',
@@ -121,7 +125,18 @@ export const setTokenBalance = async ({
 }: {
 	forkId: string;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
-	token: 'CBETH' | 'DAI' | 'ETH' | 'USDC' | 'RETH' | 'SDAI' | 'WBTC' | 'WSTETH' | 'STETH';
+	token:
+		| 'CBETH'
+		| 'DAI'
+		| 'ETH'
+		| 'PYUSD'
+		| 'RETH'
+		| 'SDAI'
+		| 'STETH'
+		| 'USDC'
+		| 'USDT'
+		| 'WBTC'
+		| 'WSTETH';
 	balance: string;
 	walletAddress: string;
 }) => {
@@ -140,7 +155,7 @@ export const setTokenBalance = async ({
 			walletAddress,
 			token === 'WBTC'
 				? ethers.toQuantity(ethers.parseUnits(balance, 8))
-				: token === 'USDC'
+				: token === 'PYUSD' || token === 'USDC' || token === 'USDT'
 				? ethers.toQuantity(ethers.parseUnits(balance, 6))
 				: ethers.toQuantity(ethers.parseUnits(balance, 'ether')),
 		]);

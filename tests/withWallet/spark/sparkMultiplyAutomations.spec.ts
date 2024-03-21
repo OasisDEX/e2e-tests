@@ -136,8 +136,8 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await automations.testRegularStopLoss({ app, forkId });
 	});
 
-	// !!! NOT WORKING - There might be a bug - INVESTIGATING
-	test.skip('It should set Trailing Stop-Loss on an Spark Mainnet Multiply position @regression', async () => {
+	// !!! NOT WORKING with SDAI - BUG 14889 - Update test with another pool/tokens
+	test('It should set Trailing Stop-Loss on an Spark Mainnet Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

@@ -6,7 +6,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { depositAndBorrow, openPosition } from 'tests/sharedTestSteps/positionManagement';
+import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -68,7 +68,7 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await depositAndBorrow({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
 			deposit: { token: 'WSTETH', amount: '10' },
@@ -91,7 +91,7 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 
 		await app.position.manage.withdrawCollateral();
 		await app.position.manage.withdraw({ token: 'WSTETH', amount: '5' });
-		await app.position.manage.payback({ token: 'USDC', amount: '5000' });
+		await app.position.manage.payBack({ token: 'USDC', amount: '5000' });
 
 		await app.position.setup.setTokenAllowance('USDC');
 		// Setting up allowance  randomly fails - Retry until it's set.
@@ -179,7 +179,7 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 		await app.position.manage.select('Manage debt');
 
 		await app.position.manage.payBackDebt();
-		await app.position.manage.payback({ token: 'USDC', amount: '5000' });
+		await app.position.manage.payBack({ token: 'USDC', amount: '5000' });
 		await app.position.manage.withdraw({ token: 'WSTETH', amount: '5' });
 
 		await app.position.setup.confirm();

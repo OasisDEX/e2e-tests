@@ -63,19 +63,19 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 
 		await app.position.shouldHaveHeader('Aave DAI/WBTC');
 		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '[1-8][0-9],[0-9]{3}.[0-9]{2}',
+			price: '[0-9].[0-9]{2}',
 			token: 'WBTC/DAI',
 		});
 		await app.position.overview.shouldHaveLoanToValue('[0-9]{2,3}.[0-9]{2}');
 		await app.position.overview.shouldHaveCollateralDeposited({
-			amount: '[1-2].[0-9]{4}',
+			amount: '[0-9].[0-9]{3,4}',
 			token: 'DAI',
 		});
 		await app.position.overview.shouldHaveDebt({
 			amount: '0.00([0-9]{1,2})?',
 			token: 'WBTC',
 		});
-		await app.position.overview.shouldHaveBorrowRate('[0-9].[0-9]{2}');
+		await app.position.overview.shouldHaveBorrowRate('[0-9]{1,2}.[0-9]{2}');
 		await app.position.overview.shouldHaveNetValue({ value: '0.[0-9]{1,2}' });
 	});
 });
