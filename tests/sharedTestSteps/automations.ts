@@ -25,7 +25,7 @@ export const testRegularStopLoss = async ({ app, forkId }: { app: App; forkId: s
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-		}).toPass({ timeout: longTestTimeout });
+		}).toPass();
 	});
 };
 

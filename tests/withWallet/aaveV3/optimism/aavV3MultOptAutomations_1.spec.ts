@@ -76,6 +76,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		await app.page.goto('/optimism/aave/v3/2#overview');
+		await app.position.overview.shouldBeVisible();
 
 		await automations.testRegularStopLoss({ app, forkId });
 	});
