@@ -17,12 +17,17 @@ export class Optimization {
 		const locator = this.page.getByRole('button', { name: `Set up ${optimization}` });
 		expect(locator).toBeVisible();
 		await this.page.waitForTimeout(1000);
-		await locator.click({ clickCount: 2 });
+		await locator.click();
 	}
 
 	@step
 	async adjustAutoBuyTrigger({ value }: { value: number }) {
 		await this.base.moveSliderAutomations({ automation: 'AutoBuy', value });
+	}
+
+	@step
+	async adjustPartialTakeProfitTrigger({ value }: { value: number }) {
+		await this.base.moveSliderAutomationsOmni({ value });
 	}
 
 	@step

@@ -23,7 +23,7 @@ export const openPosition = async ({
 	deposit: ActionData;
 	borrow?: ActionData;
 	existingDPM?: boolean;
-	adjustRisk?: { value: number };
+	adjustRisk?: { positionType?: 'Borrow'; value: number };
 	omni?: { network: 'ethereum' | 'arbitrum' | 'base' | 'optimism' };
 }) => {
 	await app.position.setup.deposit(deposit);
@@ -31,7 +31,11 @@ export const openPosition = async ({
 		await app.position.setup.borrow(borrow);
 	}
 	if (adjustRisk) {
-		await app.position.setup.moveSliderOmni({ value: adjustRisk.value });
+		if (adjustRisk?.positionType) {
+			await app.position.setup.moveSlider({ withWallet: true, value: adjustRisk.value });
+		} else {
+			await app.position.setup.moveSliderOmni({ value: adjustRisk.value });
+		}
 	}
 	if (!existingDPM) {
 		await app.position.setup.createSmartDeFiAccount();

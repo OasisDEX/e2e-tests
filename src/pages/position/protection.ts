@@ -14,15 +14,10 @@ export class Protection {
 	}
 
 	@step
-	async setup(
-		{ protection, timeout }: { protection: 'Auto-Sell' | 'Stop-Loss'; timeout?: number } = {
-			protection: 'Auto-Sell',
-			timeout: expectDefaultTimeout,
-		}
-	) {
+	async setup(protection: 'Auto-Sell' | 'Stop-Loss' | 'Trailing Stop-Loss') {
 		const locator = this.page.getByRole('button', { name: `Set up ${protection}`, exact: true });
 		await this.page.waitForTimeout(1000);
-		await locator.click({ clickCount: 2 });
+		await locator.click();
 	}
 
 	@step
@@ -38,6 +33,16 @@ export class Protection {
 	@step
 	async adjustAutoSellTrigger({ value }: { value: number }) {
 		await this.base.moveSliderAutomations({ automation: 'AutoSell', value });
+	}
+
+	@step
+	async adjustStopLossTrigger({ value }: { value: number }) {
+		await this.base.moveSliderAutomations({ automation: 'Stop-Loss', value });
+	}
+
+	@step
+	async adjustTrailingStopLossTrigger({ value }: { value: number }) {
+		await this.base.moveSliderOmni({ value });
 	}
 
 	@step

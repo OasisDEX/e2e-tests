@@ -266,10 +266,12 @@ export class Setup {
 	}
 
 	@step
-	async finishedShouldBeVisible(feature?: 'Auto Take Profit') {
+	async finishedShouldBeVisible(
+		feature?: 'Auto Take Profit' | 'Auto-Buy' | 'Auto-Sell' | 'Stop-Loss'
+	) {
 		if (feature) {
 			await expect(
-				this.page.getByText('You have successfully set up an Auto Take Profit'),
+				this.page.getByText('You have successfully set up a'),
 				'Success message should be visible'
 			).toBeVisible();
 		} else {

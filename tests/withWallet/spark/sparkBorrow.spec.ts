@@ -44,7 +44,6 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			({ forkId } = await setup({ app, network: 'mainnet' }));
 		});
 
-		// await app.page.goto('/ethereum/spark/v3/borrow/ethdai#simulate');
 		await app.page.goto('/ethereum/omni/spark/borrow/eth-dai#simulate');
 
 		await openPosition({

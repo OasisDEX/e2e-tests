@@ -10,9 +10,9 @@ export class Overview {
 	}
 
 	@step
-	async shouldBeVisible(args?: { timeout: number }) {
+	async shouldBeVisible(args?: { tab?: 'Overview' | 'Position Info'; timeout?: number }) {
 		await expect(
-			this.page.getByText('Position Info'),
+			this.page.getByText(args?.tab ?? 'Position Info'),
 			'"Position Info" should be visible'
 		).toBeVisible({
 			timeout: args?.timeout ?? positionTimeout,
@@ -20,8 +20,11 @@ export class Overview {
 	}
 
 	@step
-	async waitForComponentToBeStable(args?: { timeout: number }) {
-		await this.shouldBeVisible({ timeout: args?.timeout });
+	async waitForComponentToBeStable(args?: {
+		tab?: 'Overview' | 'Position Info';
+		timeout?: number;
+	}) {
+		await this.shouldBeVisible({ tab: args?.tab, timeout: args?.timeout });
 	}
 
 	@step
