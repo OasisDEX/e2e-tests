@@ -77,6 +77,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'WSTETH', amount: '2' },
 			borrow: { token: 'ETH', amount: '1' },
+			allowanceNotNeeded: true,
 			expectedCollateralDeposited: {
 				amount: '4.00',
 				token: 'WSTETH',
@@ -124,6 +125,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			forkId,
 			borrow: { token: 'ETH', amount: '1' },
 			deposit: { token: 'WSTETH', amount: '2' },
+			allowanceNotNeeded: true,
 			expectedCollateralDeposited: {
 				amount: '5.00',
 				token: 'WSTETH',

@@ -15,7 +15,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe.only('Spark Multiply - Mainnet - Wallet connected', async () => {
+test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 

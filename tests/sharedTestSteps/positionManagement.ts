@@ -193,14 +193,17 @@ export const close = async ({
 
 	// UI sometimes gets stuck after confirming position update
 	//   - 'Reload' added to avoid flakines
-	await app.page.reload();
+	await app.page.waitForTimeout(2_000);
+	await expect(async () => {
+		await app.page.reload();
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '0.00',
+			timeout: positionTimeout,
+		});
+	}).toPass();
 
 	// ============================================================
 
-	await app.position.overview.shouldHaveLiquidationPrice({
-		price: '0.00',
-		timeout: positionTimeout,
-	});
 	if (positionType !== 'Earn') {
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 	}
