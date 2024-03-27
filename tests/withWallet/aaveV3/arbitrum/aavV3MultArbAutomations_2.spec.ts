@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import * as automations from 'tests/sharedTestSteps/automations';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -51,7 +51,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.position.openPage('/arbitrum/aave/v3/1#overview');
+		await app.position.openPage('/arbitrum/omni/aave/v3/multiply/eth-dai/1#overview');
 
 		await automations.testTrailingStopLoss({ app, forkId });
 	});

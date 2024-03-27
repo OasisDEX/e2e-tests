@@ -51,7 +51,8 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/ethereum/aave/v3/1218#overview');
+		await app.page.goto('/ethereum/omni/aave/v3/multiply/eth-usdc/1218#overview');
+		await app.position.overview.shouldBeVisible();
 
 		await automations.testAutoBuy({ app, forkId });
 	});
@@ -64,6 +65,10 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
 		await automations.testAutoSell({ app, forkId });
 	});
 
@@ -75,7 +80,9 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v3/1218#overview');
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
 
 		await automations.testRegularStopLoss({ app, forkId });
 	});
@@ -88,13 +95,9 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await tenderly.changeAccountOwner({
-			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.page.goto('/ethereum/aave/v3/1218#overview');
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
 
 		await automations.testTrailingStopLoss({ app, forkId });
 	});
@@ -107,7 +110,9 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v3/1218#overview');
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
 
 		await automations.testPartialTakeProfit({ app, forkId });
 	});

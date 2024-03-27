@@ -1,17 +1,16 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp } from 'utils/setup';
+import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
 let forkId: string;
 let walletAddress: string;
-let positionId: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -50,56 +49,18 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/base/aave/v3/multiply/cbethusdbc');
+		await app.page.goto('/base/omni/aave/v3/multiply/cbeth-usdbc');
 
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'CBETH', amount: '14.12345' });
-		await app.position.setup.createSmartDeFiAccount();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-
-		// Setting up allowance  randomly fails - Retry until it's set.
-		await expect(async () => {
-			await app.position.setup.setupAllowance();
-			await app.position.setup.approveAllowance();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-		await app.position.setup.openMultiplyPosition1Of2();
-
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		// Logging position ID for debugging purposes
-		positionId = await app.position.setup.getNewPositionId();
-		console.log('+++ Position ID: ', positionId);
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'CBETH', amount: '14' },
+			omni: { network: 'base' },
+		});
 	});
 
-	// Skipped because of DB collision issue on staging
-	test.skip('It should adjust risk of an existent Aave V3 Multiply Base position - Down @regression', async () => {
+	// Skip again if DB collision also happeningwith omni
+	test('It should adjust risk of an existent Aave V3 Multiply Base position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12465',
@@ -107,41 +68,20 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto(positionId);
+		// Pause and reload to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.2 });
-
-		await app.position.manage.adjustRisk();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-
-		// Wait for Liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
-		}).toPass();
+		await adjustRisk({
+			forkId,
+			app,
+			risk: 'up',
+			newSliderPosition: 0.6,
+		});
 	});
 
-	// Skipped because of DB collision issue on staging
-	test.skip('It should adjust risk of an existent Aave V3 Multiply Base position - Up @regression', async () => {
+	// Skip again if DB collision also happeningwith omni
+	test('It should adjust risk of an existent Aave V3 Multiply Base position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12464',
@@ -149,39 +89,20 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
+		// Pause and reload to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
 
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.7 });
-
-		await app.position.manage.adjustRisk();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-
-		// Wait for Liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
-		}).toPass();
+		await adjustRisk({
+			forkId,
+			app,
+			risk: 'down',
+			newSliderPosition: 0.1,
+		});
 	});
 
-	// Skipped because of DB collision issue on staging
-	test.skip('It should close an existent Aave V3 Multiply Base position - Close to debt token (USDBC) @regression', async () => {
+	// Skip again if DB collision also happeningwith omni
+	test('It should close an existent Aave V3 Multiply Base position - Close to debt token (USDBC) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12466',
@@ -189,37 +110,19 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Close position');
-		await app.position.manage.closeTo('USDBC');
+		// Pause and reload to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
 
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'USDBC',
-			amount: '[0-9]{1,2}.[0-9]{1,2}',
+		await close({
+			app,
+			forkId,
+			positionType: 'Multiply',
+			closeTo: 'debt',
+			collateralToken: 'CBETH',
+			debtToken: 'USDBC',
+			tokenAmountAfterClosing: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}([0-9]{1,2})?',
 		});
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			token: 'CBETH/USDBC',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
-		await app.position.overview.shouldHaveBuyingPower('\\$0.00');
-		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'CBETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'USDBC' });
-		await app.position.overview.shouldHaveMultiple('1.00');
 	});
 
 	test.skip('It should list an opened Aave v3 Multiply Base position in portfolio', async () => {

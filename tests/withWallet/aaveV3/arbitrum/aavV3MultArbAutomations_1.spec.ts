@@ -6,6 +6,7 @@ import * as automations from 'tests/sharedTestSteps/automations';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -25,10 +26,10 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should set Auto-Buy on an Aave v3 Arbitrum Multiply position @regression', async () => {
+	test('It should open an Aave v3 Multiply Arbitrum position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: 'xxx',
+			description: '12070',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -38,20 +39,39 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
-				app,
+			({ forkId, walletAddress } = await setup({ app, network: 'arbitrum' }));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
 				network: 'arbitrum',
-				automationMinNetValueFlags: 'arbitrum:aavev3:0.001',
-			}));
+				token: 'WBTC',
+				balance: '2',
+			});
 		});
 
-		await tenderly.changeAccountOwner({
-			account: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
-			newOwner: walletAddress,
+		await app.page.goto('/arbitrum/omni/aave/v3/multiply/wbtc-dai#simulate');
+
+		await openPosition({
+			app,
 			forkId,
+			deposit: { token: 'WBTC', amount: '0.5' },
+			adjustRisk: { positionType: 'Borrow', value: 0.5 },
+			omni: { network: 'arbitrum' },
+		});
+	});
+
+	test('It should set Auto-Buy on an Aave v3 Arbitrum Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
 		});
 
-		await app.page.goto('/arbitrum/aave/v3/1#overview');
+		test.setTimeout(longTestTimeout);
+
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
 
 		await automations.testAutoBuy({ app, forkId });
 	});
@@ -64,6 +84,10 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
 		await automations.testAutoSell({ app, forkId });
 	});
 
@@ -75,8 +99,9 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		// Pause to avoid random fails
-		await app.page.waitForTimeout(2000);
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
 
 		await automations.testRegularStopLoss({ app, forkId });
 	});

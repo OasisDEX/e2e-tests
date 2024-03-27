@@ -7,9 +7,8 @@ import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	close,
-	depositAndBorrow,
+	manageDebtOrCollateral,
 	openPosition,
-	withdrawAndPayBack,
 } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
@@ -68,7 +67,7 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Deposit and Borrow in a single tx form an existing Ajna Arbitrum Borrow position @regression', async () => {
+	test('It should Deposit and Borrow in a single tx from an existing Ajna Arbitrum Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxxx',
@@ -76,7 +75,7 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await depositAndBorrow({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
 			deposit: { token: 'RETH', amount: '0.1' },
@@ -89,7 +88,7 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Withdraw and Pay back in a single tx form an existing Ajna Arbitrum Borrow position @regression', async () => {
+	test('It should Withdraw and Pay back in a single tx from an existing Ajna Arbitrum Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxxx',
@@ -99,11 +98,11 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 
 		await app.position.manage.withdrawCollateral();
 
-		await withdrawAndPayBack({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
 			withdraw: { token: 'RETH', amount: '0.1' },
-			payback: { token: 'ETH', amount: '0.01' },
+			payBack: { token: 'ETH', amount: '0.01' },
 			expectedCollateralDeposited: {
 				amount: '0.10',
 				token: 'RETH',
@@ -123,7 +122,7 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'RETH' });
 		await app.position.manage.select('Manage debt');
 
-		await depositAndBorrow({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
 			borrow: { token: 'ETH', amount: '0.02' },
@@ -149,10 +148,10 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 
 		await app.position.manage.payBackDebt();
 
-		await withdrawAndPayBack({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
-			payback: { token: 'ETH', amount: '0.01' },
+			payBack: { token: 'ETH', amount: '0.01' },
 			withdraw: { token: 'RETH', amount: '0.1' },
 			expectedCollateralDeposited: {
 				amount: '0.20',
