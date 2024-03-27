@@ -47,14 +47,14 @@ test.describe('Spark Earn - Wallet connected', async () => {
 				token: 'DAI',
 				balance: '30000',
 			});
-		});
 
-		await tenderly.setTokenBalance({
-			forkId,
-			walletAddress,
-			network: 'mainnet',
-			token: 'RETH',
-			balance: '100',
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'RETH',
+				balance: '100',
+			});
 		});
 
 		await app.page.goto('/ethereum/omni/spark/multiply/reth-eth#simulate');
