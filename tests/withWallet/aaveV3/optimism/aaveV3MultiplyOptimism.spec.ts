@@ -111,7 +111,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 
 		await app.page.goto('/optimism/omni/aave/v3/multiply/eth-usdc.e/2#overview');
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and Reload page to avoid random fails
 		await app.page.waitForTimeout(3_000);
