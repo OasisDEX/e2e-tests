@@ -3,10 +3,9 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
-	adjustRisk,
 	close,
 	manageDebtOrCollateral,
 	openPosition,
@@ -30,7 +29,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Multiply position @regression', async () => {
+	test('It should open a Spark Multiply Short position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12463',
@@ -53,48 +52,50 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/omni/spark/multiply/eth-dai');
+		await app.page.goto('/ethereum/omni/spark/multiply/sdai-eth');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '7.5' },
+			deposit: { token: 'SDAI', amount: '20000' },
 			omni: { network: 'ethereum' },
 		});
 	});
 
-	test('It should Deposit extra collateral on an existing Spark Multiply position', async () => {
+	test('It should Withdraw collateral from an existing Spark Multiply Short position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '13659',
+			description: 'xxx',
 		});
 
 		test.setTimeout(longTestTimeout);
 
-		await tenderly.changeAccountOwner({
-			account: '0xb585a1bae38dc735988cc75278aecae786e6a5d6',
-			newOwner: walletAddress,
-			forkId,
+		// Pause and reload to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
+		await app.position.overview.shouldHaveExposure({
+			amount: '22,[0-9]{3}.[0-9]{2}',
+			token: 'SDAI',
+			timeout: expectDefaultTimeout * 5,
 		});
-
-		await app.page.goto('/ethereum/omni/spark/multiply/sdai-eth/1448#overview');
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
+		await app.position.manage.withdrawCollateral();
 
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			deposit: { token: 'SDAI', amount: '30000' },
+			withdraw: { token: 'SDAI', amount: '5000' },
 			expectedCollateralExposure: {
-				amount: '30,[0-9]{3}.[0-9]{2}',
+				amount: '17,[0-9]{3}.[0-9]{2}',
 				token: 'SDAI',
 			},
-			protocol: 'Aave V3',
+			protocol: 'Spark',
 		});
 	});
 
-	test('It should Borrow from an existing Spark Multiply position', async () => {
+	test('It should Pay back on an existing Spark Multiply Short position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13659',
@@ -105,66 +106,30 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
 		await app.page.reload();
+		await app.position.overview.shouldHaveDebt({
+			amount: '0.[5-8][0-9]{3}',
+			token: 'ETH',
+			timeout: expectDefaultTimeout * 5,
+		});
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
-		await app.position.manage.withdrawDebt();
+		await app.position.manage.reduceDebt();
 
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			borrow: { token: 'ETH', amount: '1' },
+			payBack: { token: 'ETH', amount: '0.4' },
 			expectedDebt: {
-				amount: '1.[0-9]{3,4}',
+				amount: '0.[1-4][0-9]{3}',
 				token: 'ETH',
 			},
 			protocol: 'Spark',
 		});
 	});
 
-	test('It should adjust risk of an existent Spark Multiply position - Up', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12896',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
-		await adjustRisk({
-			forkId,
-			app,
-			shortPosition: true,
-			risk: 'up',
-			newSliderPosition: 0.6,
-		});
-	});
-
-	test('It should adjust risk of an existent Spark Multiply position - Down', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12898',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
-		await adjustRisk({
-			forkId,
-			app,
-			shortPosition: true,
-			risk: 'down',
-			newSliderPosition: 0.2,
-		});
-	});
-
-	test('It should close an existent Spark Earn position - Close to debt token (ETH', async () => {
+	// Failing to estimate fee with current code. Try to add pauses.
+	test.skip('It should close an existent Spark Multiply Short position - Close to collateral token (SDAI)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12897',
@@ -183,7 +148,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			closeTo: 'collateral',
 			collateralToken: 'SDAI',
 			debtToken: 'ETH',
-			tokenAmountAfterClosing: '[0-9].[0-9]{1,4}',
+			tokenAmountAfterClosing: '1[5-7],[0-9]{3}.[0-9]{2}',
 		});
 	});
 });

@@ -172,7 +172,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		// Pasue and relaod to avoid random fails
+		// Pause and relaod to avoid random fails
 		await app.page.waitForTimeout(1000);
 		await app.page.reload();
 
