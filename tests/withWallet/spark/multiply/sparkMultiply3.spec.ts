@@ -6,7 +6,6 @@ import { setup } from 'utils/setup';
 import { expectDefaultTimeout, extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
-	adjustRisk,
 	close,
 	manageDebtOrCollateral,
 	openPosition,
@@ -44,11 +43,12 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			app = new App(page);
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+
 			await tenderly.setTokenBalance({
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'SDAI',
+				token: 'DAI',
 				balance: '50000',
 			});
 		});
@@ -63,8 +63,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		});
 	});
 
-	// TO BE UPDATED
-	test.skip('It should Deposit extra collateral on an existing Spark Multiply Long position', async () => {
+	test('It should Deposit extra collateral on an existing Spark Multiply Long position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13659',
@@ -75,12 +74,10 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
 		await app.page.reload();
-		//
-		await app.pause();
-		//
+
 		await app.position.overview.shouldHaveExposure({
-			amount: '22,[0-9]{3}.[0-9]{2}',
-			token: 'SDAI',
+			amount: '11.[0-9]{2}',
+			token: 'ETH',
 			timeout: expectDefaultTimeout * 5,
 		});
 
@@ -90,17 +87,78 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			deposit: { token: 'SDAI', amount: '30000' },
+			deposit: { token: 'ETH', amount: '5' },
 			expectedCollateralExposure: {
-				amount: '30,[0-9]{3}.[0-9]{2}',
-				token: 'SDAI',
+				amount: '16.[0-9]{2}',
+				token: 'ETH',
 			},
 			protocol: 'Aave V3',
 		});
 	});
 
-	// TO BE UPDATED
-	test.skip('It should Borrow from an existing Spark Multiply position', async () => {
+	test('It should Withdraw collateral from an existing Spark Multiply Long position', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13659',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Pause and reload to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Manage collateral');
+		await app.position.manage.withdrawCollateral();
+
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			withdraw: { token: 'ETH', amount: '7' },
+			expectedCollateralExposure: {
+				amount: '9.[0-9]{4}',
+				token: 'ETH',
+			},
+			protocol: 'Aave V3',
+		});
+	});
+
+	test('It should Borrow from an existing Spark Multiply Long position', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13659',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Pause and reload to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
+
+		await app.position.overview.shouldHaveDebt({
+			amount: '[1-6],[0-9]{3}.[0-9]{2}',
+			token: 'DAI',
+			timeout: expectDefaultTimeout * 5,
+		});
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Manage debt');
+		await app.position.manage.withdrawDebt();
+
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			borrow: { token: 'DAI', amount: '15000' },
+			expectedDebt: {
+				amount: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+				token: 'DAI',
+			},
+			protocol: 'Spark',
+		});
+	});
+
+	test('It should Pay back on an existing Spark Multiply Long position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13659',
@@ -114,69 +172,23 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
-		await app.position.manage.withdrawDebt();
 
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			borrow: { token: 'ETH', amount: '1' },
+			payBack: { token: 'DAI', amount: '16000' },
 			expectedDebt: {
-				amount: '1.[0-9]{3,4}',
-				token: 'ETH',
+				amount: '[1-5],[0-9]{3}.[0-9]{2}',
+				token: 'DAI',
 			},
 			protocol: 'Spark',
 		});
 	});
 
-	// TO BE UPDATED
-	test.skip('It should adjust risk of an existent Spark Multiply position - Up', async () => {
+	test('It should close an existent Spark Multiply Long position - Close to collateral token (ETH)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12896',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
-		await adjustRisk({
-			forkId,
-			app,
-			shortPosition: true,
-			risk: 'up',
-			newSliderPosition: 0.6,
-		});
-	});
-
-	// TO BE UPDATED
-	test.skip('It should adjust risk of an existent Spark Multiply position - Down', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12898',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
-		await adjustRisk({
-			forkId,
-			app,
-			shortPosition: true,
-			risk: 'down',
-			newSliderPosition: 0.2,
-		});
-	});
-
-	// TO BE UPDATED
-	test.skip('It should close an existent Spark Earn position - Close to debt token (ETH', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12897',
+			description: 'xxx',
 		});
 
 		test.setTimeout(longTestTimeout);
@@ -190,8 +202,8 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			forkId,
 			positionType: 'Multiply',
 			closeTo: 'collateral',
-			collateralToken: 'SDAI',
-			debtToken: 'ETH',
+			collateralToken: 'ETH',
+			debtToken: 'DAI',
 			tokenAmountAfterClosing: '[0-9].[0-9]{1,4}',
 		});
 	});
