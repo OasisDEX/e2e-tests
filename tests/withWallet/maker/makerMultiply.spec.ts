@@ -4,7 +4,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import * as tx from 'utils/tx';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -90,13 +90,51 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
 	});
 
+	test('It should switch a Maker Multiply position to Borrow interface', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Switch to Borrow');
+		await app.position.manage.goToBorrowInterface();
+		await app.position.manage.takeMeToTheBorrowInterface();
+
+		await app.position.overview.shouldHaveAvailableToGenerate({
+			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{3,4}',
+			token: 'DAI',
+			timeout: expectDefaultTimeout * 5,
+		});
+	});
+
+	test('It should switch a Maker Multiply position (from Borrow) back to Multiply interface', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.position.manage.openManageOptions({ currentLabel: 'ETH' });
+		await app.position.manage.select('Switch to Multiply');
+		await app.position.manage.multiplyThisVault();
+		await app.position.manage.takeMeToTheMultiplyInterface();
+
+		await app.position.overview.shouldHaveMultiple('[0-9](.[0-9]{1,2})?');
+	});
+
 	test('It should allow to simulate a Maker Multiply position before opening it', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12573',
 		});
 
-		await app.page.goto('/vaults/open-multiply/WSTETH-A');
+		test.setTimeout(longTestTimeout);
+
+		await app.position.openPage('/vaults/open-multiply/WSTETH-A', { tab: 'Overview' });
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ tab: 'Overview' });

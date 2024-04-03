@@ -25,7 +25,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should Deposit etxra collateral on an existing Spark Earn position', async () => {
+	test('It should Deposit extra collateral on an existing Spark Earn position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxxx',

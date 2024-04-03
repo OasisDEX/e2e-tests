@@ -369,11 +369,33 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveAvailableToGenerate({ amount, token }: { amount: string; token: string }) {
+	async shouldHaveAvailableToGenerateAfterPill({
+		amount,
+		token,
+	}: {
+		amount: string;
+		token: string;
+	}) {
 		const regExp = new RegExp(`${amount} ${token}`);
 		await expect(
 			this.page.locator('li:has-text("Available to Generate")').getByText('After')
 		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveAvailableToGenerate({
+		amount,
+		token,
+		timeout,
+	}: {
+		amount: string;
+		token: string;
+		timeout?: number;
+	}) {
+		const regExp = new RegExp(`${amount} ${token}`);
+		await expect(this.page.locator('li:has-text("Available to Generate")')).toContainText(regExp, {
+			timeout: timeout ?? expectDefaultTimeout,
+		});
 	}
 
 	@step

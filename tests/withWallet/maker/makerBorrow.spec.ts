@@ -54,7 +54,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			amount: '[0-9]{1,2}.[0-9]{5}',
 			token: 'ETH',
 		});
-		await app.position.overview.shouldHaveAvailableToGenerate({
+		await app.position.overview.shouldHaveAvailableToGenerateAfterPill({
 			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{4}',
 			token: 'DAI',
 		});

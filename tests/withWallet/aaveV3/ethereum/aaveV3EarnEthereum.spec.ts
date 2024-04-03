@@ -64,7 +64,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Deposit etxra collateral on an existing Aave V3 Ethereum Earn position @regression', async () => {
+	test('It should Deposit extra collateral on an existing Aave V3 Ethereum Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxxx',

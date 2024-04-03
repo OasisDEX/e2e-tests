@@ -34,10 +34,13 @@ export class Position {
 	}
 
 	@step
-	async openPage(url: string) {
+	async openPage(url: string, args?: { tab: 'Overview' }) {
 		await expect(async () => {
 			await this.page.goto(url);
-			await this.overview.waitForComponentToBeStable({ timeout: expectDefaultTimeout * 5 });
+			await this.overview.waitForComponentToBeStable({
+				tab: args?.tab ?? 'Position Info',
+				timeout: expectDefaultTimeout * 5,
+			});
 		}).toPass();
 	}
 

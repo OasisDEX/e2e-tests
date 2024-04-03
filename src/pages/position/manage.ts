@@ -200,4 +200,24 @@ export class Manage {
 	async reduceDebt() {
 		await this.page.getByRole('button', { name: 'Reduce Debt' }).click();
 	}
+
+	@step
+	async goToBorrowInterface() {
+		await this.page.getByRole('button', { name: 'Go to Borrow interface' }).click();
+	}
+
+	@step
+	async takeMeToTheBorrowInterface() {
+		await this.page.getByRole('button', { name: 'Take me to the Borrow interface' }).click();
+	}
+
+	@step
+	async multiplyThisVault() {
+		await this.page.getByRole('button', { name: 'Multiply this vault' }).click();
+	}
+
+	@step
+	async takeMeToTheMultiplyInterface() {
+		await this.page.getByRole('button', { name: 'Take me to the Multiply interface' }).click();
+	}
 }
