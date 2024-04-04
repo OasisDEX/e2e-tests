@@ -3,7 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	adjustRisk,
@@ -29,10 +29,10 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should Deposit extra collateral on an existing Spark Multiply Short position', async () => {
+	test('It should siwtch a Spark Multiply Short position to Borrow interface', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '13659',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -58,7 +58,43 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/ethereum/omni/spark/multiply/sdai-eth/1448#overview');
+		await app.position.openPage('/ethereum/omni/spark/multiply/sdai-eth/1448#overview');
+
+		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+		await app.position.manage.select('Switch to Borrow');
+		await app.position.manage.confirm();
+		await app.position.manage.confirm();
+
+		await app.position.overview.shouldHaveCollateralDeposited({
+			amount: '[0-9]{1,2}.[0-9]{1,2}',
+			token: 'SDAI',
+			timeout: expectDefaultTimeout * 5,
+		});
+	});
+
+	test('It should siwtch a Spark Multiply Short position (from Borrow) back to Multiply interface', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.position.manage.openManageOptions({ currentLabel: 'SDAI' });
+		await app.position.manage.select('Switch to Multiply');
+		await app.position.manage.confirm();
+		await app.position.manage.confirm();
+
+		await app.position.overview.shouldHaveMultiple('[0-9](.[0-9]{1,2})?');
+	});
+
+	test('It should Deposit extra collateral on an existing Spark Multiply Short position', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '13659',
+		});
+
+		test.setTimeout(longTestTimeout);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
