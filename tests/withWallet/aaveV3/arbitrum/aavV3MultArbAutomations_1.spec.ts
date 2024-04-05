@@ -50,7 +50,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/arbitrum/omni/aave/v3/multiply/wbtc-dai#simulate');
+		await app.page.goto('/arbitrum/aave/v3/multiply/wbtc-dai#simulate');
 
 		await openPosition({
 			app,

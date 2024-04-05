@@ -54,7 +54,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/omni/aave/v3/multiply/wsteth-eth#simulate');
+		await app.page.goto('/ethereum/aave/v3/earn/wsteth-eth#simulate');
 
 		await openPosition({
 			app,

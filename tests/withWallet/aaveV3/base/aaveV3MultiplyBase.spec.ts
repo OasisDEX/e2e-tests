@@ -49,7 +49,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/base/omni/aave/v3/multiply/cbeth-usdbc');
+		await app.page.goto('/base/aave/v3/multiply/cbeth-usdbc');
 
 		await openPosition({
 			app,

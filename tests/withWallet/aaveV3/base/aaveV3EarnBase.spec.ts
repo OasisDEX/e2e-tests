@@ -49,7 +49,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/base/omni/aave/v3/multiply/cbeth-eth#simulate');
+		await app.page.goto('/base/aave/v3/multiply/cbeth-eth#simulate');
 
 		await openPosition({
 			app,

@@ -40,7 +40,7 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 			({ forkId } = await setup({ app, network: 'mainnet' }));
 		});
 
-		await app.page.goto('/ethereum/omni/aave/v2/multiply/eth-usdc#simulate');
+		await app.page.goto('/ethereum/aave/v2/multiply/eth-usdc#simulate');
 
 		await openPosition({
 			app,

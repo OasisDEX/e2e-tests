@@ -54,7 +54,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/ethereum/omni/aave/v3/multiply/reth-dai/1276#overview');
+		await app.page.goto('/ethereum/aave/v3/multiply/reth-dai/1276#overview');
 
 		await app.position.shouldHaveTab('Protection ON');
 

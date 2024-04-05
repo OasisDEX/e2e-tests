@@ -44,7 +44,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			({ forkId } = await setup({ app, network: 'base' }));
 		});
 
-		await app.page.goto('/base/omni/aave/v3/borrow/eth-usdbc#simulate');
+		await app.page.goto('/base/aave/v3/borrow/eth-usdbc#simulate');
 
 		await openPosition({
 			app,

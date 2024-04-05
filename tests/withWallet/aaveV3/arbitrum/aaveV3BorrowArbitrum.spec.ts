@@ -44,7 +44,7 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 			({ forkId } = await setup({ app, network: 'arbitrum' }));
 		});
 
-		await app.page.goto('/arbitrum/omni/aave/v3/borrow/eth-usdc#setup');
+		await app.page.goto('/arbitrum/aave/v3/borrow/eth-usdc#setup');
 
 		await openPosition({
 			app,

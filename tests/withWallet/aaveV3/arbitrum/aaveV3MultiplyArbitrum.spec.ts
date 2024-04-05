@@ -40,7 +40,7 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			({ forkId } = await setup({ app, network: 'arbitrum' }));
 		});
 
-		await app.page.goto('/arbitrum/omni/aave/v3/multiply/eth-usdc');
+		await app.page.goto('/arbitrum/aave/v3/multiply/eth-usdc');
 
 		await openPosition({
 			app,

@@ -51,7 +51,7 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/ethereum/omni/aave/v3/multiply/eth-usdc/1218#overview');
+		await app.page.goto('/ethereum/aave/v3/multiply/eth-usdc/1218#overview');
 		await app.position.overview.shouldBeVisible();
 
 		await automations.testAutoBuy({ app, forkId });

@@ -39,7 +39,7 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 			({ forkId } = await setup({ app, network: 'mainnet' }));
 		});
 
-		await app.page.goto('/ethereum/omni/aave/v2/multiply/stETH-eth#simulate');
+		await app.page.goto('/ethereum/aave/v2/earn/stETH-eth#simulate');
 
 		await openPosition({
 			app,

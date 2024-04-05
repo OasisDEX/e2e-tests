@@ -50,7 +50,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			balance: '50',
 		});
 
-		await app.page.goto('/ethereum/omni/aave/v3/borrow/cbeth-eth#simulate');
+		await app.page.goto('/ethereum/aave/v3/borrow/cbeth-eth#simulate');
 
 		await openPosition({
 			app,

@@ -49,7 +49,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/omni/aave/v3/multiply/dai-wbtc');
+		await app.page.goto('/ethereum/aave/v3/multiply/dai-wbtc');
 
 		await openPosition({
 			app,
@@ -93,7 +93,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/ethereum/omni/aave/v3/multiply/ETH-USDC/1218#overview');
+		await app.page.goto('/ethereum/aave/v3/multiply/ETH-USDC/1218#overview');
 
 		await adjustRisk({
 			forkId,
@@ -122,7 +122,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/ethereum/omni/aave/v3/multiply/ETH-USDC/1218#overview');
+		await app.page.goto('/ethereum/aave/v3/multiply/ETH-USDC/1218#overview');
 
 		await adjustRisk({
 			forkId,
