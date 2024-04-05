@@ -12,7 +12,7 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 			description: '11994',
 		});
 
-		await app.page.goto('/optimism/omni/aave/v3/borrow/dai-wbtc/4#overview');
+		await app.page.goto('/optimism/aave/v3/borrow/dai-wbtc/4#overview');
 
 		await app.position.shouldHaveHeader('DAI/WBTC Borrow #4');
 		await app.position.overview.shouldHaveLiquidationPrice({

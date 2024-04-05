@@ -12,7 +12,7 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 			description: '11993',
 		});
 
-		await app.page.goto('/arbitrum/omni/aave/v3/borrow/eth-dai/1#overview');
+		await app.page.goto('/arbitrum/aave/v3/borrow/eth-dai/1#overview');
 
 		await app.position.shouldHaveHeader('ETH/DAI Multiply #1');
 		await app.position.overview.shouldHaveLiquidationPrice({

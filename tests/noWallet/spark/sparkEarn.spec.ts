@@ -11,7 +11,7 @@ test.describe('Spark Earn', async () => {
 		});
 
 		await expect(async () => {
-			await app.page.goto('/ethereum/omni/spark/multiply/wsteth-eth/1417#overview');
+			await app.page.goto('/ethereum/spark/multiply/wsteth-eth/1417#overview');
 			await app.position.overview.shouldBeVisible();
 		}).toPass();
 

@@ -75,7 +75,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 			description: '11995',
 		});
 
-		await app.page.goto('/ethereum/omni/aave/v3/multiply/ETH-USDC/1218#overview');
+		await app.page.goto('/ethereum/aave/v3/multiply/ETH-USDC/1218#overview');
 
 		await app.position.shouldHaveHeader('ETH/USDC Multiply #1218');
 		await app.position.overview.shouldHaveLiquidationPrice({
