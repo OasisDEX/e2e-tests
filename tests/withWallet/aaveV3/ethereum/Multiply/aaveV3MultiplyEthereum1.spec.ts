@@ -60,7 +60,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// SKIP if DB collision still hapenning with omni
-	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC)', async () => {
+	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12057',
@@ -79,7 +79,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// SKIP if DB collision still hapenning with omni
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12055',
@@ -104,7 +104,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// SKIP if DB collision still hapenning with omni
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12056',
