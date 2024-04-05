@@ -173,7 +173,7 @@ export class Manage {
 	}
 
 	@step
-	async payback({ token, amount }: { token: string; amount: string }) {
+	async payBack({ token, amount }: { token: string; amount: string }) {
 		await this.page
 			.getByText(`Pay back ${token}`)
 			.locator('../..')
@@ -189,5 +189,35 @@ export class Manage {
 	@step
 	async payBackDebt() {
 		await this.page.getByRole('button', { name: 'Pay back' }).click();
+	}
+
+	@step
+	async withdrawDebt() {
+		await this.page.getByRole('button', { name: 'Withdraw' }).click();
+	}
+
+	@step
+	async reduceDebt() {
+		await this.page.getByRole('button', { name: 'Reduce Debt' }).click();
+	}
+
+	@step
+	async goToBorrowInterface() {
+		await this.page.getByRole('button', { name: 'Go to Borrow interface' }).click();
+	}
+
+	@step
+	async takeMeToTheBorrowInterface() {
+		await this.page.getByRole('button', { name: 'Take me to the Borrow interface' }).click();
+	}
+
+	@step
+	async multiplyThisVault() {
+		await this.page.getByRole('button', { name: 'Multiply this vault' }).click();
+	}
+
+	@step
+	async takeMeToTheMultiplyInterface() {
+		await this.page.getByRole('button', { name: 'Take me to the Multiply interface' }).click();
 	}
 }

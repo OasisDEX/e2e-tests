@@ -1,16 +1,11 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp, setupNewFork } from 'utils/setup';
+import { metamaskSetUp, setupNewFork } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import {
-	extremelyLongTestTimeout,
-	longTestTimeout,
-	positionTimeout,
-	veryLongTestTimeout,
-} from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -46,42 +41,14 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			({ forkId, walletAddress } = await setup({ app, network: 'optimism' }));
 		});
 
-		await app.page.goto('/optimism/aave/v3/multiply/ethusdc');
+		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc');
 
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10.12345' });
-		await app.position.setup.createSmartDeFiAccount();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-
-		await app.position.setup.setupStopLoss1Of3();
-		await app.position.setup.continueWithoutStopLoss();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		// Logging position ID for debugging purposes
-		const positionId = await app.position.setup.getNewPositionId();
-		console.log('+++ Position ID: ', positionId);
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '10.12345' },
+			omni: { network: 'optimism' },
+		});
 	});
 
 	test('It should adjust risk of an existent Aave V3 Multiply Optimism position - Up @regression', async () => {
@@ -98,37 +65,14 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/optimism/aave/v3/2#overview');
+		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.9 });
-
-		await app.position.manage.adjustRisk();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-
-		// Wait for Liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
-		}).toPass();
+		await adjustRisk({
+			forkId,
+			app,
+			risk: 'up',
+			newSliderPosition: 0.9,
+		});
 	});
 
 	test('It should adjust risk of an existent Aave V3 Multiply Optimism position - Down @regression', async () => {
@@ -137,49 +81,14 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			description: '12910',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
-		// New fork needed to be able to close a Multiply position
-		await test.step('Test setup - New fork', async () => {
-			({ forkId } = await setupNewFork({ app, network: 'optimism' }));
-		});
+		test.setTimeout(longTestTimeout);
 
-		await tenderly.changeAccountOwner({
-			account: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
-			newOwner: walletAddress,
+		await adjustRisk({
 			forkId,
+			app,
+			risk: 'down',
+			newSliderPosition: 0.05,
 		});
-
-		await app.page.goto('/optimism/aave/v3/2#overview');
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.05 });
-
-		await app.position.manage.adjustRisk();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldBeVisible('Manage Multiply position');
-
-		// Wait for Liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
-		}).toPass();
 	});
 
 	test('It should close an existent Aave V3 Multiply Optimism position - Close to collateral token (ETH) @regression', async () => {
@@ -200,40 +109,22 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/optimism/aave/v3/2#overview');
+		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
-		await app.position.manage.shouldHaveButton({ label: 'Adjust', timeout: positionTimeout });
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Close position');
+		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.closeTo('ETH');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'ETH',
-			amount: '0.[0-9]{3,4}',
+		// Pause and Reload page to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
+
+		await close({
+			app,
+			forkId,
+			positionType: 'Multiply',
+			closeTo: 'collateral',
+			collateralToken: 'ETH',
+			debtToken: 'USDC',
+			tokenAmountAfterClosing: '0.[0-9]{3,4}',
 		});
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.page.goto('/optimism/aave/v3/2#overview');
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			token: 'USDC',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
-		await app.position.overview.shouldHaveExposure({ amount: '0.00', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'USDC' });
-		await app.position.overview.shouldHaveMultiple('1.00');
-		await app.position.overview.shouldHaveBuyingPower('0.00');
 	});
 });

@@ -91,13 +91,13 @@ export class Base {
 		automation,
 		value,
 	}: {
-		automation: 'AutoSell' | 'AutoBuy';
+		automation: 'AutoSell' | 'AutoBuy' | 'Stop-Loss';
 		value: number;
 	}) {
 		await expect(async () => {
 			const triggerSlider = this.page
 				.locator('input[type="range"]')
-				.nth(automation === 'AutoBuy' ? 0 : 1);
+				.nth(automation === 'AutoSell' ? 1 : 0);
 
 			const initialSliderValue = await triggerSlider.getAttribute('value');
 
@@ -113,6 +113,28 @@ export class Base {
 			const newSliderValue = await triggerSlider.getAttribute('value');
 
 			expect(newSliderValue !== initialSliderValue).toBe(true);
+		}).toPass();
+	}
+
+	@step
+	async moveSliderAutomationsOmni({ value }: { value: number }) {
+		await expect(async () => {
+			const sliderRail = this.page.locator('.rc-slider-rail').nth(0);
+			const sliderPill = this.page.locator('[role="slider"]').nth(0);
+
+			const initialPillValue = await sliderPill.getAttribute('aria-valuenow');
+
+			const sliderOffsetWidth = await sliderRail.evaluate((el) => {
+				return el.getBoundingClientRect().width;
+			});
+
+			await sliderRail.click({
+				force: true,
+				position: { x: sliderOffsetWidth * value, y: 0 },
+			});
+
+			const newPillValue = await sliderPill.getAttribute('aria-valuenow');
+			expect(newPillValue !== initialPillValue).toBe(true);
 		}).toPass();
 	}
 

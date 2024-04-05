@@ -47,14 +47,14 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await app.page.goto('/vaults/open/ETH-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
+		await app.position.overview.waitForComponentToBeStable({ tab: 'Overview' });
 		await app.position.setup.deposit({ token: 'ETH', amount: '10.12345' });
 		await app.position.overview.shouldHaveCollateralLockedAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
 			amount: '[0-9]{1,2}.[0-9]{5}',
 			token: 'ETH',
 		});
-		await app.position.overview.shouldHaveAvailableToGenerate({
+		await app.position.overview.shouldHaveAvailableToGenerateAfterPill({
 			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{4}',
 			token: 'DAI',
 		});
@@ -104,7 +104,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await app.page.goto('/vaults/open/ETH-A');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
+		await app.position.overview.waitForComponentToBeStable({ tab: 'Overview' });
 		await app.position.setup.deposit({ token: 'ETH', amount: '15.12345' });
 		await app.position.setup.generate({ token: 'DAI', amount: '10000' });
 		await app.position.setup.setupProxy1Of4();
@@ -118,7 +118,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await app.page.reload();
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
+		await app.position.overview.waitForComponentToBeStable({ tab: 'Overview' });
 		await app.position.setup.deposit({ token: 'ETH', amount: '15.12345' });
 		await app.position.setup.generate({ token: 'DAI', amount: '10000' });
 

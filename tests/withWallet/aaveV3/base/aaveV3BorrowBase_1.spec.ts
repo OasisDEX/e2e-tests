@@ -1,16 +1,15 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp } from 'utils/setup';
+import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import {
-	extremelyLongTestTimeout,
-	veryLongTestTimeout,
-	longTestTimeout,
-	positionTimeout,
-} from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import {
+	close,
+	manageDebtOrCollateral,
+	openPosition,
+} from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -45,48 +44,19 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			({ forkId } = await setup({ app, network: 'base' }));
 		});
 
-		await app.page.goto('/base/aave/v3/borrow/ethusdbc#simulate');
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
+		await app.page.goto('/base/aave/v3/borrow/eth-usdbc#simulate');
 
-		await app.position.setup.deposit({ token: 'ETH', amount: '9.12345' });
-		await app.position.setup.borrow({ token: 'USDBC', amount: '2000' });
-
-		await app.position.setup.createSmartDeFiAccount();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-		await app.position.setup.openBorrowPosition1Of2();
-
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		// Logging position ID for debugging purposes
-		const positionId = await app.position.setup.getNewPositionId();
-		console.log('+++ Position ID: ', positionId);
-
-		await app.position.setup.goToPosition();
-		// +++ Skipping 'position type'verificationdue to 'db collision' being back
-		// await app.position.manage.shouldHaveButton({ label: 'Manage ETH', timeout: positionTimeout });
-		await app.position.manage.shouldBeVisible('Manage ');
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '9.12345' },
+			borrow: { token: 'USDBC', amount: '2000' },
+			omni: { network: 'base' },
+		});
 	});
 
-	// Skipped because of DB collision issue on staging
-	test.skip('It should deposit extra collateral on an existent Aave V3 Borrow Base position', async () => {
+	// Skip again if DB collision also happeningwith omni
+	test('It should Deposit and Borrow in a single tx from an existing Aave V3 Base Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13035',
@@ -94,67 +64,120 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.shouldHaveButton({ label: 'Manage ETH' });
-		await app.position.manage.deposit({ token: 'ETH', amount: '1' });
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.overview.shouldHaveNetValue({
-			value: '\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}',
-		});
-		await app.position.overview.shouldHaveCollateralDeposited({
-			amount: '10.[0-9]{2}',
-			token: 'ETH',
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '1' },
+			borrow: { token: 'USDBC', amount: '3000' },
+			expectedCollateralDeposited: {
+				amount: '10.12',
+				token: 'ETH',
+			},
+			expectedDebt: { amount: '5,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'USDBC' },
+			protocol: 'Aave V3',
 		});
 	});
 
-	// Skipped because of DB collision issue on staging
-	test.skip('It should close an existent Aave V3 Borrow Base position - Close to collateral token (CBETH)', async () => {
+	test('It should Withdraw and Pay back in a single tx from an existing Aave V3 Base Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxxxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.position.manage.withdrawCollateral();
+
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			withdraw: { token: 'ETH', amount: '2' },
+			payBack: { token: 'USDBC', amount: '1000' },
+			expectedCollateralDeposited: {
+				amount: '8.12',
+				token: 'ETH',
+			},
+			expectedDebt: { amount: '4,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'USDBC' },
+			protocol: 'Aave V3',
+		});
+	});
+
+	test('It should Borrow and Deposit in a single tx on an existing Aave V3 Base Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await app.position.manage.openManageOptions({ currentLabel: 'ETH' });
+		await app.position.manage.select('Manage debt');
+
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			borrow: { token: 'USDBC', amount: '2000' },
+			deposit: { token: 'ETH', amount: '1' },
+			expectedCollateralDeposited: {
+				amount: '9.12',
+				token: 'ETH',
+			},
+			expectedDebt: { amount: '6,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'USDBC' },
+			protocol: 'Aave V3',
+		});
+	});
+
+	test('It should Pay back and Withdraw in a single tx on an existing Aave V3 Base Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Reload page to avoid random fails
+		await app.page.reload();
+
+		await app.position.manage.openManageOptions({ currentLabel: 'ETH' });
+		await app.position.manage.select('Manage debt');
+		await app.position.manage.payBackDebt();
+
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			payBack: { token: 'USDBC', amount: '3000' },
+			withdraw: { token: 'ETH', amount: '1.5' },
+			expectedCollateralDeposited: {
+				amount: '7.62',
+				token: 'ETH',
+			},
+			expectedDebt: { amount: '3,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'USDBC' },
+			protocol: 'Aave V3',
+			allowanceNotNeeded: true,
+		});
+	});
+
+	// Skip again if DB collision also happeningwith omni
+	test('It should close an existent Aave V3 Borrow Base position - Close to collateral token (CBETH)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13067',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Close position');
-		await app.position.manage.closeTo('ETH');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'ETH',
-			amount: '[0-9]{1,2}.[0-9]{1,2}',
+		// Pause and Reload page to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
+
+		await close({
+			app,
+			forkId,
+			positionType: 'Borrow',
+			closeTo: 'collateral',
+			collateralToken: 'ETH',
+			debtToken: 'USDBC',
+			tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{1,2}',
 		});
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.page.goto('/base/aave/v3/2#overview');
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			token: 'ETH/USDBC',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'ETH' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'USDBC' });
 	});
 });

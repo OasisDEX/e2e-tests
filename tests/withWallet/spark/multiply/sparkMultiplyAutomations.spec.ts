@@ -11,10 +11,11 @@ import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
+test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -25,7 +26,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open with Stop-Loss an Aave v3 Multiply Base position @regression', async () => {
+	test('It should open a Spark Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12463',
@@ -34,25 +35,58 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'base' }));
+			({ context } = await metamaskSetUp({ network: 'mainnet' }));
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({ app, network: 'base' }));
+			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'WBTC',
+				balance: '5',
+			});
 		});
 
-		await app.page.goto('/base/aave/v3/multiply/eth-usdc#simulate');
+		await app.page.goto('/ethereum/spark/multiply/wbtc-dai#simulate');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-			adjustRisk: { positionType: 'Borrow', value: 0.4 },
-			omni: { network: 'base' },
+			deposit: { token: 'WBTC', amount: '1' },
+			omni: { network: 'ethereum' },
+			adjustRisk: { positionType: 'Borrow', value: 0.5 },
 		});
 	});
 
-	test('It should set Regular Stop-Loss on an Aave v3 Base Multiply position @regression', async () => {
+	test('It should set Auto-Buy on an Spark Mainnet Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await automations.testAutoBuy({ app, forkId, triggerLTV: 0.1 });
+	});
+
+	test('It should set Auto-Sell on an Spark Mainnet Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
+		await automations.testAutoSell({ app, forkId });
+	});
+
+	test('It should set Regular Stop-Loss on an Spark Mainnet Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -67,7 +101,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await automations.testRegularStopLoss({ app, forkId });
 	});
 
-	test('It should set Trailing Stop-Loss on an Aave v3 Base Multiply position @regression', async () => {
+	test('It should set Trailing Stop-Loss on an Spark Mainnet Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

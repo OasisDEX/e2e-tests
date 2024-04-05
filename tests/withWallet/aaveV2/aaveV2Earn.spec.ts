@@ -1,10 +1,10 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp, setup } from 'utils/setup';
+import { metamaskSetUp, setup } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
-import * as tx from 'utils/tx';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -39,30 +39,13 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 			({ forkId } = await setup({ app, network: 'mainnet' }));
 		});
 
-		await app.page.goto('/ethereum/aave/v2/earn/stETHeth');
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.setup.waitForComponentToBeStable();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10.09' });
-		await app.position.setup.createSmartDeFiAccount();
+		await app.page.goto('/ethereum/aave/v2/earn/stETH-eth#simulate');
 
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-		await app.position.setup.openEarnPosition1Of2();
-
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '10.09' },
+			omni: { network: 'ethereum' },
+		});
 	});
 });

@@ -3,13 +3,12 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, positionTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	close,
-	depositAndBorrow,
+	manageDebtOrCollateral,
 	openPosition,
-	withdrawAndPayBack,
 } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
@@ -65,7 +64,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Deposit and Borrow in a single tx form an existing Ajna Ethereum Borrow position @regression', async () => {
+	test('It should Deposit and Borrow in a single tx from an existing Ajna Ethereum Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxxx',
@@ -73,11 +72,12 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await depositAndBorrow({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
 			deposit: { token: 'RETH', amount: '1.5' },
 			borrow: { token: 'ETH', amount: '1' },
+			allowanceNotNeeded: true,
 			expectedCollateralDeposited: {
 				amount: '3.50',
 				token: 'RETH',
@@ -86,7 +86,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Withdraw and Pay back in a single tx form an existing Ajna Ethereum Borrow position @regression', async () => {
+	test('It should Withdraw and Pay back in a single tx from an existing Ajna Ethereum Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxxx',
@@ -96,11 +96,11 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		await app.position.manage.withdrawCollateral();
 
-		await withdrawAndPayBack({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
 			withdraw: { token: 'RETH', amount: '1' },
-			payback: { token: 'ETH', amount: '0.5' },
+			payBack: { token: 'ETH', amount: '0.5' },
 			expectedCollateralDeposited: {
 				amount: '2.50',
 				token: 'RETH',
@@ -120,11 +120,12 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'RETH' });
 		await app.position.manage.select('Manage debt');
 
-		await depositAndBorrow({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
 			borrow: { token: 'ETH', amount: '1.5' },
 			deposit: { token: 'RETH', amount: '2' },
+			allowanceNotNeeded: true,
 			expectedCollateralDeposited: {
 				amount: '4.50',
 				token: 'RETH',
@@ -146,10 +147,10 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 		await app.position.manage.payBackDebt();
 
-		await withdrawAndPayBack({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
-			payback: { token: 'ETH', amount: '2' },
+			payBack: { token: 'ETH', amount: '2' },
 			withdraw: { token: 'RETH', amount: '1.5' },
 			expectedCollateralDeposited: {
 				amount: '3.00',

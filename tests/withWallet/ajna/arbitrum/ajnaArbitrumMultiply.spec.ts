@@ -15,7 +15,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// !! Multiply not being created with very low liquidity - Re-test when liquidity rises
+// No liquidity - Enable when liquidity available
 test.describe.skip('Ajna Arbitrum Multiply - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
@@ -60,7 +60,7 @@ test.describe.skip('Ajna Arbitrum Multiply - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'RETH', amount: '0.001' },
+			deposit: { token: 'RETH', amount: '0.5' },
 		});
 	});
 });

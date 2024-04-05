@@ -10,10 +10,11 @@ import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionM
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave v2 Multiply - Wallet connected', async () => {
+test.describe('Spark Multiply - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -24,10 +25,10 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v2 Multiply position @regression', async () => {
+	test('It should open a Spark Multiply Long position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11773',
+			description: '12463',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -37,20 +38,28 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({ app, network: 'mainnet' }));
+			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'WBTC',
+				balance: '10',
+			});
 		});
 
-		await app.page.goto('/ethereum/aave/v2/multiply/eth-usdc#simulate');
+		await app.page.goto('/ethereum/spark/multiply/wbtc-dai#simulate');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '2' },
+			deposit: { token: 'WBTC', amount: '1' },
 			omni: { network: 'ethereum' },
 		});
 	});
 
-	test('It should adjust risk of an existing Aave V2 Multiply position - Up @regression', async () => {
+	test('It should adjust risk of an existing Spark Multiply Long position - Up', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -58,45 +67,58 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
+		// Pause and reload to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
+
 		await adjustRisk({
 			forkId,
 			app,
 			risk: 'up',
-			newSliderPosition: 0.6,
+			newSliderPosition: 0.7,
 		});
 	});
 
-	test('It should adjust risk of an existing Aave V2 Multiply position - Down @regression', async () => {
+	test('It should adjust risk of an existing Spark Multiply Long position - Down', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: 'xxxx',
+			description: '12898',
 		});
 
 		test.setTimeout(longTestTimeout);
+
+		// Pause and reload to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
 
 		await adjustRisk({
 			forkId,
 			app,
 			risk: 'down',
-			newSliderPosition: 0.5,
+			newSliderPosition: 0.2,
 		});
 	});
 
-	test('It should Close to collateral an existing Aave V2 Multiply position @regression', async () => {
+	test('It should close an existent Spark Multiply Long position - Close to debt token (DAI)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: 'xxxx',
+			description: 'xxx',
 		});
 
 		test.setTimeout(longTestTimeout);
 
+		// Pause and reload to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
+
 		await close({
-			forkId,
 			app,
-			closeTo: 'collateral',
-			collateralToken: 'ETH',
-			debtToken: 'USDC',
-			tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{3,4}',
+			forkId,
+			positionType: 'Multiply',
+			closeTo: 'debt',
+			collateralToken: 'WBTC',
+			debtToken: 'DAI',
+			tokenAmountAfterClosing: '[0-9]{2},[0-9]{3}.[0-9]{1,2}',
 		});
 	});
 });

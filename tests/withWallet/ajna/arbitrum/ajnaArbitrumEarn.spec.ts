@@ -41,6 +41,7 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'arbitrum',
+				extraFeaturesFlags: 'AjnaSuppressValidation:true',
 			}));
 
 			await tenderly.setTokenBalance({
@@ -49,6 +50,14 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 				network: 'arbitrum',
 				token: 'WBTC',
 				balance: '5',
+			});
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'arbitrum',
+				token: 'USDC',
+				balance: '100000',
 			});
 		});
 

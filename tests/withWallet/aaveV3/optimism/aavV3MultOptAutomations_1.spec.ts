@@ -51,7 +51,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/optimism/aave/v3/2#overview');
+		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
 		await automations.testAutoBuy({ app, forkId });
 	});
@@ -64,6 +64,10 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
 		await automations.testAutoSell({ app, forkId });
 	});
 
@@ -75,7 +79,9 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/optimism/aave/v3/2#overview');
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
 
 		await automations.testRegularStopLoss({ app, forkId });
 	});

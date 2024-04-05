@@ -1,16 +1,15 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp } from 'utils/setup';
+import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import {
-	extremelyLongTestTimeout,
-	longTestTimeout,
-	positionTimeout,
-	veryLongTestTimeout,
-} from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import {
+	close,
+	manageDebtOrCollateral,
+	openPosition,
+} from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -46,41 +45,18 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			({ forkId, walletAddress } = await setup({ app, network: 'optimism' }));
 		});
 
-		await app.position.openPage('/optimism/aave/v3/borrow/ethusdc');
+		await app.position.openPage('/optimism/aave/v3/borrow/eth-usdc');
 
-		await app.position.setup.deposit({ token: 'ETH', amount: '6.12345' });
-		await app.position.setup.borrow({ token: 'USDC', amount: '2000' });
-		await app.position.setup.createSmartDeFiAccount();
-		// Confirmation button with same label
-		await app.position.setup.createSmartDeFiAccount();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '7.5' },
+			borrow: { token: 'USDC', amount: '2000' },
+			omni: { network: 'optimism' },
 		});
-		await app.position.setup.continue();
-		await app.position.setup.openBorrowPosition1Of2();
-
-		// Position creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		// Logging position ID for debugging purposes
-		const positionId = await app.position.setup.getNewPositionId();
-		console.log('+++ Position ID: ', positionId);
-
-		await app.position.setup.goToPosition();
-		await app.position.manage.shouldBeVisible('Manage ');
-
-		// NOTE: Position type verification disabled for now due to DB collision being back - 10547
-		// // Verify that position has been logged as Borrow
-		// await app.position.manage.shouldHaveButton({ label: 'Manage ETH', timeout: positionTimeout });
 	});
 
-	test('It should Deposit and Borrow in a single tx on an existing Aave V3 Borrow Optimism position', async () => {
+	test('It should Deposit and Borrow in a single tx on an existing Aave V3 Borrow Optimism position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13664',
@@ -102,163 +78,130 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/optimism/aave/v3/4#overview');
+		await app.page.goto('/optimism/aave/v3/borrow/dai-wbtc/4#overview');
 
-		// Wait for all position data to be loaded
-		await app.position.shouldHaveTab('Protection OFF');
-
-		await app.position.manage.deposit({ token: 'DAI', amount: '50000' });
-		await app.position.manage.borrow({ token: 'WBTC', amount: '0.3' });
-
-		// Setting up allowance  randomly fails - Retry until it's set.
-		await expect(async () => {
-			await app.position.setup.setupAllowance();
-			await app.position.setup.approveAllowance();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken({});
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-		await app.position.setup.continue();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: veryLongTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.overview.shouldHaveCollateralDeposited({
-			amount: '50,[0-9]{3}.[0-9]{2}',
-			token: 'DAI',
-			timeout: positionTimeout,
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			deposit: { token: 'DAI', amount: '50000' },
+			borrow: { token: 'WBTC', amount: '0.3' },
+			expectedCollateralDeposited: {
+				amount: '50,[0-9]{3}.[0-9]{2}',
+				token: 'DAI',
+			},
+			expectedDebt: { amount: '0.3[0-9]{2,3}', token: 'WBTC' },
+			protocol: 'Aave V3',
 		});
-		await app.position.overview.shouldHaveDebt({ amount: '0.3[0-9]{2,3}', token: 'WBTC' });
 	});
 
-	test('It should adjust risk of an existent Aave V3 Borrow Optimism position - Down', async () => {
+	test('It should Withdraw and Pay back in a single tx from an existing Aave V3 Optimism Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12912',
+			description: 'xxxxx',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/optimism/aave/v3/4#overview');
+		// Pause and Reload page to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
 
-		await app.position.manage.shouldBeVisible('Manage collateral');
-		await app.position.manage.openManageOptions({ currentLabel: 'Manage DAI' });
-		await app.position.manage.select('Adjust');
+		await app.position.manage.withdrawCollateral();
 
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
-
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.1 });
-
-		await app.position.manage.adjustRisk();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
-
-		// Wait for liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeLessThan(initialLoanToValue);
-		}).toPass();
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			withdraw: { token: 'DAI', amount: '20000' },
+			payBack: { token: 'WBTC', amount: '0.1' },
+			expectedCollateralDeposited: {
+				amount: '30,[0-9]{3}.[0-9]{2}',
+				token: 'DAI',
+			},
+			expectedDebt: { amount: '0.2[0-9]{2,3}', token: 'WBTC' },
+			protocol: 'Aave V3',
+		});
 	});
 
-	test('It should adjust risk of an existent Aave V3 Borrow Optimism position - Up', async () => {
+	test('It should Borrow and Deposit in a single tx on an existing Aave V3 Optimism Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12913',
+			description: 'xxxx',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.shouldBeVisible('Manage Borrow position');
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue();
+		// Pause and Reload page to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
 
-		await app.position.manage.waitForSliderToBeEditable();
-		await app.position.manage.moveSlider({ value: 0.6 });
+		await app.position.manage.openManageOptions({ currentLabel: 'DAI' });
+		await app.position.manage.select('Manage debt');
 
-		await app.position.manage.adjustRisk();
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.position.manage.shouldHaveButton({ label: 'Adjust' });
-
-		// Wait for liq price to update
-		await expect(async () => {
-			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-			const updatedLoanToValue = await app.position.manage.getLoanToValue();
-			expect(updatedLiqPrice).toBeLessThan(initialLiqPrice);
-			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
-		}).toPass();
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			allowanceNotNeeded: true,
+			borrow: { token: 'WBTC', amount: '0.2' },
+			deposit: { token: 'DAI', amount: '10000' },
+			expectedCollateralDeposited: {
+				amount: '40,[0-9]{3}.[0-9]{2}',
+				token: 'DAI',
+			},
+			expectedDebt: { amount: '0.4[0-9]{2,3}', token: 'WBTC' },
+			protocol: 'Aave V3',
+		});
 	});
 
-	test('It should close an existent Aave V3 Borrow Optimism position - Close to collateral token (DAI)', async () => {
+	test('It should Pay back and Withdraw in a single tx on an existing Aave V3 Optimism Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Pause and Reload page to avoid random fails
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
+
+		await app.position.manage.openManageOptions({ currentLabel: 'DAI' });
+		await app.position.manage.select('Manage debt');
+		await app.position.manage.payBackDebt();
+
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			payBack: { token: 'WBTC', amount: '0.3' },
+			withdraw: { token: 'DAI', amount: '10500' },
+			expectedCollateralDeposited: {
+				amount: '29,5[0-9]{2}.[0-9]{2}',
+				token: 'DAI',
+			},
+			expectedDebt: { amount: '0.1[0-9]{2,3}', token: 'WBTC' },
+			protocol: 'Aave V3',
+			allowanceNotNeeded: true,
+		});
+	});
+
+	test('It should close an existent Aave V3 Borrow Optimism position - Close to debt token (WBTC)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12914',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Close position');
-		await app.position.manage.closeTo('WBTC');
-		await app.position.manage.shouldHaveTokenAmountAfterClosing({
-			token: 'WBTC',
-			amount: '[0-9].[0-9]{3,4}',
+		await app.page.waitForTimeout(3_000);
+		await app.page.reload();
+
+		await close({
+			forkId,
+			app,
+			positionType: 'Borrow',
+			closeTo: 'debt',
+			collateralToken: 'DAI',
+			debtToken: 'WBTC',
+			tokenAmountAfterClosing: '[0-9].[0-9]{3,4}',
 		});
-
-		// Confirm action randomly fails - Retry until it's applied.
-		await expect(async () => {
-			await app.position.setup.confirmOrRetry();
-			await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-				await metamask.confirmPermissionToSpend();
-			});
-			await app.position.manage.shouldShowSuccessScreen();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.manage.ok();
-
-		await app.page.goto('/optimism/aave/v3/4#overview');
-		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '0.00',
-			token: 'WBTC/DAI',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '0.00', token: 'DAI' });
-		await app.position.overview.shouldHaveDebt({ amount: '0.00', token: 'WBTC' });
-		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
 	});
 });

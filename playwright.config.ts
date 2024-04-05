@@ -86,6 +86,30 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'with-wallet-ajna-ethereum',
+			testMatch: ['withWallet/ajna/ethereum/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-ajna-arbitrum',
+			testMatch: ['withWallet/ajna/arbitrum/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-ajna-base',
+			testMatch: ['withWallet/ajna/base/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-ajna-optimism',
+			testMatch: ['withWallet/ajna/optimism/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
 			name: 'with-wallet-morphoblue',
 			testMatch: ['withWallet/morphoBlue/**'],
 			use: { ...devices['Desktop Chrome'] },

@@ -7,9 +7,8 @@ import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	close,
-	depositAndBorrow,
+	manageDebtOrCollateral,
 	openPosition,
-	withdrawAndPayBack,
 } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
@@ -65,7 +64,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Deposit and Borrow in a single tx form an existing Ajna Base Borrow position @regression', async () => {
+	test('It should Deposit and Borrow in a single tx from an existing Ajna Base Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxxx',
@@ -73,11 +72,12 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await depositAndBorrow({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
 			deposit: { token: 'WSTETH', amount: '2' },
 			borrow: { token: 'ETH', amount: '1' },
+			allowanceNotNeeded: true,
 			expectedCollateralDeposited: {
 				amount: '4.00',
 				token: 'WSTETH',
@@ -86,7 +86,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Withdraw and Pay back in a single tx form an existing Ajna Base Borrow position @regression', async () => {
+	test('It should Withdraw and Pay back in a single tx from an existing Ajna Base Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxxxx',
@@ -96,11 +96,11 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		await app.position.manage.withdrawCollateral();
 
-		await withdrawAndPayBack({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
 			withdraw: { token: 'WSTETH', amount: '1' },
-			payback: { token: 'ETH', amount: '1' },
+			payBack: { token: 'ETH', amount: '1' },
 			expectedCollateralDeposited: {
 				amount: '3.00',
 				token: 'WSTETH',
@@ -120,11 +120,12 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
 		await app.position.manage.select('Manage debt');
 
-		await depositAndBorrow({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
 			borrow: { token: 'ETH', amount: '1' },
 			deposit: { token: 'WSTETH', amount: '2' },
+			allowanceNotNeeded: true,
 			expectedCollateralDeposited: {
 				amount: '5.00',
 				token: 'WSTETH',
@@ -146,10 +147,10 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		await app.position.manage.payBackDebt();
 
-		await withdrawAndPayBack({
+		await manageDebtOrCollateral({
 			app,
 			forkId,
-			payback: { token: 'ETH', amount: '1' },
+			payBack: { token: 'ETH', amount: '1' },
 			withdraw: { token: 'WSTETH', amount: '3' },
 			expectedCollateralDeposited: {
 				amount: '2.00',

@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
+test.describe('Spark Earn - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -25,45 +25,59 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave V3 Earn Base position @regression', async () => {
+	test('It should open a Spark Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12471',
+			description: '12089',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'base' }));
+			({ context } = await metamaskSetUp({ network: 'mainnet' }));
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
+			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
 
 			await tenderly.setTokenBalance({
 				forkId,
 				walletAddress,
-				network: 'base',
-				token: 'CBETH',
-				balance: '20',
+				network: 'mainnet',
+				token: 'DAI',
+				balance: '30000',
+			});
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'RETH',
+				balance: '100',
 			});
 		});
 
-		await app.page.goto('/base/aave/v3/multiply/cbeth-eth#simulate');
+		await app.page.goto('/ethereum/spark/earn/reth-eth#simulate');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '5' },
-			omni: { network: 'base' },
+			deposit: { token: 'RETH', amount: '7.5' },
+			omni: { network: 'ethereum' },
 		});
 	});
 
-	test('It should adjust risk of an existent Aave V3 Earn Base position - Up', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '13070',
-		});
+	test('It should adjust risk of an existent Spark Earn position - Up @regression', async () => {
+		test.info().annotations.push(
+			{
+				type: 'Test case',
+				description: '12892',
+			},
+			{
+				type: 'Bug',
+				description: '13044',
+			}
+		);
 
 		test.setTimeout(longTestTimeout);
 
@@ -79,10 +93,10 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		});
 	});
 
-	test('It should adjust risk of an existent Aave V3 Earn Base position - Down', async () => {
+	test('It should adjust risk of an existent Spark Earn position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '13069',
+			description: '12893',
 		});
 
 		test.setTimeout(longTestTimeout);
@@ -95,14 +109,14 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			forkId,
 			app,
 			risk: 'down',
-			newSliderPosition: 0.1,
+			newSliderPosition: 0.2,
 		});
 	});
 
-	test('It should close an existent Aave V3 Earn Base position - Close to debt token (ETH)', async () => {
+	test('It should close an existent Spark Earn position - Close to collateral token (RETH) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '13071',
+			description: '12894',
 		});
 
 		test.setTimeout(longTestTimeout);
@@ -114,9 +128,9 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await close({
 			app,
 			forkId,
-			positionType: 'Multiply',
-			closeTo: 'debt',
-			collateralToken: 'CBETH',
+			positionType: 'Earn',
+			closeTo: 'collateral',
+			collateralToken: 'RETH',
 			debtToken: 'ETH',
 			tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{1,2}([0-9]{1,2})?',
 		});
