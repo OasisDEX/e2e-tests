@@ -56,7 +56,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Deposit and Borrow in a single tx on an existing Aave V3 Borrow Optimism position', async () => {
+	test('It should Deposit and Borrow in a single tx on an existing Aave V3 Borrow Optimism position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13664',
