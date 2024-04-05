@@ -41,7 +41,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			({ forkId, walletAddress } = await setup({ app, network: 'optimism' }));
 		});
 
-		await app.page.goto('/optimism/omni/aave/v3/multiply/eth-usdc');
+		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc');
 
 		await openPosition({
 			app,
@@ -65,7 +65,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/optimism/omni/aave/v3/multiply/eth-usdc.e/2#overview');
+		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
 		await adjustRisk({
 			forkId,
@@ -109,7 +109,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/optimism/omni/aave/v3/multiply/eth-usdc.e/2#overview');
+		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
 		test.setTimeout(veryLongTestTimeout);
 

@@ -53,7 +53,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/omni/spark/multiply/eth-dai');
+		await app.page.goto('/ethereum/spark/multiply/eth-dai');
 
 		await openPosition({
 			app,

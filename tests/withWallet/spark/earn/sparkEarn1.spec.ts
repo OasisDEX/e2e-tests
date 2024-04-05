@@ -57,7 +57,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/omni/spark/multiply/reth-eth#simulate');
+		await app.page.goto('/ethereum/spark/earn/reth-eth#simulate');
 
 		await openPosition({
 			app,

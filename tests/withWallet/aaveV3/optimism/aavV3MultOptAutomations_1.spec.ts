@@ -51,7 +51,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/optimism/omni/aave/v3/multiply/eth-usdc.e/2#overview');
+		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
 		await automations.testAutoBuy({ app, forkId });
 	});

@@ -45,7 +45,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			({ forkId, walletAddress } = await setup({ app, network: 'optimism' }));
 		});
 
-		await app.position.openPage('/optimism/omni/aave/v3/borrow/eth-usdc');
+		await app.position.openPage('/optimism/aave/v3/borrow/eth-usdc');
 
 		await openPosition({
 			app,
@@ -78,7 +78,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/optimism/omni/aave/v3/borrow/dai-wbtc/4#overview');
+		await app.page.goto('/optimism/aave/v3/borrow/dai-wbtc/4#overview');
 
 		await manageDebtOrCollateral({
 			app,

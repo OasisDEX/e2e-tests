@@ -76,7 +76,8 @@ export const openPosition = async ({
 		await app.page.waitForTimeout(10_000);
 		//
 		await expect(async () => {
-			await app.page.goto(positionId.replace(omni.network, `${omni.network}/omni`));
+			// await app.page.goto(positionId.replace(omni.network, `${omni.network}/omni`));
+			await app.page.goto(positionId);
 			await app.position.overview.shouldBeVisible();
 		}).toPass();
 	} else {

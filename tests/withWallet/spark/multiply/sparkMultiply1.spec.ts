@@ -58,7 +58,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.position.openPage('/ethereum/omni/spark/multiply/sdai-eth/1448#overview');
+		await app.position.openPage('/ethereum/spark/multiply/sdai-eth/1448#overview');
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Switch to Borrow');

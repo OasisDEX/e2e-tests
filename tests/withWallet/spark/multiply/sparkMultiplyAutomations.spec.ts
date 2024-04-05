@@ -49,7 +49,7 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/omni/spark/multiply/wbtc-dai#simulate');
+		await app.page.goto('/ethereum/spark/multiply/wbtc-dai#simulate');
 
 		await openPosition({
 			app,

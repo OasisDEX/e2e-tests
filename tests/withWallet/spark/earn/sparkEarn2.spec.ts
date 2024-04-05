@@ -55,7 +55,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.position.openPage('/ethereum/omni/spark/multiply/wsteth-eth/1417#overview');
+		await app.position.openPage('/ethereum/spark/earn/wsteth-eth/1417#overview');
 
 		await app.position.overview.shouldHaveExposure({
 			amount: '0.[0-9]{4}',
