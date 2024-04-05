@@ -18,7 +18,8 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
+// No liquidity - Enable when liquidity available
+test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -180,6 +181,4 @@ test.describe('Ajna Arbitrum Borrow - Wallet connected', async () => {
 			tokenAmountAfterClosing: '0.[0-9]{3,4}',
 		});
 	});
-
-	//TEST
 });
