@@ -29,7 +29,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should siwtch a Spark Multiply Short position to Borrow interface', async () => {
+	test('It should switch a Spark Multiply Short position to Borrow interface', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -72,7 +72,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		});
 	});
 
-	test('It should siwtch a Spark Multiply Short position (from Borrow) back to Multiply interface', async () => {
+	test('It should switch a Spark Multiply Short position (from Borrow) back to Multiply interface', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

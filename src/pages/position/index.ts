@@ -1,6 +1,7 @@
 import { expect, Page } from '@playwright/test';
 import { expectDefaultTimeout, positionTimeout } from 'utils/config';
 import { step } from '#noWalletFixtures';
+import { History } from './history';
 import { Manage } from './manage';
 import { Optimization } from './optimization';
 import { OrderInformation } from './orderInformation';
@@ -10,6 +11,8 @@ import { Setup } from './setup';
 
 export class Position {
 	readonly page: Page;
+
+	readonly history: History;
 
 	readonly manage: Manage;
 
@@ -25,6 +28,7 @@ export class Position {
 
 	constructor(page: Page) {
 		this.page = page;
+		this.history = new History(page);
 		this.manage = new Manage(page);
 		this.optimization = new Optimization(page);
 		this.orderInformation = new OrderInformation(page);
