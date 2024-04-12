@@ -18,8 +18,24 @@ export class Portfolio {
 	}
 
 	@step
-	async open(wallet?: string) {
-		await this.page.goto(`/portfolio/${wallet ?? ''}`);
+	async open(wallet?: string, args?: { withPositions?: boolean }) {
+		if (args?.withPositions) {
+			await expect(async () => {
+				await this.page.goto(`/portfolio/${wallet}`);
+				await expect(
+					this.page
+						.getByRole('link')
+						.filter({ hasText: 'Position #' })
+						.locator('span:has-text("$")')
+						.nth(0),
+					`First position's Net Value should be visible`
+				).toBeVisible({
+					timeout: 10_000,
+				});
+			}).toPass();
+		} else {
+			await this.page.goto(`/portfolio/${wallet ?? ''}`);
+		}
 	}
 
 	@step

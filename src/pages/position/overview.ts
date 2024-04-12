@@ -12,8 +12,8 @@ export class Overview {
 	@step
 	async shouldBeVisible(args?: { tab?: 'Overview' | 'Position Info'; timeout?: number }) {
 		await expect(
-			this.page.getByText(args?.tab ?? 'Position Info'),
-			'"Position Info" should be visible'
+			this.page.getByRole('button', { name: args?.tab ?? 'Position Info', exact: true }),
+			`${args?.tab ?? 'Position Info'} should be visible`
 		).toBeVisible({
 			timeout: args?.timeout ?? positionTimeout,
 		});

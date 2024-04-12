@@ -124,6 +124,28 @@ export class Positions {
 	}
 
 	/**
+	 * @param index should be an integer; '0' for top position, '1'for second position, etc.
+	 */
+	@step
+	async getNthPositionLink(index: number) {
+		const positionPageLink = await this.page
+			.getByRole('link')
+			.filter({ hasText: 'Position #' })
+			.nth(index)
+			.getAttribute('href');
+
+		return positionPageLink;
+	}
+
+	/**
+	 * @param index should be an integer; '0' for top position, '1'for second position, etc.
+	 */
+	@step
+	async openNthPosition(index: number) {
+		await this.page.getByRole('link').filter({ hasText: 'Position #' }).nth(index).click();
+	}
+
+	/**
 	 * @param position should be an integer; '1' for top position, '2'for second position, etc.
 	 */
 	@step
