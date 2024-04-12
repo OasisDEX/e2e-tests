@@ -48,7 +48,6 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
 			adjustRisk: { positionType: 'Borrow', value: 0.4 },
-			omni: { network: 'base' },
 		});
 	});
 

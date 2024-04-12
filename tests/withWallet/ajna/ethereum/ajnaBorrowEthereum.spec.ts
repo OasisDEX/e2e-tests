@@ -61,6 +61,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'RETH', amount: '2' },
 			borrow: { token: 'ETH', amount: '1.5' },
+			protocol: 'Ajna',
 		});
 	});
 

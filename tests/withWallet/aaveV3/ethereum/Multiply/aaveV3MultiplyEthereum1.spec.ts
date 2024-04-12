@@ -55,7 +55,6 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'DAI', amount: '15000.1234' },
-			omni: { network: 'ethereum' },
 		});
 	});
 

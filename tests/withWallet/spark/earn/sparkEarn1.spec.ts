@@ -63,7 +63,6 @@ test.describe('Spark Earn - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'RETH', amount: '7.5' },
-			omni: { network: 'ethereum' },
 		});
 	});
 

@@ -57,7 +57,6 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'CBETH', amount: '7.5' },
 			borrow: { token: 'ETH', amount: '3' },
-			omni: { network: 'ethereum' },
 		});
 	});
 

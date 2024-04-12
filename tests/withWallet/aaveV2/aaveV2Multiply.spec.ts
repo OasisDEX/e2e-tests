@@ -46,7 +46,6 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '2' },
-			omni: { network: 'ethereum' },
 		});
 	});
 

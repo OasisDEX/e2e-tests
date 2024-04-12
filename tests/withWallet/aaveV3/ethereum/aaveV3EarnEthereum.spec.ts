@@ -60,7 +60,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
-			omni: { network: 'ethereum' },
 		});
 	});
 

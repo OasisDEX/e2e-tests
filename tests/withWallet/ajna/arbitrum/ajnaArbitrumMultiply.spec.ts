@@ -61,6 +61,7 @@ test.describe.skip('Ajna Arbitrum Multiply - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'RETH', amount: '0.5' },
+			protocol: 'Ajna',
 		});
 	});
 });

@@ -46,7 +46,6 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '8.12345' },
-			omni: { network: 'arbitrum' },
 		});
 	});
 

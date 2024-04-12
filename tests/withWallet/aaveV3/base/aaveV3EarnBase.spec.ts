@@ -55,7 +55,6 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'CBETH', amount: '5' },
-			omni: { network: 'base' },
 		});
 	});
 

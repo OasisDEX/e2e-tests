@@ -57,6 +57,7 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'WSTETH', amount: '10' },
 			borrow: { token: 'USDC', amount: '8000.12' },
+			protocol: 'Morpho Blue',
 		});
 	});
 

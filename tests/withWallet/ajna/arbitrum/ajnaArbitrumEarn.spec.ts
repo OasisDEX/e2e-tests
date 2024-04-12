@@ -69,6 +69,7 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'WBTC', amount: '1' },
 			adjustRisk: { value: 0.8 },
+			protocol: 'Ajna',
 		});
 	});
 
