@@ -20,11 +20,17 @@ export class Overview {
 	}
 
 	@step
-	async waitForComponentToBeStable(args?: {
-		tab?: 'Overview' | 'Position Info';
-		timeout?: number;
-	}) {
-		await this.shouldBeVisible({ tab: args?.tab, timeout: args?.timeout });
+	async waitForComponentToBeStable(args?: { positionType?: 'Maker'; timeout?: number }) {
+		if (args?.positionType) {
+			await expect(
+				this.page.getByText('Overview', { exact: true }),
+				`"Overview" should be visible`
+			).toBeVisible({
+				timeout: args?.timeout ?? positionTimeout,
+			});
+		} else {
+			await this.shouldBeVisible();
+		}
 	}
 
 	@step

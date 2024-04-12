@@ -47,7 +47,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await app.page.goto('/vaults/open-multiply/ETH-B');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable({ tab: 'Overview' });
+		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
 
 		// If proxy was not previous setup extra steps will need to be executed
@@ -72,7 +72,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await app.page.reload();
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable({ tab: 'Overview' });
+		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
 
 		await app.position.setup.confirm();
@@ -134,10 +134,10 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.openPage('/vaults/open-multiply/WSTETH-A', { tab: 'Overview' });
+		await app.position.openPage('/vaults/open-multiply/WSTETH-A', { positionType: 'Maker' });
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable({ tab: 'Overview' });
+		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 		await app.position.setup.deposit({ token: 'WSTETH', amount: '20.12345' });
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveBuyingPowerAfterPill({
