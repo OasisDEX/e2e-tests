@@ -38,13 +38,23 @@ export class Position {
 	}
 
 	@step
-	async openPage(url: string, args?: { tab: 'Overview' }) {
+	async openPage(
+		url: string,
+		args?: { tab?: 'Overview' | 'Position Info'; positionType?: 'Maker' }
+	) {
 		await expect(async () => {
 			await this.page.goto(url);
-			await this.overview.waitForComponentToBeStable({
-				tab: args?.tab ?? 'Position Info',
-				timeout: expectDefaultTimeout * 5,
-			});
+			if (args?.positionType) {
+				await this.overview.waitForComponentToBeStable({
+					positionType: 'Maker',
+					timeout: expectDefaultTimeout * 5,
+				});
+			} else {
+				await this.overview.shouldBeVisible({
+					tab: args?.tab ?? 'Position Info',
+					timeout: expectDefaultTimeout * 5,
+				});
+			}
 		}).toPass();
 	}
 
