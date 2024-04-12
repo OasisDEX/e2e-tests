@@ -51,7 +51,6 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'ETH', amount: '7.5' },
 			borrow: { token: 'DAI', amount: '5000' },
-			omni: { network: 'ethereum' },
 		});
 	});
 

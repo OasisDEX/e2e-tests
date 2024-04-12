@@ -60,6 +60,7 @@ test.describe('Ajna Optimism Earn & Borrow - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
 			adjustRisk: { value: 0.8 },
+			protocol: 'Ajna',
 		});
 	});
 

@@ -55,7 +55,6 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'WBTC', amount: '1' },
-			omni: { network: 'ethereum' },
 			adjustRisk: { positionType: 'Borrow', value: 0.5 },
 		});
 	});

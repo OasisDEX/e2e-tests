@@ -157,6 +157,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'WSTETH', amount: '30.12345' },
+			protocol: 'Morpho Blue',
 		});
 	});
 

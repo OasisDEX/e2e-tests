@@ -51,7 +51,6 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'ETH', amount: '9.12345' },
 			borrow: { token: 'USDBC', amount: '2000' },
-			omni: { network: 'base' },
 		});
 	});
 

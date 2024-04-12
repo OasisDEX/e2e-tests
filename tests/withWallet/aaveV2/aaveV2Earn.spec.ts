@@ -45,7 +45,6 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10.09' },
-			omni: { network: 'ethereum' },
 		});
 	});
 });

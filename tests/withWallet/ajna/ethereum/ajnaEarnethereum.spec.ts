@@ -43,7 +43,12 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 		await app.page.goto('/ethereum/ajna/earn/RETH-ETH#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
 
-		await openPosition({ app, forkId, deposit: { token: 'ETH', amount: '20' } });
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '20' },
+			protocol: 'Ajna',
+		});
 	});
 
 	test('It should allow to simulate an Ajna Ethereum Earn position before opening it', async () => {

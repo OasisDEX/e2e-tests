@@ -65,6 +65,7 @@ test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'RETH', amount: '0.1' },
 			borrow: { token: 'ETH', amount: '0.01' },
+			protocol: 'Ajna',
 		});
 	});
 

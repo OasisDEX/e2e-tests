@@ -57,7 +57,6 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'WBTC', amount: '0.5' },
 			adjustRisk: { positionType: 'Borrow', value: 0.5 },
-			omni: { network: 'arbitrum' },
 		});
 	});
 

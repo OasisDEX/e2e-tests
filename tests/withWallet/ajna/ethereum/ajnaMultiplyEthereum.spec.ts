@@ -52,7 +52,12 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		await app.page.goto('/ethereum/ajna/multiply/RETH-ETH#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
 
-		await openPosition({ app, forkId, deposit: { token: 'RETH', amount: '2' } });
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'RETH', amount: '2' },
+			protocol: 'Ajna',
+		});
 	});
 
 	test('It should adjust risk of an existing Ajna Ethereum Multiply position - Up @regression', async () => {

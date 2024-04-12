@@ -59,7 +59,6 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
-			omni: { network: 'ethereum' },
 		});
 	});
 

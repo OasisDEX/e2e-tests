@@ -16,7 +16,7 @@ export const openPosition = async ({
 	borrow,
 	existingDPM,
 	adjustRisk,
-	omni,
+	protocol,
 }: {
 	app: App;
 	forkId: string;
@@ -24,7 +24,7 @@ export const openPosition = async ({
 	borrow?: ActionData;
 	existingDPM?: boolean;
 	adjustRisk?: { positionType?: 'Borrow'; value: number };
-	omni?: { network: 'ethereum' | 'arbitrum' | 'base' | 'optimism' };
+	protocol?: 'Ajna' | 'Morpho Blue';
 }) => {
 	await app.position.setup.deposit(deposit);
 	if (borrow) {
@@ -69,23 +69,22 @@ export const openPosition = async ({
 		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
 	}).toPass({ timeout: longTestTimeout });
 
-	if (omni) {
+	if (protocol) {
+		// UI sometimes gets stuck after confirming position creation
+		//   - 'Reload' added to avoid flakines
+		await app.page.reload();
+		await app.position.setup.goToPosition();
+		await app.position.overview.shouldBeVisible();
+	} else {
 		await app.position.setup.goToPositionShouldBeVisible();
 		const positionId = await app.position.setup.getNewPositionId();
 		//
 		await app.page.waitForTimeout(10_000);
 		//
 		await expect(async () => {
-			// await app.page.goto(positionId.replace(omni.network, `${omni.network}/omni`));
 			await app.page.goto(positionId);
 			await app.position.overview.shouldBeVisible();
 		}).toPass();
-	} else {
-		// UI sometimes gets stuck after confirming position creation
-		//   - 'Reload' added to avoid flakines
-		await app.page.reload();
-		await app.position.setup.goToPosition();
-		await app.position.overview.shouldBeVisible();
 	}
 };
 

@@ -47,7 +47,6 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10.12345' },
-			omni: { network: 'optimism' },
 		});
 	});
 

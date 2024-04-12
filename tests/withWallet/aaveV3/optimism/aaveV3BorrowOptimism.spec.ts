@@ -52,7 +52,6 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'ETH', amount: '7.5' },
 			borrow: { token: 'USDC', amount: '2000' },
-			omni: { network: 'optimism' },
 		});
 	});
 
