@@ -10,15 +10,18 @@ type LogName =
 
 type LogPropertyName =
 	| 'Collateral Deposit'
-	| 'Total collateral'
-	| 'Position debt'
-	| 'Loan To Value'
+	| 'Execution LTV'
+	| 'Fees incl. gas'
 	| 'Liquidation price'
+	| 'Loan To Value'
+	| 'Market price'
+	| 'Minimum sell price'
 	| 'Multiple'
 	| 'Net value'
+	| 'Position debt'
 	| 'Swapped'
-	| 'Market price'
-	| 'Fees incl. gas'
+	| 'Target LTV'
+	| 'Total collateral'
 	| 'View on Arbiscan'
 	| 'View on Etherscan';
 
