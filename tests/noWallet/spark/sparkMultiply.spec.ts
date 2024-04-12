@@ -89,6 +89,58 @@ test.describe('Spark Multiply', async () => {
 		]);
 	});
 
+	test('It should show History ("Auto sell added" event) of a Spark Multiply Long position @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.position.openPage('/ethereum/spark/multiply/ETH-DAI/1975#history');
+
+		await app.position.history.openLog('Auto sell added');
+		await app.position.history.shouldHaveLogData([
+			{ name: 'Execution LTV', value: '21%' },
+			{ name: 'Target LTV', value: '15%' },
+			{ name: 'Minimum sell price', value: '0.00 WETH/DAI' },
+			{
+				name: 'View on Etherscan',
+				value:
+					'https://etherscan.io/tx/0xd1f141f122a8e3b753451321d9fdca0a1f1a74b3c1716a04265cfa3149d9a01c',
+			},
+		]);
+	});
+
+	test('It should show History ("Auto sell executed" event) of a Spark Multiply Long position @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.position.openPage('/ethereum/spark/multiply/ETH-DAI/1975#history');
+
+		await app.position.history.openLog('Auto sell executed');
+		await app.position.history.shouldHaveLogData([
+			{ name: 'Collateral Deposit', value: '0.00 ETH' },
+			{ name: 'Total collateral', value: '0.1000 ETH 0.0633 ETH' },
+			{ name: 'Position debt', value: '150.00 DAI 31.58 DAI' },
+			{ name: 'Loan To Value', value: '46.12% 15.33%' },
+			{ name: 'Liquidation price', value: '604.55 ETH/DAI' },
+			{ name: 'Multiple', value: '1.86x 1.18x' },
+			{ name: 'Net value', value: '175.30 USD174.37 USD' },
+			{ name: 'Market price', value: '3,254.30 ETH/DAI' },
+			{ name: 'Fees incl. gas', value: '249.88 USD' },
+			{
+				name: 'View on Etherscan',
+				value:
+					'https://etherscan.io/tx/0x42684218eee07d39382056c77e05bfccb92766d8fd7c9aab2b07f0a211171180',
+			},
+		]);
+	});
+
 	test('It should show History ("Migrated from Spark" event) of a Spark Multiply Long position @regression', async ({
 		app,
 	}) => {
