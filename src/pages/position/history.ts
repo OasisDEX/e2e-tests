@@ -38,6 +38,7 @@ export class History {
 		await this.page
 			.locator(`li:has-text("${logname}")`)
 			.filter({ has: this.page.locator('time') })
+			.last()
 			.click();
 	}
 

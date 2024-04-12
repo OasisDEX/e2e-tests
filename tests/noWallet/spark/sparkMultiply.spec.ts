@@ -1,6 +1,6 @@
 import { test } from '#noWalletFixtures';
 
-test.describe.only('Spark Multiply', async () => {
+test.describe('Spark Multiply', async () => {
 	test('It should show History ("Open position" event) of a Spark Multiply Short position @regression', async ({
 		app,
 	}) => {
