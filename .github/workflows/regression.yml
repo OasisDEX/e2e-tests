@@ -71,7 +71,7 @@ jobs:
           path: playwright-reports/with-wallet-aave-ethereum
           retention-days: 30
 
- with-wallet-aave-arbitrum-tests:
+  with-wallet-aave-arbitrum-tests:
     name: 'With wallet - Aave - Arbitrum'
     runs-on: ubuntu-latest
     env:
@@ -141,7 +141,7 @@ jobs:
           path: playwright-reports/with-wallet-aave-base
           retention-days: 30
 
- with-wallet-aave-optimism-tests:
+  with-wallet-aave-optimism-tests:
     name: 'With wallet - Aave - Optimism'
     runs-on: ubuntu-latest
     env:
@@ -175,7 +175,6 @@ jobs:
           name: playwright-report-with-wallet-aave-optimism
           path: playwright-reports/with-wallet-aave-optimism
           retention-days: 30
-
 
   with-wallet-ajna-ethereum-tests:
     name: 'With wallet - Ajna - Ethereum'
