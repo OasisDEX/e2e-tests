@@ -1,10 +1,10 @@
 import { BrowserContext, test } from '@playwright/test';
-import { metamaskSetUp } from 'utils/setup';
+import { metamaskSetUp, setupNewFork } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import * as automations from 'tests/sharedTestSteps/automations';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -51,8 +51,7 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 			forkId,
 		});
 
-		await app.page.goto('/ethereum/aave/v3/multiply/eth-usdc/1218#overview');
-		await app.position.overview.shouldBeVisible();
+		await app.position.openPage('/ethereum/aave/v3/multiply/eth-usdc/1218#overview');
 
 		await automations.testAutoBuy({ app, forkId });
 	});
@@ -93,11 +92,20 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 			description: 'xxx',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
-		// Reload page to avoid random fails
-		await app.page.reload();
-		await app.position.overview.shouldBeVisible();
+		// New fork needed to avoid flakyness
+		await test.step('Test setup - New fork', async () => {
+			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
+		});
+
+		await tenderly.changeAccountOwner({
+			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.position.openPage('/ethereum/aave/v3/multiply/eth-usdc/1218#overview');
 
 		await automations.testTrailingStopLoss({ app, forkId });
 	});
@@ -108,11 +116,20 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 			description: 'xxx',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
-		// Reload page to avoid random fails
-		await app.page.reload();
-		await app.position.overview.shouldBeVisible();
+		// New fork needed to avoid flakyness
+		await test.step('Test setup - New fork', async () => {
+			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
+		});
+
+		await tenderly.changeAccountOwner({
+			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.position.openPage('/ethereum/aave/v3/multiply/eth-usdc/1218#overview');
 
 		await automations.testPartialTakeProfit({ app, forkId });
 	});
