@@ -62,8 +62,20 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'with-wallet-aave-arbitrum',
+			testMatch: ['withWallet/aaveV3/arbitrum/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
 			name: 'with-wallet-aave-base',
 			testMatch: ['withWallet/aaveV3/base/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-aave-optimism',
+			testMatch: ['withWallet/aaveV3/optimism/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
