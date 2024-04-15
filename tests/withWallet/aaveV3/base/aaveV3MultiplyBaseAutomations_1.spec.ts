@@ -6,11 +6,11 @@ import * as automations from 'tests/sharedTestSteps/automations';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -25,10 +25,10 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open with Stop-Loss an Aave v3 Multiply Base position @regression', async () => {
+	test('It should set Auto-Buy on an Aave v3 Base Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12463',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -38,30 +38,20 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({ app, network: 'base' }));
+			({ forkId, walletAddress } = await setup({
+				app,
+				network: 'base',
+				automationMinNetValueFlags: 'base:aavev3:0.001',
+			}));
 		});
 
-		await app.page.goto('/base/aave/v3/multiply/eth-usdc#simulate');
-
-		await openPosition({
-			app,
+		await tenderly.changeAccountOwner({
+			account: '0xf71da0973121d949e1cee818eb519ba364406309',
+			newOwner: walletAddress,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-			adjustRisk: { positionType: 'Borrow', value: 0.4 },
-		});
-	});
-
-	test('It should set Auto-Buy on an Aave v3 Base Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
 		});
 
-		test.setTimeout(longTestTimeout);
-
-		// Reload page to avoid random fails
-		await app.page.reload();
-		await app.position.overview.shouldBeVisible();
+		await app.position.openPage('/base/aave/v3/multiply/ETH-USDC/435#overview');
 
 		await automations.testAutoBuy({ app, forkId });
 	});
@@ -79,5 +69,20 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.position.overview.shouldBeVisible();
 
 		await automations.testAutoSell({ app, forkId });
+	});
+
+	test('It should set Partial Take Profit on an Aave v3 Mainnet Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
+		await automations.testPartialTakeProfit({ app, forkId });
 	});
 });

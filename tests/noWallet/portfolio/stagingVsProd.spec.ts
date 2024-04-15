@@ -1,6 +1,7 @@
 import { expect, test } from '#noWalletFixtures';
-import { longTestTimeout, portfolioTimeout } from 'utils/config';
+import { longTestTimeout } from 'utils/config';
 import { comparePositionsData, shortenAddress } from 'utils/general';
+import { PortfolioData } from 'src/pages/portfolio';
 
 test.describe('Staging vs Production - Wallet not connected', async () => {
 	/* 
@@ -29,44 +30,87 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 
 			test.setTimeout(longTestTimeout);
 
+			let stagingData1: PortfolioData;
+			let stagingData2: PortfolioData;
+			let productionData1: PortfolioData;
+			let productionData2: PortfolioData;
+
 			// STAGING - 1st log
 			await app.portfolio.loadPortfolioPageAndPositions({ environment: 'staging', walletAddress });
 			await app.portfolio.positions.showEmptyPositions();
 			await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
-			const stagingData1 = await app.portfolio.getPortfolioData();
+			stagingData1 = await app.portfolio.getPortfolioData();
 
-			// PRODUCTION
+			// PRODUCTION - 1st log
 			await app.portfolio.loadPortfolioPageAndPositions({
 				environment: 'production',
 				walletAddress,
 			});
 			await app.portfolio.positions.showEmptyPositions();
 			await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
-			const productionData = await app.portfolio.getPortfolioData();
+			productionData1 = await app.portfolio.getPortfolioData();
 
-			// STAGING - 2nd log (Portfolio data is updated from time to time)
-			await app.portfolio.loadPortfolioPageAndPositions({ environment: 'staging', walletAddress });
-			await app.portfolio.positions.showEmptyPositions();
-			await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
-			const stagingData2 = await app.portfolio.getPortfolioData();
-
-			// Check that productionData is equal to either stagingData1 or stagingData2
-			for (const property in productionData) {
-				if (property === 'positionsListedData') {
-					expect(
-						comparePositionsData(
-							stagingData1.positionsListedData,
-							productionData.positionsListedData
-						) ||
+			if (stagingData1.portfolioValue === productionData1.portfolioValue) {
+				// Check that productionData1 is equal to stagingData1
+				for (const property in productionData1) {
+					if (property === 'positionsListedData') {
+						expect(
 							comparePositionsData(
-								stagingData2.positionsListedData,
-								productionData.positionsListedData
+								stagingData1.positionsListedData,
+								productionData1.positionsListedData
 							)
-					).toBeTruthy();
+						).toBeTruthy();
+					} else {
+						expect(stagingData1[property]).toEqual(productionData1[property]);
+					}
+				}
+			} else {
+				// STAGING - 2nd log (Portfolio data is updated from time to time)
+				await app.portfolio.loadPortfolioPageAndPositions({
+					environment: 'staging',
+					walletAddress,
+				});
+				await app.portfolio.positions.showEmptyPositions();
+				await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
+				stagingData2 = await app.portfolio.getPortfolioData();
+
+				if (stagingData2.portfolioValue === productionData1.portfolioValue) {
+					// Check that productionData2 is equal to stagingData1
+					for (const property in productionData1) {
+						if (property === 'positionsListedData') {
+							expect(
+								comparePositionsData(
+									stagingData2.positionsListedData,
+									productionData1.positionsListedData
+								)
+							).toBeTruthy();
+						} else {
+							expect(stagingData2[property]).toEqual(productionData1[property]);
+						}
+					}
 				} else {
-					expect([stagingData1[property], stagingData2[property]]).toContain(
-						productionData[property]
-					);
+					// PRODUCTION - 2nd log (Portfolio data is updated from time to time)
+					await app.portfolio.loadPortfolioPageAndPositions({
+						environment: 'production',
+						walletAddress,
+					});
+					await app.portfolio.positions.showEmptyPositions();
+					await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
+					productionData2 = await app.portfolio.getPortfolioData();
+
+					// Check that productionData2 is equal to stagingData2
+					for (const property in productionData2) {
+						if (property === 'positionsListedData') {
+							expect(
+								comparePositionsData(
+									stagingData2.positionsListedData,
+									productionData2.positionsListedData
+								)
+							).toBeTruthy();
+						} else {
+							expect(stagingData2[property]).toEqual(productionData2[property]);
+						}
+					}
 				}
 			}
 		})
