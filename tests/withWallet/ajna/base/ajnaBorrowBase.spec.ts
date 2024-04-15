@@ -3,7 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	close,
@@ -29,7 +29,8 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Ajna Base Borrow position @regression', async () => {
+	// Test added to add pool liquidity and reduce flakiness of Borrow tests
+	test('It should open an Ajna Base Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -46,12 +47,31 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 			await tenderly.setTokenBalance({
 				forkId,
-				network: 'base',
 				walletAddress,
+				network: 'base',
 				token: 'WSTETH',
 				balance: '100',
 			});
 		});
+
+		await app.page.goto('/base/ajna/earn/WSTETH-ETH#setup');
+		await app.position.setup.acknowlegeAjnaInfo();
+
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '10' },
+			protocol: 'Ajna',
+		});
+	});
+
+	test('It should open an Ajna Base Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/base/ajna/borrow/WSTETH-ETH#setup');
 		await app.position.setup.acknowlegeAjnaInfo();
@@ -59,6 +79,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
+			existingDPM: true,
 			deposit: { token: 'WSTETH', amount: '2' },
 			borrow: { token: 'ETH', amount: '1' },
 			protocol: 'Ajna',

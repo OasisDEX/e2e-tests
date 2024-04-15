@@ -4,6 +4,21 @@ import { Positions } from './positions';
 import { Wallet } from './wallet';
 import { expectDefaultTimeout, portfolioTimeout } from 'utils/config';
 
+export type PortfolioData = {
+	reasons: string;
+	totalValue: string;
+	portfolioValue: string;
+	totalSupplied: string;
+	totalBorrowed: string;
+	emptyPositionsCount: number;
+	positionsListedCount: number;
+	positionsListedData: {
+		id: string;
+		pool: string;
+		type: string;
+	}[];
+};
+
 export class Portfolio {
 	readonly page: Page;
 
@@ -25,7 +40,7 @@ export class Portfolio {
 				await expect(
 					this.page
 						.getByRole('link')
-						.filter({ hasText: 'Position #' })
+						.filter({ hasText: 'View Position' })
 						.locator('span:has-text("$")')
 						.nth(0),
 					`First position's Net Value should be visible`
@@ -143,7 +158,7 @@ export class Portfolio {
 	@step
 	async shouldHavePositionsPanelWithoutErrors() {
 		const noPositions = this.page.getByText('There are no positions');
-		const positionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
+		const positionsListed = this.page.getByRole('button', { name: 'View Position', exact: true });
 		const migratePositions = this.page.getByText('Why migrate?');
 		const errorLoadingPositions = this.page.getByText('error trying to load positions');
 
@@ -180,20 +195,7 @@ export class Portfolio {
 
 	@step
 	async getPortfolioData() {
-		let data: {
-			reasons: string;
-			totalValue: string;
-			portfolioValue: string;
-			totalSupplied: string;
-			totalBorrowed: string;
-			emptyPositionsCount: number;
-			positionsListedCount: number;
-			positionsListedData: {
-				id: string;
-				pool: string;
-				type: string;
-			}[];
-		} = {
+		let data: PortfolioData = {
 			reasons: '',
 			totalValue: '',
 			portfolioValue: '',
