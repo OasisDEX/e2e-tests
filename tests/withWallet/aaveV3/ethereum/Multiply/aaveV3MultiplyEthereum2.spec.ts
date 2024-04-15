@@ -25,7 +25,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should Deposit on an existing Aave V3 Multiply Ethereum position @regression', async () => {
+	test('It should Deposit on an existing Aave V3 Multiply Ethereum position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13664',
@@ -73,7 +73,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Withdraw on an existing Aave V3 Multiply Ethereum position @regression', async () => {
+	test('It should Withdraw on an existing Aave V3 Multiply Ethereum position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13665',
@@ -95,7 +95,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Borrow on an existing Aave V3 Multiply Ethereum position @regression', async () => {
+	test('It should Borrow on an existing Aave V3 Multiply Ethereum position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13664',
@@ -120,7 +120,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		});
 	});
 
-	test('It should Pay back on an existing Aave V3 Multiply Ethereum position @regression', async () => {
+	test('It should Pay back on an existing Aave V3 Multiply Ethereum position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '13666',
@@ -145,7 +145,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		});
 	});
 
-	test('It should close an existent Aave V3 Multiply Ethereum position - Close to collateral token (RETH) @regression', async () => {
+	test('It should close an existent Aave V3 Multiply Ethereum position - Close to collateral token (RETH)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12057',
