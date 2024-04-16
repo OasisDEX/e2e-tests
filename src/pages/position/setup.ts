@@ -33,7 +33,7 @@ export class Setup {
 	}
 
 	@step
-	async acknowlegeAjnaInfo() {
+	async acknowledgeAjnaInfo() {
 		await this.page.getByText('I understand').click();
 	}
 

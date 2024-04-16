@@ -55,7 +55,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/base/ajna/earn/WSTETH-ETH#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
@@ -74,7 +74,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.page.goto('/base/ajna/borrow/WSTETH-ETH#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
@@ -209,7 +209,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		await app.page.goto('/base/ajna/borrow/ETH-USDC#setup');
 
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 		await app.position.setup.deposit({ token: 'ETH', amount: '10.12345' });
 
 		await app.position.overview.shouldHaveCollateralDepositedAfterPill('10.12 ETH');

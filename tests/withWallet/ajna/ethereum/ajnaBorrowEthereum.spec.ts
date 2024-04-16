@@ -54,7 +54,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/ethereum/ajna/borrow/RETH-ETH#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
@@ -189,7 +189,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await app.page.goto('/ethereum/ajna/borrow/RETH-ETH#setup');
 		await app.position.setup.openNewPosition();
 
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 		await app.position.setup.deposit({ token: 'RETH', amount: '10.12345' });
 
 		await app.position.overview.shouldHaveCollateralDepositedAfterPill('10.12 RETH');

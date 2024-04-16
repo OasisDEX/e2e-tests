@@ -49,8 +49,8 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/base/ajna/earn/ETH-USDC#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.openPage('/base/ajna/earn/ETH-USDC#setup');
+		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
@@ -66,9 +66,8 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 			description: 'xxx',
 		});
 
-		await app.page.goto('/base/ajna/earn/CBETH-ETH#setup');
-
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.openPage('/base/ajna/earn/CBETH-ETH#setup');
+		await app.position.setup.acknowledgeAjnaInfo();
 		await app.position.setup.deposit({ token: 'ETH', amount: '10' });
 
 		await app.position.overview.shouldHaveProjectedEarnings30days({
