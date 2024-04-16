@@ -59,32 +59,6 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		});
 	});
 
-	test('It should set Auto-Buy on an Spark Mainnet Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await automations.testAutoBuy({ app, forkId, triggerLTV: 0.1 });
-	});
-
-	test('It should set Auto-Sell on an Spark Mainnet Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Reload page to avoid random fails
-		await app.page.reload();
-		await app.position.overview.shouldBeVisible();
-
-		await automations.testAutoSell({ app, forkId });
-	});
-
 	test('It should set Regular Stop-Loss on an Spark Mainnet Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
@@ -113,5 +87,35 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await app.position.overview.shouldBeVisible();
 
 		await automations.testTrailingStopLoss({ app, forkId });
+	});
+
+	test('It should set Auto-Buy on an Spark Mainnet Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
+		await automations.testAutoBuy({ app, forkId, triggerLTV: 0.1 });
+	});
+
+	test('It should set Auto-Sell on an Spark Mainnet Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
+		await automations.testAutoSell({ app, forkId });
 	});
 });
