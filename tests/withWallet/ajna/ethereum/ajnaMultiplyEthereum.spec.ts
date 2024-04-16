@@ -50,7 +50,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/ethereum/ajna/multiply/RETH-ETH#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
@@ -117,7 +117,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/ethereum/ajna/multiply/WBTC-DAI#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 		await app.position.setup.deposit({ token: 'WBTC', amount: '0.654321' });
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill(

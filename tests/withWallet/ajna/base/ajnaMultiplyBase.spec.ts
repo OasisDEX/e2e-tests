@@ -50,7 +50,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/base/ajna/multiply/ETH-USDC');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
@@ -117,7 +117,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/base/ajna/multiply/WSTETH-ETH#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 		await app.position.setup.deposit({ token: 'WSTETH', amount: '15.12345' });
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('0.[0-9]{4} WSTETH/ETH');
