@@ -273,7 +273,7 @@ jobs:
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
-          yarn ci:with-wallet:ajna-base:regression
+          yarn ci:with-wallet:ajna:base:regression
       - uses: actions/upload-artifact@v3
         if: always()
         with:
@@ -308,7 +308,7 @@ jobs:
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
-          yarn ci:with-wallet:ajna-optimism:regression
+          yarn ci:with-wallet:ajna:optimism:regression
       - uses: actions/upload-artifact@v3
         if: always()
         with:
