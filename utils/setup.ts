@@ -68,13 +68,19 @@ export const setup = async ({
 	network,
 	extraFeaturesFlags,
 	automationMinNetValueFlags,
+	withoutFork,
 }: {
 	app: App;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 	extraFeaturesFlags?: string;
 	automationMinNetValueFlags?: string;
+	withoutFork?: boolean;
 }) => {
+	let forkId: string;
 	const walletAddress = await metamask.walletAddress();
+	// Logging walletAddress for debugging purposes
+	//  - Info displayed in 'Attachments > stdout' section of playwright reports
+	console.log('+++ Wallet Address: ', walletAddress);
 
 	await app.page.goto('');
 	await app.homepage.shouldBeVisible();
@@ -104,17 +110,24 @@ export const setup = async ({
 	await wallet.connect(app);
 	await termsAndconditions.accept(app);
 
-	const resp = await tenderly.createFork({ network });
-	const forkId = resp.data.root_transaction.fork_id;
+	if (!withoutFork) {
+		const resp = await tenderly.createFork({ network });
+		forkId = resp.data.root_transaction.fork_id;
 
-	await fork.addToApp({ app, forkId, network });
+		await fork.addToApp({ app, forkId, network });
 
-	await tenderly.setTokenBalance({ forkId, walletAddress, network, token: 'ETH', balance: '1000' });
+		await tenderly.setTokenBalance({
+			forkId,
+			walletAddress,
+			network,
+			token: 'ETH',
+			balance: '1000',
+		});
 
-	// Logging forkId and walletAddress for debugging purposes
-	//  - Info displayed in 'Attachments > stdout' section of playwright reports
-	console.log('+++ Fork Id: ', forkId);
-	console.log('+++ Wallet Address: ', walletAddress);
+		// Logging forkId for debugging purposes
+		//  - Info displayed in 'Attachments > stdout' section of playwright reports
+		console.log('+++ Fork Id: ', forkId);
+	}
 
 	return { forkId, walletAddress };
 };
