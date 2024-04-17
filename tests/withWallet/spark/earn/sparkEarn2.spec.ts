@@ -5,12 +5,17 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { close, manageDebtOrCollateral } from 'tests/sharedTestSteps/positionManagement';
+import {
+	close,
+	manageDebtOrCollateral,
+	openPosition,
+} from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
 let forkId: string;
 let walletAddress: string;
+let positionId: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -25,10 +30,10 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should Deposit extra collateral on an existing Spark Earn position', async () => {
+	test('It should open a Spark Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: 'xxxxx',
+			description: '12089',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -44,26 +49,43 @@ test.describe('Spark Earn - Wallet connected', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
+				token: 'SDAI',
+				balance: '30000',
+			});
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'USDT',
+				balance: '30000',
 			});
 		});
 
-		await tenderly.changeAccountOwner({
-			account: '0x6be31243e0ffa8f42d1f64834eca2ab6dc8f7498',
-			newOwner: walletAddress,
+		await app.page.goto('/ethereum/spark/earn/SDAI-USDT#setup');
+
+		positionId = await openPosition({
+			app,
 			forkId,
+			deposit: { token: 'SDAI', amount: '10000' },
+		});
+	});
+
+	test('It should Deposit extra collateral on an existing Spark Earn position', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxxxx',
 		});
 
-		await app.position.openPage('/ethereum/spark/earn/wsteth-eth/1417#overview');
+		test.setTimeout(longTestTimeout);
 
 		await app.position.overview.shouldHaveExposure({
-			amount: '0.[0-9]{4}',
-			token: 'WSTETH',
+			amount: '1[0-2],[0-9]{3}.[0-9]{2}',
+			token: 'SDAI',
 		});
 		await app.position.overview.shouldHaveDebt({
-			amount: '0.[0-9]{4}',
-			token: 'ETH',
+			amount: '(1,)?[0-9]{3}.[0-9]{2}',
+			token: 'USDT',
 		});
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -72,14 +94,11 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '20' },
+			deposit: { token: 'SDAI', amount: '5000' },
+			allowanceNotNeeded: true,
 			expectedCollateralExposure: {
-				amount: '20.[0-9]{2}',
-				token: 'WSTETH',
-			},
-			expectedDebt: {
-				amount: '0.[0-9]{4}',
-				token: 'ETH',
+				amount: '1[5-7],[0-9]{3}.[0-9]{2}',
+				token: 'SDAI',
 			},
 			protocol: 'Spark',
 		});
@@ -94,8 +113,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		// Pause and Reload page to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		await app.position.openPage(positionId);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
@@ -104,14 +122,10 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			withdraw: { token: 'WSTETH', amount: '10' },
+			withdraw: { token: 'SDAI', amount: '3000' },
 			expectedCollateralExposure: {
-				amount: '10.[0-9]{2}',
-				token: 'WSTETH',
-			},
-			expectedDebt: {
-				amount: '0.[0-9]{4}',
-				token: 'ETH',
+				amount: '1[2-4],[0-9]{3}.[0-9]{2}',
+				token: 'SDAI',
 			},
 			protocol: 'Spark',
 		});
@@ -126,8 +140,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		// Pause and Reload page to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		await app.position.openPage(positionId);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
@@ -136,14 +149,10 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			borrow: { token: 'ETH', amount: '7' },
-			expectedCollateralExposure: {
-				amount: '10.[0-9]{2}',
-				token: 'WSTETH',
-			},
+			borrow: { token: 'USDT', amount: '7000' },
 			expectedDebt: {
-				amount: '7.[0-9]{2}',
-				token: 'ETH',
+				amount: '[7-8],[0-9]{3}.[0-9]{2}',
+				token: 'USDT',
 			},
 			protocol: 'Spark',
 		});
@@ -158,8 +167,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		// Pause and Reload page to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		await app.position.openPage(positionId);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
@@ -167,20 +175,16 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			payBack: { token: 'ETH', amount: '5' },
-			expectedCollateralExposure: {
-				amount: '10.[0-9]{2}',
-				token: 'WSTETH',
-			},
+			payBack: { token: 'USDT', amount: '3000' },
 			expectedDebt: {
-				amount: '2.[0-9]{2}',
-				token: 'ETH',
+				amount: '[4-5],[0-9]{3}.[0-9]{2}',
+				token: 'USDT',
 			},
 			protocol: 'Spark',
 		});
 	});
 
-	test('It should close an existent Spark Earn position - Close to debt token (ETH)', async () => {
+	test('It should close an existent Spark Earn position - Close to debt token (USDT)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12894',
@@ -189,17 +193,16 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		await app.position.openPage(positionId);
 
 		await close({
 			app,
 			forkId,
 			positionType: 'Earn',
 			closeTo: 'debt',
-			collateralToken: 'WSTETH',
-			debtToken: 'ETH',
-			tokenAmountAfterClosing: '[0-9].[0-9]{1,2}([0-9]{1,2})?',
+			collateralToken: 'SDAI',
+			debtToken: 'USDT',
+			tokenAmountAfterClosing: '[7-9],[0-9]{3}.[0-9]{1,2}',
 		});
 	});
 });
