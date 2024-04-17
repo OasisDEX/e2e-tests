@@ -77,7 +77,7 @@ export const openPosition = async ({
 		await app.position.overview.shouldBeVisible();
 	} else {
 		await app.position.setup.goToPositionShouldBeVisible();
-		const positionId = await app.position.setup.getNewPositionId();
+		const positionId: string = await app.position.setup.getNewPositionId();
 		//
 		await app.page.waitForTimeout(10_000);
 		//
@@ -85,6 +85,8 @@ export const openPosition = async ({
 			await app.page.goto(positionId);
 			await app.position.overview.shouldBeVisible();
 		}).toPass();
+
+		return positionId;
 	}
 };
 

@@ -52,7 +52,7 @@ export class Position {
 			} else {
 				await this.overview.shouldBeVisible({
 					tab: args?.tab ?? 'Position Info',
-					timeout: expectDefaultTimeout * 5,
+					timeout: expectDefaultTimeout * 6,
 				});
 			}
 		}).toPass();

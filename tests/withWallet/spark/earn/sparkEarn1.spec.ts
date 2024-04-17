@@ -44,14 +44,6 @@ test.describe('Spark Earn - Wallet connected', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'DAI',
-				balance: '30000',
-			});
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
 				token: 'RETH',
 				balance: '100',
 			});
