@@ -349,13 +349,21 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveAvailableToWithdraw({ amount, token }: { amount: string; token: string }) {
+	async shouldHaveAvailableToWithdraw({
+		amount,
+		token,
+		timeout,
+	}: {
+		amount: string;
+		token: string;
+		timeout?: number;
+	}) {
 		const regExp = new RegExp(`${amount} ${token}`);
 
 		await expect(this.page.locator('li:has-text("Available to Withdraw") p')).toContainText(
 			regExp,
 			{
-				timeout: positionTimeout,
+				timeout: timeout ?? expectDefaultTimeout,
 			}
 		);
 	}

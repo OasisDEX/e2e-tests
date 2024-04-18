@@ -245,6 +245,7 @@ export const manageDebtOrCollateral = async ({
 	borrow,
 	payBack,
 	expectedCollateralDeposited,
+	expectedAvailableToWithdraw,
 	expectedCollateralExposure,
 	expectedDebt,
 }: {
@@ -257,6 +258,7 @@ export const manageDebtOrCollateral = async ({
 	borrow?: ActionData;
 	payBack?: ActionData;
 	expectedCollateralDeposited?: { token: string; amount: string };
+	expectedAvailableToWithdraw?: { token: string; amount: string };
 	expectedCollateralExposure?: { token: string; amount: string };
 	expectedDebt?: { token: string; amount: string };
 }) => {
@@ -306,6 +308,12 @@ export const manageDebtOrCollateral = async ({
 		await app.position.overview.shouldHaveCollateralDeposited({
 			timeout: positionTimeout,
 			...expectedCollateralDeposited,
+		});
+	}
+	if (expectedAvailableToWithdraw) {
+		await app.position.overview.shouldHaveAvailableToWithdraw({
+			timeout: positionTimeout,
+			...expectedAvailableToWithdraw,
 		});
 	}
 	if (expectedCollateralExposure) {
