@@ -524,4 +524,18 @@ export class Setup {
 			.getByRole('button', { name: 'Open new position' })
 			.click({ clickCount: 2, timeout: expectDefaultTimeout * 3 });
 	}
+
+	@step
+	async openTokenSelector() {
+		await this.page.getByTestId('deposit-token-selector').click();
+	}
+
+	@step
+	async selectDepositToken(token: 'USTD' | 'ETH') {
+		await this.page
+			.getByTestId('deposit-token-list')
+			.getByRole('listitem')
+			.filter({ hasText: token })
+			.click();
+	}
 }
