@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from '@playwright/test';
+import { Locator } from '@playwright/test';
 import { Position } from './position';
 
 export class Header {

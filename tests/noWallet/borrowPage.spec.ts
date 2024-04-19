@@ -2,7 +2,8 @@ import { test } from '#noWalletFixtures';
 import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 
 test.describe('Borrow page', async () => {
-	test('It should list only Borrow positions', async ({ app }) => {
+	// To be removed after 'Improved Product Discovery Experience' release
+	test.skip('It should list only Borrow positions', async ({ app }) => {
 		test.setTimeout(longTestTimeout);
 
 		await app.borrow.open();

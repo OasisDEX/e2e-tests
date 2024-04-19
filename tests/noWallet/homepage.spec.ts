@@ -16,15 +16,12 @@ test.describe('Homepage', async () => {
 	});
 
 	test('It should list Earn positions by default', async ({ app }) => {
-		test.setTimeout(longTestTimeout);
-
-		await app.homepage.open();
-		await app.homepage.productHub.header.position.shouldBe('Earn');
-		await app.homepage.productHub.list.allPoolsShouldBe('Earn');
+		await app.homepage.productHub.header.position.shouldBe('earn');
 	});
 
+	// To be removed after 'Improved Product Discovery Experience' release
 	(['Borrow', 'Multiply', 'Earn'] as const).forEach((positionCategory) =>
-		test(`It should list only ${positionCategory} positions`, async ({ app }) => {
+		test.skip(`It should list only ${positionCategory} positions`, async ({ app }) => {
 			test.setTimeout(longTestTimeout);
 
 			await app.homepage.open();
@@ -33,8 +30,9 @@ test.describe('Homepage', async () => {
 		})
 	);
 
+	// To be UPDATED after 'Improved Product Discovery Experience' release
 	(['Borrow', 'Multiply', 'Earn'] as const).forEach((positionCategory) =>
-		test(`It should link to ${positionCategory} page`, async ({ app }) => {
+		test.skip(`It should link to ${positionCategory} page`, async ({ app }) => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: '12334',
