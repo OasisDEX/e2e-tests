@@ -73,6 +73,9 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
+		// Wait to make sure that liquidity added in previous test is actually up
+		await app.page.waitForTimeout(5_000);
+
 		await app.page.goto('/base/ajna/borrow/WSTETH-ETH#setup');
 		await app.position.setup.acknowledgeAjnaInfo();
 
