@@ -9,10 +9,17 @@ export class Position {
 	}
 
 	@step
-	async shouldBe(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
-		await expect(this.positionLocator.locator('span').nth(0)).toContainText(positionCategory, {
-			timeout: 15_000,
-		});
+	async shouldBe(positionCategory: 'borrow' | 'earn' | 'multiply') {
+		const introText = {
+			borrow: 'Easily borrow stablecoins or other crypto-assets against your collateral',
+			earn: 'Earn long term yields to compound your crypto capital',
+			multiply:
+				'Multiply allows you to simply and securely increase your exposure to any crypto asset',
+		};
+		await expect(
+			this.positionLocator.getByText(introText[positionCategory]),
+			`'introText[positionCategory]' should be visible`
+		).toBeVisible();
 	}
 
 	@step

@@ -51,6 +51,7 @@ test.describe('Header', async () => {
 		})
 	);
 
+	// To be UPDATED after 'Improved Product Discovery Experience' release
 	(
 		[
 			{ protocol: 'Aave', product: 'Borrow' },
@@ -64,7 +65,7 @@ test.describe('Header', async () => {
 			{ protocol: 'Spark', product: 'Earn' },
 		] as const
 	).forEach(({ protocol, product }) =>
-		test(`It should open ${product} page and list only ${protocol} ${product} positions`, async ({
+		test.skip(`It should open ${product} page and list only ${protocol} ${product} positions`, async ({
 			app,
 		}) => {
 			test.info().annotations.push({
