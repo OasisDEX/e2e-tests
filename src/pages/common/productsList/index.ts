@@ -9,10 +9,16 @@ export class ProductsList {
 
 	readonly pool: Pool;
 
+	readonly poolLocator: Locator;
+
+	readonly poolPairLocator: Locator;
+
 	constructor(page: Page, productHubLocator: Locator) {
 		this.page = page;
 		this.listLocator = productHubLocator.getByRole('table');
-		this.pool = new Pool(this.listLocator.locator('tbody tr'));
+		this.pool = new Pool(this.poolLocator);
+		this.poolLocator = this.listLocator.locator('tbody tr');
+		this.poolPairLocator = this.poolLocator.locator('td:nth-child(1)');
 	}
 
 	get first() {
@@ -20,100 +26,88 @@ export class ProductsList {
 	}
 
 	nthPool(nth: number) {
-		return new Pool(this.listLocator.locator('tbody tr').nth(nth));
+		return new Pool(this.poolLocator.nth(nth));
 	}
 
 	byPairPool(pair: string) {
-		return new Pool(
-			this.listLocator
-				.locator('[role="link"]')
-				.filter({ has: this.page.getByText(pair, { exact: true }) })
-		);
+		return new Pool(this.poolLocator.filter({ has: this.page.getByText(pair, { exact: true }) }));
 	}
 
 	@step
 	async getNumberOfPools() {
 		// Wait for 1st item to be displayed to avoid random fails
-		await this.listLocator.locator('[role="link"] td:nth-child(1)').first().waitFor();
+		await this.poolLocator.first().waitFor();
 
-		const count = await this.listLocator.locator('tbody tr').count();
+		const count = await this.poolLocator.count();
 		return count;
 	}
 
 	@step
 	async getAllPairs() {
 		// Wait for 1st item to be displayed to avoid random fails
-		await this.listLocator.locator('[role="link"] td:nth-child(1)').first().waitFor();
+		await this.poolLocator.first().waitFor();
 
-		const allPairs = await this.listLocator
-			.locator('[role="link"] td:nth-child(1)')
-			.allInnerTexts();
+		const allPairs = await this.poolPairLocator.allInnerTexts();
 		return allPairs;
 	}
 
 	@step
 	async allPoolsShouldBe(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
+		const poolButton = this.poolLocator.getByRole('button');
 		// Wait for 1st item to be displayed to avoid random fails
-		await this.listLocator.locator('[role="link"] button').first().waitFor();
+		await poolButton.first().waitFor();
 
-		const pools = await this.listLocator.locator('[role="link"] button').all();
+		const poolButtons = await poolButton.all();
 
-		for (let i = 0; i < pools.length; i++) {
-			await expect(this.listLocator.locator('[role="link"] button').nth(i)).toHaveText(
-				positionCategory
-			);
+		for (let i = 0; i < poolButtons.length; i++) {
+			await expect(poolButton.nth(i)).toHaveText(positionCategory);
 		}
 	}
 
 	@step
 	async allPoolsCollateralShouldContain(token: string) {
 		// Wait for 1st item to be displayed to avoid random fails
-		await this.listLocator.locator('[role="link"] td:nth-child(1)').first().waitFor();
+		await this.poolPairLocator.first().waitFor();
 
-		const pools = await this.listLocator.locator('[role="link"] td:nth-child(1)').all();
+		const pools = await this.poolPairLocator.all();
 
 		for (let i = 0; i < pools.length; i++) {
-			await expect(this.listLocator.locator('[role="link"] td:nth-child(1)').nth(i)).toContainText(
-				token + '/'
-			);
+			await expect(this.poolPairLocator.nth(i)).toContainText(token + '/');
 		}
 	}
 
 	@step
 	async allPoolsQuoteShouldContain(token: string) {
 		// Wait for 1st item to be displayed to avoid random fails
-		await this.listLocator.locator('[role="link"] td:nth-child(1)').first().waitFor();
+		await this.poolPairLocator.first().waitFor();
 
-		const pools = await this.listLocator.locator('[role="link"] td:nth-child(1)').all();
+		const pools = await this.poolPairLocator.all();
 
 		for (let i = 0; i < pools.length; i++) {
-			await expect(this.listLocator.locator('[role="link"] td:nth-child(1)').nth(i)).toContainText(
-				'/' + token
-			);
+			await expect(this.poolPairLocator.nth(i)).toContainText('/' + token);
 		}
 	}
 
 	@step
 	async shouldHavePoolsCount(count: number) {
-		// Wait for 1st item to be displayed to avoid random fails
-		await this.listLocator.locator('[role="link"]').first().waitFor();
+		const rowLocator = this.poolLocator;
+		await expect(rowLocator.nth(0), 'First pool row should be visible').toBeVisible();
 
-		expect(await this.listLocator.locator('[role="link"]').count()).toEqual(count);
+		const rowsCount = this.poolLocator.count();
+		expect(await rowsCount).toEqual(count);
 	}
 
 	@step
 	async shouldHaveOneOrMorePools() {
 		// Wait for 1st item to be displayed to avoid random fails
-		await this.listLocator.locator('[role="link"]').first().waitFor();
+		await this.poolLocator.first().waitFor();
 
-		expect(await this.listLocator.locator('[role="link"]').count()).toBeGreaterThanOrEqual(1);
+		expect(await this.poolLocator.count()).toBeGreaterThanOrEqual(1);
 	}
 
 	@step
 	async shouldHaveTokensPair(pair: string) {
-		await expect(this.listLocator.locator('[role="link"] td:nth-child(1)').nth(0)).toContainText(
-			pair
-		);
+		await expect(this.poolPairLocator.nth(0)).toContainText(pair);
 	}
 
 	@step

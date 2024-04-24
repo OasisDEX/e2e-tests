@@ -10,13 +10,12 @@ test.describe('Homepage', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.homepage.open();
 		await app.homepage.connectWallet();
 		await app.modals.connectWallet.shouldBeVisible();
 	});
 
 	test('It should list Earn positions by default', async ({ app }) => {
-		await app.homepage.productHub.header.position.shouldBe('earn');
+		await app.homepage.productHub.header.positionType.shouldBe('earn');
 	});
 
 	// To be removed after 'Improved Product Discovery Experience' release
@@ -25,7 +24,7 @@ test.describe('Homepage', async () => {
 			test.setTimeout(longTestTimeout);
 
 			await app.homepage.open();
-			await app.homepage.productHub.header.position.select(positionCategory);
+			await app.homepage.productHub.header.positionType.select(positionCategory);
 			await app.homepage.productHub.list.allPoolsShouldBe(positionCategory);
 		})
 	);
@@ -39,7 +38,7 @@ test.describe('Homepage', async () => {
 			});
 
 			await app.homepage.open();
-			await app.homepage.productHub.header.position.select(positionCategory);
+			await app.homepage.productHub.header.positionType.select(positionCategory);
 			await app.homepage.productHub.shouldLinkTo(positionCategory);
 		})
 	);

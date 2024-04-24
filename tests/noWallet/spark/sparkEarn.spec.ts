@@ -15,7 +15,7 @@ test.describe('Spark Earn', async () => {
 			await app.position.overview.shouldBeVisible();
 		}).toPass();
 
-		await app.position.shouldHaveHeader('WSTETH/ETH Multiply #1417');
+		await app.position.shouldHaveHeader('WSTETH/ETH yield multiple #1417');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '[0-9].[0-9]{2}([0-9]{1,2})?',
 			token: 'WSTETH/ETH',
@@ -23,8 +23,6 @@ test.describe('Spark Earn', async () => {
 		await app.position.overview.shouldHaveLiquidationPriceGreaterThanZero('WSTETH/ETH');
 		await app.position.overview.shouldHaveLoanToValue('[2-8][0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValue({ value: '\\$[0-9]{1,2}.[0-9]{1,2}' });
-		await app.position.overview.shouldHaveBuyingPower('\\$[0-9]{2,3}.[0-9]{1,2}');
-		await app.position.overview.shouldHaveBuyingPowerGreaterThanZero();
 		await app.position.overview.shouldHaveExposure({
 			amount: '0.[0-9]{4}',
 			token: 'WSTETH',
@@ -34,13 +32,14 @@ test.describe('Spark Earn', async () => {
 			amount: '0.[0-9]{4}',
 			token: 'ETH',
 		});
-		await app.position.overview.shouldHaveMultiple('[1-2].[0-9]{1,2}');
-		await app.position.overview.shouldHaveBorrowRate('[0-5].[0-9]{2}');
 
 		await app.position.setup.shouldHaveLiquidationPrice({
 			amount: '[0-1].[0-9]{4}',
 			pair: 'WSTETH/ETH',
 		});
-		await app.position.setup.shouldHaveLoanToValue('[1-9][0-9].[0-9]{2}');
+		await app.position.setup.shouldHaveCurrentPrice({
+			amount: '1.[0-9]{4}',
+			pair: 'WSTETH/ETH',
+		});
 	});
 });

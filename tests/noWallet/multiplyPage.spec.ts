@@ -7,7 +7,7 @@ test.describe('Multiply page', async () => {
 		test.setTimeout(longTestTimeout);
 
 		await app.multiply.open();
-		await app.multiply.productHub.header.position.shouldBe('Multiply');
+		await app.multiply.productHub.header.positionType.shouldBe('Multiply');
 		await app.multiply.productHub.list.allPoolsShouldBe('Multiply');
 	});
 });
