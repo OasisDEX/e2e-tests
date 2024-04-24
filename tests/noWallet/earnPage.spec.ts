@@ -7,7 +7,7 @@ test.describe('Earn page', async () => {
 		test.setTimeout(longTestTimeout);
 
 		await app.earn.open();
-		await app.earn.productHub.header.position.shouldBe('Earn');
+		await app.earn.productHub.header.positionType.shouldBe('Earn');
 		await app.earn.productHub.list.allPoolsShouldBe('Earn');
 	});
 

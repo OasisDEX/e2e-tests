@@ -1,11 +1,11 @@
 import { step } from '#noWalletFixtures';
 import { expect, Locator } from '@playwright/test';
 
-export class Position {
-	readonly positionLocator: Locator;
+export class PositionType {
+	readonly headerLocator: Locator;
 
 	constructor(headerLocator: Locator) {
-		this.positionLocator = headerLocator.locator('h1 > div').nth(0);
+		this.headerLocator = headerLocator;
 	}
 
 	@step
@@ -17,14 +17,14 @@ export class Position {
 				'Multiply allows you to simply and securely increase your exposure to any crypto asset',
 		};
 		await expect(
-			this.positionLocator.getByText(introText[positionCategory]),
-			`'introText[positionCategory]' should be visible`
+			this.headerLocator.getByText(introText[positionCategory]),
+			`'${introText[positionCategory]}' should be visible`
 		).toBeVisible();
 	}
 
 	@step
 	async select(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
-		await this.positionLocator.click();
-		await this.positionLocator.locator(`li:has-text("${positionCategory}")`).click();
+		await this.headerLocator.click();
+		await this.headerLocator.locator(`li:has-text("${positionCategory}")`).click();
 	}
 }

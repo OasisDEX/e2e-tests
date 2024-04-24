@@ -7,7 +7,7 @@ test.describe('Borrow page', async () => {
 		test.setTimeout(longTestTimeout);
 
 		await app.borrow.open();
-		await app.borrow.productHub.header.position.shouldBe('Borrow');
+		await app.borrow.productHub.header.positionType.shouldBe('Borrow');
 		await app.borrow.productHub.list.allPoolsShouldBe('Borrow');
 	});
 
@@ -74,4 +74,25 @@ test.describe('Borrow page', async () => {
 			}
 		})
 	);
+
+	// [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19].forEach((positionIndex) =>
+	// 	test.skip(`It should open Borrow position page for all available pairs - ${positionIndex}`, async ({
+	// 		app,
+	// 	}) => {
+	// 		test.setTimeout(longTestTimeout);
+
+	// 		await app.borrow.open();
+
+	// 		// Wait for element to be visible
+	// 		await app.borrow.productHub.list.nthPool(positionIndex).shouldBevisible();
+	// 		await app.borrow.productHub.list.byPairPool(pair).open();
+
+	// 		// Wait for element to be visible
+	// 		await app.borrow.productHub.list.byPairPool(pair).shouldBevisible();
+	// 		await app.borrow.productHub.list.byPairPool(pair).open();
+
+	// 		await app.position.shouldHaveHeader(`Open ${pair}`);
+	// 		await app.position.overview.shouldBeVisible();
+	// 	})
+	// );
 });
