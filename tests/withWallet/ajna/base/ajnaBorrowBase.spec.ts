@@ -43,7 +43,11 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
+			({ forkId, walletAddress } = await setup({
+				app,
+				network: 'base',
+				extraFeaturesFlags: 'AjnaSuppressValidation:true',
+			}));
 
 			await tenderly.setTokenBalance({
 				forkId,
