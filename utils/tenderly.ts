@@ -70,6 +70,7 @@ export const tokenAddresses = {
 		WBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 		WETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 		WSTETH: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+		YFI: '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e',
 	},
 	arbitrum: {
 		DAI: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
@@ -112,6 +113,7 @@ export const tokenBalances = {
 	WBTC: '10',
 	WETH: '1000',
 	WSTETH: '1000',
+	YFI: '100',
 };
 
 /**
@@ -138,11 +140,15 @@ export const setTokenBalance = async ({
 		| 'USDC'
 		| 'USDT'
 		| 'WBTC'
-		| 'WSTETH';
+		| 'WSTETH'
+		| 'YFI';
 	balance: string;
 	walletAddress: string;
 }) => {
 	const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
+	// const provider = new JsonRpcProvider(
+	// 	`https://virtual.mainnet.rpc.tenderly.co/5637bebb-2611-4bb7-b29d-9d51b9a19a34`
+	// );
 
 	const WALLETS = [walletAddress];
 

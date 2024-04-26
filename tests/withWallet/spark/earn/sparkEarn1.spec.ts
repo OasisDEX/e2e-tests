@@ -25,7 +25,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Earn position @regression', async () => {
+	test('It should open a Spark Earn (Yiel Loop) position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12089',
@@ -49,7 +49,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/spark/earn/reth-eth#simulate');
+		await app.page.goto('/ethereum/spark/multiply/RETH-ETH#setup');
 
 		await openPosition({
 			app,
@@ -79,6 +79,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await adjustRisk({
 			forkId,
 			app,
+			earnPosition: true,
 			risk: 'up',
 			newSliderPosition: 0.6,
 		});
@@ -99,6 +100,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await adjustRisk({
 			forkId,
 			app,
+			earnPosition: true,
 			risk: 'down',
 			newSliderPosition: 0.2,
 		});
@@ -119,7 +121,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await close({
 			app,
 			forkId,
-			positionType: 'Earn',
+			positionType: 'Earn (Yield Loop)',
 			closeTo: 'collateral',
 			collateralToken: 'RETH',
 			debtToken: 'ETH',

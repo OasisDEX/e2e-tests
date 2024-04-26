@@ -102,9 +102,6 @@ export class Overview {
 		).toContainText(regExp, { timeout: positionTimeout });
 	}
 
-	/**
-	 	@param price - It must be regExp representing the the whole amount
-	*/
 	@step
 	async shouldHaveLoanToValue(percentage: string) {
 		const regExp = new RegExp(`${percentage}%`);

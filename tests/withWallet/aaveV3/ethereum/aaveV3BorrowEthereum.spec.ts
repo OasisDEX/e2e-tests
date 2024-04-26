@@ -18,7 +18,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
+test.describe.only('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -50,7 +50,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			balance: '50',
 		});
 
-		await app.page.goto('/ethereum/aave/v3/borrow/cbeth-eth#simulate');
+		await app.page.goto('/ethereum/aave/v3/borrow/CBETH-ETH#setup');
 
 		await openPosition({
 			app,

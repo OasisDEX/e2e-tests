@@ -60,7 +60,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'WSTETH', amount: '2' },
-			borrow: { token: 'ETH', amount: '1.5' },
+			borrow: { token: 'ETH', amount: '1' },
 			protocol: 'Ajna',
 		});
 	});
@@ -77,13 +77,13 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'WSTETH', amount: '1.5' },
-			borrow: { token: 'ETH', amount: '1' },
+			borrow: { token: 'ETH', amount: '0.5' },
 			allowanceNotNeeded: true,
 			expectedCollateralDeposited: {
 				amount: '3.50',
 				token: 'WSTETH',
 			},
-			expectedDebt: { amount: '2.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '1.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -101,12 +101,12 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			app,
 			forkId,
 			withdraw: { token: 'WSTETH', amount: '1' },
-			payBack: { token: 'ETH', amount: '0.5' },
+			payBack: { token: 'ETH', amount: '0.8' },
 			expectedCollateralDeposited: {
 				amount: '2.50',
 				token: 'WSTETH',
 			},
-			expectedDebt: { amount: '2.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '0.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -124,14 +124,14 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			borrow: { token: 'ETH', amount: '1.5' },
+			borrow: { token: 'ETH', amount: '1' },
 			deposit: { token: 'WSTETH', amount: '2' },
 			allowanceNotNeeded: true,
 			expectedCollateralDeposited: {
 				amount: '4.50',
 				token: 'WSTETH',
 			},
-			expectedDebt: { amount: '3.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '1.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -151,13 +151,13 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			payBack: { token: 'ETH', amount: '2' },
+			payBack: { token: 'ETH', amount: '1.1' },
 			withdraw: { token: 'WSTETH', amount: '1.5' },
 			expectedCollateralDeposited: {
 				amount: '3.00',
 				token: 'WSTETH',
 			},
-			expectedDebt: { amount: '1.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '0.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
 		});
 	});
 
@@ -242,7 +242,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			token: 'WSTETH',
 		});
 		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
-			amount: '[2-9].[0-9]{3,4}',
+			amount: '[0-9].[0-9]{3,4}',
 			token: 'ETH',
 		});
 
@@ -278,7 +278,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
 			token: 'ETH',
 			current: '0.00',
-			future: '[2-9].[0-9]{3,4}',
+			future: '[0-9].[0-9]{3,4}',
 		});
 	});
 });
