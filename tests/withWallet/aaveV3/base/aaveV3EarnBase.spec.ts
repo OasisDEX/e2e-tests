@@ -25,7 +25,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave V3 Earn Base position @regression', async () => {
+	test('It should open an Aave V3 Earn (Yield Loop) Base position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12471',
@@ -49,7 +49,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/base/aave/v3/multiply/cbeth-eth#simulate');
+		await app.page.goto('/base/aave/v3/multiply/CBETH-ETH#setup');
 
 		await openPosition({
 			app,
@@ -73,6 +73,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await adjustRisk({
 			forkId,
 			app,
+			earnPosition: true,
 			risk: 'up',
 			newSliderPosition: 0.6,
 		});
@@ -93,6 +94,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await adjustRisk({
 			forkId,
 			app,
+			earnPosition: true,
 			risk: 'down',
 			newSliderPosition: 0.1,
 		});
@@ -113,7 +115,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await close({
 			app,
 			forkId,
-			positionType: 'Multiply',
+			positionType: 'Earn (Yield Loop)',
 			closeTo: 'debt',
 			collateralToken: 'CBETH',
 			debtToken: 'ETH',

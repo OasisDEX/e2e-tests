@@ -35,60 +35,59 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 			await setup({ app, network: 'base', withoutFork: true });
 		});
 
-		await app.page.goto('/base/ajna/multiply/WSTETH-ETH#setup');
+		await app.page.goto('/base/ajna/multiply/SNX-USDC#setup');
 		await app.position.setup.acknowledgeAjnaInfo();
-		await app.position.setup.deposit({ token: 'WSTETH', amount: '15.12345' });
+		await app.position.setup.deposit({ token: 'SNX', amount: '10000' });
 
-		await app.position.overview.shouldHaveLiquidationPriceAfterPill('0.[0-9]{4} WSTETH/ETH');
+		await app.position.overview.shouldHaveLiquidationPriceAfterPill('0.[0-9]{4} SNX/USDC');
 		await app.position.overview.shouldHaveLoanToValueAfterPill('[0-9]{1,2}.[0-9]{2}%');
 		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
-		// !! Skipped for now - Waiting for confirmation about validity of extremely high value displayed at the moment
-		// await app.position.overview.shouldHaveBuyingPowerAfterPill({
-		// 	amount: '[0-9]{1,2},[0-9]{3}(.[0-9]{1,2})?',
-		// 	protocol: 'Ajna',
-		// });
+		await app.position.overview.shouldHaveBuyingPowerAfterPill({
+			amount: '[0-9]{2,3},[0-9]{3}(.[0-9]{1,2})?',
+			protocol: 'Ajna',
+		});
 		await app.position.overview.shouldHaveExposureAfterPill({
-			amount: '1[5-9].[0-9]{1,2}',
-			token: 'WSTETH',
+			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}',
+			token: 'SNX',
 		});
 		await app.position.overview.shouldHaveDebtAfterPill({
-			amount: '[1-2].[0-9]{3,4}',
-			token: 'ETH',
+			amount: '[1-7],[0-9]{3}.[0-9]{2}',
+			token: 'USDC',
 			protocol: 'Ajna',
 		});
 		await app.position.overview.shouldHaveMultipleAfterPill('1(.[0-9]{1,2})?');
 
 		await app.position.setup.shouldHaveLiquidationPrice({
-			amount: '0.[0-9]{3,4} WSTETH/ETH',
+			amount: '0.[0-9]{3,4} SNX/USDC',
 		});
 		// Ajna LTV displays both current and future values: 0.00% -> 10.00%
 		await app.position.setup.shouldHaveLoanToValue('0.00%10.00');
 		await app.position.setup.orderInformation.shouldHaveBuyingAmount({
-			tokenAmount: '[1-2].[0-9]{4}',
-			token: 'WSTETH',
+			tokenAmount: '([1-3],)?[0-9]{3}.[0-9]{2}',
+			token: 'SNX',
 			dollarsAmount: '[1-9],[0-9]{3}.[0-9]{2}',
 			protocol: 'Ajna',
 		});
 		await app.position.setup.orderInformation.shouldHaveTotalExposure({
-			token: 'WSTETH',
+			token: 'SNX',
 			current: '0.00',
-			future: '1[5-7].[0-9]{1,2}',
+			future: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHavePriceImpact({
-			amount: '[0-2].[0-9]{3,4}',
+			amount: '[0-8].[0-9]{3,4}',
 			percentage: '[0-9].[0-9]{2}',
 			protocol: 'Ajna',
-			pair: 'WSTETH/ETH',
+			pair: 'SNX/USDC',
 		});
 		await app.position.setup.orderInformation.shouldHaveMultiple({
 			current: '1.00',
 			future: '1(.[0-9]{1,2})?',
 		});
-		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.05');
+		await app.position.setup.orderInformation.shouldHaveSlippageLimit('0.50');
 		await app.position.setup.orderInformation.shouldHaveDebt({
-			token: 'ETH',
+			token: 'USDC',
 			current: '0.00',
-			future: '[1-2].[0-9]{3,4}',
+			future: '([1-7],)?[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveLTV({
 			current: '0.00',
@@ -114,7 +113,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.5 });
 
 		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'WSTETH/ETH' });
+		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'SNX/USDC' });
 
 		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue = await app.position.manage.getLoanToValue('Ajna');
@@ -125,7 +124,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.3 });
 
 		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'WSTETH/ETH' });
+		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'SNX/USDC' });
 
 		const updatedLiqPrice2 = await app.position.manage.getLiquidationPrice();
 		const updatedLoanToValue2 = await app.position.manage.getLoanToValue('Ajna');

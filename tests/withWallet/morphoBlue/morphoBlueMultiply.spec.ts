@@ -151,12 +151,12 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.page.goto('/ethereum/morphoblue/multiply/WSTETH-ETH#setup');
+		await app.page.goto('/ethereum/morphoblue/multiply/WSTETH-USDC#setup');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '30.12345' },
+			deposit: { token: 'WSTETH', amount: '10.12345' },
 			protocol: 'Morpho Blue',
 		});
 	});
@@ -206,7 +206,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 			app,
 			closeTo: 'collateral',
 			collateralToken: 'WSTETH',
-			debtToken: 'ETH',
+			debtToken: 'USDC',
 			tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{1,2}',
 		});
 	});

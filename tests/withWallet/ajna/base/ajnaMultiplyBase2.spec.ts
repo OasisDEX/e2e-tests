@@ -42,20 +42,20 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		});
 
 		await tenderly.changeAccountOwner({
-			account: '0x32961c0739cdc18adf406b720669ca159f7f7e74',
+			account: '0xf71da0973121d949e1cee818eb519ba364406309',
 			newOwner: walletAddress,
 			forkId,
 		});
 
-		await app.position.openPage('/base/ajna/multiply/CBETH-ETH/440#overview');
+		await app.position.openPage('/base/ajna/multiply/ETH-USDC/435#overview');
 
 		await close({
 			forkId,
 			app,
 			closeTo: 'debt',
-			collateralToken: 'CBETH',
-			debtToken: 'ETH',
-			tokenAmountAfterClosing: '0.00[0-9]{1,2}',
+			collateralToken: 'ETH',
+			debtToken: 'USDC',
+			tokenAmountAfterClosing: '[1-7].[0-9]{4}',
 		});
 	});
 
@@ -73,20 +73,20 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		});
 
 		await tenderly.changeAccountOwner({
-			account: '0x32961c0739cdc18adf406b720669ca159f7f7e74',
+			account: '0xf71da0973121d949e1cee818eb519ba364406309',
 			newOwner: walletAddress,
 			forkId,
 		});
 
-		await app.position.openPage('/base/ajna/multiply/CBETH-ETH/440#overview');
+		await app.position.openPage('/base/ajna/multiply/ETH-USDC/435#overview');
 
 		await close({
 			forkId,
 			app,
 			closeTo: 'collateral',
-			collateralToken: 'CBETH',
-			debtToken: 'ETH',
-			tokenAmountAfterClosing: '0.00[0-9]{1,2}',
+			collateralToken: 'ETH',
+			debtToken: 'USDC',
+			tokenAmountAfterClosing: '0.00[0-9]{2}',
 		});
 	});
 });

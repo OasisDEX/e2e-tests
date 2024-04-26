@@ -167,7 +167,7 @@ export const close = async ({
 }: {
 	forkId: string;
 	app: App;
-	positionType?: 'Multiply' | 'Borrow' | 'Earn';
+	positionType?: 'Multiply' | 'Borrow' | 'Earn (Liquidity Provision)' | 'Earn (Yield Loop)';
 	closeTo: 'collateral' | 'debt';
 	collateralToken: string;
 	debtToken: string;
@@ -206,15 +206,16 @@ export const close = async ({
 
 	// ============================================================
 
-	if (positionType !== 'Earn') {
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-	}
 	await app.position.overview.shouldHaveNetValue({ value: '0.00' });
 	await app.position.overview.shouldHaveDebt({
 		amount: '0.00',
 		token: debtToken,
 		protocol: 'Ajna',
 	});
+
+	if (positionType !== 'Earn (Liquidity Provision)') {
+		await app.position.overview.shouldHaveLoanToValue('0.00');
+	}
 
 	if (positionType === 'Borrow') {
 		await app.position.overview.shouldHaveCollateralDeposited({
@@ -228,10 +229,11 @@ export const close = async ({
 		await app.position.overview.shouldHaveAvailableToBorrow({ token: debtToken, amount: '0.00' });
 	} else {
 		await app.position.overview.shouldHaveExposure({ token: collateralToken, amount: '0.00' });
-		if (positionType !== 'Earn') {
-			await app.position.overview.shouldHaveBuyingPower('0.00');
-			await app.position.overview.shouldHaveMultiple('1.00');
-		}
+	}
+
+	if (positionType == 'Multiply') {
+		await app.position.overview.shouldHaveBuyingPower('0.00');
+		await app.position.overview.shouldHaveMultiple('1.00');
 	}
 };
 
