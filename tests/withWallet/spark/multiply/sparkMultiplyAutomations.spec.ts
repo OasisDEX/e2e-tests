@@ -118,4 +118,19 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 
 		await automations.testAutoSell({ app, forkId });
 	});
+
+	test('It should set Partial Take Profit on an Spark Mainnet Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
+		await automations.testPartialTakeProfit({ app, forkId });
+	});
 });

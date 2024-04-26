@@ -1,10 +1,10 @@
 import { BrowserContext, test } from '@playwright/test';
-import { metamaskSetUp } from 'utils/setup';
+import { metamaskSetUp, setupNewFork } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import * as automations from 'tests/sharedTestSteps/automations';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -54,5 +54,29 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await app.position.openPage('/arbitrum/aave/v3/multiply/eth-dai/1#overview');
 
 		await automations.testTrailingStopLoss({ app, forkId });
+	});
+
+	test('It should set Partial Take Profit on an Aave v3 Arbitrum Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		// New fork needed to avoid flakyness
+		await test.step('Test setup - New fork', async () => {
+			({ forkId } = await setupNewFork({ app, network: 'arbitrum' }));
+		});
+
+		await tenderly.changeAccountOwner({
+			account: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.position.openPage('/arbitrum/aave/v3/multiply/eth-dai/1#overview');
+
+		await automations.testPartialTakeProfit({ app, forkId });
 	});
 });

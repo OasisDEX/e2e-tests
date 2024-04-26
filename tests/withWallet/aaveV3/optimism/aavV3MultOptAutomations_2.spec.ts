@@ -1,10 +1,10 @@
 import { BrowserContext, test } from '@playwright/test';
-import { metamaskSetUp } from 'utils/setup';
+import { metamaskSetUp, setupNewFork } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import * as automations from 'tests/sharedTestSteps/automations';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -53,5 +53,29 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
 		await automations.testTrailingStopLoss({ app, forkId });
+	});
+
+	test('It should set Partial Take Profit on an Aave v3 Optimism Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		// New fork needed to avoid flakyness
+		await test.step('Test setup - New fork', async () => {
+			({ forkId } = await setupNewFork({ app, network: 'optimism' }));
+		});
+
+		await tenderly.changeAccountOwner({
+			account: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
+			newOwner: walletAddress,
+			forkId,
+		});
+
+		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
+
+		await automations.testPartialTakeProfit({ app, forkId });
 	});
 });
