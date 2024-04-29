@@ -18,7 +18,10 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Wallet connected', async () => {
+// Positionincorrectly updated to Borrow when  taking ownership of it.
+//   - Comment  from dev: "I tihnk it is related to the functionality in borrow
+//   that marks the position as multiply/borrow nothing we can do on chain i'm afraid"
+test.describe.skip('Spark Multiply - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
