@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
-import { longTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 
 export class Automations {}
 
@@ -43,15 +43,51 @@ export const testAutoSell = async ({
 	app,
 	forkId,
 	strategy,
+	assertTriggerPayload,
+	protocol,
+	collTokenAddress,
+	debtTokenAddress,
 }: {
 	app: App;
 	forkId: string;
 	strategy?: 'short';
+	assertTriggerPayload?: boolean;
+	protocol?: 'aave3' | 'spark';
+	collTokenAddress?: string;
+	debtTokenAddress?: string;
 }) => {
 	await app.position.openTab('Protection');
 	await app.position.protection.setup('Auto-Sell');
 
-	await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
+	if (assertTriggerPayload) {
+		const requestPromise = app.page.waitForRequest(
+			(request) => request.url().includes(`/${protocol}/auto-sell`) && request.method() === 'POST',
+			{ timeout: expectDefaultTimeout * 5 }
+		);
+
+		await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
+
+		const request = await requestPromise;
+		const requestJson = await request.postDataJSON();
+
+		expect(requestJson).toMatchObject({
+			dpm: expect.any(String),
+			triggerData: {
+				executionLTV: expect.any(String),
+				targetLTV: expect.any(String),
+				maxBaseFee: '300',
+				useMinSellPrice: true,
+			},
+			position: {
+				collateral: collTokenAddress ?? expect.any(String),
+				debt: debtTokenAddress ?? expect.any(String),
+			},
+			rpc: `https://rpc.tenderly.co/fork/${forkId}`,
+			action: 'add',
+		});
+	} else {
+		await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
+	}
 
 	if (!strategy) {
 		await app.position.protection.shouldHaveMessage(
@@ -83,16 +119,53 @@ export const testAutoBuy = async ({
 	forkId,
 	strategy,
 	triggerLTV,
+	assertTriggerPayload,
+	protocol,
+	collTokenAddress,
+	debtTokenAddress,
 }: {
 	app: App;
 	forkId: string;
 	strategy?: 'short';
 	triggerLTV?: number;
+	assertTriggerPayload?: boolean;
+	protocol?: 'aave3' | 'spark';
+
+	collTokenAddress?: string;
+	debtTokenAddress?: string;
 }) => {
 	await app.position.openTab('Optimization');
 	await app.position.optimization.setupOptimization('Auto-Buy');
 
-	await app.position.optimization.adjustAutoBuyTrigger({ value: triggerLTV ?? 0.2 });
+	if (assertTriggerPayload) {
+		const requestPromise = app.page.waitForRequest(
+			(request) => request.url().includes(`/${protocol}/auto-buy`) && request.method() === 'POST',
+			{ timeout: expectDefaultTimeout * 5 }
+		);
+
+		await app.position.optimization.adjustAutoBuyTrigger({ value: triggerLTV ?? 0.2 });
+
+		const request = await requestPromise;
+		const requestJson = await request.postDataJSON();
+
+		expect(requestJson).toMatchObject({
+			dpm: expect.any(String),
+			triggerData: {
+				executionLTV: expect.any(String),
+				targetLTV: expect.any(String),
+				maxBaseFee: '300',
+				useMaxBuyPrice: true,
+			},
+			position: {
+				collateral: collTokenAddress ?? expect.any(String),
+				debt: debtTokenAddress ?? expect.any(String),
+			},
+			rpc: `https://rpc.tenderly.co/fork/${forkId}`,
+			action: 'add',
+		});
+	} else {
+		await app.position.optimization.adjustAutoBuyTrigger({ value: triggerLTV ?? 0.2 });
+	}
 
 	if (!strategy) {
 		await app.position.optimization.shouldHaveMessage(

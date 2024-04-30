@@ -19,8 +19,7 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 			price: '<0.001',
 			token: 'WBTC/DAI',
 		});
-		// BUG 14860
-		// await app.position.overview.shouldHaveLoanToValue('[0-9]{2,3}.[0-9]{2}');
+		await app.position.overview.shouldHaveLoanToValue('>110.00');
 		await app.position.overview.shouldHaveCollateralDeposited({
 			amount: '<0.001',
 			token: 'DAI',
@@ -29,7 +28,7 @@ test.describe('Aave v3 Borrow Optimism', async () => {
 			amount: '<0.001',
 			token: 'WBTC',
 		});
-		await app.position.overview.shouldHaveBorrowRate('-[0-9]{1,2}.[0-9]{2}');
+		await app.position.overview.shouldHaveBorrowRate('[0-9]{1,2}.[0-9]{2}');
 		await app.position.overview.shouldHaveNetValue({ value: '-0.[0-9]{1,2}' });
 	});
 });
