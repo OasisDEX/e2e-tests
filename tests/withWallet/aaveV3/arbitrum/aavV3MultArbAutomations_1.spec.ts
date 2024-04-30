@@ -53,7 +53,14 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		await app.position.openPage('/arbitrum/aave/v3/multiply/eth-dai/1#overview');
 
-		await automations.testAutoBuy({ app, forkId });
+		await automations.testAutoBuy({
+			app,
+			forkId,
+			assertTriggerPayload: true,
+			protocol: 'aave3',
+			collTokenAddress: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+			debtTokenAddress: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+		});
 	});
 
 	test('It should set Auto-Sell on an Aave v3 Arbitrum Multiply position @regression', async () => {
@@ -68,7 +75,14 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testAutoSell({ app, forkId });
+		await automations.testAutoSell({
+			app,
+			forkId,
+			assertTriggerPayload: true,
+			protocol: 'aave3',
+			collTokenAddress: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+			debtTokenAddress: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+		});
 	});
 
 	test('It should set Regular Stop-Loss on an Aave v3 Arbitrum Multiply position @regression', async () => {
