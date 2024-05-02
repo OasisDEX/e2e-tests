@@ -52,7 +52,16 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 
 		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
-		await automations.testTrailingStopLoss({ app, forkId });
+		await automations.testTrailingStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'optimismETH',
+				debtToken: 'optimismUSDC_E',
+				triggerToken: 'optimismUSDC_E',
+			},
+		});
 	});
 
 	test('It should set Partial Take Profit on an Aave v3 Optimism Multiply position @regression', async () => {
@@ -76,6 +85,15 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 
 		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
-		await automations.testPartialTakeProfit({ app, forkId });
+		await automations.testPartialTakeProfit({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'optimismETH',
+				debtToken: 'optimismUSDC_E',
+				triggerToken: 'optimismETH',
+			},
+		});
 	});
 });

@@ -71,7 +71,16 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testRegularStopLoss({ app, forkId });
+		await automations.testRegularStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'spark',
+				collToken: 'mainnetWBTC',
+				debtToken: 'mainnetDAI',
+				triggerToken: 'mainnetDAI',
+			},
+		});
 	});
 
 	test('It should set Trailing Stop-Loss on an Spark Mainnet Multiply position @regression', async () => {
@@ -86,7 +95,16 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testTrailingStopLoss({ app, forkId });
+		await automations.testTrailingStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'spark',
+				collToken: 'mainnetWBTC',
+				debtToken: 'mainnetDAI',
+				triggerToken: 'mainnetDAI',
+			},
+		});
 	});
 
 	test('It should set Auto-Buy on an Spark Mainnet Multiply position @regression', async () => {
@@ -101,7 +119,15 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testAutoBuy({ app, forkId });
+		await automations.testAutoBuy({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'spark',
+				collToken: 'mainnetWBTC',
+				debtToken: 'mainnetDAI',
+			},
+		});
 	});
 
 	test('It should set Auto-Sell on an Spark Mainnet Multiply position @regression', async () => {
@@ -116,7 +142,15 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testAutoSell({ app, forkId });
+		await automations.testAutoSell({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'spark',
+				collToken: 'mainnetWBTC',
+				debtToken: 'mainnetDAI',
+			},
+		});
 	});
 
 	test('It should set Partial Take Profit on an Spark Mainnet Multiply position @regression', async () => {
@@ -131,6 +165,15 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testPartialTakeProfit({ app, forkId });
+		await automations.testPartialTakeProfit({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'spark',
+				collToken: 'mainnetWBTC',
+				debtToken: 'mainnetDAI',
+				triggerToken: 'mainnetWBTC',
+			},
+		});
 	});
 });

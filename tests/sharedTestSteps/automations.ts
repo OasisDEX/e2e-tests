@@ -12,11 +12,29 @@ type Automations =
 	| 'auto-buy'
 	| 'dma-partial-take-profit';
 
-type Tokens = 'arbitrumETH' | 'arbitrumDAI';
+type Tokens =
+	| 'arbitrumETH'
+	| 'arbitrumDAI'
+	| 'baseETH'
+	| 'baseUSDC'
+	| 'mainnetDAI'
+	| 'mainnetETH'
+	| 'mainnetUSDC'
+	| 'mainnetWBTC'
+	| 'optimismETH'
+	| 'optimismUSDC_E';
 
 const tokenAddresses = {
 	arbitrumETH: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
 	arbitrumDAI: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+	baseETH: '0x4200000000000000000000000000000000000006',
+	baseUSDC: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+	mainnetDAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
+	mainnetETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+	mainnetUSDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+	mainnetWBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+	optimismETH: '0x4200000000000000000000000000000000000006',
+	optimismUSDC_E: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
 };
 
 let matchObject = ({
