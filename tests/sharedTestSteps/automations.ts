@@ -3,13 +3,144 @@ import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 
-export class Automations {}
+type Protocols = 'aave3' | 'spark';
 
-export const testRegularStopLoss = async ({ app, forkId }: { app: App; forkId: string }) => {
+type Automations =
+	| 'dma-stop-loss'
+	| 'dma-trailing-stop-loss'
+	| 'auto-sell'
+	| 'auto-buy'
+	| 'dma-partial-take-profit';
+
+type Tokens = 'arbitrumETH' | 'arbitrumDAI';
+
+const tokenAddresses = {
+	arbitrumETH: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+	arbitrumDAI: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+};
+
+let matchObject = ({
+	automation,
+	collToken,
+	debtToken,
+	triggerToken,
+}: {
+	automation: Automations;
+	collToken: Tokens;
+	debtToken: Tokens;
+	triggerToken?: Tokens;
+}) => {
+	return {
+		action: 'add',
+		dpm: expect.any(String),
+		position: {
+			collateral: tokenAddresses[collToken],
+			debt: tokenAddresses[debtToken],
+		},
+		triggerData: {
+			...(automation !== 'dma-trailing-stop-loss' && {
+				executionLTV: expect.any(String),
+			}),
+			...(['dma-stop-loss', 'dma-trailing-stop-loss'].includes(automation) && {
+				token: tokenAddresses[triggerToken],
+			}),
+			...(automation === 'dma-trailing-stop-loss' && {
+				trailingDistance: expect.any(String),
+			}),
+			...(['auto-buy', 'auto-sell'].includes(automation) && {
+				executionLTV: expect.any(String),
+				targetLTV: expect.any(String),
+				maxBaseFee: '300',
+				[automation === 'auto-sell' ? 'useMinSellPrice' : 'useMaxBuyPrice']: true,
+			}),
+			...(automation === 'dma-partial-take-profit' && {
+				withdrawToken: tokenAddresses[triggerToken],
+				withdrawStep: expect.any(String),
+				executionPrice: '0',
+				stopLoss: {
+					triggerData: { executionLTV: expect.any(String), token: tokenAddresses[triggerToken] },
+					action: 'add',
+				},
+			}),
+		},
+	};
+};
+
+const verifyTriggerApiRequestPayload = async ({
+	app,
+	automation,
+	protocol,
+	collToken,
+	debtToken,
+	triggerToken,
+}: {
+	app: App;
+	automation: Automations;
+	protocol: Protocols;
+	collToken: Tokens;
+	debtToken: Tokens;
+	triggerToken?: Tokens;
+}) => {
+	const requestPromise = app.page.waitForRequest(
+		(request) =>
+			request.url().includes(`/${protocol}/${automation}`) && request.method() === 'POST',
+		{ timeout: expectDefaultTimeout * 5 }
+	);
+
+	if (automation === 'dma-stop-loss') {
+		await app.position.protection.adjustStopLossTrigger({ value: 0.7 });
+	}
+	if (automation === 'dma-trailing-stop-loss') {
+		await app.position.protection.adjustTrailingStopLossTrigger({ value: 0.8 });
+	}
+	if (automation === 'auto-buy') {
+		await app.position.optimization.adjustAutoBuyTrigger({ value: 0.1 });
+	}
+	if (automation === 'auto-sell') {
+		await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
+	}
+	if (automation === 'dma-partial-take-profit') {
+		await app.position.optimization.adjustPartialTakeProfitTrigger({ value: 0.1 });
+	}
+
+	const request = await requestPromise;
+	const requestJson = await request.postDataJSON();
+
+	expect(requestJson).toMatchObject(
+		matchObject({ automation, collToken, debtToken, triggerToken })
+	);
+};
+
+export const testRegularStopLoss = async ({
+	app,
+	forkId,
+	verifyTriggerPayload,
+}: {
+	app: App;
+	forkId: string;
+	verifyTriggerPayload?: {
+		protocol: Protocols;
+		collToken: Tokens;
+		debtToken: Tokens;
+		triggerToken: Tokens;
+	};
+}) => {
 	await app.position.openTab('Protection');
 	await app.position.protection.setup('Stop-Loss');
 
-	await app.position.protection.adjustStopLossTrigger({ value: 0.7 });
+	if (verifyTriggerPayload) {
+		await verifyTriggerApiRequestPayload({
+			app,
+			automation: 'dma-stop-loss',
+			protocol: verifyTriggerPayload.protocol,
+			collToken: verifyTriggerPayload.collToken,
+			debtToken: verifyTriggerPayload.debtToken,
+			triggerToken: verifyTriggerPayload.triggerToken,
+		});
+	} else {
+		await app.position.protection.adjustStopLossTrigger({ value: 0.7 });
+	}
+
 	await app.position.setup.confirm();
 
 	// Automation setup randomly fails - Retry until it's set.
@@ -22,11 +153,36 @@ export const testRegularStopLoss = async ({ app, forkId }: { app: App; forkId: s
 	});
 };
 
-export const testTrailingStopLoss = async ({ app, forkId }: { app: App; forkId: string }) => {
+export const testTrailingStopLoss = async ({
+	app,
+	forkId,
+	verifyTriggerPayload,
+}: {
+	app: App;
+	forkId: string;
+	verifyTriggerPayload?: {
+		protocol: Protocols;
+		collToken: Tokens;
+		debtToken: Tokens;
+		triggerToken: Tokens;
+	};
+}) => {
 	await app.position.openTab('Protection');
 	await app.position.protection.setup('Trailing Stop-Loss');
 
-	await app.position.protection.adjustTrailingStopLossTrigger({ value: 0.8 });
+	if (verifyTriggerPayload) {
+		await verifyTriggerApiRequestPayload({
+			app,
+			automation: 'dma-trailing-stop-loss',
+			protocol: verifyTriggerPayload.protocol,
+			collToken: verifyTriggerPayload.collToken,
+			debtToken: verifyTriggerPayload.debtToken,
+			triggerToken: verifyTriggerPayload.triggerToken,
+		});
+	} else {
+		await app.position.protection.adjustTrailingStopLossTrigger({ value: 0.8 });
+	}
+
 	await app.position.setup.confirm();
 
 	// Automation setup randomly fails - Retry until it's set.
@@ -43,47 +199,27 @@ export const testAutoSell = async ({
 	app,
 	forkId,
 	strategy,
-	assertTriggerPayload,
-	protocol,
-	collTokenAddress,
-	debtTokenAddress,
+	verifyTriggerPayload,
 }: {
 	app: App;
 	forkId: string;
 	strategy?: 'short';
-	assertTriggerPayload?: boolean;
-	protocol?: 'aave3' | 'spark';
-	collTokenAddress?: string;
-	debtTokenAddress?: string;
+	verifyTriggerPayload?: {
+		protocol: Protocols;
+		collToken: Tokens;
+		debtToken: Tokens;
+	};
 }) => {
 	await app.position.openTab('Protection');
 	await app.position.protection.setup('Auto-Sell');
 
-	if (assertTriggerPayload) {
-		const requestPromise = app.page.waitForRequest(
-			(request) => request.url().includes(`/${protocol}/auto-sell`) && request.method() === 'POST',
-			{ timeout: expectDefaultTimeout * 5 }
-		);
-
-		await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
-
-		const request = await requestPromise;
-		const requestJson = await request.postDataJSON();
-
-		expect(requestJson).toMatchObject({
-			dpm: expect.any(String),
-			triggerData: {
-				executionLTV: expect.any(String),
-				targetLTV: expect.any(String),
-				maxBaseFee: '300',
-				useMinSellPrice: true,
-			},
-			position: {
-				collateral: collTokenAddress ?? expect.any(String),
-				debt: debtTokenAddress ?? expect.any(String),
-			},
-			rpc: `https://rpc.tenderly.co/fork/${forkId}`,
-			action: 'add',
+	if (verifyTriggerPayload) {
+		await verifyTriggerApiRequestPayload({
+			app,
+			automation: 'auto-sell',
+			protocol: verifyTriggerPayload.protocol,
+			collToken: verifyTriggerPayload.collToken,
+			debtToken: verifyTriggerPayload.debtToken,
 		});
 	} else {
 		await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
@@ -119,49 +255,28 @@ export const testAutoBuy = async ({
 	forkId,
 	strategy,
 	triggerLTV,
-	assertTriggerPayload,
-	protocol,
-	collTokenAddress,
-	debtTokenAddress,
+	verifyTriggerPayload,
 }: {
 	app: App;
 	forkId: string;
 	strategy?: 'short';
 	triggerLTV?: number;
-	assertTriggerPayload?: boolean;
-	protocol?: 'aave3' | 'spark';
-
-	collTokenAddress?: string;
-	debtTokenAddress?: string;
+	verifyTriggerPayload?: {
+		protocol: Protocols;
+		collToken: Tokens;
+		debtToken: Tokens;
+	};
 }) => {
 	await app.position.openTab('Optimization');
 	await app.position.optimization.setupOptimization('Auto-Buy');
 
-	if (assertTriggerPayload) {
-		const requestPromise = app.page.waitForRequest(
-			(request) => request.url().includes(`/${protocol}/auto-buy`) && request.method() === 'POST',
-			{ timeout: expectDefaultTimeout * 5 }
-		);
-
-		await app.position.optimization.adjustAutoBuyTrigger({ value: triggerLTV ?? 0.2 });
-
-		const request = await requestPromise;
-		const requestJson = await request.postDataJSON();
-
-		expect(requestJson).toMatchObject({
-			dpm: expect.any(String),
-			triggerData: {
-				executionLTV: expect.any(String),
-				targetLTV: expect.any(String),
-				maxBaseFee: '300',
-				useMaxBuyPrice: true,
-			},
-			position: {
-				collateral: collTokenAddress ?? expect.any(String),
-				debt: debtTokenAddress ?? expect.any(String),
-			},
-			rpc: `https://rpc.tenderly.co/fork/${forkId}`,
-			action: 'add',
+	if (verifyTriggerPayload) {
+		await verifyTriggerApiRequestPayload({
+			app,
+			automation: 'auto-buy',
+			protocol: verifyTriggerPayload.protocol,
+			collToken: verifyTriggerPayload.collToken,
+			debtToken: verifyTriggerPayload.debtToken,
 		});
 	} else {
 		await app.position.optimization.adjustAutoBuyTrigger({ value: triggerLTV ?? 0.2 });
@@ -193,7 +308,20 @@ export const testAutoBuy = async ({
 	});
 };
 
-export const testPartialTakeProfit = async ({ app, forkId }: { app: App; forkId: string }) => {
+export const testPartialTakeProfit = async ({
+	app,
+	forkId,
+	verifyTriggerPayload,
+}: {
+	app: App;
+	forkId: string;
+	verifyTriggerPayload?: {
+		protocol: Protocols;
+		collToken: Tokens;
+		debtToken: Tokens;
+		triggerToken: Tokens;
+	};
+}) => {
 	await app.position.openTab('Optimization');
 
 	await app.position.optimization.setupOptimization('Auto Take Profit');
@@ -201,7 +329,19 @@ export const testPartialTakeProfit = async ({ app, forkId }: { app: App; forkId:
 	// Long pause needed to avoid random fails
 	await app.page.waitForTimeout(10000);
 
-	await app.position.optimization.adjustPartialTakeProfitTrigger({ value: 0.1 });
+	if (verifyTriggerPayload) {
+		await verifyTriggerApiRequestPayload({
+			app,
+			automation: 'dma-partial-take-profit',
+			protocol: verifyTriggerPayload.protocol,
+			collToken: verifyTriggerPayload.collToken,
+			debtToken: verifyTriggerPayload.debtToken,
+			triggerToken: verifyTriggerPayload.triggerToken,
+		});
+	} else {
+		await app.position.optimization.adjustPartialTakeProfitTrigger({ value: 0.1 });
+	}
+
 	await app.position.setup.confirm();
 
 	// Automation setup randomly fails - Retry until it's set.
