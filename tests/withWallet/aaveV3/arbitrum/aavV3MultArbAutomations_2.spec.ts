@@ -53,7 +53,16 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		await app.position.openPage('/arbitrum/aave/v3/multiply/eth-dai/1#overview');
 
-		await automations.testTrailingStopLoss({ app, forkId });
+		await automations.testTrailingStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'arbitrumETH',
+				debtToken: 'arbitrumDAI',
+				triggerToken: 'arbitrumDAI',
+			},
+		});
 	});
 
 	test('It should set Partial Take Profit on an Aave v3 Arbitrum Multiply position @regression', async () => {
@@ -77,6 +86,15 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		await app.position.openPage('/arbitrum/aave/v3/multiply/eth-dai/1#overview');
 
-		await automations.testPartialTakeProfit({ app, forkId });
+		await automations.testPartialTakeProfit({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'arbitrumETH',
+				debtToken: 'arbitrumDAI',
+				triggerToken: 'arbitrumETH',
+			},
+		});
 	});
 });

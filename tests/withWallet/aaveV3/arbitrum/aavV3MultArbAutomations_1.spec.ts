@@ -56,10 +56,11 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await automations.testAutoBuy({
 			app,
 			forkId,
-			assertTriggerPayload: true,
-			protocol: 'aave3',
-			collTokenAddress: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
-			debtTokenAddress: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'arbitrumETH',
+				debtToken: 'arbitrumDAI',
+			},
 		});
 	});
 
@@ -78,10 +79,11 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await automations.testAutoSell({
 			app,
 			forkId,
-			assertTriggerPayload: true,
-			protocol: 'aave3',
-			collTokenAddress: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
-			debtTokenAddress: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'arbitrumETH',
+				debtToken: 'arbitrumDAI',
+			},
 		});
 	});
 
@@ -97,6 +99,15 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testRegularStopLoss({ app, forkId });
+		await automations.testRegularStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'arbitrumETH',
+				debtToken: 'arbitrumDAI',
+				triggerToken: 'arbitrumDAI',
+			},
+		});
 	});
 });

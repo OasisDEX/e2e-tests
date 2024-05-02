@@ -101,7 +101,7 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testAutoBuy({ app, forkId, triggerLTV: 0.1 });
+		await automations.testAutoBuy({ app, forkId });
 	});
 
 	test('It should set Auto-Sell on an Spark Mainnet Multiply position @regression', async () => {
