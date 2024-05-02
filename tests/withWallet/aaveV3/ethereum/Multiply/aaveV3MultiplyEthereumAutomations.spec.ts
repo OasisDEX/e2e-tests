@@ -53,7 +53,15 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 
 		await app.position.openPage('/ethereum/aave/v3/multiply/eth-usdc/1218#overview');
 
-		await automations.testAutoBuy({ app, forkId });
+		await automations.testAutoBuy({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'mainnetETH',
+				debtToken: 'mainnetUSDC',
+			},
+		});
 	});
 
 	test('It should set Auto-Sell on an Aave v3 Mainnet Multiply position @regression', async () => {
@@ -68,7 +76,15 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testAutoSell({ app, forkId });
+		await automations.testAutoSell({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'mainnetETH',
+				debtToken: 'mainnetUSDC',
+			},
+		});
 	});
 
 	test('It should set Regular Stop-Loss on an Aave v3 Mainnet Multiply position @regression', async () => {
@@ -83,7 +99,16 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testRegularStopLoss({ app, forkId });
+		await automations.testRegularStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'mainnetETH',
+				debtToken: 'mainnetUSDC',
+				triggerToken: 'mainnetUSDC',
+			},
+		});
 	});
 
 	test('It should set Trailing Stop-Loss on an Aave v3 Mainnet Multiply position @regression', async () => {
@@ -107,7 +132,16 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 
 		await app.position.openPage('/ethereum/aave/v3/multiply/eth-usdc/1218#overview');
 
-		await automations.testTrailingStopLoss({ app, forkId });
+		await automations.testTrailingStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'mainnetETH',
+				debtToken: 'mainnetUSDC',
+				triggerToken: 'mainnetUSDC',
+			},
+		});
 	});
 
 	test('It should set Partial Take Profit on an Aave v3 Mainnet Multiply position @regression', async () => {
@@ -131,6 +165,15 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 
 		await app.position.openPage('/ethereum/aave/v3/multiply/eth-usdc/1218#overview');
 
-		await automations.testPartialTakeProfit({ app, forkId });
+		await automations.testPartialTakeProfit({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'mainnetETH',
+				debtToken: 'mainnetUSDC',
+				triggerToken: 'mainnetETH',
+			},
+		});
 	});
 });

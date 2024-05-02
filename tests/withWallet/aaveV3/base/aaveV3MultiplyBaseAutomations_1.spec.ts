@@ -53,7 +53,15 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await app.position.openPage('/base/aave/v3/multiply/ETH-USDC/435#overview');
 
-		await automations.testAutoBuy({ app, forkId });
+		await automations.testAutoBuy({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'baseETH',
+				debtToken: 'baseUSDC',
+			},
+		});
 	});
 
 	test('It should set Auto-Sell on an Aave v3 Base Multiply position @regression', async () => {
@@ -68,7 +76,15 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testAutoSell({ app, forkId });
+		await automations.testAutoSell({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'baseETH',
+				debtToken: 'baseUSDC',
+			},
+		});
 	});
 
 	test('It should set Partial Take Profit on an Aave v3 Mainnet Multiply position @regression', async () => {
@@ -83,6 +99,15 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testPartialTakeProfit({ app, forkId });
+		await automations.testPartialTakeProfit({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'baseETH',
+				debtToken: 'baseUSDC',
+				triggerToken: 'baseETH',
+			},
+		});
 	});
 });

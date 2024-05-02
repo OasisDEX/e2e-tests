@@ -53,10 +53,19 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await app.position.openPage('/base/aave/v3/multiply/ETH-USDC/435#overview');
 
-		await automations.testRegularStopLoss({ app, forkId });
+		await automations.testRegularStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'baseETH',
+				debtToken: 'baseUSDC',
+				triggerToken: 'baseUSDC',
+			},
+		});
 	});
 
-	// While ona FORK Aave Multiply Base positions almost always failto estimate gas for Trailing Stop-Loss
+	// While ona FORK Aave Multiply Base positions almost always fail to estimate gas for Trailing Stop-Loss
 	test.skip('It should set Trailing Stop-Loss on an Aave v3 Base Multiply position @regression', async () => {
 		test.info().annotations.push(
 			{
@@ -75,6 +84,15 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testTrailingStopLoss({ app, forkId });
+		await automations.testTrailingStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'baseETH',
+				debtToken: 'baseUSDC',
+				triggerToken: 'baseUSDC',
+			},
+		});
 	});
 });
