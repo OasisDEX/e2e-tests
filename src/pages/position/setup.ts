@@ -209,8 +209,18 @@ export class Setup {
 	}
 
 	@step
+	async setupProxy1Of5() {
+		await this.page.getByRole('button', { name: 'Set up Proxy (1/5)' }).click();
+	}
+
+	@step
 	async createProxy2Of4() {
 		await this.page.getByRole('button', { name: 'Create Proxy (2/4)' }).click();
+	}
+
+	@step
+	async createProxy2Of5() {
+		await this.page.getByRole('button', { name: 'Create Proxy (2/5)' }).click();
 	}
 
 	@step

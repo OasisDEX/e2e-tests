@@ -7,6 +7,7 @@ import { Optimization } from './optimization';
 import { OrderInformation } from './orderInformation';
 import { Overview } from './overview';
 import { Protection } from './protection';
+import { Refinance } from './refinance';
 import { Setup } from './setup';
 
 export class Position {
@@ -24,6 +25,8 @@ export class Position {
 
 	readonly protection: Protection;
 
+	readonly refinance: Refinance;
+
 	readonly setup: Setup;
 
 	constructor(page: Page) {
@@ -34,6 +37,7 @@ export class Position {
 		this.orderInformation = new OrderInformation(page);
 		this.overview = new Overview(page);
 		this.protection = new Protection(page);
+		this.refinance = new Refinance(page);
 		this.setup = new Setup(page);
 	}
 

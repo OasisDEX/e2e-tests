@@ -58,7 +58,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		});
 	});
 
-	// Skip again if DB collision also happeningwith omni
+	// Skip again if DB collision also happening with omni
 	test('It should adjust risk of an existent Aave V3 Multiply Base position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
