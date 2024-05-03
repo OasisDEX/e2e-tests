@@ -77,8 +77,8 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 
 		await app.position.setup.generate({ token: 'DAI', amount: '8,000.12' });
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[1-2],[0-9]{3}.[0-9]{2}');
-		await app.position.overview.shouldHaveCollateralizationRatio('[0-9]{3}.[0-9]{2}%');
-		await app.position.overview.shouldHaveVaultDaiDebt('8,000.1200');
+		await app.position.overview.shouldHaveCollateralizationRatioAfterPill('[0-9]{3}.[0-9]{2}%');
+		await app.position.overview.shouldHaveVaultDaiDebtAfterPill('8,000.1200');
 		await app.position.setup.vaultChanges.shouldHaveCollateralizationRatio({
 			current: '0.00',
 			future: '[0-9]{2,3}.[0-9]{2}',

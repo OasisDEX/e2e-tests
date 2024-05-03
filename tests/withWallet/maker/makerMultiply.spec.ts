@@ -145,7 +145,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 			protocol: 'Maker',
 		});
 		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2},[0-9]{3}.[0-9]{2}');
-		await app.position.overview.shouldHaveVaultDaiDebt('[0-9]{1,2},[0-9]{3}.[0-9]{4}');
+		await app.position.overview.shouldHaveVaultDaiDebtAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{4}');
 		await app.position.overview.shouldHaveTotalCollateral({
 			token: 'WSTETH',
 			amount: '[0-9]{2}.[0-9]{2}',

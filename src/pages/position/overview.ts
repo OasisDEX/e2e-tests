@@ -330,18 +330,26 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveCollateralLockedAfterPill(collateral: string) {
-		const regExp = new RegExp(collateral);
-		await expect(
-			this.page.getByText('Collateral Locked').locator('..').getByText('After')
-		).toContainText(regExp, { timeout: positionTimeout });
-	}
-
-	@step
 	async shouldHaveCollateralDepositedAfterPill(collateral: string) {
 		const regExp = new RegExp(collateral);
 		await expect(
 			this.page.getByText('Collateral Deposited').locator('..').getByText('After')
+		).toContainText(regExp, { timeout: positionTimeout });
+	}
+
+	@step
+	async shouldHaveCollateralLocked(collateral: string) {
+		const regExp = new RegExp(collateral);
+		await expect(this.page.getByText('Collateral Locked').locator('..')).toContainText(regExp, {
+			timeout: positionTimeout,
+		});
+	}
+
+	@step
+	async shouldHaveCollateralLockedAfterPill(collateral: string) {
+		const regExp = new RegExp(collateral);
+		await expect(
+			this.page.getByText('Collateral Locked').locator('..').getByText('After')
 		).toContainText(regExp, { timeout: positionTimeout });
 	}
 
@@ -432,6 +440,18 @@ export class Overview {
 	@step
 	async shouldHaveCollateralizationRatio(percentage: string) {
 		const regExp = new RegExp(percentage);
+		await expect(this.page.getByText('Collateralization Ratio').locator('..')).toContainText(
+			regExp,
+			{ timeout: positionTimeout }
+		);
+	}
+
+	/**
+	 	@param price - It must be regExp representing the the whole amount
+	*/
+	@step
+	async shouldHaveCollateralizationRatioAfterPill(percentage: string) {
+		const regExp = new RegExp(percentage);
 		await expect(
 			this.page.getByText('Collateralization Ratio').locator('..').getByText('After')
 		).toContainText(regExp, { timeout: positionTimeout });
@@ -440,8 +460,19 @@ export class Overview {
 	@step
 	async shouldHaveVaultDaiDebt(amount: string) {
 		const regExp = new RegExp(`${amount} DAI`);
+		await expect(this.page.locator('li:has-text("Vault Dai Debt")')).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveVaultDaiDebtAfterPill(amount: string) {
+		const regExp = new RegExp(`${amount} DAI`);
 		await expect(
 			this.page.locator('li:has-text("Vault Dai Debt")').getByText('After')
 		).toContainText(regExp);
+	}
+
+	@step
+	async refinance() {
+		await this.page.getByRole('button', { name: 'Get Started' }).click();
 	}
 }
