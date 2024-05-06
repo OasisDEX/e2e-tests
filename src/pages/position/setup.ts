@@ -214,6 +214,11 @@ export class Setup {
 	}
 
 	@step
+	async createProxy() {
+		await this.page.getByRole('button', { name: 'Create Proxy' }).click();
+	}
+
+	@step
 	async createProxy2Of4() {
 		await this.page.getByRole('button', { name: 'Create Proxy (2/4)' }).click();
 	}
