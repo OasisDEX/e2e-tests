@@ -144,8 +144,16 @@ export class Positions {
 	 * @param index should be an integer; '0' for top position, '1'for second position, etc.
 	 */
 	@step
-	async openNthPosition(index: number) {
-		await this.page.getByRole('link').filter({ hasText: 'Position #' }).nth(index).click();
+	async openNthPosition(index: number, options?: { migratable: boolean }) {
+		await this.page
+			.getByRole('link')
+			.filter({
+				has: this.page.getByRole('button', {
+					name: options?.migratable ? 'Migrate' : 'Position #',
+				}),
+			})
+			.nth(index)
+			.click();
 	}
 
 	/**

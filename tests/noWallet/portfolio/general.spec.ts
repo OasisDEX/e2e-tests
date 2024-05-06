@@ -29,7 +29,7 @@ test.describe('Default states - Wallet not connected', async () => {
 			automationMinNetValueFlags,
 		});
 
-		await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F');
+		await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F', { withPositions: true });
 	});
 
 	test.afterAll(async () => {
@@ -82,6 +82,30 @@ test.describe('Default states - Wallet not connected', async () => {
 		const positionsCount2 = await app.portfolio.positions.getNumberOfPositions();
 		expect(positionsCount2.migratePositionsCount).toEqual(1);
 		expect(positionsCount2.positionsListedCount).toEqual(0);
+	});
+
+	test('It should open position page with Migrate UI - Position card @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.portfolio.positions.openNthPosition(0, { migratable: true });
+
+		await app.position.manage.shouldBeVisible('Migrate your position into Summer.fi');
+	});
+
+	test('It should open position page with Migrate UI - Overview Migrate link @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F', { withPositions: true });
+
+		await app.portfolio.positions.openNthPosition(0, { migratable: true });
+
+		await app.position.manage.shouldBeVisible('Migrate your position into Summer.fi');
 	});
 
 	test.skip('It should sort by Net Value @regression', async () => {
