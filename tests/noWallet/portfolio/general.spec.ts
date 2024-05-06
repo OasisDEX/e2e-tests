@@ -54,6 +54,36 @@ test.describe('Default states - Wallet not connected', async () => {
 		await app.portfolio.positions.shouldHaveNetValuesGreaterThanOneCent();
 	});
 
+	test('It should list migratable positions @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		const { migratePositionsCount } = await app.portfolio.positions.getNumberOfPositions();
+		expect(migratePositionsCount).toEqual(1);
+	});
+
+	test('It should filter by migratable positions @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		const positionsCount = await app.portfolio.positions.getNumberOfPositions();
+		expect(positionsCount.migratePositionsCount).toEqual(1);
+		expect(positionsCount.positionsListedCount).toBeGreaterThan(1);
+
+		await app.portfolio.positions.filterByProductType({
+			currentFilter: 'All products',
+			productType: 'Migrate',
+		});
+
+		const positionsCount2 = await app.portfolio.positions.getNumberOfPositions();
+		expect(positionsCount2.migratePositionsCount).toEqual(1);
+		expect(positionsCount2.positionsListedCount).toEqual(0);
+	});
+
 	test.skip('It should sort by Net Value @regression', async () => {
 		test.info().annotations.push(
 			{
