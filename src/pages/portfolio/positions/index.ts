@@ -1,4 +1,4 @@
-import { expect, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
 import { portfolioTimeout } from 'utils/config';
 import { FeaturedFor } from './featuredFor';
@@ -17,9 +17,12 @@ export class Positions {
 
 	readonly featuredFor: FeaturedFor;
 
+	readonly positionsControlsLocator: Locator;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.featuredFor = new FeaturedFor(page);
+		this.positionsControlsLocator = this.page.getByTestId('portfolio-positions-controls');
 	}
 
 	@step
@@ -38,14 +41,14 @@ export class Positions {
 		currentFilter: ProductTypes;
 		productType: ProductTypes;
 	}) {
-		const productFilterLocator = this.page
-			.locator(`span:has-text("${currentFilter}")`)
-			.locator('../..');
+		await this.positionsControlsLocator.locator(`span:has-text("${currentFilter}")`).click();
+		await this.positionsControlsLocator
+			.getByRole('listitem')
+			.filter({ hasText: productType })
+			.click();
 
-		await this.page.locator(`span:has-text("${currentFilter}")`).click();
-		await productFilterLocator.getByRole('listitem').filter({ hasText: productType }).click();
 		await expect(
-			this.page.locator(`span:has-text("${productType}")`),
+			this.positionsControlsLocator.locator('span').filter({ hasText: productType }),
 			`"${productType}" should be visible`
 		).toBeVisible({
 			timeout: portfolioTimeout,
