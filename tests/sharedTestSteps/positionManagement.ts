@@ -1,4 +1,5 @@
-import { expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { longTestTimeout, positionTimeout } from 'utils/config';
@@ -48,11 +49,11 @@ export const openPosition = async ({
 		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.continue();
-	} else if (deposit.token !== 'ETH') {
-		await app.position.setup.setTokenAllowance(deposit.token);
 	}
 
 	if (deposit.token !== 'ETH') {
+		await app.position.setup.setTokenAllowance(deposit.token);
+
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
 			await app.position.setup.approveAllowance();
@@ -88,6 +89,72 @@ export const openPosition = async ({
 
 		return positionId;
 	}
+};
+
+export const openMakerPosition = async ({
+	app,
+	forkId,
+	deposit,
+	generate,
+	existingProxy,
+	adjustRisk,
+}: {
+	app: App;
+	forkId: string;
+	deposit: ActionData;
+	generate?: ActionData;
+	existingProxy?: boolean;
+	adjustRisk?: { positionType?: 'Generate'; value: number };
+}) => {
+	await app.position.setup.deposit(deposit);
+	if (generate) {
+		await app.position.setup.generate(generate);
+	}
+	if (adjustRisk) {
+		// TO BE DONE
+	}
+	if (!existingProxy) {
+		await app.position.setup.setupProxy();
+		await app.position.setup.createProxy();
+		await test.step('Metamask: ConfirmAddToken', async () => {
+			await metamask.confirmAddToken();
+		});
+
+		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
+		await app.page.waitForTimeout(5_000);
+		await app.page.reload();
+
+		await app.position.setup.deposit(deposit);
+		if (generate) {
+			await app.position.setup.generate(generate);
+		}
+	}
+
+	if (deposit.token !== 'ETH') {
+		await app.position.setup.setTokenAllowance(deposit.token);
+		await app.position.setup.setTokenAllowance(deposit.token);
+
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.approveAllowance();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+	}
+
+	await app.position.setup.confirm();
+	await app.position.setup.continueWithoutStopLoss();
+	await app.position.setup.createVault3Of3();
+	await test.step('Metamask: ConfirmAddToken', async () => {
+		await metamask.confirmAddToken();
+	});
+
+	await app.position.setup.goToVault();
+	await app.position.manage.shouldBeVisible('Manage your vault');
+	// Verify that it has beenopened as 'Borrow' type
+	await app.position.manage.shouldHaveButton({ label: deposit.token });
 };
 
 export const adjustRisk = async ({
