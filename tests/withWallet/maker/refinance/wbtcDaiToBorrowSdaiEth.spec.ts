@@ -31,7 +31,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 	});
 
 	// Create a Maker position as part of the Refinance tests setup
-	test('It should open a Maker Borrow position', async () => {
+	test('It should open a Maker Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
