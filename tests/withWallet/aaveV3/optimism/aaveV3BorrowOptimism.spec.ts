@@ -68,7 +68,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			network: 'optimism',
 			walletAddress,
 			token: 'DAI',
-			balance: '100000',
+			balance: '200000',
 		});
 
 		await tenderly.changeAccountOwner({
@@ -82,10 +82,10 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			deposit: { token: 'DAI', amount: '50000' },
+			deposit: { token: 'DAI', amount: '100000' },
 			borrow: { token: 'WBTC', amount: '0.3' },
 			expectedCollateralDeposited: {
-				amount: '50,[0-9]{3}.[0-9]{2}',
+				amount: '100,[0-9]{3}.[0-9]{2}',
 				token: 'DAI',
 			},
 			expectedDebt: { amount: '0.3[0-9]{2,3}', token: 'WBTC' },
@@ -113,7 +113,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			withdraw: { token: 'DAI', amount: '20000' },
 			payBack: { token: 'WBTC', amount: '0.1' },
 			expectedCollateralDeposited: {
-				amount: '30,[0-9]{3}.[0-9]{2}',
+				amount: '80,[0-9]{3}.[0-9]{2}',
 				token: 'DAI',
 			},
 			expectedDebt: { amount: '0.2[0-9]{2,3}', token: 'WBTC' },
@@ -143,7 +143,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			borrow: { token: 'WBTC', amount: '0.2' },
 			deposit: { token: 'DAI', amount: '10000' },
 			expectedCollateralDeposited: {
-				amount: '40,[0-9]{3}.[0-9]{2}',
+				amount: '90,[0-9]{3}.[0-9]{2}',
 				token: 'DAI',
 			},
 			expectedDebt: { amount: '0.4[0-9]{2,3}', token: 'WBTC' },
@@ -171,9 +171,9 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			app,
 			forkId,
 			payBack: { token: 'WBTC', amount: '0.3' },
-			withdraw: { token: 'DAI', amount: '10500' },
+			withdraw: { token: 'DAI', amount: '10000' },
 			expectedCollateralDeposited: {
-				amount: '29,5[0-9]{2}.[0-9]{2}',
+				amount: '80,[0-9]{3}.[0-9]{2}',
 				token: 'DAI',
 			},
 			expectedDebt: { amount: '0.1[0-9]{2,3}', token: 'WBTC' },
@@ -200,7 +200,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			closeTo: 'debt',
 			collateralToken: 'DAI',
 			debtToken: 'WBTC',
-			tokenAmountAfterClosing: '[0-9].[0-9]{3,4}',
+			tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{3,4}',
 		});
 	});
 });

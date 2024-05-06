@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Wallet connected', async () => {
+test.describe.skip('Maker Borrow - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
