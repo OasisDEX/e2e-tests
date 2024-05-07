@@ -125,7 +125,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			borrow: { token: 'ETH', amount: '2' },
 			deposit: { token: 'CBETH', amount: '1' },
 			expectedCollateralDeposited: {
-				amount: '8.00',
+				amount: '8.0000',
 				token: 'CBETH',
 			},
 			expectedDebt: { amount: '6.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
@@ -154,7 +154,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			payBack: { token: 'ETH', amount: '3' },
 			withdraw: { token: 'CBETH', amount: '1.5' },
 			expectedCollateralDeposited: {
-				amount: '6.50',
+				amount: '6.5000',
 				token: 'CBETH',
 			},
 			expectedDebt: { amount: '3.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
