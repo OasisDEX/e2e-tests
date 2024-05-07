@@ -17,7 +17,7 @@ export class ProductsList {
 		this.page = page;
 		this.listLocator = productHubLocator.getByRole('table');
 		this.pool = new Pool(this.poolLocator);
-		this.poolLocator = this.listLocator.locator('tbody tr');
+		this.poolLocator = this.listLocator.locator('tbody tr[role="link"]');
 		this.poolPairLocator = this.poolLocator.locator('td:nth-child(1)');
 	}
 
