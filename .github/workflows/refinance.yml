@@ -1,8 +1,18 @@
 name: Refinance
 
 on: 
-  schedule:
-    - cron:  '0 1 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on.'
+        type: string
+        default: 'https://staging.summer.fi'
+        required: true
+      flags_features:
+        description: 'Features Flags to enable / disable. For example: "flag1:true flag2:false"'
+        type: string
+        default: ''
+        required: false
 
 jobs:
   with-wallet-refinance:
