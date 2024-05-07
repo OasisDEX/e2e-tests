@@ -24,7 +24,6 @@ export class PositionType {
 
 	@step
 	async select(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
-		await this.headerLocator.click();
 		await this.headerLocator.locator(`li:has-text("${positionCategory}")`).click();
 	}
 }

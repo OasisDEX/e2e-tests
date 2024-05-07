@@ -28,4 +28,38 @@ export class Pool {
 		await this.poolLocator.click();
 		await this.poolLocator.locator(`li:has-text("${positionCategory}")`).click();
 	}
+
+	@step
+	async getPool() {
+		const pool = await this.poolLocator.locator('td').first().innerText();
+		return pool;
+	}
+
+	@step
+	async getStrategy() {
+		const strategy = await this.poolLocator.locator('td').nth(1).innerText();
+		return strategy;
+	}
+
+	@step
+	async getProtocol() {
+		const pool = await this.poolLocator
+			.locator('td')
+			.last()
+			.locator('img')
+			.first()
+			.getAttribute('alt');
+		return pool;
+	}
+
+	@step
+	async getNetwork() {
+		const pool = await this.poolLocator
+			.locator('td')
+			.last()
+			.locator('img')
+			.last()
+			.getAttribute('alt');
+		return pool;
+	}
 }

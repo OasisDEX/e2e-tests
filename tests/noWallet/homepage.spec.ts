@@ -1,6 +1,8 @@
 import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
+const numberOfPools = Array.from({ length: 10 }, (_, index) => 0 + index);
+
 test.describe('Homepage', async () => {
 	test('It should open connect-wallet popup - Homepage', async ({ app }) => {
 		test.info().annotations.push({
@@ -18,20 +20,8 @@ test.describe('Homepage', async () => {
 		await app.homepage.productHub.header.positionType.shouldBe('earn');
 	});
 
-	// To be removed after 'Improved Product Discovery Experience' release
 	(['Borrow', 'Multiply', 'Earn'] as const).forEach((positionCategory) =>
-		test.skip(`It should list only ${positionCategory} positions`, async ({ app }) => {
-			test.setTimeout(longTestTimeout);
-
-			await app.homepage.open();
-			await app.homepage.productHub.header.positionType.select(positionCategory);
-			await app.homepage.productHub.list.allPoolsShouldBe(positionCategory);
-		})
-	);
-
-	// To be UPDATED after 'Improved Product Discovery Experience' release
-	(['Borrow', 'Multiply', 'Earn'] as const).forEach((positionCategory) =>
-		test.skip(`It should link to ${positionCategory} page`, async ({ app }) => {
+		test(`It should link to ${positionCategory} page`, async ({ app }) => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: '12334',
@@ -47,5 +37,73 @@ test.describe('Homepage', async () => {
 		await app.homepage.open();
 		await app.homepage.productHub.list.openPoolFinder();
 		await app.poolFinder.shouldHaveHeader('Earn');
+	});
+
+	numberOfPools.forEach((poolIndex) => {
+		test(`It should open position page for all available EARN pools - ${poolIndex}`, async ({
+			app,
+		}) => {
+			// Logging pool info for debugging purposes
+			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
+			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
+			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
+			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
+			console.log('++++ Pool Index: ', poolIndex);
+			console.log('++++ Pool: ', pool);
+			console.log('++++ Strategy: ', strategy);
+			console.log('++++ Protocol: ', protocol);
+			console.log('++++ Network: ', network);
+
+			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
+			await app.homepage.productHub.list.nthPool(poolIndex).open();
+
+			await app.position.overview.shouldBeVisible();
+		});
+	});
+
+	numberOfPools.forEach((poolIndex) => {
+		test(`It should open position page for all available BORROW pools - ${poolIndex}`, async ({
+			app,
+		}) => {
+			await app.homepage.productHub.header.positionType.select('Borrow');
+			await app.homepage.productHub.header.positionType.shouldBe('borrow');
+
+			// Logging pool info for debugging purposes
+			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
+			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
+			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
+			console.log('++++ Pool Index: ', poolIndex);
+			console.log('++++ Pool: ', pool);
+			console.log('++++ Protocol: ', protocol);
+			console.log('++++ Network: ', network);
+
+			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
+			await app.homepage.productHub.list.nthPool(poolIndex).open();
+
+			await app.position.overview.shouldBeVisible();
+		});
+	});
+
+	numberOfPools.forEach((poolIndex) => {
+		test(`It should open position page for all available MULTIPLY pools - ${poolIndex}`, async ({
+			app,
+		}) => {
+			await app.homepage.productHub.header.positionType.select('Multiply');
+			await app.homepage.productHub.header.positionType.shouldBe('multiply');
+
+			// Logging pool info for debugging purposes
+			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
+			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
+			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
+			console.log('++++ Pool Index: ', poolIndex);
+			console.log('++++ Pool: ', pool);
+			console.log('++++ Protocol: ', protocol);
+			console.log('++++ Network: ', network);
+
+			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
+			await app.homepage.productHub.list.nthPool(poolIndex).open();
+
+			await app.position.overview.shouldBeVisible();
+		});
 	});
 });
