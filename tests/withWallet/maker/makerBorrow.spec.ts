@@ -1,7 +1,7 @@
 import { BrowserContext, test } from '@playwright/test';
-import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
+import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';

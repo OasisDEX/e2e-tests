@@ -27,11 +27,11 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 	});
 
 	test.use({
-		viewport: { width: 1600, height: 850 },
+		viewport: { width: 1400, height: 720 },
 	});
 
 	// Create a Maker position as part of the Refinance tests setup
-	test('It should open a Maker Borrow position', async () => {
+	test('It should open a Maker Borrow position @refinance', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -101,7 +101,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await app.position.manage.shouldHaveButton({ label: 'WBTC' });
 	});
 
-	test('It should refinance a Maker Borrow position (WBTC/DAI) to Spark Borrow (sDAI/ETH)', async () => {
+	test('It should refinance a Maker Borrow position (WBTC/DAI) to Spark Borrow (sDAI/ETH) @refinance', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
