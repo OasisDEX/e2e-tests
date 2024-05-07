@@ -198,7 +198,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await close({
 			app,
 			forkId,
-			positionType: 'Earn',
+			positionType: 'Earn (Yield Loop)',
 			closeTo: 'debt',
 			collateralToken: 'SDAI',
 			debtToken: 'USDT',

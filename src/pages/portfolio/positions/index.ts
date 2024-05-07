@@ -149,7 +149,7 @@ export class Positions {
 			.getByRole('link')
 			.filter({
 				has: this.page.getByRole('button', {
-					name: options?.migratable ? 'Migrate' : 'Position #',
+					name: options?.migratable ? 'Migrate' : 'View Position',
 				}),
 			})
 			.nth(index)

@@ -52,7 +52,9 @@ export const openPosition = async ({
 	}
 
 	if (deposit.token !== 'ETH') {
-		await app.position.setup.setTokenAllowance(deposit.token);
+		if (existingDPM) {
+			await app.position.setup.setTokenAllowance(deposit.token);
+		}
 
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
