@@ -107,7 +107,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			description: '11788, 11790',
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(extremelyLongTestTimeout);
 
 		// Wait an reload to avoid flakiness
 		await app.page.waitForTimeout(1000);
