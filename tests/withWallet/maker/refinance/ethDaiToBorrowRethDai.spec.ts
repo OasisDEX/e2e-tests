@@ -1,12 +1,11 @@
 import { BrowserContext, test } from '@playwright/test';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import { expect, metamaskSetUp } from 'utils/setup';
+import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import * as tx from 'utils/tx';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openMakerPosition } from 'tests/sharedTestSteps/positionManagement';
+import { openMakerPosition, swapMakerToSpark } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -73,59 +72,22 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 
 		// Wait an reload to avoid flakiness
 		await app.page.waitForTimeout(1000);
-		const originalPositionPage: string = app.page.url();
 		await app.page.reload();
 
-		await app.position.overview.refinance();
-		await app.position.refinance.selectReason('Switch to lower my cost');
-		await app.position.refinance.productList.byPairPool('RETH/DAI').open();
-
-		// Smart DeFi Acount creation randomly fails - Retry until it's created.
-		await expect(async () => {
-			await app.position.setup.createSmartDeFiAccount();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-		await app.position.refinance.shouldHaveMaxTransactionCost();
-		await app.position.refinance.confirm();
-		await test.step('Confirm automation setup', async () => {
-			await expect(async () => {
-				await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-				await app.position.setup.continueShouldBeVisible();
-			}).toPass();
+		await swapMakerToSpark({
+			app,
+			forkId,
+			reason: 'Switch to lower my cost',
+			targetPool: 'RETH/DAI',
+			expectedTargetExposure: {
+				amount: '[0-9]{1,2}.[0-9]{2}',
+				token: 'RETH',
+			},
+			expectedTargetDebt: {
+				amount: '[1][4-5],[0-9]{3}.[0-9]{2}',
+				token: 'DAI',
+			},
+			originalPosition: { type: 'Borrow', collateralToken: 'ETH', debtToken: 'DAI' },
 		});
-
-		await app.position.setup.continue();
-		await app.position.refinance.confirm();
-		await test.step('Confirm automation setup', async () => {
-			await expect(async () => {
-				await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-				await app.position.setup.goToPositionShouldBeVisible();
-			}).toPass();
-		});
-
-		await app.position.setup.goToPosition();
-
-		await app.position.manage.shouldBeVisible('Manage your Spark');
-		await app.position.overview.shouldHaveExposure({
-			amount: '[0-9]{1,2}.[0-9]{2}',
-			token: 'RETH',
-		});
-		await app.position.overview.shouldHaveDebt({
-			amount: '[1][4-5],[0-9]{3}.[0-9]{2}',
-			token: 'DAI',
-		});
-
-		// Verify that original Maker position is now empty
-		await app.page.goto(originalPositionPage);
-		await app.position.manage.shouldBeVisible('Manage your vault');
-		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
-		await app.position.overview.shouldHaveCollateralizationRatio('0.00');
-		await app.position.overview.shouldHaveCollateralLocked('0.00');
-		await app.position.overview.shouldHaveVaultDaiDebt('0.0000');
-		await app.position.overview.shouldHaveAvailableToWithdraw({ amount: '0.00000', token: 'ETH' });
-		await app.position.overview.shouldHaveAvailableToGenerate({ amount: '0.0000', token: 'DAI' });
 	});
 });

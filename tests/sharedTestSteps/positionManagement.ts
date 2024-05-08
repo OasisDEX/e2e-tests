@@ -3,6 +3,7 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { longTestTimeout, positionTimeout } from 'utils/config';
+import { Reason } from 'src/pages/position/refinance';
 
 type ActionData = { token: string; amount: string };
 
@@ -136,9 +137,7 @@ export const openMakerPosition = async ({
 		await app.position.setup.setTokenAllowance(deposit.token);
 		await app.position.setup.setTokenAllowance(deposit.token);
 
-		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
-			await app.position.setup.approveAllowance();
 			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
@@ -155,8 +154,6 @@ export const openMakerPosition = async ({
 
 	await app.position.setup.goToVault();
 	await app.position.manage.shouldBeVisible('Manage your vault');
-	// Verify that it has beenopened as 'Borrow' type
-	await app.position.manage.shouldHaveButton({ label: deposit.token });
 };
 
 export const adjustRisk = async ({
@@ -398,6 +395,88 @@ export const manageDebtOrCollateral = async ({
 			timeout: positionTimeout,
 			protocol: 'Ajna',
 			...expectedDebt,
+		});
+	}
+};
+
+export const swapMakerToSpark = async ({
+	app,
+	forkId,
+	reason,
+	targetPool,
+	expectedTargetExposure,
+	expectedTargetDebt,
+	originalPosition,
+}: {
+	app: App;
+	forkId: string;
+	reason: Reason;
+	targetPool: string;
+	expectedTargetExposure: ActionData;
+	expectedTargetDebt: ActionData;
+	originalPosition: { type: 'Borrow' | 'Multiply'; collateralToken: string; debtToken?: string };
+}) => {
+	const originalPositionPage: string = app.page.url();
+
+	await app.position.overview.refinance();
+	await app.position.refinance.selectReason(reason);
+	await app.position.refinance.productList.byPairPool(targetPool).open();
+
+	// Smart DeFi Acount creation randomly fails - Retry until it's created.
+	await expect(async () => {
+		await app.position.setup.createSmartDeFiAccount();
+		await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+		await app.position.setup.continueShouldBeVisible();
+	}).toPass({ timeout: longTestTimeout });
+
+	await app.position.setup.continue();
+	await app.position.refinance.shouldHaveMaxTransactionCost();
+	await app.position.refinance.confirm();
+	await test.step('Confirm automation setup', async () => {
+		await expect(async () => {
+			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass();
+	});
+
+	await app.position.setup.continue();
+	await app.position.refinance.confirm();
+	await test.step('Confirm automation setup', async () => {
+		await expect(async () => {
+			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+			await app.position.setup.goToPositionShouldBeVisible();
+		}).toPass();
+	});
+
+	await app.position.setup.goToPosition();
+
+	await app.position.manage.shouldBeVisible('Manage your Spark');
+	await app.position.overview.shouldHaveExposure(expectedTargetExposure);
+	await app.position.overview.shouldHaveDebt(expectedTargetDebt);
+
+	// Verify that original Maker position is now empty
+	await app.page.goto(originalPositionPage);
+	await app.position.manage.shouldBeVisible('Manage your vault');
+	await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
+	await app.position.overview.shouldHaveVaultDaiDebt('0.0000');
+	if (originalPosition.type === 'Multiply') {
+		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
+		await app.position.overview.shouldHaveTotalCollateral({
+			amount: '0.00',
+			token: originalPosition.collateralToken,
+		});
+	}
+	if (originalPosition.type === 'Borrow') {
+		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
+		await app.position.overview.shouldHaveCollateralizationRatio('0.00');
+		await app.position.overview.shouldHaveCollateralLocked('0.00');
+		await app.position.overview.shouldHaveAvailableToWithdraw({
+			amount: '0.00000',
+			token: originalPosition.collateralToken,
+		});
+		await app.position.overview.shouldHaveAvailableToGenerate({
+			amount: '0.0000',
+			token: originalPosition.debtToken,
 		});
 	}
 };

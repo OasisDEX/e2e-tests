@@ -3,6 +3,12 @@ import { expect, Locator, Page } from '@playwright/test';
 import { ProductsList } from '../common/productsList';
 import { expectDefaultTimeout } from 'utils/config';
 
+export type Reason =
+	| 'Switch to higher max Loan To Value'
+	| 'Switch to lower my cost'
+	| 'Change direction of my position'
+	| 'Switch to an Earn position';
+
 export class Refinance {
 	readonly page: Page;
 
@@ -21,13 +27,7 @@ export class Refinance {
 	}
 
 	@step
-	async selectReason(
-		reason:
-			| 'Switch to higher max Loan To Value'
-			| 'Switch to lower my cost'
-			| 'Change direction of my position'
-			| 'Switch to an Earn position'
-	) {
+	async selectReason(reason: Reason) {
 		await this.page.getByRole('button', { name: reason }).click();
 	}
 
