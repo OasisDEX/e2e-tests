@@ -17,7 +17,7 @@ test.describe('Homepage', async () => {
 	});
 
 	test('It should list Earn positions by default', async ({ app }) => {
-		await app.homepage.productHub.header.positionType.shouldBe('earn');
+		await app.homepage.productHub.header.positionType.shouldBe('Earn');
 	});
 
 	(['Borrow', 'Multiply', 'Earn'] as const).forEach((positionCategory) =>
@@ -33,11 +33,15 @@ test.describe('Homepage', async () => {
 		})
 	);
 
-	test('It should link to pool finder - Earn', async ({ app }) => {
-		await app.homepage.open();
-		await app.homepage.productHub.list.openPoolFinder();
-		await app.poolFinder.shouldHaveHeader('Earn');
-	});
+	(['Borrow', 'Earn'] as const).forEach((positionType) =>
+		test(`It should link to pool finder - ${positionType}`, async ({ app }) => {
+			await app.homepage.productHub.header.positionType.select(positionType);
+			await app.homepage.productHub.header.positionType.shouldBe(positionType);
+
+			await app.homepage.productHub.list.openPoolFinder();
+			await app.poolFinder.shouldHaveHeader(positionType);
+		})
+	);
 
 	numberOfPools.forEach((poolIndex) => {
 		test(`It should open position page for all available EARN pools - ${poolIndex}`, async ({
@@ -66,7 +70,7 @@ test.describe('Homepage', async () => {
 			app,
 		}) => {
 			await app.homepage.productHub.header.positionType.select('Borrow');
-			await app.homepage.productHub.header.positionType.shouldBe('borrow');
+			await app.homepage.productHub.header.positionType.shouldBe('Borrow');
 
 			// Logging pool info for debugging purposes
 			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
@@ -89,7 +93,7 @@ test.describe('Homepage', async () => {
 			app,
 		}) => {
 			await app.homepage.productHub.header.positionType.select('Multiply');
-			await app.homepage.productHub.header.positionType.shouldBe('multiply');
+			await app.homepage.productHub.header.positionType.shouldBe('Multiply');
 
 			// Logging pool info for debugging purposes
 			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();

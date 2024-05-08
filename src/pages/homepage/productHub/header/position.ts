@@ -9,16 +9,19 @@ export class PositionType {
 	}
 
 	@step
-	async shouldBe(positionCategory: 'borrow' | 'earn' | 'multiply') {
+	async shouldBe(positionCategory: 'Borrow' | 'Earn' | 'Multiply') {
 		const introText = {
 			borrow: 'Easily borrow stablecoins or other crypto-assets against your collateral',
 			earn: 'Earn long term yields to compound your crypto capital',
 			multiply:
 				'Multiply allows you to simply and securely increase your exposure to any crypto asset',
 		};
+
+		const categoryText = introText[positionCategory.toLowerCase()];
+
 		await expect(
-			this.headerLocator.getByText(introText[positionCategory]),
-			`'${introText[positionCategory]}' should be visible`
+			this.headerLocator.getByText(categoryText),
+			`'${categoryText}' should be visible`
 		).toBeVisible();
 	}
 
