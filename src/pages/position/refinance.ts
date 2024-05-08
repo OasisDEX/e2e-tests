@@ -17,7 +17,7 @@ export class Refinance {
 			this.page.locator('#product-hub'),
 			this.page.locator('#product-hub tbody tr[role="button"]')
 		);
-		this.refinanceLocator = this.page.locator('#modalCard').filter({ hasText: 'Refinance' });
+		this.refinanceLocator = this.page.locator('#modalCard').filter({ hasText: 'Swap your' });
 	}
 
 	@step
