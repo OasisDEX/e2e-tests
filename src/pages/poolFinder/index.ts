@@ -12,7 +12,7 @@ export class PoolFinder {
 
 	constructor(page: Page) {
 		this.page = page;
-		this.list = new ProductsList(page, this.page.locator('main'));
+		this.list = new ProductsList(page, this.page.locator('main'), this.page.locator('tbody tr'));
 		this.noItems = new NoItems(page);
 	}
 

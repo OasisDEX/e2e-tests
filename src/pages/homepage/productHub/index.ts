@@ -13,7 +13,11 @@ export class ProductHub {
 	constructor(page: Page) {
 		this.productHubLocator = page.locator('#product-hub');
 		this.header = new Header(page.locator('#product-hub > div:nth-child(1)'));
-		this.list = new ProductsList(page, this.productHubLocator);
+		this.list = new ProductsList(
+			page,
+			this.productHubLocator,
+			this.productHubLocator.locator('tbody tr[role="link"]')
+		);
 	}
 
 	@step

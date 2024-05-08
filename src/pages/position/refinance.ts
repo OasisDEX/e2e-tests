@@ -12,7 +12,11 @@ export class Refinance {
 
 	constructor(page: Page) {
 		this.page = page;
-		this.productList = new ProductsList(page, this.page.locator('#product-hub'));
+		this.productList = new ProductsList(
+			page,
+			this.page.locator('#product-hub'),
+			this.page.locator('#product-hub tbody tr[role="link"]')
+		);
 		this.refinanceLocator = this.page.locator('#modalCard').filter({ hasText: 'Refinance' });
 	}
 

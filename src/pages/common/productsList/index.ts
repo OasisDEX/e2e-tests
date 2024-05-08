@@ -13,12 +13,12 @@ export class ProductsList {
 
 	readonly poolPairLocator: Locator;
 
-	constructor(page: Page, productHubLocator: Locator) {
+	constructor(page: Page, productHubLocator: Locator, poolLocator: Locator) {
 		this.page = page;
 		this.listLocator = productHubLocator.getByRole('table');
-		this.pool = new Pool(this.poolLocator);
-		this.poolLocator = this.listLocator.locator('tbody tr[role="link"]');
-		this.poolPairLocator = this.poolLocator.locator('td:nth-child(1)');
+		this.pool = new Pool(poolLocator);
+		this.poolLocator = poolLocator;
+		this.poolPairLocator = poolLocator.locator('td:nth-child(1)');
 	}
 
 	get first() {
