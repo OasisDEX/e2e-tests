@@ -27,7 +27,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 	});
 
 	test.use({
-		viewport: { width: 1600, height: 850 },
+		viewport: { width: 1400, height: 720 },
 	});
 
 	// Create a Maker position as part of the Refinance tests setup
