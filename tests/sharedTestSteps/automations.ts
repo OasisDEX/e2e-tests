@@ -3,7 +3,7 @@ import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 
-type Protocols = 'aave3' | 'spark';
+type Protocols = 'aave3' | 'spark' | 'morphoblue';
 
 type Automations =
 	| 'dma-stop-loss'
@@ -20,6 +20,7 @@ type Tokens =
 	| 'mainnetDAI'
 	| 'mainnetETH'
 	| 'mainnetUSDC'
+	| 'mainnetUSDT'
 	| 'mainnetWBTC'
 	| 'optimismETH'
 	| 'optimismUSDC_E';
@@ -32,6 +33,7 @@ const tokenAddresses = {
 	mainnetDAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
 	mainnetETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 	mainnetUSDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+	mainnetUSDT: '0xdac17f958d2ee523a2206206994597c13d831ec7',
 	mainnetWBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 	optimismETH: '0x4200000000000000000000000000000000000006',
 	optimismUSDC_E: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
@@ -42,15 +44,20 @@ let matchObject = ({
 	collToken,
 	debtToken,
 	triggerToken,
+	protocol,
 }: {
 	automation: Automations;
 	collToken: Tokens;
 	debtToken: Tokens;
 	triggerToken?: Tokens;
+	protocol?: 'morphoblue';
 }) => {
 	return {
 		action: 'add',
 		dpm: expect.any(String),
+		...(protocol && {
+			protocol,
+		}),
 		position: {
 			collateral: tokenAddresses[collToken],
 			debt: tokenAddresses[debtToken],
@@ -124,9 +131,17 @@ const verifyTriggerApiRequestPayload = async ({
 	const request = await requestPromise;
 	const requestJson = await request.postDataJSON();
 
-	expect(requestJson).toMatchObject(
-		matchObject({ automation, collToken, debtToken, triggerToken })
-	);
+	const matchObjectParameters = {
+		automation,
+		collToken,
+		debtToken,
+		...(triggerToken && { triggerToken }),
+		...(protocol === 'morphoblue' && { protocol }),
+	};
+	//
+	console.log('======= matchObjectParameters: ', matchObjectParameters);
+	//
+	expect(requestJson).toMatchObject(matchObject(matchObjectParameters));
 };
 
 export const testRegularStopLoss = async ({

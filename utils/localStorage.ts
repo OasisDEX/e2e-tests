@@ -21,7 +21,17 @@ export const updateFlags = async ({
 	if (featuresFlags) {
 		featuresFlags.forEach((flag) => {
 			const flagValues: string[] = flag.split(':');
-			obConfigOverrides.features[flagValues[0]] = flagValues[1] === 'true';
+			if (flagValues[0] === 'LambdaAutomations') {
+				if (flagValues[1] === 'DisableNetValueCheck') {
+					obConfigOverrides.features.LambdaAutomations.DisableNetValueCheck =
+						flagValues[2] === 'true';
+				} else {
+					obConfigOverrides.features.LambdaAutomations[flagValues[1]][flagValues[2]] =
+						flagValues[3] === 'true';
+				}
+			} else {
+				obConfigOverrides.features[flagValues[0]] = flagValues[1] === 'true';
+			}
 		});
 	}
 
