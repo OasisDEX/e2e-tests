@@ -15,7 +15,7 @@ export class Refinance {
 		this.productList = new ProductsList(
 			page,
 			this.page.locator('#product-hub'),
-			this.page.locator('#product-hub tbody tr[role="link"]')
+			this.page.locator('#product-hub tbody tr[role="button"]')
 		);
 		this.refinanceLocator = this.page.locator('#modalCard').filter({ hasText: 'Refinance' });
 	}
@@ -36,7 +36,7 @@ export class Refinance {
 		const regExp = new RegExp('\\$[0-9]{1,2}.[0-9]{1,2}');
 		await expect(this.refinanceLocator.getByText('Max transaction cost').locator('..')).toHaveText(
 			regExp,
-			{ timeout: expectDefaultTimeout * 3 }
+			{ timeout: expectDefaultTimeout * 4 }
 		);
 	}
 

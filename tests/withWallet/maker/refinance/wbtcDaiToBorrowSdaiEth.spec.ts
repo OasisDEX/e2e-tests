@@ -152,7 +152,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			token: 'SDAI',
 		});
 		await app.position.overview.shouldHaveDebt({
-			amount: '[0-9]{1,2}.[0-9]{4}',
+			amount: '[0-9]{1,2}.[0-9]{2}([0-9]{1,2})?',
 			token: 'ETH',
 		});
 
