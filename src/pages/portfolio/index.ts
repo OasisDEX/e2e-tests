@@ -1,6 +1,6 @@
 import { expect, Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
-import { Positions } from './positions';
+import { PositionsHub } from './positionsHub';
 import { Wallet } from './wallet';
 import { expectDefaultTimeout, portfolioTimeout } from 'utils/config';
 
@@ -22,13 +22,13 @@ export type PortfolioData = {
 export class Portfolio {
 	readonly page: Page;
 
-	readonly positions: Positions;
+	readonly positionsHub: PositionsHub;
 
 	readonly wallet: Wallet;
 
 	constructor(page: Page) {
 		this.page = page;
-		this.positions = new Positions(page);
+		this.positionsHub = new PositionsHub(page);
 		this.wallet = new Wallet(page);
 	}
 
@@ -213,10 +213,10 @@ export class Portfolio {
 		data.totalBorrowed = await this.getTotalBorrowed();
 
 		const { emptyPositionsCount, positionsListedCount } =
-			await this.positions.getNumberOfPositions();
+			await this.positionsHub.getNumberOfPositions();
 		data.emptyPositionsCount = emptyPositionsCount;
 		data.positionsListedCount = positionsListedCount;
-		data.positionsListedData = await this.positions.getPositionsData();
+		data.positionsListedData = await this.positionsHub.getPositionsData();
 
 		return data;
 	}
