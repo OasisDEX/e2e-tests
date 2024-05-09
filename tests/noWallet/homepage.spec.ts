@@ -4,7 +4,7 @@ import { longTestTimeout } from 'utils/config';
 const numberOfPools = Array.from({ length: 10 }, (_, index) => 0 + index);
 
 test.describe('Homepage', async () => {
-	test('It should open connect-wallet popup - Homepage', async ({ app }) => {
+	test('It should open connect-wallet popup - Homepage @regression', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12333',
@@ -34,7 +34,7 @@ test.describe('Homepage', async () => {
 	);
 
 	(['Borrow', 'Earn'] as const).forEach((positionType) =>
-		test(`It should link to pool finder - ${positionType}`, async ({ app }) => {
+		test(`It should link to pool finder - ${positionType} @regression`, async ({ app }) => {
 			await app.homepage.productHub.header.positionType.select(positionType);
 			await app.homepage.productHub.header.positionType.shouldBe(positionType);
 
@@ -44,7 +44,7 @@ test.describe('Homepage', async () => {
 	);
 
 	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available EARN pools - ${poolIndex}`, async ({
+		test(`It should open position page for all available EARN pools - ${poolIndex} @regression`, async ({
 			app,
 		}) => {
 			// Logging pool info for debugging purposes
@@ -66,7 +66,7 @@ test.describe('Homepage', async () => {
 	});
 
 	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - ${poolIndex}`, async ({
+		test(`It should open position page for all available BORROW pools - ${poolIndex} @regression`, async ({
 			app,
 		}) => {
 			await app.homepage.productHub.header.positionType.select('Borrow');
@@ -89,7 +89,7 @@ test.describe('Homepage', async () => {
 	});
 
 	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available MULTIPLY pools - ${poolIndex}`, async ({
+		test(`It should open position page for all available MULTIPLY pools - ${poolIndex} @regression`, async ({
 			app,
 		}) => {
 			await app.homepage.productHub.header.positionType.select('Multiply');

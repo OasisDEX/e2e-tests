@@ -132,6 +132,18 @@ const defaultConfig: PlaywrightTestConfig = {
 			testMatch: ['withWallet/maker/**', 'withWallet/spark/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
+
+		{
+			name: 'with-wallet-spark',
+			testMatch: ['withWallet/spark/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-maker',
+			testMatch: ['withWallet/maker/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
 	],
 };
 
