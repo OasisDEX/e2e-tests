@@ -65,7 +65,7 @@ test.describe('Maker Borrow - Swap', async () => {
 	test('It should swap a Maker Borrow position (ETH/DAI) to Spark Borrow (RETH/DAI) @regression @swap', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11788, 11790',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
