@@ -472,7 +472,7 @@ export class Overview {
 	}
 
 	@step
-	async refinance() {
+	async swap() {
 		await this.page.getByRole('button', { name: 'Get Started' }).click();
 	}
 }

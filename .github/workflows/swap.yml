@@ -1,4 +1,4 @@
-name: Refinance
+name: Swap
 
 on: 
   workflow_dispatch:
@@ -15,8 +15,8 @@ on:
         required: false
 
 jobs:
-  with-wallet-refinance:
-    name: 'With wallet - Refinance'
+  with-wallet-swap:
+    name: 'With wallet - Swap'
     runs-on: ubuntu-latest
     env:
       TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
@@ -40,11 +40,11 @@ jobs:
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn ci:with-wallet:refinance
+          yarn ci:with-wallet:swap
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report-with-wallet-refinance
-          path: playwright-reports/with-wallet-refinance
+          name: playwright-report-with-wallet-swap
+          path: playwright-reports/with-wallet-swap
           retention-days: 30
   

@@ -9,7 +9,7 @@ export type Reason =
 	| 'Change direction of my position'
 	| 'Switch to an Earn position';
 
-export class Refinance {
+export class Swap {
 	readonly page: Page;
 
 	readonly productList: ProductsList;

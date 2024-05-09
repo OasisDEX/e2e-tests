@@ -3,7 +3,7 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { longTestTimeout, positionTimeout } from 'utils/config';
-import { Reason } from 'src/pages/position/refinance';
+import { Reason } from 'src/pages/position/swap';
 
 type ActionData = { token: string; amount: string };
 
@@ -418,9 +418,9 @@ export const swapMakerToSpark = async ({
 }) => {
 	const originalPositionPage: string = app.page.url();
 
-	await app.position.overview.refinance();
-	await app.position.refinance.selectReason(reason);
-	await app.position.refinance.productList.byPairPool(targetPool).open();
+	await app.position.overview.swap();
+	await app.position.swap.selectReason(reason);
+	await app.position.swap.productList.byPairPool(targetPool).open();
 
 	// Smart DeFi Acount creation randomly fails - Retry until it's created.
 	await expect(async () => {
@@ -430,8 +430,8 @@ export const swapMakerToSpark = async ({
 	}).toPass({ timeout: longTestTimeout });
 
 	await app.position.setup.continue();
-	await app.position.refinance.shouldHaveMaxTransactionCost();
-	await app.position.refinance.confirm();
+	await app.position.swap.shouldHaveMaxTransactionCost();
+	await app.position.swap.confirm();
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
@@ -440,7 +440,7 @@ export const swapMakerToSpark = async ({
 	});
 
 	await app.position.setup.continue();
-	await app.position.refinance.confirm();
+	await app.position.swap.confirm();
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });

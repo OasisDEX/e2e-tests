@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Multiply - Wallet connected', async () => {
+test.describe('Maker Multiply - Swap', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,8 +29,8 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Maker position as part of the Refinance tests setup
-	test('It should open a Maker Multiply position @refinance', async () => {
+	// Create a Maker position as part of the Swap tests setup
+	test('It should open a Maker Multiply position @regression @swap', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -70,7 +70,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		});
 	});
 
-	test('It should refinance a Multiply Borrow position (WBTC/DAI) to Spark Multiply (SDIA/USDC) @refinance', async () => {
+	test('It should swap a Multiply Borrow position (WBTC/DAI) to Spark Multiply (SDIA/USDC) @regression @swap', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',

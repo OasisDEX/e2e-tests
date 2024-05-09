@@ -10,11 +10,10 @@ import { openMakerPosition, swapMakerToSpark } from 'tests/sharedTestSteps/posit
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Wallet connected', async () => {
+test.describe('Maker Borrow - Swap', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,8 +28,8 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Maker position as part of the Refinance tests setup
-	test('It should open a Maker Borrow position @refinance', async () => {
+	// Create a Maker position as part of the Swap tests setup
+	test('It should open a Maker Borrow position @regression @swap', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -43,22 +42,14 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WBTC',
-				balance: '20',
-			});
 		});
 
-		await app.page.goto('vaults/open/WBTC-C');
+		await app.page.goto('/vaults/open/ETH-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -66,12 +57,12 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '1' },
-			generate: { token: 'DAI', amount: '30000' },
+			deposit: { token: 'ETH', amount: '10' },
+			generate: { token: 'DAI', amount: '15000' },
 		});
 	});
 
-	test('It should refinance a Maker Borrow position (WBTC/DAI) to Spark Borrow (WBTC/DAI) @refinance', async () => {
+	test('It should swap a Maker Borrow position (ETH/DAI) to Spark Borrow (RETH/DAI) @regression @swap', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -86,11 +77,17 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await swapMakerToSpark({
 			app,
 			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			targetPool: 'WBTC/DAI',
-			expectedTargetExposure: { amount: '1.0000', token: 'WBTC' },
-			expectedTargetDebt: { amount: '30,000.00', token: 'DAI' },
-			originalPosition: { type: 'Borrow', collateralToken: 'WBTC', debtToken: 'DAI' },
+			reason: 'Switch to lower my cost',
+			targetPool: 'RETH/DAI',
+			expectedTargetExposure: {
+				amount: '[0-9]{1,2}.[0-9]{2}',
+				token: 'RETH',
+			},
+			expectedTargetDebt: {
+				amount: '[1][4-5],[0-9]{3}.[0-9]{2}',
+				token: 'DAI',
+			},
+			originalPosition: { type: 'Borrow', collateralToken: 'ETH', debtToken: 'DAI' },
 		});
 	});
 });

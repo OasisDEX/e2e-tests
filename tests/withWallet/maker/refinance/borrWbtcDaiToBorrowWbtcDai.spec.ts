@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Wallet connected', async () => {
+test.describe('Maker Borrow - Swap', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,8 +29,8 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Maker position as part of the Refinance tests setup
-	test('It should open a Maker Borrow position @regression @refinance', async () => {
+	// Create a Maker position as part of the Swap tests setup
+	test('It should open a Maker Borrow position @regression @swap', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -66,12 +66,12 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '0.2' },
-			generate: { token: 'DAI', amount: '5000' },
+			deposit: { token: 'WBTC', amount: '1' },
+			generate: { token: 'DAI', amount: '30000' },
 		});
 	});
 
-	test('It should refinance a Maker Borrow position (WBTC/DAI) to Spark Borrow (sDAI/ETH) @regression @refinance', async () => {
+	test('It should swap a Maker Borrow position (WBTC/DAI) to Spark Borrow (WBTC/DAI) @regression @swap', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -86,16 +86,10 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await swapMakerToSpark({
 			app,
 			forkId,
-			reason: 'Change direction of my position',
-			targetPool: 'SDAI/ETH',
-			expectedTargetExposure: {
-				amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
-				token: 'SDAI',
-			},
-			expectedTargetDebt: {
-				amount: '[0-9].[0-9]{2}([0-9]{1,2})?',
-				token: 'ETH',
-			},
+			reason: 'Switch to higher max Loan To Value',
+			targetPool: 'WBTC/DAI',
+			expectedTargetExposure: { amount: '1.0000', token: 'WBTC' },
+			expectedTargetDebt: { amount: '30,000.00', token: 'DAI' },
 			originalPosition: { type: 'Borrow', collateralToken: 'WBTC', debtToken: 'DAI' },
 		});
 	});
