@@ -33,7 +33,7 @@ test.describe('Maker Borrow - Swap', async () => {
 	test('It should open a Maker Borrow position @regression @swap', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11788, 11790',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);

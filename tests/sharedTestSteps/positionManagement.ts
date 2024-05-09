@@ -147,10 +147,11 @@ export const openMakerPosition = async ({
 
 	await app.position.setup.confirm();
 	await app.position.setup.continueWithoutStopLoss();
-	await app.position.setup.createVault3Of3();
-	await test.step('Metamask: ConfirmAddToken', async () => {
-		await metamask.confirmAddToken();
-	});
+
+	await expect(async () => {
+		await app.position.setup.createOrRetry();
+		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
+	}).toPass();
 
 	await app.position.setup.goToVault();
 	await app.position.manage.shouldBeVisible('Manage your vault');
