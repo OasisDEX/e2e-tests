@@ -92,7 +92,7 @@
 		"//-5a": "---------------------------------------------------------------",
 		"//-5b": "---------- SWAP TESTS ------------",
 		"//-5c": "---------------------------------------------------------------",
-		"with-wallet:swap": "REPORT_FOLDER=with-wallet-swap npx playwright test --grep @swap --workers=1",
+		"with-wallet:swap": "REPORT_FOLDER=with-wallet-swap npx playwright test --grep @swap --project=with-wallet-swap --workers=1",
 		"ci:with-wallet:swap": "RETRIES='2' xvfb-run yarn with-wallet:swap",
 		"//-9a": "---------------------------------------------------------------",
 		"//-9b": "---------------------- REPORTS --------------------------------",
