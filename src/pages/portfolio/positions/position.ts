@@ -2,7 +2,9 @@ import { step } from '#noWalletFixtures';
 import { expect, Locator } from '@playwright/test';
 import { portfolioTimeout } from 'utils/config';
 
-export class Vault {
+type AutomationStatus = 'On' | 'Off';
+
+export class Position {
 	readonly vaultLocator: Locator;
 
 	constructor(vaultLocator: Locator) {
@@ -28,4 +30,17 @@ export class Vault {
 		});
 		await this.vaultLocator.getByRole('button', { name: 'View' }).click();
 	}
+
+	@step
+	async shouldHaveAutomations({
+		stopLoss,
+		autoSell,
+		autoBuy,
+		takeProfit,
+	}: {
+		stopLoss: AutomationStatus;
+		autoSell: AutomationStatus;
+		autoBuy: AutomationStatus;
+		takeProfit: AutomationStatus;
+	}) {}
 }

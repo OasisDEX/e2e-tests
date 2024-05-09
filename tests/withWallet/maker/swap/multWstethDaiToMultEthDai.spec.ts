@@ -26,7 +26,7 @@ test.describe('Maker Multiply - Swap', async () => {
 	});
 
 	test.use({
-		viewport: { width: 1450, height: 720 },
+		viewport: { width: 1400, height: 720 },
 	});
 
 	// Create a Maker position as part of the Swap tests setup
