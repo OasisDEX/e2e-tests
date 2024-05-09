@@ -103,4 +103,12 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 		});
 		await app.position.setup.shouldHaveLoanToValue('[0-9]{1,2}.[0-9]{1,2}');
 	});
+
+	test('It should show position automation - Stop-Loss @regression', async ({ app }) => {
+		await app.position.openPage('/ethereum/aave/v3/multiply/RETH-DAI/1276#overview');
+
+		await app.position.shouldHaveTab('Protection ON');
+		await app.position.openTab('Protection');
+		await app.position.protection.shouldHaveAutomationOn('Stop-Loss');
+	});
 });
