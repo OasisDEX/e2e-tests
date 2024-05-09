@@ -66,8 +66,8 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '1' },
-			generate: { token: 'DAI', amount: '30000' },
+			deposit: { token: 'WBTC', amount: '0.2' },
+			generate: { token: 'DAI', amount: '5000' },
 		});
 	});
 
@@ -89,11 +89,11 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 			reason: 'Change direction of my position',
 			targetPool: 'SDAI/ETH',
 			expectedTargetExposure: {
-				amount: '[3-9][0-9],[0-9]{3}.[0-9]{2}',
+				amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
 				token: 'SDAI',
 			},
 			expectedTargetDebt: {
-				amount: '[0-9]{1,2}.[0-9]{2}([0-9]{1,2})?',
+				amount: '[0-9].[0-9]{2}([0-9]{1,2})?',
 				token: 'ETH',
 			},
 			originalPosition: { type: 'Borrow', collateralToken: 'WBTC', debtToken: 'DAI' },
