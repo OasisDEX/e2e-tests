@@ -144,6 +144,12 @@ const defaultConfig: PlaywrightTestConfig = {
 			testMatch: ['withWallet/maker/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
+
+		{
+			name: 'with-wallet-swap',
+			testMatch: ['withWallet/**/swap/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
 	],
 };
 
