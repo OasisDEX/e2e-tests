@@ -17,6 +17,24 @@ test.describe('Borrow page', async () => {
 		await app.poolFinder.shouldHaveHeader('Borrow');
 	});
 
+	test('It should show next and previous pages in product hub', async ({ app }) => {
+		await app.borrow.open();
+
+		await app.borrow.productHub.list.shouldBePage('1');
+
+		await app.borrow.productHub.list.nextPage();
+		await app.borrow.productHub.list.shouldBePage('2');
+
+		await app.borrow.productHub.list.nextPage();
+		await app.borrow.productHub.list.shouldBePage('3');
+
+		await app.borrow.productHub.list.previousPage();
+		await app.borrow.productHub.list.shouldBePage('2');
+
+		await app.borrow.productHub.list.previousPage();
+		await app.borrow.productHub.list.shouldBePage('1');
+	});
+
 	numberOfPools.forEach((poolIndex) => {
 		test(`It should open position page for all available BORROW pools - Page 1 - ${poolIndex} @regression`, async ({
 			app,
