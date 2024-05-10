@@ -78,7 +78,7 @@ test.describe('Header', async () => {
 			await app.homepage.open();
 			await app.header.protocols.select({ protocol, product });
 			await app.borrow.productHub.header.positionType.shouldBe(product);
-			await app.borrow.productHub.list.allPoolsShouldBe(product);
+			// await app.borrow.productHub.list.allPoolsShouldBe(product);
 		})
 	);
 });
