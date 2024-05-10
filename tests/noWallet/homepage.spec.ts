@@ -21,7 +21,7 @@ test.describe('Homepage', async () => {
 	});
 
 	(['Borrow', 'Multiply', 'Earn'] as const).forEach((positionCategory) =>
-		test(`It should link to ${positionCategory} page`, async ({ app }) => {
+		test(`It should link to ${positionCategory} page - Product hub header`, async ({ app }) => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: '12334',
@@ -40,6 +40,35 @@ test.describe('Homepage', async () => {
 
 			await app.homepage.productHub.list.openPoolFinder();
 			await app.poolFinder.shouldHaveHeader(positionType);
+		})
+	);
+
+	(['Borrow', 'Multiply', 'Earn'] as const).forEach((positionCategory) =>
+		test(`It should list only ${positionCategory} pages - Homepage @regression`, async ({
+			app,
+		}) => {
+			test.info().annotations.push({
+				type: 'Test case',
+				description: '12337',
+			});
+
+			test.setTimeout(longTestTimeout);
+
+			await app.homepage.open();
+			await app.homepage.productHub.header.positionType.select(positionCategory);
+
+			if (positionCategory === 'Borrow') {
+				// Only Borrow positions have Borrow rate in Product hub
+				await app.homepage.productHub.list.allPoolsBorrowRateShouldBeGreaterThanZero();
+			}
+			if (positionCategory === 'Earn') {
+				// Only Earn positions have Management in Product hub
+				await app.homepage.productHub.list.allPoolsShouldHaveManagement();
+			}
+			if (positionCategory === 'Multiply') {
+				// Only Multiply positions have Max Multiple in Product hub
+				await app.homepage.productHub.list.allPoolsMaxMultipleShouldBeGreaterThanZero();
+			}
 		})
 	);
 

@@ -51,6 +51,7 @@ export class ProductsList {
 		return allPairs;
 	}
 
+	// This function is only valid for Ajna Pool finder
 	@step
 	async allPoolsShouldBe(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
 		const poolButton = this.poolLocator.getByRole('button');
@@ -62,6 +63,66 @@ export class ProductsList {
 		for (let i = 0; i < poolButtons.length; i++) {
 			await expect(poolButton.nth(i)).toHaveText(positionCategory);
 		}
+	}
+
+	@step
+	async allPoolsBorrowRateShouldBeGreaterThanZero() {
+		// Wait for 1st item to be displayed to avoid random fails
+		await this.poolLocator.first().waitFor();
+
+		await expect(this.listLocator.locator('thead th').nth(3)).toHaveText('Borrow rate');
+
+		const allBorrowRates = await this.poolLocator.locator('td:nth-child(4)').allInnerTexts();
+
+		const allBorrowRatesNumbers = allBorrowRates.map((element) =>
+			parseFloat(element.split('%')[0])
+		);
+		// Log for debugging purposes
+		console.log('=== allBorrowRatesNumbers: ', allBorrowRatesNumbers);
+
+		expect(
+			allBorrowRatesNumbers.every((rate) => rate > 0),
+			'All Borrow rates should be > 0'
+		).toBeTruthy();
+	}
+
+	@step
+	async allPoolsMaxMultipleShouldBeGreaterThanZero() {
+		// Wait for 1st item to be displayed to avoid random fails
+		await this.poolLocator.first().waitFor();
+
+		await expect(this.listLocator.locator('thead th').nth(2)).toHaveText('Max multiple');
+
+		const allMaxMultiples = await this.poolLocator.locator('td:nth-child(3)').allInnerTexts();
+
+		const allMaxMultiplesNumbers = allMaxMultiples.map((element) =>
+			parseFloat(element.split('x')[0])
+		);
+		// Log for debugging purposes
+		console.log('=== allMaxMultiplesNumbers: ', allMaxMultiplesNumbers);
+
+		expect(
+			allMaxMultiplesNumbers.every((rate) => rate > 0),
+			'All Max Multiples should be > 0'
+		).toBeTruthy();
+	}
+
+	@step
+	async allPoolsShouldHaveManagement() {
+		// Wait for 1st item to be displayed to avoid random fails
+		await this.poolLocator.first().waitFor();
+
+		await expect(this.listLocator.locator('thead th').nth(2)).toHaveText('Management');
+
+		const allPoolsManagement = await this.poolLocator.locator('td:nth-child(3)').allInnerTexts();
+
+		// Log for debugging purposes
+		console.log('=== allPoolsManagement: ', allPoolsManagement);
+
+		expect(
+			allPoolsManagement.every((managementType) => ['Active', 'Passive'].includes(managementType)),
+			'All Management values should be either "Active" or "Passive"'
+		).toBeTruthy();
 	}
 
 	@step
