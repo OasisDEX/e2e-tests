@@ -19,12 +19,12 @@ test.describe('Open position pages', async () => {
 				withPositions: true,
 			});
 
-			await app.portfolio.positions.showEmptyPositions();
-			const positionPageLink = await app.portfolio.positions.getNthPositionLink(positionIndex);
+			await app.portfolio.positionsHub.showEmptyPositions();
+			const positionPageLink = await app.portfolio.positionsHub.getNthPositionLink(positionIndex);
 			// Console log for debugging purposes in case of test fail
 			console.log('Position page: ', positionPageLink);
 
-			await app.portfolio.positions.openNthPosition(positionIndex);
+			await app.portfolio.positionsHub.openNthPosition(positionIndex);
 			await expect(async () => {
 				const lostConnection = app.page.getByText('Lost connection');
 				if (lostConnection.isVisible) {

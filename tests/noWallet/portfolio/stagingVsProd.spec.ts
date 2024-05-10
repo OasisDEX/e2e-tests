@@ -37,7 +37,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 
 			// STAGING - 1st log
 			await app.portfolio.loadPortfolioPageAndPositions({ environment: 'staging', walletAddress });
-			await app.portfolio.positions.showEmptyPositions();
+			await app.portfolio.positionsHub.showEmptyPositions();
 			await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
 			stagingData1 = await app.portfolio.getPortfolioData();
 
@@ -46,7 +46,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 				environment: 'production',
 				walletAddress,
 			});
-			await app.portfolio.positions.showEmptyPositions();
+			await app.portfolio.positionsHub.showEmptyPositions();
 			await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
 			productionData1 = await app.portfolio.getPortfolioData();
 
@@ -70,7 +70,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 					environment: 'staging',
 					walletAddress,
 				});
-				await app.portfolio.positions.showEmptyPositions();
+				await app.portfolio.positionsHub.showEmptyPositions();
 				await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
 				stagingData2 = await app.portfolio.getPortfolioData();
 
@@ -94,7 +94,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 						environment: 'production',
 						walletAddress,
 					});
-					await app.portfolio.positions.showEmptyPositions();
+					await app.portfolio.positionsHub.showEmptyPositions();
 					await app.portfolio.shouldHaveViewingWalletBanner(shortenAddress(walletAddress));
 					productionData2 = await app.portfolio.getPortfolioData();
 
