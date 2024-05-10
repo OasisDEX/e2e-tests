@@ -114,4 +114,9 @@ export class ProductsList {
 	async openPoolFinder() {
 		await this.listLocator.getByRole('button', { name: 'Search custom pools' }).click();
 	}
+
+	@step
+	async nextPage() {
+		await this.page.locator('#assets-table > div > button').nth(1).click();
+	}
 }
