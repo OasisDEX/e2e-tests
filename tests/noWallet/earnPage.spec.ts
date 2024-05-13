@@ -35,7 +35,11 @@ test.describe('Earn page', async () => {
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
 
-			await app.position.overview.shouldBeVisible();
+			if (protocol === 'Maker') {
+				await app.modals.connectWallet.shouldBeVisible();
+			} else {
+				await app.position.overview.shouldBeVisible();
+			}
 		});
 	});
 
@@ -61,7 +65,11 @@ test.describe('Earn page', async () => {
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
 
-			await app.position.overview.shouldBeVisible();
+			if (protocol === 'Maker') {
+				await app.modals.connectWallet.shouldBeVisible();
+			} else {
+				await app.position.overview.shouldBeVisible();
+			}
 		});
 	});
 
@@ -89,7 +97,11 @@ test.describe('Earn page', async () => {
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
 
-			await app.position.overview.shouldBeVisible();
+			if (protocol === 'Maker') {
+				await app.modals.connectWallet.shouldBeVisible();
+			} else {
+				await app.position.overview.shouldBeVisible();
+			}
 		});
 	});
 
@@ -119,7 +131,11 @@ test.describe('Earn page', async () => {
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
 
-			await app.position.overview.shouldBeVisible();
+			if (protocol === 'Maker') {
+				await app.modals.connectWallet.shouldBeVisible();
+			} else {
+				await app.position.overview.shouldBeVisible();
+			}
 		});
 	});
 
@@ -151,7 +167,11 @@ test.describe('Earn page', async () => {
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
 
-			await app.position.overview.shouldBeVisible();
+			if (protocol === 'Maker') {
+				await app.modals.connectWallet.shouldBeVisible();
+			} else {
+				await app.position.overview.shouldBeVisible();
+			}
 		});
 	});
 
@@ -185,7 +205,11 @@ test.describe('Earn page', async () => {
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
 
-			await app.position.overview.shouldBeVisible();
+			if (protocol === 'Maker') {
+				await app.modals.connectWallet.shouldBeVisible();
+			} else {
+				await app.position.overview.shouldBeVisible();
+			}
 		});
 	});
 
@@ -221,7 +245,11 @@ test.describe('Earn page', async () => {
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
 
-			await app.position.overview.shouldBeVisible();
+			if (protocol === 'Maker') {
+				await app.modals.connectWallet.shouldBeVisible();
+			} else {
+				await app.position.overview.shouldBeVisible();
+			}
 		});
 	});
 });
