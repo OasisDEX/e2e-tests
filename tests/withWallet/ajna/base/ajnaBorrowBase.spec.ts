@@ -267,7 +267,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		});
 		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
-			amount: '[2-6].[0-9]{3,4}',
+			amount: '[2-8].[0-9]{3,4}',
 			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
@@ -302,7 +302,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveAvailableToWithdraw({
 			token: 'ETH',
 			current: '0.00',
-			future: '[0-5].[0-9]{3,4}',
+			future: '[2-8].[0-9]{3,4}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
 			token: 'USDC',

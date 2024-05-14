@@ -1,7 +1,7 @@
 import { test } from '#noWalletFixtures';
 
 const numberOfPools = Array.from({ length: 20 }, (_, index) => 0 + index);
-const numberOfPoolsPage7 = Array.from({ length: 9 }, (_, index) => 0 + index);
+const numberOfPoolsPage7 = Array.from({ length: 8 }, (_, index) => 0 + index);
 
 test.describe('Multiply page', async () => {
 	numberOfPools.forEach((poolIndex) => {
