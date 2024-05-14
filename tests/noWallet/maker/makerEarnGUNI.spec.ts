@@ -1,6 +1,6 @@
 import { test } from '#noWalletFixtures';
 
-test.describe.only('Maker Earn - GUNI', async () => {
+test.describe('Maker Earn - GUNI', async () => {
 	test('It should open an existing Maker Earn GUNI vault page @regression', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
