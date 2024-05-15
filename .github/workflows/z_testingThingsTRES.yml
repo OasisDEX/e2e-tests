@@ -45,3 +45,21 @@ jobs:
           name: playwright-report-with-wallet-ajna-arbitrum
           path: playwright-reports/with-wallet-ajna-arbitrum
           retention-days: 30
+
+  no-wallet-tests:
+    name: 'No wallet'
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.37.1-jammy
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Run local set-up composite action
+        uses: ./.github/actions/no-wallet-tests/
+          with: 
+            base_url: ${{ inputs.base_url }}
+            flags_features: ${{ inputs.flags_features}}
