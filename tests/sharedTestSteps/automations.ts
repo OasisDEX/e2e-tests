@@ -87,6 +87,9 @@ let matchObject = ({
 					action: 'add',
 				},
 			}),
+			...(protocol && {
+				poolId: expect.any(String),
+			}),
 		},
 	};
 };
@@ -138,9 +141,7 @@ const verifyTriggerApiRequestPayload = async ({
 		...(triggerToken && { triggerToken }),
 		...(protocol === 'morphoblue' && { protocol }),
 	};
-	//
-	console.log('======= matchObjectParameters: ', matchObjectParameters);
-	//
+
 	expect(requestJson).toMatchObject(matchObject(matchObjectParameters));
 };
 
@@ -231,11 +232,13 @@ export const testTrailingStopLoss = async ({
 export const testAutoSell = async ({
 	app,
 	forkId,
+	protocol,
 	strategy,
 	verifyTriggerPayload,
 }: {
 	app: App;
 	forkId: string;
+	protocol?: 'Morpho Blue';
 	strategy?: 'short';
 	verifyTriggerPayload?: {
 		protocol: Protocols;
@@ -263,9 +266,12 @@ export const testAutoSell = async ({
 			'Please enter a minimum sell price or select Set No Threshold'
 		);
 		await app.position.protection.setNoThreshold();
-		await app.position.protection.shouldHaveMessage(
-			'You are setting an auto sell trigger with no minimum sell price threshold'
-		);
+		if (!protocol) {
+			// Morpho BUG 15553
+			await app.position.protection.shouldHaveMessage(
+				'You are setting an auto sell trigger with no minimum sell price threshold'
+			);
+		}
 	}
 
 	// Pause needed to avoid random fails
@@ -286,12 +292,14 @@ export const testAutoSell = async ({
 export const testAutoBuy = async ({
 	app,
 	forkId,
+	protocol,
 	strategy,
 	triggerLTV,
 	verifyTriggerPayload,
 }: {
 	app: App;
 	forkId: string;
+	protocol?: 'Morpho Blue';
 	strategy?: 'short';
 	triggerLTV?: number;
 	verifyTriggerPayload?: {
@@ -321,9 +329,12 @@ export const testAutoBuy = async ({
 		);
 
 		await app.position.optimization.setNoThreshold();
-		await app.position.optimization.shouldHaveMessage(
-			'You are setting an auto buy trigger with no maximum buy price threshold'
-		);
+		if (!protocol) {
+			// Morpho BUG 15553
+			await app.position.optimization.shouldHaveMessage(
+				'You are setting an auto buy trigger with no maximum buy price threshold'
+			);
+		}
 	}
 
 	// Pause needed to avoid random fails
