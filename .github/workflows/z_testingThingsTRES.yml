@@ -60,6 +60,6 @@ jobs:
         run: yarn
       - name: Run local set-up composite action
         uses: ./.github/actions/no-wallet-tests/
-          with: 
-            base_url: ${{ inputs.base_url }}
-            flags_features: ${{ inputs.flags_features}}
+        with: 
+          base_url: ${{ inputs.base_url }}
+          flags_features: ${{ inputs.flags_features}}
