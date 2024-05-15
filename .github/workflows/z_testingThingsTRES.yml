@@ -30,7 +30,7 @@ jobs:
         with:
           node-version: 18
       - name: Run local set-up composite action
-        uses: ./.github/actions/setUp
+        uses: ./.github/actions/setUp/action.yml@master/main/
       # - name: Install dependencies
       #   run: yarn
       # - name: Install playwright
