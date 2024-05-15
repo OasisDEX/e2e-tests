@@ -1,22 +1,12 @@
-name: Reusable workflow example
+name: 'Set Up Action'
+description: 'Composite action to install playwright and depencies needed for e2e tests'
 
-on:
-  workflow_call:
-
-jobs:
-  set-up:
-    name: 'Set up'
-    runs-on: ubuntu-latest
-    container:
-      image: synthetixio/docker-node:18.16-ubuntu
-    steps:
-      # - uses: actions/checkout@v3
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+runs:
+  using: 'composite'
+  steps:
+    - name: Install dependencies
+      run: yarn
+    - name: Install playwright
+      run: npx playwright install && npx playwright install-deps
+    - name: Install xvfb
+      run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
