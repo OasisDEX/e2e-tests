@@ -1,4 +1,4 @@
-name: Regression - Aave Base
+name: 0.1. Regression - Aave Base
 
 on: 
   workflow_dispatch:
