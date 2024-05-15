@@ -1,4 +1,4 @@
-name: Regression - No wallet
+name: 0.1. Regression - No wallet
 
 on: 
   workflow_dispatch:

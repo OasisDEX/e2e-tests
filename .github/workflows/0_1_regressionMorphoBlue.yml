@@ -1,4 +1,4 @@
-name: Regression - Ajna Base
+name: 0.1. Regression - Morpho Blue
 
 on: 
   workflow_dispatch:
@@ -15,8 +15,8 @@ on:
         required: false
 
 jobs:
-  with-wallet-ajna-base-tests:
-    name: 'With wallet - Ajna - Base'
+  with-wallet-morphoblue-tests:
+    name: 'With wallet - Morpho Blue'
     runs-on: ubuntu-latest
     env:
       TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
@@ -35,17 +35,17 @@ jobs:
         run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Run With wallet Ajna Base
+      - name: Run With wallet Morpho Blue tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
-          yarn ci:with-wallet:ajna:base:regression
+          yarn ci:with-wallet:morphoblue:regression
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report-with-wallet-ajna-base
-          path: playwright-reports/with-wallet-ajna-base
+          name: playwright-report-with-wallet-morphoblue
+          path: playwright-reports/with-wallet-morphoblue
           retention-days: 30
