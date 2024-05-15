@@ -25,18 +25,12 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      # - uses: actions/checkout@v3
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 18
       - name: Run local set-up composite action
-        uses: ./.github/actions/setUp/
-      # - name: Install dependencies
-      #   run: yarn
-      # - name: Install playwright
-      #   run: npx playwright install && npx playwright install-deps
-      # - name: Install xvfb
-      #   run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+        uses: ./.github/actions/set-up/
       - name: Run With wallet Ajna Arbitrum
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
