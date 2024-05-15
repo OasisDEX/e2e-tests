@@ -1,4 +1,4 @@
-name: ZtestDOS - Ajna Arbitrum
+name: Ztest TRES - Ajna Arbitrum
 
 on: 
   workflow_dispatch:
