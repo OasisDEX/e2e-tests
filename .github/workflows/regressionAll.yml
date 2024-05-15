@@ -1,4 +1,4 @@
-name: Regression - All
+name: 0. Regression - All
 
 on: 
   workflow_dispatch:
