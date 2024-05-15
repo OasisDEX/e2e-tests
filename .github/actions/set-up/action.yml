@@ -4,9 +4,6 @@ description: 'Composite action to install playwright and depencies needed for e2
 runs:
   using: 'composite'
   steps:
-    - uses: actions/setup-node@v3
-        with:
-          node-version: 18
     - name: Install dependencies
       shell: bash
       run: yarn
