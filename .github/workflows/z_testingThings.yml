@@ -1,4 +1,4 @@
-name: Z - TESTING - Regression - Ajna Arbitrum
+name: Ztest TESTING - Ajna Arbitrum
 
 on: 
   workflow_dispatch:
@@ -25,10 +25,10 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      # This step checks out a copy of your repository to reuse an action.
-      - name: My first step - check out repository
-        uses: actions/checkout@v4
-      # This step references the directory that contains the action.
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
       - name: Use local set-up
         uses: ./.github/actions/set-up
       # - uses: actions/checkout@v3

@@ -10,10 +10,10 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      # - uses: actions/checkout@v3
+      # - uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 18
       - name: Install dependencies
         run: yarn
       - name: Install playwright
