@@ -1,4 +1,4 @@
-name: Reusable Workflow - Regression - Aave Arbitrum
+name: Reusable Workflow - Regression - Ajna Optimism
 
 on: 
   workflow_call:
@@ -22,8 +22,8 @@ on:
         required: true
 
 jobs:
-  with-wallet-aave-arbitrum-tests:
-    name: 'With wallet - Aave - Arbitrum'
+  with-wallet-ajna-optimism-tests:
+    name: 'With wallet - Ajna - Optimism'
     runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
@@ -38,17 +38,17 @@ jobs:
         run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Run With wallet Aave Arbitrum tests
+      - name: Run With wallet Ajna Optimism
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
-          yarn ci:with-wallet:aave:arbitrum:regression
+          yarn ci:with-wallet:ajna:optimism:regression
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-with-wallet-aave-arbitrum
-          path: playwright-reports/with-wallet-aave-arbitrum
+          name: playwright-report-with-wallet-ajna-optimism
+          path: playwright-reports/with-wallet-ajna-optimism
           retention-days: 30
