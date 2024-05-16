@@ -16,7 +16,6 @@ on:
 
 jobs:
   no-wallet-tests:
-    name: 'No wallet'
     uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
     with:
       base_url: ${{ inputs.base_url }}
