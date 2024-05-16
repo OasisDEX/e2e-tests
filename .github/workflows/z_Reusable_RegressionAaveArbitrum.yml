@@ -1,4 +1,4 @@
-name: 0.1. Regression - Aave Arbitrum
+name: Reusable Workflow - Regression - Aave Arbitrum
 
 on: 
   workflow_call:
@@ -13,15 +13,22 @@ on:
         type: string
         default: ''
         required: false
+    secrets:
+      TENDERLY_PROJECT:
+        required: true
+      TENDERLY_USER:
+        required: true
+      TENDERLY_ACCESS_KEY:
+        required: true
 
 jobs:
   with-wallet-aave-arbitrum-tests:
     name: 'With wallet - Aave - Arbitrum'
     runs-on: ubuntu-latest
-    env:
-      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
+    # env:
+    #   TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+    #   TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
+    #   TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
