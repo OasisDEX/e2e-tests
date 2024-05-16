@@ -122,7 +122,7 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'with-wallet-morphoblue',
+			name: 'with-wallet-morphoblue-ethereum',
 			testMatch: ['withWallet/morphoBlue/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
@@ -134,13 +134,13 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'with-wallet-spark',
+			name: 'with-wallet-spark-ethereum',
 			testMatch: ['withWallet/spark/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
 		{
-			name: 'with-wallet-maker',
+			name: 'with-wallet-maker-ethereum',
 			testMatch: ['withWallet/maker/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
