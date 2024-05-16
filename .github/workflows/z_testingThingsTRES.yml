@@ -15,51 +15,60 @@ on:
         required: false
 
 jobs:
-  with-wallet-ajna-arbitrum-tests:
-    name: 'With wallet - Ajna - Arbitrum'
-    runs-on: ubuntu-latest
-    env:
-      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
-    container:
-      image: synthetixio/docker-node:18.16-ubuntu
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Run local set-up composite action
-        uses: ./.github/actions/set-up/
-      - name: Run With wallet Ajna Arbitrum
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          BASE_URL=${{ inputs.base_url }} \
-          FLAGS_FEATURES=${{ inputs.flags_features}} \
-          yarn ci:with-wallet:ajna:arbitrum:regression
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report-with-wallet-ajna-arbitrum
-          path: playwright-reports/with-wallet-ajna-arbitrum
-          retention-days: 30
+  # with-wallet-ajna-arbitrum-tests:
+  #   name: 'With wallet - Ajna - Arbitrum'
+  #   runs-on: ubuntu-latest
+  #   env:
+  #     TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+  #     TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
+  #     TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
+  #   container:
+  #     image: synthetixio/docker-node:18.16-ubuntu
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 18
+  #     - name: Run local set-up composite action
+  #       uses: ./.github/actions/set-up/
+  #     - name: Run With wallet Ajna Arbitrum
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         BASE_URL=${{ inputs.base_url }} \
+  #         FLAGS_FEATURES=${{ inputs.flags_features}} \
+  #         yarn ci:with-wallet:ajna:arbitrum:regression
+  #     - uses: actions/upload-artifact@v3
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-ajna-arbitrum
+  #         path: playwright-reports/with-wallet-ajna-arbitrum
+  #         retention-days: 30
 
-  no-wallet-tests:
-    name: 'No wallet'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.37.1-jammy
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Run local set-up composite action
-        uses: ./.github/actions/no-wallet-tests/
-        with: 
-          base_url: ${{ inputs.base_url }}
-          flags_features: ${{ inputs.flags_features}}
+  # no-wallet-tests:
+  #   name: 'No wallet'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.37.1-jammy
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - uses: actions/setup-node@v3
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Run local set-up composite action
+  #       uses: ./.github/actions/no-wallet-tests/
+  #       with: 
+  #         base_url: ${{ inputs.base_url }}
+  #         flags_features: ${{ inputs.flags_features}}
+
+  with-wallet-ajna-arbitrum-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
+    with:
+      protocol: ajna
+      network: arbitrum
+      base_url: ${{ inputs.base_url }}
+      flags_features: ${{ inputs.flags_features}}
+    secrets: inherit
