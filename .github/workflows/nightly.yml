@@ -25,6 +25,7 @@ jobs:
           name: playwright-report-no-wallet
           path: playwright-reports/no-wallet
           retention-days: 30
+  
   with-wallet-aave-ethereum-tests:
     name: 'With wallet - Aave - Ethereum'
     runs-on: ubuntu-latest
@@ -57,6 +58,7 @@ jobs:
           name: playwright-report-with-wallet-aave-ethereum
           path: playwright-reports/with-wallet-aave-ethereum
           retention-days: 30
+  
   with-wallet-aave-aother-tests:
     name: 'With wallet - Aave - Arbitrum, Optimism & Base'
     runs-on: ubuntu-latest
@@ -89,6 +91,7 @@ jobs:
           name: playwright-report-with-wallet-aave-other
           path: playwright-reports/with-wallet-aave-other
           retention-days: 30
+  
   with-wallet-ajna-and-morphoblue-tests:
     name: 'With wallet - Ajna & Morpho Blue'
     runs-on: ubuntu-latest
@@ -121,6 +124,7 @@ jobs:
           name: playwright-report-with-wallet-ajna-and-morphoblue
           path: playwright-reports/with-wallet-ajna-and-morphoblue
           retention-days: 30
+  
   with-wallet-maker-and-spark-tests:
     name: 'With wallet - Maker & Spark'
     runs-on: ubuntu-latest
