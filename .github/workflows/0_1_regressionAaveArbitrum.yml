@@ -18,8 +18,6 @@ jobs:
   with-wallet-aave-arbitrum-tests:
     uses: ./.github/workflows/z_Reusable_RegressionAaveArbitrum.yml
     with:
-      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
+    secrets: inherit
