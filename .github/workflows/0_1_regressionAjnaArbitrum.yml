@@ -15,9 +15,10 @@ on:
         required: false
 
 jobs:
-  with-wallet-ajna-arbitrum-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAjnaArbitrum.yml
+  uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: ajna
+      network: arbitrum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit

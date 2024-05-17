@@ -15,9 +15,10 @@ on:
         required: false
 
 jobs:
-  with-wallet-aave-ethereum-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAaveEthereum.yml
+  uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: aave
+      network: ethereum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
