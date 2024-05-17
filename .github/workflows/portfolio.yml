@@ -10,6 +10,14 @@ on:
         required: false
 
 jobs:
+  no-wallet-tests-2:
+    name: 'Portfolio - Staging vs Production - TEST'
+    uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      flags_features: ${{ inputs.flags_features}}
+      script: portfolio:staging-vs-production
+
   no-wallet-tests:
     name: 'Portfolio - Staging vs Production'
     runs-on: ubuntu-latest
