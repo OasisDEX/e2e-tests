@@ -34,7 +34,11 @@ jobs:
         run: yarn
       - name: Run NO-WALLET tests
         # run: BASE_URL=${{ inputs.base_url }} FLAGS_FEATURES=${{ inputs.flags_features}} yarn ${{ inputs.script }}
-        run: ${{ inputs.base_url && 'BASE_URL='${{ inputs.base_url }} }} ${{ inputs.flags_features && 'FLAGS_FEATURES='${{ inputs.flags_features}} }} yarn ${{ inputs.script }}
+        if: inputs.base_url
+        run: BASE_URL=${{ inputs.base_url }} FLAGS_FEATURES=${{ inputs.flags_features}} yarn ${{ inputs.script }}
+        else:
+        run: yarn ${{ inputs.script }}
+        # run: ${{ inputs.base_url && 'BASE_URL='${{ inputs.base_url }} }} ${{ inputs.flags_features && 'FLAGS_FEATURES='${{ inputs.flags_features}} }} yarn ${{ inputs.script }}
         # if: inputs.base_url
         # run: BASE_URL=${{ inputs.base_url }} FLAGS_FEATURES=${{ inputs.flags_features}} yarn ${{ inputs.script }}
         # if: !inputs.base_url
