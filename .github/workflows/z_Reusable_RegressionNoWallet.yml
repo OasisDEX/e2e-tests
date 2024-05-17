@@ -33,7 +33,8 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Run NO-WALLET tests
-        run: BASE_URL=${{ inputs.base_url }} FLAGS_FEATURES=${{ inputs.flags_features}} yarn ${{ inputs.script }}
+        # run: BASE_URL=${{ inputs.base_url }} FLAGS_FEATURES=${{ inputs.flags_features}} yarn ${{ inputs.script }}
+        run: ${{ inputs.base_url && 'BASE_URL=${{ inputs.base_url }}' }} ${{ inputs.flags_features && 'FLAGS_FEATURES=${{ inputs.flags_features}}' }} yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
