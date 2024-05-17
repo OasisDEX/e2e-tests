@@ -15,6 +15,13 @@ on:
         required: false
 
 jobs:
+  no-wallet-tests-2:
+    uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      flags_features: ${{ inputs.flags_features}}
+      script: nightly:no-wallet
+
   no-wallet-tests:
     name: 'No wallet'
     runs-on: ubuntu-latest
@@ -35,6 +42,7 @@ jobs:
           name: playwright-report-no-wallet
           path: playwright-reports/no-wallet
           retention-days: 30
+  
   with-wallet-aave-ethereum-tests:
     name: 'With wallet - Aave - Ethereum'
     runs-on: ubuntu-latest
