@@ -15,9 +15,11 @@ on:
         required: false
 
 jobs:
-  with-wallet-spark-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionSpark.yml
+  with-wallet-spark-ethereum-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: spark
+      network: ethereum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit

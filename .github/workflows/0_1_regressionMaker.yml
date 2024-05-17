@@ -15,9 +15,11 @@ on:
         required: false
 
 jobs:
-  with-wallet-maker-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionMaker.yml
+  with-wallet-maker-ethereum-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: maker
+      network: ethereum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit

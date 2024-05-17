@@ -22,78 +22,100 @@ jobs:
       flags_features: ${{ inputs.flags_features}}
 
   with-wallet-aave-arbitrum-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAaveArbitrum.yml
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: aave
+      network: arbitrum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
   with-wallet-aave-base-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAaveBase.yml
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: aave
+      network: base
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
   with-wallet-aave-ethereum-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAaveEthereum.yml
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: aave
+      network: ethereum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
   with-wallet-aave-optimism-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAaveOptimism.yml
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: aave
+      network: optimism
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
   with-wallet-ajna-arbitrum-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAjnaArbitrum.yml
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: ajna
+      network: arbitrum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
   with-wallet-ajna-base-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAjnaBase.yml
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: ajna
+      network: base
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
   with-wallet-ajna-ethereum-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAjnaEthereum.yml
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: ajna
+      network: ethereum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
   with-wallet-ajna-optimism-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAjnaOptimism.yml
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: ajna
+      network: optimism
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
-  with-wallet-maker-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionMaker.yml
+  with-wallet-maker-ethereum-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: maker
+      network: ethereum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
-  with-wallet-morphoblue-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionMorphoBlue.yml
+  with-wallet-morphoblue-ethereum-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: morphoblue
+      network: ethereum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
-  with-wallet-spark-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionSpark.yml
+  with-wallet-spark-ethereum-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: spark
+      network: ethereum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit

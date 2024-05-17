@@ -16,8 +16,10 @@ on:
 
 jobs:
   with-wallet-ajna-optimism-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionAjnaOptimism.yml
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: ajna
+      network: optimism
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit

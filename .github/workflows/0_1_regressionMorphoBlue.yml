@@ -15,9 +15,11 @@ on:
         required: false
 
 jobs:
-  with-wallet-morphoblue-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionMorphoBlue.yml
+  with-wallet-morphoblue-ethereum-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
     with:
+      protocol: morphoblue
+      network: ethereum
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
