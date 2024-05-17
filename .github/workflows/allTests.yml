@@ -1,4 +1,4 @@
-name: All Tests - Staging
+name: All Tests
 
 on: 
   workflow_dispatch:
