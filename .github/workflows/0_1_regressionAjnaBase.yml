@@ -15,10 +15,11 @@ on:
         required: false
 
 jobs:
-  uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
-    with:
-      protocol: ajna
-      network: base
-      base_url: ${{ inputs.base_url }}
-      flags_features: ${{ inputs.flags_features}}
-    secrets: inherit
+  with-wallet-ajna-base-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
+      with:
+        protocol: ajna
+        network: base
+        base_url: ${{ inputs.base_url }}
+        flags_features: ${{ inputs.flags_features}}
+      secrets: inherit
