@@ -20,4 +20,5 @@ jobs:
     with:
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
+      script: ci:no-wallet:regression
 
