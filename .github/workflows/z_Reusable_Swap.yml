@@ -1,7 +1,7 @@
 name: Reusable Workflow - Swap
 
 on: 
-  workflow_dispatch:
+  workflow_call:
     inputs:
       protocol:
         description: 'For example: "aave'
@@ -17,6 +17,13 @@ on:
         type: string
         default: ''
         required: false
+    secrets:
+      TENDERLY_PROJECT:
+        required: true
+      TENDERLY_USER:
+        required: true
+      TENDERLY_ACCESS_KEY:
+        required: true
 
 jobs:
   with-wallet-swap:
