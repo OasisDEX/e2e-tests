@@ -30,7 +30,7 @@ test.describe('Maker Multiply - Swap', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Maker Multiply position @regression @swap', async () => {
+	test('It should open a Maker Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -46,19 +46,19 @@ test.describe('Maker Multiply - Swap', async () => {
 			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true',
+				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
 
 			await tenderly.setTokenBalance({
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
+				token: 'WBTC',
 				balance: '20',
 			});
 		});
 
-		await app.page.goto('/vaults/open-multiply/WSTETH-B');
+		await app.page.goto('/vaults/open-multiply/WBTC-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -66,14 +66,14 @@ test.describe('Maker Multiply - Swap', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
+			deposit: { token: 'WBTC', amount: '1' },
 		});
 	});
 
-	test('It should swap a Maker Multiply position (WSTETH/DAI) to Spark Multiply (ETH/DAI) @regression @swap', async () => {
+	test('It should swap a Maker Multiply position (WBTC/DAI) to Spark Multiply (SDIA/USDC) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: 'xxx',
+			description: '11788, 11790',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -86,16 +86,16 @@ test.describe('Maker Multiply - Swap', async () => {
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			targetPool: 'ETH/DAI',
+			targetPool: 'WSTETH/DAI',
 			expectedTargetExposure: {
-				amount: '[0-9]{1,2}.[0-9]{2}',
-				token: 'ETH',
+				amount: '[0-9]{2}.[0-9]{2}',
+				token: 'WSTETH',
 			},
 			expectedTargetDebt: {
 				amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
 				token: 'DAI',
 			},
-			originalPosition: { type: 'Multiply', collateralToken: 'WSTETH' },
+			originalPosition: { type: 'Multiply', collateralToken: 'WBTC' },
 		});
 	});
 });

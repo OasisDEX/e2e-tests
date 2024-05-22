@@ -5,7 +5,11 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openMakerPosition, swapMakerToSpark } from 'tests/sharedTestSteps/positionManagement';
+import {
+	openMakerPosition,
+	openPosition,
+	swapMakerToSpark,
+} from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -14,7 +18,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Multiply - Swap', async () => {
+test.describe('Morpho Blue Borrow - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,8 +33,8 @@ test.describe('Maker Multiply - Swap', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Maker Multiply position @regression @swap', async () => {
+	// Create a Morpho Blue position as part of the Swap tests setup
+	test('It should open a Morpho Blue Borrow position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -53,27 +57,28 @@ test.describe('Maker Multiply - Swap', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WBTC',
-				balance: '20',
+				token: 'WSTETH',
+				balance: '100',
 			});
 		});
 
-		await app.page.goto('/vaults/open-multiply/WBTC-C');
+		await app.page.goto('/ethereum/morphoblue/multiply/WSTETH-USDC#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
+		await app.position.overview.waitForComponentToBeStable();
 
-		await openMakerPosition({
+		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '1' },
+			deposit: { token: 'WSTETH', amount: '10' },
+			borrow: { token: 'USDC', amount: '15000' },
 		});
 	});
 
-	test('It should swap a Maker Multiply position (WBTC/DAI) to Spark Multiply (SDIA/USDC) @regression @swap', async () => {
+	test('It should swap a Morpho Blue Multiply position (WSTETH/USDC) to Spark Multiply (WSTETH/DAI)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11788, 11790',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -88,14 +93,14 @@ test.describe('Maker Multiply - Swap', async () => {
 			reason: 'Switch to higher max Loan To Value',
 			targetPool: 'WSTETH/DAI',
 			expectedTargetExposure: {
-				amount: '[0-9]{2}.[0-9]{2}',
+				amount: '[0-9]{1,2}.[0-9]{2}',
 				token: 'WSTETH',
 			},
 			expectedTargetDebt: {
-				amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+				amount: '[1][4-5],[0-9]{3}.[0-9]{2}',
 				token: 'DAI',
 			},
-			originalPosition: { type: 'Multiply', collateralToken: 'WBTC' },
+			originalPosition: { type: 'Multiply', collateralToken: 'WSTETH', debtToken: 'USDC' },
 		});
 	});
 });
