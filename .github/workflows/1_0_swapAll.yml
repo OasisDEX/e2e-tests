@@ -1,4 +1,4 @@
-name: 1.1. Swap - All
+name: 1.0. Swap - All
 
 on: 
   workflow_dispatch:
