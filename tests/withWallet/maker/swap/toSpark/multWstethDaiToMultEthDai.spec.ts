@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Swap', async () => {
+test.describe('Maker Multiply - Swap', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -30,10 +30,10 @@ test.describe('Maker Borrow - Swap', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Maker Borrow position @regression @swap', async () => {
+	test('It should open a Maker Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: 'xxx',
+			description: '11788, 11790',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -46,19 +46,19 @@ test.describe('Maker Borrow - Swap', async () => {
 			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'MakerTenderly:true',
 			}));
 
 			await tenderly.setTokenBalance({
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WBTC',
+				token: 'WSTETH',
 				balance: '20',
 			});
 		});
 
-		await app.page.goto('vaults/open/WBTC-C');
+		await app.page.goto('/vaults/open-multiply/WSTETH-B');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -66,15 +66,14 @@ test.describe('Maker Borrow - Swap', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '1' },
-			generate: { token: 'DAI', amount: '30000' },
+			deposit: { token: 'WSTETH', amount: '10' },
 		});
 	});
 
-	test('It should swap a Maker Borrow position (WBTC/DAI) to Spark Borrow (WBTC/DAI) @regression @swap', async () => {
+	test('It should swap a Maker Multiply position (WSTETH/DAI) to Spark Multiply (ETH/DAI) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11788, 11790',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -87,10 +86,16 @@ test.describe('Maker Borrow - Swap', async () => {
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			targetPool: 'WBTC/DAI',
-			expectedTargetExposure: { amount: '1.0000', token: 'WBTC' },
-			expectedTargetDebt: { amount: '30,000.00', token: 'DAI' },
-			originalPosition: { type: 'Borrow', collateralToken: 'WBTC', debtToken: 'DAI' },
+			targetPool: 'ETH/DAI',
+			expectedTargetExposure: {
+				amount: '[0-9]{1,2}.[0-9]{2}',
+				token: 'ETH',
+			},
+			expectedTargetDebt: {
+				amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+				token: 'DAI',
+			},
+			originalPosition: { type: 'Multiply', collateralToken: 'WSTETH' },
 		});
 	});
 });

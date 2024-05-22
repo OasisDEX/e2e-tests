@@ -30,7 +30,7 @@ test.describe('Maker Borrow - Swap', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Maker Borrow position @swap', async () => {
+	test('It should open a Maker Borrow position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -71,7 +71,7 @@ test.describe('Maker Borrow - Swap', async () => {
 		});
 	});
 
-	test('It should swap a Maker Borrow position (WSTETH/DAI) to Spark Borrow (WSTETH/DAI) @swap', async () => {
+	test('It should swap a Maker Borrow position (WSTETH/DAI) to Spark Borrow (WSTETH/DAI)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
