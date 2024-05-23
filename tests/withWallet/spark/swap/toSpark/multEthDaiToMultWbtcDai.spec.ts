@@ -10,11 +10,10 @@ import { openPosition, swapMakerToSpark } from 'tests/sharedTestSteps/positionMa
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
+test.describe('Spark Borrow - Swap', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,8 +28,8 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Morpho Blue position as part of the Swap tests setup
-	test('It should open a Morpho Blue Borrow position', async () => {
+	// Create a Maker position as part of the Swap tests setup
+	test('It should open a Spark Multiply position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -43,34 +42,26 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
-			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/multiply/WSTETH-USDC#setup');
+		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
+		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
+			deposit: { token: 'ETH', amount: '10' },
 		});
 	});
 
-	test('It should swap a Morpho Blue Multiply position (WSTETH/USDC) to Spark Multiply (WSTETH/DAI)', async () => {
+	test('It should swap a Spark Multiply position (ETH/DAI) to Spark Multiply (WBTC/DAI)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -86,16 +77,10 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			targetPool: 'WSTETH/DAI',
-			expectedTargetExposure: {
-				amount: '[0-9]{1,2}.[0-9]{2}',
-				token: 'WSTETH',
-			},
-			expectedTargetDebt: {
-				amount: '[1][4-5],[0-9]{3}.[0-9]{2}',
-				token: 'DAI',
-			},
-			originalPosition: { type: 'Multiply', collateralToken: 'WSTETH', debtToken: 'USDC' },
+			targetPool: 'WBTC/DAI',
+			expectedTargetExposure: { amount: '0.[0-9]{4}', token: 'WBTC' },
+			expectedTargetDebt: { amount: '[0-9],[0-9]{3}.[0-9]{2}', token: 'DAI' },
+			originalPosition: { type: 'Multiply', collateralToken: 'ETH', debtToken: 'DAI' },
 		});
 	});
 });

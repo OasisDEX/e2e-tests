@@ -27,7 +27,7 @@ on:
 
 jobs:
   with-wallet-swap:
-    name: 'With wallet - Swap - - ${{ inputs.protocol }}'
+    name: 'Swap - ${{ inputs.protocol }}'
     runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu

@@ -157,8 +157,8 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'with-wallet-swap-aaveV3',
-			testMatch: ['withWallet/aaveV3/swap/**'],
+			name: 'with-wallet-swap-aavev3',
+			testMatch: ['withWallet/aaveV3/ethereum/swap/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
