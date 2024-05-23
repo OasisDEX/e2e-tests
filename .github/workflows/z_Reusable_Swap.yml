@@ -51,7 +51,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-with-wallet-swap
-          path: playwright-reports/with-wallet-swap
+          name: playwright-report-with-wallet-swap-${{ inputs.protocol }}
+          path: playwright-reports/with-wallet-swap-${{ inputs.protocol }}
           retention-days: 30
   
