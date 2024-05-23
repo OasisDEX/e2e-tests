@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
+test.describe('Spark Multiply - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,8 +29,8 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Morpho Blue position as part of the Swap tests setup
-	test('It should open a Morpho Blue Multiply position', async () => {
+	// Create a Maker position as part of the Swap tests setup
+	test('It should open a Spark Multiply position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -53,12 +53,12 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
+				token: 'SDAI',
+				balance: '50000',
 			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/multiply/WSTETH-USDC#setup');
+		await app.page.goto('/ethereum/spark/multiply/SDAI-ETH#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -66,11 +66,11 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
+			deposit: { token: 'SDAI', amount: '30000' },
 		});
 	});
 
-	test('It should swap a Morpho Blue Multiply position (WSTETH/USDC) to Spark Multiply (WSTETH/DAI)', async () => {
+	test('It should swap a Spark Multiply position (SDAI/ETH) to Spark Multiply (ETH/DAI)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -85,17 +85,17 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 		await swapMakerToSpark({
 			app,
 			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			targetPool: 'WSTETH/DAI',
+			reason: 'Change direction of my position',
+			targetPool: 'ETH/DAI',
 			expectedTargetExposure: {
-				amount: '1[0-2].[0-9]{2}',
-				token: 'WSTETH',
+				amount: '[0-9]{1,2}.[0-9]{2}',
+				token: 'ETH',
 			},
 			expectedTargetDebt: {
-				amount: '[3-7],[0-9]{3}.[0-9]{2}',
+				amount: '[2-6],[0-9]{3}.[0-9]{2}',
 				token: 'DAI',
 			},
-			originalPosition: { type: 'Multiply', collateralToken: 'WSTETH', debtToken: 'USDC' },
+			originalPosition: { type: 'Multiply', collateralToken: 'SDAI', debtToken: 'ETH' },
 		});
 	});
 });
