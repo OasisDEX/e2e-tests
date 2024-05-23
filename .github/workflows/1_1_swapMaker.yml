@@ -15,7 +15,7 @@ on:
         required: false
 
 jobs:
-  swap-aaveV3-tests:
+  swap-maker-tests:
     uses: ./.github/workflows/z_Reusable_Swap.yml
     with:
       protocol: maker

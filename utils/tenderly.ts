@@ -59,6 +59,7 @@ export const tokenAddresses = {
 		CBETH: '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
 		DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
 		GHO: '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f',
+		LINK: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
 		PYUSD: '0x6c3ea9036406852006290770BEdFcAbA0e23A0e8',
 		RETH: '0xae78736cd615f374d3085123a210448e74fc6393',
 		SDAI: '0x83F20F44975D03b1b09e64809B757c47f942BEeA',
@@ -101,6 +102,7 @@ export const tokenBalances = {
 	DAI: '200000',
 	ETH: '1000',
 	GHO: '10000',
+	LINK: '100000',
 	OP: '100000',
 	PYUSD: '200000',
 	RETH: '1000',
@@ -133,6 +135,8 @@ export const setTokenBalance = async ({
 		| 'CBETH'
 		| 'DAI'
 		| 'ETH'
+		| 'GHO'
+		| 'LINK'
 		| 'PYUSD'
 		| 'RETH'
 		| 'SDAI'

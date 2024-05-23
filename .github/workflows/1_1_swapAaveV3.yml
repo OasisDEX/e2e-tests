@@ -18,7 +18,7 @@ jobs:
   swap-aaveV3-tests:
     uses: ./.github/workflows/z_Reusable_Swap.yml
     with:
-      protocol: aave
+      protocol: aavev3
       base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
