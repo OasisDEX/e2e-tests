@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Borrow - Swap', async () => {
+test.describe('Spark Multiply - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -52,7 +52,7 @@ test.describe('Spark Borrow - Swap', async () => {
 		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
+		await app.position.overview.waitForComponentToBeStable();
 
 		await openPosition({
 			app,
