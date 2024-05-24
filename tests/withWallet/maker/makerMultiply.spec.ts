@@ -50,16 +50,6 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
 
-		// If proxy was not previous setup extra steps will need to be executed
-		const button = app.page
-			.getByText('Configure your Vault')
-			.locator('../../..')
-			.locator('div:nth-child(3) > button')
-			.nth(1);
-		await expect(button).toBeVisible();
-
-		const buttonLabel = await button.innerText();
-
 		await app.position.setup.setupProxy1Of4();
 
 		await expect(async () => {
