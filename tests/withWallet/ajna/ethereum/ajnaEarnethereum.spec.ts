@@ -47,7 +47,6 @@ test.describe('Ajna Ethereum Earn - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '20' },
-			protocol: 'Ajna',
 		});
 	});
 
