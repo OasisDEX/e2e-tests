@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
-import { longTestTimeout, positionTimeout } from 'utils/config';
+import { expectDefaultTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { Reason } from 'src/pages/position/swap';
 
 type ActionData = { token: string; amount: string };
@@ -78,7 +78,14 @@ export const openPosition = async ({
 		//   - 'Reload' added to avoid flakines
 		await app.page.reload();
 		await app.position.setup.goToPosition();
-		await app.position.overview.shouldBeVisible();
+		await expect(async () => {
+			const applicationError = app.page.getByText('Aplication error:');
+
+			if (await applicationError.isVisible()) {
+				await app.page.reload();
+			}
+			await app.position.overview.shouldBeVisible();
+		}).toPass({ timeout: expectDefaultTimeout * 4 });
 	} else {
 		await app.position.setup.goToPositionShouldBeVisible();
 		const positionId: string = await app.position.setup.getNewPositionId();
@@ -87,7 +94,14 @@ export const openPosition = async ({
 		//
 		await expect(async () => {
 			await app.page.goto(positionId);
-			await app.position.overview.shouldBeVisible();
+			await expect(async () => {
+				const applicationError = app.page.getByText('Aplication error:');
+
+				if (await applicationError.isVisible()) {
+					await app.page.reload();
+				}
+				await app.position.overview.shouldBeVisible();
+			}).toPass({ timeout: expectDefaultTimeout * 4 });
 		}).toPass();
 
 		return positionId;
