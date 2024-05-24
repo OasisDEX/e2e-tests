@@ -56,7 +56,6 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'YFI', amount: '1' },
-			protocol: 'Ajna',
 		});
 	});
 
