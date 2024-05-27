@@ -56,7 +56,7 @@ export class Position {
 			} else {
 				await this.overview.shouldBeVisible({
 					tab: args?.tab ?? 'Position Info',
-					timeout: expectDefaultTimeout * 6,
+					timeout: expectDefaultTimeout * 5,
 				});
 			}
 		}).toPass();
