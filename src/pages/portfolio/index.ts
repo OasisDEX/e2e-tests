@@ -5,11 +5,11 @@ import { Wallet } from './wallet';
 import { expectDefaultTimeout, portfolioTimeout } from 'utils/config';
 
 export type PortfolioData = {
-	reasons: string;
-	totalValue: string;
-	portfolioValue: string;
-	totalSupplied: string;
-	totalBorrowed: string;
+	reasons: number;
+	totalValue: number;
+	portfolioValue: number;
+	totalSupplied: number;
+	totalBorrowed: number;
 	emptyPositionsCount: number;
 	positionsListedCount: number;
 	positionsListedData: {
@@ -69,7 +69,7 @@ export class Portfolio {
 	@step
 	async getReasonsValue() {
 		const value = await this.page.getByText('worth of reasons to open').locator('span').innerText();
-		return value;
+		return parseFloat(value.replace(',', '').replace('$', '').replace('M', ''));
 	}
 
 	@step
@@ -113,7 +113,7 @@ export class Portfolio {
 	@step
 	async getTotalValue() {
 		const value = await this.page.locator('span:has-text("Total Value") + h2').innerText();
-		return value;
+		return parseFloat(value.replace(',', '').replace('$', '').replace('M', ''));
 	}
 
 	@step
@@ -126,7 +126,7 @@ export class Portfolio {
 	@step
 	async getPortfolioValue() {
 		const value = await this.page.locator('span:has-text("Summer.fi Portfolio") + h2').innerText();
-		return value;
+		return parseFloat(value.replace(',', '').replace('$', '').replace('M', ''));
 	}
 
 	@step
@@ -139,7 +139,7 @@ export class Portfolio {
 	@step
 	async getTotalSupplied() {
 		const value = await this.page.locator('span:has-text("Total Supplied") + h2').innerText();
-		return value;
+		return parseFloat(value.replace(',', '').replace('$', '').replace('M', ''));
 	}
 
 	@step
@@ -152,7 +152,7 @@ export class Portfolio {
 	@step
 	async getTotalBorrowed() {
 		const value = await this.page.locator('span:has-text("Total Borrowed") + h2').innerText();
-		return value;
+		return parseFloat(value.replace(',', '').replace('$', '').replace('M', ''));
 	}
 
 	@step
@@ -196,11 +196,11 @@ export class Portfolio {
 	@step
 	async getPortfolioData() {
 		let data: PortfolioData = {
-			reasons: '',
-			totalValue: '',
-			portfolioValue: '',
-			totalSupplied: '',
-			totalBorrowed: '',
+			reasons: 0,
+			totalValue: 0,
+			portfolioValue: 0,
+			totalSupplied: 0,
+			totalBorrowed: 0,
 			emptyPositionsCount: 0,
 			positionsListedCount: 0,
 			positionsListedData: [],

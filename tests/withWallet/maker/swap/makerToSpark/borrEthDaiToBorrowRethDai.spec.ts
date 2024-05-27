@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Swap', async () => {
+test.describe.only('Maker Borrow - Swap', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -69,6 +69,10 @@ test.describe('Maker Borrow - Swap', async () => {
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
+
+		//
+		await app.pause();
+		//
 
 		// Wait an reload to avoid flakiness
 		await app.page.waitForTimeout(1000);
