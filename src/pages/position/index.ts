@@ -80,4 +80,14 @@ export class Position {
 	async openTab(tab: string) {
 		await this.page.getByRole('button', { name: tab }).click();
 	}
+
+	@step
+	async getAPY() {
+		const apyText = await this.page
+			.getByText('7 Day APY')
+			.locator('xpath=//following-sibling::span[1]')
+			.innerText();
+		const apy = parseFloat(apyText.replace('%', ''));
+		return apy;
+	}
 }

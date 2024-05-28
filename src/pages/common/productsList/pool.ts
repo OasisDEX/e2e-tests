@@ -42,6 +42,13 @@ export class Pool {
 	}
 
 	@step
+	async getAPY() {
+		const apyText = await this.poolLocator.locator('td').nth(3).innerText();
+		const apy = parseFloat(apyText.replace('%', ''));
+		return apy;
+	}
+
+	@step
 	async getProtocol() {
 		const pool = await this.poolLocator
 			.locator('td')
