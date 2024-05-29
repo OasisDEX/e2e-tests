@@ -78,7 +78,7 @@ export class ProductsList {
 			parseFloat(element.split('%')[0])
 		);
 		// Log for debugging purposes
-		console.log('=== allBorrowRatesNumbers: ', allBorrowRatesNumbers);
+		console.log('allBorrowRatesNumbers: ', allBorrowRatesNumbers);
 
 		expect(
 			allBorrowRatesNumbers.every((rate) => rate > 0),
@@ -99,7 +99,7 @@ export class ProductsList {
 			parseFloat(element.split('x')[0])
 		);
 		// Log for debugging purposes
-		console.log('=== allMaxMultiplesNumbers: ', allMaxMultiplesNumbers);
+		console.log('allMaxMultiplesNumbers: ', allMaxMultiplesNumbers);
 
 		expect(
 			allMaxMultiplesNumbers.every((rate) => rate > 0),
@@ -117,7 +117,7 @@ export class ProductsList {
 		const allPoolsManagement = await this.poolLocator.locator('td:nth-child(3)').allInnerTexts();
 
 		// Log for debugging purposes
-		console.log('=== allPoolsManagement: ', allPoolsManagement);
+		console.log('allPoolsManagement: ', allPoolsManagement);
 
 		expect(
 			allPoolsManagement.every((managementType) => ['Active', 'Passive'].includes(managementType)),

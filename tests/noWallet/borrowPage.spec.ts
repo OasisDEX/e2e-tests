@@ -36,7 +36,7 @@ test.describe('Borrow page', async () => {
 	});
 
 	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 1 - ${poolIndex} @regression`, async ({
+		test(`It should open position page for all available BORROW pools - Page 1 - ${poolIndex}`, async ({
 			app,
 		}) => {
 			await app.borrow.open();
@@ -50,11 +50,11 @@ test.describe('Borrow page', async () => {
 			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
 			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
 			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('++++ Pool Index: ', poolIndex);
-			console.log('++++ Pool: ', pool);
-			console.log('++++ Strategy: ', strategy);
-			console.log('++++ Protocol: ', protocol);
-			console.log('++++ Network: ', network);
+			console.log('Pool Index: ', poolIndex);
+			console.log('Pool: ', pool);
+			console.log('Strategy: ', strategy);
+			console.log('Protocol: ', protocol);
+			console.log('Network: ', network);
 
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
@@ -85,11 +85,11 @@ test.describe('Borrow page', async () => {
 			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
 			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
 			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('++++ Pool Index: ', poolIndex);
-			console.log('++++ Pool: ', pool);
-			console.log('++++ Strategy: ', strategy);
-			console.log('++++ Protocol: ', protocol);
-			console.log('++++ Network: ', network);
+			console.log('Pool Index: ', poolIndex);
+			console.log('Pool: ', pool);
+			console.log('Strategy: ', strategy);
+			console.log('Protocol: ', protocol);
+			console.log('Network: ', network);
 
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
@@ -122,11 +122,11 @@ test.describe('Borrow page', async () => {
 			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
 			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
 			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('++++ Pool Index: ', poolIndex);
-			console.log('++++ Pool: ', pool);
-			console.log('++++ Strategy: ', strategy);
-			console.log('++++ Protocol: ', protocol);
-			console.log('++++ Network: ', network);
+			console.log('Pool Index: ', poolIndex);
+			console.log('Pool: ', pool);
+			console.log('Strategy: ', strategy);
+			console.log('Protocol: ', protocol);
+			console.log('Network: ', network);
 
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
@@ -161,11 +161,11 @@ test.describe('Borrow page', async () => {
 			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
 			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
 			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('++++ Pool Index: ', poolIndex);
-			console.log('++++ Pool: ', pool);
-			console.log('++++ Strategy: ', strategy);
-			console.log('++++ Protocol: ', protocol);
-			console.log('++++ Network: ', network);
+			console.log('Pool Index: ', poolIndex);
+			console.log('Pool: ', pool);
+			console.log('Strategy: ', strategy);
+			console.log('Protocol: ', protocol);
+			console.log('Network: ', network);
 
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
@@ -202,11 +202,11 @@ test.describe('Borrow page', async () => {
 			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
 			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
 			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('++++ Pool Index: ', poolIndex);
-			console.log('++++ Pool: ', pool);
-			console.log('++++ Strategy: ', strategy);
-			console.log('++++ Protocol: ', protocol);
-			console.log('++++ Network: ', network);
+			console.log('Pool Index: ', poolIndex);
+			console.log('Pool: ', pool);
+			console.log('Strategy: ', strategy);
+			console.log('Protocol: ', protocol);
+			console.log('Network: ', network);
 
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
@@ -245,11 +245,11 @@ test.describe('Borrow page', async () => {
 			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
 			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
 			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('++++ Pool Index: ', poolIndex);
-			console.log('++++ Pool: ', pool);
-			console.log('++++ Strategy: ', strategy);
-			console.log('++++ Protocol: ', protocol);
-			console.log('++++ Network: ', network);
+			console.log('Pool Index: ', poolIndex);
+			console.log('Pool: ', pool);
+			console.log('Strategy: ', strategy);
+			console.log('Protocol: ', protocol);
+			console.log('Network: ', network);
 
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
@@ -290,11 +290,11 @@ test.describe('Borrow page', async () => {
 			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
 			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
 			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('++++ Pool Index: ', poolIndex);
-			console.log('++++ Pool: ', pool);
-			console.log('++++ Strategy: ', strategy);
-			console.log('++++ Protocol: ', protocol);
-			console.log('++++ Network: ', network);
+			console.log('Pool Index: ', poolIndex);
+			console.log('Pool: ', pool);
+			console.log('Strategy: ', strategy);
+			console.log('Protocol: ', protocol);
+			console.log('Network: ', network);
 
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
@@ -337,11 +337,11 @@ test.describe('Borrow page', async () => {
 			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
 			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
 			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('++++ Pool Index: ', poolIndex);
-			console.log('++++ Pool: ', pool);
-			console.log('++++ Strategy: ', strategy);
-			console.log('++++ Protocol: ', protocol);
-			console.log('++++ Network: ', network);
+			console.log('Pool Index: ', poolIndex);
+			console.log('Pool: ', pool);
+			console.log('Strategy: ', strategy);
+			console.log('Protocol: ', protocol);
+			console.log('Network: ', network);
 
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
@@ -386,11 +386,11 @@ test.describe('Borrow page', async () => {
 			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
 			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
 			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('++++ Pool Index: ', poolIndex);
-			console.log('++++ Pool: ', pool);
-			console.log('++++ Strategy: ', strategy);
-			console.log('++++ Protocol: ', protocol);
-			console.log('++++ Network: ', network);
+			console.log('Pool Index: ', poolIndex);
+			console.log('Pool: ', pool);
+			console.log('Strategy: ', strategy);
+			console.log('Protocol: ', protocol);
+			console.log('Network: ', network);
 
 			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
 			await app.homepage.productHub.list.nthPool(poolIndex).open();
