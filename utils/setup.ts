@@ -80,7 +80,7 @@ export const setup = async ({
 	const walletAddress = await metamask.walletAddress();
 	// Logging walletAddress for debugging purposes
 	//  - Info displayed in 'Attachments > stdout' section of playwright reports
-	console.log('Wallet Address: ', walletAddress);
+	console.log(' Wallet Address: ', walletAddress);
 
 	await app.page.goto('');
 	await app.homepage.shouldBeVisible();
@@ -126,7 +126,7 @@ export const setup = async ({
 
 		// Logging forkId for debugging purposes
 		//  - Info displayed in 'Attachments > stdout' section of playwright reports
-		console.log('Fork Id: ', forkId);
+		console.log(' Fork Id: ', forkId);
 	}
 
 	return { forkId, walletAddress };

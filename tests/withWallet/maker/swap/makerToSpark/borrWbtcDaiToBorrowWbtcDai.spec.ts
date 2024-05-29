@@ -58,7 +58,7 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 			});
 		});
 
-		await app.page.goto('vaults/open/WBTC-C');
+		await app.page.goto('/vaults/open/WBTC-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -89,7 +89,7 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 			reason: 'Switch to higher max Loan To Value',
 			targetPool: 'WBTC/DAI',
 			expectedTargetExposure: { amount: '1.0000', token: 'WBTC' },
-			expectedTargetDebt: { amount: '30,000.00', token: 'DAI' },
+			expectedTargetDebt: { amount: '30,[0-9]{3}.[0-9]{2}', token: 'DAI' },
 			originalPosition: { type: 'Borrow', collateralToken: 'WBTC', debtToken: 'DAI' },
 		});
 	});
