@@ -46,7 +46,7 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true',
+				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
 
 			await tenderly.setTokenBalance({
