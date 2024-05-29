@@ -12,8 +12,8 @@ export const comparePositionsData = (stagingPositions, productionPositions) => {
 			Object.keys(stagingPosition).every((key) => stagingPosition[key] === productionPosition[key])
 		);
 		if (!positionResult) {
-			console.log('+++ Inconsistent Position Data - Staging: ', stagingPosition);
-			console.log('+++ Inconsistent Position Data - Production: ', productionPositions[0]);
+			console.log('Inconsistent Position Data - Staging: ', stagingPosition);
+			console.log('Inconsistent Position Data - Production: ', productionPositions[0]);
 		}
 		return positionResult;
 	});
