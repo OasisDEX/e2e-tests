@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Multiply - Swap', async () => {
+test.describe('Maker Multiply - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
