@@ -55,7 +55,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			});
 		});
 
-		// await app.page.goto('/ethereum/aave/v3/earn/wsteth-eth#simulate');
 		await app.position.openPage('/ethereum/aave/v3/earn/wsteth-eth#simulate');
 
 		await openPosition({
@@ -75,7 +74,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and Reload page to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		// await app.page.reload();
 		await reloadUntilCorrect(app);
 
 		await app.position.overview.shouldHaveExposure({
@@ -117,7 +115,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and Reload page to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		// await app.page.reload();
 		await reloadUntilCorrect(app);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -150,7 +147,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and Reload page to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		// await app.page.reload();
 		await reloadUntilCorrect(app);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -183,7 +179,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Reload page to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		// await app.page.reload();
 		await reloadUntilCorrect(app);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -215,7 +210,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		// await app.page.reload();
 		await reloadUntilCorrect(app);
 
 		await adjustRisk({
@@ -237,7 +231,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		// await app.page.reload();
 		await reloadUntilCorrect(app);
 
 		await adjustRisk({
@@ -259,7 +252,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		// await app.page.reload();
 		await reloadUntilCorrect(app);
 
 		await close({
