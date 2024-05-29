@@ -5,7 +5,7 @@ const numberOfPoolsPage7 = Array.from({ length: 8 }, (_, index) => 0 + index);
 
 test.describe('Multiply page', async () => {
 	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available MULTIPLY pools - Page 1 - ${poolIndex} @regression`, async ({
+		test(`It should open position page for all available MULTIPLY pools - Page 1 - ${poolIndex}`, async ({
 			app,
 		}) => {
 			await app.multiply.open();

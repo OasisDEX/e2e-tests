@@ -46,7 +46,7 @@ test.describe('Earn page', async () => {
 	});
 
 	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available EARN pools - Page 1 - ${poolIndex} @regression`, async ({
+		test(`It should open position page for all available EARN pools - Page 1 - ${poolIndex}`, async ({
 			app,
 		}) => {
 			await app.earn.open();

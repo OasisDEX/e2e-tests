@@ -36,7 +36,7 @@ test.describe('Borrow page', async () => {
 	});
 
 	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 1 - ${poolIndex} @regression`, async ({
+		test(`It should open position page for all available BORROW pools - Page 1 - ${poolIndex}`, async ({
 			app,
 		}) => {
 			await app.borrow.open();
