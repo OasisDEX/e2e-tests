@@ -11,6 +11,7 @@ import {
 	manageDebtOrCollateral,
 	openPosition,
 } from 'tests/sharedTestSteps/positionManagement';
+import { reloadUntilCorrect } from 'utils/general';
 
 let context: BrowserContext;
 let app: App;
@@ -54,7 +55,8 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/aave/v3/earn/wsteth-eth#simulate');
+		// await app.page.goto('/ethereum/aave/v3/earn/wsteth-eth#simulate');
+		await app.position.openPage('/ethereum/aave/v3/earn/wsteth-eth#simulate');
 
 		await openPosition({
 			app,
@@ -73,7 +75,8 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and Reload page to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		// await app.page.reload();
+		await reloadUntilCorrect(app);
 
 		await app.position.overview.shouldHaveExposure({
 			amount: '9.[0-9]{4}',
@@ -114,7 +117,8 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and Reload page to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		// await app.page.reload();
+		await reloadUntilCorrect(app);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage collateral');
@@ -146,7 +150,8 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and Reload page to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		// await app.page.reload();
+		await reloadUntilCorrect(app);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
@@ -177,7 +182,9 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		// Reload page to avoid random fails
-		await app.page.reload();
+		await app.page.waitForTimeout(3_000);
+		// await app.page.reload();
+		await reloadUntilCorrect(app);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 		await app.position.manage.select('Manage debt');
@@ -208,7 +215,8 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		// await app.page.reload();
+		await reloadUntilCorrect(app);
 
 		await adjustRisk({
 			forkId,
@@ -229,7 +237,8 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		// await app.page.reload();
+		await reloadUntilCorrect(app);
 
 		await adjustRisk({
 			forkId,
@@ -250,7 +259,8 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		// await app.page.reload();
+		await reloadUntilCorrect(app);
 
 		await close({
 			app,
