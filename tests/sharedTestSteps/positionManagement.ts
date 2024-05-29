@@ -25,7 +25,7 @@ export const openPosition = async ({
 	deposit: ActionData;
 	borrow?: ActionData;
 	existingDPM?: boolean;
-	adjustRisk?: { positionType?: 'Borrow'; value: number };
+	adjustRisk?: { positionType?: 'Borrow' | 'Earn'; value: number };
 	protocol?: 'Ajna' | 'Morpho Blue';
 }) => {
 	await app.position.setup.deposit(deposit);
