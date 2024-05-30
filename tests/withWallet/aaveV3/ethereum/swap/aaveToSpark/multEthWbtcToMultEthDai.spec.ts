@@ -5,7 +5,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openPosition, swapMakerToSpark } from 'tests/sharedTestSteps/positionManagement';
+import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -73,20 +73,20 @@ test.describe('Aave V3 Multiply - Swap to Spark', async () => {
 		await app.page.waitForTimeout(1000);
 		await app.page.reload();
 
-		await swapMakerToSpark({
+		await swapPosition({
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			targetPool: 'ETH/DAI',
-			expectedTargetExposure: {
-				amount: '1[0-9].[0-9]{2}',
-				token: 'ETH',
+			originalProtocol: 'Aave V3',
+			targetProtocol: 'Spark',
+			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
+			verifyPositions: {
+				originalPosition: { type: 'Multiply', collateralToken: 'ETH', debtToken: 'DAI' },
+				targetPosition: {
+					exposure: { amount: '1[0-9].[0-9]{2}', token: 'ETH' },
+					debt: { amount: '[2-8],[0-9]{3}.[0-9]{2}', token: 'DAI' },
+				},
 			},
-			expectedTargetDebt: {
-				amount: '[2-8],[0-9]{3}.[0-9]{2}',
-				token: 'DAI',
-			},
-			originalPosition: { type: 'Multiply', collateralToken: 'ETH', debtToken: 'WBTC' },
 		});
 	});
 });

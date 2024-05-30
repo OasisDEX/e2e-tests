@@ -5,7 +5,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openPosition, swapMakerToSpark } from 'tests/sharedTestSteps/positionManagement';
+import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -82,20 +82,20 @@ test.describe('Aave V3 Multiply - Swap to Spark', async () => {
 		await app.page.waitForTimeout(1000);
 		await app.page.reload();
 
-		await swapMakerToSpark({
+		await swapPosition({
 			app,
 			forkId,
 			reason: 'Change direction of my position',
-			targetPool: 'SDAI/ETH',
-			expectedTargetExposure: {
-				amount: '[1-6][0-9],[0-9]{3}.[0-9]{2}',
-				token: 'SDAI',
+			originalProtocol: 'Aave V3',
+			targetProtocol: 'Spark',
+			targetPool: { colToken: 'SDAI', debtToken: 'ETH' },
+			verifyPositions: {
+				originalPosition: { type: 'Multiply', collateralToken: 'LINK', debtToken: 'ETH' },
+				targetPosition: {
+					exposure: { amount: '[1-6][0-9],[0-9]{3}.[0-9]{2}', token: 'SDAI' },
+					debt: { amount: '[0-1].[0-9]{2}', token: 'ETH' },
+				},
 			},
-			expectedTargetDebt: {
-				amount: '[0-1].[0-9]{2}',
-				token: 'ETH',
-			},
-			originalPosition: { type: 'Multiply', collateralToken: 'LINK', debtToken: 'ETH' },
 		});
 	});
 });

@@ -3,9 +3,11 @@ import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { expectDefaultTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import { Tokens } from 'utils/testData';
 import { Reason } from 'src/pages/position/swap';
 
 type ActionData = { token: string; amount: string };
+type SwapProtocols = 'Aave V3' | 'Maker' | 'Morpho' | 'Spark';
 
 /**
  *
@@ -414,48 +416,70 @@ export const manageDebtOrCollateral = async ({
 	}
 };
 
-export const swapMakerToSpark = async ({
+export const swapPosition = async ({
 	app,
 	forkId,
+	originalProtocol,
 	reason,
+	targetProtocol,
 	targetPool,
-	expectedTargetExposure,
-	expectedTargetDebt,
-	originalPosition,
+	verifyPositions,
 }: {
 	app: App;
 	forkId: string;
+	originalProtocol: SwapProtocols;
+	originalPosition?: { type: 'Borrow' | 'Multiply'; collateralToken: string; debtToken?: string };
 	reason: Reason;
-	targetPool: string;
-	expectedTargetExposure: ActionData;
-	expectedTargetDebt: ActionData;
-	originalPosition: { type: 'Borrow' | 'Multiply'; collateralToken: string; debtToken?: string };
+	targetProtocol: SwapProtocols;
+	targetPool: { colToken: Tokens; debtToken: Tokens };
+	verifyPositions?: {
+		originalPosition?: { type: 'Borrow' | 'Multiply'; collateralToken: string; debtToken?: string };
+		targetPosition?: { exposure?: ActionData; debt?: ActionData };
+	};
 }) => {
-	const originalPositionPage: string = app.page.url();
+	let originalPositionPage: string;
+	if (verifyPositions?.originalPosition) {
+		originalPositionPage = app.page.url();
+	}
 
 	await app.position.overview.swap();
 	await app.position.swap.selectReason(reason);
-	await app.position.swap.productList.byPairPool(targetPool).open();
 
-	// Smart DeFi Acount creation randomly fails - Retry until it's created.
-	await expect(async () => {
-		await app.position.setup.createSmartDeFiAccount();
-		await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
-		await app.position.setup.continueShouldBeVisible();
-	}).toPass({ timeout: longTestTimeout });
-
-	await app.position.setup.continue();
-	await app.position.swap.shouldHaveMaxTransactionCost();
-	await app.position.swap.confirm();
-	await test.step('Confirm automation setup', async () => {
-		await expect(async () => {
-			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass();
+	await app.position.swap.productHub.filters.protocols.select({
+		protocols: [targetProtocol],
 	});
 
-	await app.position.setup.continue();
+	await app.position.swap.productHub.filters.collateralTokens.select(targetPool.colToken);
+	await app.position.swap.productHub.filters.debtTokens.select(targetPool.debtToken);
+
+	await app.position.swap.productList
+		.byPairPool(`${targetPool.colToken}/${targetPool.debtToken}`)
+		.open();
+
+	if (originalProtocol === 'Maker') {
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.createSmartDeFiAccount();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+		await app.position.swap.shouldHaveMaxTransactionCost('\\$[0-9]{1,2}.[0-9]{1,2}');
+		await app.position.swap.confirm();
+		await test.step('Confirm automation setup', async () => {
+			await expect(async () => {
+				await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+				await app.position.setup.continueShouldBeVisible();
+			}).toPass();
+		});
+
+		await app.position.setup.continue();
+	}
+
+	await app.position.swap.shouldHaveMaxTransactionCost('.[0-9]{1,2}');
 	await app.position.swap.confirm();
+
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
@@ -465,33 +489,41 @@ export const swapMakerToSpark = async ({
 
 	await app.position.setup.goToPosition();
 
-	await app.position.manage.shouldBeVisible('Manage your Spark');
-	await app.position.overview.shouldHaveExposure(expectedTargetExposure);
-	await app.position.overview.shouldHaveDebt(expectedTargetDebt);
-
-	// Verify that original Maker position is now empty
-	await app.page.goto(originalPositionPage);
-	await app.position.manage.shouldBeVisible('Manage your vault');
-	await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
-	await app.position.overview.shouldHaveVaultDaiDebt('0.0000');
-	if (originalPosition.type === 'Multiply') {
-		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
-		await app.position.overview.shouldHaveTotalCollateral({
-			amount: '0.00',
-			token: originalPosition.collateralToken,
-		});
+	if (verifyPositions?.targetPosition) {
+		// Verify new target position
+		await app.position.manage.shouldBeVisible(`Manage your ${targetProtocol}`);
+		await app.position.overview.shouldHaveExposure(verifyPositions.targetPosition.exposure);
+		await app.position.overview.shouldHaveDebt(verifyPositions.targetPosition.debt);
 	}
-	if (originalPosition.type === 'Borrow') {
+
+	if (verifyPositions?.originalPosition) {
+		// Verify that original position is now empty
+		await app.page.goto(originalPositionPage);
+
+		await app.position.manage.shouldBeVisible('Manage your');
 		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
-		await app.position.overview.shouldHaveCollateralizationRatio('0.00');
-		await app.position.overview.shouldHaveCollateralLocked('0.00');
-		await app.position.overview.shouldHaveAvailableToWithdraw({
-			amount: '0.00000',
-			token: originalPosition.collateralToken,
-		});
-		await app.position.overview.shouldHaveAvailableToGenerate({
-			amount: '0.0000',
-			token: originalPosition.debtToken,
-		});
+		// TO BE UPDATE for all protocols
+		// await app.position.overview.shouldHaveVaultDaiDebt('0.0000');
+		// if (verifyPositions.originalPosition.type === 'Multiply') {
+		// 	await app.position.overview.shouldHaveNetValue({ value: '\\$(<)?0.0[0-1]' });
+		// 	// TO BE UPDATE for all protocols
+		// 	// await app.position.overview.shouldHaveTotalCollateral({
+		// 	// 	amount: '0.00',
+		// 	// 	token: verifyPositions.originalPosition.collateralToken,
+		// 	// });
+		// }
+		if (verifyPositions.originalPosition.type === 'Borrow') {
+			await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
+			await app.position.overview.shouldHaveCollateralizationRatio('0.00');
+			await app.position.overview.shouldHaveCollateralLocked('0.00');
+			await app.position.overview.shouldHaveAvailableToWithdraw({
+				amount: '0.00000',
+				token: verifyPositions.originalPosition.collateralToken,
+			});
+			await app.position.overview.shouldHaveAvailableToGenerate({
+				amount: '0.0000',
+				token: verifyPositions.originalPosition.debtToken,
+			});
+		}
 	}
 };

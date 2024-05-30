@@ -1,5 +1,6 @@
 import { step } from '#noWalletFixtures';
 import { expect, Locator, Page } from '@playwright/test';
+import { ProductHub } from '../productHub';
 import { ProductsList } from '../common/productsList';
 import { expectDefaultTimeout } from 'utils/config';
 
@@ -12,12 +13,15 @@ export type Reason =
 export class Swap {
 	readonly page: Page;
 
+	readonly productHub: ProductHub;
+
 	readonly productList: ProductsList;
 
 	readonly refinanceLocator: Locator;
 
 	constructor(page: Page) {
 		this.page = page;
+		this.productHub = new ProductHub(page);
 		this.productList = new ProductsList(
 			page,
 			this.page.locator('#product-hub'),
@@ -32,8 +36,8 @@ export class Swap {
 	}
 
 	@step
-	async shouldHaveMaxTransactionCost() {
-		const regExp = new RegExp('\\$[0-9]{1,2}.[0-9]{1,2}');
+	async shouldHaveMaxTransactionCost(cost: string) {
+		const regExp = new RegExp(cost);
 		await expect(this.refinanceLocator.getByText('Max transaction cost').locator('..')).toHaveText(
 			regExp,
 			{ timeout: expectDefaultTimeout * 4 }

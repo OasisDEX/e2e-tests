@@ -41,7 +41,7 @@ test.describe('Earn page', async () => {
 			await app.position.overview.shouldBeVisible({ tab: 'Position Info' });
 			const positionPageAPY = await app.position.getAPY();
 
-			expect(Math.abs(positionPageAPY - productHubAPY) / productHubAPY).toBeLessThan(0.04);
+			expect(Math.abs(positionPageAPY - productHubAPY)).toBeLessThan(0.1);
 		});
 	});
 

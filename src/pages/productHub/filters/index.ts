@@ -1,13 +1,19 @@
 import { Locator, Page } from '@playwright/test';
-import { Networks } from './networks';
-import { Protocols } from './protocols';
 import { step } from '#noWalletFixtures';
 import { Base } from 'src/pages/position/base';
+import { CollateralTokens } from './collateralTokens';
+import { DebtTokens } from './debtTokens';
+import { Networks } from './networks';
+import { Protocols } from './protocols';
 
 export class Filters {
 	readonly page: Page;
 
 	readonly base: Base;
+
+	readonly collateralTokens: CollateralTokens;
+
+	readonly debtTokens: DebtTokens;
 
 	readonly networks: Networks;
 
@@ -19,6 +25,8 @@ export class Filters {
 		this.page = page;
 		this.productHubLocator = productHubLocator;
 		this.base = new Base(page);
+		this.collateralTokens = new CollateralTokens(productHubLocator);
+		this.debtTokens = new DebtTokens(productHubLocator);
 		this.networks = new Networks(productHubLocator);
 		this.protocols = new Protocols(productHubLocator);
 	}

@@ -5,7 +5,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openPosition, swapMakerToSpark } from 'tests/sharedTestSteps/positionManagement';
+import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -73,14 +73,20 @@ test.describe('Spark Multiply - Swap to Spark', async () => {
 		await app.page.waitForTimeout(1000);
 		await app.page.reload();
 
-		await swapMakerToSpark({
+		await swapPosition({
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			targetPool: 'WBTC/DAI',
-			expectedTargetExposure: { amount: '0.[0-9]{4}', token: 'WBTC' },
-			expectedTargetDebt: { amount: '[0-9],[0-9]{3}.[0-9]{2}', token: 'DAI' },
-			originalPosition: { type: 'Multiply', collateralToken: 'ETH', debtToken: 'DAI' },
+			originalProtocol: 'Spark',
+			targetProtocol: 'Spark',
+			targetPool: { colToken: 'WBTC', debtToken: 'DAI' },
+			verifyPositions: {
+				originalPosition: { type: 'Multiply', collateralToken: 'ETH', debtToken: 'DAI' },
+				targetPosition: {
+					exposure: { amount: '0.[0-9]{4}', token: 'WBTC' },
+					debt: { amount: '[0-9],[0-9]{3}.[0-9]{2}', token: 'DAI' },
+				},
+			},
 		});
 	});
 });
