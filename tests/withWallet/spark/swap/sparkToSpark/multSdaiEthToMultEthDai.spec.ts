@@ -5,7 +5,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openPosition, swapMakerToSpark } from 'tests/sharedTestSteps/positionManagement';
+import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -82,7 +82,7 @@ test.describe('Spark Multiply - Swap to Spark', async () => {
 		await app.page.waitForTimeout(1000);
 		await app.page.reload();
 
-		await swapMakerToSpark({
+		await swapPosition({
 			app,
 			forkId,
 			reason: 'Change direction of my position',

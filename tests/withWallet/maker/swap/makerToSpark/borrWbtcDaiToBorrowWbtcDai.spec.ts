@@ -5,7 +5,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openMakerPosition, swapMakerToSpark } from 'tests/sharedTestSteps/positionManagement';
+import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -83,14 +83,20 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 		await app.page.waitForTimeout(1000);
 		await app.page.reload();
 
-		await swapMakerToSpark({
+		await swapPosition({
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			targetPool: 'WBTC/DAI',
-			expectedTargetExposure: { amount: '1.0000', token: 'WBTC' },
-			expectedTargetDebt: { amount: '30,[0-9]{3}.[0-9]{2}', token: 'DAI' },
-			originalPosition: { type: 'Borrow', collateralToken: 'WBTC', debtToken: 'DAI' },
+			originalProtocol: 'Maker',
+			targetProtocol: 'Spark',
+			targetPool: { colToken: 'WBTC', debtToken: 'DAI' },
+			verifyPositions: {
+				originalPosition: { type: 'Borrow', collateralToken: 'WBTC', debtToken: 'DAI' },
+				targetPosition: {
+					exposure: { amount: '1.0000', token: 'WBTC' },
+					debt: { amount: '30,[0-9]{3}.[0-9]{2}', token: 'DAI' },
+				},
+			},
 		});
 	});
 });

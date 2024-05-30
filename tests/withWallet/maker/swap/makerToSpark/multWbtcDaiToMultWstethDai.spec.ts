@@ -5,7 +5,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openMakerPosition, swapMakerToSpark } from 'tests/sharedTestSteps/positionManagement';
+import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -70,7 +70,7 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 		});
 	});
 
-	test('It should swap a Maker Multiply position (WBTC/DAI) to Spark Multiply (SDIA/USDC) @regression', async () => {
+	test('It should swap a Maker Multiply position (WBTC/DAI) to Spark Multiply (WSTETH/DAI) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -82,20 +82,20 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 		await app.page.waitForTimeout(1000);
 		await app.page.reload();
 
-		await swapMakerToSpark({
+		await swapPosition({
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			targetPool: 'WSTETH/DAI',
-			expectedTargetExposure: {
-				amount: '[0-9]{2}.[0-9]{2}',
-				token: 'WSTETH',
+			originalProtocol: 'Maker',
+			targetProtocol: 'Spark',
+			targetPool: { colToken: 'WSTETH', debtToken: 'DAI' },
+			verifyPositions: {
+				originalPosition: { type: 'Multiply', collateralToken: 'WBTC', debtToken: 'DAI' },
+				targetPosition: {
+					exposure: { amount: '[0-9]{2}.[0-9]{2}', token: 'WSTETH' },
+					debt: { amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}', token: 'DAI' },
+				},
 			},
-			expectedTargetDebt: {
-				amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
-				token: 'DAI',
-			},
-			originalPosition: { type: 'Multiply', collateralToken: 'WBTC' },
 		});
 	});
 });
