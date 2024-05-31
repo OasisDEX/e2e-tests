@@ -5,7 +5,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
+import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Multiply - Swap to Morpho', async () => {
+test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -28,11 +28,11 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Maker position as part of the Swap tests setup
-	test('Test setup - Open Maker Mutiply position and start Swap process', async () => {
+	// Create an Aave V3 position as part of the Swap tests setup
+	test('It should open an Aave V3 Borrow position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11788, 11790',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -45,19 +45,20 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'EnableRefinance:true',
 			}));
 		});
 
-		await app.page.goto('/vaults/open-multiply/ETH-C');
+		await app.page.goto('/ethereum/aave/v3/borrow/ETH-USDC#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
+		await app.position.overview.waitForComponentToBeStable();
 
-		await openMakerPosition({
+		await openPosition({
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
+			borrow: { token: 'USDC', amount: '5000' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -66,7 +67,7 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			originalProtocol: 'Maker',
+			originalProtocol: 'Aave V3',
 			targetProtocol: 'Morpho',
 			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
 			upToStep5: true,
@@ -77,7 +78,7 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 		[
 			{ colToken: 'EZETH', debtToken: 'ETH' },
 			{ colToken: 'OSETH', debtToken: 'ETH' },
-			// { colToken: 'PTWEETH', debtToken: 'USDA' },
+			{ colToken: 'PTWEETH', debtToken: 'USDA' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
@@ -93,12 +94,12 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
 			{ colToken: 'WSTETH', debtToken: 'ETH-2' },
 			{ colToken: 'WSTETH', debtToken: 'ETH-3' },
-			// { colToken: 'WSTETH', debtToken: 'USDA' },
+			{ colToken: 'WSTETH', debtToken: 'USDA' },
 			{ colToken: 'WSTETH', debtToken: 'USDC' },
 			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap an Aave V3 Borrow position (ETH/USDC) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -114,7 +115,7 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Maker',
+				originalProtocol: 'Aave V3',
 				targetProtocol: 'Morpho',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
