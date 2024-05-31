@@ -23,3 +23,9 @@ export const confirmAndVerifySuccess = async ({
 	// Verify last tx success
 	await tenderly.verifyTxReceiptStatusSuccess(forkId);
 };
+
+export const rejectPermissionToSpend = async () => {
+	await test.step(`Metamask: rejectPermissionToSpend`, async () => {
+		await metamask.rejectPermissionToSpend();
+	});
+};

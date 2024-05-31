@@ -48,4 +48,16 @@ export class Swap {
 	async confirm() {
 		await this.refinanceLocator.getByRole('button', { name: 'Confirm' }).click();
 	}
+
+	@step
+	async confirmOrRetry() {
+		const confirm = this.page.getByRole('button', { name: 'Confirm', exact: true });
+		const retry = this.page.getByRole('button', { name: 'Retry' });
+
+		if (await confirm.isVisible()) {
+			await confirm.click();
+		} else if (await retry.isVisible()) {
+			await retry.click();
+		}
+	}
 }
