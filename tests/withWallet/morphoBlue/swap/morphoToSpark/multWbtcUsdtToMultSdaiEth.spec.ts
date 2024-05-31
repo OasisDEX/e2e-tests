@@ -86,16 +86,16 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 			app,
 			forkId,
 			reason: 'Change direction of my position',
-			targetPool: 'SDAI/ETH',
-			expectedTargetExposure: {
-				amount: '[0-9]{2,3}[0-9],[0-9]{3}.[0-9]{2}',
-				token: 'SDAI',
+			originalProtocol: 'Morpho',
+			targetProtocol: 'Spark',
+			targetPool: { colToken: 'SDAI', debtToken: 'ETH' },
+			verifyPositions: {
+				originalPosition: { type: 'Multiply', collateralToken: 'WBTC', debtToken: 'USDT' },
+				targetPosition: {
+					exposure: { amount: '[0-9]{2,3}[0-9],[0-9]{3}.[0-9]{2}', token: 'SDAI' },
+					debt: { amount: '[1-4].[0-9]{2}', token: 'ETH' },
+				},
 			},
-			expectedTargetDebt: {
-				amount: '[1-4].[0-9]{2}',
-				token: 'ETH',
-			},
-			originalPosition: { type: 'Multiply', collateralToken: 'WBTC', debtToken: 'SDAI' },
 		});
 	});
 });

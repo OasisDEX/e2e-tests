@@ -86,16 +86,16 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			targetPool: 'WSTETH/DAI',
-			expectedTargetExposure: {
-				amount: '1[0-2].[0-9]{2}',
-				token: 'WSTETH',
+			originalProtocol: 'Morpho',
+			targetProtocol: 'Spark',
+			targetPool: { colToken: 'WSTETH', debtToken: 'DAI' },
+			verifyPositions: {
+				originalPosition: { type: 'Multiply', collateralToken: 'WSTETH', debtToken: 'USDC' },
+				targetPosition: {
+					exposure: { amount: '1[0-2].[0-9]{2}', token: 'WSTETH' },
+					debt: { amount: '[3-7],[0-9]{3}.[0-9]{2}', token: 'DAI' },
+				},
 			},
-			expectedTargetDebt: {
-				amount: '[3-7],[0-9]{3}.[0-9]{2}',
-				token: 'DAI',
-			},
-			originalPosition: { type: 'Multiply', collateralToken: 'WSTETH', debtToken: 'USDC' },
 		});
 	});
 });
