@@ -424,6 +424,9 @@ export const swapPosition = async ({
 	targetProtocol,
 	targetPool,
 	verifyPositions,
+	existingDpmAndApproval,
+	upToStep5,
+	rejectSwap,
 }: {
 	app: App;
 	forkId: string;
@@ -436,6 +439,9 @@ export const swapPosition = async ({
 		originalPosition?: { type: 'Borrow' | 'Multiply'; collateralToken: string; debtToken?: string };
 		targetPosition?: { exposure?: ActionData; debt?: ActionData };
 	};
+	existingDpmAndApproval?: boolean;
+	upToStep5?: boolean;
+	rejectSwap?: boolean;
 }) => {
 	let originalPositionPage: string;
 	if (verifyPositions?.originalPosition) {
@@ -456,7 +462,7 @@ export const swapPosition = async ({
 		.byPairPool(`${targetPool.colToken}/${targetPool.debtToken}`)
 		.open();
 
-	if (originalProtocol === 'Maker') {
+	if (originalProtocol === 'Maker' && !existingDpmAndApproval) {
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.createSmartDeFiAccount();
@@ -477,53 +483,59 @@ export const swapPosition = async ({
 		await app.position.setup.continue();
 	}
 
-	await app.position.swap.shouldHaveMaxTransactionCost('.[0-9]{1,2}');
-	await app.position.swap.confirm();
+	if (!upToStep5) {
+		await app.position.swap.shouldHaveMaxTransactionCost('.[0-9]{1,2}');
+		await app.position.swap.confirmOrRetry();
 
-	await test.step('Confirm automation setup', async () => {
-		await expect(async () => {
-			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-			await app.position.setup.goToPositionShouldBeVisible();
-		}).toPass();
-	});
-
-	await app.position.setup.goToPosition();
-
-	if (verifyPositions?.targetPosition) {
-		// Verify new target position
-		await app.position.manage.shouldBeVisible(`Manage your ${targetProtocol}`);
-		await app.position.overview.shouldHaveExposure(verifyPositions.targetPosition.exposure);
-		await app.position.overview.shouldHaveDebt(verifyPositions.targetPosition.debt);
-	}
-
-	if (verifyPositions?.originalPosition) {
-		// Verify that original position is now empty
-		await app.page.goto(originalPositionPage);
-
-		await app.position.manage.shouldBeVisible('Manage your');
-		await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
-		// TO BE UPDATE for all protocols
-		// await app.position.overview.shouldHaveVaultDaiDebt('0.0000');
-		// if (verifyPositions.originalPosition.type === 'Multiply') {
-		// 	await app.position.overview.shouldHaveNetValue({ value: '\\$(<)?0.0[0-1]' });
-		// 	// TO BE UPDATE for all protocols
-		// 	// await app.position.overview.shouldHaveTotalCollateral({
-		// 	// 	amount: '0.00',
-		// 	// 	token: verifyPositions.originalPosition.collateralToken,
-		// 	// });
-		// }
-		if (verifyPositions.originalPosition.type === 'Borrow') {
-			await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
-			await app.position.overview.shouldHaveCollateralizationRatio('0.00');
-			await app.position.overview.shouldHaveCollateralLocked('0.00');
-			await app.position.overview.shouldHaveAvailableToWithdraw({
-				amount: '0.00000',
-				token: verifyPositions.originalPosition.collateralToken,
+		if (rejectSwap) {
+			await tx.rejectPermissionToSpend();
+		} else {
+			await test.step('Confirm automation setup', async () => {
+				await expect(async () => {
+					await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+					await app.position.setup.goToPositionShouldBeVisible();
+				}).toPass();
 			});
-			await app.position.overview.shouldHaveAvailableToGenerate({
-				amount: '0.0000',
-				token: verifyPositions.originalPosition.debtToken,
-			});
+
+			await app.position.setup.goToPosition();
+
+			if (verifyPositions?.targetPosition) {
+				// Verify new target position
+				await app.position.manage.shouldBeVisible(`Manage your ${targetProtocol}`);
+				await app.position.overview.shouldHaveExposure(verifyPositions.targetPosition.exposure);
+				await app.position.overview.shouldHaveDebt(verifyPositions.targetPosition.debt);
+			}
+
+			if (verifyPositions?.originalPosition) {
+				// Verify that original position is now empty
+				await app.page.goto(originalPositionPage);
+
+				await app.position.manage.shouldBeVisible('Manage your');
+				await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
+				// TO BE UPDATE for all protocols
+				// await app.position.overview.shouldHaveVaultDaiDebt('0.0000');
+				// if (verifyPositions.originalPosition.type === 'Multiply') {
+				// 	await app.position.overview.shouldHaveNetValue({ value: '\\$(<)?0.0[0-1]' });
+				// 	// TO BE UPDATE for all protocols
+				// 	// await app.position.overview.shouldHaveTotalCollateral({
+				// 	// 	amount: '0.00',
+				// 	// 	token: verifyPositions.originalPosition.collateralToken,
+				// 	// });
+				// }
+				if (verifyPositions.originalPosition.type === 'Borrow') {
+					await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
+					await app.position.overview.shouldHaveCollateralizationRatio('0.00');
+					await app.position.overview.shouldHaveCollateralLocked('0.00');
+					await app.position.overview.shouldHaveAvailableToWithdraw({
+						amount: '0.00000',
+						token: verifyPositions.originalPosition.collateralToken,
+					});
+					await app.position.overview.shouldHaveAvailableToGenerate({
+						amount: '0.0000',
+						token: verifyPositions.originalPosition.debtToken,
+					});
+				}
+			}
 		}
 	}
 };
