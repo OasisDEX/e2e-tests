@@ -69,6 +69,7 @@ export const tokenAddresses = {
 		USDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 		USDT: '0xdac17f958d2ee523a2206206994597c13d831ec7',
 		WBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+		WEETH: '0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee',
 		WETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 		WSTETH: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
 		YFI: '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e',
@@ -113,6 +114,7 @@ export const tokenBalances = {
 	USDC: '200000',
 	USDT: '200000',
 	WBTC: '10',
+	WEETH: '1000',
 	WETH: '1000',
 	WSTETH: '1000',
 	YFI: '100',
@@ -144,6 +146,7 @@ export const setTokenBalance = async ({
 		| 'USDC'
 		| 'USDT'
 		| 'WBTC'
+		| 'WEETH'
 		| 'WSTETH'
 		| 'YFI';
 	balance: string;

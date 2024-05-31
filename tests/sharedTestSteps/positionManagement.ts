@@ -456,7 +456,14 @@ export const swapPosition = async ({
 	});
 
 	await app.position.swap.productHub.filters.collateralTokens.select(targetPool.colToken);
-	await app.position.swap.productHub.filters.debtTokens.select(targetPool.debtToken);
+
+	let trimmedDebtToken: Tokens;
+	if (targetPool.debtToken.includes('-')) {
+		trimmedDebtToken = targetPool.debtToken.includes('ETH') ? 'ETH' : 'DAI';
+	}
+	await app.position.swap.productHub.filters.debtTokens.select(
+		targetPool.debtToken.includes('-') ? trimmedDebtToken : targetPool.debtToken
+	);
 
 	await app.position.swap.productList
 		.byPairPool(`${targetPool.colToken}/${targetPool.debtToken}`)
