@@ -29,7 +29,7 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Maker Mutiply position @regression', async () => {
+	test('Test setup - Open Maker Mutiply position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -59,34 +59,51 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
 		});
-	});
 
-	test('It should swap a Maker Multiply position (ETH/DAI) to Spark Multiply (sDAI/ETH) @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// Wait an reload to avoid flakiness
-		await app.page.waitForTimeout(1000);
-		await app.page.reload();
+		await app.page.waitForTimeout(3000);
 
 		await swapPosition({
 			app,
 			forkId,
-			reason: 'Change direction of my position',
+			reason: 'Switch to higher max Loan To Value',
 			originalProtocol: 'Maker',
 			targetProtocol: 'Spark',
-			targetPool: { colToken: 'SDAI', debtToken: 'ETH' },
-			verifyPositions: {
-				originalPosition: { type: 'Multiply', collateralToken: 'ETH', debtToken: 'DAI' },
-				targetPosition: {
-					exposure: { amount: '[0-9]{2},[0-9]{3}.[0-9]{2}', token: 'SDAI' },
-					debt: { amount: '[1-5].[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
-				},
-			},
+			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
+			upToStep5: true,
 		});
 	});
+
+	(
+		[
+			{ colToken: 'ETH', debtToken: 'DAI' },
+			{ colToken: 'RETH', debtToken: 'DAI' },
+			{ colToken: 'SDAI', debtToken: 'ETH' },
+			{ colToken: 'WBTC', debtToken: 'DAI' },
+			{ colToken: 'WSTETH', debtToken: 'DAI' },
+		] as const
+	).forEach((targetPool) =>
+		test(`It should swap a Maker Multiply position (ETH/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+			test.info().annotations.push({
+				type: 'Test case',
+				description: 'xxx',
+			});
+
+			test.setTimeout(extremelyLongTestTimeout);
+
+			// Wait an reload to avoid flakiness
+			await app.page.waitForTimeout(1000);
+			await app.page.reload();
+
+			await swapPosition({
+				app,
+				forkId,
+				reason: 'Switch to higher max Loan To Value',
+				originalProtocol: 'Maker',
+				targetProtocol: 'Spark',
+				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+				existingDpmAndApproval: true,
+				rejectSwap: true,
+			});
+		})
+	);
 });
