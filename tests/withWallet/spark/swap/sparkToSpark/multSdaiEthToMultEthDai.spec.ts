@@ -86,16 +86,16 @@ test.describe('Spark Multiply - Swap to Spark', async () => {
 			app,
 			forkId,
 			reason: 'Change direction of my position',
-			targetPool: 'ETH/DAI',
-			expectedTargetExposure: {
-				amount: '[0-9]{1,2}.[0-9]{2}',
-				token: 'ETH',
+			originalProtocol: 'Spark',
+			targetProtocol: 'Spark',
+			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
+			verifyPositions: {
+				originalPosition: { type: 'Multiply', collateralToken: 'SDAI', debtToken: 'ETH' },
+				targetPosition: {
+					exposure: { amount: '[0-9]{1,2}.[0-9]{2}', token: 'ETH' },
+					debt: { amount: '[2-6],[0-9]{3}.[0-9]{2}', token: 'DAI' },
+				},
 			},
-			expectedTargetDebt: {
-				amount: '[2-6],[0-9]{3}.[0-9]{2}',
-				token: 'DAI',
-			},
-			originalPosition: { type: 'Multiply', collateralToken: 'SDAI', debtToken: 'ETH' },
 		});
 	});
 });
