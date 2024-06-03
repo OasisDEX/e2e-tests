@@ -29,8 +29,12 @@ export class CollateralTokens {
 		}
 
 		await this.collateralTokensLocator.locator('div').first().click();
-		const regExp = new RegExp(`^${token}$`);
-		await this.collateralTokensLocator.getByRole('listitem').filter({ hasText: regExp }).click();
+		if (token === 'PTWEETH') {
+			await this.collateralTokensLocator.getByRole('listitem').filter({ hasText: token }).click();
+		} else {
+			const regExp = new RegExp(`^${token}$`);
+			await this.collateralTokensLocator.getByRole('listitem').filter({ hasText: regExp }).click();
+		}
 		await this.collateralTokensLocator.locator('div').first().click();
 	}
 }
