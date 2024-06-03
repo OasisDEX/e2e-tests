@@ -29,4 +29,12 @@ export class Positions {
 			this.listLocator.filter({ has: this.page.getByText(`Position #${id}`, { exact: true }) })
 		);
 	}
+
+	byIdAndProtocol({ id, protocol }: { id: string; protocol: 'Aave V3' | 'Spark' }) {
+		return new Position(
+			this.listLocator
+				.filter({ has: this.page.getByText(`Position #${id}`, { exact: true }) })
+				.filter({ has: this.page.getByText(protocol, { exact: true }) })
+		);
+	}
 }
