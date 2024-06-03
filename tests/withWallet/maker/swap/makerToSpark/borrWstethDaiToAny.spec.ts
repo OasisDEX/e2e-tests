@@ -69,19 +69,8 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 			deposit: { token: 'WSTETH', amount: '10' },
 			generate: { token: 'DAI', amount: '15000' },
 		});
-	});
 
-	test('It should swap a Maker Borrow position (WSTETH/DAI) to Spark Borrow (WSTETH/DAI)', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// Wait an reload to avoid flakiness
-		await app.page.waitForTimeout(1000);
-		await app.page.reload();
+		await app.page.waitForTimeout(3000);
 
 		await swapPosition({
 			app,
@@ -89,14 +78,42 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 			reason: 'Switch to higher max Loan To Value',
 			originalProtocol: 'Maker',
 			targetProtocol: 'Spark',
-			targetPool: { colToken: 'WSTETH', debtToken: 'DAI' },
-			verifyPositions: {
-				originalPosition: { type: 'Borrow', collateralToken: 'WSTETH', debtToken: 'DAI' },
-				targetPosition: {
-					exposure: { amount: '[0-9]{1,2}.[0-9]{2}', token: 'WSTETH' },
-					debt: { amount: '[1][4-5],[0-9]{3}.[0-9]{2}', token: 'DAI' },
-				},
-			},
+			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
+			upToStep5: true,
 		});
 	});
+
+	(
+		[
+			{ colToken: 'ETH', debtToken: 'DAI' },
+			{ colToken: 'RETH', debtToken: 'DAI' },
+			{ colToken: 'SDAI', debtToken: 'ETH' },
+			{ colToken: 'WBTC', debtToken: 'DAI' },
+			{ colToken: 'WSTETH', debtToken: 'DAI' },
+		] as const
+	).forEach((targetPool) =>
+		test(`It should swap a Maker Borrow position (WSTETH/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+			test.info().annotations.push({
+				type: 'Test case',
+				description: 'xxx',
+			});
+
+			test.setTimeout(extremelyLongTestTimeout);
+
+			// Wait an reload to avoid flakiness
+			await app.page.waitForTimeout(1000);
+			await app.page.reload();
+
+			await swapPosition({
+				app,
+				forkId,
+				reason: 'Switch to higher max Loan To Value',
+				originalProtocol: 'Maker',
+				targetProtocol: 'Spark',
+				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+				existingDpmAndApproval: true,
+				rejectSwap: true,
+			});
+		})
+	);
 });
