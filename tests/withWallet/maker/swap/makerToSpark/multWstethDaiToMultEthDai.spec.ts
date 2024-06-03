@@ -30,7 +30,7 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Maker Multiply position @regression', async () => {
+	test('It should open a Maker Multiply position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -70,7 +70,7 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 		});
 	});
 
-	test('It should swap a Maker Multiply position (WSTETH/DAI) to Spark Multiply (ETH/DAI) @regression', async () => {
+	test('It should swap a Maker Multiply position (WSTETH/DAI) to Spark Multiply (ETH/DAI)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
