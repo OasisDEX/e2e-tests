@@ -19,7 +19,8 @@ let positionId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Earn - Wallet connected', async () => {
+// No liquidity for SDAI/USDT - To be updated with another pool
+test.describe.skip('Spark Earn - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
