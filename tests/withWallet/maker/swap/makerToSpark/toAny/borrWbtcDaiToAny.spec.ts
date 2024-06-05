@@ -14,7 +14,8 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Swap to Spark', async () => {
+// New spec file that allows running all target pools even if previous ones fail
+test.describe.skip('Maker Borrow - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -30,7 +31,7 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Maker Borrow position', async () => {
+	test('Test setup - Open Maker Borrow position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -53,12 +54,12 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
+				token: 'WBTC',
+				balance: '20',
 			});
 		});
 
-		await app.page.goto('/vaults/open/WSTETH-B');
+		await app.page.goto('vaults/open/WBTC-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -66,8 +67,8 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
-			generate: { token: 'DAI', amount: '15000' },
+			deposit: { token: 'WBTC', amount: '0.2' },
+			generate: { token: 'DAI', amount: '5000' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -92,7 +93,7 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Borrow position (WSTETH/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (WBTC/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
