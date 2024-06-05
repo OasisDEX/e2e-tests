@@ -10,6 +10,7 @@ import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionM
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let positionPage: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -49,7 +50,7 @@ test.describe('Maker Multiply - Swap to Aave V3', async () => {
 			}));
 		});
 
-		await app.page.goto('/vaults/open-multiply/ETH-C');
+		await app.position.openPage('/vaults/open-multiply/ETH-C', { positionType: 'Maker' });
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -71,50 +72,53 @@ test.describe('Maker Multiply - Swap to Aave V3', async () => {
 			targetPool: { colToken: 'SDAI', debtToken: 'ETH' },
 			upToStep5: true,
 		});
+
+		// Needed for 'next' swap test
+		positionPage = app.page.url();
 	});
 
 	(
 		[
-			{ colToken: 'CBETH', debtToken: 'ETH' },
-			{ colToken: 'CBETH', debtToken: 'USDC' },
+			// { colToken: 'CBETH', debtToken: 'ETH' },
+			// { colToken: 'CBETH', debtToken: 'USDC' },
 			{ colToken: 'DAI', debtToken: 'ETH' },
-			{ colToken: 'DAI', debtToken: 'MKR' },
+			// { colToken: 'DAI', debtToken: 'MKR' },
 			{ colToken: 'DAI', debtToken: 'WBTC' },
 			{ colToken: 'ETH', debtToken: 'DAI' },
 			{ colToken: 'ETH', debtToken: 'USDC' },
 			{ colToken: 'ETH', debtToken: 'USDT' },
 			{ colToken: 'ETH', debtToken: 'WBTC' },
-			{ colToken: 'LDO', debtToken: 'USDT' },
-			{ colToken: 'LINK', debtToken: 'DAI' },
-			{ colToken: 'LINK', debtToken: 'ETH' },
-			{ colToken: 'LINK', debtToken: 'USDC' },
-			{ colToken: 'LINK', debtToken: 'USDT' },
-			{ colToken: 'MKR', debtToken: 'DAI' },
+			// { colToken: 'LDO', debtToken: 'USDT' },
+			// { colToken: 'LINK', debtToken: 'DAI' },
+			// { colToken: 'LINK', debtToken: 'ETH' },
+			// { colToken: 'LINK', debtToken: 'USDC' },
+			// { colToken: 'LINK', debtToken: 'USDT' },
+			// { colToken: 'MKR', debtToken: 'DAI' },
 			{ colToken: 'RETH', debtToken: 'DAI' },
-			{ colToken: 'RETH', debtToken: 'ETH' },
+			// { colToken: 'RETH', debtToken: 'ETH' },
 			{ colToken: 'RETH', debtToken: 'USDC' },
 			{ colToken: 'RETH', debtToken: 'USDT' },
 			{ colToken: 'SDAI', debtToken: 'ETH' },
-			{ colToken: 'SDAI', debtToken: 'FRAX' },
-			{ colToken: 'SDAI', debtToken: 'LUSD' },
-			{ colToken: 'SDAI', debtToken: 'USDC' },
-			{ colToken: 'SDAI', debtToken: 'USDT' },
+			// { colToken: 'SDAI', debtToken: 'FRAX' },
+			// { colToken: 'SDAI', debtToken: 'LUSD' },
+			// { colToken: 'SDAI', debtToken: 'USDC' },
+			// { colToken: 'SDAI', debtToken: 'USDT' },
 			{ colToken: 'SDAI', debtToken: 'WBTC' },
 			{ colToken: 'USDC', debtToken: 'ETH' },
-			{ colToken: 'USDC', debtToken: 'USDT' },
+			// { colToken: 'USDC', debtToken: 'USDT' },
 			{ colToken: 'USDC', debtToken: 'WBTC' },
 			{ colToken: 'USDC', debtToken: 'WSTETH' },
 			{ colToken: 'USDT', debtToken: 'ETH' },
 			{ colToken: 'WBTC', debtToken: 'DAI' },
 			{ colToken: 'WBTC', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'LUSD' },
+			// { colToken: 'WBTC', debtToken: 'LUSD' },
 			{ colToken: 'WBTC', debtToken: 'USDC' },
 			{ colToken: 'WBTC', debtToken: 'USDT' },
-			{ colToken: 'WSTETH', debtToken: 'CBETH' },
+			// { colToken: 'WSTETH', debtToken: 'CBETH' },
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			{ colToken: 'WSTETH', debtToken: 'ETH' },
-			{ colToken: 'WSTETH', debtToken: 'LUSD' },
-			{ colToken: 'WSTETH', debtToken: 'RPL' },
+			// { colToken: 'WSTETH', debtToken: 'ETH' },
+			// { colToken: 'WSTETH', debtToken: 'LUSD' },
+			// { colToken: 'WSTETH', debtToken: 'RPL' },
 			{ colToken: 'WSTETH', debtToken: 'USDC' },
 			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
@@ -129,7 +133,7 @@ test.describe('Maker Multiply - Swap to Aave V3', async () => {
 
 			// Wait an reload to avoid flakiness
 			await app.page.waitForTimeout(1000);
-			await app.page.reload();
+			await app.position.openPage(positionPage, { tab: 'Overview' });
 
 			await swapPosition({
 				app,

@@ -430,10 +430,10 @@ export const swapPosition = async ({
 }: {
 	app: App;
 	forkId: string;
-	originalProtocol: SwapProtocols;
+	originalProtocol?: SwapProtocols;
 	originalPosition?: { type: 'Borrow' | 'Multiply'; collateralToken: string; debtToken?: string };
 	reason: Reason;
-	targetProtocol: SwapProtocols;
+	targetProtocol?: SwapProtocols;
 	targetPool: { colToken: Tokens; debtToken: Tokens };
 	verifyPositions?: {
 		originalPosition?: { type: 'Borrow' | 'Multiply'; collateralToken: string; debtToken?: string };
@@ -451,9 +451,11 @@ export const swapPosition = async ({
 	await app.position.overview.swap();
 	await app.position.swap.selectReason(reason);
 
-	await app.position.swap.productHub.filters.protocols.select({
-		protocols: [targetProtocol],
-	});
+	if (targetProtocol) {
+		await app.position.swap.productHub.filters.protocols.select({
+			protocols: [targetProtocol],
+		});
+	}
 
 	await app.position.swap.productHub.filters.collateralTokens.select(targetPool.colToken);
 

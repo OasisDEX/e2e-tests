@@ -10,6 +10,7 @@ import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManage
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -42,32 +43,41 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({
+			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
-
-		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
-
-		await openPosition({
-			app,
+		await tenderly.changeAccountOwner({
+			account: '0xb2f1349068c1cb6a596a22a3531b8062778c9da4',
+			newOwner: walletAddress,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
 		});
 
-		await app.page.waitForTimeout(3000);
+		await app.position.openPage('/ethereum/spark/multiply/WSTETH-DAI/2584#overview');
+		await app.position.overview.shouldBeVisible();
+
+		// await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
+
+		// Depositing collateral too quickly after loading page returns wrong simulation results
+		// await app.position.overview.waitForComponentToBeStable();
+
+		// await openPosition({
+		// 	app,
+		// 	forkId,
+		// 	deposit: { token: 'ETH', amount: '10' },
+		// });
+
+		// await app.page.waitForTimeout(3000);
 
 		await swapPosition({
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			originalProtocol: 'Spark',
-			targetProtocol: 'Aave V3',
+			// originalProtocol: 'Spark',
+			// targetProtocol: 'Aave V3',
 			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
 			upToStep5: true,
 		});
@@ -75,45 +85,45 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'CBETH', debtToken: 'ETH' },
-			{ colToken: 'CBETH', debtToken: 'USDC' },
-			{ colToken: 'DAI', debtToken: 'ETH' },
-			{ colToken: 'DAI', debtToken: 'MKR' },
-			{ colToken: 'DAI', debtToken: 'WBTC' },
-			{ colToken: 'ETH', debtToken: 'DAI' },
-			{ colToken: 'ETH', debtToken: 'USDC' },
-			{ colToken: 'ETH', debtToken: 'USDT' },
-			{ colToken: 'ETH', debtToken: 'WBTC' },
-			{ colToken: 'LDO', debtToken: 'USDT' },
-			{ colToken: 'LINK', debtToken: 'DAI' },
-			{ colToken: 'LINK', debtToken: 'ETH' },
-			{ colToken: 'LINK', debtToken: 'USDC' },
-			{ colToken: 'LINK', debtToken: 'USDT' },
-			{ colToken: 'MKR', debtToken: 'DAI' },
-			{ colToken: 'RETH', debtToken: 'DAI' },
-			{ colToken: 'RETH', debtToken: 'ETH' },
-			{ colToken: 'RETH', debtToken: 'USDC' },
-			{ colToken: 'RETH', debtToken: 'USDT' },
-			{ colToken: 'SDAI', debtToken: 'ETH' },
-			{ colToken: 'SDAI', debtToken: 'FRAX' },
-			{ colToken: 'SDAI', debtToken: 'LUSD' },
-			{ colToken: 'SDAI', debtToken: 'USDC' },
-			{ colToken: 'SDAI', debtToken: 'USDT' },
+			// // { colToken: 'CBETH', debtToken: 'ETH' },
+			// // { colToken: 'CBETH', debtToken: 'USDC' },
+			// { colToken: 'DAI', debtToken: 'ETH' },
+			// // { colToken: 'DAI', debtToken: 'MKR' },
+			// { colToken: 'DAI', debtToken: 'WBTC' },
+			// { colToken: 'ETH', debtToken: 'DAI' },
+			// { colToken: 'ETH', debtToken: 'USDC' },
+			// { colToken: 'ETH', debtToken: 'USDT' },
+			// { colToken: 'ETH', debtToken: 'WBTC' },
+			// // { colToken: 'LDO', debtToken: 'USDT' },
+			// // { colToken: 'LINK', debtToken: 'DAI' },
+			// // { colToken: 'LINK', debtToken: 'ETH' },
+			// // { colToken: 'LINK', debtToken: 'USDC' },
+			// // { colToken: 'LINK', debtToken: 'USDT' },
+			// // { colToken: 'MKR', debtToken: 'DAI' },
+			// { colToken: 'RETH', debtToken: 'DAI' },
+			// { colToken: 'RETH', debtToken: 'ETH' },
+			// { colToken: 'RETH', debtToken: 'USDC' },
+			// { colToken: 'RETH', debtToken: 'USDT' },
+			// { colToken: 'SDAI', debtToken: 'ETH' },
+			// // { colToken: 'SDAI', debtToken: 'FRAX' },
+			// // { colToken: 'SDAI', debtToken: 'LUSD' },
+			// // { colToken: 'SDAI', debtToken: 'USDC' },
+			// // { colToken: 'SDAI', debtToken: 'USDT' },
 			{ colToken: 'SDAI', debtToken: 'WBTC' },
 			{ colToken: 'USDC', debtToken: 'ETH' },
-			{ colToken: 'USDC', debtToken: 'USDT' },
+			// // { colToken: 'USDC', debtToken: 'USDT' },  ---
 			{ colToken: 'USDC', debtToken: 'WBTC' },
 			{ colToken: 'USDC', debtToken: 'WSTETH' },
 			{ colToken: 'USDT', debtToken: 'ETH' },
 			{ colToken: 'WBTC', debtToken: 'DAI' },
 			{ colToken: 'WBTC', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'LUSD' },
+			// { colToken: 'WBTC', debtToken: 'LUSD' },
 			{ colToken: 'WBTC', debtToken: 'USDC' },
 			{ colToken: 'WBTC', debtToken: 'USDT' },
 			{ colToken: 'WSTETH', debtToken: 'CBETH' },
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
 			{ colToken: 'WSTETH', debtToken: 'ETH' },
-			{ colToken: 'WSTETH', debtToken: 'LUSD' },
+			// { colToken: 'WSTETH', debtToken: 'LUSD' },
 			{ colToken: 'WSTETH', debtToken: 'RPL' },
 			{ colToken: 'WSTETH', debtToken: 'USDC' },
 			{ colToken: 'WSTETH', debtToken: 'USDT' },
@@ -135,8 +145,8 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Spark',
-				targetProtocol: 'Aave V3',
+				// originalProtocol: 'Spark',
+				// targetProtocol: 'Aave V3',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,

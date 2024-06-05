@@ -216,27 +216,27 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.page.goto('/base/ajna/borrow/ETH-USDC#setup');
 
 		await app.position.setup.acknowledgeAjnaInfo();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10.12345' });
+		await app.position.setup.deposit({ token: 'ETH', amount: '1.12345' });
 
-		await app.position.overview.shouldHaveCollateralDepositedAfterPill('10.12 ETH');
-		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveCollateralDepositedAfterPill('1.1234 ETH');
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[1-7],[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
-			amount: '10.12',
+			amount: '1.1234',
 			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
-			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+			amount: '[1-7],[0-9]{3}.[0-9]{2}',
 			token: 'USDC',
 		});
 
 		await app.position.setup.shouldHaveMaxBorrowingAmount({
 			token: 'USDC',
-			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+			amount: '[1-7],[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveCollateralLocked({
 			token: 'ETH',
 			current: '0.00',
-			future: '10.12',
+			future: '1.1234',
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '[0-9]{2,3}.[0-9]{2}',
@@ -245,32 +245,32 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveAvailableToWithdraw({
 			token: 'ETH',
 			current: '0.00',
-			future: '10.12',
+			future: '1.1234',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
 			token: 'USDC',
 			current: '0.00',
-			future: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+			future: '[1-7],[0-9]{3}.[0-9]{2}',
 		});
 
-		await app.position.setup.borrow({ token: 'USDC', amount: '10,000.12' });
+		await app.position.setup.borrow({ token: 'USDC', amount: '1,000.12' });
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill(
-			'[0-3],[0-9]{3}.[0-9]{2} ETH/USDC'
+			'([0-3],)?[0-9]{3}.[0-9]{2} ETH/USDC'
 		);
-		await app.position.overview.shouldHaveLoanToValueAfterPill('[2-7][0-9].[0-9]{1,2}%');
+		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-7][0-9].[0-9]{1,2}%');
 		await app.position.overview.shouldHaveDebtAfterPill({
 			protocol: 'Ajna',
-			amount: '10,000.12',
+			amount: '1,000.12',
 			token: 'USDC',
 		});
-		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[1-7],[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
-			amount: '[2-8].[0-9]{3,4}',
+			amount: '[0-3].[0-9]{3,4}',
 			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
-			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}',
+			amount: '([1-6],)?[0-9]{3}.[0-9]{1,2}',
 			token: 'USDC',
 		});
 
@@ -287,7 +287,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.position.orderInformation.shouldHaveLTV({
 			protocol: 'Ajna',
 			current: '0.00',
-			future: '[1-9][0-9].[0-9]{2}',
+			future: '[1-8][0-9].[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '[0-9]{2,3}.[0-9]{2}',
@@ -296,17 +296,17 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveDebt({
 			token: 'USDC',
 			current: '0.00',
-			future: '10,0[0-9]{2}.[0-9]{1,2}',
+			future: '1,0[0-9]{2}.[0-9]{1,2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToWithdraw({
 			token: 'ETH',
 			current: '0.00',
-			future: '[2-8].[0-9]{3,4}',
+			future: '[0-2].[0-9]{3,4}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
 			token: 'USDC',
 			current: '0.00',
-			future: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}',
+			future: '([0-3],)?[0-9]{3}.[0-9]{1,2}',
 		});
 	});
 });

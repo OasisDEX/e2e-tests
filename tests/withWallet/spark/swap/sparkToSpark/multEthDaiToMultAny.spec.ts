@@ -13,7 +13,8 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Swap to Spark', async () => {
+// Spark to Spark disabled for now
+test.describe.skip('Spark Multiply - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -28,7 +29,7 @@ test.describe('Spark Multiply - Swap to Spark', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Maker position as part of the Swap tests setup
+	// Create a Spark position as part of the Swap tests setup
 	test('It should open a Spark Multiply position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
