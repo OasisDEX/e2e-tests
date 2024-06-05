@@ -10,43 +10,84 @@ import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionM
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
+// (
+// 	[
+// 		{ colToken: 'EZETH', debtToken: 'ETH' },
+// 		{ colToken: 'OSETH', debtToken: 'ETH' },
+// 		{ colToken: 'SUSDE', debtToken: 'DAI-1' },
+// 		{ colToken: 'SUSDE', debtToken: 'DAI-2' },
+// 		{ colToken: 'SUSDE', debtToken: 'DAI-3' },
+// 		{ colToken: 'SUSDE', debtToken: 'DAI-4' },
+// 		{ colToken: 'SUSDE', debtToken: 'USDT' },
+// 		{ colToken: 'USDE', debtToken: 'DAI-1' },
+// 		{ colToken: 'USDE', debtToken: 'DAI-2' },
+// 		{ colToken: 'USDE', debtToken: 'DAI-3' },
+// 		{ colToken: 'USDE', debtToken: 'DAI-4' },
+// 		{ colToken: 'WBTC', debtToken: 'USDC' },
+// 		{ colToken: 'WBTC', debtToken: 'USDT' },
+// 		{ colToken: 'WEETH', debtToken: 'ETH' },
+// 		{ colToken: 'WSTETH', debtToken: 'ETH-1' },
+// 		{ colToken: 'WSTETH', debtToken: 'ETH-2' },
+// 		{ colToken: 'WSTETH', debtToken: 'ETH-3' },
+// 		// { colToken: 'WSTETH', debtToken: 'USDA' },
+// 		{ colToken: 'WSTETH', debtToken: 'USDC' },
+// 		{ colToken: 'WSTETH', debtToken: 'USDT' },
+// 	] as const
+// )
 (
 	[
 		{
-			colToken: 'ETH',
-			debtToken: 'DAI',
-			exposure: '[0-9]{1,2}.[0-9]{2}',
-			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
-		},
-		{
 			colToken: 'WBTC',
-			debtToken: 'DAI',
+			debtToken: 'USDC',
 			exposure: '0.[0-9]{2}([0-9]{1,2})?',
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
-			colToken: 'WSTETH',
-			debtToken: 'DAI',
-			exposure: '[0-9]{1,2}.[0-9]{2}',
+			colToken: 'WBTC',
+			debtToken: 'USDT',
+			exposure: '0.[0-9]{2}([0-9]{1,2})?',
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
-			colToken: 'RETH',
-			debtToken: 'DAI',
-			exposure: '[0-9]{1,2}.[0-9]{2}',
-			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
-		},
-		{
-			colToken: 'SDAI',
+			colToken: 'WEETH',
 			debtToken: 'ETH',
-			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
 			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'WSTETH',
+			debtToken: 'ETH-1',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'WSTETH',
+			debtToken: 'ETH-2',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'WSTETH',
+			debtToken: 'ETH-3',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'WSTETH',
+			debtToken: 'USDC',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'WSTETH',
+			debtToken: 'USDT',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 	] as const
 ).forEach((targetPool) =>
-	test.describe(`Maker Borrow - Swap to Spark ${targetPool.colToken}/${targetPool.debtToken}`, async () => {
+	test.describe(`Maker Borrow - Swap to Morpho ${targetPool.colToken}/${targetPool.debtToken}`, async () => {
 		test.afterAll(async () => {
 			await tenderly.deleteFork(forkId);
 
@@ -61,7 +102,7 @@ let walletAddress: string;
 			viewport: { width: 1400, height: 720 },
 		});
 
-		test(`It should swap a Maker Borrow position (WSTETH/DAI) to Spark Multiply ${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (ETH/DAI) to Morpho Multiply ${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -74,22 +115,14 @@ let walletAddress: string;
 				let page = await context.newPage();
 				app = new App(page);
 
-				({ forkId, walletAddress } = await setup({
+				({ forkId } = await setup({
 					app,
 					network: 'mainnet',
 					extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 				}));
-
-				await tenderly.setTokenBalance({
-					forkId,
-					walletAddress,
-					network: 'mainnet',
-					token: 'WSTETH',
-					balance: '100',
-				});
 			});
 
-			await app.page.goto('/vaults/open/WSTETH-B');
+			await app.page.goto('/vaults/open/ETH-C');
 
 			// Depositing collateral too quickly after loading page returns wrong simulation results
 			await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -97,7 +130,7 @@ let walletAddress: string;
 			await openMakerPosition({
 				app,
 				forkId,
-				deposit: { token: 'WSTETH', amount: '10' },
+				deposit: { token: 'ETH', amount: '10' },
 				generate: { token: 'DAI', amount: '15000' },
 			});
 
@@ -109,7 +142,7 @@ let walletAddress: string;
 				targetProtocol: 'Spark',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				verifyPositions: {
-					originalPosition: { type: 'Multiply', collateralToken: 'WSTETH', debtToken: 'DAI' },
+					originalPosition: { type: 'Multiply', collateralToken: 'ETH', debtToken: 'DAI' },
 					targetPosition: {
 						exposure: { amount: targetPool.exposure, token: targetPool.colToken },
 						debt: { amount: targetPool.debt, token: targetPool.debtToken },
