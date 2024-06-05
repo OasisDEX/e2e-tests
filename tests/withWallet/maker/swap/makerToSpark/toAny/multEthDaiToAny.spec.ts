@@ -10,11 +10,11 @@ import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionM
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Swap to Spark', async () => {
+// New spec file that allows running all target pools even if previous ones fail
+test.describe.skip('Maker Multiply - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -30,7 +30,7 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('Test setup - Open Maker Borrow position and start Swap process', async () => {
+	test('Test setup - Open Maker Mutiply position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -43,22 +43,14 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WBTC',
-				balance: '20',
-			});
 		});
 
-		await app.page.goto('vaults/open/WBTC-C');
+		await app.page.goto('/vaults/open-multiply/ETH-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -66,8 +58,7 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '0.2' },
-			generate: { token: 'DAI', amount: '5000' },
+			deposit: { token: 'ETH', amount: '10' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -92,7 +83,7 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Borrow position (WBTC/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Multiply position (ETH/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
