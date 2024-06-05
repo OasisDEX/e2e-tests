@@ -14,69 +14,201 @@ let forkId: string;
 (
 	[
 		{
-			colToken: 'EZETH',
+			colToken: 'CBETH',
 			debtToken: 'ETH',
 			exposure: '[0-9]{1,2}.[0-9]{2}',
 			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
 		},
 		{
-			colToken: 'OSETH',
-			debtToken: 'ETH',
+			colToken: 'CBETH',
+			debtToken: 'USDC',
 			exposure: '[0-9]{1,2}.[0-9]{2}',
 			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
 		},
 		{
-			colToken: 'SUSDE',
-			debtToken: 'DAI-1',
+			colToken: 'DAI',
+			debtToken: 'ETH',
 			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'DAI',
+			debtToken: 'MKR',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'DAI',
+			debtToken: 'WBTC',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '0.[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'ETH',
+			debtToken: 'DAI',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
-			colToken: 'SUSDE',
-			debtToken: 'DAI-2',
-			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			colToken: 'ETH',
+			debtToken: 'USDC',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
-			colToken: 'SUSDE',
-			debtToken: 'DAI-3',
-			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			colToken: 'ETH',
+			debtToken: 'USDT',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
-			colToken: 'SUSDE',
-			debtToken: 'DAI-4',
-			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
-			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+			colToken: 'ETH',
+			debtToken: 'WBTC',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '0.[0-9]{2}([0-9]{1,2})?',
 		},
 		{
-			colToken: 'SUSDE',
+			colToken: 'LDO',
 			debtToken: 'USDT',
 			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
-			colToken: 'USDE',
-			debtToken: 'DAI-1',
+			colToken: 'LINK',
+			debtToken: 'DAI',
 			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
-			colToken: 'USDE',
-			debtToken: 'DAI-2',
+			colToken: 'LINK',
+			debtToken: 'ETH',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'LINK',
+			debtToken: 'USDC',
 			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
-			colToken: 'USDE',
-			debtToken: 'DAI-3',
+			colToken: 'LINK',
+			debtToken: 'USDT',
 			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
-			colToken: 'USDE',
-			debtToken: 'DAI-4',
+			colToken: 'MKR',
+			debtToken: 'DAI',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'RETH',
+			debtToken: 'DAI',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'RETH',
+			debtToken: 'ETH',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'RETH',
+			debtToken: 'USDC',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'RETH',
+			debtToken: 'USDT',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'SDAI',
+			debtToken: 'ETH',
 			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'SDAI',
+			debtToken: 'FRAX',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'SDAI',
+			debtToken: 'LUSD',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'SDAI',
+			debtToken: 'USDC',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'SDAI',
+			debtToken: 'USDT',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'SDAI',
+			debtToken: 'WBTC',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '0.[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'USDC',
+			debtToken: 'ETH',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'USDC',
+			debtToken: 'USDT',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'USDC',
+			debtToken: 'WBTC',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '0.[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'USDC',
+			debtToken: 'WSTETH',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'USDT',
+			debtToken: 'ETH',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'WBTC',
+			debtToken: 'DAI',
+			exposure: '0.[0-9]{2}([0-9]{1,2})?',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'WBTC',
+			debtToken: 'ETH',
+			exposure: '0.[0-9]{2}([0-9]{1,2})?',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'WBTC',
+			debtToken: 'LUSD',
+			exposure: '0.[0-9]{2}([0-9]{1,2})?',
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
@@ -92,28 +224,34 @@ let forkId: string;
 			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
-			colToken: 'WEETH',
+			colToken: 'WSTETH',
+			debtToken: 'CBETH',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+		},
+		{
+			colToken: 'WSTETH',
+			debtToken: 'DAI',
+			exposure: '[0-9]{1,2}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
+		},
+		{
+			colToken: 'WSTETH',
 			debtToken: 'ETH',
 			exposure: '[0-9]{1,2}.[0-9]{2}',
 			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
 		},
 		{
 			colToken: 'WSTETH',
-			debtToken: 'ETH-1',
+			debtToken: 'LUSD',
 			exposure: '[0-9]{1,2}.[0-9]{2}',
-			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
 			colToken: 'WSTETH',
-			debtToken: 'ETH-2',
-			exposure: '[0-9]{1,2}.[0-9]{2}',
-			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
-		},
-		{
-			colToken: 'WSTETH',
-			debtToken: 'ETH-3',
-			exposure: '[0-9]{1,2}.[0-9]{2}',
-			debt: '[2-9].[0-9]{2}([0-9]{1,2})?',
+			debtToken: 'RPL',
+			exposure: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+			debt: '[1][4-7],[0-9]{3}.[0-9]{2}',
 		},
 		{
 			colToken: 'WSTETH',
@@ -129,7 +267,7 @@ let forkId: string;
 		},
 	] as const
 ).forEach((targetPool) =>
-	test.describe(`Maker Borrow - Swap to Morpho ${targetPool.colToken}/${targetPool.debtToken}`, async () => {
+	test.describe(`Maker Borrow - Swap to Aave V3 ${targetPool.colToken}/${targetPool.debtToken}`, async () => {
 		test.afterAll(async () => {
 			await tenderly.deleteFork(forkId);
 
@@ -144,7 +282,7 @@ let forkId: string;
 			viewport: { width: 1400, height: 720 },
 		});
 
-		test(`It should swap a Maker Borrow position (ETH/DAI) to Morpho Multiply ${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply ${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -181,7 +319,7 @@ let forkId: string;
 				forkId,
 				reason: 'Switch to lower my cost',
 				originalProtocol: 'Maker',
-				targetProtocol: 'Morpho',
+				targetProtocol: 'Aave V3',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				verifyPositions: {
 					originalPosition: { type: 'Borrow', collateralToken: 'ETH', debtToken: 'DAI' },

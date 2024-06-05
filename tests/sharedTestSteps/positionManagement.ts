@@ -512,7 +512,19 @@ export const swapPosition = async ({
 				// Verify new target position
 				await app.position.manage.shouldBeVisible(`Manage your ${targetProtocol}`);
 				await app.position.overview.shouldHaveExposure(verifyPositions.targetPosition.exposure);
-				await app.position.overview.shouldHaveDebt(verifyPositions.targetPosition.debt);
+
+				let trimmedDebtToken: Tokens;
+				if (verifyPositions.targetPosition.debt.token.includes('-')) {
+					trimmedDebtToken = verifyPositions.targetPosition.debt.token.includes('ETH')
+						? 'ETH'
+						: 'DAI';
+				}
+
+				await app.position.overview.shouldHaveDebt(
+					verifyPositions.targetPosition.debt.token.includes('-')
+						? { ...verifyPositions.targetPosition.debt, token: trimmedDebtToken }
+						: verifyPositions.targetPosition.debt
+				);
 			}
 
 			if (verifyPositions?.originalPosition) {

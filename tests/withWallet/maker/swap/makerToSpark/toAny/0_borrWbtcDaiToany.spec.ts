@@ -109,7 +109,7 @@ let walletAddress: string;
 				targetProtocol: 'Spark',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				verifyPositions: {
-					originalPosition: { type: 'Multiply', collateralToken: 'WBTC', debtToken: 'DAI' },
+					originalPosition: { type: 'Borrow', collateralToken: 'WBTC', debtToken: 'DAI' },
 					targetPosition: {
 						exposure: { amount: targetPool.exposure, token: targetPool.colToken },
 						debt: { amount: targetPool.debt, token: targetPool.debtToken },
