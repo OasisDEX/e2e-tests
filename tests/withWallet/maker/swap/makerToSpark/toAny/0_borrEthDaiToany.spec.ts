@@ -60,7 +60,7 @@ let forkId: string;
 			viewport: { width: 1400, height: 720 },
 		});
 
-		test(`It should swap a Maker Borrow position (ETH/DAI) to Spark Multoply ${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (ETH/DAI) to Spark Multiply ${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
