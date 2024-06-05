@@ -13,7 +13,8 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Swap to Spark', async () => {
+// Spark to Spark disabled for now
+test.describe.skip('Spark Multiply - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
