@@ -9,7 +9,9 @@ export class Protocols {
 	constructor(productHubLocator: Locator) {
 		this.productHubLocator = productHubLocator;
 		this.protocolsLocator = this.productHubLocator
-			.getByText('Morpho BlueSpark')
+			.getByText('Clear selection')
+			.nth(2)
+			.locator('..')
 			.locator('..')
 			.locator('..');
 	}
