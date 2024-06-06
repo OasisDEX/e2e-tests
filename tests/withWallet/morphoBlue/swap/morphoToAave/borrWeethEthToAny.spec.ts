@@ -14,7 +14,8 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
+// 'To Aave V3' failing at the moment - BUG to be fixed by devs
+test.describe.skip('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 

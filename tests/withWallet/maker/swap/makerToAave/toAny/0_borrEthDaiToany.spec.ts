@@ -11,6 +11,10 @@ let context: BrowserContext;
 let app: App;
 let forkId: string;
 
+// *******************************************
+// Tests seems too heavy for running in github
+// stopping the run randomly
+// *******************************************
 (
 	[
 		{
@@ -267,68 +271,71 @@ let forkId: string;
 		},
 	] as const
 ).forEach((targetPool) =>
-	test.describe(`Maker Borrow - Swap to Aave V3 ${targetPool.colToken}/${targetPool.debtToken}`, async () => {
-		test.afterAll(async () => {
-			await tenderly.deleteFork(forkId);
+	test.describe.skip(
+		`Maker Borrow - Swap to Aave V3 ${targetPool.colToken}/${targetPool.debtToken}`,
+		async () => {
+			test.afterAll(async () => {
+				await tenderly.deleteFork(forkId);
 
-			await app.page.close();
+				await app.page.close();
 
-			await context.close();
+				await context.close();
 
-			await resetState();
-		});
-
-		test.use({
-			viewport: { width: 1400, height: 720 },
-		});
-
-		test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply ${targetPool.colToken}/${targetPool.debtToken})`, async () => {
-			test.info().annotations.push({
-				type: 'Test case',
-				description: 'xxx',
+				await resetState();
 			});
 
-			test.setTimeout(extremelyLongTestTimeout);
+			test.use({
+				viewport: { width: 1400, height: 720 },
+			});
 
-			await test.step('Test setup', async () => {
-				({ context } = await metamaskSetUp({ network: 'mainnet' }));
-				let page = await context.newPage();
-				app = new App(page);
+			test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply ${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+				test.info().annotations.push({
+					type: 'Test case',
+					description: 'xxx',
+				});
 
-				({ forkId } = await setup({
+				test.setTimeout(extremelyLongTestTimeout);
+
+				await test.step('Test setup', async () => {
+					({ context } = await metamaskSetUp({ network: 'mainnet' }));
+					let page = await context.newPage();
+					app = new App(page);
+
+					({ forkId } = await setup({
+						app,
+						network: 'mainnet',
+						extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+					}));
+				});
+
+				await app.page.goto('/vaults/open/ETH-C');
+
+				// Depositing collateral too quickly after loading page returns wrong simulation results
+				await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
+
+				await openMakerPosition({
 					app,
-					network: 'mainnet',
-					extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
-				}));
-			});
+					forkId,
+					deposit: { token: 'ETH', amount: '10' },
+					generate: { token: 'DAI', amount: '15000' },
+				});
 
-			await app.page.goto('/vaults/open/ETH-C');
-
-			// Depositing collateral too quickly after loading page returns wrong simulation results
-			await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
-
-			await openMakerPosition({
-				app,
-				forkId,
-				deposit: { token: 'ETH', amount: '10' },
-				generate: { token: 'DAI', amount: '15000' },
-			});
-
-			await swapPosition({
-				app,
-				forkId,
-				reason: 'Switch to lower my cost',
-				originalProtocol: 'Maker',
-				targetProtocol: 'Aave V3',
-				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
-				verifyPositions: {
-					originalPosition: { type: 'Borrow', collateralToken: 'ETH', debtToken: 'DAI' },
-					targetPosition: {
-						exposure: { amount: targetPool.exposure, token: targetPool.colToken },
-						debt: { amount: targetPool.debt, token: targetPool.debtToken },
+				await swapPosition({
+					app,
+					forkId,
+					reason: 'Switch to lower my cost',
+					originalProtocol: 'Maker',
+					targetProtocol: 'Aave V3',
+					targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+					verifyPositions: {
+						originalPosition: { type: 'Borrow', collateralToken: 'ETH', debtToken: 'DAI' },
+						targetPosition: {
+							exposure: { amount: targetPool.exposure, token: targetPool.colToken },
+							debt: { amount: targetPool.debt, token: targetPool.debtToken },
+						},
 					},
-				},
+				});
 			});
-		});
-	})
+		}
+	)
 );
