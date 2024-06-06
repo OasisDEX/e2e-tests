@@ -92,7 +92,7 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 			verifyPositions: {
 				originalPosition: { type: 'Multiply', collateralToken: 'WBTC', debtToken: 'USDT' },
 				targetPosition: {
-					exposure: { amount: '[0-9]{2,3}[0-9],[0-9]{3}.[0-9]{2}', token: 'SDAI' },
+					exposure: { amount: '[0-9]{2,3},[0-9]{3}.[0-9]{2}', token: 'SDAI' },
 					debt: { amount: '[1-4].[0-9]{2}', token: 'ETH' },
 				},
 			},
