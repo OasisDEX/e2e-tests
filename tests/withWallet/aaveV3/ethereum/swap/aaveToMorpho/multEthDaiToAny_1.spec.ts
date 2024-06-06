@@ -10,11 +10,10 @@ import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManage
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
+test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,8 +28,8 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Morpho Blue position as part of the Swap tests setup
-	test('It should open a Morpho Blue Borrow position', async () => {
+	// Create an Aave V3 position as part of the Swap tests setup
+	test('It should open an Aave V3 Multiply position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -43,22 +42,14 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'EnableRefinance:true',
 			}));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WEETH',
-				balance: '100',
-			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/borrow/WEETH-ETH#setup');
+		await app.page.goto('/ethereum/aave/v3/multiply/ETH-DAI#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -66,8 +57,7 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WEETH', amount: '10' },
-			borrow: { token: 'ETH', amount: '5' },
+			deposit: { token: 'ETH', amount: '10' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -76,9 +66,9 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			originalProtocol: 'Morpho',
+			originalProtocol: 'Aave V3',
 			targetProtocol: 'Morpho',
-			targetPool: { colToken: 'SUSDE', debtToken: 'USDT' },
+			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
 			upToStep5: true,
 		});
 	});
@@ -95,19 +85,9 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 			{ colToken: 'SUSDE', debtToken: 'USDT' },
 			{ colToken: 'USDE', debtToken: 'DAI-1' },
 			{ colToken: 'USDE', debtToken: 'DAI-2' },
-			{ colToken: 'USDE', debtToken: 'DAI-3' },
-			{ colToken: 'USDE', debtToken: 'DAI-4' },
-			{ colToken: 'WBTC', debtToken: 'USDC' },
-			{ colToken: 'WBTC', debtToken: 'USDT' },
-			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
-			{ colToken: 'WSTETH', debtToken: 'ETH-2' },
-			{ colToken: 'WSTETH', debtToken: 'ETH-3' },
-			// { colToken: 'WSTETH', debtToken: 'USDA' },
-			{ colToken: 'WSTETH', debtToken: 'USDC' },
-			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Morpho Borrow position (WEETH/ETH) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap an Aave V3 Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -123,7 +103,7 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Morpho',
+				originalProtocol: 'Aave V3',
 				targetProtocol: 'Morpho',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,

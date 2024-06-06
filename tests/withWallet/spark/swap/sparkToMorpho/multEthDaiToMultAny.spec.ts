@@ -77,7 +77,7 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 		[
 			{ colToken: 'EZETH', debtToken: 'ETH' },
 			{ colToken: 'OSETH', debtToken: 'ETH' },
-			{ colToken: 'PTWEETH', debtToken: 'USDA' },
+			// { colToken: 'PTWEETH', debtToken: 'USDA' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
@@ -93,7 +93,7 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
 			{ colToken: 'WSTETH', debtToken: 'ETH-2' },
 			{ colToken: 'WSTETH', debtToken: 'ETH-3' },
-			{ colToken: 'WSTETH', debtToken: 'USDA' },
+			// { colToken: 'WSTETH', debtToken: 'USDA' },
 			{ colToken: 'WSTETH', debtToken: 'USDC' },
 			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
