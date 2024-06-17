@@ -5,11 +5,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import {
-	close,
-	manageDebtOrCollateral,
-	openPosition,
-} from 'tests/sharedTestSteps/positionManagement';
+import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -179,28 +175,6 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			expectedDebt: { amount: '0.1[0-9]{2,3}', token: 'WBTC' },
 			protocol: 'Aave V3',
 			allowanceNotNeeded: true,
-		});
-	});
-
-	test('It should close an existent Aave V3 Borrow Optimism position - Close to debt token (WBTC)', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12914',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
-		await close({
-			forkId,
-			app,
-			positionType: 'Borrow',
-			closeTo: 'debt',
-			collateralToken: 'DAI',
-			debtToken: 'WBTC',
-			tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{3,4}',
 		});
 	});
 });

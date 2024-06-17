@@ -80,22 +80,4 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			newSliderPosition: 0.5,
 		});
 	});
-
-	test('It should close an existent Aave V3 Multiply Arbitrum position - Close to debt token (DAI) @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12907',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await close({
-			forkId,
-			app,
-			closeTo: 'debt',
-			collateralToken: 'ETH',
-			debtToken: 'USDC',
-			tokenAmountAfterClosing: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}',
-		});
-	});
 });

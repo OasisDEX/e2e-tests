@@ -25,7 +25,8 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Ajna Base Multiply position @regression', async () => {
+	// Test added to add pool liquidity and reduce flakiness of Borrow tests
+	test('It should open an Ajna Base Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -38,16 +39,39 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
+			({ forkId, walletAddress } = await setup({
+				app,
+				network: 'base',
+				extraFeaturesFlags: 'AjnaSuppressValidation:true',
+			}));
 
 			await tenderly.setTokenBalance({
 				forkId,
-				network: 'base',
 				walletAddress,
+				network: 'base',
 				token: 'USDC',
-				balance: '100000',
+				balance: '200000',
 			});
 		});
+
+		await app.page.goto('/base/ajna/earn/ETH-USDC#setup');
+		await app.position.setup.acknowledgeAjnaInfo();
+
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'USDC', amount: '100000' },
+			protocol: 'Ajna',
+		});
+	});
+
+	test('It should open an Ajna Base Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.page.goto('/base/ajna/multiply/ETH-USDC');
 		await app.position.setup.acknowledgeAjnaInfo();
@@ -55,6 +79,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
+			existingDPM: true,
 			deposit: { token: 'ETH', amount: '15' },
 			protocol: 'Ajna',
 		});

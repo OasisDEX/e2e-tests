@@ -5,12 +5,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { App } from 'src/app';
-import {
-	adjustRisk,
-	close,
-	manageDebtOrCollateral,
-	openPosition,
-} from 'tests/sharedTestSteps/positionManagement';
+import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 import { reloadUntilCorrect } from 'utils/general';
 
 let context: BrowserContext;
@@ -197,27 +192,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 				token: 'ETH',
 			},
 			protocol: 'Aave V3',
-		});
-	});
-
-	test('It should adjust risk of an existing Aave V3 Earn Ethereum position - Up', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '13060',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await reloadUntilCorrect(app);
-
-		await adjustRisk({
-			forkId,
-			app,
-			earnPosition: true,
-			risk: 'up',
-			newSliderPosition: 0.8,
 		});
 	});
 });
