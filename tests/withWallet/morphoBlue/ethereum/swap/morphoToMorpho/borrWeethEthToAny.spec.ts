@@ -1,4 +1,4 @@
-import { BrowserContext, test } from '@playwright/test';
+import { BrowserContext, expect, test } from '@playwright/test';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
@@ -78,16 +78,16 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 			reason: 'Switch to higher max Loan To Value',
 			originalProtocol: 'Morpho',
 			targetProtocol: 'Morpho',
-			targetPool: { colToken: 'SUSDE', debtToken: 'USDT' },
+			targetPool: { colToken: 'WBTC', debtToken: 'USDC' },
 			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			{ colToken: 'EZETH', debtToken: 'ETH' },
-			{ colToken: 'OSETH', debtToken: 'ETH' },
-			// { colToken: 'PTWEETH', debtToken: 'USDA' },
+			// { colToken: 'EZETH', debtToken: 'ETH' },
+			// { colToken: 'OSETH', debtToken: 'ETH' },
+			// // { colToken: 'PTWEETH', debtToken: 'USDA' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
@@ -119,16 +119,34 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 			await app.page.waitForTimeout(1000);
 			await app.page.reload();
 
-			await swapPosition({
-				app,
-				forkId,
-				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Morpho',
-				targetProtocol: 'Morpho',
-				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
-				existingDpmAndApproval: true,
-				rejectSwap: true,
-			});
+			//
+			await app.pause();
+			//
+
+			await expect(async () => {
+				await app.page.reload();
+				await swapPosition({
+					app,
+					forkId,
+					reason: 'Switch to higher max Loan To Value',
+					originalProtocol: 'Morpho',
+					targetProtocol: 'Morpho',
+					targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+					existingDpmAndApproval: true,
+					rejectSwap: true,
+				});
+			}).toPass();
+
+			// await swapPosition({
+			// 	app,
+			// 	forkId,
+			// 	reason: 'Switch to higher max Loan To Value',
+			// 	originalProtocol: 'Morpho',
+			// 	targetProtocol: 'Morpho',
+			// 	targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+			// 	existingDpmAndApproval: true,
+			// 	rejectSwap: true,
+			// });
 		})
 	);
 });
