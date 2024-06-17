@@ -3,7 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { veryLongTestTimeout, longTestTimeout, extremelyLongTestTimeout } from 'utils/config';
+import { veryLongTestTimeout, extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import * as automations from 'tests/sharedTestSteps/automations';
 import { openPosition } from 'tests/sharedTestSteps/positionManagement';
@@ -65,81 +65,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		});
 	});
 
-	test('It should set Auto-Buy on a Morpho Blue Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Reload page to avoid random fails
-		await app.page.reload();
-		await app.position.overview.shouldBeVisible();
-
-		await automations.testAutoBuy({
-			app,
-			forkId,
-			protocol: 'Morpho Blue',
-			verifyTriggerPayload: {
-				protocol: 'morphoblue',
-				collToken: 'mainnetWBTC',
-				debtToken: 'mainnetUSDT',
-			},
-		});
-	});
-
-	test('It should set Auto-Sell on a Morpho Blue Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Reload page to avoid random fails
-		await app.page.reload();
-		await app.position.overview.shouldBeVisible();
-
-		await automations.testAutoSell({
-			app,
-			forkId,
-			protocol: 'Morpho Blue',
-			verifyTriggerPayload: {
-				protocol: 'morphoblue',
-				collToken: 'mainnetWBTC',
-				debtToken: 'mainnetUSDT',
-			},
-		});
-	});
-
-	// regSL, TSL and PTP not working on FORK for pools with liquidity
-	test.skip('It should set Regular Stop-Loss on a Morpho Blue Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Reload page to avoid random fails
-		await app.page.reload();
-		await app.position.overview.shouldBeVisible();
-
-		await automations.testRegularStopLoss({
-			app,
-			forkId,
-			verifyTriggerPayload: {
-				protocol: 'morphoblue',
-				collToken: 'mainnetWBTC',
-				debtToken: 'mainnetUSDT',
-				triggerToken: 'mainnetUSDT',
-			},
-		});
-	});
-
-	// regSL, TSL and PTP not working on FORK for pools with liquidity
-	test.skip('It should set Trailing Stop-Loss on a Morpho Blue Multiply position @regression', async () => {
+	test('It should set Trailing Stop-Loss on a Morpho Blue Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -163,8 +89,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		});
 	});
 
-	// regSL, TSL and PTP not working on FORK for pools with liquidity
-	test.skip('It should set Partial Take Profit on a Morpho Blue Multiply position @regression', async () => {
+	test('It should set Partial Take Profit on a Morpho Blue Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

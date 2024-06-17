@@ -1,6 +1,6 @@
 import { step } from '#noWalletFixtures';
 import { expect, Locator, Page } from '@playwright/test';
-import { positionTimeout } from 'utils/config';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class OrderInformation {
 	readonly page: Page;
@@ -300,6 +300,16 @@ export class OrderInformation {
 		await expect(
 			this.orderInformationLocator.locator('li:has-text("Fees + (max gas fee)")')
 		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveMaxGasFee(fee: string) {
+		const regExp = new RegExp(fee);
+
+		await expect(this.orderInformationLocator.locator('li:has-text("Max gas fee")')).toContainText(
+			regExp,
+			{ timeout: expectDefaultTimeout * 3 }
+		);
 	}
 
 	@step

@@ -117,10 +117,20 @@ export class Base {
 	}
 
 	@step
-	async moveSliderAutomationsOmni({ value }: { value: number }) {
+	async moveSliderAutomationsOmni({
+		value,
+		sliderPosition,
+	}: {
+		value: number;
+		sliderPosition?: 1 | 2 | 3;
+	}) {
 		await expect(async () => {
-			const sliderRail = this.page.locator('.rc-slider-rail').nth(0);
-			const sliderPill = this.page.locator('[role="slider"]').nth(0);
+			const sliderRail = this.page
+				.locator('.rc-slider-rail')
+				.nth(sliderPosition ? sliderPosition - 1 : 0);
+			const sliderPill = this.page
+				.locator('[role="slider"]')
+				.nth(sliderPosition ? sliderPosition - 1 : 0);
 
 			const initialPillValue = await sliderPill.getAttribute('aria-valuenow');
 
