@@ -29,6 +29,7 @@
 		"with-wallet:ajna:arbitrum": "REPORT_FOLDER=with-wallet-ajna-arbitrum npx playwright test --project=with-wallet-ajna-arbitrum --workers=1",
 		"with-wallet:ajna:base": "REPORT_FOLDER=with-wallet-ajna-base npx playwright test --project=with-wallet-ajna-base --workers=1",
 		"with-wallet:ajna:optimism": "REPORT_FOLDER=with-wallet-ajna-optimism npx playwright test --project=with-wallet-ajna-optimism --workers=1",
+		"with-wallet:morphoblue": "REPORT_FOLDER=with-wallet-morphoblue npx playwright test --project=with-wallet-morphoblue --workers=1",
 		"with-wallet:morphoblue:ethereum": "REPORT_FOLDER=with-wallet-morphoblue-ethereum npx playwright test --project=with-wallet-morphoblue-ethereum --workers=1",
 		"with-wallet:maker-and-spark": "REPORT_FOLDER=with-wallet-maker-and-spark npx playwright test --project=with-wallet-maker-and-spark --workers=1",
 		"with-wallet:spark:ethereum": "REPORT_FOLDER=with-wallet-spark-ethereum npx playwright test --project=with-wallet-spark-ethereum --workers=1",
