@@ -241,7 +241,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			token: 'WSTETH',
 		});
 		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
-			amount: '[0-9].[0-9]{3,4}',
+			amount: '[0-9]{1,2}.[0-9]{2}',
 			token: 'ETH',
 		});
 
@@ -277,7 +277,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
 			token: 'ETH',
 			current: '0.00',
-			future: '[0-9].[0-9]{3,4}',
+			future: '[0-9]{1,2}.[0-9]{2}([0-9]{1,2})?',
 		});
 	});
 });

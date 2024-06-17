@@ -16,8 +16,8 @@ test.describe('MorphoBlue - Multiply', async () => {
 			value: '\\$([0-9]{1,2})?([0-9],)?([0-9]{1,2})?[0-9].[0-9]{2}',
 		});
 		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '[0-9].[0-9]{4}',
-			token: 'SUSDE/DAI',
+			price: '[0-9]{1,2}.[0-9]{4}',
+			token: 'DAI/SUSDE',
 		});
 		await app.position.overview.shouldHaveExposure({
 			amount: '[0-9].[0-9]{4}',
