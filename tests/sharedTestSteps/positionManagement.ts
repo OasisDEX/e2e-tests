@@ -260,6 +260,10 @@ export const close = async ({
 		currentLabel: positionType === 'Borrow' ? collateralToken : 'Adjust',
 	});
 	await app.position.manage.select('Close position');
+
+	// Delay to avoid random fails
+	await app.page.waitForTimeout(2_000);
+
 	if (closeTo === 'debt') {
 		await app.position.manage.closeTo(debtToken);
 	}
