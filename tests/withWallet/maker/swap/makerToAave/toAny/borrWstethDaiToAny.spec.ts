@@ -14,8 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// 'To Aave V3' failing at the moment - BUG to be fixed by devs
-test.describe.skip('Maker Borrow - Swap to Aave V3', async () => {
+test.describe('Maker Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -106,10 +105,10 @@ test.describe.skip('Maker Borrow - Swap to Aave V3', async () => {
 			{ colToken: 'RETH', debtToken: 'USDC' },
 			{ colToken: 'RETH', debtToken: 'USDT' },
 			{ colToken: 'SDAI', debtToken: 'ETH' },
-			// { colToken: 'SDAI', debtToken: 'FRAX' },
-			// { colToken: 'SDAI', debtToken: 'LUSD' },
-			// { colToken: 'SDAI', debtToken: 'USDC' },
-			// { colToken: 'SDAI', debtToken: 'USDT' },
+			{ colToken: 'SDAI', debtToken: 'FRAX' },
+			{ colToken: 'SDAI', debtToken: 'LUSD' },
+			{ colToken: 'SDAI', debtToken: 'USDC' },
+			{ colToken: 'SDAI', debtToken: 'USDT' },
 			{ colToken: 'SDAI', debtToken: 'WBTC' },
 			{ colToken: 'USDC', debtToken: 'ETH' },
 			{ colToken: 'USDC', debtToken: 'USDT' },

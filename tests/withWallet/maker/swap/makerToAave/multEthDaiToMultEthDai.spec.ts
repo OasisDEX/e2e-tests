@@ -13,8 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// 'To Aave V3' failing at the moment - BUG to be fixed by devs
-test.describe.skip('Maker Multiply - Swap to Aave V3', async () => {
+test.describe('Maker Multiply - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
