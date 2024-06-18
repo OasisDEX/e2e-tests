@@ -182,7 +182,7 @@ const defaultConfig: PlaywrightTestConfig = {
 
 		{
 			name: 'with-wallet-swap-morphoblue',
-			testMatch: ['withWallet/morphoBlue/swap/**'],
+			testMatch: ['withWallet/morphoBlue/ethereum/swap/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
