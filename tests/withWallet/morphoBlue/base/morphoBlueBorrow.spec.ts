@@ -1,7 +1,6 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp } from 'utils/setup';
+import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
@@ -55,8 +54,8 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '0.01' },
-			borrow: { token: 'USDC', amount: '20' },
+			deposit: { token: 'CBETH', amount: '10' },
+			borrow: { token: 'USDC', amount: '10000' },
 			protocol: 'Morpho Blue',
 		});
 	});
@@ -72,14 +71,14 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '0.005' },
-			borrow: { token: 'USDC', amount: '10' },
+			deposit: { token: 'CBETH', amount: '5' },
+			borrow: { token: 'USDC', amount: '5000' },
 			allowanceNotNeeded: true,
 			expectedCollateralDeposited: {
-				amount: '0.015',
+				amount: '15.00',
 				token: 'CBETH',
 			},
-			expectedDebt: { amount: '3[0-9].[0-9]{1,2}', token: 'USDC' },
+			expectedDebt: { amount: '15,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 
@@ -96,13 +95,13 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			withdraw: { token: 'CBETH', amount: '0.005' },
-			payBack: { token: 'USDC', amount: '10' },
+			withdraw: { token: 'CBETH', amount: '5' },
+			payBack: { token: 'USDC', amount: '5000' },
 			expectedCollateralDeposited: {
-				amount: '0.01',
+				amount: '10.00',
 				token: 'CBETH',
 			},
-			expectedDebt: { amount: '2[0-9].[0-9]{1,2}', token: 'USDC' },
+			expectedDebt: { amount: '10,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 
@@ -121,13 +120,13 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 			app,
 			forkId,
 			allowanceNotNeeded: true,
-			borrow: { token: 'USDC', amount: '10' },
-			deposit: { token: 'CBETH', amount: '0.005' },
+			borrow: { token: 'USDC', amount: '5000' },
+			deposit: { token: 'CBETH', amount: '5' },
 			expectedCollateralDeposited: {
-				amount: '0.015',
+				amount: '15.00',
 				token: 'CBETH',
 			},
-			expectedDebt: { amount: '3[0-9].[0-9]{1,2}', token: 'USDC' },
+			expectedDebt: { amount: '15,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 
@@ -147,13 +146,13 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 			app,
 			forkId,
 			allowanceNotNeeded: true,
-			payBack: { token: 'USDC', amount: '10' },
-			withdraw: { token: 'CBETH', amount: '0.005' },
+			payBack: { token: 'USDC', amount: '5000' },
+			withdraw: { token: 'CBETH', amount: '5' },
 			expectedCollateralDeposited: {
-				amount: '0.01',
+				amount: '10.00',
 				token: 'CBETH',
 			},
-			expectedDebt: { amount: '2[0-9].[0-9]{1,2}', token: 'USDC' },
+			expectedDebt: { amount: '10,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 });
