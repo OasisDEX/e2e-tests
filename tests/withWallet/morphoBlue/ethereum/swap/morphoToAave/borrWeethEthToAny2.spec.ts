@@ -14,8 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// 'To Aave V3' failing at the moment - BUG to be fixed by devs
-test.describe.skip('Morpho Blue Borrow - Swap to Aave V3', async () => {
+test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -86,16 +85,6 @@ test.describe.skip('Morpho Blue Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'CBETH', debtToken: 'ETH' },
-			{ colToken: 'CBETH', debtToken: 'USDC' },
-			{ colToken: 'DAI', debtToken: 'ETH' },
-			{ colToken: 'DAI', debtToken: 'MKR' },
-			{ colToken: 'DAI', debtToken: 'WBTC' },
-			{ colToken: 'ETH', debtToken: 'DAI' },
-			{ colToken: 'ETH', debtToken: 'USDC' },
-			{ colToken: 'ETH', debtToken: 'USDT' },
-			{ colToken: 'ETH', debtToken: 'WBTC' },
-			{ colToken: 'LDO', debtToken: 'USDT' },
 			{ colToken: 'LINK', debtToken: 'DAI' },
 			{ colToken: 'LINK', debtToken: 'ETH' },
 			{ colToken: 'LINK', debtToken: 'USDC' },
@@ -106,28 +95,6 @@ test.describe.skip('Morpho Blue Borrow - Swap to Aave V3', async () => {
 			{ colToken: 'RETH', debtToken: 'USDC' },
 			{ colToken: 'RETH', debtToken: 'USDT' },
 			{ colToken: 'SDAI', debtToken: 'ETH' },
-			// { colToken: 'SDAI', debtToken: 'FRAX' },
-			// { colToken: 'SDAI', debtToken: 'LUSD' },
-			// { colToken: 'SDAI', debtToken: 'USDC' },
-			// { colToken: 'SDAI', debtToken: 'USDT' },
-			{ colToken: 'SDAI', debtToken: 'WBTC' },
-			{ colToken: 'USDC', debtToken: 'ETH' },
-			{ colToken: 'USDC', debtToken: 'USDT' },
-			{ colToken: 'USDC', debtToken: 'WBTC' },
-			{ colToken: 'USDC', debtToken: 'WSTETH' },
-			{ colToken: 'USDT', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'DAI' },
-			{ colToken: 'WBTC', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'LUSD' },
-			{ colToken: 'WBTC', debtToken: 'USDC' },
-			{ colToken: 'WBTC', debtToken: 'USDT' },
-			{ colToken: 'WSTETH', debtToken: 'CBETH' },
-			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			{ colToken: 'WSTETH', debtToken: 'ETH' },
-			{ colToken: 'WSTETH', debtToken: 'LUSD' },
-			{ colToken: 'WSTETH', debtToken: 'RPL' },
-			{ colToken: 'WSTETH', debtToken: 'USDC' },
-			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Morpho Borrow position (WEETH/ETH) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
