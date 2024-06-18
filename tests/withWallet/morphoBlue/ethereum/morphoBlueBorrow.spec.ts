@@ -92,41 +92,17 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.withdrawCollateral();
-		await app.position.manage.withdraw({ token: 'WSTETH', amount: '5' });
-		await app.position.manage.payBack({ token: 'USDC', amount: '5000' });
 
-		await app.position.setup.setTokenAllowance('USDC');
-		// Setting up allowance  randomly fails - Retry until it's set.
-		await expect(async () => {
-			await app.position.setup.approveAllowanceOrRetry();
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
-			await app.position.setup.continueShouldBeVisible();
-		}).toPass({ timeout: longTestTimeout });
-
-		await app.position.setup.continue();
-
-		// ============================================================
-
-		// UI sometimes gets stuck after confirming position update
-		//   - 'Reload' added to avoid flakines
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.setup.shouldShowUpdatingPosition();
-		await app.page.reload();
-
-		// ============================================================
-
-		await app.position.overview.shouldHaveNetValue({
-			value: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
-		});
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '15.00', token: 'WSTETH' });
-		await app.position.overview.shouldHaveDebt({
-			amount: '1[2-3],[0-9]{3}.[0-9]{1,2}',
-			token: 'USDC',
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			withdraw: { token: 'WSTETH', amount: '5' },
+			payBack: { token: 'USDC', amount: '5000' },
+			expectedCollateralDeposited: {
+				amount: '15.00',
+				token: 'WSTETH',
+			},
+			expectedDebt: { amount: '1[2-3],[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 
@@ -141,31 +117,17 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
 		await app.position.manage.select('Manage debt');
 
-		await app.position.manage.borrow({ token: 'USDC', amount: '10000' });
-		await app.position.manage.deposit({ token: 'WSTETH', amount: '10' });
-
-		await app.position.setup.confirm();
-
-		// ============================================================
-
-		// UI sometimes gets stuck after confirming position update
-		//   - 'Reload' added to avoid flakines
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.setup.shouldShowUpdatingPosition();
-		await app.page.reload();
-
-		// ============================================================
-
-		await app.position.overview.shouldHaveNetValue({
-			value: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
-		});
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '25.00', token: 'WSTETH' });
-		await app.position.overview.shouldHaveDebt({
-			amount: '23,[0-9]{3}.[0-9]{1,2}',
-			token: 'USDC',
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			borrow: { token: 'USDC', amount: '10000' },
+			deposit: { token: 'WSTETH', amount: '10' },
+			allowanceNotNeeded: true,
+			expectedCollateralDeposited: {
+				amount: '25.00',
+				token: 'WSTETH',
+			},
+			expectedDebt: { amount: '23,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 
@@ -179,33 +141,19 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 
 		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
 		await app.position.manage.select('Manage debt');
-
 		await app.position.manage.payBackDebt();
-		await app.position.manage.payBack({ token: 'USDC', amount: '5000' });
-		await app.position.manage.withdraw({ token: 'WSTETH', amount: '5' });
 
-		await app.position.setup.confirm();
-
-		// ============================================================
-
-		// UI sometimes gets stuck after confirming position update
-		//   - 'Reload' added to avoid flakines
-		await app.position.setup.confirm();
-		await test.step('Metamask: ConfirmPermissionToSpend', async () => {
-			await metamask.confirmPermissionToSpend();
-		});
-		await app.position.setup.shouldShowUpdatingPosition();
-		await app.page.reload();
-
-		// ============================================================
-
-		await app.position.overview.shouldHaveNetValue({
-			value: '[0-9]{2,3},[0-9]{3}.[0-9]{2}',
-		});
-		await app.position.overview.shouldHaveCollateralDeposited({ amount: '20.00', token: 'WSTETH' });
-		await app.position.overview.shouldHaveDebt({
-			amount: '18,[0-9]{3}.[0-9]{1,2}',
-			token: 'USDC',
+		await manageDebtOrCollateral({
+			app,
+			forkId,
+			payBack: { token: 'USDC', amount: '5000' },
+			withdraw: { token: 'WSTETH', amount: '5' },
+			allowanceNotNeeded: true,
+			expectedCollateralDeposited: {
+				amount: '20.00',
+				token: 'WSTETH',
+			},
+			expectedDebt: { amount: '18,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 
