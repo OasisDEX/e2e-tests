@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Morpho Blue Borrow - Swap to Spark', async () => {
+test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -46,7 +46,7 @@ test.describe('Morpho Blue Borrow - Swap to Spark', async () => {
 			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'EnableRefinance:true',
 			}));
 
 			await tenderly.setTokenBalance({
@@ -77,22 +77,26 @@ test.describe('Morpho Blue Borrow - Swap to Spark', async () => {
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
 			originalProtocol: 'Morpho',
-			targetProtocol: 'Spark',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
+			targetProtocol: 'Morpho',
+			targetPool: { colToken: 'WBTC', debtToken: 'USDC' },
 			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			{ colToken: 'ETH', debtToken: 'DAI' },
-			{ colToken: 'RETH', debtToken: 'DAI' },
-			{ colToken: 'SDAI', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'DAI' },
-			{ colToken: 'WSTETH', debtToken: 'DAI' },
+			{ colToken: 'USDE', debtToken: 'DAI-3' },
+			{ colToken: 'USDE', debtToken: 'DAI-4' },
+			{ colToken: 'WBTC', debtToken: 'USDC' },
+			{ colToken: 'WBTC', debtToken: 'USDT' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-2' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-3' },
+			{ colToken: 'WSTETH', debtToken: 'USDC' },
+			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Morpho Borrow position (WEETH/ETH) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Morpho Borrow position (WEETH/ETH) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -111,7 +115,7 @@ test.describe('Morpho Blue Borrow - Swap to Spark', async () => {
 					forkId,
 					reason: 'Switch to higher max Loan To Value',
 					originalProtocol: 'Morpho',
-					targetProtocol: 'Spark',
+					targetProtocol: 'Morpho',
 					targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 					existingDpmAndApproval: true,
 					rejectSwap: true,
