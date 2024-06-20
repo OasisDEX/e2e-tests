@@ -1,9 +1,9 @@
-import { BrowserContext, test } from '@playwright/test';
+import { BrowserContext, expect, test } from '@playwright/test';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -15,7 +15,7 @@ let walletAddress: string;
 test.describe.configure({ mode: 'serial' });
 
 // Morpho SWAP tests hanging in GitHub - TO BE INVESTIGATED
-test.describe.skip('Morpho Blue Borrow - Swap to Aave V3', async () => {
+test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -104,22 +104,25 @@ test.describe.skip('Morpho Blue Borrow - Swap to Aave V3', async () => {
 				description: 'xxx',
 			});
 
-			test.setTimeout(extremelyLongTestTimeout);
+			test.setTimeout(veryLongTestTimeout);
 
 			// Wait an reload to avoid flakiness
 			await app.page.waitForTimeout(1000);
-			await app.page.reload();
 
-			await swapPosition({
-				app,
-				forkId,
-				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Morpho',
-				targetProtocol: 'Aave V3',
-				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
-				existingDpmAndApproval: true,
-				rejectSwap: true,
-			});
+			await expect(async () => {
+				await app.page.reload();
+
+				await swapPosition({
+					app,
+					forkId,
+					reason: 'Switch to higher max Loan To Value',
+					originalProtocol: 'Morpho',
+					targetProtocol: 'Aave V3',
+					targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+					existingDpmAndApproval: true,
+					rejectSwap: true,
+				});
+			}).toPass();
 		})
 	);
 });
