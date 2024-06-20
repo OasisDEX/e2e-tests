@@ -59,22 +59,6 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		});
 	});
 
-	test('It should adjust risk of an existing Ajna Ethereum Multiply position - Up @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await adjustRisk({
-			forkId,
-			app,
-			risk: 'up',
-			newSliderPosition: 0.6,
-		});
-	});
-
 	test('It should adjust risk of an existing Ajna Ethereum Multiply position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
@@ -87,7 +71,23 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 			forkId,
 			app,
 			risk: 'down',
-			newSliderPosition: 0.5,
+			newSliderPosition: 0.05,
+		});
+	});
+
+	test('It should adjust risk of an existing Ajna Ethereum Multiply position - Up @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await adjustRisk({
+			forkId,
+			app,
+			risk: 'up',
+			newSliderPosition: 0.1,
 		});
 	});
 

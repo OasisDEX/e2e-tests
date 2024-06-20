@@ -1,4 +1,5 @@
 import { expect, test } from '#noWalletFixtures';
+import { positionTimeout } from 'utils/config';
 
 const numberOfPools = Array.from({ length: 20 }, (_, index) => 0 + index);
 const numberOfPoolsPage7 = Array.from({ length: 7 }, (_, index) => 0 + index);
@@ -107,6 +108,8 @@ test.describe('Earn page', async () => {
 		test(`It should open position page for all available EARN pools - Page 3 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.earn.open();
 			// Move to page 2 inproduct hub
 			await app.earn.productHub.list.nextPage();
@@ -139,6 +142,8 @@ test.describe('Earn page', async () => {
 		test(`It should open position page for all available EARN pools - Page 4 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.earn.open();
 			// Move to page 2 inproduct hub
 			await app.earn.productHub.list.nextPage();
@@ -173,6 +178,8 @@ test.describe('Earn page', async () => {
 		test(`It should open position page for all available EARN pools - Page 5 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.earn.open();
 			// Move to page 2 inproduct hub
 			await app.earn.productHub.list.nextPage();
@@ -209,6 +216,8 @@ test.describe('Earn page', async () => {
 		test(`It should open position page for all available EARN pools - Page 6 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.earn.open();
 			// Move to page 2 inproduct hub
 			await app.earn.productHub.list.nextPage();
@@ -247,6 +256,8 @@ test.describe('Earn page', async () => {
 		test(`It should open position page for all available EARN pools - Page 7 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.earn.open();
 			// Move to page 2 inproduct hub
 			await app.earn.productHub.list.nextPage();

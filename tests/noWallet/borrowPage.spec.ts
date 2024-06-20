@@ -1,5 +1,5 @@
 import { test } from '#noWalletFixtures';
-import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { positionTimeout } from 'utils/config';
 
 const numberOfPools = Array.from({ length: 20 }, (_, index) => 0 + index);
 const numberOfPoolsPage10 = Array.from({ length: 14 }, (_, index) => 0 + index);
@@ -143,6 +143,8 @@ test.describe('Borrow page', async () => {
 		test(`It should open position page for all available BORROW pools - Page 4 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.borrow.open();
 
 			// Set Min Liquidity to '0' so that all pools are listed
@@ -182,6 +184,8 @@ test.describe('Borrow page', async () => {
 		test(`It should open position page for all available BORROW pools - Page 5 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.borrow.open();
 
 			// Set Min Liquidity to '0' so that all pools are listed
@@ -223,6 +227,8 @@ test.describe('Borrow page', async () => {
 		test(`It should open position page for all available BORROW pools - Page 6 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.borrow.open();
 
 			// Set Min Liquidity to '0' so that all pools are listed
@@ -266,6 +272,8 @@ test.describe('Borrow page', async () => {
 		test(`It should open position page for all available BORROW pools - Page 7 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.borrow.open();
 
 			// Set Min Liquidity to '0' so that all pools are listed
@@ -311,6 +319,8 @@ test.describe('Borrow page', async () => {
 		test(`It should open position page for all available BORROW pools - Page 8 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.borrow.open();
 
 			// Set Min Liquidity to '0' so that all pools are listed
@@ -358,6 +368,8 @@ test.describe('Borrow page', async () => {
 		test(`It should open position page for all available BORROW pools - Page 9 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.borrow.open();
 
 			// Set Min Liquidity to '0' so that all pools are listed
@@ -407,6 +419,8 @@ test.describe('Borrow page', async () => {
 		test(`It should open position page for all available BORROW pools - Page 10 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.borrow.open();
 
 			// Set Min Liquidity to '0' so that all pools are listed

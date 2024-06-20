@@ -1,4 +1,4 @@
-import { BrowserContext, test } from '@playwright/test';
+import { BrowserContext, expect, test } from '@playwright/test';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
@@ -80,22 +80,25 @@ test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 
 		// Wait an reload to avoid flakiness
 		await app.page.waitForTimeout(1000);
-		await app.page.reload();
 
-		await swapPosition({
-			app,
-			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			originalProtocol: 'Morpho',
-			targetProtocol: 'Spark',
-			targetPool: { colToken: 'WBTC', debtToken: 'DAI' },
-			verifyPositions: {
-				originalPosition: { type: 'Multiply', collateralToken: 'WSTETH', debtToken: 'USDT' },
-				targetPosition: {
-					exposure: { amount: '[0-1].[0-9]{2}([0-9]{1,2})?', token: 'WBTC' },
-					debt: { amount: '[3-7],[0-9]{3}.[0-9]{2}', token: 'DAI' },
+		await expect(async () => {
+			await app.page.reload();
+
+			await swapPosition({
+				app,
+				forkId,
+				reason: 'Switch to higher max Loan To Value',
+				originalProtocol: 'Morpho',
+				targetProtocol: 'Spark',
+				targetPool: { colToken: 'WBTC', debtToken: 'DAI' },
+				verifyPositions: {
+					originalPosition: { type: 'Multiply', collateralToken: 'WSTETH', debtToken: 'USDT' },
+					targetPosition: {
+						exposure: { amount: '[0-1].[0-9]{2}([0-9]{1,2})?', token: 'WBTC' },
+						debt: { amount: '[3-7],[0-9]{3}.[0-9]{2}', token: 'DAI' },
+					},
 				},
-			},
-		});
+			});
+		}).toPass();
 	});
 });
