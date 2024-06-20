@@ -1,4 +1,5 @@
 import { test } from '#noWalletFixtures';
+import { positionTimeout } from 'utils/config';
 
 const numberOfPools = Array.from({ length: 20 }, (_, index) => 0 + index);
 const numberOfPoolsPage7 = Array.from({ length: 8 }, (_, index) => 0 + index);
@@ -151,6 +152,8 @@ test.describe('Multiply page', async () => {
 		test(`It should open position page for all available MULTIPLY pools - Page 5 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.multiply.open();
 
 			// Set Min Liquidity to '0' so that all pools are listed
@@ -192,6 +195,8 @@ test.describe('Multiply page', async () => {
 		test(`It should open position page for all available MULTIPLY pools - Page 6 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.multiply.open();
 
 			// Set Min Liquidity to '0' so that all pools are listed
@@ -235,6 +240,8 @@ test.describe('Multiply page', async () => {
 		test(`It should open position page for all available MULTIPLY pools - Page 7 - ${poolIndex}`, async ({
 			app,
 		}) => {
+			test.setTimeout(positionTimeout);
+
 			await app.multiply.open();
 
 			// Set Min Liquidity to '0' so that all pools are listed

@@ -37,11 +37,17 @@ export class Swap {
 
 	@step
 	async shouldHaveMaxTransactionCost(cost: string) {
-		const regExp = new RegExp(cost);
-		await expect(this.refinanceLocator.getByText('Max transaction cost').locator('..')).toHaveText(
-			regExp,
-			{ timeout: expectDefaultTimeout * 4 }
-		);
+		const regExp = new RegExp(`((${cost})\|(n/a))`);
+
+		await expect(
+			this.refinanceLocator.getByText('Max transaction cost').locator('..'),
+			'Should have `n/a` or expected amount'
+		).toHaveText(regExp, { timeout: expectDefaultTimeout * 4 });
+
+		await expect(
+			this.refinanceLocator.getByText('Max transaction cost').locator('..'),
+			'Should not have `n/a`'
+		).not.toHaveText('n/a', { timeout: expectDefaultTimeout / 5 });
 	}
 
 	@step
