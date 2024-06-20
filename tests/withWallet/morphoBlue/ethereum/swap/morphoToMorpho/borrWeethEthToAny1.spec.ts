@@ -3,7 +3,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -102,7 +102,7 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 				description: 'xxx',
 			});
 
-			test.setTimeout(extremelyLongTestTimeout);
+			test.setTimeout(longTestTimeout);
 
 			// Wait an reload to avoid flakiness
 			await app.page.waitForTimeout(1000);
