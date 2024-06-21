@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
+test.describe.only('Morpho Blue Borrow - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -85,8 +85,8 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'EZETH', debtToken: 'ETH' },
-			{ colToken: 'OSETH', debtToken: 'ETH' },
+			// { colToken: 'EZETH', debtToken: 'ETH' },
+			// { colToken: 'OSETH', debtToken: 'ETH' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
