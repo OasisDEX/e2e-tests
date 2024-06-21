@@ -150,8 +150,7 @@ export const setupNewFork = async ({
 
 	await expect(async () => {
 		await app.page.goto('');
-		await app.header.useCasesShouldBeVisible();
-		await app.header.connectWalletShouldNotBeVisible();
+		await app.header.portfolioShouldBeVisible();
 	}).toPass();
 
 	await fork.addToApp({ app, forkId, network });

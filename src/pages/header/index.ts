@@ -21,6 +21,11 @@ export class Header {
 	}
 
 	@step
+	async portfolioShouldBeVisible() {
+		await expect(this.headerLocator.getByText('Portfolio')).toBeVisible();
+	}
+
+	@step
 	async shouldHavePortfolioCount(count: string) {
 		await expect(this.headerLocator.getByText('Portfolio')).toContainText(count, {
 			timeout: portfolioTimeout,
