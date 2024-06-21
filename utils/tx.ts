@@ -25,7 +25,5 @@ export const confirmAndVerifySuccess = async ({
 };
 
 export const rejectPermissionToSpend = async () => {
-	await test.step(`Metamask: rejectPermissionToSpend`, async () => {
-		await metamask.rejectPermissionToSpend();
-	});
+	await metamask.rejectPermissionToSpend();
 };

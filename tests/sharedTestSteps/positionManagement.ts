@@ -501,7 +501,11 @@ export const swapPosition = async ({
 		await app.position.swap.confirmOrRetry();
 
 		if (rejectSwap) {
-			await tx.rejectPermissionToSpend();
+			await test.step('Reject Permission To Spend', async () => {
+				await expect(async () => {
+					await tx.rejectPermissionToSpend();
+				}).toPass();
+			});
 		} else {
 			await test.step('Confirm automation setup', async () => {
 				await expect(async () => {
