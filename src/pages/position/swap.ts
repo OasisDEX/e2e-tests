@@ -44,10 +44,9 @@ export class Swap {
 			'Should have `n/a` or expected amount'
 		).toHaveText(regExp, { timeout: expectDefaultTimeout * 4 });
 
-		await expect(
-			this.refinanceLocator.getByText('Max transaction cost').locator('..'),
-			'Should not have `n/a`'
-		).not.toHaveText('n/a', { timeout: expectDefaultTimeout / 5 });
+		await expect(this.refinanceLocator.getByText('n/a')).not.toBeVisible({
+			timeout: expectDefaultTimeout / 5,
+		});
 	}
 
 	@step
