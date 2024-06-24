@@ -12,6 +12,8 @@ let app: App;
 let forkId: string;
 let walletAddress: string;
 
+test.describe.configure({ mode: 'serial' });
+
 test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);

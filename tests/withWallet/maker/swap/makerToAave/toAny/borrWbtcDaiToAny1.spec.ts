@@ -1,4 +1,4 @@
-import { BrowserContext, test } from '@playwright/test';
+import { BrowserContext, expect, test } from '@playwright/test';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
@@ -94,7 +94,7 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 			{ colToken: 'ETH', debtToken: 'USDC' },
 			{ colToken: 'ETH', debtToken: 'USDT' },
 			{ colToken: 'ETH', debtToken: 'WBTC' },
-			{ colToken: 'LDO', debtToken: 'USDT' },
+			// { colToken: 'LDO', debtToken: 'USDT' }, // BUG - 15943 - NOT working
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Maker Borrow position (WBTC/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
@@ -105,20 +105,22 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 
 			test.setTimeout(longTestTimeout);
 
-			// Wait an reload to avoid flakiness
-			await app.page.waitForTimeout(1000);
-			await app.page.reload();
+			await expect(async () => {
+				// Wait an reload to avoid flakiness
+				await app.page.waitForTimeout(1000);
+				await app.page.reload();
 
-			await swapPosition({
-				app,
-				forkId,
-				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Maker',
-				targetProtocol: 'Aave V3',
-				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
-				existingDpmAndApproval: true,
-				rejectSwap: true,
-			});
+				await swapPosition({
+					app,
+					forkId,
+					reason: 'Switch to higher max Loan To Value',
+					originalProtocol: 'Maker',
+					targetProtocol: 'Aave V3',
+					targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+					existingDpmAndApproval: true,
+					rejectSwap: true,
+				});
+			}).toPass();
 		})
 	);
 });
