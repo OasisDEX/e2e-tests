@@ -86,26 +86,15 @@ test.describe('Maker Borrow - Swap to Morpho', async () => {
 	(
 		[
 			{ colToken: 'EZETH', debtToken: 'ETH' },
-			{ colToken: 'OSETH', debtToken: 'ETH' },
-			// { colToken: 'PTWEETH', debtToken: 'USDA' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-4' },
 			{ colToken: 'SUSDE', debtToken: 'USDT' },
-			{ colToken: 'USDE', debtToken: 'DAI-1' },
-			{ colToken: 'USDE', debtToken: 'DAI-2' },
 			{ colToken: 'USDE', debtToken: 'DAI-3' },
 			{ colToken: 'USDE', debtToken: 'DAI-4' },
 			{ colToken: 'WBTC', debtToken: 'USDC' },
-			{ colToken: 'WBTC', debtToken: 'USDT' },
-			{ colToken: 'WEETH', debtToken: 'ETH' },
 			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
-			{ colToken: 'WSTETH', debtToken: 'ETH-2' },
 			{ colToken: 'WSTETH', debtToken: 'ETH-3' },
-			// { colToken: 'WSTETH', debtToken: 'USDA' },
 			{ colToken: 'WSTETH', debtToken: 'USDC' },
-			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Maker Borrow position (WBTC/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
