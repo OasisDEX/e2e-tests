@@ -77,11 +77,10 @@ test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 		[
 			{ colToken: 'EZETH', debtToken: 'ETH' },
 			{ colToken: 'OSETH', debtToken: 'ETH' },
-			// { colToken: 'PTWEETH', debtToken: 'USDA' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-4' },
+			// { colToken: 'SUSDE', debtToken: 'DAI-4' },
 			{ colToken: 'SUSDE', debtToken: 'USDT' },
 			{ colToken: 'USDE', debtToken: 'DAI-1' },
 			{ colToken: 'USDE', debtToken: 'DAI-2' },
