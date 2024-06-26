@@ -90,13 +90,13 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			withdraw: { token: 'ETH', amount: '2' },
-			payBack: { token: 'DAI', amount: '2000' },
+			withdraw: { token: 'ETH', amount: '1.5' },
+			payBack: { token: 'DAI', amount: '1000' },
 			expectedCollateralDeposited: {
-				amount: '7.00',
+				amount: '7.50',
 				token: 'ETH',
 			},
-			expectedDebt: { amount: '4,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
+			expectedDebt: { amount: '5,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
 			protocol: 'Spark',
 		});
 	});
@@ -116,10 +116,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			app,
 			forkId,
 			allowanceNotNeeded: true,
-			borrow: { token: 'DAI', amount: '2000' },
-			deposit: { token: 'ETH', amount: '1' },
+			borrow: { token: 'DAI', amount: '1000' },
+			deposit: { token: 'ETH', amount: '1.5' },
 			expectedCollateralDeposited: {
-				amount: '8.00',
+				amount: '9.00',
 				token: 'ETH',
 			},
 			expectedDebt: { amount: '6,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
@@ -145,13 +145,13 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			payBack: { token: 'DAI', amount: '3000' },
+			payBack: { token: 'DAI', amount: '1000' },
 			withdraw: { token: 'ETH', amount: '1.5' },
 			expectedCollateralDeposited: {
-				amount: '6.50',
+				amount: '7.50',
 				token: 'ETH',
 			},
-			expectedDebt: { amount: '3,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
+			expectedDebt: { amount: '5,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
 			protocol: 'Spark',
 			allowanceNotNeeded: true,
 		});
