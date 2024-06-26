@@ -54,7 +54,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '14' },
+			deposit: { token: 'CBETH', amount: '1' },
 		});
 	});
 
@@ -75,7 +75,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			forkId,
 			app,
 			risk: 'up',
-			newSliderPosition: 0.6,
+			newSliderPosition: 0.4,
 		});
 	});
 
