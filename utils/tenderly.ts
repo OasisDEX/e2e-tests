@@ -144,6 +144,7 @@ export const setTokenBalance = async ({
 		| 'RETH'
 		| 'SDAI'
 		| 'STETH'
+		| 'SUSDE'
 		| 'USDC'
 		| 'USDT'
 		| 'WBTC'
