@@ -2,9 +2,36 @@ export const wEthContractAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 export const usdcContractAddress = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 export const ajnaPoolAddress = '0x3ba6a019ed5541b5f5555d8593080042cf3ae5f4';
 
-export const morphoMultiplyPages = [
+export const morphoMultiplyPages_1 = [
 	'/ethereum/morphoblue/multiply/WSTETH-USDC#setup',
+	'/ethereum/morphoblue/multiply/WSTETH-USDT#setup',
+	'/ethereum/morphoblue/multiply/WSTETH-USDA#setup',
 	'/ethereum/morphoblue/multiply/WBTC-USDC#setup',
+	'/ethereum/morphoblue/multiply/WBTC-USDT#setup',
+];
+
+export const morphoMultiplyPages_2 = [
+	'/ethereum/morphoblue/multiply/USDE-DAI-1#setup',
+	'/ethereum/morphoblue/multiply/USDE-DAI-2#setup',
+	'/ethereum/morphoblue/multiply/USDE-DAI-3#setup',
+	'/ethereum/morphoblue/multiply/SUSDE-USDT#setup',
+	'/ethereum/morphoblue/multiply/OSETH-ETH#setup',
+];
+
+export const morphoMultiplyPages_3 = [
+	'/ethereum/morphoblue/multiply/WSTETH-ETH-1#setup',
+	'/ethereum/morphoblue/multiply/WSTETH-ETH-2#setup',
+	'/ethereum/morphoblue/multiply/WSTETH-ETH-3#setup',
+	'/ethereum/morphoblue/multiply/WEETH-ETH#setup',
+	'/ethereum/morphoblue/multiply/WOETH-ETH#setup',
+];
+
+export const morphoMultiplyPages_4 = [
+	'/ethereum/morphoblue/multiply/MKR-USDC#setup',
+	'/ethereum/morphoblue/multiply/EZETH-ETH#setup',
+	'/ethereum/morphoblue/multiply/SUSDE-DAI-1#setup',
+	'/ethereum/morphoblue/multiply/SUSDE-DAI-2#setup',
+	'/ethereum/morphoblue/multiply/SUSDE-DAI-3#setup',
 ];
 
 export type Tokens =

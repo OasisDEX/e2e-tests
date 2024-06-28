@@ -6,7 +6,7 @@ import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openPosition } from 'tests/sharedTestSteps/positionManagement';
-import { SetBalanceTokens, depositAmount, morphoMultiplyPages_1 } from 'utils/testData';
+import { SetBalanceTokens, depositAmount, morphoMultiplyPages_2 } from 'utils/testData';
 import { getCollTokenFromPositionUrl, getPoolFromPositionUrl } from 'utils/general';
 
 let context: BrowserContext;
@@ -16,7 +16,7 @@ let walletAddress: string;
 
 // test.describe.configure({ mode: 'serial' });
 
-morphoMultiplyPages_1.forEach((page) => {
+morphoMultiplyPages_2.forEach((page) => {
 	const pool: string = getPoolFromPositionUrl({ url: page, positionType: 'multiply' });
 	const collToken: string = getCollTokenFromPositionUrl({ url: page, positionType: 'multiply' });
 
