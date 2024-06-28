@@ -194,7 +194,7 @@ const defaultConfig: PlaywrightTestConfig = {
 
 		{
 			name: 'with-wallet-open-positions',
-			testMatch: ['withWallet/z_openPositions'],
+			testMatch: ['withWallet/z_openPositions/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 	],
