@@ -20,7 +20,7 @@ morphoMultiplyPages_1.forEach((page) => {
 	const pool: string = getPoolFromPositionUrl({ url: page, positionType: 'multiply' });
 	const collToken: string = getCollTokenFromPositionUrl({ url: page, positionType: 'multiply' });
 
-	test.describe.only('Morpho Blue Multiply - Wallet connected - Open position', async () => {
+	test.describe('Morpho Blue Multiply - Wallet connected - Open position', async () => {
 		test.afterAll(async () => {
 			await tenderly.deleteFork(forkId);
 
