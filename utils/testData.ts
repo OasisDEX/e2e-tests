@@ -2,6 +2,11 @@ export const wEthContractAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 export const usdcContractAddress = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 export const ajnaPoolAddress = '0x3ba6a019ed5541b5f5555d8593080042cf3ae5f4';
 
+export const morphoMultiplyPages = [
+	'/ethereum/morphoblue/multiply/WSTETH-USDC#setup',
+	'/ethereum/morphoblue/multiply/WBTC-USDC#setup',
+];
+
 export type Tokens =
 	| 'CBETH'
 	| 'DAI'
@@ -32,3 +37,60 @@ export type Tokens =
 	| 'WBTC'
 	| 'WEETH'
 	| 'WSTETH';
+
+export type SetBalanceTokens =
+	| 'CBETH'
+	| 'DAI'
+	| 'ENA'
+	| 'ETH'
+	| 'EZETH'
+	| 'FRAX'
+	| 'GHO'
+	| 'LINK'
+	| 'LUSD'
+	| 'MKR'
+	| 'OSETH'
+	| 'PYUSD'
+	| 'RETH'
+	| 'SDAI'
+	| 'STETH'
+	| 'SUSDE'
+	| 'USDC'
+	| 'USDE'
+	| 'USDT'
+	| 'WBTC'
+	| 'WEETH'
+	| 'WOETH'
+	| 'WSTETH'
+	| 'YFI';
+
+export const depositAmount = {
+	AJNA: '100',
+	CBETH: '10',
+	DAI: '2000',
+	ENA: '4000',
+	ETH: '10',
+	EZETH: '10',
+	FRAX: '2000',
+	GHO: '100',
+	LINK: '1000',
+	LUSD: '2000',
+	MKR: '20',
+	OP: '1000',
+	OSETH: '10',
+	PYUSD: '2000',
+	RETH: '10',
+	SDAI: '2000',
+	STETH: '10',
+	SUSDE: '100000',
+	TBTC: '100',
+	USDC: '2000',
+	USDE: '2000',
+	USDT: '2000',
+	WBTC: '0.1',
+	WEETH: '10',
+	WETH: '10',
+	WOETH: '10',
+	WSTETH: '10',
+	YFI: '1',
+};
