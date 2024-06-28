@@ -45,7 +45,7 @@ jobs:
           path: playwright-reports/with-wallet-aave-ethereum
           retention-days: 30
   
-  with-wallet-aave-aother-tests:
+  with-wallet-aave-other-tests:
     name: 'With wallet - Aave - Arbitrum, Optimism & Base'
     runs-on: ubuntu-latest
     env:

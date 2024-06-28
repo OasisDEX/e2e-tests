@@ -191,6 +191,12 @@ const defaultConfig: PlaywrightTestConfig = {
 			testMatch: ['withWallet/spark/swap/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
+
+		{
+			name: 'with-wallet-open-positions',
+			testMatch: ['withWallet/z_openPositions'],
+			use: { ...devices['Desktop Chrome'] },
+		},
 	],
 };
 

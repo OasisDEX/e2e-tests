@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ethers, JsonRpcProvider } from 'ethers';
 import { IAccountGuardAbi, IAccountImplementationAbi } from './abis';
 import { expect } from '@playwright/test';
+import { SetBalanceTokens } from './testData';
 
 require('dotenv').config();
 
@@ -58,8 +59,14 @@ export const tokenAddresses = {
 		AJNA: '0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079',
 		CBETH: '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
 		DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
+		ENA: '0x57e114b691db790c35207b2e685d4a43181e6061',
+		EZETH: '0xbf5495Efe5DB9ce00f80364C8B423567e58d2110',
+		FRAX: '0x853d955aCEf822Db058eb8505911ED77F175b99e',
 		GHO: '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f',
 		LINK: '0x514910771AF9Ca656af840dff83E8264EcF986CA',
+		LUSD: '0x5f98805a4e8be255a32880fdec7f6728c6568ba0',
+		MKR: '0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2',
+		OSETH: '0xf1c9acdc66974dfb6decb12aa385b9cd01190e38',
 		PYUSD: '0x6c3ea9036406852006290770BEdFcAbA0e23A0e8',
 		RETH: '0xae78736cd615f374d3085123a210448e74fc6393',
 		SDAI: '0x83F20F44975D03b1b09e64809B757c47f942BEeA',
@@ -67,10 +74,12 @@ export const tokenAddresses = {
 		SUSDE: '0x9d39a5de30e57443bff2a8307a4256c8797a3497',
 		TBTC: '0x18084fbA666a33d37592fA2633fD49a74DD93a88',
 		USDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+		USDE: '0x4c9edd5852cd905f086c759e8383e09bff1e68b3',
 		USDT: '0xdac17f958d2ee523a2206206994597c13d831ec7',
 		WBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 		WEETH: '0xCd5fE23C85820F7B72D0926FC9b05b43E359b7ee',
 		WETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+		WOETH: '0xdcee70654261af21c44c093c300ed3bb97b78192',
 		WSTETH: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
 		YFI: '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e',
 	},
@@ -102,10 +111,16 @@ export const tokenBalances = {
 	AJNA: '10000',
 	CBETH: '1000',
 	DAI: '200000',
+	ENA: '400000',
 	ETH: '1000',
+	EZETH: '1000',
+	FRAX: '200000',
 	GHO: '10000',
 	LINK: '100000',
+	LUSD: '200000',
+	MKR: '2000',
 	OP: '100000',
+	OSETH: '1000',
 	PYUSD: '200000',
 	RETH: '1000',
 	SDAI: '200000',
@@ -113,10 +128,12 @@ export const tokenBalances = {
 	SUSDE: '10000000',
 	TBTC: '10000',
 	USDC: '200000',
+	USDE: '200000',
 	USDT: '200000',
 	WBTC: '10',
 	WEETH: '1000',
 	WETH: '1000',
+	WOETH: '1000',
 	WSTETH: '1000',
 	YFI: '100',
 };
@@ -134,23 +151,7 @@ export const setTokenBalance = async ({
 }: {
 	forkId: string;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
-	token:
-		| 'CBETH'
-		| 'DAI'
-		| 'ETH'
-		| 'GHO'
-		| 'LINK'
-		| 'PYUSD'
-		| 'RETH'
-		| 'SDAI'
-		| 'STETH'
-		| 'SUSDE'
-		| 'USDC'
-		| 'USDT'
-		| 'WBTC'
-		| 'WEETH'
-		| 'WSTETH'
-		| 'YFI';
+	token: SetBalanceTokens;
 	balance: string;
 	walletAddress: string;
 }) => {

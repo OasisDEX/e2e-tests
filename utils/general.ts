@@ -29,3 +29,30 @@ export const reloadUntilCorrect = async (app: App) => {
 		await app.position.overview.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 	}).toPass();
 };
+
+export const getPoolFromPositionUrl = ({
+	url,
+	positionType,
+}: {
+	url: string;
+	positionType: 'borrow' | 'multiply';
+}): string => {
+	const pool: string = url.substring(
+		url.indexOf(positionType) + (positionType === 'multiply' ? 9 : 7),
+		url.includes('#') ? url.indexOf('#') : url.length
+	);
+
+	return pool;
+};
+
+export const getCollTokenFromPositionUrl = ({
+	url,
+	positionType,
+}: {
+	url: string;
+	positionType: 'borrow' | 'multiply';
+}): string => {
+	const collToken: string = getPoolFromPositionUrl({ url, positionType }).split('-')[0];
+
+	return collToken;
+};
