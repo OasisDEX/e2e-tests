@@ -6,7 +6,7 @@ import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openPosition } from 'tests/sharedTestSteps/positionManagement';
-import { SetBalanceTokens, depositAmount, morphoMultiplyPages_2 } from 'utils/testData';
+import { SetBalanceTokens, aaveV3EthereumMultiplyPages_1, depositAmount } from 'utils/testData';
 import { getCollTokenFromPositionUrl, getPoolFromPositionUrl } from 'utils/general';
 
 let context: BrowserContext;
@@ -14,13 +14,11 @@ let app: App;
 let forkId: string;
 let walletAddress: string;
 
-// test.describe.configure({ mode: 'serial' });
-
-morphoMultiplyPages_2.forEach((page) => {
+aaveV3EthereumMultiplyPages_1.forEach((page) => {
 	const pool: string = getPoolFromPositionUrl({ url: page, positionType: 'multiply' });
 	const collToken: string = getCollTokenFromPositionUrl({ url: page, positionType: 'multiply' });
 
-	test.describe('Morpho Blue Multiply - Wallet connected - Open position', async () => {
+	test.describe('Aave V3 Multiply - Wallet connected - Open position', async () => {
 		test.afterAll(async () => {
 			await tenderly.deleteFork(forkId);
 
@@ -31,7 +29,7 @@ morphoMultiplyPages_2.forEach((page) => {
 			await resetState();
 		});
 
-		test(`It should open a Morpho Blue Multiply position - ${pool}`, async () => {
+		test(`It should open a Aave V3 Multiply position - ${pool}`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -66,7 +64,6 @@ morphoMultiplyPages_2.forEach((page) => {
 				app,
 				forkId,
 				deposit: { token: collToken, amount: depositAmount[collToken] },
-				protocol: 'Morpho Blue',
 			});
 		});
 	});
