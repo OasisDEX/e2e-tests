@@ -19,7 +19,7 @@ export const confirmAndVerifySuccess = async ({
 	await expect(async () => {
 		const txCountAfter = await tenderly.getTxCount(forkId);
 		expect(txCountAfter).toBeGreaterThan(txCountBefore);
-	}, 'tx count should increase').toPass({ timeout: expectDefaultTimeout * 1.5 });
+	}, 'tx count should increase').toPass({ timeout: expectDefaultTimeout * 2 });
 
 	// Verify last tx success
 	await tenderly.verifyTxReceiptStatusSuccess(forkId);

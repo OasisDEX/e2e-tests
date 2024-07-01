@@ -12,7 +12,7 @@ let app: App;
 let forkId: string;
 let walletAddress: string;
 
-test.describe.configure({ mode: 'serial' });
+// test.describe.configure({ mode: 'serial' });
 
 test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {

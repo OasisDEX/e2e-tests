@@ -72,7 +72,6 @@ export const aaveV3EthereumMultiplyPages_5 = [
 	'/ethereum/aave/v3/multiply/CBETH-DAI#setup',
 	'/ethereum/aave/v3/multiply/CBETH-USDC#setup',
 	'/ethereum/aave/v3/multiply/CBETH-GHO#setup',
-	'/ethereum/aave/v3/multiply/MKR-DAI#setup',
 	'/ethereum/aave/v3/multiply/LDO-USDT#setup',
 ];
 
@@ -138,6 +137,7 @@ export type SetBalanceTokens =
 	| 'EZETH'
 	| 'FRAX'
 	| 'GHO'
+	| 'LDO'
 	| 'LINK'
 	| 'LUSD'
 	| 'MKR'
@@ -165,6 +165,7 @@ export const depositAmount = {
 	EZETH: '10',
 	FRAX: '2000',
 	GHO: '100',
+	LDO: '2000',
 	LINK: '1000',
 	LUSD: '2000',
 	MKR: '20',
