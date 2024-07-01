@@ -2,101 +2,100 @@ export const wEthContractAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 export const usdcContractAddress = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 export const ajnaPoolAddress = '0x3ba6a019ed5541b5f5555d8593080042cf3ae5f4';
 
-export const morphoEthereumMultiplyPages_1 = [
-	'/ethereum/morphoblue/multiply/WSTETH-USDC#setup',
-	'/ethereum/morphoblue/multiply/WSTETH-USDT#setup',
-	// '/ethereum/morphoblue/multiply/WSTETH-USDA#setup', - BUG 15978 - Pool should be removed for Multiply
-	'/ethereum/morphoblue/multiply/WBTC-USDC#setup',
-	'/ethereum/morphoblue/multiply/WBTC-USDT#setup',
+export const sparkEthereumMultiplyPools = [
+	'ETH-DAI',
+	'RETH-DAI',
+	'WSTETH-DAI',
+	'WBTC-DAI',
+	'SDAI-ETH',
+	'WEETH-DAI',
 ];
 
-export const morphoEthereumMultiplyPages_2 = [
-	'/ethereum/morphoblue/multiply/USDE-DAI-1#setup',
-	'/ethereum/morphoblue/multiply/USDE-DAI-2#setup',
-	'/ethereum/morphoblue/multiply/USDE-DAI-3#setup',
-	'/ethereum/morphoblue/multiply/SUSDE-USDT#setup',
-	'/ethereum/morphoblue/multiply/OSETH-ETH#setup',
+export const morphoEthereumMultiplyPools_1 = [
+	'WSTETH-USDC',
+	'WSTETH-USDT',
+	// 'WSTETH-USDA', - BUG 15978 - Pool should be removed for Multiply
+	'WBTC-USDC',
+	'WBTC-USDT',
 ];
 
-export const morphoEthereumMultiplyPages_3 = [
-	'/ethereum/morphoblue/multiply/WSTETH-ETH-1#setup',
-	'/ethereum/morphoblue/multiply/WSTETH-ETH-2#setup',
-	'/ethereum/morphoblue/multiply/WSTETH-ETH-3#setup',
-	'/ethereum/morphoblue/multiply/WEETH-ETH#setup',
-	'/ethereum/morphoblue/multiply/WOETH-ETH#setup',
+export const morphoEthereumMultiplyPools_2 = [
+	'USDE-DAI-1',
+	'USDE-DAI-2',
+	'USDE-DAI-3',
+	'SUSDE-USDT',
+	'OSETH-ETH',
 ];
 
-export const morphoEthereumMultiplyPages_4 = [
-	'/ethereum/morphoblue/multiply/MKR-USDC#setup',
-	'/ethereum/morphoblue/multiply/EZETH-ETH#setup',
-	'/ethereum/morphoblue/multiply/SUSDE-DAI-1#setup',
-	'/ethereum/morphoblue/multiply/SUSDE-DAI-2#setup',
-	'/ethereum/morphoblue/multiply/SUSDE-DAI-3#setup',
+export const morphoEthereumMultiplyPools_3 = [
+	'WSTETH-ETH-1',
+	'WSTETH-ETH-2',
+	'WSTETH-ETH-3',
+	'WEETH-ETH',
+	'WOETH-ETH',
 ];
 
-export const aaveV3EthereumMultiplyPages_1 = [
-	'/ethereum/aave/v3/multiply/ETH-DAI#setup',
-	'/ethereum/aave/v3/multiply/ETH-USDC#setup',
-	'/ethereum/aave/v3/multiply/ETH-USDT#setup',
-	'/ethereum/aave/v3/multiply/ETH-GHO#setup',
-	'/ethereum/aave/v3/multiply/ETH-WBTC#setup',
+export const morphoEthereumMultiplyPools_4 = [
+	'MKR-USDC',
+	'EZETH-ETH',
+	'SUSDE-DAI-1',
+	'SUSDE-DAI-2',
+	'SUSDE-DAI-3',
 ];
 
-export const aaveV3EthereumMultiplyPages_2 = [
-	'/ethereum/aave/v3/multiply/WBTC-DAI#setup',
-	'/ethereum/aave/v3/multiply/WBTC-USDC#setup',
-	'/ethereum/aave/v3/multiply/WBTC-USDT#setup',
-	'/ethereum/aave/v3/multiply/WBTC-LUSD#setup',
-	'/ethereum/aave/v3/multiply/WBTC-GHO#setup',
-	'/ethereum/aave/v3/multiply/WBTC-ETH#setup',
+export const aaveV3EthereumMultiplyPools_1 = [
+	'ETH-DAI',
+	'ETH-USDC',
+	'ETH-USDT',
+	'ETH-GHO',
+	'ETH-WBTC',
 ];
 
-export const aaveV3EthereumMultiplyPages_3 = [
-	'/ethereum/aave/v3/multiply/WSTETH-DAI#setup',
-	'/ethereum/aave/v3/multiply/WSTETH-USDC#setup',
-	'/ethereum/aave/v3/multiply/WSTETH-USDT#setup',
-	'/ethereum/aave/v3/multiply/WSTETH-LUSD#setup',
-	'/ethereum/aave/v3/multiply/WSTETH-GHO#setup',
-	'/ethereum/aave/v3/multiply/WSTETH-RPL#setup',
+export const aaveV3EthereumMultiplyPools_2 = [
+	'WBTC-DAI',
+	'WBTC-USDC',
+	'WBTC-USDT',
+	'WBTC-LUSD',
+	'WBTC-GHO',
+	'WBTC-ETH',
 ];
 
-export const aaveV3EthereumMultiplyPages_4 = [
-	'/ethereum/aave/v3/multiply/RETH-DAI#setup',
-	'/ethereum/aave/v3/multiply/RETH-USDC#setup',
-	'/ethereum/aave/v3/multiply/RETH-USDT#setup',
-	'/ethereum/aave/v3/multiply/RETH-GHO#setup',
-	'/ethereum/aave/v3/multiply/WEETH-GHO#setup',
+export const aaveV3EthereumMultiplyPools_3 = [
+	'WSTETH-DAI',
+	'WSTETH-USDC',
+	'WSTETH-USDT',
+	'WSTETH-LUSD',
+	'WSTETH-GHO',
+	'WSTETH-RPL',
 ];
 
-export const aaveV3EthereumMultiplyPages_5 = [
-	'/ethereum/aave/v3/multiply/CBETH-DAI#setup',
-	'/ethereum/aave/v3/multiply/CBETH-USDC#setup',
-	'/ethereum/aave/v3/multiply/CBETH-GHO#setup',
-	'/ethereum/aave/v3/multiply/LDO-USDT#setup',
+export const aaveV3EthereumMultiplyPools_4 = [
+	'RETH-DAI',
+	'RETH-USDC',
+	'RETH-USDT',
+	'RETH-GHO',
+	'WEETH-GHO',
 ];
 
-export const aaveV3EthereumMultiplyPages_6 = [
-	'/ethereum/aave/v3/multiply/LINK-DAI#setup',
-	'/ethereum/aave/v3/multiply/LINK-USDC#setup',
-	'/ethereum/aave/v3/multiply/LINK-USDT#setup',
-	'/ethereum/aave/v3/multiply/LINK-GHO#setup',
-	'/ethereum/aave/v3/multiply/LINK-ETH#setup',
+export const aaveV3EthereumMultiplyPools_5 = ['CBETH-DAI', 'CBETH-USDC', 'CBETH-GHO', 'LDO-USDT'];
+
+export const aaveV3EthereumMultiplyPools_6 = [
+	'LINK-DAI',
+	'LINK-USDC',
+	'LINK-USDT',
+	'LINK-GHO',
+	'LINK-ETH',
 ];
 
-export const aaveV3EthereumMultiplyPages_7 = [
-	'/ethereum/aave/v3/multiply/DAI-ETH#setup',
-	'/ethereum/aave/v3/multiply/DAI-MKR#setup',
-	'/ethereum/aave/v3/multiply/DAI-WBTC#setup',
-	'/ethereum/aave/v3/multiply/SDAI-WBTC#setup',
-	'/ethereum/aave/v3/multiply/SDAI-ETH#setup',
+export const aaveV3EthereumMultiplyPools_7 = [
+	'DAI-ETH',
+	'DAI-MKR',
+	'DAI-WBTC',
+	'SDAI-WBTC',
+	'SDAI-ETH',
 ];
 
-export const aaveV3EthereumMultiplyPages_8 = [
-	'/ethereum/aave/v3/multiply/USDC-ETH#setup',
-	'/ethereum/aave/v3/multiply/USDC-WSTETH#setup',
-	'/ethereum/aave/v3/multiply/USDC-WBTC#setup',
-	'/ethereum/aave/v3/multiply/USDT-ETH#setup',
-];
+export const aaveV3EthereumMultiplyPools_8 = ['USDC-ETH', 'USDC-WSTETH', 'USDC-WBTC', 'USDT-ETH'];
 
 export type Tokens =
 	| 'CBETH'
