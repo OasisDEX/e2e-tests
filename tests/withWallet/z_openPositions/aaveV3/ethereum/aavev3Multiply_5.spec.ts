@@ -58,7 +58,7 @@ aaveV3EthereumMultiplyPages_5.forEach((page) => {
 				}
 			});
 
-			await app.page.goto(page);
+			await app.position.openPage(page);
 
 			await openPosition({
 				app,

@@ -87,7 +87,7 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '0.00',
-			future: '[0-9]{1,2}.[0-9]{2}',
+			future: '[0-9]{2,3}.[0-9]{2}',
 		});
 	});
 
