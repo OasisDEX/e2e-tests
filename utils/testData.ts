@@ -11,6 +11,14 @@ export const sparkEthereumMultiplyPools = [
 	'WEETH-DAI',
 ];
 
+export const sparkEthereumEarnPools = [
+	'RETH-ETH',
+	'WSTETH-ETH',
+	'SDAI-USDC',
+	'SDAI-USDT',
+	'WEETH-ETH',
+];
+
 export const morphoEthereumMultiplyPools_1 = [
 	'WSTETH-USDC',
 	'WSTETH-USDT',
@@ -42,6 +50,18 @@ export const morphoEthereumMultiplyPools_4 = [
 	'SUSDE-DAI-2',
 	'SUSDE-DAI-3',
 ];
+
+export const aaveV3EthereumEarnPools_1 = [
+	'WSTETH-CBETH',
+	'WSTETH-ETH',
+	'CBETH-ETH',
+	'RETH-ETH',
+	'WEETH-ETH',
+];
+
+export const aaveV3EthereumEarnPools_2 = ['SDAI-DAI', 'SDAI-LUSD', 'SDAI-USDC', 'SDAI-USDT'];
+
+export const aaveV3EthereumEarnPools_3 = ['USDC-USDT', 'USDC-GHO', 'SDAI-FRAX', 'SDAI-GHO'];
 
 export const aaveV3EthereumMultiplyPools_1 = [
 	'ETH-DAI',
