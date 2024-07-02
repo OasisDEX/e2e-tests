@@ -25,7 +25,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should update an existing Auto-Sell trigger on a Morpho Blue Multiply position @regression', async () => {
+	test('It should update an existing Auto-Buy trigger on a Morpho Blue Borrow position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -47,28 +47,28 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		});
 
 		await tenderly.changeAccountOwner({
-			account: '0xb3ec84f942d4e8d5abb3d27a574c3655eac50603',
+			account: '0x302a28d7968824f386f278a72368856bc4d82ba4',
 			newOwner: walletAddress,
 			forkId,
 		});
 
-		await app.position.openPage('/ethereum/morphoblue/multiply/WSTETH-ETH-1/1478#overview');
+		await app.position.openPage('/ethereum/morphoblue/borrow/WSTETH-USDC/1467#overview');
 
-		await automations.testAutoSell({
+		await automations.testAutoBuy({
 			app,
 			forkId,
 			protocol: 'Morpho Blue',
 			verifyTriggerPayload: {
 				protocol: 'morphoblue',
 				collToken: 'mainnetWSTETH',
-				debtToken: 'mainnetETH',
+				debtToken: 'mainnetUSDC',
 				action: 'update',
 			},
 			action: 'update',
 		});
 	});
 
-	test('It should remove an existing Auto-Sell trigger on a Morpho Blue Multiply position @regression', async () => {
+	test('It should remove an existing Auto-Buy trigger on a Morpho Blue Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -82,21 +82,21 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		});
 
 		await tenderly.changeAccountOwner({
-			account: '0xb3ec84f942d4e8d5abb3d27a574c3655eac50603',
+			account: '0x302a28d7968824f386f278a72368856bc4d82ba4',
 			newOwner: walletAddress,
 			forkId,
 		});
 
-		await app.position.openPage('/ethereum/morphoblue/multiply/WSTETH-ETH-1/1478#overview');
+		await app.position.openPage('/ethereum/morphoblue/borrow/WSTETH-USDC/1467#overview');
 
-		await automations.testAutoSell({
+		await automations.testAutoBuy({
 			app,
 			forkId,
 			protocol: 'Morpho Blue',
 			verifyTriggerPayload: {
 				protocol: 'morphoblue',
 				collToken: 'mainnetWSTETH',
-				debtToken: 'mainnetETH',
+				debtToken: 'mainnetUSDC',
 				action: 'remove',
 			},
 			action: 'remove',
