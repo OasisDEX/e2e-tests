@@ -161,6 +161,7 @@ export const testRegularStopLoss = async ({
 	app,
 	forkId,
 	verifyTriggerPayload,
+	action,
 }: {
 	app: App;
 	forkId: string;
@@ -169,10 +170,14 @@ export const testRegularStopLoss = async ({
 		collToken: Tokens;
 		debtToken: Tokens;
 		triggerToken: Tokens;
+		action?: 'update' | 'remove';
 	};
+	action?: 'update' | 'remove';
 }) => {
 	await app.position.openTab('Protection');
-	await app.position.protection.setup('Stop-Loss');
+	if (!action) {
+		await app.position.protection.setup('Stop-Loss');
+	}
 
 	if (verifyTriggerPayload) {
 		await verifyTriggerApiRequestPayload({
@@ -182,6 +187,7 @@ export const testRegularStopLoss = async ({
 			collToken: verifyTriggerPayload.collToken,
 			debtToken: verifyTriggerPayload.debtToken,
 			triggerToken: verifyTriggerPayload.triggerToken,
+			action,
 		});
 	} else {
 		await app.position.protection.adjustStopLossTrigger({ value: 0.7 });
@@ -194,7 +200,7 @@ export const testRegularStopLoss = async ({
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-			await app.position.setup.finishedShouldBeVisible({ feature: 'Stop-Loss' });
+			await app.position.setup.finishedShouldBeVisible({ feature: 'Stop-Loss', action });
 		}).toPass();
 	});
 };
@@ -314,6 +320,7 @@ export const testAutoBuy = async ({
 	strategy,
 	triggerLTV,
 	verifyTriggerPayload,
+	action,
 }: {
 	app: App;
 	forkId: string;
@@ -324,10 +331,14 @@ export const testAutoBuy = async ({
 		protocol: Protocols;
 		collToken: Tokens;
 		debtToken: Tokens;
+		action?: 'update' | 'remove';
 	};
+	action?: 'update' | 'remove';
 }) => {
 	await app.position.openTab('Optimization');
-	await app.position.optimization.setupOptimization('Auto-Buy');
+	if (!action) {
+		await app.position.optimization.setupOptimization('Auto-Buy');
+	}
 
 	if (verifyTriggerPayload) {
 		await verifyTriggerApiRequestPayload({
@@ -336,16 +347,16 @@ export const testAutoBuy = async ({
 			protocol: verifyTriggerPayload.protocol,
 			collToken: verifyTriggerPayload.collToken,
 			debtToken: verifyTriggerPayload.debtToken,
+			action,
 		});
 	} else {
 		await app.position.optimization.adjustAutoBuyTrigger({ value: triggerLTV ?? 0.2 });
 	}
 
-	if (!strategy) {
+	if (!strategy && !action) {
 		await app.position.optimization.shouldHaveMessage(
 			'Please enter a maximum buy price or select Set No Threshold'
 		);
-
 		await app.position.optimization.setNoThreshold();
 		if (!protocol) {
 			// Morpho BUG 15553
@@ -365,7 +376,7 @@ export const testAutoBuy = async ({
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto-Buy' });
+			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto-Buy', action });
 		}).toPass({ timeout: longTestTimeout });
 	});
 };
