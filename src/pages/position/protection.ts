@@ -76,4 +76,9 @@ export class Protection {
 			`'${automation} ON' should be visible`
 		).toBeVisible();
 	}
+
+	@step
+	async removeTrigger() {
+		await this.base.removeTrigger();
+	}
 }

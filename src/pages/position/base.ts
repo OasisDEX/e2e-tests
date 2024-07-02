@@ -192,4 +192,9 @@ export class Base {
 	async confirm() {
 		await this.page.getByRole('button', { name: 'Confirm' }).click();
 	}
+
+	@step
+	async removeTrigger() {
+		await this.page.getByRole('button', { name: 'Remove trigger' }).click();
+	}
 }
