@@ -40,7 +40,10 @@ export const openNewPosition = async ({
 
 			test.setTimeout(extremelyLongTestTimeout);
 
-			let collToken: string = pool.split('-')[0];
+			let collToken: string =
+				pool.split('-')[
+					network === 'ethereum' && protocol === 'aave/v3' && pool === 'WSTETH-ETH' ? 1 : 0
+				];
 
 			await test.step('Test setup', async () => {
 				({ context } = await metamaskSetUp({ network: 'mainnet' }));
