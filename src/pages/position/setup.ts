@@ -281,10 +281,16 @@ export class Setup {
 	}
 
 	@step
-	async finishedShouldBeVisible(
-		feature?: 'Auto Take Profit' | 'Auto-Buy' | 'Auto-Sell' | 'Stop-Loss'
-	) {
-		if (feature) {
+	async finishedShouldBeVisible(args?: {
+		feature: 'Auto Take Profit' | 'Auto-Buy' | 'Auto-Sell' | 'Stop-Loss';
+		action?: 'update' | 'remove';
+	}) {
+		if (args.action === 'remove') {
+			await expect(
+				this.page.getByText('has been successfully cancelled'),
+				'Success message should be visible'
+			).toBeVisible();
+		} else if (args?.feature) {
 			await expect(
 				this.page.getByText('You have successfully set up a'),
 				'Success message should be visible'

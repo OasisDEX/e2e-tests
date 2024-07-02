@@ -22,6 +22,7 @@ type Tokens =
 	| 'mainnetUSDC'
 	| 'mainnetUSDT'
 	| 'mainnetWBTC'
+	| 'mainnetWSTETH'
 	| 'optimismETH'
 	| 'optimismUSDC_E';
 
@@ -35,6 +36,7 @@ const tokenAddresses = {
 	mainnetUSDC: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 	mainnetUSDT: '0xdac17f958d2ee523a2206206994597c13d831ec7',
 	mainnetWBTC: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+	mainnetWSTETH: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
 	optimismETH: '0x4200000000000000000000000000000000000006',
 	optimismUSDC_E: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
 };
@@ -45,15 +47,17 @@ let matchObject = ({
 	debtToken,
 	triggerToken,
 	protocol,
+	action,
 }: {
 	automation: Automations;
 	collToken: Tokens;
 	debtToken: Tokens;
 	triggerToken?: Tokens;
 	protocol?: 'morphoblue';
+	action?: 'update' | 'remove';
 }) => {
 	return {
-		action: 'add',
+		action: action ?? 'add',
 		dpm: expect.any(String),
 		...(protocol && {
 			protocol,
@@ -76,7 +80,8 @@ let matchObject = ({
 				executionLTV: expect.any(String),
 				targetLTV: expect.any(String),
 				maxBaseFee: '300',
-				[automation === 'auto-sell' ? 'useMinSellPrice' : 'useMaxBuyPrice']: true,
+				[automation === 'auto-sell' ? 'useMinSellPrice' : 'useMaxBuyPrice']:
+					action !== 'remove' ? true : false,
 			}),
 			...(automation === 'dma-partial-take-profit' && {
 				withdrawToken: tokenAddresses[triggerToken],
@@ -101,6 +106,7 @@ const verifyTriggerApiRequestPayload = async ({
 	collToken,
 	debtToken,
 	triggerToken,
+	action,
 }: {
 	app: App;
 	automation: Automations;
@@ -108,6 +114,7 @@ const verifyTriggerApiRequestPayload = async ({
 	collToken: Tokens;
 	debtToken: Tokens;
 	triggerToken?: Tokens;
+	action?: 'update' | 'remove';
 }) => {
 	const requestPromise = app.page.waitForRequest(
 		(request) =>
@@ -115,20 +122,24 @@ const verifyTriggerApiRequestPayload = async ({
 		{ timeout: expectDefaultTimeout * 5 }
 	);
 
-	if (automation === 'dma-stop-loss') {
-		await app.position.protection.adjustStopLossTrigger({ value: 0.7 });
-	}
-	if (automation === 'dma-trailing-stop-loss') {
-		await app.position.protection.adjustTrailingStopLossTrigger({ value: 0.8 });
-	}
-	if (automation === 'auto-buy') {
-		await app.position.optimization.adjustAutoBuyTrigger({ value: 0.1 });
-	}
-	if (automation === 'auto-sell') {
-		await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
-	}
-	if (automation === 'dma-partial-take-profit') {
-		await app.position.optimization.adjustPartialTakeProfitTrigger({ value: 0.1 });
+	if (action === 'remove') {
+		await app.position.protection.removeTrigger();
+	} else {
+		if (automation === 'dma-stop-loss') {
+			await app.position.protection.adjustStopLossTrigger({ value: 0.7 });
+		}
+		if (automation === 'dma-trailing-stop-loss') {
+			await app.position.protection.adjustTrailingStopLossTrigger({ value: 0.8 });
+		}
+		if (automation === 'auto-buy') {
+			await app.position.optimization.adjustAutoBuyTrigger({ value: 0.1 });
+		}
+		if (automation === 'auto-sell') {
+			await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
+		}
+		if (automation === 'dma-partial-take-profit') {
+			await app.position.optimization.adjustPartialTakeProfitTrigger({ value: 0.1 });
+		}
 	}
 
 	const request = await requestPromise;
@@ -140,6 +151,7 @@ const verifyTriggerApiRequestPayload = async ({
 		debtToken,
 		...(triggerToken && { triggerToken }),
 		...(protocol === 'morphoblue' && { protocol }),
+		...(action && { action }),
 	};
 
 	expect(requestJson).toMatchObject(matchObject(matchObjectParameters));
@@ -182,7 +194,7 @@ export const testRegularStopLoss = async ({
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-			await app.position.setup.finishedShouldBeVisible('Stop-Loss');
+			await app.position.setup.finishedShouldBeVisible({ feature: 'Stop-Loss' });
 		}).toPass();
 	});
 };
@@ -224,7 +236,7 @@ export const testTrailingStopLoss = async ({
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-			await app.position.setup.finishedShouldBeVisible('Stop-Loss');
+			await app.position.setup.finishedShouldBeVisible({ feature: 'Stop-Loss' });
 		}).toPass({ timeout: longTestTimeout });
 	});
 };
@@ -235,6 +247,7 @@ export const testAutoSell = async ({
 	protocol,
 	strategy,
 	verifyTriggerPayload,
+	action,
 }: {
 	app: App;
 	forkId: string;
@@ -244,10 +257,14 @@ export const testAutoSell = async ({
 		protocol: Protocols;
 		collToken: Tokens;
 		debtToken: Tokens;
+		action?: 'update' | 'remove';
 	};
+	action?: 'update' | 'remove';
 }) => {
 	await app.position.openTab('Protection');
-	await app.position.protection.setup('Auto-Sell');
+	if (!action) {
+		await app.position.protection.setup('Auto-Sell');
+	}
 
 	if (verifyTriggerPayload) {
 		await verifyTriggerApiRequestPayload({
@@ -256,12 +273,13 @@ export const testAutoSell = async ({
 			protocol: verifyTriggerPayload.protocol,
 			collToken: verifyTriggerPayload.collToken,
 			debtToken: verifyTriggerPayload.debtToken,
+			action,
 		});
 	} else {
 		await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
 	}
 
-	if (!strategy) {
+	if (!strategy && !action) {
 		await app.position.protection.shouldHaveMessage(
 			'Please enter a minimum sell price or select Set No Threshold'
 		);
@@ -284,7 +302,7 @@ export const testAutoSell = async ({
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-			await app.position.setup.finishedShouldBeVisible('Auto-Sell');
+			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto-Sell', action });
 		}).toPass({ timeout: longTestTimeout });
 	});
 };
@@ -347,7 +365,7 @@ export const testAutoBuy = async ({
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-			await app.position.setup.finishedShouldBeVisible('Auto-Buy');
+			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto-Buy' });
 		}).toPass({ timeout: longTestTimeout });
 	});
 };
@@ -397,7 +415,7 @@ export const testPartialTakeProfit = async ({
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
 			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
-			await app.position.setup.finishedShouldBeVisible('Auto Take Profit');
+			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto Take Profit' });
 		}).toPass({ timeout: longTestTimeout });
 	});
 };
