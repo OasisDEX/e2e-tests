@@ -53,12 +53,12 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WEETH',
+				token: 'WSTETH',
 				balance: '100',
 			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/borrow/WEETH-ETH#setup');
+		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -66,20 +66,8 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WEETH', amount: '10' },
-			borrow: { token: 'ETH', amount: '5' },
-		});
-
-		await app.page.waitForTimeout(3000);
-
-		await swapPosition({
-			app,
-			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			originalProtocol: 'Morpho',
-			targetProtocol: 'Aave V3',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
-			upToStep5: true,
+			deposit: { token: 'WSTETH', amount: '10' },
+			borrow: { token: 'USDC', amount: '10000' },
 		});
 	});
 
@@ -160,12 +148,12 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WEETH',
+				token: 'WSTETH',
 				balance: '100',
 			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/borrow/WEETH-ETH#setup');
+		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -173,20 +161,8 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WEETH', amount: '10' },
-			borrow: { token: 'ETH', amount: '5' },
-		});
-
-		await app.page.waitForTimeout(3000);
-
-		await swapPosition({
-			app,
-			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			originalProtocol: 'Morpho',
-			targetProtocol: 'Aave V3',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
-			upToStep5: true,
+			deposit: { token: 'WSTETH', amount: '10' },
+			borrow: { token: 'USDC', amount: '10000' },
 		});
 	});
 
