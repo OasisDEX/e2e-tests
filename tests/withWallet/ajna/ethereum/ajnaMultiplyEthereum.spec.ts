@@ -44,18 +44,18 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 				forkId,
 				network: 'mainnet',
 				walletAddress,
-				token: 'YFI',
-				balance: '10',
+				token: 'WBTC',
+				balance: '5',
 			});
 		});
 
-		await app.page.goto('/ethereum/ajna/multiply/YFI-DAI#setup');
+		await app.page.goto('/ethereum/ajna/multiply/WBTC-DAI#setup');
 		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'YFI', amount: '1' },
+			deposit: { token: 'WBTC', amount: '0.1' },
 		});
 	});
 
@@ -103,9 +103,9 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 			forkId,
 			app,
 			closeTo: 'collateral',
-			collateralToken: 'YFI',
+			collateralToken: 'WBTC',
 			debtToken: 'DAI',
-			tokenAmountAfterClosing: '[0-1].[0-9]{3,4}',
+			tokenAmountAfterClosing: '0.[0-9]{3,4}',
 		});
 	});
 
