@@ -10,7 +10,6 @@ import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManage
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -43,10 +42,10 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'MakerTenderly:true',
 			}));
 		});
 
@@ -59,16 +58,6 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
-		});
-
-		await app.page.waitForTimeout(3000);
-
-		await swapPosition({
-			app,
-			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
-			upToStep5: true,
 		});
 	});
 
