@@ -11,10 +11,12 @@ export const openNewPosition = async ({
 	network,
 	protocol,
 	pool,
+	positionType,
 }: {
 	network: 'ethereum';
-	protocol: 'aave/v3' | 'morphoblue' | 'spark';
+	protocol: 'aave/v3' | 'erc-4626' | 'morphoblue' | 'spark';
 	pool: string;
+	positionType: 'borrow' | 'earn' | 'multiply';
 }) => {
 	let context: BrowserContext;
 	let app: App;
@@ -32,7 +34,7 @@ export const openNewPosition = async ({
 			await resetState();
 		});
 
-		test(`It should open a Multiply position - ${pool}`, async () => {
+		test(`It should open a position - ${positionType.toUpperCase()} - ${pool}`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -42,7 +44,11 @@ export const openNewPosition = async ({
 
 			let collToken: string =
 				pool.split('-')[
-					network === 'ethereum' && protocol === 'aave/v3' && pool === 'WSTETH-ETH' ? 1 : 0
+					(network === 'ethereum' && protocol === 'aave/v3' && pool === 'WSTETH-ETH') ||
+					pool.includes('flagship') ||
+					pool.includes('steakhouse')
+						? 1
+						: 0
 				];
 
 			await test.step('Test setup', async () => {
@@ -66,7 +72,7 @@ export const openNewPosition = async ({
 				}
 			});
 
-			await app.position.openPage(`/${network}/${protocol}/multiply/${pool}#setup`);
+			await app.position.openPage(`/${network}/${protocol}/${positionType}/${pool}#setup`);
 
 			await openPosition({
 				app,
