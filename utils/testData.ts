@@ -163,6 +163,14 @@ export const aaveV3OptimismMultiplyPools_4 = [
 	'USDC-SUSD',
 ];
 
+export const aaveV3BaseMultiplyPools = [
+	'ETH-USDC',
+	'ETH-USDBC',
+	'CBETH-USDC',
+	'CBETH-USDBC',
+	'WSTETH-USDC',
+	'WEETH-USDC',
+];
 export type Tokens =
 	| 'CBETH'
 	| 'DAI'

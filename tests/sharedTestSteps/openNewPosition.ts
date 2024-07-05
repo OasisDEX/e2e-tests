@@ -13,7 +13,7 @@ export const openNewPosition = async ({
 	pool,
 	positionType,
 }: {
-	network: 'arbitrum' | 'ethereum' | 'optimism';
+	network: 'arbitrum' | 'base' | 'ethereum' | 'optimism';
 	protocol: 'aave/v3' | 'erc-4626' | 'morphoblue' | 'spark';
 	pool: string;
 	positionType: 'borrow' | 'earn' | 'multiply';
