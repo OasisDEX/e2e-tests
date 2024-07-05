@@ -13,7 +13,7 @@ export const openNewPosition = async ({
 	pool,
 	positionType,
 }: {
-	network: 'ethereum';
+	network: 'arbitrum' | 'ethereum' | 'optimism';
 	protocol: 'aave/v3' | 'erc-4626' | 'morphoblue' | 'spark';
 	pool: string;
 	positionType: 'borrow' | 'earn' | 'multiply';
@@ -52,20 +52,22 @@ export const openNewPosition = async ({
 				];
 
 			await test.step('Test setup', async () => {
-				({ context } = await metamaskSetUp({ network: 'mainnet' }));
+				const setupNetwork = network === 'ethereum' ? 'mainnet' : network;
+
+				({ context } = await metamaskSetUp({ network: setupNetwork }));
 				let page = await context.newPage();
 				app = new App(page);
 
 				({ forkId, walletAddress } = await setup({
 					app,
-					network: 'mainnet',
+					network: setupNetwork,
 				}));
 
 				if (collToken !== 'ETH') {
 					await tenderly.setTokenBalance({
 						forkId,
 						walletAddress,
-						network: 'mainnet',
+						network: setupNetwork,
 						token: collToken as SetBalanceTokens,
 						balance: tenderly.tokenBalances[collToken],
 					});

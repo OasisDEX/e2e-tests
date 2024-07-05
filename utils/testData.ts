@@ -127,6 +127,42 @@ export const aaveV3EthereumMultiplyPools_7 = [
 
 export const aaveV3EthereumMultiplyPools_8 = ['USDC-ETH', 'USDC-WSTETH', 'USDC-WBTC', 'USDT-ETH'];
 
+export const aaveV3ArbitrumMultiplyPools_1 = [
+	'ETH-DAI',
+	'ETH-USDC',
+	'WBTC-DAI',
+	'WBTC-USDC',
+	'WEETH-USDC',
+];
+
+export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-DAI', 'RETH-USDC', 'WSTETH-DAI', 'WSTETH-USDC'];
+
+export const aaveV3ArbitrumMultiplyPools_3 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
+
+export const aaveV3OptimismMultiplyPools_1 = [
+	'ETH-DAI',
+	'ETH-USDC',
+	'ETH-USDC.E',
+	'WSTETH-DAI',
+	'WSTETH-USDC',
+];
+
+export const aaveV3OptimismMultiplyPools_2 = [
+	'WSTETH-USDC.E',
+	'WBTC-DAI',
+	'WBTC-USDC',
+	'WBTC-USDC.E',
+];
+
+export const aaveV3OptimismMultiplyPools_3 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
+
+export const aaveV3OptimismMultiplyPools_4 = [
+	'USDC.E-ETH',
+	'USDC.E-WBTC',
+	'USDC.E-SUSD',
+	'USDC-SUSD',
+];
+
 export type Tokens =
 	| 'CBETH'
 	| 'DAI'
@@ -210,7 +246,7 @@ export const depositAmount = {
 	USDE: '2000',
 	USDT: '2000',
 	WBTC: '0.1',
-	WEETH: '10',
+	WEETH: '2',
 	WETH: '10',
 	WOETH: '10',
 	WSTETH: '10',
