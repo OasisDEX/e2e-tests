@@ -51,6 +51,16 @@ export const morphoEthereumMultiplyPools_4 = [
 	'SUSDE-DAI-3',
 ];
 
+export const morphoEthereumEarnPools = [
+	'flagship-ETH',
+	'flagship-USDC',
+	'flagship-USDT',
+	'steakhouse-ETH',
+	'steakhouse-PYUSD',
+	'steakhouse-USDC',
+	'steakhouse-USDT',
+];
+
 export const aaveV3EthereumEarnPools_1 = [
 	'WSTETH-CBETH',
 	'WSTETH-ETH',

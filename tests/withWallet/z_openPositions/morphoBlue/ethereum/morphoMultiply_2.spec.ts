@@ -4,6 +4,11 @@ import { openNewPosition } from 'tests/sharedTestSteps/openNewPosition';
 
 morphoEthereumMultiplyPools_2.forEach((pool) => {
 	test.describe('Morpho Blue Multiply - Wallet connected', async () => {
-		await openNewPosition({ network: 'ethereum', protocol: 'morphoblue', pool });
+		await openNewPosition({
+			network: 'ethereum',
+			protocol: 'morphoblue',
+			pool,
+			positionType: 'multiply',
+		});
 	});
 });
