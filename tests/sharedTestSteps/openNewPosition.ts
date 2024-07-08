@@ -64,12 +64,13 @@ export const openNewPosition = async ({
 				}));
 
 				if (collToken !== 'ETH') {
+					const setBalanceToken = collToken === 'USDC.E' ? 'USDC_E' : collToken;
 					await tenderly.setTokenBalance({
 						forkId,
 						walletAddress,
 						network: setupNetwork,
-						token: collToken as SetBalanceTokens,
-						balance: tenderly.tokenBalances[collToken],
+						token: setBalanceToken as SetBalanceTokens,
+						balance: tenderly.tokenBalances[setBalanceToken],
 					});
 				}
 			});
@@ -79,7 +80,10 @@ export const openNewPosition = async ({
 			await openPosition({
 				app,
 				forkId,
-				deposit: { token: collToken, amount: depositAmount[collToken] },
+				deposit: {
+					token: collToken,
+					amount: depositAmount[collToken === 'USDC.E' ? 'USDC_E' : collToken],
+				},
 			});
 		});
 	});
