@@ -127,6 +127,8 @@ export const aaveV3EthereumMultiplyPools_7 = [
 
 export const aaveV3EthereumMultiplyPools_8 = ['USDC-ETH', 'USDC-WSTETH', 'USDC-WBTC', 'USDT-ETH'];
 
+export const aaveV3ArbitrumEarnPools = ['WSTETH-ETH', 'RETH-ETH', 'WEETH-ETH']; // BUG - 16013
+
 export const aaveV3ArbitrumMultiplyPools_1 = [
 	'ETH-DAI',
 	'ETH-USDC',
@@ -139,13 +141,20 @@ export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-DAI', 'RETH-USDC', 'WSTETH-D
 
 export const aaveV3ArbitrumMultiplyPools_3 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
 
-export const aaveV3OptimismMultiplyPools_1 = [
-	'ETH-DAI',
+export const aaveV3BaseEarnPools = ['CBETH-ETH', 'WSTETH-ETH', 'WEETH-ETH'];
+
+export const aaveV3BaseMultiplyPools = [
 	'ETH-USDC',
-	'ETH-USDC.E',
-	'WSTETH-DAI',
+	'ETH-USDBC',
+	'CBETH-USDC',
+	'CBETH-USDBC',
 	'WSTETH-USDC',
+	'WEETH-USDC',
 ];
+
+export const aaveV3OptimismEarnPools = ['USDC.E-SUSD', 'USDC-SUSD', 'WSTETH-ETH']; // BUG - 16013
+
+export const aaveV3OptimismMultiplyPools_1 = ['ETH-DAI', 'ETH-USDC', 'ETH-USDC.E', 'WSTETH-DAI'];
 
 export const aaveV3OptimismMultiplyPools_2 = [
 	'WSTETH-USDC.E',
@@ -156,21 +165,8 @@ export const aaveV3OptimismMultiplyPools_2 = [
 
 export const aaveV3OptimismMultiplyPools_3 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
 
-export const aaveV3OptimismMultiplyPools_4 = [
-	'USDC.E-ETH',
-	'USDC.E-WBTC',
-	'USDC.E-SUSD',
-	'USDC-SUSD',
-];
+export const aaveV3OptimismMultiplyPools_4 = ['USDC.E-ETH', 'USDC.E-WBTC', 'WSTETH-USDC'];
 
-export const aaveV3BaseMultiplyPools = [
-	'ETH-USDC',
-	'ETH-USDBC',
-	'CBETH-USDC',
-	'CBETH-USDBC',
-	'WSTETH-USDC',
-	'WEETH-USDC',
-];
 export type Tokens =
 	| 'CBETH'
 	| 'DAI'
@@ -195,8 +191,9 @@ export type Tokens =
 	| 'SDAI'
 	| 'SUSDE'
 	| 'USDA'
-	| 'USDE'
 	| 'USDC'
+	| 'USDC_E'
+	| 'USDE'
 	| 'USDT'
 	| 'WBTC'
 	| 'WEETH'
@@ -221,6 +218,7 @@ export type SetBalanceTokens =
 	| 'STETH'
 	| 'SUSDE'
 	| 'USDC'
+	| 'USDC_E'
 	| 'USDE'
 	| 'USDT'
 	| 'WBTC'
@@ -251,6 +249,7 @@ export const depositAmount = {
 	SUSDE: '100000',
 	TBTC: '100',
 	USDC: '2000',
+	USDC_E: '2000',
 	USDE: '2000',
 	USDT: '2000',
 	WBTC: '0.1',

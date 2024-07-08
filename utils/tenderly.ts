@@ -104,6 +104,7 @@ export const tokenAddresses = {
 		OP: '0x4200000000000000000000000000000000000042',
 		RETH: '0x9Bcef72be871e61ED4fBbc7630889beE758eb81D',
 		USDC: '0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85',
+		USDC_E: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
 		WBTC: '0x68f180fcCe6836688e9084f035309E29Bf0A2095',
 		WSTETH: '0x1F32b1c2345538c0c6f582fCB022739c4A194Ebb',
 	},
@@ -131,6 +132,7 @@ export const tokenBalances = {
 	SUSDE: '10000000',
 	TBTC: '10000',
 	USDC: '200000',
+	USDC_E: '200000',
 	USDE: '200000',
 	USDT: '200000',
 	WBTC: '10',
@@ -176,7 +178,7 @@ export const setTokenBalance = async ({
 			walletAddress,
 			token === 'WBTC'
 				? ethers.toQuantity(ethers.parseUnits(balance, 8))
-				: token === 'PYUSD' || token === 'USDC' || token === 'USDT'
+				: token === 'PYUSD' || token === 'USDC' || token === 'USDT' || token === 'USDC_E'
 				? ethers.toQuantity(ethers.parseUnits(balance, 6))
 				: ethers.toQuantity(ethers.parseUnits(balance, 'ether')),
 		]);
