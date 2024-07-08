@@ -3,7 +3,12 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import {
+	extremelyLongTestTimeout,
+	longTestTimeout,
+	positionTimeout,
+	veryLongTestTimeout,
+} from 'utils/config';
 import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 import { reloadUntilCorrect } from 'utils/general';
@@ -138,7 +143,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			description: 'xxxx',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and Reload page to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -170,7 +175,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			description: 'xxxx',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Reload page to avoid random fails
 		await app.page.waitForTimeout(3_000);
