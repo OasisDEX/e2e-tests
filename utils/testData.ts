@@ -61,17 +61,24 @@ export const morphoEthereumEarnPools = [
 	'steakhouse-USDT',
 ];
 
-export const aaveV3EthereumEarnPools_1 = [
-	'WSTETH-CBETH',
-	'WSTETH-ETH',
+export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC', 'CBETH-USDC', 'WEETH-USDC'];
+
+export const morphoBaseEarnPools = [
+	'WSTETH-ETH-2',
 	'CBETH-ETH',
-	'RETH-ETH',
-	'WEETH-ETH',
+	// 'WSTETH-ETH-1',  -- NO LIQUIDITY FOR MOST OF THE POOLS
+	// 'EZETH-ETH',
+	// 'BSDETH-ETH',
+	// 'WEETH-ETH',
 ];
+
+export const aaveV3EthereumEarnPools_1 = ['WSTETH-CBETH', 'WSTETH-ETH', 'CBETH-ETH', 'RETH-ETH'];
 
 export const aaveV3EthereumEarnPools_2 = ['SDAI-DAI', 'SDAI-LUSD', 'SDAI-USDC', 'SDAI-USDT'];
 
 export const aaveV3EthereumEarnPools_3 = ['USDC-USDT', 'USDC-GHO', 'SDAI-FRAX', 'SDAI-GHO'];
+
+export const aaveV3EthereumEarnPools_4 = ['SUSDE-USDT', 'SUSDE-USDC', 'SUSDE-DAI', 'WEETH-ETH'];
 
 export const aaveV3EthereumMultiplyPools_1 = [
 	'ETH-DAI',
