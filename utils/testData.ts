@@ -72,6 +72,15 @@ export const morphoBaseEarnPools = [
 	// 'WEETH-ETH',
 ];
 
+export const morphoBaseBorrowPools = [
+	'AERO-USDC',
+	'EZETH-USDC',
+	'CBETH-USDC',
+	'WSTETH-USDC',
+	'ETH-USDC',
+	'CBETH-ETH',
+	// 'WSTETH-ETH-2',  !! openPosition to be UPDATED !!!
+];
 export const aaveV3EthereumEarnPools_1 = ['WSTETH-CBETH', 'WSTETH-ETH', 'CBETH-ETH', 'RETH-ETH'];
 
 export const aaveV3EthereumEarnPools_2 = ['SDAI-DAI', 'SDAI-LUSD', 'SDAI-USDC', 'SDAI-USDT'];
@@ -177,6 +186,7 @@ export const aaveV3OptimismMultiplyPools_4 = ['USDC.E-ETH', 'USDC.E-WBTC', 'WSTE
 export const aaveV2EthereumMultiplyPools = ['ETH-USDC', 'WBTC-USDC']; // 'STETH-USDC' skipped - Not able to get funds with 'tenderly_setBalance'
 
 export type Tokens =
+	| 'AERO'
 	| 'CBETH'
 	| 'DAI'
 	| 'DAI-1'
@@ -209,6 +219,7 @@ export type Tokens =
 	| 'WSTETH';
 
 export type SetBalanceTokens =
+	| 'AERO'
 	| 'CBETH'
 	| 'DAI'
 	| 'ENA'
@@ -238,11 +249,12 @@ export type SetBalanceTokens =
 
 export const depositAmount = {
 	AJNA: '100',
-	CBETH: '10',
+	AERO: '3000',
+	CBETH: '5',
 	DAI: '2000',
 	ENA: '4000',
-	ETH: '10',
-	EZETH: '10',
+	ETH: '5',
+	EZETH: '5',
 	FRAX: '2000',
 	GHO: '100',
 	LDO: '2000',
@@ -250,11 +262,11 @@ export const depositAmount = {
 	LUSD: '2000',
 	MKR: '20',
 	OP: '1000',
-	OSETH: '10',
+	OSETH: '5',
 	PYUSD: '2000',
-	RETH: '10',
+	RETH: '5',
 	SDAI: '2000',
-	STETH: '10',
+	STETH: '5',
 	SUSDE: '100000',
 	TBTC: '100',
 	USDC: '2000',
@@ -263,8 +275,8 @@ export const depositAmount = {
 	USDT: '2000',
 	WBTC: '0.1',
 	WEETH: '2',
-	WETH: '10',
-	WOETH: '10',
-	WSTETH: '10',
+	WETH: '5',
+	WOETH: '5',
+	WSTETH: '5',
 	YFI: '1',
 };
