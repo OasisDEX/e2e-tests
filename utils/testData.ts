@@ -79,7 +79,7 @@ export const morphoBaseBorrowPools = [
 	'WSTETH-USDC',
 	'ETH-USDC',
 	'CBETH-ETH',
-	// 'WSTETH-ETH-2',  !! openPosition to be UPDATED !!!
+	'WSTETH-ETH-2',
 ];
 export const aaveV3EthereumEarnPools_1 = ['WSTETH-CBETH', 'WSTETH-ETH', 'CBETH-ETH', 'RETH-ETH'];
 
