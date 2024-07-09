@@ -79,16 +79,6 @@ export const openNewPosition = async ({
 
 			await app.position.openPage(`/${network}/${protocol}/${positionType}/${pool}#setup`);
 
-			// ====================
-			// let trimmedDebtToken: Tokens;
-			// if (targetPool.debtToken.includes('-')) {
-			// 	trimmedDebtToken = targetPool.debtToken.includes('ETH') ? 'ETH' : 'DAI';
-			// }
-			// await app.position.swap.productHub.filters.debtTokens.select(
-			// 	targetPool.debtToken.includes('-') ? trimmedDebtToken : targetPool.debtToken
-			// );
-			//=====================
-
 			await openPosition({
 				app,
 				forkId,
