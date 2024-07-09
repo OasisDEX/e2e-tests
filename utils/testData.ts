@@ -167,6 +167,8 @@ export const aaveV3OptimismMultiplyPools_3 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH',
 
 export const aaveV3OptimismMultiplyPools_4 = ['USDC.E-ETH', 'USDC.E-WBTC', 'WSTETH-USDC'];
 
+export const aaveV2EthereumMultiplyPools = ['ETH-USDC', 'WBTC-USDC']; // 'STETH-USDC' skipped - Not able to get funds with 'tenderly_setBalance'
+
 export type Tokens =
 	| 'CBETH'
 	| 'DAI'

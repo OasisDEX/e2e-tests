@@ -197,6 +197,21 @@ const defaultConfig: PlaywrightTestConfig = {
 			testMatch: ['withWallet/z_openPositions/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
+
+		{
+			name: 'with-wallet-open-positions-aave',
+			testMatch: ['withWallet/z_openPositions/aave**/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-open-positions-other',
+			testMatch: [
+				'withWallet/z_openPositions/morphoBlue/**',
+				'withWallet/z_openPositions/spark/**',
+			],
+			use: { ...devices['Desktop Chrome'] },
+		},
 	],
 };
 
