@@ -51,6 +51,8 @@ export const openNewPosition = async ({
 						: 0
 				];
 
+			let debtToken: string = pool.split('-')[1];
+
 			await test.step('Test setup', async () => {
 				const setupNetwork = network === 'ethereum' ? 'mainnet' : network;
 
@@ -77,6 +79,16 @@ export const openNewPosition = async ({
 
 			await app.position.openPage(`/${network}/${protocol}/${positionType}/${pool}#setup`);
 
+			// ====================
+			// let trimmedDebtToken: Tokens;
+			// if (targetPool.debtToken.includes('-')) {
+			// 	trimmedDebtToken = targetPool.debtToken.includes('ETH') ? 'ETH' : 'DAI';
+			// }
+			// await app.position.swap.productHub.filters.debtTokens.select(
+			// 	targetPool.debtToken.includes('-') ? trimmedDebtToken : targetPool.debtToken
+			// );
+			//=====================
+
 			await openPosition({
 				app,
 				forkId,
@@ -84,6 +96,15 @@ export const openNewPosition = async ({
 					token: collToken,
 					amount: depositAmount[collToken === 'USDC.E' ? 'USDC_E' : collToken],
 				},
+				borrow:
+					positionType === 'borrow'
+						? {
+								token: debtToken,
+								amount: (
+									+depositAmount[debtToken === 'USDC.E' ? 'USDC_E' : collToken] / 3
+								).toString(),
+						  }
+						: null,
 			});
 		});
 	});
