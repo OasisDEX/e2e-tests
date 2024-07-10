@@ -1,8 +1,8 @@
 import { test } from '@playwright/test';
-import { morphoEthereumEarnPools } from 'utils/testData';
+import { morphoEthereumEarnPools_1 } from 'utils/testData';
 import { openNewPosition } from 'tests/sharedTestSteps/openNewPosition';
 
-morphoEthereumEarnPools.forEach((pool) => {
+morphoEthereumEarnPools_1.forEach((pool) => {
 	test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		await openNewPosition({
 			network: 'ethereum',

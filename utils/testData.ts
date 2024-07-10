@@ -19,39 +19,16 @@ export const sparkEthereumEarnPools = [
 	'WEETH-ETH',
 ];
 
-export const morphoEthereumMultiplyPools_1 = [
+export const morphoEthereumMultiplyPools = [
 	'WSTETH-USDC',
 	'WSTETH-USDT',
-	// 'WSTETH-USDA', - BUG 15978 - Pool should be removed for Multiply
 	'WBTC-USDC',
 	'WBTC-USDT',
-];
-
-export const morphoEthereumMultiplyPools_2 = [
-	'USDE-DAI-1',
-	'USDE-DAI-2',
-	'USDE-DAI-3',
-	'SUSDE-USDT',
-	'OSETH-ETH',
-];
-
-export const morphoEthereumMultiplyPools_3 = [
-	'WSTETH-ETH-1',
-	'WSTETH-ETH-2',
-	'WSTETH-ETH-3',
-	'WEETH-ETH',
-	'WOETH-ETH',
-];
-
-export const morphoEthereumMultiplyPools_4 = [
 	'MKR-USDC',
-	'EZETH-ETH',
-	'SUSDE-DAI-1',
-	'SUSDE-DAI-2',
-	'SUSDE-DAI-3',
+	'WSTETH-USDA', // - BUG 15978 - Pool should be removed for Multiply
 ];
 
-export const morphoEthereumEarnPools = [
+export const morphoEthereumEarnPools_1 = [
 	'flagship-ETH',
 	'flagship-USDC',
 	'flagship-USDT',
@@ -59,6 +36,58 @@ export const morphoEthereumEarnPools = [
 	'steakhouse-PYUSD',
 	'steakhouse-USDC',
 	'steakhouse-USDT',
+];
+
+export const morphoEthereumEarnPools_2 = [
+	'USDE-DAI-1',
+	'USDE-DAI-2',
+	'USDE-DAI-3',
+	'SUSDE-USDT',
+	'OSETH-ETH',
+];
+
+export const morphoEthereumEarnPools_3 = [
+	'WSTETH-ETH-1',
+	'WSTETH-ETH-2',
+	'WSTETH-ETH-3',
+	'WEETH-ETH',
+	'WOETH-ETH',
+];
+
+export const morphoEthereumEarnPools_4 = ['EZETH-ETH', 'SUSDE-DAI-1', 'SUSDE-DAI-2', 'SUSDE-DAI-3'];
+
+export const morphoEthereumBorrowPools_1 = [
+	'USDE-DAI-1',
+	'USDE-DAI-2',
+	'USDE-DAI-3',
+	'OSETH-ETH',
+	'EZETH-ETH',
+];
+
+export const morphoEthereumBorrowPools_2 = [
+	'SUSDE-DAI-1',
+	'SUSDE-DAI-2',
+	'SUSDE-DAI-3',
+	'SUSDE-DAI-4',
+	'SUSDE-USDT',
+];
+
+export const morphoEthereumBorrowPools_3 = [
+	'WSTETH-ETH-1',
+	'WSTETH-ETH-2',
+	'WSTETH-ETH-3',
+	'WSTETH-USDC',
+	'WSTETH-USDT',
+	'WSTETH-USDA',
+];
+
+export const morphoEthereumBorrowPools_4 = [
+	'WBTC-USDC',
+	'WBTC-USDT',
+	'MKR-USDC',
+	'RSETH-ETH',
+	'WOETH-ETH',
+	'WEETH-ETH',
 ];
 
 export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC', 'CBETH-USDC', 'WEETH-USDC'];
@@ -207,6 +236,7 @@ export type Tokens =
 	| 'PTWEETH'
 	| 'RETH'
 	| 'RPL'
+	| 'RSETH'
 	| 'SDAI'
 	| 'SUSDE'
 	| 'USDA'
@@ -234,6 +264,7 @@ export type SetBalanceTokens =
 	| 'OSETH'
 	| 'PYUSD'
 	| 'RETH'
+	| 'RSETH'
 	| 'SDAI'
 	| 'STETH'
 	| 'SUSDE'
@@ -265,6 +296,7 @@ export const depositAmount = {
 	OSETH: '5',
 	PYUSD: '2000',
 	RETH: '5',
+	RSETH: '5',
 	SDAI: '2000',
 	STETH: '5',
 	SUSDE: '100000',
