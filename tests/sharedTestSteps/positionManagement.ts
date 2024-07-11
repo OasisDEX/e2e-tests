@@ -61,7 +61,7 @@ export const openPosition = async ({
 
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
-			await app.position.setup.approveAllowance();
+			await app.position.setup.approveAllowanceOrRetry();
 			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });

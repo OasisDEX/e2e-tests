@@ -44,7 +44,10 @@ export const openNewPosition = async ({
 
 			let collToken: string =
 				pool.split('-')[
-					(network === 'ethereum' && protocol === 'aave/v3' && pool === 'WSTETH-ETH') ||
+					(network === 'ethereum' &&
+						protocol === 'aave/v3' &&
+						pool === 'WSTETH-ETH' &&
+						positionType !== 'borrow') ||
 					pool.includes('flagship') ||
 					pool.includes('steakhouse')
 						? 1
