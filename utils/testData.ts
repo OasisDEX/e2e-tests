@@ -181,6 +181,75 @@ export const aaveV3EthereumMultiplyPools_7 = [
 
 export const aaveV3EthereumMultiplyPools_8 = ['USDC-ETH', 'USDC-WSTETH', 'USDC-WBTC', 'USDT-ETH'];
 
+export const aaveV3EthereumBorrowPools_1 = [
+	'ETH-DAI',
+	'ETH-USDC',
+	'ETH-USDT',
+	'ETH-GHO',
+	'ETH-WBTC',
+];
+
+export const aaveV3EthereumBorrowPools_2 = [
+	'WBTC-DAI',
+	'WBTC-USDC',
+	'WBTC-USDT',
+	'WBTC-LUSD',
+	'WBTC-GHO',
+	'WBTC-ETH',
+];
+
+export const aaveV3EthereumBorrowPools_3 = [
+	'WSTETH-DAI',
+	'WSTETH-USDC',
+	'WSTETH-USDT',
+	'WSTETH-LUSD',
+	'WSTETH-GHO',
+	'WSTETH-RPL',
+	'WSTETH-CBETH',
+	'WSTETH-ETH', // Failing -> BUG - 16039
+];
+
+export const aaveV3EthereumBorrowPools_4 = [
+	'RETH-DAI',
+	'RETH-USDC',
+	'RETH-USDT',
+	'RETH-GHO',
+	'RETH-ETH',
+	'WEETH-GHO',
+];
+
+export const aaveV3EthereumBorrowPools_5 = ['CBETH-ETH', 'CBETH-USDC', 'CBETH-GHO', 'LDO-USDT'];
+
+export const aaveV3EthereumBorrowPools_6 = [
+	'LINK-DAI',
+	'LINK-USDC',
+	'LINK-USDT',
+	'LINK-GHO',
+	'LINK-ETH',
+	'DAI-ETH',
+	'DAI-MKR',
+	'DAI-WBTC',
+];
+
+export const aaveV3EthereumBorrowPools_7 = [
+	'SDAI-WBTC',
+	'SDAI-ETH',
+	'SDAI-USDC',
+	'SDAI-USDT',
+	'SDAI-LUSD',
+	'SDAI-GHO',
+	'SDAI-FRAX',
+];
+
+export const aaveV3EthereumBorrowPools_8 = [
+	'USDC-WBTC',
+	'USDC-ETH',
+	'USDC-WSTETH',
+	'USDC-USDT',
+	'USDC-GHO',
+	'USDT-ETH',
+];
+
 export const aaveV3ArbitrumEarnPools = ['WSTETH-ETH', 'RETH-ETH', 'WEETH-ETH']; // BUG - 16013
 
 export const aaveV3ArbitrumMultiplyPools_1 = [
@@ -297,11 +366,11 @@ export const depositAmount = {
 	ETH: '2',
 	EZETH: '2',
 	FRAX: '4000',
-	GHO: '100',
+	GHO: '4000',
 	LDO: '4000',
 	LINK: '1000',
 	LUSD: '4000',
-	MKR: '20',
+	MKR: '2',
 	OP: '1000',
 	OSETH: '2',
 	PYUSD: '4000',
@@ -315,7 +384,7 @@ export const depositAmount = {
 	USDC_E: '4000',
 	USDE: '4000',
 	USDT: '4000',
-	WBTC: '0.3',
+	WBTC: '0.15',
 	WEETH: '2',
 	WETH: '2',
 	WOETH: '2',
