@@ -12,94 +12,59 @@ let app: App;
 let forkId: string;
 let walletAddress: string;
 
-test.describe.configure({ mode: 'serial' });
+(['update', 'remove'] as const).forEach((automationAction) =>
+	test.describe('Morpho Blue Multiply - Wallet connected', async () => {
+		test.afterAll(async () => {
+			await tenderly.deleteFork(forkId);
 
-test.describe('Morpho Blue Multiply - Wallet connected', async () => {
-	test.afterAll(async () => {
-		await tenderly.deleteFork(forkId);
+			await app.page.close();
 
-		await app.page.close();
+			await context.close();
 
-		await context.close();
-
-		await resetState();
-	});
-
-	test('It should update an existing Auto-Sell trigger on a Morpho Blue Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
+			await resetState();
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		test(`It should ${automationAction} an existing Auto-Sell trigger on a Morpho Blue Multiply position @regression`, async () => {
+			test.info().annotations.push({
+				type: 'Test case',
+				description: 'xxx',
+			});
 
-		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'mainnet' }));
-			let page = await context.newPage();
-			app = new App(page);
+			test.setTimeout(veryLongTestTimeout);
 
-			({ forkId, walletAddress } = await setup({
+			await test.step('Test setup', async () => {
+				({ context } = await metamaskSetUp({ network: 'mainnet' }));
+				let page = await context.newPage();
+				app = new App(page);
+
+				({ forkId, walletAddress } = await setup({
+					app,
+					network: 'mainnet',
+					extraFeaturesFlags:
+						'LambdaAutomations:DisableNetValueCheck:true AaveV3LambdaSuppressValidation:true',
+				}));
+			});
+
+			await tenderly.changeAccountOwner({
+				account: '0xb3ec84f942d4e8d5abb3d27a574c3655eac50603',
+				newOwner: walletAddress,
+				forkId,
+			});
+
+			await app.position.openPage('/ethereum/morphoblue/multiply/WSTETH-ETH-1/1478#overview');
+
+			await automations.testAutoSell({
 				app,
-				network: 'mainnet',
-				extraFeaturesFlags:
-					'LambdaAutomations:DisableNetValueCheck:true AaveV3LambdaSuppressValidation:true',
-			}));
+				forkId,
+				protocol: 'Morpho Blue',
+				verifyTriggerPayload: {
+					protocol: 'morphoblue',
+					collToken: 'mainnetWSTETH',
+					debtToken: 'mainnetETH',
+					action: automationAction,
+				},
+				action: automationAction,
+			});
 		});
-
-		await tenderly.changeAccountOwner({
-			account: '0xb3ec84f942d4e8d5abb3d27a574c3655eac50603',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.position.openPage('/ethereum/morphoblue/multiply/WSTETH-ETH-1/1478#overview');
-
-		await automations.testAutoSell({
-			app,
-			forkId,
-			protocol: 'Morpho Blue',
-			verifyTriggerPayload: {
-				protocol: 'morphoblue',
-				collToken: 'mainnetWSTETH',
-				debtToken: 'mainnetETH',
-				action: 'update',
-			},
-			action: 'update',
-		});
-	});
-
-	test('It should remove an existing Auto-Sell trigger on a Morpho Blue Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		// New fork needed to be able to close a Multiply position
-		await test.step('Test setup - New fork', async () => {
-			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
-		});
-
-		await tenderly.changeAccountOwner({
-			account: '0xb3ec84f942d4e8d5abb3d27a574c3655eac50603',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.position.openPage('/ethereum/morphoblue/multiply/WSTETH-ETH-1/1478#overview');
-
-		await automations.testAutoSell({
-			app,
-			forkId,
-			protocol: 'Morpho Blue',
-			verifyTriggerPayload: {
-				protocol: 'morphoblue',
-				collToken: 'mainnetWSTETH',
-				debtToken: 'mainnetETH',
-				action: 'remove',
-			},
-			action: 'remove',
-		});
-	});
-});
+	})
+);

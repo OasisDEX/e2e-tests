@@ -277,6 +277,7 @@ export type SetBalanceTokens =
 	| 'SDAI'
 	| 'STETH'
 	| 'SUSDE'
+	| 'USDA'
 	| 'USDC'
 	| 'USDC_E'
 	| 'USDE'
