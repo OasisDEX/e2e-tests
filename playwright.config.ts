@@ -205,6 +205,37 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'with-wallet-open-positions-aave-ethereum',
+			testMatch: ['withWallet/z_openPositions/aave**/ethereum/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-open-positions-aave-ethereum-earn-multiply',
+			testMatch: [
+				'withWallet/z_openPositions/aave**/ethereum/**Mult**',
+				'withWallet/z_openPositions/aave**/ethereum/**Earn**',
+			],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-open-positions-aave-ethereum-borrow',
+			testMatch: ['withWallet/z_openPositions/aave**/ethereum/**Borr**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-open-positions-aave-l2s',
+			testMatch: [
+				'withWallet/z_openPositions/aaveV3/arbitrum/**',
+				'withWallet/z_openPositions/aaveV3/base/**',
+				'withWallet/z_openPositions/aaveV3/optimism/**',
+			],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
 			name: 'with-wallet-open-positions-other',
 			testMatch: [
 				'withWallet/z_openPositions/morphoBlue/**',
