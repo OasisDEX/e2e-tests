@@ -152,26 +152,27 @@ export const aaveV3EthereumMultiplyPools_3 = [
 	'WSTETH-USDT',
 	'WSTETH-LUSD',
 	'WSTETH-RPL',
-	'WSTETH-GHO',
+	// 'WSTETH-GHO', --> skipped as there is no GHO liquidity
 ];
 
 export const aaveV3EthereumMultiplyPools_4 = [
 	'RETH-DAI',
 	'RETH-USDC',
 	'RETH-USDT',
-	'RETH-GHO',
-	// 'WEETH-GHO',  --> WEETH supply 100%
+	// 'RETH-GHO', --> skipped as there is no GHO liquidity
+	// 'WEETH-GHO', --> WEETH supply 100%
 ];
 
-export const aaveV3EthereumMultiplyPools_5 = ['CBETH-DAI', 'CBETH-USDC', 'CBETH-GHO'];
-// 'LDO-USDT' skipped as tenderly_setErc20Balance is not working with LDO
+export const aaveV3EthereumMultiplyPools_5 = ['CBETH-DAI', 'CBETH-USDC'];
+// 'CBETH-GHO' --> skipped as there is no GHO liquidity
+// 'LDO-USDT' --> skipped as tenderly_setErc20Balance is not working with LDO
 
 export const aaveV3EthereumMultiplyPools_6 = [
 	'LINK-DAI',
 	'LINK-USDC',
 	'LINK-USDT',
-	'LINK-GHO',
 	'LINK-ETH',
+	// 'LINK-GHO', --> skipped as there is no GHO liquidity
 ];
 
 export const aaveV3EthereumMultiplyPools_7 = [
@@ -264,7 +265,8 @@ export const aaveV3ArbitrumMultiplyPools_1 = [
 	// 'WEETH-USDC',  --> WEETH supply 100%
 ];
 
-export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-DAI', 'RETH-USDC', 'WSTETH-DAI', 'WSTETH-USDC'];
+// export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-DAI', 'RETH-USDC', 'WSTETH-DAI', 'WSTETH-USDC'];
+export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-USDC'];
 
 export const aaveV3ArbitrumMultiplyPools_3 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
 
