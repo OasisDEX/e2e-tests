@@ -73,14 +73,13 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'SDAI', debtToken: 'FRAX' },
-			{ colToken: 'SDAI', debtToken: 'LUSD' },
-			{ colToken: 'SDAI', debtToken: 'USDC' },
+			{ colToken: 'SDAI', debtToken: 'GHO' },
 			{ colToken: 'SDAI', debtToken: 'USDT' },
+			{ colToken: 'SDAI', debtToken: 'ETH' },
 			{ colToken: 'SDAI', debtToken: 'WBTC' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Morpho Borrow position (WEETH/ETH) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Morpho Borrow position (WSTETH/USDC) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
