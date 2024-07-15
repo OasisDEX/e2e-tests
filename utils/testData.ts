@@ -59,7 +59,7 @@ export const morphoEthereumEarnPools_3 = [
 	'WSTETH-ETH-1',
 	'WSTETH-ETH-2',
 	'WSTETH-ETH-3',
-	// 'WEETH-ETH',
+	'WEETH-ETH',
 	'WOETH-ETH',
 ];
 
@@ -96,7 +96,7 @@ export const morphoEthereumBorrowPools_4 = [
 	'MKR-USDC',
 	'RSETH-ETH',
 	'WOETH-ETH',
-	// 'WEETH-ETH', --> WEETH supply 100%
+	'WEETH-ETH',
 ];
 
 export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC', 'CBETH-USDC'];
@@ -151,8 +151,8 @@ export const aaveV3EthereumMultiplyPools_3 = [
 	'WSTETH-USDC',
 	'WSTETH-USDT',
 	'WSTETH-LUSD',
-	'WSTETH-GHO',
 	'WSTETH-RPL',
+	'WSTETH-GHO',
 ];
 
 export const aaveV3EthereumMultiplyPools_4 = [
@@ -163,7 +163,8 @@ export const aaveV3EthereumMultiplyPools_4 = [
 	// 'WEETH-GHO',  --> WEETH supply 100%
 ];
 
-export const aaveV3EthereumMultiplyPools_5 = ['CBETH-DAI', 'CBETH-USDC', 'CBETH-GHO', 'LDO-USDT'];
+export const aaveV3EthereumMultiplyPools_5 = ['CBETH-DAI', 'CBETH-USDC', 'CBETH-GHO'];
+// 'LDO-USDT' skipped as tenderly_setErc20Balance is not working with LDO
 
 export const aaveV3EthereumMultiplyPools_6 = [
 	'LINK-DAI',
@@ -219,7 +220,8 @@ export const aaveV3EthereumBorrowPools_4 = [
 	// 'WEETH-GHO', --> WEETH supply 100%
 ];
 
-export const aaveV3EthereumBorrowPools_5 = ['CBETH-ETH', 'CBETH-USDC', 'CBETH-GHO', 'LDO-USDT'];
+export const aaveV3EthereumBorrowPools_5 = ['CBETH-ETH', 'CBETH-USDC', 'CBETH-GHO'];
+// 'LDO-USDT' skipped as tenderly_setErc20Balance is not working with LDO
 
 export const aaveV3EthereumBorrowPools_6 = [
 	'LINK-DAI',
@@ -353,6 +355,7 @@ export type Tokens =
 	| 'ETH-3'
 	| 'EZETH'
 	| 'FRAX'
+	| 'GHO'
 	| 'LDO'
 	| 'LINK'
 	| 'LUSD'

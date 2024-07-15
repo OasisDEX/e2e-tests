@@ -13,11 +13,6 @@ export class Homepage {
 	}
 
 	@step
-	async open() {
-		await this.page.goto('');
-	}
-
-	@step
 	async shouldBeVisible() {
 		await expect(
 			this.page.getByText('The best place to Borrow and Earn in DeFi'),
@@ -28,7 +23,20 @@ export class Homepage {
 	}
 
 	@step
+	async open() {
+		await expect(async () => {
+			await this.page.goto('');
+			await this.shouldBeVisible();
+		}).toPass();
+	}
+
+	@step
 	async connectWallet() {
 		await this.page.getByText('Connect a wallet').click();
+	}
+
+	@step
+	async openRaysPage() {
+		await this.page.getByRole('link').filter({ hasText: 'Learn how to earn $RAYS' }).click();
 	}
 }

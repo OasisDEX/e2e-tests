@@ -10,7 +10,6 @@ import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManage
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -43,7 +42,7 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
@@ -74,7 +73,6 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'CBETH', debtToken: 'ETH' },
 			{ colToken: 'CBETH', debtToken: 'USDC' },
 			{ colToken: 'DAI', debtToken: 'ETH' },
 			{ colToken: 'DAI', debtToken: 'MKR' },

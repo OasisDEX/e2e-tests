@@ -162,17 +162,22 @@ export class Portfolio {
 		const migratePositions = this.page.getByText('Why migrate?');
 		const errorLoadingPositions = this.page.getByText('error trying to load positions');
 
+		let errorLoadingPositionsCount: number;
+
+		// Initial check to make sure that positions component has either loaded or shown error
 		await expect(async () => {
 			const noPositionsCount = await noPositions.count();
 			const positionsListedCount = await positionsListed.count();
 			const migratePositionsCount = await migratePositions.count();
-			const errorLoadingPositionsCount = await errorLoadingPositions.count();
+			errorLoadingPositionsCount = await errorLoadingPositions.count();
 
 			expect(
 				noPositionsCount + positionsListedCount + migratePositionsCount + errorLoadingPositionsCount
 			).toBeGreaterThan(0);
-			expect(errorLoadingPositionsCount).toEqual(0);
 		}).toPass();
+
+		// Check that positions component loaded without errors
+		expect(errorLoadingPositionsCount).toEqual(0);
 	}
 
 	@step

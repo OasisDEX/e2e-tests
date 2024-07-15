@@ -16,6 +16,11 @@ test.describe('Homepage', async () => {
 		await app.modals.connectWallet.shouldBeVisible();
 	});
 
+	test('It should open Rays page', async ({ app }) => {
+		await app.homepage.openRaysPage();
+		await app.rays.shouldBeVivible();
+	});
+
 	test('It should list Earn positions by default', async ({ app }) => {
 		await app.homepage.productHub.header.positionType.shouldBe('Earn');
 	});

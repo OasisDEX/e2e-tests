@@ -78,10 +78,10 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// SKIP if DB collision still hapenning with omni
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12055',
+			description: '12056',
 		});
 
 		test.setTimeout(veryLongTestTimeout);
@@ -97,19 +97,20 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await adjustRisk({
 			forkId,
 			app,
-			risk: 'up',
-			newSliderPosition: 0.9,
+			risk: 'down',
+			newSliderPosition: 0.05,
 		});
 	});
 
 	// SKIP if DB collision still hapenning with omni
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down @regression', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12056',
+			description: '12055',
 		});
 
 		test.setTimeout(veryLongTestTimeout);
+
 		// New fork needed to be able to close a Multiply position
 		await test.step('Test setup - New fork', async () => {
 			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
@@ -126,8 +127,8 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await adjustRisk({
 			forkId,
 			app,
-			risk: 'down',
-			newSliderPosition: 0.05,
+			risk: 'up',
+			newSliderPosition: 0.9,
 		});
 	});
 

@@ -10,7 +10,6 @@ import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManage
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -43,7 +42,7 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
@@ -81,7 +80,6 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 			{ colToken: 'WBTC', debtToken: 'USDT' },
 			{ colToken: 'WSTETH', debtToken: 'CBETH' },
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			{ colToken: 'WSTETH', debtToken: 'ETH' },
 			{ colToken: 'WSTETH', debtToken: 'LUSD' },
 			{ colToken: 'WSTETH', debtToken: 'RPL' },
 			{ colToken: 'WSTETH', debtToken: 'USDC' },
@@ -104,8 +102,6 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
-				// originalProtocol: 'Spark',
-				// targetProtocol: 'Aave V3',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,

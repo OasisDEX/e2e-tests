@@ -10,6 +10,7 @@ import {
 	PoolFinder,
 	Portfolio,
 	Position,
+	Rays,
 } from './pages';
 
 export class App {
@@ -35,6 +36,8 @@ export class App {
 
 	readonly position: Position;
 
+	readonly rays: Rays;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.borrow = new Borrow(page);
@@ -47,6 +50,7 @@ export class App {
 		this.poolFinder = new PoolFinder(page);
 		this.portfolio = new Portfolio(page);
 		this.position = new Position(page);
+		this.rays = new Rays(page);
 	}
 
 	async pause() {

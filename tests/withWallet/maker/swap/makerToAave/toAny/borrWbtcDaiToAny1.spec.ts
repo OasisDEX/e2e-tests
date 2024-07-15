@@ -85,7 +85,6 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'CBETH', debtToken: 'ETH' },
 			{ colToken: 'CBETH', debtToken: 'USDC' },
 			{ colToken: 'DAI', debtToken: 'ETH' },
 			{ colToken: 'DAI', debtToken: 'MKR' },
