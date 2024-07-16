@@ -99,8 +99,9 @@ export const morphoEthereumBorrowPools_4 = [
 	'WEETH-ETH',
 ];
 
-export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC', 'CBETH-USDC'];
+export const morphoBaseMultiplyPools = ['ETH-USDC', 'CBETH-USDC'];
 // , 'WEETH-USDC' --> WEETH supply 100%
+// , 'WSTETH-USDC' --> NO LIQUIDITY
 
 export const morphoBaseEarnPools = [
 	'WSTETH-ETH-2',
@@ -114,11 +115,11 @@ export const morphoBaseEarnPools = [
 export const morphoBaseBorrowPools = [
 	'AERO-USDC',
 	'EZETH-USDC',
-	'CBETH-USDC',
-	'WSTETH-USDC',
 	'ETH-USDC',
 	'CBETH-ETH',
 	'WSTETH-ETH-2',
+	// 'CBETH-USDC', -- NO LIQUIDITY
+	// 'WSTETH-USDC', -- NO LIQUIDITY
 ];
 export const aaveV3EthereumEarnPools_1 = ['WSTETH-CBETH', 'WSTETH-ETH', 'CBETH-ETH', 'RETH-ETH'];
 
@@ -265,8 +266,7 @@ export const aaveV3ArbitrumMultiplyPools_1 = [
 	// 'WEETH-USDC',  --> WEETH supply 100%
 ];
 
-// export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-DAI', 'RETH-USDC', 'WSTETH-DAI', 'WSTETH-USDC'];
-export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-USDC'];
+export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-DAI', 'RETH-USDC', 'WSTETH-DAI', 'WSTETH-USDC'];
 
 export const aaveV3ArbitrumMultiplyPools_3 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
 

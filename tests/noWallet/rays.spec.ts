@@ -2,7 +2,7 @@ import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('No-wallet connected - Rays', async () => {
-	test('It should open Rays page - Rays page header', async ({ app }) => {
+	test('It should open connect-wallet popup  - Rays page header', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -16,7 +16,7 @@ test.describe('No-wallet connected - Rays', async () => {
 		await app.modals.connectWallet.shouldBeVisible();
 	});
 
-	test('It should open Rays page - Claim Rays block', async ({ app }) => {
+	test('It should open connect-wallet popup - Claim Rays block', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

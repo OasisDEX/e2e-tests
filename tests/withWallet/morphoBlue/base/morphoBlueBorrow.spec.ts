@@ -44,18 +44,18 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 				forkId,
 				network: 'base',
 				walletAddress,
-				token: 'CBETH',
+				token: 'ETH',
 				balance: '30',
 			});
 		});
 
-		await app.page.goto('/base/morphoblue/borrow/CBETH-USDC#setup');
+		await app.page.goto('/base/morphoblue/borrow/ETH-USDC#setup');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '10' },
-			borrow: { token: 'USDC', amount: '10000' },
+			deposit: { token: 'ETH', amount: '5' },
+			borrow: { token: 'USDC', amount: '5000' },
 			protocol: 'Morpho Blue',
 		});
 	});
@@ -71,14 +71,14 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '5' },
-			borrow: { token: 'USDC', amount: '5000' },
+			deposit: { token: 'ETH', amount: '1' },
+			borrow: { token: 'USDC', amount: '1000' },
 			allowanceNotNeeded: true,
 			expectedCollateralDeposited: {
-				amount: '15.00',
-				token: 'CBETH',
+				amount: '6.00',
+				token: 'ETH',
 			},
-			expectedDebt: { amount: '15,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
+			expectedDebt: { amount: '6,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 
@@ -95,13 +95,13 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			withdraw: { token: 'CBETH', amount: '5' },
-			payBack: { token: 'USDC', amount: '5000' },
+			withdraw: { token: 'ETH', amount: '1' },
+			payBack: { token: 'USDC', amount: '1000' },
 			expectedCollateralDeposited: {
-				amount: '10.00',
-				token: 'CBETH',
+				amount: '5.00',
+				token: 'ETH',
 			},
-			expectedDebt: { amount: '10,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
+			expectedDebt: { amount: '5,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 
@@ -113,20 +113,20 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'CBETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'ETH' });
 		await app.position.manage.select('Manage debt');
 
 		await manageDebtOrCollateral({
 			app,
 			forkId,
 			allowanceNotNeeded: true,
-			borrow: { token: 'USDC', amount: '5000' },
-			deposit: { token: 'CBETH', amount: '5' },
+			borrow: { token: 'USDC', amount: '1000' },
+			deposit: { token: 'ETH', amount: '1' },
 			expectedCollateralDeposited: {
-				amount: '15.00',
-				token: 'CBETH',
+				amount: '6.00',
+				token: 'ETH',
 			},
-			expectedDebt: { amount: '15,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
+			expectedDebt: { amount: '6,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 
@@ -138,7 +138,7 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'CBETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'ETH' });
 		await app.position.manage.select('Manage debt');
 		await app.position.manage.payBackDebt();
 
@@ -146,13 +146,13 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 			app,
 			forkId,
 			allowanceNotNeeded: true,
-			payBack: { token: 'USDC', amount: '5000' },
-			withdraw: { token: 'CBETH', amount: '5' },
+			payBack: { token: 'USDC', amount: '1000' },
+			withdraw: { token: 'ETH', amount: '1' },
 			expectedCollateralDeposited: {
-				amount: '10.00',
-				token: 'CBETH',
+				amount: '5.00',
+				token: 'ETH',
 			},
-			expectedDebt: { amount: '10,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
+			expectedDebt: { amount: '5,[0-9]{3}.[0-9]{1,2}', token: 'USDC' },
 		});
 	});
 });
