@@ -3,17 +3,18 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
+import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Swap to Aave V3', async () => {
+test.describe('Maker Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -28,11 +29,11 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Spark position as part of the Swap tests setup
-	test('It should open a Spark Multiply position', async () => {
+	// Create a Maker position as part of the Swap tests setup
+	test('Test setup - Open Maker Borrow position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: 'xxx',
+			description: '11788, 11790',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -42,22 +43,31 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({
+			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'WBTC',
+				balance: '20',
+			});
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
+		await app.page.goto('vaults/open/WBTC-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
+		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 
-		await openPosition({
+		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'WBTC', amount: '0.2' },
+			generate: { token: 'DAI', amount: '5000' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -65,28 +75,32 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 		await swapPosition({
 			app,
 			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
+			reason: 'Change direction of my position',
+			originalProtocol: 'Maker',
+			targetProtocol: 'Aave V3',
+			targetPool: { colToken: 'SDAI', debtToken: 'ETH' },
 			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			{ colToken: 'WBTC', debtToken: 'DAI' },
-			{ colToken: 'WBTC', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'LUSD' },
-			{ colToken: 'WBTC', debtToken: 'USDC' },
-			{ colToken: 'WBTC', debtToken: 'USDT' },
+			{ colToken: 'WSTETH', debtToken: 'CBETH' },
+			{ colToken: 'WSTETH', debtToken: 'DAI' },
+			{ colToken: 'WSTETH', debtToken: 'LUSD' },
+			{ colToken: 'WSTETH', debtToken: 'RPL' },
+			{ colToken: 'WSTETH', debtToken: 'USDC' },
+			{ colToken: 'WSTETH', debtToken: 'USDT' },
+			{ colToken: 'WSTETH', debtToken: 'GHO' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Spark Multiply position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (WBTC/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
 			});
 
-			test.setTimeout(extremelyLongTestTimeout);
+			test.setTimeout(longTestTimeout);
 
 			// Wait an reload to avoid flakiness
 			await app.page.waitForTimeout(1000);
@@ -96,6 +110,8 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
+				originalProtocol: 'Maker',
+				targetProtocol: 'Aave V3',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,

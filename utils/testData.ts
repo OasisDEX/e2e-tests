@@ -99,9 +99,9 @@ export const morphoEthereumBorrowPools_4 = [
 	'WEETH-ETH',
 ];
 
-export const morphoBaseMultiplyPools = ['ETH-USDC', 'CBETH-USDC'];
+export const morphoBaseMultiplyPools = ['ETH-USDC'];
 // , 'WEETH-USDC' --> WEETH supply 100%
-// , 'WSTETH-USDC' --> NO LIQUIDITY
+// , 'CBETH-USDC', 'WSTETH-USDC' --> NO LIQUIDITY
 
 export const morphoBaseEarnPools = [
 	'WSTETH-ETH-2',
