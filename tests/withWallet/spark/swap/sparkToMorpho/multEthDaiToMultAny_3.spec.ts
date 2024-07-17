@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Swap to Aave V3', async () => {
+test.describe('Spark Multiply - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -28,7 +28,7 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Spark position as part of the Swap tests setup
+	// Create a Maker position as part of the Swap tests setup
 	test('It should open a Spark Multiply position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
@@ -66,21 +66,23 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
+			originalProtocol: 'Spark',
+			targetProtocol: 'Morpho',
+			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
 			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			{ colToken: 'WBTC', debtToken: 'DAI' },
-			{ colToken: 'WBTC', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'LUSD' },
-			{ colToken: 'WBTC', debtToken: 'USDC' },
-			{ colToken: 'WBTC', debtToken: 'USDT' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-2' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-3' },
+			{ colToken: 'WSTETH', debtToken: 'USDC' },
+			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Spark Multiply position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Spark Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -96,6 +98,8 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
+				originalProtocol: 'Spark',
+				targetProtocol: 'Morpho',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,
