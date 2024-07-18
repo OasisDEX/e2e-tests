@@ -46,4 +46,9 @@ export class Header {
 	async connectWallet() {
 		await this.headerLocator.getByText('Connect Wallet').click();
 	}
+
+	@step
+	async openRaysPage() {
+		await this.page.getByRole('link').filter({ hasText: 'Get $RAYS' }).click();
+	}
 }

@@ -475,4 +475,10 @@ export class Overview {
 	async swap() {
 		await this.page.getByRole('button', { name: 'Get Started' }).click();
 	}
+
+	@step
+	async shouldHaveRays(count: string) {
+		const regExp = new RegExp(`\\+ ${count}`);
+		await expect(this.page.getByText('Rays / year')).toHaveText(regExp);
+	}
 }

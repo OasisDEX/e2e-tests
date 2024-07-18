@@ -275,3 +275,36 @@ jobs:
           name: playwright-report-with-wallet-open-positions-other
           path: playwright-reports/with-wallet-open-positions-other
           retention-days: 30
+
+  with-wallet-open-rays:
+    name: 'With wallet - Rays'
+    runs-on: ubuntu-latest
+    env:
+      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
+      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Run With wallet Maker and Spark tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          yarn nightly:with-wallet:rays
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report-with-wallet-rays
+          path: playwright-reports/with-wallet-rays
+          retention-days: 30
