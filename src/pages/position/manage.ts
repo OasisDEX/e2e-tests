@@ -218,4 +218,24 @@ export class Manage {
 	async takeMeToTheMultiplyInterface() {
 		await this.page.getByRole('button', { name: 'Take me to the Multiply interface' }).click();
 	}
+
+	@step
+	async shouldHaveBoostRays({
+		raysCount,
+		automations,
+	}: {
+		raysCount: string;
+		automations?: ('Stop Loss' | 'Auto Sell' | 'Auto Buy' | 'Take Profit')[];
+	}) {
+		const regExp = new RegExp(`${raysCount} Rays a year`);
+		await expect(this.page.getByText('Boost your Rays by an extra')).toHaveText(regExp);
+		if (automations) {
+			for (const automation of automations) {
+				await expect(
+					this.page.getByText('Boost your Rays by an extra').locator('..').getByText(automation),
+					`${automation} should be listed`
+				).toBeVisible();
+			}
+		}
+	}
 }

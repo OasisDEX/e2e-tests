@@ -17,6 +17,7 @@
 	"scripts": {
 		"no-wallet": "REPORT_FOLDER=no-wallet npx playwright test --project=no-wallet",
 		"no-wallet:portfolio": "REPORT_FOLDER=no-wallet-portfolio npx playwright test --project=no-wallet-portfolio",
+		"with-wallet:rays": "REPORT_FOLDER=with-wallet-rays npx playwright test --project=with-wallet-rays --workers=1",
 		"with-wallet:aave:ethereum": "REPORT_FOLDER=with-wallet-aave-ethereum npx playwright test --project=with-wallet-aave-ethereum --workers=1",
 		"with-wallet:aave:other": "REPORT_FOLDER=with-wallet-aave-other npx playwright test --project=with-wallet-aave-other --workers=1",
 		"with-wallet:aave:arbitrum": "REPORT_FOLDER=with-wallet-aave-arbitrum npx playwright test --project=with-wallet-aave-arbitrum --workers=1",
@@ -98,6 +99,7 @@
 		"nightly:with-wallet:open-positions:aave:ethereum:borrow": "RETRIES='2' xvfb-run yarn with-wallet:open-positions:aave:ethereum:borrow",
 		"nightly:with-wallet:open-positions:aave:l2s": "RETRIES='2' xvfb-run yarn with-wallet:open-positions:aave:l2s",
 		"nightly:with-wallet:open-positions:other": "RETRIES='2' xvfb-run yarn with-wallet:open-positions:other",
+		"nightly:with-wallet:rays": "RETRIES='2' xvfb-run yarn with-wallet:rays",
 		"//-4a": "---------------------------------------------------------------",
 		"//-4b": "---------- PORTFOLIO (Staging vs Production) TESTS ------------",
 		"//-4c": "---------------------------------------------------------------",

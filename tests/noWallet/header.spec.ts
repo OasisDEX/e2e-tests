@@ -2,7 +2,7 @@ import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
 test.describe('Header', async () => {
-	test('It should open connect-wallet popup - Header', async ({ app }) => {
+	test('It should open connect-wallet popup - Header @regression', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12336',
@@ -13,6 +13,11 @@ test.describe('Header', async () => {
 		await app.homepage.open();
 		await app.header.connectWallet();
 		await app.modals.connectWallet.shouldBeVisible();
+	});
+
+	test('It should open Rays page @regression', async ({ app }) => {
+		await app.header.openRaysPage();
+		await app.rays.shouldBeVivible();
 	});
 
 	(['Swap', 'Bridge'] as const).forEach((productOption) =>

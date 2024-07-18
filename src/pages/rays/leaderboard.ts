@@ -47,4 +47,45 @@ export class Leaderboard {
 	async shouldNotHaveNextPage() {
 		await expect(this.leaderboardLocator.getByText('next page')).not.toBeVisible();
 	}
+
+	@step
+	async search(address: string) {
+		await this.leaderboardLocator
+			.locator('input[placeholder="Search wallet address or ENS"]')
+			.type(address);
+	}
+
+	@step
+	async shouldDisplaySearchedAddressInTopRow(address: string) {
+		await expect(this.leaderboardLocator.getByText("You're here")).toBeVisible();
+		const topRowText = await this.leaderboardLocator.locator('tbody > tr').first().innerText();
+		expect(topRowText).toContain(address.toLowerCase());
+	}
+
+	@step
+	async shouldLinkToRaysBlogInNewTab() {
+		const buttons = ['Enable Automations', 'Open a position', 'Use Swap'];
+
+		for (const button of buttons) {
+			const href = await this.page.getByRole('link', { name: button }).getAttribute('href');
+			const target = await this.page.getByRole('link', { name: button }).getAttribute('target');
+			expect(href).toBe('https://blog.summer.fi/introducing-rays-points-program');
+			expect(target).toBe('_blank');
+		}
+	}
+
+	@step
+	async viewRaysDetailedInfo({ leaderboardResult }: { leaderboardResult: number }) {
+		const walletAddress = await this.leaderboardLocator
+			.locator('p[class*="Leaderboard_userColumn"]')
+			.nth(leaderboardResult - 1)
+			.innerText();
+
+		await this.leaderboardLocator
+			.locator('p[class*="Leaderboard_userColumn"] a')
+			.nth(leaderboardResult - 1)
+			.click();
+
+		return walletAddress;
+	}
 }
