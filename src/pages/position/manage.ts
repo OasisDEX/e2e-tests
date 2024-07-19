@@ -244,4 +244,34 @@ export class Manage {
 		const regExp = new RegExp('[E-e]arn extra Rays each time automation triggers');
 		await expect(this.page.getByText(regExp)).toBeVisible();
 	}
+
+	@step
+	async shouldUpdateEarnRays() {
+		const initialRaysToEarn = await this.page.getByText('Rays Instantly').innerText();
+		await expect(this.page.getByText('Rays Instantly')).not.toContainText(initialRaysToEarn, {
+			timeout: expectDefaultTimeout * 2,
+		});
+	}
+
+	@step
+	async shouldEarnRays(raysCount: string) {
+		const regExp = new RegExp(`Earn ${raysCount}`);
+		await expect(this.page.getByText('Rays Instantly')).toContainText(regExp);
+	}
+
+	@step
+	async shouldIncreaseRays(raysCount: string) {
+		const regExp = new RegExp(raysCount);
+		await expect(
+			this.page.getByText('You will increase your yearly Rays on this position by')
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldReduceRays(raysCount: string) {
+		const regExp = new RegExp(raysCount);
+		await expect(
+			this.page.getByText('You will reduce your yearly Rays on this position by')
+		).toContainText(regExp);
+	}
 }
