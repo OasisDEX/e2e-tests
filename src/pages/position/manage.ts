@@ -220,7 +220,7 @@ export class Manage {
 	}
 
 	@step
-	async shouldHaveBoostRays({
+	async shouldHaveAutomationBoostRays({
 		raysCount,
 		automations,
 	}: {
@@ -237,5 +237,11 @@ export class Manage {
 				).toBeVisible();
 			}
 		}
+	}
+
+	@step
+	async shouldHaveAutomationTriggerEarnRays() {
+		const regExp = new RegExp('[E-e]arn extra Rays each time automation triggers');
+		await expect(this.page.getByText(regExp)).toBeVisible();
 	}
 }

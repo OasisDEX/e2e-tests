@@ -15,11 +15,16 @@ export class Position {
 	}
 
 	@step
-	async shouldHave(args: { assets?: string }) {
+	async shouldHave(args: { assets?: string; rays?: string }) {
 		if (args.assets) {
 			await expect(
 				this.positionLocator.getByText('Position').locator('xpath=//preceding::span[1]')
 			).toContainText(args.assets, { timeout: portfolioTimeout });
+		}
+
+		if (args.rays) {
+			const regExp = new RegExp(`\\+ ${args.rays}`);
+			await expect(this.positionLocator.getByText('Rays / year')).toHaveText(regExp);
 		}
 	}
 
