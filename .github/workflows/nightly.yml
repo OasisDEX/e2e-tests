@@ -211,7 +211,7 @@ jobs:
           retention-days: 30
 
   with-wallet-open-positions-tests-aave-l2s:
-    name: 'With wallet - Open Positions - Aave - L2s'
+    name: 'Open Positions - Aave - L2s'
     runs-on: ubuntu-latest
     env:
       TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
@@ -244,7 +244,7 @@ jobs:
           retention-days: 30
 
   with-wallet-open-positions-tests-other:
-    name: 'With wallet - Open Positions - Other'
+    name: 'Open Positions - Other'
     runs-on: ubuntu-latest
     env:
       TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
