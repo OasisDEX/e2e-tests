@@ -51,7 +51,7 @@ export class Rays {
 
 	@step
 	async connectWallet() {
-		await this.page.getByText('Connect wallet').click();
+		await this.page.getByRole('button', { name: 'Connect wallet', exact: true }).click();
 	}
 
 	@step

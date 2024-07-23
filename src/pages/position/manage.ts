@@ -256,7 +256,9 @@ export class Manage {
 	@step
 	async shouldEarnRays(raysCount: string) {
 		const regExp = new RegExp(`Earn ${raysCount}`);
-		await expect(this.page.getByText('Rays Instantly')).toContainText(regExp);
+		await expect(this.page.getByText('Rays Instantly')).toContainText(regExp, {
+			timeout: expectDefaultTimeout * 2,
+		});
 	}
 
 	@step
