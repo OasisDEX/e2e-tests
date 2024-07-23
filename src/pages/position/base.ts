@@ -194,6 +194,14 @@ export class Base {
 	}
 
 	@step
+	async shouldHaveConfirmButton() {
+		await expect(
+			this.page.getByRole('button', { name: 'Confirm' }),
+			'Should show "Confirm" button'
+		).toBeVisible();
+	}
+
+	@step
 	async removeTrigger() {
 		await this.page.getByRole('button', { name: 'Remove trigger' }).click();
 	}
