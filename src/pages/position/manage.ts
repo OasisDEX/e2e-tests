@@ -83,6 +83,11 @@ export class Manage {
 	}
 
 	@step
+	async shouldHaveConfirmButton() {
+		await this.base.shouldHaveConfirmButton();
+	}
+
+	@step
 	async shouldShowSuccessScreen() {
 		await expect(this.page.getByText('Success!'), '"Success!" should be visible').toBeVisible({
 			timeout: positionTimeout,
@@ -246,6 +251,12 @@ export class Manage {
 	}
 
 	@step
+	async shouldNotHaveAutomationTriggerEarnRays() {
+		const regExp = new RegExp('[E-e]arn extra Rays each time automation triggers');
+		await expect(this.page.getByText(regExp)).not.toBeVisible();
+	}
+
+	@step
 	async shouldUpdateEarnRays() {
 		const initialRaysToEarn = await this.page.getByText('Rays Instantly').innerText();
 		await expect(this.page.getByText('Rays Instantly')).not.toContainText(initialRaysToEarn, {
@@ -270,10 +281,22 @@ export class Manage {
 	}
 
 	@step
-	async shouldReduceRays(raysCount: string) {
-		const regExp = new RegExp(raysCount);
-		await expect(
-			this.page.getByText('You will reduce your yearly Rays on this position by')
-		).toContainText(regExp);
+	async shouldReduceRays({ raysCount, automation }: { raysCount: string; automation?: boolean }) {
+		if (automation) {
+			const regExp = new RegExp(
+				`Reduce Rays by ${raysCount} Rays a yearWhen you remove this automation`
+			);
+			await expect(this.page.getByText('Reduce Rays by').locator('..')).toContainText(regExp);
+		} else {
+			const regExp = new RegExp(raysCount);
+			await expect(
+				this.page.getByText('You will reduce your yearly Rays on this position by')
+			).toContainText(regExp);
+		}
+	}
+
+	@step
+	async shouldNotHaveReduceRays() {
+		await expect(this.page.getByText('Reduce Rays by')).not.toBeVisible();
 	}
 }

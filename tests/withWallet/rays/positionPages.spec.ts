@@ -27,7 +27,7 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 	test('It should show Rays to be earned - Adjust risk UP @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11772',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -59,7 +59,7 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 	test('It should show Rays to be earned - Adjust risk DOWN @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11772',
+			description: 'xxx',
 		});
 
 		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.1 });
@@ -70,7 +70,7 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 	test('It should show Rays to be increased - Deposit extra collateral @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11772',
+			description: 'xxx',
 		});
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -82,19 +82,19 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 	test('It should show Rays to be reduced - Withdraw collateral @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11772',
+			description: 'xxx',
 		});
 
 		await app.position.manage.withdrawCollateral();
 		await app.position.manage.withdraw({ token: 'ETH', amount: '0.002' });
 
-		await app.position.manage.shouldReduceRays('0.00[0-9]{2}');
+		await app.position.manage.shouldReduceRays({ raysCount: '0.00[0-9]{2}' });
 	});
 
 	test('It should show Rays to be increased - Pay back debt @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11772',
+			description: 'xxx',
 		});
 
 		await app.position.manage.openManageOptions({ currentLabel: 'ETH' });
@@ -106,19 +106,19 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 	test('It should show Rays to be reduced - Borrow more @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11772',
+			description: 'xxx',
 		});
 
 		await app.position.manage.withdrawDebt();
 		await app.position.manage.borrow({ token: 'DAI', amount: '7' });
 
-		await app.position.manage.shouldReduceRays('0.00[0-9]{2}');
+		await app.position.manage.shouldReduceRays({ raysCount: '0.00[0-9]{2}' });
 	});
 
 	test('It should show Rays to be earned - Close position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11772',
+			description: 'xxx',
 		});
 
 		await app.position.manage.openManageOptions({ currentLabel: 'DAI' });

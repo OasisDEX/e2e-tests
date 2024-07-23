@@ -240,6 +240,91 @@ test.describe('No-wallet connected - Rays', async () => {
 		await app.position.manage.shouldHaveAutomationTriggerEarnRays();
 	});
 
+	test('It should show Rays to be reduced - Remove automation - Stop-Loss @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.position.openPage('/ethereum/aave/v3/multiply/RETH-DAI/1276#protection');
+
+		await app.position.protection.removeTrigger();
+		await app.position.manage.shouldReduceRays({ raysCount: '0.00[0-9]{2}', automation: true });
+	});
+
+	test('It should show Rays to be reduced - Remove automation - Auto-Sell @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.position.openPage('/optimism/aave/v3/borrow/DAI-WBTC/323#protection');
+
+		await app.position.protection.removeTrigger();
+		await app.position.manage.shouldReduceRays({ raysCount: '0.000[0-9]', automation: true });
+	});
+
+	test('It should show Rays to be reduced - Remove automation - Trailing Stop-Loss @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.position.openPage('/arbitrum/aave/v3/multiply/WBTC-USDC/370#protection');
+
+		await app.position.protection.removeTrigger();
+		await app.position.manage.shouldReduceRays({ raysCount: '0.000[0-9]', automation: true });
+	});
+
+	test('It should NOT show Rays to be reduced - Remove automation - 2x protection automations ON @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.position.openPage('/optimism/aave/v3/multiply/WBTC-USDC.E/19#protection');
+		await app.position.manage.shouldHaveAutomationTriggerEarnRays();
+
+		await app.position.protection.removeTrigger();
+		await app.position.manage.shouldHaveConfirmButton();
+		await app.position.manage.shouldNotHaveAutomationTriggerEarnRays();
+		await app.position.manage.shouldNotHaveReduceRays();
+	});
+
+	test('It should show Rays to be reduced - Remove automation - Auto-Buy @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.position.openPage('/optimism/aave/v3/multiply/WBTC-USDC.E/19#optimization');
+		await app.position.protection.removeTrigger();
+		await app.position.manage.shouldReduceRays({ raysCount: '0.00[0-9]{2}', automation: true });
+	});
+
+	test('It should show Rays to be reduced - Remove automation - Auto Take Profit @regression', async ({
+		app,
+	}) => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		await app.position.openPage('/ethereum/aave/v3/multiply/ETH-USDC/1586#optimization');
+		await app.position.protection.removeTrigger();
+		await app.position.manage.shouldReduceRays({ raysCount: '0.0[0-9]{3}', automation: true });
+	});
+
 	test('It should show Position Rays - Portfolio position card', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
