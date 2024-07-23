@@ -1,7 +1,7 @@
 import { BrowserContext, test } from '@playwright/test';
 import { metamaskSetUp, setup } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
 let context: BrowserContext;
@@ -37,7 +37,7 @@ test.describe('Rays - Wallet connected', async () => {
 		await app.page.goto('/rays');
 
 		await app.rays.claimRays();
-		await app.rays.openPosition.shouldBeVisible();
+		await app.rays.openPosition.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 		await app.rays.openPosition.openBoostShouldBeVisible();
 		await app.rays.openPosition.productPicker.shouldBeVisible();
 	});

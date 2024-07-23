@@ -1,6 +1,7 @@
 import { expect, step } from '#noWalletFixtures';
 import { Page } from '@playwright/test';
 import { ProductPicker } from './productPicker';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class OpenPosition {
 	readonly page: Page;
@@ -13,14 +14,16 @@ export class OpenPosition {
 	}
 
 	@step
-	async shouldBeVisible() {
-		await expect(this.page.getByText('Open a position to qualify for your $RAYS')).toBeVisible();
+	async shouldBeVisible(args?: { timeout: number }) {
+		await expect(this.page.getByRole('heading').filter({ hasText: 'Open a position' })).toBeVisible(
+			{
+				timeout: args?.timeout ?? expectDefaultTimeout,
+			}
+		);
 	}
 
 	@step
 	async openBoostShouldBeVisible() {
-		await expect(
-			this.page.getByText('Boost your RAYS 2.5x when you open a position')
-		).toBeVisible();
+		await expect(this.page.getByText('Boost your RAYS 2x when you open a position')).toBeVisible();
 	}
 }

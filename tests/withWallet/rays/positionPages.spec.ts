@@ -114,4 +114,15 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 
 		await app.position.manage.shouldReduceRays('0.00[0-9]{2}');
 	});
+
+	test('It should show Rays to be earned - Close position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: '11772',
+		});
+
+		await app.position.manage.openManageOptions({ currentLabel: 'DAI' });
+		await app.position.manage.select('Close position');
+		await app.position.manage.shouldEarnRays('0.000[0-9]');
+	});
 });
