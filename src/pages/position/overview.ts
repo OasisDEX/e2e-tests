@@ -481,4 +481,12 @@ export class Overview {
 		const regExp = new RegExp(`\\+ ${count}`);
 		await expect(this.page.getByText('Rays / year')).toHaveText(regExp);
 	}
+
+	@step
+	async getRaysPerYear() {
+		const raysText = await this.page.getByText('Rays / year').innerText();
+		const raysNumber = parseFloat(raysText.slice(2, -12).replace(',', ''));
+
+		return raysNumber;
+	}
 }

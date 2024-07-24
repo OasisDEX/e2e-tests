@@ -30,10 +30,14 @@ export class Rays {
 	}
 
 	@step
-	async openPage() {
+	async openPage(wallet?: string) {
 		await expect(async () => {
-			await this.page.goto('/rays');
-			await this.shouldBeVivible();
+			await this.page.goto(`/rays${wallet ? `?userAddress=${wallet}` : ''}`);
+			if (wallet) {
+				await expect(this.page.getByText('is eligible for up to')).toBeVisible();
+			} else {
+				await this.shouldBeVivible();
+			}
 		}).toPass();
 	}
 
@@ -77,5 +81,13 @@ export class Rays {
 	@step
 	async claimRays() {
 		await this.page.getByRole('button', { name: 'Claim $RAYS' }).click();
+	}
+
+	@step
+	async getRaysPerYear() {
+		const raysText = await this.page.locator('h3[class*="ClaimRaysTitle_earning"]').innerText();
+		const raysNumber = parseFloat(raysText.slice(10, -13).replace(',', ''));
+
+		return raysNumber;
 	}
 }
