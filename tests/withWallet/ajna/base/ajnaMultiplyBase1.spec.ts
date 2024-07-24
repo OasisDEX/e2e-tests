@@ -113,7 +113,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 			forkId,
 			app,
 			risk: 'down',
-			newSliderPosition: 0.03,
+			newSliderPosition: 0.18,
 		});
 	});
 });
