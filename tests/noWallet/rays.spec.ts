@@ -1,4 +1,4 @@
-import { test } from '#noWalletFixtures';
+import { expect, test } from '#noWalletFixtures';
 
 test.describe('No-wallet connected - Rays', async () => {
 	test('It should link to Rays blog and open in new tab  @regression', async ({ app }) => {
@@ -333,6 +333,29 @@ test.describe('No-wallet connected - Rays', async () => {
 
 		await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F', { withPositions: true });
 		await app.portfolio.positionsHub.positions.first.shouldHave({ rays: '0.0[0-9]{3}' });
+	});
+
+	test('It should show same amount of rays/year in Portfolio, Position and Rays pages', async ({
+		app,
+	}) => {
+		await app.rays.openPage('0x4e16eb48a4e48038828b97c8d8544864638d360e');
+		const raysPage: number = await app.rays.getRaysPerYear();
+
+		await app.portfolio.open('0x4e16eb48a4e48038828b97c8d8544864638d360e', { withPositions: true });
+		const portfolio: number = await app.portfolio.positionsHub.positions.first.getRaysPerYear();
+
+		await app.position.openPage('/ethereum/aave/v3/multiply/WEETH-ETH/2665#overview');
+		const positionPage: number = await app.position.overview.getRaysPerYear();
+
+		// Check that values difference is smaller than 1%
+		expect(
+			Math.abs(positionPage - portfolio) / portfolio,
+			'Portfolio and Position page diff should be less than 1%'
+		).toBeLessThan(0.01);
+		expect(
+			Math.abs(raysPage - portfolio) / portfolio,
+			'Portfolio and Rays page diff should be less than 1%'
+		).toBeLessThan(0.01);
 	});
 });
 

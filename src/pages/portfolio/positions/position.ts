@@ -58,4 +58,12 @@ export class Position {
 			).toEqual(automations[i].status);
 		}
 	}
+
+	@step
+	async getRaysPerYear() {
+		const raysText = await this.positionLocator.getByText(' Rays / year').innerText();
+		const raysNumber = parseFloat(raysText.slice(2, -12).replace(',', ''));
+
+		return raysNumber;
+	}
 }
