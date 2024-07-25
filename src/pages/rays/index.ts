@@ -1,6 +1,7 @@
 import { expect, Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
 import { Calculator } from './calculator';
+import { Claimed } from './claimed';
 import { Header } from './header';
 import { Leaderboard } from './leaderboard';
 import { OpenPosition } from './openPosition';
@@ -9,6 +10,8 @@ export class Rays {
 	readonly page: Page;
 
 	readonly calculator: Calculator;
+
+	readonly claimed: Claimed;
 
 	readonly header: Header;
 
@@ -19,6 +22,7 @@ export class Rays {
 	constructor(page: Page) {
 		this.page = page;
 		this.calculator = new Calculator(page);
+		this.claimed = new Claimed(page);
 		this.header = new Header(page);
 		this.leaderboard = new Leaderboard(page);
 		this.openPosition = new OpenPosition(page);

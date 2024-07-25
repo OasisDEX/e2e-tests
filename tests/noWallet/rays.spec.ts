@@ -357,7 +357,28 @@ test.describe('No-wallet connected - Rays', async () => {
 			'Portfolio and Rays page diff should be less than 1%'
 		).toBeLessThan(0.01);
 	});
+
+	test('It should show migratable position in /open-position page', async ({ app }) => {
+		await app.rays.openPosition.openPage('0xc2da497f91c687725da514a47731047271a04d3f');
+
+		await app.rays.openPosition.productPicker.shouldDisplayTabs([
+			'Migrate',
+			'Earn',
+			'Borrow',
+			'Multiply',
+		]);
+
+		await app.rays.openPosition.productPicker.firstProductShouldBeMigratable();
+	});
+
+	test('It should NOT show "Migrate" tab in /open-position page', async ({ app }) => {
+		await app.rays.openPosition.openPage('0x471b8da4e8d204e33813f4b337e2dda789038df6');
+
+		await app.rays.openPosition.productPicker.shouldDisplayTabs(['Earn', 'Borrow', 'Multiply']);
+	});
 });
+
+// TEST TO BE DONE --> https://summer.fi/rays/claimed?userAddress=0x6afbdfcfff76368fa0c50d6e70ceafbb1ac21f83
 
 // TEST - TO BE DONE
 // Should NOT get points - DeFi Saver position:

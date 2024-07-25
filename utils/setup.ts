@@ -69,12 +69,14 @@ export const setup = async ({
 	extraFeaturesFlags,
 	automationMinNetValueFlags,
 	withoutFork,
+	withExistingWallet,
 }: {
 	app: App;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 	extraFeaturesFlags?: string;
 	automationMinNetValueFlags?: string;
 	withoutFork?: boolean;
+	withExistingWallet?: { privateKey: string };
 }) => {
 	let forkId: string;
 	const walletAddress = await metamask.walletAddress();
@@ -106,6 +108,10 @@ export const setup = async ({
 		featuresFlags,
 		automationMinNetValueFlags: setupAutomationMinNetValueFlags,
 	});
+
+	if (withExistingWallet) {
+		await metamask.importAccount(withExistingWallet?.privateKey);
+	}
 
 	await wallet.connect(app);
 	await termsAndconditions.accept(app);
