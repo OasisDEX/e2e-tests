@@ -17,4 +17,21 @@ export class ProductPicker {
 			this.productPickerLocator.getByRole('button', { name: 'earn', exact: true })
 		).toBeVisible();
 	}
+
+	@step
+	async shouldDisplayTabs(tabs: ('Migrate' | 'Earn' | 'Borrow' | 'Multiply')[]) {
+		for (const tab of tabs) {
+			await expect(
+				this.productPickerLocator.getByRole('button', { name: 'earn', exact: true }),
+				`'${tab}' tab should be visible`
+			).toBeVisible();
+		}
+	}
+
+	@step
+	async firstProductShouldBeMigratable() {
+		await expect(
+			this.productPickerLocator.locator('*[class*="MigrateProductCard_titleRow"]')
+		).toContainText('Migrate');
+	}
 }
