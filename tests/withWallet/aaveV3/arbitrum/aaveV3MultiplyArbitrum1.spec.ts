@@ -5,7 +5,7 @@ import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
+import { adjustRisk, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
