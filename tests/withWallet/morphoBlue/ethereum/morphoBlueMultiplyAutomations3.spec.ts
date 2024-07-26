@@ -1,9 +1,9 @@
 import { BrowserContext, test } from '@playwright/test';
-import { metamaskSetUp, setupNewFork } from 'utils/setup';
+import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import * as automations from 'tests/sharedTestSteps/automations';
 
@@ -30,7 +30,7 @@ let walletAddress: string;
 				description: 'xxx',
 			});
 
-			test.setTimeout(veryLongTestTimeout);
+			test.setTimeout(extremelyLongTestTimeout);
 
 			await test.step('Test setup', async () => {
 				({ context } = await metamaskSetUp({ network: 'mainnet' }));

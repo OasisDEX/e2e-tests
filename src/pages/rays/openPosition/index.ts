@@ -14,6 +14,13 @@ export class OpenPosition {
 	}
 
 	@step
+	async openPage(wallet: string, args?: { timeout: number }) {
+		await expect(async () => {
+			await this.page.goto(`/rays/open-position?userAddress=${wallet}`);
+		}).toPass({ timeout: args?.timeout ?? expectDefaultTimeout * 3 });
+	}
+
+	@step
 	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(this.page.getByRole('heading').filter({ hasText: 'Open a position' })).toBeVisible(
 			{
