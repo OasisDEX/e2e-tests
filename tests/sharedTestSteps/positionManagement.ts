@@ -123,15 +123,13 @@ export const openMakerPosition = async ({
 	deposit: ActionData;
 	generate?: ActionData;
 	existingProxy?: boolean;
-	adjustRisk?: { positionType?: 'Generate'; value: number };
+	adjustRisk?: { value: number };
 }) => {
 	await app.position.setup.deposit(deposit);
 	if (generate) {
 		await app.position.setup.generate(generate);
 	}
-	if (adjustRisk) {
-		// TO BE DONE
-	}
+
 	if (!existingProxy) {
 		await app.position.setup.setupProxy();
 		await app.position.setup.createProxy();
@@ -159,6 +157,13 @@ export const openMakerPosition = async ({
 		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.continue();
+	}
+
+	if (adjustRisk) {
+		await app.position.setup.moveSlider({
+			protocol: 'Maker',
+			value: adjustRisk?.value,
+		});
 	}
 
 	await app.position.setup.confirm();

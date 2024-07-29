@@ -21,8 +21,8 @@ export class Manage {
 	}
 
 	@step
-	async getLiquidationPrice(): Promise<number> {
-		return await this.base.getLiquidationPrice();
+	async getLiquidationPrice(protocol?: 'Maker'): Promise<number> {
+		return await this.base.getLiquidationPrice(protocol ?? undefined);
 	}
 
 	@step
