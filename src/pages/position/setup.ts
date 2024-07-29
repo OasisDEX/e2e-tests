@@ -117,7 +117,7 @@ export class Setup {
 		withWallet,
 	}: {
 		value: number;
-		protocol?: 'Ajna' | 'Morpho';
+		protocol?: 'Ajna' | 'Morpho' | 'Maker';
 		withWallet?: boolean;
 	}) {
 		if (protocol) {
@@ -558,5 +558,17 @@ export class Setup {
 			.getByRole('listitem')
 			.filter({ hasText: token })
 			.click();
+	}
+
+	@step
+	async getPriceImpact() {
+		const impact = await this.page
+			.getByRole('listitem')
+			.filter({ hasText: 'Price (impact)' })
+			.locator('span > span:has-text("%")')
+			.innerText();
+		const impactNumber = parseFloat(impact.slice(1, -2));
+
+		return impactNumber;
 	}
 }

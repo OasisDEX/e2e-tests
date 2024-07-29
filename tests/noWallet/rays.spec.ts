@@ -378,8 +378,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	});
 });
 
-// TEST TO BE DONE --> https://summer.fi/rays/claimed?userAddress=0x6afbdfcfff76368fa0c50d6e70ceafbb1ac21f83
-
 // TEST - TO BE DONE
 // Should NOT get points - DeFi Saver position:
 // /portfolio/0x7d6149ad9a573a6e2ca6ebf7d4897c1b766841b4#positions

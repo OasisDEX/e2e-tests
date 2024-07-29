@@ -9,9 +9,14 @@ export class Base {
 	}
 
 	@step
-	async getLiquidationPrice(): Promise<number> {
+	async getLiquidationPrice(protocol?: 'Maker'): Promise<number> {
 		const value = await this.page.locator('span:has-text("Liquidation Price") + span').innerText();
-		return parseFloat(value.slice(0, value.indexOf(' ')).replace(',', ''));
+		const slicedValue = (protocol ? value.slice(1) : value.slice(0, value.indexOf(' '))).replace(
+			',',
+			''
+		);
+
+		return parseFloat(slicedValue);
 	}
 
 	@step
@@ -91,7 +96,7 @@ export class Base {
 		automation,
 		value,
 	}: {
-		automation: 'AutoSell' | 'AutoBuy' | 'Stop-Loss';
+		automation?: 'AutoSell' | 'AutoBuy' | 'Stop-Loss';
 		value: number;
 	}) {
 		await expect(async () => {
