@@ -58,6 +58,12 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'with-wallet-rays-and-swap-rate',
+			testMatch: ['withWallet/swapRate/**', 'withWallet/swapRate/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
 			name: 'with-wallet-aave-other',
 			testMatch: [
 				'withWallet/aaveV3/arbitrum/**',
