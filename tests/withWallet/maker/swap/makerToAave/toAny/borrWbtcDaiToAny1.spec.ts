@@ -46,7 +46,7 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'MakerTenderly:true',
 			}));
 
 			await tenderly.setTokenBalance({

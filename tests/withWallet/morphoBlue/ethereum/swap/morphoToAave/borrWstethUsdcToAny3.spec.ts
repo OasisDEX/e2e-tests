@@ -73,7 +73,7 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'SDAI', debtToken: 'GHO' },
+			// { colToken: 'SDAI', debtToken: 'GHO' },
 			{ colToken: 'SDAI', debtToken: 'USDT' },
 			{ colToken: 'SDAI', debtToken: 'ETH' },
 			{ colToken: 'SDAI', debtToken: 'WBTC' },
