@@ -565,10 +565,9 @@ export class Setup {
 		let rate: string;
 		await expect(async () => {
 			rate = await this.page.locator('p:has-text("Price (impact)") + div').innerText();
-
 			expect(rate).toContain('.');
-		}).toPass();
-		const rateNumber = parseFloat(rate.slice(0, rate.indexOf(' ')));
+		}).toPass({ timeout: expectDefaultTimeout * 2 });
+		const rateNumber = parseFloat(rate.slice(0, rate.indexOf(' ')).replace(',', ''));
 
 		return rateNumber;
 	}
