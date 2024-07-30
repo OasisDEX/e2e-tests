@@ -561,6 +561,19 @@ export class Setup {
 	}
 
 	@step
+	async getSwapRate() {
+		let rate: string;
+		await expect(async () => {
+			rate = await this.page.locator('p:has-text("Price (impact)") + div').innerText();
+
+			expect(rate).toContain('.');
+		}).toPass();
+		const rateNumber = parseFloat(rate.slice(0, rate.indexOf(' ')));
+
+		return rateNumber;
+	}
+
+	@step
 	async getPriceImpact() {
 		const impact = await this.page
 			.getByRole('listitem')

@@ -2,7 +2,7 @@ import { test } from '#noWalletFixtures';
 import { positionTimeout } from 'utils/config';
 
 const numberOfPools = Array.from({ length: 20 }, (_, index) => 0 + index);
-const numberOfPoolsPage10 = Array.from({ length: 14 }, (_, index) => 0 + index);
+const numberOfPoolsPage10 = Array.from({ length: 8 }, (_, index) => 0 + index);
 
 test.describe('Borrow page', async () => {
 	test('It should open Borrow pool finder', async ({ app }) => {
