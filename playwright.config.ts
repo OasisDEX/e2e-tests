@@ -59,7 +59,7 @@ const defaultConfig: PlaywrightTestConfig = {
 
 		{
 			name: 'with-wallet-rays-and-swap-rate',
-			testMatch: ['withWallet/swapRate/**', 'withWallet/swapRate/**'],
+			testMatch: ['withWallet/rays/**', 'withWallet/swapRate/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
