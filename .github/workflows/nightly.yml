@@ -303,10 +303,10 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           OLD_WALLET_PK=${{ secrets.OLD_WALLET_PK }} \
-          yarn nightly:with-wallet:rays-and-swap-rate
+          yarn nightly:with-wallet:rays-and-token-swap-rate
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report-with-wallet-rays-and-swap-rate
-          path: playwright-reports/with-wallet-rays-and-swap-rate
+          name: playwright-report-with-wallet-rays-and-token-swap-rate
+          path: playwright-reports/with-wallet-rays-and-token-swap-rate
           retention-days: 30

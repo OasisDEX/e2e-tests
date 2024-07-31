@@ -122,11 +122,12 @@ export const morphoBaseBorrowPools = [
 	// 'EZETH-USDC', -- NO LIQUIDITY
 	// 'ETH-USDC', -- NO LIQUIDITY
 ];
-export const aaveV3EthereumEarnPools_1 = ['WSTETH-CBETH', 'WSTETH-ETH', 'CBETH-ETH', 'RETH-ETH'];
+export const aaveV3EthereumEarnPools_1 = ['WSTETH-CBETH', 'CBETH-ETH', 'RETH-ETH'];
 
 export const aaveV3EthereumEarnPools_2 = ['SDAI-DAI', 'SDAI-LUSD', 'SDAI-USDC', 'SDAI-USDT'];
 
-export const aaveV3EthereumEarnPools_3 = ['USDC-USDT', 'USDC-GHO', 'SDAI-FRAX', 'SDAI-GHO'];
+export const aaveV3EthereumEarnPools_3 = ['USDC-USDT', 'SDAI-FRAX'];
+// 'USDC-GHO', 'SDAI-GHO' -- NO LIQUIDITY - GHO
 
 export const aaveV3EthereumEarnPools_4 = ['SUSDE-USDT', 'SUSDE-USDC', 'SUSDE-DAI'];
 // , 'WEETH-ETH' --> WEETH supply 100%
@@ -135,7 +136,7 @@ export const aaveV3EthereumMultiplyPools_1 = [
 	'ETH-DAI',
 	'ETH-USDC',
 	'ETH-USDT',
-	'ETH-GHO',
+	// 'ETH-GHO', -- NO LIQUIDITY - GHO
 	'ETH-WBTC',
 ];
 
@@ -144,7 +145,7 @@ export const aaveV3EthereumMultiplyPools_2 = [
 	'WBTC-USDC',
 	'WBTC-USDT',
 	'WBTC-LUSD',
-	'WBTC-GHO',
+	// 'WBTC-GHO', -- NO LIQUIDITY - GHO
 	'WBTC-ETH',
 ];
 
@@ -191,7 +192,7 @@ export const aaveV3EthereumBorrowPools_1 = [
 	'ETH-DAI',
 	'ETH-USDC',
 	'ETH-USDT',
-	'ETH-GHO',
+	// 'ETH-GHO', -- NO LIQUIDITY - GHO
 	'ETH-WBTC',
 ];
 
@@ -200,7 +201,7 @@ export const aaveV3EthereumBorrowPools_2 = [
 	'WBTC-USDC',
 	'WBTC-USDT',
 	'WBTC-LUSD',
-	'WBTC-GHO',
+	// 'WBTC-GHO', -- NO LIQUIDITY - GHO
 	'WBTC-ETH',
 ];
 
@@ -209,7 +210,7 @@ export const aaveV3EthereumBorrowPools_3 = [
 	'WSTETH-USDC',
 	'WSTETH-USDT',
 	'WSTETH-LUSD',
-	'WSTETH-GHO',
+	// 'WSTETH-GHO', -- NO LIQUIDITY - GHO
 	'WSTETH-RPL',
 	'WSTETH-CBETH',
 ];
@@ -218,7 +219,7 @@ export const aaveV3EthereumBorrowPools_4 = [
 	'RETH-DAI',
 	'RETH-USDC',
 	'RETH-USDT',
-	'RETH-GHO',
+	// 'RETH-GHO', -- NO LIQUIDITY - GHO
 	'RETH-ETH',
 	// 'WEETH-GHO', --> WEETH supply 100%
 ];
@@ -230,7 +231,7 @@ export const aaveV3EthereumBorrowPools_6 = [
 	'LINK-DAI',
 	'LINK-USDC',
 	'LINK-USDT',
-	'LINK-GHO',
+	// 'LINK-GHO', -- NO LIQUIDITY - GHO
 	'LINK-ETH',
 	'DAI-ETH',
 	'DAI-MKR',
@@ -243,7 +244,7 @@ export const aaveV3EthereumBorrowPools_7 = [
 	'SDAI-USDC',
 	'SDAI-USDT',
 	'SDAI-LUSD',
-	'SDAI-GHO',
+	// 'SDAI-GHO', -- NO LIQUIDITY - GHO
 	'SDAI-FRAX',
 ];
 
@@ -252,7 +253,7 @@ export const aaveV3EthereumBorrowPools_8 = [
 	'USDC-ETH',
 	'USDC-WSTETH',
 	'USDC-USDT',
-	'USDC-GHO',
+	// 'USDC-GHO', -- NO LIQUIDITY - GHO
 	'USDT-ETH',
 ];
 
@@ -446,4 +447,11 @@ export const depositAmount = {
 	WOETH: '2',
 	WSTETH: '2',
 	YFI: '1',
+};
+
+export const tokenDecimals = {
+	CBETH: 10 ** 18,
+	ETH: 10 ** 18,
+	RETH: 10 ** 18,
+	WSTETH: 10 ** 18,
 };

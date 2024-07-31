@@ -561,7 +561,7 @@ export class Setup {
 	}
 
 	@step
-	async getSwapRate() {
+	async getTokenSwapRate() {
 		let rate: string;
 		await expect(async () => {
 			rate = await this.page.locator('p:has-text("Price (impact)") + div').innerText();

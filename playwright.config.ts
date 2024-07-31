@@ -52,14 +52,14 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'with-wallet-swap-rate',
-			testMatch: ['withWallet/swapRate/**'],
+			name: 'with-wallet-token-swap-rate',
+			testMatch: ['withWallet/tokenSwapRate/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
 		{
-			name: 'with-wallet-rays-and-swap-rate',
-			testMatch: ['withWallet/rays/**', 'withWallet/swapRate/**'],
+			name: 'with-wallet-rays-and-token-swap-rate',
+			testMatch: ['withWallet/rays/**', 'withWallet/tokenSwapRate/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
