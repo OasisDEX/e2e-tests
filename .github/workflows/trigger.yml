@@ -6,7 +6,7 @@ on:
 jobs:
   trigger-job:
     name: 'Trigger job'
-      runs-on: ubuntu-latest
-      steps:
-        - run: echo 'This is the TRIGGER workflow.'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'This is the TRIGGER workflow.'
 
