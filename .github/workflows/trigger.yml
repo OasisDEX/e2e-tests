@@ -1,10 +1,11 @@
-name: Trigger
+name: trigger
 
 on: 
   workflow_dispatch
 
 jobs:
-  on-failure:
+  trigger-job:
+    name: 'Trigger job'
     runs-on: ubuntu-latest
     steps:
       - run: echo 'This is the TRIGGER workflow.'
