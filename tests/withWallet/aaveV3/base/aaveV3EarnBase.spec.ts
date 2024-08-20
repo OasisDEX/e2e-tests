@@ -14,7 +14,8 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
+// Base ETH borrow cap at 100%
+test.describe.skip('Aave V3 Earn - Base - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -54,7 +55,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '5' },
+			deposit: { token: 'CBETH', amount: '1' },
 		});
 	});
 
@@ -75,7 +76,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			app,
 			earnPosition: true,
 			risk: 'up',
-			newSliderPosition: 0.6,
+			newSliderPosition: 0.3,
 		});
 	});
 
