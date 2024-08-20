@@ -14,7 +14,8 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Wallet connected', async () => {
+// SKIPPED - Not possible to use WBTC as collateral or to borrow it for SPARK
+test.describe.skip('Spark Multiply - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
