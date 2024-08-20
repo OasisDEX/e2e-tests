@@ -2,7 +2,7 @@ name: Triggered
 
 on:
   workflow_run:
-    workflows: ['trigger']
+    workflows: ['Trigger']
     types: [completed]
 
 jobs:
