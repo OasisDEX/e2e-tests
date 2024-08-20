@@ -14,7 +14,8 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
+// SKIPPED - Not possible to use WBTC as collateral or to borrow it for SPARK
+test.describe.skip('Morpho Blue Multiply - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 

@@ -38,7 +38,9 @@ test.describe('Rays - Wallet connected', async () => {
 
 		await app.rays.claimRays();
 		await app.rays.openPosition.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
-		await app.rays.openPosition.openBoostShouldBeVisible();
+
+		// Element removed
+		// await app.rays.openPosition.openBoostShouldBeVisible();
 		await app.rays.openPosition.productPicker.shouldBeVisible();
 	});
 });
