@@ -109,6 +109,9 @@ export const compareTokenSwapRate = async ({
 				});
 
 				const oneInchResponseJson = await oneInchResponse.json();
+				// Adding log for debugging purposes - Tests failing in GitHub but passing locally
+				console.log('oneInchResponseJson: ', oneInchResponseJson);
+				//
 				oneInchTokenSwapRate0 = oneInchResponseJson.dstAmount;
 				expect(oneInchTokenSwapRate0).toBeDefined();
 			}).toPass();

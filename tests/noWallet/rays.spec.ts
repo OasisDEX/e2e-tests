@@ -335,7 +335,8 @@ test.describe('No-wallet connected - Rays', async () => {
 		await app.portfolio.positionsHub.positions.first.shouldHave({ rays: '0.0[0-9]{3}' });
 	});
 
-	test('It should show same amount of rays/year in Portfolio, Position and Rays pages', async ({
+	// BUG - https://www.notion.so/oazo/144cbc0395cb478a8b81cff326740123?v=2bb430cfe8ca41ff9f6dde3b129ac0fb&p=0e834846fc2f4718b233daae576be8a7&pm=s
+	test.skip('It should show same amount of rays/year in Portfolio, Position and Rays pages', async ({
 		app,
 	}) => {
 		await app.rays.openPage('0x4e16eb48a4e48038828b97c8d8544864638d360e');

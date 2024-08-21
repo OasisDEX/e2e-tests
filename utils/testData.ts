@@ -6,7 +6,7 @@ export const sparkEthereumMultiplyPools = [
 	'ETH-DAI',
 	'RETH-DAI',
 	'WSTETH-DAI',
-	'WBTC-DAI',
+	// 'WBTC-DAI', --> Not possiblt to use WBTC on Spark (as collateral or borrow)
 	'SDAI-ETH',
 	// 'WEETH-DAI', --> WEETH supply 100%
 ];
@@ -23,7 +23,7 @@ export const sparkEthereumBorrowPools = [
 	'ETH-DAI',
 	'RETH-DAI',
 	'WSTETH-DAI',
-	'WBTC-DAI',
+	// 'WBTC-DAI',  --> Not possiblt to use WBTC on Spark (as collateral or borrow)
 	'SDAI-ETH',
 	// 'WEETH-DAI', --> WEETH supply 100%
 ];

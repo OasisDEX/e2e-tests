@@ -88,7 +88,7 @@ test.describe('Aave V3 Multiply - Swap to Spark', async () => {
 			{ colToken: 'RETH', debtToken: 'DAI' },
 			{ colToken: 'SDAI', debtToken: 'ETH' },
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			{ colToken: 'WBTC', debtToken: 'DAI' },
+			// { colToken: 'WBTC', debtToken: 'DAI' }, -- SPARK WBTC - Not possible to use it as collateral or borrow it
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap an Aave V3 Multiply position (ETH/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
