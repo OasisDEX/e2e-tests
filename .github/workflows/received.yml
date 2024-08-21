@@ -9,8 +9,8 @@ jobs:
   log:
     runs-on: ubuntu-latest
     steps:
-      - name: Event received
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
         ref: ${{ github.event.client_payload.sha }}
+      - name: Event received
         run: echo "Event received"
