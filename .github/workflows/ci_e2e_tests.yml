@@ -2,8 +2,9 @@ name: CI E2E tests
 
 on:
   # Listen to a repository dispatch event by the name of `dispatch-event`
-  repository_dispatch:
-    types: [dispatch-event]
+  # repository_dispatch:
+  #   types: [dispatch-event]
+  workflow_dispatch
 
 jobs:
   log:
