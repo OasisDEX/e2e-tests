@@ -1,0 +1,15 @@
+name: Received TRES
+
+on:
+  repository_dispatch:
+    types: [bcd_release]
+
+jobs:
+  mi-trabajo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Haz Algo!"
+        env:
+          VERSION: ${{ github.event.client_payload.version }}
+        run: |
+          echo BCD version $VERSION released!
