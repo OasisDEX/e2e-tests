@@ -11,7 +11,6 @@ import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -29,7 +28,7 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 	test('It should open a Spark Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12463',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -39,22 +38,15 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WBTC',
-				balance: '5',
-			});
+			({ forkId } = await setup({ app, network: 'mainnet' }));
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/wbtc-dai#simulate');
+		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '1' },
+			deposit: { token: 'ETH', amount: '10' },
 			adjustRisk: { positionType: 'Borrow', value: 0.5 },
 		});
 	});
@@ -76,7 +68,7 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			forkId,
 			verifyTriggerPayload: {
 				protocol: 'spark',
-				collToken: 'mainnetWBTC',
+				collToken: 'mainnetETH',
 				debtToken: 'mainnetDAI',
 				triggerToken: 'mainnetDAI',
 			},
@@ -100,7 +92,7 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			forkId,
 			verifyTriggerPayload: {
 				protocol: 'spark',
-				collToken: 'mainnetWBTC',
+				collToken: 'mainnetETH',
 				debtToken: 'mainnetDAI',
 				triggerToken: 'mainnetDAI',
 			},
@@ -124,7 +116,7 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			forkId,
 			verifyTriggerPayload: {
 				protocol: 'spark',
-				collToken: 'mainnetWBTC',
+				collToken: 'mainnetETH',
 				debtToken: 'mainnetDAI',
 			},
 		});
@@ -147,7 +139,7 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			forkId,
 			verifyTriggerPayload: {
 				protocol: 'spark',
-				collToken: 'mainnetWBTC',
+				collToken: 'mainnetETH',
 				debtToken: 'mainnetDAI',
 			},
 		});
@@ -170,9 +162,9 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			forkId,
 			verifyTriggerPayload: {
 				protocol: 'spark',
-				collToken: 'mainnetWBTC',
+				collToken: 'mainnetETH',
 				debtToken: 'mainnetDAI',
-				triggerToken: 'mainnetWBTC',
+				triggerToken: 'mainnetETH',
 			},
 		});
 	});
