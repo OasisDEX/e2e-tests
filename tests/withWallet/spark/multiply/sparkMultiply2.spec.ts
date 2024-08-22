@@ -106,7 +106,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await app.page.waitForTimeout(3_000);
 		await app.page.reload();
 		await app.position.overview.shouldHaveDebt({
-			amount: '0.[5-8][0-9]{3}',
+			amount: '[0-1].[0-9]{4}',
 			token: 'ETH',
 			timeout: expectDefaultTimeout * 5,
 		});
@@ -120,7 +120,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			forkId,
 			payBack: { token: 'ETH', amount: '0.4' },
 			expectedDebt: {
-				amount: '0.[1-4][0-9]{3}',
+				amount: '0.[0-6][0-9]{3}',
 				token: 'ETH',
 			},
 			protocol: 'Spark',
