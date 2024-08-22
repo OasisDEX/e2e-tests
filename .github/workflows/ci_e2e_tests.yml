@@ -9,9 +9,9 @@ on:
         required: true
 
 jobs:
-  log-${{ inputs.name }}:
+  ci-e2e-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Event received
+      - name: CI - Regression E2E tests - ${{ inputs.name }}
         run: echo "Event received - NAME is ${{ inputs.name }}"
