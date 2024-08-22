@@ -3,8 +3,8 @@ name: CI E2E tests
 on: 
   workflow_dispatch:
     inputs:
-      name:
-        description: 'Testing inputs from dispatch event - NAME'
+      run_id:
+        description: 'Run_id from oasis-borrow run that is triggering this workflow.'
         type: string
         required: true
 
@@ -13,5 +13,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: CI - Regression E2E tests - ${{ inputs.name }}
-        run: echo "Event received - NAME is ${{ inputs.name }}"
+      - name: CI - Regression E2E tests for RUN_ID ${{ inputs.run_id }}
+        run: echo "Event received - RUN_ID is ${{ inputs.run_id }}"
