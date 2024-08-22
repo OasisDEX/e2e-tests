@@ -1,10 +1,12 @@
 name: CI E2E tests
 
-on:
-  # Listen to a repository dispatch event by the name of `dispatch-event`
-  # repository_dispatch:
-  #   types: [dispatch-event]
-  workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Testing inputs from dispatch event - NAME'
+        type: string
+        required: true
 
 jobs:
   log:
@@ -12,4 +14,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Event received
-        run: echo "Event received"
+        run: echo "Event received - NAME is ${{ inputs.name }}"
