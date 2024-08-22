@@ -1,4 +1,4 @@
-name: CI E2E tests - ${{ inputs.name }}
+name: CI E2E tests
 
 on: 
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
         required: true
 
 jobs:
-  log:
+  log-${{ inputs.name }}:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
