@@ -7,7 +7,8 @@ on:
 
 jobs:
   trigger-conclusion:
-   steps:
+    runs-on: ubuntu-latest
+    steps:
       - run: echo 'CI E2E tests workflow conclussion is ${{ github.event.workflow_run.conclusion }} --.'
   on-ci-e2e-tests-success:
     runs-on: ubuntu-latest
