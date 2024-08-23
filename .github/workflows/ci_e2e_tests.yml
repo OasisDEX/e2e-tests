@@ -17,15 +17,16 @@ on:
       # ########################
 
 jobs:
-  ci-e2e-tests:
+  staging-deployed-trigger-received:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Regression E2E tests for oasis-borrow RUN_ID ${{ inputs.run_id }}"
-      - name: CI E2E tests - No wallet
-        uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
-        with:
-          base_url: 'https://staging.summer.fi'
-          script: ci:no-wallet:regression
+  no-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
+    with:
+      base_url: 'https://staging.summer.fi'
+      script: ci:no-wallet:regression
+
       # - name: Testing e2e tests fail - TO BE REMOVED after Testing
       #   if: ${{ inputs.result == 'fail' }}
       #   uses: actions/github-script@v7
