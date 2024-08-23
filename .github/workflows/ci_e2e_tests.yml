@@ -21,7 +21,7 @@ jobs:
       - name: CI - Regression E2E tests for RUN_ID ${{ inputs.run_id }}
         run: echo "Event received - RUN_ID is ${{ inputs.run_id }}"
       - name: Check coverage tolerance
-        if: ${{ inputs.result == fail }}
+        if: ${{ inputs.result == "fail" }}
         uses: actions/github-script@v7
         with:
           script: |
