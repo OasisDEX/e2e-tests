@@ -9,10 +9,10 @@ on:
         required: true
       # ########################
       # testing 'tests failure' scenario
-      result:
-        description: 'Test result parameter introduced for testing failure scenario'
-        type: string
-        required: true
+      # result:
+      #   description: 'Test result parameter introduced for testing failure scenario'
+      #   type: string
+      #   required: true
       # 'result' input to be removed after testing'
       # ########################
 
@@ -20,12 +20,17 @@ jobs:
   ci-e2e-tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - name: CI - Regression E2E tests for oasis-borrow RUN_ID ${{ inputs.run_id }}
+        uses: actions/checkout@v4
         run: echo "Event received - oasis-borrow RUN_ID is ${{ inputs.run_id }}"
-      - name: Testing e2e tests fail - TO BE REMOVED after Testing
-        if: ${{ inputs.result == 'fail' }}
-        uses: actions/github-script@v7
+      - name: CI E2E tests - No wallet
+        uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
         with:
-          script: |
-            core.setFailed('E2E tests failed')
+          base_url: 'https://staging.summer.fi'
+          script: ci:no-wallet:regression
+      # - name: Testing e2e tests fail - TO BE REMOVED after Testing
+      #   if: ${{ inputs.result == 'fail' }}
+      #   uses: actions/github-script@v7
+      #   with:
+      #     script: |
+      #       core.setFailed('E2E tests failed')

@@ -26,7 +26,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 	].forEach((walletAddress) =>
 		test(`It should show same info in Portfolio - Staging vs Production - ${shortenAddress(
 			walletAddress
-		)} @regression`, async ({ app }) => {
+		)}`, async ({ app }) => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: '14090',
