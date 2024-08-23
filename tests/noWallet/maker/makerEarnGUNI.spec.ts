@@ -9,9 +9,6 @@ test.describe('Maker Earn - GUNI', async () => {
 
 		await app.position.openPage('/ethereum/maker/29929#overview');
 
-		// Position name notdisplayed when wallet is not connected
-		// await app.position.shouldHaveHeader('GUNIV3DAIUSDC2-A');
-
 		await app.position.overview.shouldBeVisible();
 		await app.position.overview.shouldHaveNetValue({
 			value: '\\$([0-9]{1,2})?([0-9],)?([0-9]{1,2})?[0-9].[0-9]{2}',

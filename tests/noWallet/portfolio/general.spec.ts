@@ -108,7 +108,7 @@ test.describe('Default states - Wallet not connected', async () => {
 		await app.position.manage.shouldBeVisible('Migrate your position into Summer.fi');
 	});
 
-	test.skip('It should sort by Net Value @regression', async () => {
+	test.skip('It should sort by Net Value', async () => {
 		test.info().annotations.push(
 			{
 				type: 'Test case',

@@ -19,7 +19,7 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 	});
 
 	// To be moved to WITH-WALLET tests
-	test.skip('It should validate risk slider - Safe @regression', async ({ app }) => {
+	test.skip('It should validate risk slider - Safe', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11623',
@@ -44,7 +44,7 @@ test.describe('Aave v3 Earn Ethereum', async () => {
 	});
 
 	// To be moved to WITH-WALLET tests
-	test.skip('It should validate risk slider - Risky @regression', async ({ app }) => {
+	test.skip('It should validate risk slider - Risky', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11624',

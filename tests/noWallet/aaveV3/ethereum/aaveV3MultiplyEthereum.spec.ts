@@ -3,7 +3,7 @@ import { longTestTimeout } from 'utils/config';
 
 test.describe('Aave v3 Multiply Ethereum', async () => {
 	// To be moved to WITH-WALLET tests
-	test.skip('It should validate "Deposit <collateral>" field - No enough collateral in wallet @regression', async ({
+	test.skip('It should validate "Deposit <collateral>" field - No enough collateral in wallet', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
@@ -19,7 +19,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 	});
 
 	// To be moved to WITH-WALLET tests
-	test.skip('It should validate risk slider - Safe @regression', async ({ app }) => {
+	test.skip('It should validate risk slider - Safe', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11615',
@@ -41,7 +41,7 @@ test.describe('Aave v3 Multiply Ethereum', async () => {
 	});
 
 	// To be moved to WITH-WALLET tests
-	test.skip('It should validate risk slider - Risky @regression', async ({ app }) => {
+	test.skip('It should validate risk slider - Risky', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11616',
