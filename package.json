@@ -96,6 +96,8 @@
 		"nightly:with-wallet:aave:other": "RETRIES='2' xvfb-run yarn with-wallet:aave:other",
 		"nightly:with-wallet:ajna-and-morphoblue": "RETRIES='2' xvfb-run yarn with-wallet:ajna-and-morphoblue",
 		"nightly:with-wallet:maker-and-spark": "RETRIES='2' xvfb-run yarn with-wallet:maker-and-spark",
+		"nightly:with-wallet:maker": "RETRIES='2' xvfb-run yarn with-wallet:maker:ethereum",
+		"nightly:with-wallet:spark": "RETRIES='2' xvfb-run yarn with-wallet:spark:ethereum",
 		"nightly:with-wallet:open-positions:aave": "RETRIES='2' xvfb-run yarn with-wallet:open-positions:aave",
 		"nightly:with-wallet:open-positions:aave:ethereum:earn-multiply": "RETRIES='2' xvfb-run yarn with-wallet:open-positions:aave:ethereum:earn-multiply",
 		"nightly:with-wallet:open-positions:aave:ethereum:borrow": "RETRIES='2' xvfb-run yarn with-wallet:open-positions:aave:ethereum:borrow",
