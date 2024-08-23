@@ -9,7 +9,15 @@ jobs:
   trigger-conclusion:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'CI E2E tests workflow conclussion is ${{ github.event.workflow_run.conclusion }} --.'
+      - run: echo 'CI E2E tests workflow conclussion is -- ${{ github.event.workflow_run.conclusion }} --.'
+  trigger-id:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'CI E2E tests workflow ID is -- ${{ github.event.workflow_run.id }} --.'
+  trigger-run-number:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'CI E2E tests workflow RUN NUMER is -- ${{ github.event.workflow_run.run_number }} --.'
   on-ci-e2e-tests-success:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
