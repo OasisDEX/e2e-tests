@@ -1,0 +1,18 @@
+name: CI E2E tests - RESULT
+
+on: 
+  workflow_run:
+    workflows: [CI E2E tests]
+    types: [completed]
+
+jobs:
+  on-ci-e2e-tests-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - run: echo 'CI E2E tests passed'
+  on-ci-e2e-testsfailure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'ci-e2e-tests failed'
