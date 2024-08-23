@@ -7,20 +7,23 @@ on:
         description: 'Run_id from oasis-borrow run that is triggering this workflow.'
         type: string
         required: true
+      # ########################
       # testing 'tests failure' scenario
       result:
         description: 'Test result parameter introduced for testing failure scenario'
         type: string
         required: true
+      # 'result' input to be removed after testing'
+      # ########################
 
 jobs:
   ci-e2e-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: CI - Regression E2E tests for RUN_ID ${{ inputs.run_id }}
-        run: echo "Event received - RUN_ID is ${{ inputs.run_id }}"
-      - name: Check coverage tolerance
+      - name: CI - Regression E2E tests for oasis-borrow RUN_ID ${{ inputs.run_id }}
+        run: echo "Event received - oasis-borrow RUN_ID is ${{ inputs.run_id }}"
+      - name: Testing e2e tests fail - TO BE REMOVED after Testing
         if: ${{ inputs.result == 'fail' }}
         uses: actions/github-script@v7
         with:
