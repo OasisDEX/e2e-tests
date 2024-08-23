@@ -20,9 +20,7 @@ jobs:
   ci-e2e-tests:
     runs-on: ubuntu-latest
     steps:
-      - name: CI - Regression E2E tests for oasis-borrow RUN_ID ${{ inputs.run_id }}
-        uses: actions/checkout@v4
-        run: echo "Event received - oasis-borrow RUN_ID is ${{ inputs.run_id }}"
+      - run: echo "Regression E2E tests for oasis-borrow RUN_ID ${{ inputs.run_id }}"
       - name: CI E2E tests - No wallet
         uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
         with:
