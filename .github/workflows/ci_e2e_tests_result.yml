@@ -1,4 +1,4 @@
-name: CI E2E tests - RESULT
+name: Sending CI E2E tests result to oasis-borrow
 
 on: 
   workflow_run:
@@ -19,18 +19,3 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/OasisDEX/test-workflow-trigger/actions/workflows/e2e_tests_result.yml/dispatches \
             -d "{\"ref\":\"main\", \"inputs\":{\"tests_run_id\":\"${{ github.event.workflow_run.id }}\", \"tests_result\":\"${{ github.event.workflow_run.conclusion }}\"}}"
-      # - name: Test results failed
-      #   if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-      #   uses: actions/github-script@v7
-      #   with:
-      #     script: |
-      #       core.setFailed('E2E tests failed')
-      # - name: Test results passed
-      #   if: ${{ github.event.workflow_run.conclusion == 'success' }}
-      #   run: echo 'CI E2E tests passed'
-
-  # on-ci-e2e-tests-failure:
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-  #   steps:
-  #     - run: echo 'ci-e2e-tests failed'
