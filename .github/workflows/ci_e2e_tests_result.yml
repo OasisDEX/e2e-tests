@@ -6,20 +6,10 @@ on:
     types: [completed]
 
 jobs:
-  # ########################
-  # ## 'trigger-conclusion' and 'trigger-id' jobs TO BE REMOVED after TESTING
-  trigger-conclusion:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'CI E2E tests workflow conclussion is -- ${{ github.event.workflow_run.conclusion }} --.'
-  trigger-id:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'CI E2E tests workflow ID is -- ${{ github.event.workflow_run.id }} --.'
-  # ########################
   tests-result:
     runs-on: ubuntu-latest
     steps:
+      - run: echo 'CI E2E tests result -- ${{ github.event.workflow_run.conclusion }}'
       - name: Triggering E2E tests result workflow in oasis-borrow repository
         run: |
           curl -L \
@@ -29,15 +19,15 @@ jobs:
             -H "X-GitHub-Api-Version: 2022-11-28" \
             https://api.github.com/repos/OasisDEX/test-workflow-trigger/actions/workflows/e2e_tests_result.yml/dispatches \
             -d "{\"ref\":\"main\", \"inputs\":{\"tests_run_id\":\"${{ github.event.workflow_run.id }}\", \"tests_result\":\"${{ github.event.workflow_run.conclusion }}\"}}"
-      - name: Test results failed
-        if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-        uses: actions/github-script@v7
-        with:
-          script: |
-            core.setFailed('E2E tests failed')
-      - name: Test results passed
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        run: echo 'CI E2E tests passed'
+      # - name: Test results failed
+      #   if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+      #   uses: actions/github-script@v7
+      #   with:
+      #     script: |
+      #       core.setFailed('E2E tests failed')
+      # - name: Test results passed
+      #   if: ${{ github.event.workflow_run.conclusion == 'success' }}
+      #   run: echo 'CI E2E tests passed'
 
   # on-ci-e2e-tests-failure:
   #   runs-on: ubuntu-latest
