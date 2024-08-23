@@ -6,13 +6,21 @@ on:
     types: [completed]
 
 jobs:
+  trigger-conclusion:
+   steps:
+      - run: echo 'CI E2E tests workflow conclussion is ${{ github.event.workflow_run.conclusion }} --.'
   on-ci-e2e-tests-success:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - run: echo 'CI E2E tests passed'
-  on-ci-e2e-testsfailure:
+  on-ci-e2e-tests-failure:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
       - run: echo 'ci-e2e-tests failed'
+  on-ci-e2e-tests-cancellation:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'cancelled' }}
+    steps:
+      - run: echo 'ci-e2e-tests was cancelled'
