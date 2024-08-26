@@ -15,7 +15,7 @@ let walletAddress: string;
 test.describe.configure({ mode: 'serial' });
 
 // New spec file that allows running all target pools even if previous ones fail
-test.describe.skip('Maker Borrow - Swap to Spark', async () => {
+test.describe('Maker Borrow - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -89,8 +89,8 @@ test.describe.skip('Maker Borrow - Swap to Spark', async () => {
 			{ colToken: 'ETH', debtToken: 'DAI' },
 			{ colToken: 'RETH', debtToken: 'DAI' },
 			{ colToken: 'SDAI', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'DAI' },
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
+			// { colToken: 'WBTC', debtToken: 'DAI' }, -- Maker WBTC ceiling
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Maker Borrow position (WSTETH/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {

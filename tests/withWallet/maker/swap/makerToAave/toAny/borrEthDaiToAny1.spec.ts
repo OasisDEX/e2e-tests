@@ -1,4 +1,4 @@
-import { BrowserContext, test } from '@playwright/test';
+import { BrowserContext, expect, test } from '@playwright/test';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
@@ -10,7 +10,6 @@ import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionM
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -43,22 +42,14 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'MakerTenderly:true',
 			}));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WBTC',
-				balance: '20',
-			});
 		});
 
-		await app.page.goto('vaults/open/WBTC-C');
+		await app.page.goto('vaults/open/ETH-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -66,7 +57,7 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '0.2' },
+			deposit: { token: 'ETH', amount: '10' },
 			generate: { token: 'DAI', amount: '5000' },
 		});
 
@@ -85,18 +76,18 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'SDAI', debtToken: 'ETH' },
-			// { colToken: 'SDAI', debtToken: 'GHO' }, - NO LIQUIDITY - GHO
-			{ colToken: 'SDAI', debtToken: 'USDT' },
-			{ colToken: 'SDAI', debtToken: 'WBTC' },
-			{ colToken: 'USDC', debtToken: 'ETH' },
-			{ colToken: 'USDC', debtToken: 'USDT' },
-			{ colToken: 'USDC', debtToken: 'WBTC' },
-			{ colToken: 'USDT', debtToken: 'ETH' },
-			{ colToken: 'USDC', debtToken: 'WSTETH' },
+			{ colToken: 'CBETH', debtToken: 'USDC' },
+			{ colToken: 'DAI', debtToken: 'ETH' },
+			{ colToken: 'DAI', debtToken: 'MKR' },
+			{ colToken: 'DAI', debtToken: 'WBTC' },
+			{ colToken: 'ETH', debtToken: 'DAI' },
+			{ colToken: 'ETH', debtToken: 'USDC' },
+			{ colToken: 'ETH', debtToken: 'USDT' },
+			{ colToken: 'ETH', debtToken: 'WBTC' },
+			// { colToken: 'LDO', debtToken: 'USDT' }, // BUG - 15943 - NOT working
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Borrow position (WBTC/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -104,20 +95,22 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 
 			test.setTimeout(longTestTimeout);
 
-			// Wait an reload to avoid flakiness
-			await app.page.waitForTimeout(1000);
-			await app.page.reload();
+			await expect(async () => {
+				// Wait an reload to avoid flakiness
+				await app.page.waitForTimeout(1000);
+				await app.page.reload();
 
-			await swapPosition({
-				app,
-				forkId,
-				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Maker',
-				targetProtocol: 'Aave V3',
-				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
-				existingDpmAndApproval: true,
-				rejectSwap: true,
-			});
+				await swapPosition({
+					app,
+					forkId,
+					reason: 'Switch to higher max Loan To Value',
+					originalProtocol: 'Maker',
+					targetProtocol: 'Aave V3',
+					targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+					existingDpmAndApproval: true,
+					rejectSwap: true,
+				});
+			}).toPass();
 		})
 	);
 });

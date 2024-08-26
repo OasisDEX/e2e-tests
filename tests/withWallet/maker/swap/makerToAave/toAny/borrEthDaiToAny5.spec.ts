@@ -10,12 +10,10 @@ import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionM
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// TO BE SPLIT in 4x files
-test.describe.skip('Maker Borrow - Swap to Aave V3', async () => {
+test.describe('Maker Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -31,7 +29,7 @@ test.describe.skip('Maker Borrow - Swap to Aave V3', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Maker Borrow position', async () => {
+	test('Test setup - Open Maker Borrow position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -44,22 +42,14 @@ test.describe.skip('Maker Borrow - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
-			});
 		});
 
-		await app.page.goto('/vaults/open/WSTETH-B');
+		await app.page.goto('vaults/open/ETH-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -67,8 +57,8 @@ test.describe.skip('Maker Borrow - Swap to Aave V3', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
-			generate: { token: 'DAI', amount: '15000' },
+			deposit: { token: 'ETH', amount: '10' },
+			generate: { token: 'DAI', amount: '5000' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -86,51 +76,16 @@ test.describe.skip('Maker Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'CBETH', debtToken: 'ETH' },
-			{ colToken: 'CBETH', debtToken: 'USDC' },
-			{ colToken: 'DAI', debtToken: 'ETH' },
-			{ colToken: 'DAI', debtToken: 'MKR' },
-			{ colToken: 'DAI', debtToken: 'WBTC' },
-			{ colToken: 'ETH', debtToken: 'DAI' },
-			{ colToken: 'ETH', debtToken: 'USDC' },
-			{ colToken: 'ETH', debtToken: 'USDT' },
-			{ colToken: 'ETH', debtToken: 'WBTC' },
-			{ colToken: 'LDO', debtToken: 'USDT' },
-			{ colToken: 'LINK', debtToken: 'DAI' },
-			{ colToken: 'LINK', debtToken: 'ETH' },
-			{ colToken: 'LINK', debtToken: 'USDC' },
-			{ colToken: 'LINK', debtToken: 'USDT' },
-			{ colToken: 'MKR', debtToken: 'DAI' },
-			{ colToken: 'RETH', debtToken: 'DAI' },
-			{ colToken: 'RETH', debtToken: 'ETH' },
-			{ colToken: 'RETH', debtToken: 'USDC' },
-			{ colToken: 'RETH', debtToken: 'USDT' },
-			{ colToken: 'SDAI', debtToken: 'ETH' },
-			{ colToken: 'SDAI', debtToken: 'FRAX' },
-			{ colToken: 'SDAI', debtToken: 'LUSD' },
-			{ colToken: 'SDAI', debtToken: 'USDC' },
-			{ colToken: 'SDAI', debtToken: 'USDT' },
-			{ colToken: 'SDAI', debtToken: 'WBTC' },
-			{ colToken: 'USDC', debtToken: 'ETH' },
-			{ colToken: 'USDC', debtToken: 'USDT' },
-			{ colToken: 'USDC', debtToken: 'WBTC' },
-			{ colToken: 'USDC', debtToken: 'WSTETH' },
-			{ colToken: 'USDT', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'DAI' },
-			{ colToken: 'WBTC', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'LUSD' },
-			{ colToken: 'WBTC', debtToken: 'USDC' },
-			{ colToken: 'WBTC', debtToken: 'USDT' },
 			{ colToken: 'WSTETH', debtToken: 'CBETH' },
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			{ colToken: 'WSTETH', debtToken: 'ETH' },
 			{ colToken: 'WSTETH', debtToken: 'LUSD' },
 			{ colToken: 'WSTETH', debtToken: 'RPL' },
 			{ colToken: 'WSTETH', debtToken: 'USDC' },
 			{ colToken: 'WSTETH', debtToken: 'USDT' },
+			// { colToken: 'WSTETH', debtToken: 'GHO' }, - NO LIQUIDITY - GHO
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Borrow position (WSTETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
