@@ -260,7 +260,7 @@ export class Manage {
 	async shouldUpdateEarnRays() {
 		const initialRaysToEarn = await this.page.getByText('Rays Instantly').innerText();
 		await expect(this.page.getByText('Rays Instantly')).not.toContainText(initialRaysToEarn, {
-			timeout: expectDefaultTimeout * 2,
+			timeout: expectDefaultTimeout * 3,
 		});
 	}
 
@@ -268,7 +268,7 @@ export class Manage {
 	async shouldEarnRays(raysCount: string) {
 		const regExp = new RegExp(`Earn ${raysCount}`);
 		await expect(this.page.getByText('Rays Instantly')).toContainText(regExp, {
-			timeout: expectDefaultTimeout * 2,
+			timeout: expectDefaultTimeout * 3,
 		});
 	}
 

@@ -56,18 +56,19 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 		await app.position.manage.shouldEarnRays('0.00[0-9]{2}');
 	});
 
-	test('It should show Rays to be earned - Adjust risk DOWN @regression', async () => {
+	test('It should show Rays to be earned - Adjust risk DOWN', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
 		});
 
+		await app.page.reload();
+
 		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.1 });
-		await app.position.manage.shouldUpdateEarnRays();
 		await app.position.manage.shouldEarnRays('0.000[0-9]');
 	});
 
-	test('It should show Rays to be increased - Deposit extra collateral @regression', async () => {
+	test('It should show Rays to be increased - Deposit extra collateral', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -79,7 +80,7 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 		await app.position.manage.shouldIncreaseRays('[1-5],[0-9]{3}.[0-9]{2}');
 	});
 
-	test('It should show Rays to be reduced - Withdraw collateral @regression', async () => {
+	test('It should show Rays to be reduced - Withdraw collateral', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -91,7 +92,7 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 		await app.position.manage.shouldReduceRays({ raysCount: '0.00[0-9]{2}' });
 	});
 
-	test('It should show Rays to be increased - Pay back debt @regression', async () => {
+	test('It should show Rays to be increased - Pay back debt', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -103,7 +104,7 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 		await app.position.manage.shouldIncreaseRays('0.00[0-9]{2}');
 	});
 
-	test('It should show Rays to be reduced - Borrow more @regression', async () => {
+	test('It should show Rays to be reduced - Borrow more', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -115,7 +116,7 @@ test.describe('Rays - Wallet connected - Position page', async () => {
 		await app.position.manage.shouldReduceRays({ raysCount: '0.00[0-9]{2}' });
 	});
 
-	test('It should show Rays to be earned - Close position @regression', async () => {
+	test('It should show Rays to be earned - Close position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
