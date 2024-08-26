@@ -17,5 +17,5 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${{ secrets.E2E_TESTS_PAT }}" \
             -H "X-GitHub-Api-Version: 2022-11-28" \
-            https://api.github.com/repos/OasisDEX/test-workflow-trigger/actions/workflows/e2e_tests_result.yml/dispatches \
+            https://api.github.com/repos/OasisDEX/oasis-borrow/actions/workflows/e2e-tests-result.yaml/dispatches \
             -d "{\"ref\":\"main\", \"inputs\":{\"tests_run_id\":\"${{ github.event.workflow_run.id }}\", \"tests_result\":\"${{ github.event.workflow_run.conclusion }}\"}}"
