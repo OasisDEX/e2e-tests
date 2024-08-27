@@ -30,6 +30,14 @@ const defaultConfig: PlaywrightTestConfig = {
 	/* Configure projects for major browsers */
 	projects: [
 		{
+			name: 'verify-staging',
+			testMatch: ['verifyStaging.spec.ts'],
+			use: {
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
 			name: 'no-wallet',
 			testMatch: ['noWallet/**'],
 			use: {
