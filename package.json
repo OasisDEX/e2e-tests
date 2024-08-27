@@ -15,6 +15,7 @@
 		"ethers": "^6.7.1"
 	},
 	"scripts": {
+		"verify-staging": "REPORT_FOLDER=verify-staging npx playwright test --project=verify-staging",
 		"no-wallet": "REPORT_FOLDER=no-wallet npx playwright test --project=no-wallet",
 		"no-wallet:portfolio": "REPORT_FOLDER=no-wallet-portfolio npx playwright test --project=no-wallet-portfolio",
 		"with-wallet:rays": "REPORT_FOLDER=with-wallet-rays npx playwright test --project=with-wallet-rays --workers=1",
