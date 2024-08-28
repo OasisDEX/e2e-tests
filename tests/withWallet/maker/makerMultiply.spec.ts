@@ -2,10 +2,10 @@ import { BrowserContext, test } from '@playwright/test';
 import { expect, metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
-import * as tx from 'utils/tx';
 import { setup } from 'utils/setup';
 import { expectDefaultTimeout, extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import { confirmAddToken } from 'tests/sharedTestSteps/makerConfirmTx';
 
 let context: BrowserContext;
 let app: App;
@@ -54,7 +54,8 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 		await expect(async () => {
 			await app.position.setup.createOrRetry();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			// await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await confirmAddToken({ app });
 		}).toPass();
 
 		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
@@ -70,7 +71,8 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 		await expect(async () => {
 			await app.position.setup.createOrRetry();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			// await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await confirmAddToken({ app });
 			await app.position.setup.goToVaultShouldBeVisible();
 		}).toPass();
 

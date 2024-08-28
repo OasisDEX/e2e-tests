@@ -3,7 +3,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
