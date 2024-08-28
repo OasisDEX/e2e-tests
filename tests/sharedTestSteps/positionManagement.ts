@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { expectDefaultTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { Tokens } from 'utils/testData';
 import { Reason } from 'src/pages/position/swap';
+import { confirmAddToken } from './makerConfirmTx';
 
 type ActionData = { token: string; amount: string };
 type SwapProtocols = 'Aave V3' | 'Maker' | 'Morpho' | 'Spark';
@@ -133,9 +133,7 @@ export const openMakerPosition = async ({
 	if (!existingProxy) {
 		await app.position.setup.setupProxy();
 		await app.position.setup.createProxy();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
+		await confirmAddToken({ app });
 
 		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
 		await app.page.waitForTimeout(5_000);
@@ -152,7 +150,8 @@ export const openMakerPosition = async ({
 		await app.position.setup.setTokenAllowance(deposit.token);
 
 		await expect(async () => {
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			// await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await confirmAddToken({ app });
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
@@ -171,7 +170,8 @@ export const openMakerPosition = async ({
 
 	await expect(async () => {
 		await app.position.setup.createOrRetry();
-		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
+		// await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
+		await confirmAddToken({ app });
 	}).toPass();
 
 	await app.position.setup.goToVault();
