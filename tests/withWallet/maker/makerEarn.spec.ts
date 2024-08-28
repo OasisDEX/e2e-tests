@@ -1,11 +1,11 @@
 import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp } from 'utils/setup';
+import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import { confirmAddToken } from 'tests/sharedTestSteps/makerConfirmTx';
 
 let context: BrowserContext;
 let app: App;
@@ -63,39 +63,25 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await app.page.goto(`/earn/dsr/${walletAddress}#overview`);
 		await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
 
-		// If proxy was not previously setup extra steps will need to be executed
-		const button = app.page
-			.getByText('Set up DSR strategy')
-			.locator('../../..')
-			.locator('div:nth-child(3) > button');
-		await expect(button).toBeVisible();
-		const buttonLabel = await button.innerText();
-		if (buttonLabel.includes('Set up Proxy')) {
-			await app.position.setup.setupProxy();
-			await app.position.setup.setupProxy(); // Thre are 2x Setup Proxy screens
-			await test.step('Metamask: ConfirmAddToken', async () => {
-				await metamask.confirmAddToken();
-			});
+		await app.position.setup.setupProxy();
+		await app.position.setup.setupProxy(); // Thre are 2x Setup Proxy screens
+		await confirmAddToken({ app });
 
-			// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
-			await app.page.waitForTimeout(5_000);
-			await app.page.reload();
+		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
+		await app.page.waitForTimeout(5_000);
+		await app.page.reload();
 
-			await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
-		}
+		await app.position.setup.deposit({ token: 'DAI', amount: '17500.50' });
 
 		await app.position.setup.setupAllowance();
 		await app.position.setup.unlimitedAllowance();
 		await app.position.setup.setupAllowance();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
+		await confirmAddToken({ app });
 
 		await app.position.setup.goToDeposit();
 		await app.position.setup.confirmDeposit();
-		await test.step('Metamask: ConfirmAddToken', async () => {
-			await metamask.confirmAddToken();
-		});
+		await confirmAddToken({ app });
+
 		await app.position.setup.shouldShowSuccessScreen();
 	});
 
