@@ -67,7 +67,7 @@ export const updateFlagsAndRejectCookies = async ({
 		await app.page.evaluate(() =>
 			window.localStorage.setItem(
 				'cookieSettings',
-				'{"accepted":false,"enabledCookies":{"marketing":false,"analytics":false},"version":"ver-26.06.2023"}'
+				'{"accepted":false,"enabledCookies":{"marketing":false,"analytics":false},"version":"version-27.08.2024"}'
 			)
 		);
 
