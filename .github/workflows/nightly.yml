@@ -5,6 +5,11 @@ on:
     - cron:  '0 1 * * 1-5'
 
 jobs:
+  api-tests: 
+    uses: ./.github/workflows/z_Reusable_Apis.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+
   no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
     with:
