@@ -25,10 +25,25 @@ const defaultConfig: PlaywrightTestConfig = {
 		// trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 		video: 'retain-on-failure',
+		extraHTTPHeaders: {
+			// We set this header per GitHub guidelines.
+			Accept: 'application/vnd.github.v3+json',
+			// Add authorization token to all requests.
+			// Assuming personal access token available in the environment.
+			// 'Authorization': `token ${process.env.API_TOKEN}`,
+		},
 	},
 
 	/* Configure projects for major browsers */
 	projects: [
+		{
+			name: 'api-tests',
+			testMatch: ['api/**'],
+			use: {
+				...devices['Desktop Chrome'],
+			},
+		},
+
 		{
 			name: 'verify-staging',
 			testMatch: ['verifyStaging.spec.ts'],
