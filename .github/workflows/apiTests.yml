@@ -14,26 +14,3 @@ jobs:
     uses: ./.github/workflows/z_Reusable_Apis.yml
     with:
       base_url: ${{ inputs.base_url }}
-
-    # name: 'API tests'
-    # runs-on: ubuntu-latest
-    # container:
-    #   image: mcr.microsoft.com/playwright:v1.37.1-jammy
-    # steps:
-    #   - uses: actions/checkout@v4
-    #   - uses: actions/setup-node@v4
-    #     with:
-    #       node-version: 18
-    #   - name: Install dependencies
-    #     run: yarn
-    #   - name: Verify that staging environment is ready for testing
-    #     if: ${{ inputs.base_url == 'https://staging.summer.fi' }}
-    #     run: yarn verify-staging
-    #   - name: Run API tests
-    #     run: yarn api-tests
-    #   - uses: actions/upload-artifact@v4
-    #     if: always()
-    #     with:
-    #       name: playwright-report-api-tests
-    #       path: playwright-reports/api-tests
-    #       retention-days: 30

@@ -87,9 +87,9 @@ test.describe('Maker Borrow - Swap to Spark', async () => {
 	(
 		[
 			{ colToken: 'ETH', debtToken: 'DAI' },
-			{ colToken: 'RETH', debtToken: 'DAI' },
 			{ colToken: 'SDAI', debtToken: 'ETH' },
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
+			{ colToken: 'RETH', debtToken: 'DAI' },
 			// { colToken: 'WBTC', debtToken: 'DAI' }, -- Maker WBTC ceiling
 		] as const
 	).forEach((targetPool) =>
