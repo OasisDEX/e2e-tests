@@ -107,6 +107,17 @@ export const responses = {
 			},
 		],
 	},
+	stopLoss: {
+		simulation: {},
+		transaction: {
+			to: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
+			data: expect.any(String),
+			triggerTxData: expect.any(String),
+		},
+		encodedTriggerData: expect.any(String),
+		warnings: [],
+	},
+
 	wrongDpm: {
 		message: 'Validation Errors',
 		errors: [
@@ -198,6 +209,17 @@ export const responses = {
 			{
 				message: 'Required',
 				code: 'invalid_type',
+				path: ['triggerData'],
+			},
+		],
+		warnings: [],
+	},
+	wrongTriggerDataStopLoss: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Invalid input',
+				code: 'invalid_union',
 				path: ['triggerData'],
 			},
 		],
@@ -370,6 +392,21 @@ export const validPayloads = {
 				minSellPrice: '50000000000',
 				targetLTV: '3800',
 				useMinSellPrice: true,
+			},
+		},
+	},
+	stopLoss: {
+		closeToDebt: {
+			dpm: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '7685',
+				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
 		},
 	},

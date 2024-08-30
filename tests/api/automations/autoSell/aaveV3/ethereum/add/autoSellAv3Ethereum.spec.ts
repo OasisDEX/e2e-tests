@@ -3,7 +3,7 @@ import { validPayloads, responses } from 'utils/testData_APIs';
 
 const autoSellEndpoint = '/api/triggers/1/aave3/auto-sell';
 
-test.describe.only('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
+test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1218
 
