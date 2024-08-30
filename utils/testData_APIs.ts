@@ -184,6 +184,799 @@ export const responses = {
 		encodedTriggerData: expect.any(String),
 		warnings: [],
 	},
+	autoTakeProfit: {
+		simulation: {
+			profits: [
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+				{
+					triggerPrice: expect.any(String),
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 6,
+							symbol: 'USDC',
+							address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+						},
+					},
+					stopLossDynamicPrice: expect.any(String),
+					fee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+					totalFee: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'WETH',
+							address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+						},
+					},
+				},
+			],
+		},
+		transaction: {
+			to: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
+			data: expect.any(String),
+			triggerTxData: expect.any(String),
+		},
+		encodedTriggerData: expect.any(String),
+		warnings: [],
+	},
 	wrongDpm: {
 		message: 'Validation Errors',
 		errors: [
@@ -346,6 +1139,17 @@ export const responses = {
 		],
 		warnings: [],
 	},
+	wrongExecutionPrice: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Invalid input',
+				code: 'invalid_union',
+				path: ['triggerData', 'executionPrice'],
+			},
+		],
+		warnings: [],
+	},
 	wrongMaxBaseFee: {
 		message: 'Validation Errors',
 		errors: [
@@ -379,12 +1183,44 @@ export const responses = {
 		],
 		warnings: [],
 	},
+	wrongWithdrawStep: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Invalid input',
+				code: 'invalid_union',
+				path: ['triggerData', 'withdrawStep'],
+			},
+		],
+		warnings: [],
+	},
+	wrongStopLossTriggerData: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Invalid input',
+				code: 'invalid_union',
+				path: ['triggerData', 'stopLoss', 'triggerData'],
+			},
+		],
+		warnings: [],
+	},
 	wrongToken: {
 		message: 'Validation Errors',
 		errors: [
 			{
 				message: 'Invalid address format',
 				path: ['triggerData', 'token'],
+			},
+		],
+		warnings: [],
+	},
+	wrongWithdrawToken: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Invalid address format',
+				path: ['triggerData', 'withdrawToken'],
 			},
 		],
 		warnings: [],
@@ -509,6 +1345,30 @@ export const validPayloads = {
 			triggerData: {
 				trailingDistance: '8000000000',
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+		},
+	},
+	autoTakeProfit: {
+		closeToDebt: {
+			dpm: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '3200',
+				executionPrice: '0',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7940',
+						token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+					},
+					action: 'add',
+				},
+				withdrawToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+				withdrawStep: '500',
 			},
 		},
 	},
