@@ -1,4 +1,4 @@
-name: CI E2E tests
+name: CI E2E and API tests
 
 on: 
   workflow_dispatch:
@@ -12,9 +12,13 @@ jobs:
   staging-deployed-trigger-received:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Regression E2E tests for oasis-borrow RUN_ID ${{ inputs.run_id }}"
+      - run: echo "Regression E2E and API tests for oasis-borrow RUN_ID ${{ inputs.run_id }}"
   no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
     with:
       base_url: 'https://staging.summer.fi'
       script: ci:no-wallet:regression
+  api-tests:
+    uses: ./.github/workflows/z_Reusable_Apis.yml
+    with:
+      base_url: 'https://staging.summer.fi'
