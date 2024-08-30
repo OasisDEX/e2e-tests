@@ -117,7 +117,73 @@ export const responses = {
 		encodedTriggerData: expect.any(String),
 		warnings: [],
 	},
-
+	trailingStopLoss: {
+		simulation: {
+			latestPrice: {
+				tokenRoundId: expect.any(String),
+				denominationRoundId: expect.any(String),
+				token: {
+					id: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+					symbol: 'WETH',
+					oraclesToken: [
+						{
+							address: '0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419',
+						},
+					],
+				},
+				denomination: {
+					id: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+					symbol: 'USDC',
+					oraclesToken: [
+						{
+							address: '0x8fffffd4afb6115b954bd326cbe7b4ba576818f6',
+						},
+					],
+				},
+				derivedPrice: expect.any(String),
+			},
+			position: {
+				hasStablecoinDebt: true,
+				ltv: expect.any(String),
+				collateral: {
+					balance: expect.any(String),
+					token: {
+						decimals: 18,
+						symbol: 'WETH',
+						address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+					},
+				},
+				debt: {
+					balance: expect.any(String),
+					token: {
+						decimals: 6,
+						symbol: 'USDC',
+						address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+					},
+				},
+				address: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
+				oraclePrices: {
+					collateralPrice: expect.any(String),
+					debtPrice: expect.any(String),
+				},
+				collateralPriceInDebt: expect.any(String),
+				netValueUSD: expect.any(String),
+				debtValueUSD: expect.any(String),
+				collateralValueUSD: expect.any(String),
+			},
+			executionParams: {
+				executionPrice: expect.any(String),
+				dynamicExecutionLTV: expect.any(String),
+			},
+		},
+		transaction: {
+			to: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
+			data: expect.any(String),
+			triggerTxData: expect.any(String),
+		},
+		encodedTriggerData: expect.any(String),
+		warnings: [],
+	},
 	wrongDpm: {
 		message: 'Validation Errors',
 		errors: [
@@ -302,6 +368,27 @@ export const responses = {
 		],
 		warnings: [],
 	},
+	wrongTrailingDistance: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Invalid input',
+				code: 'invalid_union',
+				path: ['triggerData', 'trailingDistance'],
+			},
+		],
+		warnings: [],
+	},
+	wrongToken: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Invalid address format',
+				path: ['triggerData', 'token'],
+			},
+		],
+		warnings: [],
+	},
 	wrongUseMaxBuyPrice: {
 		message: 'Validation Errors',
 		errors: [
@@ -406,6 +493,21 @@ export const validPayloads = {
 			action: 'add',
 			triggerData: {
 				executionLTV: '7685',
+				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+		},
+	},
+	trailingStopLoss: {
+		closeToDebt: {
+			dpm: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'add',
+			triggerData: {
+				trailingDistance: '8000000000',
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
 		},
