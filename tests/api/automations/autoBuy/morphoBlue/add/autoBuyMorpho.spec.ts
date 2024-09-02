@@ -3,7 +3,7 @@ import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
 
 const autoBuyEndpoint = '/api/triggers/1/morphoblue/auto-buy';
 
-test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
+test.describe('API tests - Auto-Buy - Morpho Blue - Ethereum', async () => {
 	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467
 
