@@ -1,38 +1,37 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsAaveV3Ethereum, responses } from 'utils/testData_APIs';
+import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
 
-const autoSellEndpoint = '/api/triggers/1/aave3/auto-sell';
+const autoSellEndpoint = '/api/triggers/1/morphoblue/auto-sell';
 
-test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
-	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1218
+test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
+	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
+	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467
 
 	test('Add automation - Without Min Sell Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice,
+			data: validPayloadsMorpho.autoSell.addWithoutMinSellPrice,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoSellWithoutMinSellPrice);
+		expect(respJSON).toMatchObject(responses.autoSellWithoutMinSellPriceMorpho);
 	});
 
 	test('Add automation - With Min Sell Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: validPayloadsAaveV3Ethereum.autoSell.addWithMinSellPrice,
+			data: validPayloadsMorpho.autoSell.addWithMinSellPrice,
 		});
 
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject({
-			...responses.autoSellWithoutMinSellPrice,
+			...responses.autoSellWithoutMinSellPriceMorpho,
 			warnings: [],
 		});
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...payloadWithoutDpm } =
-			validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice;
+		const { dpm, ...payloadWithoutDpm } = validPayloadsMorpho.autoSell.addWithoutMinSellPrice;
 
 		const response = await request.post(autoSellEndpoint, {
 			data: payloadWithoutDpm,
@@ -45,7 +44,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice, dpm: 1 },
+			data: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice, dpm: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -55,7 +54,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice, dpm: '0xwrong' },
+			data: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
@@ -65,7 +64,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "position"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } =
-			validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice;
+			validPayloadsMorpho.autoSell.addWithoutMinSellPrice;
 
 		const response = await request.post(autoSellEndpoint, {
 			data: payloadWithoutPosition,
@@ -78,7 +77,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice, position: 'string' },
+			data: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice, position: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -88,7 +87,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice, position: 1 },
+			data: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice, position: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -98,7 +97,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice, position: [] },
+			data: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice, position: [] },
 		});
 
 		const respJSON = await response.json();
@@ -108,7 +107,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice, position: null },
+			data: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice, position: null },
 		});
 
 		const respJSON = await response.json();
@@ -118,7 +117,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "collateral (position)"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } =
-			validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice;
+			validPayloadsMorpho.autoSell.addWithoutMinSellPrice;
 		const { collateral, ...positionWithoutCollateral } = position;
 
 		const response = await request.post(autoSellEndpoint, {
@@ -133,9 +132,9 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice,
+				...validPayloadsMorpho.autoSell.addWithoutMinSellPrice,
 				position: {
-					...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice.position,
+					...validPayloadsMorpho.autoSell.addWithoutMinSellPrice.position,
 					collateral: 11,
 				},
 			},
@@ -149,9 +148,9 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice,
+				...validPayloadsMorpho.autoSell.addWithoutMinSellPrice,
 				position: {
-					...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice.position,
+					...validPayloadsMorpho.autoSell.addWithoutMinSellPrice.position,
 					collateral: '0xwrong',
 				},
 			},
@@ -164,7 +163,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "debt (position)"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } =
-			validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice;
+			validPayloadsMorpho.autoSell.addWithoutMinSellPrice;
 		const { debt, ...positionWithoutDebt } = position;
 
 		const response = await request.post(autoSellEndpoint, {
@@ -179,11 +178,8 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice,
-				position: {
-					...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice.position,
-					debt: 11,
-				},
+				...validPayloadsMorpho.autoSell.addWithoutMinSellPrice,
+				position: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice.position, debt: 11 },
 			},
 		});
 
@@ -195,9 +191,9 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice,
+				...validPayloadsMorpho.autoSell.addWithoutMinSellPrice,
 				position: {
-					...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice.position,
+					...validPayloadsMorpho.autoSell.addWithoutMinSellPrice.position,
 					debt: '0xwrong',
 				},
 			},
@@ -210,7 +206,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "triggerData"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice;
+			validPayloadsMorpho.autoSell.addWithoutMinSellPrice;
 
 		const response = await request.post(autoSellEndpoint, {
 			data: payloadWithoutTriggerData,
@@ -223,10 +219,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: {
-				...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice,
-				triggerData: 'string',
-			},
+			data: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -236,7 +229,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice, triggerData: 1 },
+			data: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -246,7 +239,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice, triggerData: [] },
+			data: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
@@ -256,7 +249,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice, triggerData: null },
+			data: { ...validPayloadsMorpho.autoSell.addWithoutMinSellPrice, triggerData: null },
 		});
 
 		const respJSON = await response.json();
@@ -266,7 +259,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "executionLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice;
+			validPayloadsMorpho.autoSell.addWithoutMinSellPrice;
 		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
 		const response = await request.post(autoSellEndpoint, {
@@ -280,7 +273,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "maxBaseFee (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice;
+			validPayloadsMorpho.autoSell.addWithoutMinSellPrice;
 		const { maxBaseFee, ...triggerDataWithoutMaxBaseFee } = triggerData;
 
 		const response = await request.post(autoSellEndpoint, {
@@ -294,7 +287,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "targetLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice;
+			validPayloadsMorpho.autoSell.addWithoutMinSellPrice;
 		const { targetLTV, ...triggerDataWithoutTargetLTV } = triggerData;
 
 		const response = await request.post(autoSellEndpoint, {
@@ -308,7 +301,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "useMinSellPrice (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice;
+			validPayloadsMorpho.autoSell.addWithoutMinSellPrice;
 		const { useMinSellPrice, ...triggerDataWithoutUseMinSellPrice } = triggerData;
 
 		const response = await request.post(autoSellEndpoint, {

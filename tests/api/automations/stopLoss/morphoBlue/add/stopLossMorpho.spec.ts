@@ -1,42 +1,54 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsAaveV3Ethereum, responses } from 'utils/testData_APIs';
+import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
 
-const trailingStopLossEndpoint = '/api/triggers/1/aave3/dma-trailing-stop-loss';
+const stopLossEndpoint = '/api/triggers/1/morphoblue/dma-stop-loss';
 
-test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () => {
-	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1218
+test.describe('API tests - Stop-Loss - Morpho Blue - Ethereum', async () => {
+	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
+	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467
 
 	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
+		const response = await request.post(stopLossEndpoint, {
+			data: validPayloadsMorpho.stopLoss.closeToDebt,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.trailingStopLoss);
+		expect(respJSON).toMatchObject({
+			...responses.stopLoss,
+			transaction: {
+				...responses.stopLoss.transaction,
+				to: '0x302a28D7968824f386F278a72368856BC4d82BA4',
+			},
+		});
 	});
 
 	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
+				...validPayloadsMorpho.stopLoss.closeToDebt,
 				triggerData: {
-					...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt.triggerData,
-					token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+					...validPayloadsMorpho.stopLoss.closeToDebt.triggerData,
+					token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
 				},
 			},
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.trailingStopLoss);
+		expect(respJSON).toMatchObject({
+			...responses.stopLoss,
+			transaction: {
+				...responses.stopLoss.transaction,
+				to: '0x302a28D7968824f386F278a72368856BC4d82BA4',
+			},
+		});
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...payloadWithoutDpm } = validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt;
+		const { dpm, ...payloadWithoutDpm } = validPayloadsMorpho.stopLoss.closeToDebt;
 
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: payloadWithoutDpm,
 		});
 
@@ -46,8 +58,8 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt, dpm: 1 },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.closeToDebt, dpm: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -56,8 +68,8 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt, dpm: '0xwrong' },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.closeToDebt, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
@@ -66,10 +78,9 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Without "position"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } =
-			validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloadsMorpho.stopLoss.closeToDebt;
 
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: payloadWithoutPosition,
 		});
 
@@ -79,8 +90,8 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt, position: 'string' },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.closeToDebt, position: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -89,8 +100,8 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt, position: 1 },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.closeToDebt, position: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -99,8 +110,8 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt, position: [] },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.closeToDebt, position: [] },
 		});
 
 		const respJSON = await response.json();
@@ -109,8 +120,8 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt, position: null },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.closeToDebt, position: null },
 		});
 
 		const respJSON = await response.json();
@@ -119,11 +130,10 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Without "collateral (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } =
-			validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloadsMorpho.stopLoss.closeToDebt;
 		const { collateral, ...positionWithoutCollateral } = position;
 
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...payloadWithoutPosition, position: positionWithoutCollateral },
 		});
 
@@ -133,13 +143,10 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
-				position: {
-					...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt.position,
-					collateral: 11,
-				},
+				...validPayloadsMorpho.stopLoss.closeToDebt,
+				position: { ...validPayloadsMorpho.stopLoss.closeToDebt.position, collateral: 11 },
 			},
 		});
 
@@ -149,11 +156,11 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
+				...validPayloadsMorpho.stopLoss.closeToDebt,
 				position: {
-					...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt.position,
+					...validPayloadsMorpho.stopLoss.closeToDebt.position,
 					collateral: '0xwrong',
 				},
 			},
@@ -165,11 +172,10 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Without "debt (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } =
-			validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloadsMorpho.stopLoss.closeToDebt;
 		const { debt, ...positionWithoutDebt } = position;
 
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...payloadWithoutPosition, position: positionWithoutDebt },
 		});
 
@@ -179,13 +185,10 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
-				position: {
-					...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt.position,
-					debt: 11,
-				},
+				...validPayloadsMorpho.stopLoss.closeToDebt,
+				position: { ...validPayloadsMorpho.stopLoss.closeToDebt.position, debt: 11 },
 			},
 		});
 
@@ -195,11 +198,11 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
+				...validPayloadsMorpho.stopLoss.closeToDebt,
 				position: {
-					...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt.position,
+					...validPayloadsMorpho.stopLoss.closeToDebt.position,
 					debt: '0xwrong',
 				},
 			},
@@ -211,10 +214,9 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Without "triggerData"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloadsMorpho.stopLoss.closeToDebt;
 
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: payloadWithoutTriggerData,
 		});
 
@@ -224,8 +226,8 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt, triggerData: 'string' },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.closeToDebt, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -234,8 +236,8 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt, triggerData: 1 },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.closeToDebt, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -244,8 +246,8 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt, triggerData: [] },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.closeToDebt, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
@@ -254,8 +256,8 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt, triggerData: null },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.closeToDebt, triggerData: null },
 		});
 
 		const respJSON = await response.json();
@@ -263,26 +265,24 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_null);
 	});
 
-	test('Add automation - Without "trailingDistance (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt;
-		const { trailingDistance, ...triggerDataWithoutTrailingDistance } = triggerData;
+	test('Add automation - Without "executionLTV (triggerData)"', async ({ request }) => {
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloadsMorpho.stopLoss.closeToDebt;
+		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutTrailingDistance },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutExecutionLTV },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTrailingDistance);
+		expect(respJSON).toMatchObject(responses.wrongExecutionLTV);
 	});
 
 	test('Add automation - Without "token (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloadsMorpho.stopLoss.closeToDebt;
 		const { token, ...triggerDataWithoutToken } = triggerData;
 
-		const response = await request.post(trailingStopLossEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutToken },
 		});
 
