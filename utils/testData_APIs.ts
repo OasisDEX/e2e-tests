@@ -1071,6 +1071,73 @@ export const responses = {
 		encodedTriggerData: expect.any(String),
 		warnings: [],
 	},
+	trailingStopLossMorpho: {
+		simulation: {
+			latestPrice: {
+				tokenRoundId: expect.any(String),
+				denominationRoundId: expect.any(String),
+				token: {
+					id: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+					symbol: 'WBTC',
+					oraclesToken: [
+						{
+							address: '0xf4030086522a5beea4988f8ca5b36dbc97bee88c',
+						},
+					],
+				},
+				denomination: {
+					id: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+					symbol: 'USDC',
+					oraclesToken: [
+						{
+							address: '0x8fffffd4afb6115b954bd326cbe7b4ba576818f6',
+						},
+					],
+				},
+				derivedPrice: expect.any(String),
+			},
+			position: {
+				hasStablecoinDebt: false,
+				ltv: expect.any(String),
+				collateral: {
+					balance: expect.any(String),
+					token: {
+						decimals: 8,
+						symbol: 'WBTC',
+						address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+					},
+				},
+				debt: {
+					balance: expect.any(String),
+					token: {
+						decimals: 6,
+						symbol: 'USDC',
+						address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+					},
+				},
+				address: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
+				oraclePrices: {
+					collateralPrice: expect.any(String),
+					debtPrice: expect.any(String),
+				},
+				collateralPriceInDebt: expect.any(String),
+				netValueUSD: expect.any(String),
+				debtValueUSD: expect.any(String),
+				collateralValueUSD: expect.any(String),
+			},
+			executionParams: {
+				executionPrice: expect.any(String),
+				dynamicExecutionLTV: expect.any(String),
+			},
+		},
+		transaction: {
+			to: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
+			data: expect.any(String),
+			triggerTxData: expect.any(String),
+		},
+		encodedTriggerData: expect.any(String),
+		warnings: [],
+	},
 	wrongDpm: {
 		message: 'Validation Errors',
 		errors: [
@@ -1552,6 +1619,22 @@ export const validPayloadsMorpho = {
 				executionLTV: '9337',
 				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
 				token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+		},
+	},
+	trailingStopLoss: {
+		closeToDebt: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'add',
+			triggerData: {
+				trailingDistance: '120000000000',
+				poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
+				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
 		},
 	},
