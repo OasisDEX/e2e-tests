@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { validPayloads, responses } from 'utils/testData_APIs';
+import { validPayloadsAaveV3Ethereum, responses } from 'utils/testData_APIs';
 
 const autoBuyEndpoint = '/api/triggers/1/aave3/auto-buy';
 
@@ -9,7 +9,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without Max Buy Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: validPayloads.autoBuy.addWithoutMaxBuyPrice,
+			data: validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice,
 		});
 
 		const respJSON = await response.json();
@@ -19,7 +19,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - With Max Buy Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: validPayloads.autoBuy.addWithMaxBuyPrice,
+			data: validPayloadsAaveV3Ethereum.autoBuy.addWithMaxBuyPrice,
 		});
 
 		const respJSON = await response.json();
@@ -31,7 +31,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...payloadWithoutDpm } = validPayloads.autoBuy.addWithoutMaxBuyPrice;
+		const { dpm, ...payloadWithoutDpm } = validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice;
 
 		const response = await request.post(autoBuyEndpoint, {
 			data: payloadWithoutDpm,
@@ -44,7 +44,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, dpm: 1 },
+			data: { ...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice, dpm: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -54,7 +54,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, dpm: '0xwrong' },
+			data: { ...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
@@ -63,7 +63,8 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "position"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.autoBuy.addWithoutMaxBuyPrice;
+		const { position, ...payloadWithoutPosition } =
+			validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice;
 
 		const response = await request.post(autoBuyEndpoint, {
 			data: payloadWithoutPosition,
@@ -76,7 +77,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, position: 'string' },
+			data: { ...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice, position: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -86,7 +87,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, position: 1 },
+			data: { ...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice, position: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -96,7 +97,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, position: [] },
+			data: { ...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice, position: [] },
 		});
 
 		const respJSON = await response.json();
@@ -106,7 +107,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, position: null },
+			data: { ...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice, position: null },
 		});
 
 		const respJSON = await response.json();
@@ -115,7 +116,8 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "collateral (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.autoBuy.addWithoutMaxBuyPrice;
+		const { position, ...payloadWithoutPosition } =
+			validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice;
 		const { collateral, ...positionWithoutCollateral } = position;
 
 		const response = await request.post(autoBuyEndpoint, {
@@ -130,8 +132,11 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
-				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
-				position: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice.position, collateral: 11 },
+				...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice,
+				position: {
+					...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice.position,
+					collateral: 11,
+				},
 			},
 		});
 
@@ -143,9 +148,9 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
-				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
+				...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice,
 				position: {
-					...validPayloads.autoBuy.addWithoutMaxBuyPrice.position,
+					...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice.position,
 					collateral: '0xwrong',
 				},
 			},
@@ -157,7 +162,8 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "debt (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.autoBuy.addWithoutMaxBuyPrice;
+		const { position, ...payloadWithoutPosition } =
+			validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice;
 		const { debt, ...positionWithoutDebt } = position;
 
 		const response = await request.post(autoBuyEndpoint, {
@@ -172,8 +178,11 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
-				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
-				position: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice.position, debt: 11 },
+				...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice,
+				position: {
+					...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice.position,
+					debt: 11,
+				},
 			},
 		});
 
@@ -185,9 +194,9 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
-				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
+				...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice,
 				position: {
-					...validPayloads.autoBuy.addWithoutMaxBuyPrice.position,
+					...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice.position,
 					debt: '0xwrong',
 				},
 			},
@@ -200,7 +209,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "triggerData"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.autoBuy.addWithoutMaxBuyPrice;
+			validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice;
 
 		const response = await request.post(autoBuyEndpoint, {
 			data: payloadWithoutTriggerData,
@@ -213,7 +222,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, triggerData: 'string' },
+			data: { ...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -223,7 +232,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, triggerData: 1 },
+			data: { ...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -233,7 +242,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, triggerData: [] },
+			data: { ...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
@@ -243,7 +252,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, triggerData: null },
+			data: { ...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice, triggerData: null },
 		});
 
 		const respJSON = await response.json();
@@ -253,7 +262,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "executionLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.autoBuy.addWithoutMaxBuyPrice;
+			validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice;
 		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
 		const response = await request.post(autoBuyEndpoint, {
@@ -267,7 +276,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "maxBaseFee (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.autoBuy.addWithoutMaxBuyPrice;
+			validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice;
 		const { maxBaseFee, ...triggerDataWithoutMaxBaseFee } = triggerData;
 
 		const response = await request.post(autoBuyEndpoint, {
@@ -281,7 +290,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "targetLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.autoBuy.addWithoutMaxBuyPrice;
+			validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice;
 		const { targetLTV, ...triggerDataWithoutTargetLTV } = triggerData;
 
 		const response = await request.post(autoBuyEndpoint, {
@@ -295,7 +304,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Without "useMaxBuyPrice (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.autoBuy.addWithoutMaxBuyPrice;
+			validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice;
 		const { useMaxBuyPrice, ...triggerDataWithoutUseMaxBuyPrice } = triggerData;
 
 		const response = await request.post(autoBuyEndpoint, {
