@@ -1,10 +1,25 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
+import { validPayloadsMorpho, responses, autoTakeProfitResponse } from 'utils/testData_APIs';
 
 const autoTakeProfit = '/api/triggers/1/morphoblue/dma-partial-take-profit';
+
 const validPayloads = validPayloadsMorpho;
 
-test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
+const validResponse = autoTakeProfitResponse({
+	dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
+	collateral: {
+		decimals: 8,
+		symbol: 'WBTC',
+		address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+	},
+	debt: {
+		decimals: 6,
+		symbol: 'USDC',
+		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+	},
+});
+
+test.describe('API tests - Auto Take Profit - Morpho Blue - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WBTC-USDC/2545
 
@@ -15,7 +30,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoTakeProfitMorpho);
+		expect(respJSON).toMatchObject(validResponse);
 	});
 
 	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
@@ -38,7 +53,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoTakeProfitMorpho);
+		expect(respJSON).toMatchObject(validResponse);
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {

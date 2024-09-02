@@ -1,8 +1,31 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsSpark, responses } from 'utils/testData_APIs';
+import {
+	validPayloadsSpark,
+	responses,
+	autoBuyWithoutMaxBuyPriceResponse,
+} from 'utils/testData_APIs';
 
 const autoBuyEndpoint = '/api/triggers/1/spark/auto-buy';
+
 const validPayloads = validPayloadsSpark;
+
+const validResponse = autoBuyWithoutMaxBuyPriceResponse({
+	dpm: '0x6be31243E0FfA8F42D1F64834ECa2AB6DC8F7498',
+	collateral: {
+		decimals: 18,
+		symbol: 'wstETH',
+		address: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+	},
+	debt: {
+		decimals: 18,
+		symbol: 'WETH',
+		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+	},
+	hasStablecoinDebt: false,
+	executionLTV: '4100',
+	targetLTV: '4900',
+	targetLTVWithDeviation: ['4800', '5000'],
+});
 
 test.describe('API tests - Auto-Buy - Spark - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
@@ -15,7 +38,11 @@ test.describe('API tests - Auto-Buy - Spark - Ethereum', async () => {
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoBuyWithoutMaxBuyPriceSpark);
+		//   https://app.shortcut.com/oazo-apps/story/15553/bug-auto-buy-missing-warning-when-selecting-set-no-threshold
+		expect(respJSON).toMatchObject({
+			...validResponse,
+			warnings: [],
+		});
 	});
 
 	test('Add automation - With Max Buy Price - Valid payload data', async ({ request }) => {
@@ -26,7 +53,7 @@ test.describe('API tests - Auto-Buy - Spark - Ethereum', async () => {
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject({
-			...responses.autoBuyWithoutMaxBuyPriceSpark,
+			...validResponse,
 			warnings: [],
 		});
 	});
