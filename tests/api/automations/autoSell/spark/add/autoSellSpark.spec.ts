@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
+import { validPayloadsSpark, responses } from 'utils/testData_APIs';
 
-const autoSellEndpoint = '/api/triggers/1/morphoblue/auto-sell';
-const validPayloads = validPayloadsMorpho;
+const autoSellEndpoint = '/api/triggers/1/spark/auto-sell';
+const validPayloads = validPayloadsSpark;
 
-test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
-	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467
+test.describe('API tests - Auto-Sell - Spark - Ethereum', async () => {
+	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
+	// Position link: https://staging.summer.fi/ethereum/spark/earn/WSTETH-ETH/1417
 
 	test('Add automation - Without Min Sell Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
@@ -15,7 +15,7 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoSellWithoutMinSellPriceMorpho);
+		expect(respJSON).toMatchObject(responses.autoSellWithoutMinSellPriceSpark);
 	});
 
 	test('Add automation - With Min Sell Price - Valid payload data', async ({ request }) => {
@@ -26,7 +26,7 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject({
-			...responses.autoSellWithoutMinSellPriceMorpho,
+			...responses.autoSellWithoutMinSellPriceSpark,
 			warnings: [],
 		});
 	});

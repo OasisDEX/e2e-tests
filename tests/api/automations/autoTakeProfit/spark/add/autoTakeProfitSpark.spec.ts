@@ -1,31 +1,27 @@
 import { expect, test } from '@playwright/test';
-import {
-	validPayloadsAaveV3Ethereum,
-	responses,
-	autoTakeProfitResponse,
-} from 'utils/testData_APIs';
+import { validPayloadsSpark, responses, autoTakeProfitResponse } from 'utils/testData_APIs';
 
-const autoTakeProfit = '/api/triggers/1/aave3/dma-partial-take-profit';
+const autoTakeProfit = '/api/triggers/1/spark/dma-partial-take-profit';
 
-const validPayloads = validPayloadsAaveV3Ethereum;
+const validPayloads = validPayloadsSpark;
 
 const validResponse = autoTakeProfitResponse({
-	dpm: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
+	dpm: '0x6be31243E0FfA8F42D1F64834ECa2AB6DC8F7498',
 	collateral: {
+		decimals: 18,
+		symbol: 'wstETH',
+		address: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+	},
+	debt: {
 		decimals: 18,
 		symbol: 'WETH',
 		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
 	},
-	debt: {
-		decimals: 6,
-		symbol: 'USDC',
-		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-	},
 });
 
-test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
+test.describe('API tests - Auto Take Profit - Spark - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1218
+	// Position link: https://staging.summer.fi/ethereum/spark/earn/WSTETH-ETH/1417
 
 	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
@@ -45,12 +41,12 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 					...validPayloads.autoTakeProfit.closeToDebt.triggerData.stopLoss,
 					triggerData: {
 						...validPayloads.autoTakeProfit.closeToDebt.triggerData.stopLoss.triggerData,
-						token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+						token: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 					},
 				},
 				triggerData: {
 					...validPayloads.autoTakeProfit.closeToDebt.triggerData,
-					withdrawToken: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+					withdrawToken: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 				},
 			},
 		});

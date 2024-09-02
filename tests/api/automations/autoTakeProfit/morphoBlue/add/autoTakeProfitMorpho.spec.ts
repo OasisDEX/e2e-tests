@@ -1,35 +1,51 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
+import { validPayloadsMorpho, responses, autoTakeProfitResponse } from 'utils/testData_APIs';
 
 const autoTakeProfit = '/api/triggers/1/morphoblue/dma-partial-take-profit';
 
-test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
+const validPayloads = validPayloadsMorpho;
+
+const validResponse = autoTakeProfitResponse({
+	dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
+	collateral: {
+		decimals: 8,
+		symbol: 'WBTC',
+		address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+	},
+	debt: {
+		decimals: 6,
+		symbol: 'USDC',
+		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+	},
+});
+
+test.describe('API tests - Auto Take Profit - Morpho Blue - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WBTC-USDC/2545
 
 	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: validPayloadsMorpho.autoTakeProfit.closeToDebt,
+			data: validPayloads.autoTakeProfit.closeToDebt,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoTakeProfitMorpho);
+		expect(respJSON).toMatchObject(validResponse);
 	});
 
 	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloadsMorpho.autoTakeProfit.closeToDebt,
+				...validPayloads.autoTakeProfit.closeToDebt,
 				stopLoss: {
-					...validPayloadsMorpho.autoTakeProfit.closeToDebt.triggerData.stopLoss,
+					...validPayloads.autoTakeProfit.closeToDebt.triggerData.stopLoss,
 					triggerData: {
-						...validPayloadsMorpho.autoTakeProfit.closeToDebt.triggerData.stopLoss.triggerData,
+						...validPayloads.autoTakeProfit.closeToDebt.triggerData.stopLoss.triggerData,
 						token: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 					},
 				},
 				triggerData: {
-					...validPayloadsMorpho.autoTakeProfit.closeToDebt.triggerData,
+					...validPayloads.autoTakeProfit.closeToDebt.triggerData,
 					withdrawToken: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 				},
 			},
@@ -37,11 +53,11 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoTakeProfitMorpho);
+		expect(respJSON).toMatchObject(validResponse);
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...payloadWithoutDpm } = validPayloadsMorpho.autoTakeProfit.closeToDebt;
+		const { dpm, ...payloadWithoutDpm } = validPayloads.autoTakeProfit.closeToDebt;
 
 		const response = await request.post(autoTakeProfit, {
 			data: payloadWithoutDpm,
@@ -54,7 +70,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt, dpm: 1 },
+			data: { ...validPayloads.autoTakeProfit.closeToDebt, dpm: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -64,7 +80,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt, dpm: '0xwrong' },
+			data: { ...validPayloads.autoTakeProfit.closeToDebt, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
@@ -73,7 +89,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "position"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloadsMorpho.autoTakeProfit.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads.autoTakeProfit.closeToDebt;
 
 		const response = await request.post(autoTakeProfit, {
 			data: payloadWithoutPosition,
@@ -86,7 +102,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt, position: 'string' },
+			data: { ...validPayloads.autoTakeProfit.closeToDebt, position: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -96,7 +112,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt, position: 1 },
+			data: { ...validPayloads.autoTakeProfit.closeToDebt, position: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -106,7 +122,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt, position: [] },
+			data: { ...validPayloads.autoTakeProfit.closeToDebt, position: [] },
 		});
 
 		const respJSON = await response.json();
@@ -116,7 +132,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt, position: null },
+			data: { ...validPayloads.autoTakeProfit.closeToDebt, position: null },
 		});
 
 		const respJSON = await response.json();
@@ -125,7 +141,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "collateral (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloadsMorpho.autoTakeProfit.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads.autoTakeProfit.closeToDebt;
 		const { collateral, ...positionWithoutCollateral } = position;
 
 		const response = await request.post(autoTakeProfit, {
@@ -140,9 +156,9 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloadsMorpho.autoTakeProfit.closeToDebt,
+				...validPayloads.autoTakeProfit.closeToDebt,
 				position: {
-					...validPayloadsMorpho.autoTakeProfit.closeToDebt.position,
+					...validPayloads.autoTakeProfit.closeToDebt.position,
 					collateral: 11,
 				},
 			},
@@ -156,9 +172,9 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloadsMorpho.autoTakeProfit.closeToDebt,
+				...validPayloads.autoTakeProfit.closeToDebt,
 				position: {
-					...validPayloadsMorpho.autoTakeProfit.closeToDebt.position,
+					...validPayloads.autoTakeProfit.closeToDebt.position,
 					collateral: '0xwrong',
 				},
 			},
@@ -170,7 +186,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "debt (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloadsMorpho.autoTakeProfit.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads.autoTakeProfit.closeToDebt;
 		const { debt, ...positionWithoutDebt } = position;
 
 		const response = await request.post(autoTakeProfit, {
@@ -185,8 +201,8 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloadsMorpho.autoTakeProfit.closeToDebt,
-				position: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt.position, debt: 11 },
+				...validPayloads.autoTakeProfit.closeToDebt,
+				position: { ...validPayloads.autoTakeProfit.closeToDebt.position, debt: 11 },
 			},
 		});
 
@@ -198,9 +214,9 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloadsMorpho.autoTakeProfit.closeToDebt,
+				...validPayloads.autoTakeProfit.closeToDebt,
 				position: {
-					...validPayloadsMorpho.autoTakeProfit.closeToDebt.position,
+					...validPayloads.autoTakeProfit.closeToDebt.position,
 					debt: '0xwrong',
 				},
 			},
@@ -212,8 +228,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "triggerData"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsMorpho.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
 
 		const response = await request.post(autoTakeProfit, {
 			data: payloadWithoutTriggerData,
@@ -226,7 +241,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt, triggerData: 'string' },
+			data: { ...validPayloads.autoTakeProfit.closeToDebt, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -236,7 +251,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt, triggerData: 1 },
+			data: { ...validPayloads.autoTakeProfit.closeToDebt, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -246,7 +261,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt, triggerData: [] },
+			data: { ...validPayloads.autoTakeProfit.closeToDebt, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
@@ -256,7 +271,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloadsMorpho.autoTakeProfit.closeToDebt, triggerData: null },
+			data: { ...validPayloads.autoTakeProfit.closeToDebt, triggerData: null },
 		});
 
 		const respJSON = await response.json();
@@ -265,8 +280,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "executionLTV (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsMorpho.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
 		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
 		const response = await request.post(autoTakeProfit, {
@@ -279,8 +293,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "executionPrice (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsMorpho.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
 		const { executionPrice, ...triggerDataWithoutExecutionPrice } = triggerData;
 
 		const response = await request.post(autoTakeProfit, {
@@ -293,8 +306,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "withdrawToken (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsMorpho.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
 		const { withdrawToken, ...triggerDataWithoutWithdrawToken } = triggerData;
 
 		const response = await request.post(autoTakeProfit, {
@@ -307,8 +319,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "withdrawStep (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsMorpho.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
 		const { withdrawStep, ...triggerDataWithoutWithdrawStep } = triggerData;
 
 		const response = await request.post(autoTakeProfit, {
@@ -321,8 +332,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "stopLoss > triggerData (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloadsMorpho.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
 		const { stopLoss, ...triggerDataWithoutStopLoss } = triggerData;
 		const { triggerData: stopLossTriggerData, ...triggerDataStopLossWithoutTriggerData } = stopLoss;
 

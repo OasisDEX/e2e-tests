@@ -1,40 +1,67 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
+import {
+	validPayloadsSpark,
+	responses,
+	autoBuyWithoutMaxBuyPriceResponse,
+} from 'utils/testData_APIs';
 
-const autoSellEndpoint = '/api/triggers/1/morphoblue/auto-sell';
-const validPayloads = validPayloadsMorpho;
+const autoBuyEndpoint = '/api/triggers/1/spark/auto-buy';
 
-test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
-	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467
+const validPayloads = validPayloadsSpark;
 
-	test('Add automation - Without Min Sell Price - Valid payload data', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: validPayloads.autoSell.addWithoutMinSellPrice,
+const validResponse = autoBuyWithoutMaxBuyPriceResponse({
+	dpm: '0x6be31243E0FfA8F42D1F64834ECa2AB6DC8F7498',
+	collateral: {
+		decimals: 18,
+		symbol: 'wstETH',
+		address: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+	},
+	debt: {
+		decimals: 18,
+		symbol: 'WETH',
+		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+	},
+	hasStablecoinDebt: false,
+	executionLTV: '4100',
+	targetLTV: '4900',
+	targetLTVWithDeviation: ['4800', '5000'],
+});
+
+test.describe('API tests - Auto-Buy - Spark - Ethereum', async () => {
+	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
+	// Position link: https://staging.summer.fi/ethereum/spark/earn/WSTETH-ETH/1417
+
+	test('Add automation - Without Max Buy Price - Valid payload data', async ({ request }) => {
+		const response = await request.post(autoBuyEndpoint, {
+			data: validPayloads.autoBuy.addWithoutMaxBuyPrice,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoSellWithoutMinSellPriceMorpho);
+		//   https://app.shortcut.com/oazo-apps/story/15553/bug-auto-buy-missing-warning-when-selecting-set-no-threshold
+		expect(respJSON).toMatchObject({
+			...validResponse,
+			warnings: [],
+		});
 	});
 
-	test('Add automation - With Min Sell Price - Valid payload data', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: validPayloads.autoSell.addWithMinSellPrice,
+	test('Add automation - With Max Buy Price - Valid payload data', async ({ request }) => {
+		const response = await request.post(autoBuyEndpoint, {
+			data: validPayloads.autoBuy.addWithMaxBuyPrice,
 		});
 
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject({
-			...responses.autoSellWithoutMinSellPriceMorpho,
+			...validResponse,
 			warnings: [],
 		});
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...payloadWithoutDpm } = validPayloads.autoSell.addWithoutMinSellPrice;
+		const { dpm, ...payloadWithoutDpm } = validPayloads.autoBuy.addWithoutMaxBuyPrice;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: payloadWithoutDpm,
 		});
 
@@ -44,8 +71,8 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, dpm: 1 },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, dpm: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -54,8 +81,8 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, dpm: '0xwrong' },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
@@ -64,9 +91,9 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "position"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.autoSell.addWithoutMinSellPrice;
+		const { position, ...payloadWithoutPosition } = validPayloads.autoBuy.addWithoutMaxBuyPrice;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: payloadWithoutPosition,
 		});
 
@@ -76,8 +103,8 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, position: 'string' },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, position: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -86,8 +113,8 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, position: 1 },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, position: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -96,8 +123,8 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, position: [] },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, position: [] },
 		});
 
 		const respJSON = await response.json();
@@ -106,8 +133,8 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, position: null },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, position: null },
 		});
 
 		const respJSON = await response.json();
@@ -116,10 +143,10 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "collateral (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.autoSell.addWithoutMinSellPrice;
+		const { position, ...payloadWithoutPosition } = validPayloads.autoBuy.addWithoutMaxBuyPrice;
 		const { collateral, ...positionWithoutCollateral } = position;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: { ...payloadWithoutPosition, position: positionWithoutCollateral },
 		});
 
@@ -129,11 +156,11 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: {
-				...validPayloads.autoSell.addWithoutMinSellPrice,
+				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
 				position: {
-					...validPayloads.autoSell.addWithoutMinSellPrice.position,
+					...validPayloads.autoBuy.addWithoutMaxBuyPrice.position,
 					collateral: 11,
 				},
 			},
@@ -145,11 +172,11 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: {
-				...validPayloads.autoSell.addWithoutMinSellPrice,
+				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
 				position: {
-					...validPayloads.autoSell.addWithoutMinSellPrice.position,
+					...validPayloads.autoBuy.addWithoutMaxBuyPrice.position,
 					collateral: '0xwrong',
 				},
 			},
@@ -161,10 +188,10 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "debt (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.autoSell.addWithoutMinSellPrice;
+		const { position, ...payloadWithoutPosition } = validPayloads.autoBuy.addWithoutMaxBuyPrice;
 		const { debt, ...positionWithoutDebt } = position;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: { ...payloadWithoutPosition, position: positionWithoutDebt },
 		});
 
@@ -174,10 +201,13 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: {
-				...validPayloads.autoSell.addWithoutMinSellPrice,
-				position: { ...validPayloads.autoSell.addWithoutMinSellPrice.position, debt: 11 },
+				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
+				position: {
+					...validPayloads.autoBuy.addWithoutMaxBuyPrice.position,
+					debt: 11,
+				},
 			},
 		});
 
@@ -187,11 +217,11 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: {
-				...validPayloads.autoSell.addWithoutMinSellPrice,
+				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
 				position: {
-					...validPayloads.autoSell.addWithoutMinSellPrice.position,
+					...validPayloads.autoBuy.addWithoutMaxBuyPrice.position,
 					debt: '0xwrong',
 				},
 			},
@@ -204,9 +234,9 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 
 	test('Add automation - Without "triggerData"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.autoSell.addWithoutMinSellPrice;
+			validPayloads.autoBuy.addWithoutMaxBuyPrice;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: payloadWithoutTriggerData,
 		});
 
@@ -216,8 +246,8 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, triggerData: 'string' },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -226,8 +256,8 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, triggerData: 1 },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -236,8 +266,8 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, triggerData: [] },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
@@ -246,8 +276,8 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 	});
 
 	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, triggerData: null },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloads.autoBuy.addWithoutMaxBuyPrice, triggerData: null },
 		});
 
 		const respJSON = await response.json();
@@ -257,10 +287,10 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 
 	test('Add automation - Without "executionLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.autoSell.addWithoutMinSellPrice;
+			validPayloads.autoBuy.addWithoutMaxBuyPrice;
 		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutExecutionLTV },
 		});
 
@@ -271,10 +301,10 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 
 	test('Add automation - Without "maxBaseFee (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.autoSell.addWithoutMinSellPrice;
+			validPayloads.autoBuy.addWithoutMaxBuyPrice;
 		const { maxBaseFee, ...triggerDataWithoutMaxBaseFee } = triggerData;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutMaxBaseFee },
 		});
 
@@ -285,10 +315,10 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 
 	test('Add automation - Without "targetLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.autoSell.addWithoutMinSellPrice;
+			validPayloads.autoBuy.addWithoutMaxBuyPrice;
 		const { targetLTV, ...triggerDataWithoutTargetLTV } = triggerData;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(autoBuyEndpoint, {
 			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutTargetLTV },
 		});
 
@@ -297,17 +327,17 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 		expect(respJSON).toMatchObject(responses.wrongTargetLTV);
 	});
 
-	test('Add automation - Without "useMinSellPrice (triggerData)"', async ({ request }) => {
+	test('Add automation - Without "useMaxBuyPrice (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.autoSell.addWithoutMinSellPrice;
-		const { useMinSellPrice, ...triggerDataWithoutUseMinSellPrice } = triggerData;
+			validPayloads.autoBuy.addWithoutMaxBuyPrice;
+		const { useMaxBuyPrice, ...triggerDataWithoutUseMaxBuyPrice } = triggerData;
 
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutUseMinSellPrice },
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutUseMaxBuyPrice },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongUseMinSellPrice);
+		expect(respJSON).toMatchObject(responses.wrongUseMaxBuyPrice);
 	});
 });
