@@ -1661,7 +1661,21 @@ export const validPayloadsAaveV3Arbitrum = {
 			},
 		},
 	},
-	trailingStopLoss: { closeToDebt: {} },
+	trailingStopLoss: {
+		closeToDebt: {
+			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'add',
+			triggerData: {
+				trailingDistance: '13000000000',
+				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+		},
+	},
 	autoTakeProfit: {
 		closeToDebt: {
 			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
@@ -1738,7 +1752,21 @@ export const validPayloadsAaveV3Base = {
 			},
 		},
 	},
-	trailingStopLoss: { closeToDebt: {} },
+	trailingStopLoss: {
+		closeToDebt: {
+			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'add',
+			triggerData: {
+				trailingDistance: '21000000000',
+				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+		},
+	},
 	autoTakeProfit: {
 		closeToDebt: {
 			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
@@ -1815,7 +1843,21 @@ export const validPayloadsAaveV3Optimism = {
 			},
 		},
 	},
-	trailingStopLoss: { closeToDebt: {} },
+	trailingStopLoss: {
+		closeToDebt: {
+			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+			action: 'add',
+			triggerData: {
+				trailingDistance: '26000000000',
+				token: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+		},
+	},
 	autoTakeProfit: {
 		closeToDebt: {
 			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
