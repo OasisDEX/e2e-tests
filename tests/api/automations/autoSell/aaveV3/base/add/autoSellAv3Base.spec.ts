@@ -1,35 +1,35 @@
 import { expect, test } from '@playwright/test';
 import {
-	validPayloadsSpark,
+	validPayloadsAaveV3Base,
 	responses,
 	autoSellWithoutMinSellPriceResponse,
 } from 'utils/testData_APIs';
 
-const autoSellEndpoint = '/api/triggers/1/spark/auto-sell';
+const autoSellEndpoint = '/api/triggers/8453/aave3/auto-sell';
 
-const validPayloads = validPayloadsSpark;
+const validPayloads = validPayloadsAaveV3Base;
 
 const validResponse = autoSellWithoutMinSellPriceResponse({
-	dpm: '0x6be31243E0FfA8F42D1F64834ECa2AB6DC8F7498',
+	dpm: '0xf71dA0973121d949E1CEe818eb519BA364406309',
 	collateral: {
 		decimals: 18,
-		symbol: 'wstETH',
-		address: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+		symbol: 'WETH',
+		address: '0x4200000000000000000000000000000000000006',
 	},
 	debt: {
-		decimals: 18,
-		symbol: 'WETH',
-		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+		decimals: 6,
+		symbol: 'USDC',
+		address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
 	},
-	hasStablecoinDebt: false,
-	executionLTV: '5700',
-	targetLTV: '4900',
-	targetLTVWithDeviation: ['4800', '5000'],
+	hasStablecoinDebt: true,
+	executionLTV: '3800',
+	targetLTV: '3300',
+	targetLTVWithDeviation: ['3200', '3400'],
 });
 
-test.describe('API tests - Auto-Sell - Spark - Ethereum', async () => {
+test.describe('API tests - Auto-Sell - Aave V3 - Base', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/ethereum/spark/earn/WSTETH-ETH/1417
+	// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDC/435
 
 	test('Add automation - Without Min Sell Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
@@ -38,11 +38,7 @@ test.describe('API tests - Auto-Sell - Spark - Ethereum', async () => {
 
 		const respJSON = await response.json();
 
-		//   https://app.shortcut.com/oazo-apps/story/15553/bug-auto-buy-missing-warning-when-selecting-set-no-threshold
-		expect(respJSON).toMatchObject({
-			...validResponse,
-			warnings: [],
-		});
+		expect(respJSON).toMatchObject(validResponse);
 	});
 
 	test('Add automation - With Min Sell Price - Valid payload data', async ({ request }) => {
@@ -51,7 +47,7 @@ test.describe('API tests - Auto-Sell - Spark - Ethereum', async () => {
 				...validPayloads.autoSell.addWithoutMinSellPrice,
 				triggerData: {
 					...validPayloads.autoSell.addWithoutMinSellPrice.triggerData,
-					minSellPrice: '20000000',
+					minSellPrice: '60000000000',
 					useMinSellPrice: true,
 				},
 			},
@@ -211,7 +207,10 @@ test.describe('API tests - Auto-Sell - Spark - Ethereum', async () => {
 		const response = await request.post(autoSellEndpoint, {
 			data: {
 				...validPayloads.autoSell.addWithoutMinSellPrice,
-				position: { ...validPayloads.autoSell.addWithoutMinSellPrice.position, debt: 11 },
+				position: {
+					...validPayloads.autoSell.addWithoutMinSellPrice.position,
+					debt: 11,
+				},
 			},
 		});
 
@@ -251,7 +250,10 @@ test.describe('API tests - Auto-Sell - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: { ...validPayloads.autoSell.addWithoutMinSellPrice, triggerData: 'string' },
+			data: {
+				...validPayloads.autoSell.addWithoutMinSellPrice,
+				triggerData: 'string',
+			},
 		});
 
 		const respJSON = await response.json();
