@@ -1,35 +1,35 @@
 import { expect, test } from '@playwright/test';
 import {
-	validPayloadsAaveV3Ethereum,
+	validPayloadsAaveV3Base,
 	responses,
 	autoBuyWithoutMaxBuyPriceResponse,
 } from 'utils/testData_APIs';
 
-const autoBuyEndpoint = '/api/triggers/1/aave3/auto-buy';
+const autoBuyEndpoint = '/api/triggers/8453/aave3/auto-buy';
 
-const validPayloads = validPayloadsAaveV3Ethereum;
+const validPayloads = validPayloadsAaveV3Base;
 
 const validResponse = autoBuyWithoutMaxBuyPriceResponse({
-	dpm: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
+	dpm: '0xf71dA0973121d949E1CEe818eb519BA364406309',
 	collateral: {
 		decimals: 18,
 		symbol: 'WETH',
-		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+		address: '0x4200000000000000000000000000000000000006',
 	},
 	debt: {
 		decimals: 6,
 		symbol: 'USDC',
-		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+		address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
 	},
 	hasStablecoinDebt: true,
-	executionLTV: '3200',
-	targetLTV: '5000',
-	targetLTVWithDeviation: ['4900', '5100'],
+	executionLTV: '2800',
+	targetLTV: '3300',
+	targetLTVWithDeviation: ['3200', '3400'],
 });
 
-test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
+test.describe('API tests - Auto-Buy - Aave V3 - Base', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1218
+	// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDC/435#optimization
 
 	test('Add automation - Without Max Buy Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
@@ -47,7 +47,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
 				triggerData: {
 					...validPayloads.autoBuy.addWithoutMaxBuyPrice.triggerData,
-					maxBuyPrice: '1000000000000',
+					maxBuyPrice: '750000000000',
 					useMaxBuyPrice: true,
 				},
 			},

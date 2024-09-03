@@ -48,7 +48,14 @@ test.describe('API tests - Auto-Buy - Morpho Blue - Ethereum', async () => {
 
 	test('Add automation - With Max Buy Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: validPayloads.autoBuy.addWithMaxBuyPrice,
+			data: {
+				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
+				triggerData: {
+					...validPayloads.autoBuy.addWithoutMaxBuyPrice.triggerData,
+					maxBuyPrice: '200000000',
+					useMaxBuyPrice: true,
+				},
+			},
 		});
 
 		const respJSON = await response.json();

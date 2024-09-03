@@ -1,35 +1,35 @@
 import { expect, test } from '@playwright/test';
 import {
-	validPayloadsAaveV3Ethereum,
+	validPayloadsAaveV3Arbitrum,
 	responses,
 	autoBuyWithoutMaxBuyPriceResponse,
 } from 'utils/testData_APIs';
 
-const autoBuyEndpoint = '/api/triggers/1/aave3/auto-buy';
+const autoBuyEndpoint = '/api/triggers/42161/aave3/auto-buy';
 
-const validPayloads = validPayloadsAaveV3Ethereum;
+const validPayloads = validPayloadsAaveV3Arbitrum;
 
 const validResponse = autoBuyWithoutMaxBuyPriceResponse({
-	dpm: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
+	dpm: '0xF0464Ef55705e5B5cb3b865d92BE5341fe85fBB8',
 	collateral: {
 		decimals: 18,
 		symbol: 'WETH',
-		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+		address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
 	},
 	debt: {
-		decimals: 6,
-		symbol: 'USDC',
-		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+		decimals: 18,
+		symbol: 'DAI',
+		address: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
 	},
 	hasStablecoinDebt: true,
-	executionLTV: '3200',
-	targetLTV: '5000',
-	targetLTVWithDeviation: ['4900', '5100'],
+	executionLTV: '4900',
+	targetLTV: '5800',
+	targetLTVWithDeviation: ['5700', '5900'],
 });
 
-test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
+test.describe('API tests - Auto-Buy - Aave V3 - Arbitrum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1218
+	// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/ETH-DAI/1
 
 	test('Add automation - Without Max Buy Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
@@ -47,7 +47,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
 				triggerData: {
 					...validPayloads.autoBuy.addWithoutMaxBuyPrice.triggerData,
-					maxBuyPrice: '1000000000000',
+					maxBuyPrice: '600000000000',
 					useMaxBuyPrice: true,
 				},
 			},

@@ -38,6 +38,7 @@ test.describe('API tests - Auto-Buy - Spark - Ethereum', async () => {
 
 		const respJSON = await response.json();
 
+		// No warning for Morpho - Minor bug
 		//   https://app.shortcut.com/oazo-apps/story/15553/bug-auto-buy-missing-warning-when-selecting-set-no-threshold
 		expect(respJSON).toMatchObject({
 			...validResponse,
@@ -47,7 +48,14 @@ test.describe('API tests - Auto-Buy - Spark - Ethereum', async () => {
 
 	test('Add automation - With Max Buy Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
-			data: validPayloads.autoBuy.addWithMaxBuyPrice,
+			data: {
+				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
+				triggerData: {
+					...validPayloads.autoBuy.addWithoutMaxBuyPrice.triggerData,
+					maxBuyPrice: '300000000',
+					useMaxBuyPrice: true,
+				},
+			},
 		});
 
 		const respJSON = await response.json();

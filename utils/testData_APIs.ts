@@ -1349,22 +1349,6 @@ export const validPayloadsAaveV3Ethereum = {
 				useMaxBuyPrice: false,
 			},
 		},
-		addWithMaxBuyPrice: {
-			action: 'add',
-			dpm: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
-			position: {
-				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-			},
-			protocol: 'aavev3',
-			triggerData: {
-				executionLTV: '3200',
-				maxBaseFee: '300',
-				maxBuyPrice: '1000000000000',
-				targetLTV: '5000',
-				useMaxBuyPrice: true,
-			},
-		},
 	},
 	autoSell: {
 		addWithoutMinSellPrice: {
@@ -1380,22 +1364,6 @@ export const validPayloadsAaveV3Ethereum = {
 				maxBaseFee: '300',
 				targetLTV: '3800',
 				useMinSellPrice: false,
-			},
-		},
-		addWithMinSellPrice: {
-			dpm: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
-			protocol: 'aavev3',
-			position: {
-				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-			},
-			action: 'add',
-			triggerData: {
-				executionLTV: '4600',
-				maxBaseFee: '300',
-				minSellPrice: '50000000000',
-				targetLTV: '3800',
-				useMinSellPrice: true,
 			},
 		},
 	},
@@ -1456,41 +1424,6 @@ export const validPayloadsAaveV3Ethereum = {
 };
 
 export const validPayloadsMorpho = {
-	autoSell: {
-		addWithoutMinSellPrice: {
-			dpm: '0x302a28d7968824f386f278a72368856bc4d82ba4',
-			protocol: 'morphoblue',
-			position: {
-				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
-				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-			},
-			action: 'add',
-			triggerData: {
-				executionLTV: '9400',
-				maxBaseFee: '300',
-				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
-				targetLTV: '9300',
-				useMinSellPrice: false,
-			},
-		},
-		addWithMinSellPrice: {
-			dpm: '0x302a28d7968824f386f278a72368856bc4d82ba4',
-			protocol: 'morphoblue',
-			position: {
-				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
-				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-			},
-			action: 'add',
-			triggerData: {
-				executionLTV: '9400',
-				maxBaseFee: '300',
-				minSellPrice: '50000000',
-				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
-				targetLTV: '9300',
-				useMinSellPrice: true,
-			},
-		},
-	},
 	autoBuy: {
 		addWithoutMaxBuyPrice: {
 			dpm: '0x302a28d7968824f386f278a72368856bc4d82ba4',
@@ -1508,7 +1441,9 @@ export const validPayloadsMorpho = {
 				useMaxBuyPrice: false,
 			},
 		},
-		addWithMaxBuyPrice: {
+	},
+	autoSell: {
+		addWithoutMinSellPrice: {
 			dpm: '0x302a28d7968824f386f278a72368856bc4d82ba4',
 			protocol: 'morphoblue',
 			position: {
@@ -1517,12 +1452,11 @@ export const validPayloadsMorpho = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '8200',
+				executionLTV: '9400',
 				maxBaseFee: '300',
-				maxBuyPrice: '200000000',
 				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
 				targetLTV: '9300',
-				useMaxBuyPrice: true,
+				useMinSellPrice: false,
 			},
 		},
 	},
@@ -1603,22 +1537,6 @@ export const validPayloadsSpark = {
 				useMaxBuyPrice: false,
 			},
 		},
-		addWithMaxBuyPrice: {
-			dpm: '0x6be31243e0ffa8f42d1f64834eca2ab6dc8f7498',
-			protocol: 'sparkv3',
-			position: {
-				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
-				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-			},
-			action: 'add',
-			triggerData: {
-				executionLTV: '4100',
-				maxBaseFee: '300',
-				maxBuyPrice: '300000000',
-				targetLTV: '4900',
-				useMaxBuyPrice: true,
-			},
-		},
 	},
 	autoSell: {
 		addWithoutMinSellPrice: {
@@ -1634,22 +1552,6 @@ export const validPayloadsSpark = {
 				maxBaseFee: '300',
 				targetLTV: '4900',
 				useMinSellPrice: false,
-			},
-		},
-		addWithMinSellPrice: {
-			dpm: '0x6be31243e0ffa8f42d1f64834eca2ab6dc8f7498',
-			protocol: 'sparkv3',
-			position: {
-				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
-				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
-			},
-			action: 'add',
-			triggerData: {
-				executionLTV: '5700',
-				maxBaseFee: '300',
-				minSellPrice: '20000000',
-				targetLTV: '4900',
-				useMinSellPrice: true,
 			},
 		},
 	},
@@ -1710,25 +1612,274 @@ export const validPayloadsSpark = {
 };
 
 export const validPayloadsAaveV3Arbitrum = {
-	autoBuy: { addWithoutMaxBuyPrice: {}, addWithMaxBuyPrice: {} },
-	autoSell: { addWithoutMinSellPrice: {}, addWithMinSellPrice: {} },
-	stopLoss: { closeToDebt: {} },
-	trailingStopLoss: { closeToDebt: {} },
-	autoTakeProfit: { closeToDebt: {} },
+	autoBuy: {
+		addWithoutMaxBuyPrice: {
+			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '4900',
+				maxBaseFee: '300',
+				targetLTV: '5800',
+				useMaxBuyPrice: false,
+			},
+		},
+	},
+	autoSell: {
+		addWithoutMinSellPrice: {
+			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '6200',
+				maxBaseFee: '300',
+				targetLTV: '5700',
+				useMinSellPrice: false,
+			},
+		},
+	},
+	stopLoss: {
+		closeToDebt: {
+			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '8140',
+				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+		},
+	},
+	trailingStopLoss: {
+		closeToDebt: {
+			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'add',
+			triggerData: {
+				trailingDistance: '13000000000',
+				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+		},
+	},
+	autoTakeProfit: {
+		closeToDebt: {
+			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '5300',
+				executionPrice: '0',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '8140',
+						token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+					},
+					action: 'add',
+				},
+				withdrawToken: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+				withdrawStep: '500',
+			},
+		},
+	},
 };
 
 export const validPayloadsAaveV3Base = {
-	autoBuy: { addWithoutMaxBuyPrice: {}, addWithMaxBuyPrice: {} },
-	autoSell: { addWithoutMinSellPrice: {}, addWithMinSellPrice: {} },
-	stopLoss: { closeToDebt: {} },
-	trailingStopLoss: { closeToDebt: {} },
-	autoTakeProfit: { closeToDebt: {} },
+	autoBuy: {
+		addWithoutMaxBuyPrice: {
+			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '2800',
+				maxBaseFee: '300',
+				targetLTV: '3300',
+				useMaxBuyPrice: false,
+			},
+		},
+	},
+	autoSell: {
+		addWithoutMinSellPrice: {
+			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '3800',
+				maxBaseFee: '300',
+				targetLTV: '3300',
+				useMinSellPrice: false,
+			},
+		},
+	},
+	stopLoss: {
+		closeToDebt: {
+			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '7890',
+				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+		},
+	},
+	trailingStopLoss: {
+		closeToDebt: {
+			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'add',
+			triggerData: {
+				trailingDistance: '21000000000',
+				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+		},
+	},
+	autoTakeProfit: {
+		closeToDebt: {
+			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '2800',
+				executionPrice: '0',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7890',
+						token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+					},
+					action: 'add',
+				},
+				withdrawToken: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+				withdrawStep: '500',
+			},
+		},
+	},
 };
 
 export const validPayloadsAaveV3Optimism = {
-	autoBuy: { addWithoutMaxBuyPrice: {}, addWithMaxBuyPrice: {} },
-	autoSell: { addWithoutMinSellPrice: {}, addWithMinSellPrice: {} },
-	stopLoss: { closeToDebt: {} },
-	trailingStopLoss: { closeToDebt: {} },
-	autoTakeProfit: { closeToDebt: {} },
+	autoBuy: {
+		addWithoutMaxBuyPrice: {
+			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '3100',
+				maxBaseFee: '300',
+				targetLTV: '3900',
+				useMaxBuyPrice: false,
+			},
+		},
+	},
+	autoSell: {
+		addWithoutMinSellPrice: {
+			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '4400',
+				maxBaseFee: '300',
+				targetLTV: '3900',
+				useMinSellPrice: false,
+			},
+		},
+	},
+	stopLoss: {
+		closeToDebt: {
+			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '7890',
+				token: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+		},
+	},
+	trailingStopLoss: {
+		closeToDebt: {
+			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+			action: 'add',
+			triggerData: {
+				trailingDistance: '26000000000',
+				token: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+		},
+	},
+	autoTakeProfit: {
+		closeToDebt: {
+			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '3500',
+				executionPrice: '0',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7890',
+						token: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+					},
+					action: 'add',
+				},
+				withdrawToken: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+				withdrawStep: '500',
+			},
+		},
+	},
 };

@@ -47,7 +47,14 @@ test.describe('API tests - Auto-Sell - Spark - Ethereum', async () => {
 
 	test('Add automation - With Min Sell Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
-			data: validPayloads.autoSell.addWithMinSellPrice,
+			data: {
+				...validPayloads.autoSell.addWithoutMinSellPrice,
+				triggerData: {
+					...validPayloads.autoSell.addWithoutMinSellPrice.triggerData,
+					minSellPrice: '20000000',
+					useMinSellPrice: true,
+				},
+			},
 		});
 
 		const respJSON = await response.json();
