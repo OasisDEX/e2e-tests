@@ -1,35 +1,35 @@
 import { expect, test } from '@playwright/test';
 import {
-	validPayloadsAaveV3Ethereum,
+	validPayloadsAaveV3Optimism,
 	responses,
 	autoBuyWithoutMaxBuyPriceResponse,
 } from 'utils/testData_APIs';
 
-const autoBuyEndpoint = '/api/triggers/1/aave3/auto-buy';
+const autoBuyEndpoint = '/api/triggers/10/aave3/auto-buy';
 
-const validPayloads = validPayloadsAaveV3Ethereum;
+const validPayloads = validPayloadsAaveV3Optimism;
 
 const validResponse = autoBuyWithoutMaxBuyPriceResponse({
-	dpm: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
+	dpm: '0x2047E97451955c98bF8378f6ac2f04D95578990C',
 	collateral: {
 		decimals: 18,
 		symbol: 'WETH',
-		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+		address: '0x4200000000000000000000000000000000000006',
 	},
 	debt: {
 		decimals: 6,
 		symbol: 'USDC',
-		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+		address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
 	},
 	hasStablecoinDebt: true,
-	executionLTV: '3200',
-	targetLTV: '5000',
-	targetLTVWithDeviation: ['4900', '5100'],
+	executionLTV: '3100',
+	targetLTV: '3900',
+	targetLTVWithDeviation: ['3800', '4000'],
 });
 
-test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
+test.describe('API tests - Auto-Buy - Aave V3 - Optimism', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1218
+	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC.E/2#optimization
 
 	test('Add automation - Without Max Buy Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
@@ -47,7 +47,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum', async () => {
 				...validPayloads.autoBuy.addWithoutMaxBuyPrice,
 				triggerData: {
 					...validPayloads.autoBuy.addWithoutMaxBuyPrice.triggerData,
-					maxBuyPrice: '1000000000000',
+					maxBuyPrice: '700000000000',
 					useMaxBuyPrice: true,
 				},
 			},
