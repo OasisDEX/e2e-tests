@@ -1664,7 +1664,30 @@ export const validPayloadsAaveV3Arbitrum = {
 	},
 	stopLoss: { closeToDebt: {} },
 	trailingStopLoss: { closeToDebt: {} },
-	autoTakeProfit: { closeToDebt: {} },
+	autoTakeProfit: {
+		closeToDebt: {
+			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '5300',
+				executionPrice: '0',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '8140',
+						token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+					},
+					action: 'add',
+				},
+				withdrawToken: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+				withdrawStep: '500',
+			},
+		},
+	},
 };
 
 export const validPayloadsAaveV3Base = {
@@ -1704,7 +1727,30 @@ export const validPayloadsAaveV3Base = {
 	},
 	stopLoss: { closeToDebt: {} },
 	trailingStopLoss: { closeToDebt: {} },
-	autoTakeProfit: { closeToDebt: {} },
+	autoTakeProfit: {
+		closeToDebt: {
+			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '2800',
+				executionPrice: '0',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7890',
+						token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+					},
+					action: 'add',
+				},
+				withdrawToken: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+				withdrawStep: '500',
+			},
+		},
+	},
 };
 
 export const validPayloadsAaveV3Optimism = {
@@ -1744,5 +1790,28 @@ export const validPayloadsAaveV3Optimism = {
 	},
 	stopLoss: { closeToDebt: {} },
 	trailingStopLoss: { closeToDebt: {} },
-	autoTakeProfit: { closeToDebt: {} },
+	autoTakeProfit: {
+		closeToDebt: {
+			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '3500',
+				executionPrice: '0',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7890',
+						token: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+					},
+					action: 'add',
+				},
+				withdrawToken: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+				withdrawStep: '500',
+			},
+		},
+	},
 };
