@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsMorpho, responses, trailingStopLossResponse } from 'utils/testData_APIs';
+import { validPayloadsSpark, responses, trailingStopLossResponse } from 'utils/testData_APIs';
 
-const trailingStopLossEndpoint = '/api/triggers/1/morphoblue/dma-trailing-stop-loss';
+const trailingStopLossEndpoint = '/api/triggers/1/spark/dma-trailing-stop-loss';
 
-const validPayloads = validPayloadsMorpho;
+const validPayloads = validPayloadsSpark;
 
 const validResponse = trailingStopLossResponse({
-	dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
+	dpm: '0x7126E8E9C26832B441a560f4283e09f9c51AB605',
 	collateral: {
 		decimals: 8,
 		symbol: 'WBTC',
@@ -14,17 +14,17 @@ const validResponse = trailingStopLossResponse({
 		oraclesAddress: '0xf4030086522a5beea4988f8ca5b36dbc97bee88c',
 	},
 	debt: {
-		decimals: 6,
-		symbol: 'USDC',
-		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-		oraclesAddress: '0x8fffffd4afb6115b954bd326cbe7b4ba576818f6',
+		decimals: 18,
+		symbol: 'DAI',
+		address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+		oraclesAddress: '0xaed0c38402a5d19df6e4c03f4e2dced6e29c1ee9',
 	},
-	hasStablecoinDebt: false,
+	hasStablecoinDebt: true,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async () => {
+test.describe('API tests - Trailing Stop-Loss - Spark - Ethereum', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WBTC-USDC/2545
+	// Position link: https://staging.summer.fi/ethereum/spark/borrow/WBTC-DAI/2592#protection
 
 	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {

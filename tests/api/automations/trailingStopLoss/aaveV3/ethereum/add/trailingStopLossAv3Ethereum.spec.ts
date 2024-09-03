@@ -1,8 +1,30 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsAaveV3Ethereum, responses } from 'utils/testData_APIs';
+import {
+	validPayloadsAaveV3Ethereum,
+	responses,
+	trailingStopLossResponse,
+} from 'utils/testData_APIs';
 
 const trailingStopLossEndpoint = '/api/triggers/1/aave3/dma-trailing-stop-loss';
+
 const validPayloads = validPayloadsAaveV3Ethereum;
+
+const validResponse = trailingStopLossResponse({
+	dpm: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
+	collateral: {
+		decimals: 18,
+		symbol: 'WETH',
+		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+		oraclesAddress: '0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419',
+	},
+	debt: {
+		decimals: 6,
+		symbol: 'USDC',
+		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+		oraclesAddress: '0x8fffffd4afb6115b954bd326cbe7b4ba576818f6',
+	},
+	hasStablecoinDebt: true,
+});
 
 test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
@@ -15,7 +37,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.trailingStopLoss);
+		expect(respJSON).toMatchObject(validResponse);
 	});
 
 	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
@@ -31,7 +53,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Ethereum', async () =>
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.trailingStopLoss);
+		expect(respJSON).toMatchObject(validResponse);
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {

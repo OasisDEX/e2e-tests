@@ -1,8 +1,31 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsAaveV3Ethereum, responses } from 'utils/testData_APIs';
+import {
+	validPayloadsAaveV3Ethereum,
+	responses,
+	autoSellWithoutMinSellPriceResponse,
+} from 'utils/testData_APIs';
 
 const autoSellEndpoint = '/api/triggers/1/aave3/auto-sell';
+
 const validPayloads = validPayloadsAaveV3Ethereum;
+
+const validResponse = autoSellWithoutMinSellPriceResponse({
+	dpm: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
+	collateral: {
+		decimals: 18,
+		symbol: 'WETH',
+		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+	},
+	debt: {
+		decimals: 6,
+		symbol: 'USDC',
+		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+	},
+	hasStablecoinDebt: true,
+	executionLTV: '4600',
+	targetLTV: '3800',
+	targetLTVWithDeviation: ['3700', '3900'],
+});
 
 test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
@@ -15,7 +38,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoSellWithoutMinSellPrice);
+		expect(respJSON).toMatchObject(validResponse);
 	});
 
 	test('Add automation - With Min Sell Price - Valid payload data', async ({ request }) => {
@@ -26,7 +49,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject({
-			...responses.autoSellWithoutMinSellPrice,
+			...validResponse,
 			warnings: [],
 		});
 	});
