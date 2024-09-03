@@ -1628,22 +1628,6 @@ export const validPayloadsAaveV3Arbitrum = {
 				useMaxBuyPrice: false,
 			},
 		},
-		addWithMaxBuyPrice: {
-			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
-			protocol: 'aavev3',
-			position: {
-				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
-				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
-			},
-			action: 'add',
-			triggerData: {
-				executionLTV: '4900',
-				maxBaseFee: '300',
-				maxBuyPrice: '600000000000',
-				targetLTV: '5800',
-				useMaxBuyPrice: true,
-			},
-		},
 	},
 	autoSell: {
 		addWithoutMinSellPrice: {
@@ -1662,7 +1646,21 @@ export const validPayloadsAaveV3Arbitrum = {
 			},
 		},
 	},
-	stopLoss: { closeToDebt: {} },
+	stopLoss: {
+		closeToDebt: {
+			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '8140',
+				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+		},
+	},
 	trailingStopLoss: { closeToDebt: {} },
 	autoTakeProfit: {
 		closeToDebt: {
@@ -1725,7 +1723,21 @@ export const validPayloadsAaveV3Base = {
 			},
 		},
 	},
-	stopLoss: { closeToDebt: {} },
+	stopLoss: {
+		closeToDebt: {
+			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '7890',
+				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+		},
+	},
 	trailingStopLoss: { closeToDebt: {} },
 	autoTakeProfit: {
 		closeToDebt: {
@@ -1788,7 +1800,21 @@ export const validPayloadsAaveV3Optimism = {
 			},
 		},
 	},
-	stopLoss: { closeToDebt: {} },
+	stopLoss: {
+		closeToDebt: {
+			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+			action: 'add',
+			triggerData: {
+				executionLTV: '7890',
+				token: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+		},
+	},
 	trailingStopLoss: { closeToDebt: {} },
 	autoTakeProfit: {
 		closeToDebt: {
