@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
+import { validPayloadsSpark, responses } from 'utils/testData_APIs';
 
 const stopLossEndpoint = '/api/triggers/1/spark/dma-stop-loss';
-const validPayloads = validPayloadsMorpho;
+const validPayloads = validPayloadsSpark;
 
-test.describe('API tests - Stop-Loss - Morpho Blue - Ethereum', async () => {
+test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/ethereum/spark/earn/WSTETH-ETH/1417
 
@@ -19,7 +19,7 @@ test.describe('API tests - Stop-Loss - Morpho Blue - Ethereum', async () => {
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0x302a28D7968824f386F278a72368856BC4d82BA4',
+				to: '0x6be31243E0FfA8F42D1F64834ECa2AB6DC8F7498',
 			},
 		});
 	});
@@ -41,7 +41,7 @@ test.describe('API tests - Stop-Loss - Morpho Blue - Ethereum', async () => {
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0x302a28D7968824f386F278a72368856BC4d82BA4',
+				to: '0x6be31243E0FfA8F42D1F64834ECa2AB6DC8F7498',
 			},
 		});
 	});
