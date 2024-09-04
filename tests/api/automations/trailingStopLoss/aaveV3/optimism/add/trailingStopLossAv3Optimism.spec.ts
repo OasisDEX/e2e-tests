@@ -22,6 +22,7 @@ const validResponse = trailingStopLossResponse({
 		symbol: 'USDC',
 		address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
 		oraclesAddress: '0x16a9fa2fda030272ce99b29cf780dfa30361e0f3',
+		usd_cOptimism: true,
 	},
 	hasStablecoinDebt: true,
 });

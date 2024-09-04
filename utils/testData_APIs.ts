@@ -962,7 +962,13 @@ export const trailingStopLossResponse = ({
 }: {
 	dpm: string;
 	collateral: { decimals: number; symbol: string; address: string; oraclesAddress: string };
-	debt: { decimals: number; symbol: string; address: string; oraclesAddress: string };
+	debt: {
+		decimals: number;
+		symbol: string;
+		address: string;
+		oraclesAddress: string;
+		usd_cOptimism?: boolean;
+	};
 	hasStablecoinDebt: boolean;
 }) => {
 	const response = {
@@ -980,7 +986,9 @@ export const trailingStopLossResponse = ({
 					],
 				},
 				denomination: {
-					id: debt.address.toLocaleLowerCase(),
+					id: debt.usd_cOptimism
+						? '0x0b2c639c533813f4aa9d7837caf62653d097ff85'
+						: debt.address.toLocaleLowerCase(),
 					symbol: debt.symbol,
 					oraclesToken: [
 						{
