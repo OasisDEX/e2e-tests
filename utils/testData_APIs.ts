@@ -1390,8 +1390,9 @@ export const validPayloadsAaveV3Ethereum = {
 			triggerData: {
 				executionLTV: '3800',
 				maxBaseFee: '300',
+				maxBuyPrice: '1000000000000',
 				targetLTV: '4400',
-				useMaxBuyPrice: false,
+				useMaxBuyPrice: true,
 			},
 		},
 	},
