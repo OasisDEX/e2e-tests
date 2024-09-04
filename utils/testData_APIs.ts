@@ -1379,6 +1379,21 @@ export const validPayloadsAaveV3Ethereum = {
 				useMaxBuyPrice: false,
 			},
 		},
+		updateMaxBuyPrice: {
+			dpm: '0x551eb8395093fde4b9eef017c93593a3c7a75138',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '3800',
+				maxBaseFee: '300',
+				targetLTV: '4400',
+				useMaxBuyPrice: false,
+			},
+		},
 	},
 	autoSell: {
 		addWithoutMinSellPrice: {
