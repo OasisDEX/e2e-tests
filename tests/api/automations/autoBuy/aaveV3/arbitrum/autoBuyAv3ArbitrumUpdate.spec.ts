@@ -100,7 +100,6 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Arbitrum', async () => 
 				...validPayloads,
 				triggerData: {
 					...triggerdataWithoutmaxBuyPrice,
-					maxBuyPrice: '350000000000',
 					useMaxBuyPrice: false,
 				},
 			},

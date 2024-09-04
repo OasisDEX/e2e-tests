@@ -338,4 +338,14 @@ test.describe('API tests - Auto-Buy - Add - Aave V3 - Arbitrum', async () => {
 
 		expect(respJSON).toMatchObject(responses.wrongUseMaxBuyPrice);
 	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloadsAaveV3Arbitrum.autoBuy.updateMaxBuyPrice, action: 'add' },
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.autoBuyAlreadyExists);
+	});
 });

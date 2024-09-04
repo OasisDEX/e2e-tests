@@ -7,50 +7,33 @@ import {
 
 const autoBuyEndpoint = '/api/triggers/8453/aave3/auto-buy';
 
-const validPayloads = validPayloadsAaveV3Base.autoBuy.addWithoutMaxBuyPrice;
+const validPayloads = validPayloadsAaveV3Base.autoBuy.updateMaxBuyPrice;
 
 const validResponse = autoBuyWithoutMaxBuyPriceResponse({
-	dpm: '0xf71dA0973121d949E1CEe818eb519BA364406309',
+	dpm: '0x5A1f00e5A2C1BF7974688ac1E1343E66598cd526',
 	collateral: {
 		decimals: 18,
-		symbol: 'WETH',
-		address: '0x4200000000000000000000000000000000000006',
+		symbol: 'cbETH',
+		address: '0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22',
 	},
 	debt: {
 		decimals: 6,
-		symbol: 'USDC',
-		address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+		symbol: 'USDbC',
+		address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
 	},
 	hasStablecoinDebt: true,
-	executionLTV: '2800',
-	targetLTV: '3300',
-	targetLTVWithDeviation: ['3200', '3400'],
+	executionLTV: '5100',
+	targetLTV: '5600',
+	targetLTVWithDeviation: ['5500', '5700'],
 });
 
-test.describe('API tests - Auto-Buy - Aave V3 - Base', async () => {
-	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDC/435#optimization
+test.describe('API tests - Auto-Buy - Update - Aave V3 - Arbitrum', async () => {
+	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+	// Position link: https://staging.summer.fi/base/aave/v3/multiply/CBETH-USDBC/588#optimization
 
-	test('Add automation - Without Max Buy Price - Valid payload data', async ({ request }) => {
+	test('Update existing automation - maxBuyPrice - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: validPayloads,
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(validResponse);
-	});
-
-	test('Add automation - With Max Buy Price - Valid payload data', async ({ request }) => {
-		const response = await request.post(autoBuyEndpoint, {
-			data: {
-				...validPayloads,
-				triggerData: {
-					...validPayloads.triggerData,
-					maxBuyPrice: '750000000000',
-					useMaxBuyPrice: true,
-				},
-			},
 		});
 
 		const respJSON = await response.json();
@@ -59,6 +42,120 @@ test.describe('API tests - Auto-Buy - Aave V3 - Base', async () => {
 			...validResponse,
 			warnings: [],
 		});
+	});
+
+	test('Update existing automation - executionLTV - Valid payload data', async ({ request }) => {
+		const response = await request.post(autoBuyEndpoint, {
+			data: {
+				...validPayloads,
+				triggerData: {
+					...validPayloads.triggerData,
+					executionLTV: '4700',
+					maxBuyPrice: '500000000000',
+				},
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject({
+			...validResponse,
+			simulation: { ...validResponse.simulation, executionLTV: '4700' },
+			warnings: [],
+		});
+	});
+
+	test('Update existing automation - targetLTV - Valid payload data', async ({ request }) => {
+		const response = await request.post(autoBuyEndpoint, {
+			data: {
+				...validPayloads,
+				triggerData: {
+					...validPayloads.triggerData,
+					targetLTV: '5800',
+					maxBuyPrice: '500000000000',
+				},
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject({
+			...validResponse,
+			simulation: {
+				...validResponse.simulation,
+				targetLTV: '5800',
+				targetLTVWithDeviation: ['5700', '5900'],
+			},
+			warnings: [],
+		});
+	});
+
+	test('Update existing automation - Set No threshold - Valid payload data', async ({
+		request,
+	}) => {
+		const { maxBuyPrice, ...triggerdataWithoutmaxBuyPrice } = validPayloads.triggerData;
+
+		const response = await request.post(autoBuyEndpoint, {
+			data: {
+				...validPayloads,
+				triggerData: {
+					...triggerdataWithoutmaxBuyPrice,
+					useMaxBuyPrice: false,
+				},
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject({
+			...validResponse,
+		});
+	});
+
+	test('Update existing automation - executionLTV, targetLTV & maxBuyPrice - Valid payload data', async ({
+		request,
+	}) => {
+		const response = await request.post(autoBuyEndpoint, {
+			data: {
+				...validPayloads,
+				triggerData: {
+					...validPayloads.triggerData,
+					executionLTV: '4000',
+					targetLTV: '4700',
+					maxBuyPrice: '800000000000',
+				},
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject({
+			...validResponse,
+			simulation: {
+				...validResponse.simulation,
+				executionLTV: '4000',
+				targetLTV: '4700',
+				targetLTVWithDeviation: ['4600', '4800'],
+			},
+			warnings: [],
+		});
+	});
+
+	test('Update non-existing automation', async ({ request }) => {
+		const response = await request.post(autoBuyEndpoint, {
+			data: {
+				...validPayloadsAaveV3Base.autoBuy.addWithoutMaxBuyPrice,
+				action: 'update',
+				triggerData: {
+					...validPayloadsAaveV3Base.autoBuy.addWithoutMaxBuyPrice.triggerData,
+					targetLTV: '5900',
+				},
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.autoBuyDoesNotExist);
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {
@@ -328,7 +425,7 @@ test.describe('API tests - Auto-Buy - Aave V3 - Base', async () => {
 
 	test('Add automation - Without "useMaxBuyPrice (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { useMaxBuyPrice, ...triggerDataWithoutUseMaxBuyPrice } = triggerData;
+		const { maxBuyPrice, useMaxBuyPrice, ...triggerDataWithoutUseMaxBuyPrice } = triggerData;
 
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutUseMaxBuyPrice },
@@ -337,15 +434,5 @@ test.describe('API tests - Auto-Buy - Aave V3 - Base', async () => {
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongUseMaxBuyPrice);
-	});
-
-	test('Add automation - Trigger already exists', async ({ request }) => {
-		const response = await request.post(autoBuyEndpoint, {
-			data: { ...validPayloadsAaveV3Base.autoBuy.updateMaxBuyPrice, action: 'add' },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.autoBuyAlreadyExists);
 	});
 });
