@@ -135,7 +135,7 @@ const verifyTriggerApiRequestPayload = async ({
 			await app.position.optimization.adjustAutoBuyTrigger({ value: 0.1 });
 		}
 		if (automation === 'auto-sell') {
-			await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
+			await app.position.protection.adjustAutoSellTrigger({ value: 0.9 });
 		}
 		if (automation === 'dma-partial-take-profit') {
 			await app.position.optimization.adjustPartialTakeProfitTrigger({ value: 0.1 });
@@ -282,7 +282,7 @@ export const testAutoSell = async ({
 			action,
 		});
 	} else {
-		await app.position.protection.adjustAutoSellTrigger({ value: 0.8 });
+		await app.position.protection.adjustAutoSellTrigger({ value: 0.9 });
 	}
 
 	if (!strategy && !action) {

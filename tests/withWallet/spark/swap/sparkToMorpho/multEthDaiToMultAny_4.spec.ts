@@ -75,10 +75,11 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-4' },
+			{ colToken: 'SUSDE', debtToken: 'USDT' },
+			{ colToken: 'USDE', debtToken: 'DAI-1' },
+			{ colToken: 'USDE', debtToken: 'DAI-2' },
+			{ colToken: 'USDE', debtToken: 'DAI-3' },
+			{ colToken: 'USDE', debtToken: 'DAI-4' },
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Spark Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
