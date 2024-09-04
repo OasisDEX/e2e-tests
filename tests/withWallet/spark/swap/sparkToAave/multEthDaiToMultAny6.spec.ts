@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Swap to Morpho', async () => {
+test.describe('Spark Multiply - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -28,7 +28,7 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Maker position as part of the Swap tests setup
+	// Create a Spark position as part of the Swap tests setup
 	test('It should open a Spark Multiply position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
@@ -45,7 +45,7 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'MakerTenderly:true',
 			}));
 		});
 
@@ -59,29 +59,18 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
 		});
-
-		await app.page.waitForTimeout(3000);
-
-		await swapPosition({
-			app,
-			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			originalProtocol: 'Spark',
-			targetProtocol: 'Morpho',
-			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
-			upToStep5: true,
-		});
 	});
 
 	(
 		[
-			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-4' },
+			{ colToken: 'RETH', debtToken: 'DAI' },
+			{ colToken: 'RETH', debtToken: 'USDC' },
+			{ colToken: 'RETH', debtToken: 'USDT' },
+			{ colToken: 'SDAI', debtToken: 'ETH' },
+			// { colToken: 'MKR', debtToken: 'DAI' }, -- Aave MKR very clos to supply cap
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Spark Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Spark Multiply position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -97,8 +86,6 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Spark',
-				targetProtocol: 'Morpho',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,
