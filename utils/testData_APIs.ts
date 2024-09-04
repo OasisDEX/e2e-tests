@@ -1338,6 +1338,17 @@ export const responses = {
 		],
 		warnings: [],
 	},
+	autoBuyDoesNotExist: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Auto buy trigger does not exist',
+				code: 'auto-buy-trigger-does-not-exist',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
 };
 
 export const validPayloadsAaveV3Ethereum = {
@@ -1634,6 +1645,22 @@ export const validPayloadsAaveV3Arbitrum = {
 				maxBaseFee: '300',
 				targetLTV: '5800',
 				useMaxBuyPrice: false,
+			},
+		},
+		updateMaxBuyPrice: {
+			dpm: '0x1816c0d0b0a42b9118a53c2f6d0a305ed54ea74c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x5979d7b546e38e414f7e9822514be443a4800529',
+				debt: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '4400',
+				maxBaseFee: '300',
+				maxBuyPrice: '450000000000',
+				targetLTV: '5300',
+				useMaxBuyPrice: true,
 			},
 		},
 	},
