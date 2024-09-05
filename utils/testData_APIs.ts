@@ -1888,6 +1888,22 @@ export const validPayloadsAaveV3Optimism = {
 				useMaxBuyPrice: false,
 			},
 		},
+		updateMaxBuyPrice: {
+			dpm: '0x171e21cb42c071e6f2b11a60a8041a8a3c1818ba',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x68f180fcce6836688e9084f035309e29bf0a2095',
+				debt: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1100',
+				maxBaseFee: '300',
+				maxBuyPrice: '20000000000000',
+				targetLTV: '1600',
+				useMaxBuyPrice: true,
+			},
+		},
 	},
 	autoSell: {
 		addWithoutMinSellPrice: {

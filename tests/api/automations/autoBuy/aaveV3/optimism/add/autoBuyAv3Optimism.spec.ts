@@ -344,13 +344,13 @@ test.describe('API tests - Auto-Buy - Aave V3 - Optimism', async () => {
 		expect(respJSON).toMatchObject(responses.wrongUseMaxBuyPrice);
 	});
 
-	// test('Add automation - Trigger already exists', async ({ request }) => {
-	// 	const response = await request.post(autoBuyEndpoint, {
-	// 		data: { ...validPayloadsAaveV3Optimism.autoBuy.updateMaxBuyPrice, action: 'add' },
-	// 	});
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(autoBuyEndpoint, {
+			data: { ...validPayloadsAaveV3Optimism.autoBuy.updateMaxBuyPrice, action: 'add' },
+		});
 
-	// 	const respJSON = await response.json();
+		const respJSON = await response.json();
 
-	// 	expect(respJSON).toMatchObject(responses.autoBuyAlreadyExists);
-	// });
+		expect(respJSON).toMatchObject(responses.autoBuyAlreadyExists);
+	});
 });
