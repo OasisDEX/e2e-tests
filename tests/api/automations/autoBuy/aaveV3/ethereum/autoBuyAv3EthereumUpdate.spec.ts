@@ -144,10 +144,6 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Ethereum', async () => 
 			data: {
 				...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice,
 				action: 'update',
-				triggerData: {
-					...validPayloadsAaveV3Ethereum.autoBuy.addWithoutMaxBuyPrice.triggerData,
-					targetLTV: '5900',
-				},
 			},
 		});
 
