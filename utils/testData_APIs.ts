@@ -1487,6 +1487,23 @@ export const validPayloadsMorpho = {
 				useMaxBuyPrice: false,
 			},
 		},
+		updateMaxBuyPrice: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '3000',
+				maxBaseFee: '300',
+				maxBuyPrice: '250000000',
+				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+				targetLTV: '4300',
+				useMaxBuyPrice: true,
+			},
+		},
 	},
 	autoSell: {
 		addWithoutMinSellPrice: {
