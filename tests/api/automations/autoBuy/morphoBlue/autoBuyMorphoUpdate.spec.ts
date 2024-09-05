@@ -155,7 +155,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.autoBuyDoesNotExist);
 	});
 
-	test('Add automation - Without "dpm"', async ({ request }) => {
+	test('Update automation - Without "dpm"', async ({ request }) => {
 		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
 		const response = await request.post(autoBuyEndpoint, {
@@ -167,7 +167,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Update automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloads, dpm: 1 },
 		});
@@ -177,7 +177,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Update automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloads, dpm: '0xwrong' },
 		});
@@ -187,7 +187,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Without "position"', async ({ request }) => {
+	test('Update automation - Without "position"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 
 		const response = await request.post(autoBuyEndpoint, {
@@ -199,7 +199,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.missingPosition);
 	});
 
-	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
+	test('Update automation - Wrong data type - "position" - string', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloads, position: 'string' },
 		});
@@ -209,7 +209,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongPosition_string);
 	});
 
-	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
+	test('Update automation - Wrong data type - "position" - number', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloads, position: 1 },
 		});
@@ -219,7 +219,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongPosition_number);
 	});
 
-	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
+	test('Update automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloads, position: [] },
 		});
@@ -229,7 +229,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongPosition_array);
 	});
 
-	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
+	test('Update automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloads, position: null },
 		});
@@ -239,7 +239,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongPosition_null);
 	});
 
-	test('Add automation - Without "collateral (position)"', async ({ request }) => {
+	test('Update automation - Without "collateral (position)"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { collateral, ...positionWithoutCollateral } = position;
 
@@ -252,7 +252,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
+	test('Update automation - Wrong data type - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
 				...validPayloads,
@@ -268,7 +268,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
+	test('Update automation - Wrong value - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
 				...validPayloads,
@@ -284,7 +284,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Without "debt (position)"', async ({ request }) => {
+	test('Update automation - Without "debt (position)"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { debt, ...positionWithoutDebt } = position;
 
@@ -297,7 +297,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
+	test('Update automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
 				...validPayloads,
@@ -313,7 +313,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
+	test('Update automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
 				...validPayloads,
@@ -329,7 +329,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Without "triggerData"', async ({ request }) => {
+	test('Update automation - Without "triggerData"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
 		const response = await request.post(autoBuyEndpoint, {
@@ -341,7 +341,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.missingTriggerData);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
+	test('Update automation - Wrong data type - "triggerData" - string', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloads, triggerData: 'string' },
 		});
@@ -351,7 +351,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_string);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
+	test('Update automation - Wrong data type - "triggerData" - number', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloads, triggerData: 1 },
 		});
@@ -361,7 +361,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_number);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
+	test('Update automation - Wrong data type - "triggerData" - array', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloads, triggerData: [] },
 		});
@@ -371,7 +371,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_array);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
+	test('Update automation - Wrong data type - "triggerData" - null', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloads, triggerData: null },
 		});
@@ -381,7 +381,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_null);
 	});
 
-	test('Add automation - Without "executionLTV (triggerData)"', async ({ request }) => {
+	test('Update automation - Without "executionLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
@@ -394,7 +394,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongExecutionLTV);
 	});
 
-	test('Add automation - Without "maxBaseFee (triggerData)"', async ({ request }) => {
+	test('Update automation - Without "maxBaseFee (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { maxBaseFee, ...triggerDataWithoutMaxBaseFee } = triggerData;
 
@@ -407,7 +407,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongMaxBaseFee);
 	});
 
-	test('Add automation - Without "targetLTV (triggerData)"', async ({ request }) => {
+	test('Update automation - Without "targetLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { targetLTV, ...triggerDataWithoutTargetLTV } = triggerData;
 
@@ -420,7 +420,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		expect(respJSON).toMatchObject(responses.wrongTargetLTV);
 	});
 
-	test('Add automation - Without "useMaxBuyPrice (triggerData)"', async ({ request }) => {
+	test('Update automation - Without "useMaxBuyPrice (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { maxBuyPrice, useMaxBuyPrice, ...triggerDataWithoutUseMaxBuyPrice } = triggerData;
 

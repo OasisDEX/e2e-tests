@@ -1360,6 +1360,28 @@ export const responses = {
 		],
 		warnings: [],
 	},
+	autoSellDoesNotExist: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Auto sell trigger does not exist',
+				code: 'auto-sell-trigger-does-not-exist',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
+	autoSellAlreadyExists: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Auto sell trigger already exists',
+				code: 'auto-sell-trigger-already-exists',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
 };
 
 export const validPayloadsAaveV3Ethereum = {
@@ -1738,6 +1760,22 @@ export const validPayloadsAaveV3Arbitrum = {
 				maxBaseFee: '300',
 				targetLTV: '5700',
 				useMinSellPrice: false,
+			},
+		},
+		updateMinSellPrice: {
+			dpm: '0x1816c0d0b0a42b9118a53c2f6d0a305ed54ea74c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x5979d7b546e38e414f7e9822514be443a4800529',
+				debt: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '6400',
+				maxBaseFee: '300',
+				minSellPrice: '50000000000',
+				targetLTV: '5600',
+				useMinSellPrice: true,
 			},
 		},
 	},
