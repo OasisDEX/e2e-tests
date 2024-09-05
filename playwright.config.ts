@@ -284,6 +284,24 @@ const defaultConfig: PlaywrightTestConfig = {
 			],
 			use: { ...devices['Desktop Chrome'] },
 		},
+
+		{
+			name: 'with-wallet-open-positions-aave-arbitrum',
+			testMatch: ['withWallet/z_openPositions/aaveV3/arbitrum/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-open-positions-aave-base',
+			testMatch: ['withWallet/z_openPositions/aaveV3/base/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-open-positions-aave-optimism',
+			testMatch: ['withWallet/z_openPositions/aaveV3/optimism/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
 	],
 };
 
