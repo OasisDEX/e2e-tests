@@ -1600,6 +1600,22 @@ export const validPayloadsSpark = {
 				useMaxBuyPrice: false,
 			},
 		},
+		updateMaxBuyPrice: {
+			dpm: '0xce049ff57d4146d5be3a55e60ef4523bb70798b6',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1700',
+				maxBaseFee: '300',
+				maxBuyPrice: '700000000000',
+				targetLTV: '2300',
+				useMaxBuyPrice: true,
+			},
+		},
 	},
 	autoSell: {
 		addWithoutMinSellPrice: {
