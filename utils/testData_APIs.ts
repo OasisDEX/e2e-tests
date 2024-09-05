@@ -1338,6 +1338,28 @@ export const responses = {
 		],
 		warnings: [],
 	},
+	autoBuyDoesNotExist: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Auto buy trigger does not exist',
+				code: 'auto-buy-trigger-does-not-exist',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
+	autoBuyAlreadyExists: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Auto buy trigger already exists',
+				code: 'auto-buy-trigger-already-exists',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
 };
 
 export const validPayloadsAaveV3Ethereum = {
@@ -1355,6 +1377,22 @@ export const validPayloadsAaveV3Ethereum = {
 				maxBaseFee: '300',
 				targetLTV: '5000',
 				useMaxBuyPrice: false,
+			},
+		},
+		updateMaxBuyPrice: {
+			dpm: '0x551eb8395093fde4b9eef017c93593a3c7a75138',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '3800',
+				maxBaseFee: '300',
+				maxBuyPrice: '1000000000000',
+				targetLTV: '4400',
+				useMaxBuyPrice: true,
 			},
 		},
 	},
@@ -1636,6 +1674,22 @@ export const validPayloadsAaveV3Arbitrum = {
 				useMaxBuyPrice: false,
 			},
 		},
+		updateMaxBuyPrice: {
+			dpm: '0x1816c0d0b0a42b9118a53c2f6d0a305ed54ea74c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x5979d7b546e38e414f7e9822514be443a4800529',
+				debt: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '4400',
+				maxBaseFee: '300',
+				maxBuyPrice: '450000000000',
+				targetLTV: '5300',
+				useMaxBuyPrice: true,
+			},
+		},
 	},
 	autoSell: {
 		addWithoutMinSellPrice: {
@@ -1725,6 +1779,22 @@ export const validPayloadsAaveV3Base = {
 				maxBaseFee: '300',
 				targetLTV: '3300',
 				useMaxBuyPrice: false,
+			},
+		},
+		updateMaxBuyPrice: {
+			dpm: '0x5a1f00e5a2c1bf7974688ac1e1343e66598cd526',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x2ae3f1ec7f1f5012cfeab0185bfc7aa3cf0dec22',
+				debt: '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '5100',
+				maxBaseFee: '300',
+				maxBuyPrice: '600000000000',
+				targetLTV: '5600',
+				useMaxBuyPrice: true,
 			},
 		},
 	},
