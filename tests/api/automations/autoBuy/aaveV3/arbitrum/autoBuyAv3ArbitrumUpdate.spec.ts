@@ -146,10 +146,6 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Arbitrum', async () => 
 			data: {
 				...validPayloadsAaveV3Arbitrum.autoBuy.addWithoutMaxBuyPrice,
 				action: 'update',
-				triggerData: {
-					...validPayloadsAaveV3Arbitrum.autoBuy.addWithoutMaxBuyPrice.triggerData,
-					targetLTV: '5900',
-				},
 			},
 		});
 

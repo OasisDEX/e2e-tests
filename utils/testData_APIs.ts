@@ -1487,6 +1487,23 @@ export const validPayloadsMorpho = {
 				useMaxBuyPrice: false,
 			},
 		},
+		updateMaxBuyPrice: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '3000',
+				maxBaseFee: '300',
+				maxBuyPrice: '250000000',
+				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+				targetLTV: '4300',
+				useMaxBuyPrice: true,
+			},
+		},
 	},
 	autoSell: {
 		addWithoutMinSellPrice: {
@@ -1581,6 +1598,22 @@ export const validPayloadsSpark = {
 				maxBaseFee: '300',
 				targetLTV: '4900',
 				useMaxBuyPrice: false,
+			},
+		},
+		updateMaxBuyPrice: {
+			dpm: '0xce049ff57d4146d5be3a55e60ef4523bb70798b6',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1700',
+				maxBaseFee: '300',
+				maxBuyPrice: '700000000000',
+				targetLTV: '2300',
+				useMaxBuyPrice: true,
 			},
 		},
 	},
@@ -1886,6 +1919,22 @@ export const validPayloadsAaveV3Optimism = {
 				maxBaseFee: '300',
 				targetLTV: '3900',
 				useMaxBuyPrice: false,
+			},
+		},
+		updateMaxBuyPrice: {
+			dpm: '0x171e21cb42c071e6f2b11a60a8041a8a3c1818ba',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x68f180fcce6836688e9084f035309e29bf0a2095',
+				debt: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1100',
+				maxBaseFee: '300',
+				maxBuyPrice: '20000000000000',
+				targetLTV: '1600',
+				useMaxBuyPrice: true,
 			},
 		},
 	},
