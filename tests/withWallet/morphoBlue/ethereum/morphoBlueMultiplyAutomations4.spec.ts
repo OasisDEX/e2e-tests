@@ -68,7 +68,8 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		});
 	});
 
-	test('It should remove an existing Auto-Buy trigger on a Morpho Blue Multiply position @regression', async () => {
+	// TO BE UPDATED - There seem to be issues with metamask in automated test
+	test.skip('It should remove an existing Auto-Buy trigger on a Morpho Blue Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

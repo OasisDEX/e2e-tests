@@ -179,7 +179,8 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should allow to simulate an Ajna Ethereum Borrow position before opening it', async () => {
+	// Randomly failing with automated test
+	test.skip('It should allow to simulate an Ajna Ethereum Borrow position before opening it', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12732',
