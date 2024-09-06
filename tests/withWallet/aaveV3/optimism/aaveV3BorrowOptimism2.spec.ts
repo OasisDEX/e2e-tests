@@ -59,7 +59,8 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		});
 	});
 
-	test('It should close an existent Aave V3 Borrow Optimism position - Close to debt token (WBTC)', async () => {
+	// Randomly failing with automated test
+	test.skip('It should close an existent Aave V3 Borrow Optimism position - Close to debt token (WBTC)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12914',

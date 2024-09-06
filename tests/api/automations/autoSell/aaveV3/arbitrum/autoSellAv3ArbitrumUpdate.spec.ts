@@ -424,7 +424,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Arbitrum', async () => {
 
 	test('Update automation - Without "useMinSellPrice (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { useMinSellPrice, ...triggerDataWithoutUseMinSellPrice } = triggerData;
+		const { minSellPrice, useMinSellPrice, ...triggerDataWithoutUseMinSellPrice } = triggerData;
 
 		const response = await request.post(autoSellEndpoint, {
 			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutUseMinSellPrice },
