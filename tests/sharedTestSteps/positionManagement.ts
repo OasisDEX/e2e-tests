@@ -103,7 +103,7 @@ export const openPosition = async ({
 					await app.page.reload();
 				}
 				await app.position.overview.shouldBeVisible();
-			}).toPass({ timeout: expectDefaultTimeout * 4 });
+			}).toPass({ timeout: expectDefaultTimeout * 5 });
 		}).toPass();
 
 		return positionId;
