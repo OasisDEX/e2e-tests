@@ -1,163 +1,104 @@
 import { expect, test } from '@playwright/test';
-import {
-	validPayloadsAaveV3Arbitrum,
-	responses,
-	autoSellWithoutMinSellPriceResponse,
-} from 'utils/testData_APIs';
+import { validPayloadsAaveV3Arbitrum, responses } from 'utils/testData_APIs';
 
-const autoSellEndpoint = '/api/triggers/42161/aave3/auto-sell';
+const stopLossEndpoint = '/api/triggers/42161/aave3/dma-stop-loss';
+const validPayloads = validPayloadsAaveV3Arbitrum.stopLoss.updateCloseToCollateral;
 
-const validPayloads = validPayloadsAaveV3Arbitrum.autoSell.updateMinSellPrice;
-
-const validResponse = autoSellWithoutMinSellPriceResponse({
-	dpm: '0x1816c0d0B0a42B9118a53C2f6D0a305eD54EA74C',
-	collateral: {
-		decimals: 18,
-		symbol: 'wstETH',
-		address: '0x5979D7b546E38E414F7E9822514be443A4800529',
-	},
-	debt: {
-		decimals: 6,
-		symbol: 'USDC',
-		address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
-	},
-	hasStablecoinDebt: true,
-	executionLTV: '6400',
-	targetLTV: '5600',
-	targetLTVWithDeviation: ['5500', '5700'],
-});
-
-test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () => {
+test.describe('API tests - Stop-Loss - Update - Aave V3 - Arbitrum', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/WSTETH-USDC/351
+	// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/ETH-DAI/352#protection
 
-	test('Update existing automation - minSellPrice - Valid payload data', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+	test('Update automation - Close to collateral - Valid payload data', async ({ request }) => {
+		const response = await request.post(stopLossEndpoint, {
 			data: validPayloads,
 		});
 
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject({
-			...validResponse,
-			warnings: [],
+			...responses.stopLoss,
+			transaction: {
+				...responses.stopLoss.transaction,
+				to: '0x5658E378371809d1aEF8749eBAD8D161CD90D33c',
+			},
 		});
 	});
 
-	test('Update existing automation - executionLTV - Valid payload data', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+	test('Update automation - executionLTV - Valid payload data', async ({ request }) => {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
-				triggerData: {
-					...validPayloads.triggerData,
-					executionLTV: '6600',
-					minSellPrice: '100000000000',
-				},
+				triggerData: { executionLTV: '7000', token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1' },
 			},
 		});
 
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject({
-			...validResponse,
-			simulation: { ...validResponse.simulation, executionLTV: '6600' },
-			warnings: [],
+			...responses.stopLoss,
+			transaction: {
+				...responses.stopLoss.transaction,
+				to: '0x5658E378371809d1aEF8749eBAD8D161CD90D33c',
+			},
 		});
 	});
 
-	test('Update existing automation - targetLTV - Valid payload data', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: {
-				...validPayloads,
-				triggerData: {
-					...validPayloads.triggerData,
-					targetLTV: '5100',
-					minSellPrice: '100000000000',
-				},
-			},
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject({
-			...validResponse,
-			simulation: {
-				...validResponse.simulation,
-				targetLTV: '5100',
-				targetLTVWithDeviation: ['5000', '5200'],
-			},
-			warnings: [],
-		});
-	});
-
-	test('Update existing automation - Set No threshold - Valid payload data', async ({
+	test('Update automation - Close to collateral & executionLTV - Valid payload data', async ({
 		request,
 	}) => {
-		const { minSellPrice, ...triggerdataWithoutminSellPrice } = validPayloads.triggerData;
-
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
-				triggerData: {
-					...triggerdataWithoutminSellPrice,
-					useMinSellPrice: false,
-				},
+				triggerData: { executionLTV: '7100', token: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' },
 			},
 		});
 
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject({
-			...validResponse,
+			...responses.stopLoss,
+			transaction: {
+				...responses.stopLoss.transaction,
+				to: '0x5658E378371809d1aEF8749eBAD8D161CD90D33c',
+			},
 		});
 	});
 
-	test('Update existing automation - executionLTV, targetLTV & minSellPrice - Valid payload data', async ({
-		request,
-	}) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: {
-				...validPayloads,
-				triggerData: {
-					...validPayloads.triggerData,
-					executionLTV: '6500',
-					targetLTV: '5000',
-					minSellPrice: '30000000000',
-				},
-			},
+	test('Update automation - Close to debt - Valid payload data', async ({ request }) => {
+		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+		// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/RETH-ETH/540#protection
+		const response = await request.post(stopLossEndpoint, {
+			data: validPayloadsAaveV3Arbitrum.stopLoss.updateCloseToDebt,
 		});
 
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject({
-			...validResponse,
-			simulation: {
-				...validResponse.simulation,
-				executionLTV: '6500',
-				targetLTV: '5000',
-				targetLTVWithDeviation: ['4900', '5100'],
+			...responses.stopLoss,
+			transaction: {
+				...responses.stopLoss.transaction,
+				to: '0x8AD95C7Bcb4f1f346b04C82C4eC9363922453C53',
 			},
-			warnings: [],
 		});
 	});
 
 	test('Update non-existing automation', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Arbitrum.autoSell.addWithoutMinSellPrice,
+				...validPayloadsAaveV3Arbitrum.stopLoss.closeToDebt,
 				action: 'update',
 			},
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoSellDoesNotExist);
+		expect(respJSON).toMatchObject(responses.stopLossDoesNotExist);
 	});
 
 	test('Update automation - Without "dpm"', async ({ request }) => {
 		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: payloadWithoutDpm,
 		});
 
@@ -167,7 +108,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Update automation - Wrong data type - "dpm"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, dpm: 1 },
 		});
 
@@ -177,7 +118,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Update automation - Wrong value - "dpm"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, dpm: '0xwrong' },
 		});
 
@@ -189,7 +130,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	test('Update automation - Without "position"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: payloadWithoutPosition,
 		});
 
@@ -199,7 +140,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Update automation - Wrong data type - "position" - string', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, position: 'string' },
 		});
 
@@ -209,7 +150,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Update automation - Wrong data type - "position" - number', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, position: 1 },
 		});
 
@@ -219,7 +160,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Update automation - Wrong data type - "position" - array', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, position: [] },
 		});
 
@@ -229,7 +170,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Update automation - Wrong data type - "position" - null', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, position: null },
 		});
 
@@ -242,7 +183,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { collateral, ...positionWithoutCollateral } = position;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...payloadWithoutPosition, position: positionWithoutCollateral },
 		});
 
@@ -252,13 +193,10 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Update automation - Wrong data type - "collateral (position)"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
-				position: {
-					...validPayloads.position,
-					collateral: 11,
-				},
+				position: { ...validPayloads.position, collateral: 11 },
 			},
 		});
 
@@ -268,7 +206,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Update automation - Wrong value - "collateral (position)"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
 				position: {
@@ -287,7 +225,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { debt, ...positionWithoutDebt } = position;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...payloadWithoutPosition, position: positionWithoutDebt },
 		});
 
@@ -297,13 +235,10 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Update automation - Wrong data type - "debt (position)"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
-				position: {
-					...validPayloads.position,
-					debt: 11,
-				},
+				position: { ...validPayloads.position, debt: 11 },
 			},
 		});
 
@@ -313,7 +248,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Update automation - Wrong value - "debt (position)"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
 				position: {
@@ -331,107 +266,78 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 	test('Update automation - Without "triggerData"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: payloadWithoutTriggerData,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.missingTriggerData);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
 	test('Update automation - Wrong data type - "triggerData" - string', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: {
-				...validPayloads,
-				triggerData: 'string',
-			},
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloads, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_string);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
 	test('Update automation - Wrong data type - "triggerData" - number', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_number);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
 	test('Update automation - Wrong data type - "triggerData" - array', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_array);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
 	test('Update automation - Wrong data type - "triggerData" - null', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, triggerData: null },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_null);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
 	test('Update automation - Without "executionLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(stopLossEndpoint, {
 			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutExecutionLTV },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongExecutionLTV);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
-	test('Update automation - Without "maxBaseFee (triggerData)"', async ({ request }) => {
+	test('Update automation - Without "token (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { maxBaseFee, ...triggerDataWithoutMaxBaseFee } = triggerData;
+		const { token, ...triggerDataWithoutToken } = triggerData;
 
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutMaxBaseFee },
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutToken },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongMaxBaseFee);
-	});
-
-	test('Update automation - Without "targetLTV (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { targetLTV, ...triggerDataWithoutTargetLTV } = triggerData;
-
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutTargetLTV },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongTargetLTV);
-	});
-
-	test('Update automation - Without "useMinSellPrice (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { minSellPrice, useMinSellPrice, ...triggerDataWithoutUseMinSellPrice } = triggerData;
-
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutUseMinSellPrice },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongUseMinSellPrice);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 });

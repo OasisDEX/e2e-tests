@@ -1382,6 +1382,28 @@ export const responses = {
 		],
 		warnings: [],
 	},
+	stopLossDoesNotExist: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Stop loss trigger does not exist',
+				code: 'stop-loss-trigger-does-not-exist',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
+	stopLossAlreadyExist: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Stop Loss trigger already exists',
+				code: 'stop-loss-trigger-already-exists',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
 };
 
 export const validPayloadsAaveV3Ethereum = {
@@ -1824,6 +1846,32 @@ export const validPayloadsAaveV3Arbitrum = {
 			triggerData: {
 				executionLTV: '8140',
 				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+		},
+		updateCloseToCollateral: {
+			dpm: '0x5658e378371809d1aef8749ebad8d161cd90d33c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '8140',
+				token: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0x8ad95c7bcb4f1f346b04c82c4ec9363922453c53',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8',
+				debt: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '6560',
+				token: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
 			},
 		},
 	},
