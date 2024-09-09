@@ -1,34 +1,34 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsMorpho, responses, trailingStopLossResponse } from 'utils/testData_APIs';
+import { validPayloadsAaveV3Base, responses, trailingStopLossResponse } from 'utils/testData_APIs';
 
-const trailingStopLossEndpoint = '/api/triggers/1/morphoblue/dma-trailing-stop-loss';
+const trailingStopLossEndpoint = '/api/triggers/8453/aave3/dma-trailing-stop-loss';
 
-const validPayloads = validPayloadsMorpho;
+const validPayloads = validPayloadsAaveV3Base.trailingStopLoss.closeToDebt;
 
 const validResponse = trailingStopLossResponse({
-	dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
+	dpm: '0xf71dA0973121d949E1CEe818eb519BA364406309',
 	collateral: {
-		decimals: 8,
-		symbol: 'WBTC',
-		address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-		oraclesAddress: '0xf4030086522a5beea4988f8ca5b36dbc97bee88c',
+		decimals: 18,
+		symbol: 'WETH',
+		address: '0x4200000000000000000000000000000000000006',
+		oraclesAddress: '0x71041dddad3595f9ced3dccfbe3d1f4b0a16bb70',
 	},
 	debt: {
 		decimals: 6,
 		symbol: 'USDC',
-		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-		oraclesAddress: '0x8fffffd4afb6115b954bd326cbe7b4ba576818f6',
+		address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+		oraclesAddress: '0x7e860098f58bbfc8648a4311b374b1d669a2bc6b',
 	},
-	hasStablecoinDebt: false,
+	hasStablecoinDebt: true,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async () => {
-	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WBTC-USDC/2545
+test.describe('API tests - Trailing Stop-Loss - Aave V3 - Base', async () => {
+	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
+	// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDC/435
 
 	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: validPayloads.trailingStopLoss.closeToDebt,
+			data: validPayloads,
 		});
 
 		const respJSON = await response.json();
@@ -39,10 +39,10 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloads.trailingStopLoss.closeToDebt,
+				...validPayloads,
 				triggerData: {
-					...validPayloads.trailingStopLoss.closeToDebt.triggerData,
-					token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+					...validPayloads.triggerData,
+					token: '0x4200000000000000000000000000000000000006',
 				},
 			},
 		});
@@ -53,7 +53,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...payloadWithoutDpm } = validPayloads.trailingStopLoss.closeToDebt;
+		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: payloadWithoutDpm,
@@ -66,7 +66,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 
 	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, dpm: 1 },
+			data: { ...validPayloads, dpm: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -76,7 +76,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 
 	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, dpm: '0xwrong' },
+			data: { ...validPayloads, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
@@ -85,7 +85,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	});
 
 	test('Add automation - Without "position"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.trailingStopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: payloadWithoutPosition,
@@ -98,7 +98,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 
 	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, position: 'string' },
+			data: { ...validPayloads, position: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -108,7 +108,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 
 	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, position: 1 },
+			data: { ...validPayloads, position: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -118,7 +118,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 
 	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, position: [] },
+			data: { ...validPayloads, position: [] },
 		});
 
 		const respJSON = await response.json();
@@ -128,7 +128,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 
 	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, position: null },
+			data: { ...validPayloads, position: null },
 		});
 
 		const respJSON = await response.json();
@@ -137,7 +137,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	});
 
 	test('Add automation - Without "collateral (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.trailingStopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { collateral, ...positionWithoutCollateral } = position;
 
 		const response = await request.post(trailingStopLossEndpoint, {
@@ -152,9 +152,9 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloads.trailingStopLoss.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.trailingStopLoss.closeToDebt.position,
+					...validPayloads.position,
 					collateral: 11,
 				},
 			},
@@ -168,9 +168,9 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloads.trailingStopLoss.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.trailingStopLoss.closeToDebt.position,
+					...validPayloads.position,
 					collateral: '0xwrong',
 				},
 			},
@@ -182,7 +182,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	});
 
 	test('Add automation - Without "debt (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.trailingStopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { debt, ...positionWithoutDebt } = position;
 
 		const response = await request.post(trailingStopLossEndpoint, {
@@ -197,9 +197,9 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloads.trailingStopLoss.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.trailingStopLoss.closeToDebt.position,
+					...validPayloads.position,
 					debt: 11,
 				},
 			},
@@ -213,9 +213,9 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloads.trailingStopLoss.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.trailingStopLoss.closeToDebt.position,
+					...validPayloads.position,
 					debt: '0xwrong',
 				},
 			},
@@ -227,8 +227,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	});
 
 	test('Add automation - Without "triggerData"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.trailingStopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: payloadWithoutTriggerData,
@@ -241,7 +240,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 
 	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, triggerData: 'string' },
+			data: { ...validPayloads, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -251,7 +250,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 
 	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, triggerData: 1 },
+			data: { ...validPayloads, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -261,7 +260,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 
 	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, triggerData: [] },
+			data: { ...validPayloads, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
@@ -271,7 +270,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 
 	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, triggerData: null },
+			data: { ...validPayloads, triggerData: null },
 		});
 
 		const respJSON = await response.json();
@@ -280,8 +279,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	});
 
 	test('Add automation - Without "trailingDistance (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.trailingStopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { trailingDistance, ...triggerDataWithoutTrailingDistance } = triggerData;
 
 		const response = await request.post(trailingStopLossEndpoint, {
@@ -294,8 +292,7 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 	});
 
 	test('Add automation - Without "token (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.trailingStopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { token, ...triggerDataWithoutToken } = triggerData;
 
 		const response = await request.post(trailingStopLossEndpoint, {
