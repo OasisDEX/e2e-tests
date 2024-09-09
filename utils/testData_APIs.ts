@@ -1756,7 +1756,7 @@ export const validPayloadsAaveV3Arbitrum = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '6200',
+				executionLTV: '7200',
 				maxBaseFee: '300',
 				targetLTV: '5700',
 				useMinSellPrice: false,

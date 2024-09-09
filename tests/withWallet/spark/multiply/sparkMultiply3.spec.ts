@@ -148,9 +148,9 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			borrow: { token: 'DAI', amount: '15000' },
+			borrow: { token: 'DAI', amount: '5000' },
 			expectedDebt: {
-				amount: '[0-9]{2},[0-9]{3}.[0-9]{2}',
+				amount: '[6-9],[0-9]{3}.[0-9]{2}',
 				token: 'DAI',
 			},
 			protocol: 'Spark',
@@ -175,9 +175,9 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			payBack: { token: 'DAI', amount: '16000' },
+			payBack: { token: 'DAI', amount: '1000' },
 			expectedDebt: {
-				amount: '[1-5],[0-9]{3}.[0-9]{2}',
+				amount: '[5-8],[0-9]{3}.[0-9]{2}',
 				token: 'DAI',
 			},
 			protocol: 'Spark',
