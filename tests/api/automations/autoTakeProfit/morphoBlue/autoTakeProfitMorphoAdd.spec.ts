@@ -1,35 +1,31 @@
 import { expect, test } from '@playwright/test';
-import {
-	validPayloadsAaveV3Arbitrum,
-	responses,
-	autoTakeProfitResponse,
-} from 'utils/testData_APIs';
+import { validPayloadsMorpho, responses, autoTakeProfitResponse } from 'utils/testData_APIs';
 
-const autoTakeProfit = '/api/triggers/42161/aave3/dma-partial-take-profit';
+const autoTakeProfit = '/api/triggers/1/morphoblue/dma-partial-take-profit';
 
-const validPayloads = validPayloadsAaveV3Arbitrum;
+const validPayloads = validPayloadsMorpho.autoTakeProfit.closeToDebt;
 
 const validResponse = autoTakeProfitResponse({
-	dpm: '0xF0464Ef55705e5B5cb3b865d92BE5341fe85fBB8',
+	dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
 	collateral: {
-		decimals: 18,
-		symbol: 'WETH',
-		address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+		decimals: 8,
+		symbol: 'WBTC',
+		address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
 	},
 	debt: {
-		decimals: 18,
-		symbol: 'DAI',
-		address: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
+		decimals: 6,
+		symbol: 'USDC',
+		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
 	},
 });
 
-test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
+test.describe('API tests - Auto Take Profit - Morpho Blue - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/ETH-DAI/1
+	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WBTC-USDC/2545
 
 	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: validPayloads.autoTakeProfit.closeToDebt,
+			data: validPayloads,
 		});
 
 		const respJSON = await response.json();
@@ -40,17 +36,17 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloads.autoTakeProfit.closeToDebt,
+				...validPayloads,
 				stopLoss: {
-					...validPayloads.autoTakeProfit.closeToDebt.triggerData.stopLoss,
+					...validPayloads.triggerData.stopLoss,
 					triggerData: {
-						...validPayloads.autoTakeProfit.closeToDebt.triggerData.stopLoss.triggerData,
-						token: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+						...validPayloads.triggerData.stopLoss.triggerData,
+						token: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 					},
 				},
 				triggerData: {
-					...validPayloads.autoTakeProfit.closeToDebt.triggerData,
-					withdrawToken: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+					...validPayloads.triggerData,
+					withdrawToken: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 				},
 			},
 		});
@@ -61,7 +57,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...payloadWithoutDpm } = validPayloads.autoTakeProfit.closeToDebt;
+		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
 		const response = await request.post(autoTakeProfit, {
 			data: payloadWithoutDpm,
@@ -74,7 +70,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloads.autoTakeProfit.closeToDebt, dpm: 1 },
+			data: { ...validPayloads, dpm: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -84,7 +80,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloads.autoTakeProfit.closeToDebt, dpm: '0xwrong' },
+			data: { ...validPayloads, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
@@ -93,7 +89,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	});
 
 	test('Add automation - Without "position"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.autoTakeProfit.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 
 		const response = await request.post(autoTakeProfit, {
 			data: payloadWithoutPosition,
@@ -106,7 +102,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloads.autoTakeProfit.closeToDebt, position: 'string' },
+			data: { ...validPayloads, position: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -116,7 +112,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloads.autoTakeProfit.closeToDebt, position: 1 },
+			data: { ...validPayloads, position: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -126,7 +122,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloads.autoTakeProfit.closeToDebt, position: [] },
+			data: { ...validPayloads, position: [] },
 		});
 
 		const respJSON = await response.json();
@@ -136,7 +132,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloads.autoTakeProfit.closeToDebt, position: null },
+			data: { ...validPayloads, position: null },
 		});
 
 		const respJSON = await response.json();
@@ -145,7 +141,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	});
 
 	test('Add automation - Without "collateral (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.autoTakeProfit.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { collateral, ...positionWithoutCollateral } = position;
 
 		const response = await request.post(autoTakeProfit, {
@@ -160,9 +156,9 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloads.autoTakeProfit.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.autoTakeProfit.closeToDebt.position,
+					...validPayloads.position,
 					collateral: 11,
 				},
 			},
@@ -176,9 +172,9 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloads.autoTakeProfit.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.autoTakeProfit.closeToDebt.position,
+					...validPayloads.position,
 					collateral: '0xwrong',
 				},
 			},
@@ -190,7 +186,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	});
 
 	test('Add automation - Without "debt (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.autoTakeProfit.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { debt, ...positionWithoutDebt } = position;
 
 		const response = await request.post(autoTakeProfit, {
@@ -205,8 +201,8 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloads.autoTakeProfit.closeToDebt,
-				position: { ...validPayloads.autoTakeProfit.closeToDebt.position, debt: 11 },
+				...validPayloads,
+				position: { ...validPayloads.position, debt: 11 },
 			},
 		});
 
@@ -218,9 +214,9 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloads.autoTakeProfit.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.autoTakeProfit.closeToDebt.position,
+					...validPayloads.position,
 					debt: '0xwrong',
 				},
 			},
@@ -232,7 +228,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	});
 
 	test('Add automation - Without "triggerData"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
 		const response = await request.post(autoTakeProfit, {
 			data: payloadWithoutTriggerData,
@@ -245,7 +241,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloads.autoTakeProfit.closeToDebt, triggerData: 'string' },
+			data: { ...validPayloads, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -255,7 +251,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloads.autoTakeProfit.closeToDebt, triggerData: 1 },
+			data: { ...validPayloads, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -265,7 +261,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloads.autoTakeProfit.closeToDebt, triggerData: [] },
+			data: { ...validPayloads, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
@@ -275,7 +271,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
-			data: { ...validPayloads.autoTakeProfit.closeToDebt, triggerData: null },
+			data: { ...validPayloads, triggerData: null },
 		});
 
 		const respJSON = await response.json();
@@ -284,7 +280,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	});
 
 	test('Add automation - Without "executionLTV (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
 		const response = await request.post(autoTakeProfit, {
@@ -297,7 +293,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	});
 
 	test('Add automation - Without "executionPrice (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { executionPrice, ...triggerDataWithoutExecutionPrice } = triggerData;
 
 		const response = await request.post(autoTakeProfit, {
@@ -310,7 +306,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	});
 
 	test('Add automation - Without "withdrawToken (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { withdrawToken, ...triggerDataWithoutWithdrawToken } = triggerData;
 
 		const response = await request.post(autoTakeProfit, {
@@ -323,7 +319,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	});
 
 	test('Add automation - Without "withdrawStep (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { withdrawStep, ...triggerDataWithoutWithdrawStep } = triggerData;
 
 		const response = await request.post(autoTakeProfit, {
@@ -336,7 +332,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 	});
 
 	test('Add automation - Without "stopLoss > triggerData (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.autoTakeProfit.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { stopLoss, ...triggerDataWithoutStopLoss } = triggerData;
 		const { triggerData: stopLossTriggerData, ...triggerDataStopLossWithoutTriggerData } = stopLoss;
 
@@ -352,7 +348,7 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Arbitrum', async () => {
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongStopLossTriggerData);
+		expect(respJSON).toMatchObject(responses.wrongStopLossTriggerDataMorpho);
 	});
 
 	// TO BE DONE - More negative scenarios for missing attribues in 'triggerData > StopLoss'

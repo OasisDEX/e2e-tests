@@ -1382,6 +1382,28 @@ export const responses = {
 		],
 		warnings: [],
 	},
+	stopLossDoesNotExist: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Stop loss trigger does not exist',
+				code: 'stop-loss-trigger-does-not-exist',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
+	stopLossAlreadyExist: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Stop Loss trigger already exists',
+				code: 'stop-loss-trigger-already-exists',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
 };
 
 export const validPayloadsAaveV3Ethereum = {
@@ -1604,7 +1626,7 @@ export const validPayloadsMorpho = {
 			},
 			action: 'add',
 			triggerData: {
-				trailingDistance: '120000000000',
+				trailingDistance: '1230000000000',
 				poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
@@ -1826,6 +1848,32 @@ export const validPayloadsAaveV3Arbitrum = {
 				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0x5658e378371809d1aef8749ebad8d161cd90d33c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '8140',
+				token: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0x8ad95c7bcb4f1f346b04c82c4ec9363922453c53',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8',
+				debt: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '6560',
+				token: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
@@ -1946,6 +1994,32 @@ export const validPayloadsAaveV3Base = {
 			action: 'add',
 			triggerData: {
 				executionLTV: '7890',
+				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+		},
+		updateCloseToCollateral: {
+			dpm: '0xb3287c2890ed7ea99cb4d5d899434bb64997a609',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '7855',
+				token: '0x4200000000000000000000000000000000000006',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0x20e74013d82fea853afca3b4cb1fd9c2b105f55a',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '7721',
 				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
 			},
 		},

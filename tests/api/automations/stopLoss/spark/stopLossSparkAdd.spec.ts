@@ -2,7 +2,7 @@ import { expect, test } from '@playwright/test';
 import { validPayloadsSpark, responses } from 'utils/testData_APIs';
 
 const stopLossEndpoint = '/api/triggers/1/spark/dma-stop-loss';
-const validPayloads = validPayloadsSpark;
+const validPayloads = validPayloadsSpark.stopLoss.closeToDebt;
 
 test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
@@ -10,7 +10,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: validPayloads.stopLoss.closeToDebt,
+			data: validPayloads,
 		});
 
 		const respJSON = await response.json();
@@ -27,9 +27,9 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloads.stopLoss.closeToDebt,
+				...validPayloads,
 				triggerData: {
-					...validPayloads.stopLoss.closeToDebt.triggerData,
+					...validPayloads.triggerData,
 					token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
 				},
 			},
@@ -47,7 +47,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...payloadWithoutDpm } = validPayloads.stopLoss.closeToDebt;
+		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
 		const response = await request.post(stopLossEndpoint, {
 			data: payloadWithoutDpm,
@@ -60,7 +60,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloads.stopLoss.closeToDebt, dpm: 1 },
+			data: { ...validPayloads, dpm: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -70,7 +70,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloads.stopLoss.closeToDebt, dpm: '0xwrong' },
+			data: { ...validPayloads, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
@@ -79,7 +79,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "position"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.stopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 
 		const response = await request.post(stopLossEndpoint, {
 			data: payloadWithoutPosition,
@@ -92,7 +92,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloads.stopLoss.closeToDebt, position: 'string' },
+			data: { ...validPayloads, position: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -102,7 +102,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloads.stopLoss.closeToDebt, position: 1 },
+			data: { ...validPayloads, position: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -112,7 +112,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloads.stopLoss.closeToDebt, position: [] },
+			data: { ...validPayloads, position: [] },
 		});
 
 		const respJSON = await response.json();
@@ -122,7 +122,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloads.stopLoss.closeToDebt, position: null },
+			data: { ...validPayloads, position: null },
 		});
 
 		const respJSON = await response.json();
@@ -131,7 +131,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "collateral (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.stopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { collateral, ...positionWithoutCollateral } = position;
 
 		const response = await request.post(stopLossEndpoint, {
@@ -146,8 +146,8 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloads.stopLoss.closeToDebt,
-				position: { ...validPayloads.stopLoss.closeToDebt.position, collateral: 11 },
+				...validPayloads,
+				position: { ...validPayloads.position, collateral: 11 },
 			},
 		});
 
@@ -159,9 +159,9 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloads.stopLoss.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.stopLoss.closeToDebt.position,
+					...validPayloads.position,
 					collateral: '0xwrong',
 				},
 			},
@@ -173,7 +173,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "debt (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.stopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { debt, ...positionWithoutDebt } = position;
 
 		const response = await request.post(stopLossEndpoint, {
@@ -188,8 +188,8 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloads.stopLoss.closeToDebt,
-				position: { ...validPayloads.stopLoss.closeToDebt.position, debt: 11 },
+				...validPayloads,
+				position: { ...validPayloads.position, debt: 11 },
 			},
 		});
 
@@ -201,9 +201,9 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloads.stopLoss.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.stopLoss.closeToDebt.position,
+					...validPayloads.position,
 					debt: '0xwrong',
 				},
 			},
@@ -215,7 +215,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "triggerData"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.stopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
 		const response = await request.post(stopLossEndpoint, {
 			data: payloadWithoutTriggerData,
@@ -228,7 +228,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloads.stopLoss.closeToDebt, triggerData: 'string' },
+			data: { ...validPayloads, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -238,7 +238,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloads.stopLoss.closeToDebt, triggerData: 1 },
+			data: { ...validPayloads, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -248,7 +248,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloads.stopLoss.closeToDebt, triggerData: [] },
+			data: { ...validPayloads, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
@@ -258,7 +258,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 
 	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloads.stopLoss.closeToDebt, triggerData: null },
+			data: { ...validPayloads, triggerData: null },
 		});
 
 		const respJSON = await response.json();
@@ -267,7 +267,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "executionLTV (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.stopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
 		const response = await request.post(stopLossEndpoint, {
@@ -280,7 +280,7 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 	});
 
 	test('Add automation - Without "token (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads.stopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { token, ...triggerDataWithoutToken } = triggerData;
 
 		const response = await request.post(stopLossEndpoint, {

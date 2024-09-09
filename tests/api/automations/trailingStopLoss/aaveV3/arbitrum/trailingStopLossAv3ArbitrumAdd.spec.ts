@@ -7,7 +7,7 @@ import {
 
 const trailingStopLossEndpoint = '/api/triggers/42161/aave3/dma-trailing-stop-loss';
 
-const validPayloads = validPayloadsAaveV3Arbitrum;
+const validPayloads = validPayloadsAaveV3Arbitrum.trailingStopLoss.closeToDebt;
 
 const validResponse = trailingStopLossResponse({
 	dpm: '0xF0464Ef55705e5B5cb3b865d92BE5341fe85fBB8',
@@ -32,7 +32,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: validPayloads.trailingStopLoss.closeToDebt,
+			data: validPayloads,
 		});
 
 		const respJSON = await response.json();
@@ -43,9 +43,9 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloads.trailingStopLoss.closeToDebt,
+				...validPayloads,
 				triggerData: {
-					...validPayloads.trailingStopLoss.closeToDebt.triggerData,
+					...validPayloads.triggerData,
 					token: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
 				},
 			},
@@ -57,7 +57,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...payloadWithoutDpm } = validPayloads.trailingStopLoss.closeToDebt;
+		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: payloadWithoutDpm,
@@ -70,7 +70,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, dpm: 1 },
+			data: { ...validPayloads, dpm: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -80,7 +80,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, dpm: '0xwrong' },
+			data: { ...validPayloads, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
@@ -89,7 +89,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Add automation - Without "position"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.trailingStopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: payloadWithoutPosition,
@@ -102,7 +102,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, position: 'string' },
+			data: { ...validPayloads, position: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -112,7 +112,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, position: 1 },
+			data: { ...validPayloads, position: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -122,7 +122,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, position: [] },
+			data: { ...validPayloads, position: [] },
 		});
 
 		const respJSON = await response.json();
@@ -132,7 +132,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, position: null },
+			data: { ...validPayloads, position: null },
 		});
 
 		const respJSON = await response.json();
@@ -141,7 +141,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Add automation - Without "collateral (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.trailingStopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { collateral, ...positionWithoutCollateral } = position;
 
 		const response = await request.post(trailingStopLossEndpoint, {
@@ -156,9 +156,9 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloads.trailingStopLoss.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.trailingStopLoss.closeToDebt.position,
+					...validPayloads.position,
 					collateral: 11,
 				},
 			},
@@ -172,9 +172,9 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloads.trailingStopLoss.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.trailingStopLoss.closeToDebt.position,
+					...validPayloads.position,
 					collateral: '0xwrong',
 				},
 			},
@@ -186,7 +186,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Add automation - Without "debt (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads.trailingStopLoss.closeToDebt;
+		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { debt, ...positionWithoutDebt } = position;
 
 		const response = await request.post(trailingStopLossEndpoint, {
@@ -201,9 +201,9 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloads.trailingStopLoss.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.trailingStopLoss.closeToDebt.position,
+					...validPayloads.position,
 					debt: 11,
 				},
 			},
@@ -217,9 +217,9 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloads.trailingStopLoss.closeToDebt,
+				...validPayloads,
 				position: {
-					...validPayloads.trailingStopLoss.closeToDebt.position,
+					...validPayloads.position,
 					debt: '0xwrong',
 				},
 			},
@@ -231,8 +231,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Add automation - Without "triggerData"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.trailingStopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: payloadWithoutTriggerData,
@@ -245,7 +244,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, triggerData: 'string' },
+			data: { ...validPayloads, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -255,7 +254,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, triggerData: 1 },
+			data: { ...validPayloads, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
@@ -265,7 +264,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, triggerData: [] },
+			data: { ...validPayloads, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
@@ -275,7 +274,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 
 	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads.trailingStopLoss.closeToDebt, triggerData: null },
+			data: { ...validPayloads, triggerData: null },
 		});
 
 		const respJSON = await response.json();
@@ -284,8 +283,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Add automation - Without "trailingDistance (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.trailingStopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { trailingDistance, ...triggerDataWithoutTrailingDistance } = triggerData;
 
 		const response = await request.post(trailingStopLossEndpoint, {
@@ -298,8 +296,7 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 	});
 
 	test('Add automation - Without "token (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } =
-			validPayloads.trailingStopLoss.closeToDebt;
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { token, ...triggerDataWithoutToken } = triggerData;
 
 		const response = await request.post(trailingStopLossEndpoint, {
