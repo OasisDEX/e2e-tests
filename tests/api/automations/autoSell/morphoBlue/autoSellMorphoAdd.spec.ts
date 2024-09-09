@@ -345,4 +345,14 @@ test.describe('API tests - Auto-Sell - Morpho Blue - Ethereum', async () => {
 
 		expect(respJSON).toMatchObject(responses.wrongUseMinSellPrice);
 	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(autoSellEndpoint, {
+			data: { ...validPayloadsMorpho.autoSell.updateMinSellPrice, action: 'add' },
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.autoSellAlreadyExists);
+	});
 });

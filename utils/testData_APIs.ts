@@ -1434,6 +1434,22 @@ export const validPayloadsAaveV3Ethereum = {
 				useMinSellPrice: false,
 			},
 		},
+		updateMinSellPrice: {
+			dpm: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '5000',
+				maxBaseFee: '300',
+				minSellPrice: '25000000000',
+				targetLTV: '4500',
+				useMinSellPrice: true,
+			},
+		},
 	},
 	stopLoss: {
 		closeToDebt: {
@@ -1542,6 +1558,23 @@ export const validPayloadsMorpho = {
 				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
 				targetLTV: '9300',
 				useMinSellPrice: false,
+			},
+		},
+		updateMinSellPrice: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '8000',
+				maxBaseFee: '300',
+				minSellPrice: '400000000000',
+				poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
+				targetLTV: '7300',
+				useMinSellPrice: true,
 			},
 		},
 	},
@@ -2006,6 +2039,22 @@ export const validPayloadsAaveV3Optimism = {
 				maxBaseFee: '300',
 				targetLTV: '3900',
 				useMinSellPrice: false,
+			},
+		},
+		updateMinSellPrice: {
+			dpm: '0x429fd4661fe20ad9bade4efdf93e81f1c8560768',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '6000',
+				maxBaseFee: '300',
+				minSellPrice: '55000000000',
+				targetLTV: '5500',
+				useMinSellPrice: true,
 			},
 		},
 	},
