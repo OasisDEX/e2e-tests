@@ -1626,7 +1626,7 @@ export const validPayloadsMorpho = {
 			},
 			action: 'add',
 			triggerData: {
-				trailingDistance: '120000000000',
+				trailingDistance: '1230000000000',
 				poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
