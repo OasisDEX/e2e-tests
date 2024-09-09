@@ -346,4 +346,14 @@ test.describe('API tests - Auto-Sell - Aave V3 - Ethereum', async () => {
 
 		expect(respJSON).toMatchObject(responses.wrongUseMinSellPrice);
 	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(autoSellEndpoint, {
+			data: { ...validPayloadsAaveV3Ethereum.autoSell.updateMinSellPrice, action: 'add' },
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.autoSellAlreadyExists);
+	});
 });

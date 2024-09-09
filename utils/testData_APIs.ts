@@ -1434,6 +1434,22 @@ export const validPayloadsAaveV3Ethereum = {
 				useMinSellPrice: false,
 			},
 		},
+		updateMinSellPrice: {
+			dpm: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '5000',
+				maxBaseFee: '300',
+				minSellPrice: '25000000000',
+				targetLTV: '4500',
+				useMinSellPrice: true,
+			},
+		},
 	},
 	stopLoss: {
 		closeToDebt: {
