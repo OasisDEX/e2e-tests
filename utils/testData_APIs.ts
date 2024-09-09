@@ -1560,6 +1560,23 @@ export const validPayloadsMorpho = {
 				useMinSellPrice: false,
 			},
 		},
+		updateMinSellPrice: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '8000',
+				maxBaseFee: '300',
+				minSellPrice: '400000000000',
+				poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
+				targetLTV: '7300',
+				useMinSellPrice: true,
+			},
+		},
 	},
 	stopLoss: {
 		closeToDebt: {
