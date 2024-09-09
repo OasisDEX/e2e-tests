@@ -1,35 +1,35 @@
 import { expect, test } from '@playwright/test';
 import {
-	validPayloadsAaveV3Ethereum,
+	validPayloadsAaveV3Optimism,
 	responses,
 	autoSellWithoutMinSellPriceResponse,
 } from 'utils/testData_APIs';
 
-const autoSellEndpoint = '/api/triggers/1/aave3/auto-sell';
+const autoSellEndpoint = '/api/triggers/10/aave3/auto-sell';
 
-const validPayloads = validPayloadsAaveV3Ethereum.autoSell.updateMinSellPrice;
+const validPayloads = validPayloadsAaveV3Optimism.autoSell.updateMinSellPrice;
 
 const validResponse = autoSellWithoutMinSellPriceResponse({
-	dpm: '0xB42D970a6424583618D0013E0D6eBB039dd1c945',
+	dpm: '0x429Fd4661Fe20aD9BADE4EFdF93E81f1c8560768',
 	collateral: {
 		decimals: 18,
 		symbol: 'WETH',
-		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+		address: '0x4200000000000000000000000000000000000006',
 	},
 	debt: {
 		decimals: 18,
-		symbol: 'GHO',
-		address: '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f',
+		symbol: 'DAI',
+		address: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
 	},
 	hasStablecoinDebt: true,
-	executionLTV: '5000',
-	targetLTV: '4500',
-	targetLTVWithDeviation: ['4400', '4600'],
+	executionLTV: '6000',
+	targetLTV: '5500',
+	targetLTVWithDeviation: ['5400', '5600'],
 });
 
 test.describe('API tests - Auto-Sell - Aave V3 - Base', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-GHO/2737
+	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-DAI/384#protection
 
 	test('Update existing automation - minSellPrice - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
@@ -50,8 +50,8 @@ test.describe('API tests - Auto-Sell - Aave V3 - Base', async () => {
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					executionLTV: '6000',
-					minSellPrice: '20000000000',
+					executionLTV: '6100',
+					minSellPrice: '50000000000',
 				},
 			},
 		});
@@ -60,7 +60,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Base', async () => {
 
 		expect(respJSON).toMatchObject({
 			...validResponse,
-			simulation: { ...validResponse.simulation, executionLTV: '6000' },
+			simulation: { ...validResponse.simulation, executionLTV: '6100' },
 			warnings: [],
 		});
 	});
@@ -72,7 +72,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Base', async () => {
 				triggerData: {
 					...validPayloads.triggerData,
 					targetLTV: '4400',
-					minSellPrice: '20000000000',
+					minSellPrice: '50000000000',
 				},
 			},
 		});
@@ -144,7 +144,7 @@ test.describe('API tests - Auto-Sell - Aave V3 - Base', async () => {
 	test('Update non-existing automation', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice,
+				...validPayloadsAaveV3Optimism.autoSell.addWithoutMinSellPrice,
 				action: 'update',
 			},
 		});
