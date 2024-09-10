@@ -1382,6 +1382,28 @@ export const responses = {
 		],
 		warnings: [],
 	},
+	autoTakeProfitDoesNotExist: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Trigger does not exist',
+				code: 'trigger-does-not-exist',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
+	autoTakeProfitAlreadyExists: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Trigger already exists',
+				code: 'trigger-already-exists',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
 	stopLossDoesNotExist: {
 		message: 'Validation Errors',
 		errors: [
@@ -1981,6 +2003,28 @@ export const validPayloadsAaveV3Arbitrum = {
 				executionLTV: '1600',
 				executionPrice: '9000000000000',
 				withdrawToken: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0x5658e378371809d1aef8749ebad8d161cd90d33c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1000',
+				executionPrice: '600000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '8140',
+						token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
 				withdrawStep: '500',
 			},
 		},
