@@ -1530,7 +1530,7 @@ export const validPayloadsAaveV3Ethereum = {
 		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
 			protocol: 'aavev3',
 			position: {
@@ -1673,7 +1673,7 @@ export const validPayloadsMorpho = {
 		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
 			protocol: 'morphoblue',
 			position: {
@@ -1798,7 +1798,7 @@ export const validPayloadsSpark = {
 		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0x6be31243e0ffa8f42d1f64834eca2ab6dc8f7498',
 			protocol: 'sparkv3',
 			position: {
@@ -1947,7 +1947,7 @@ export const validPayloadsAaveV3Arbitrum = {
 		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
 			protocol: 'aavev3',
 			position: {
@@ -1966,6 +1966,21 @@ export const validPayloadsAaveV3Arbitrum = {
 					action: 'add',
 				},
 				withdrawToken: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInCollateral: {
+			dpm: '0x849c16eb8bdeca1cb1bc7e83f1b92b1926b427ca',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+				debt: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1600',
+				executionPrice: '9000000000000',
+				withdrawToken: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
 				withdrawStep: '500',
 			},
 		},
@@ -2096,7 +2111,7 @@ export const validPayloadsAaveV3Base = {
 		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
 			protocol: 'aavev3',
 			position: {
@@ -2245,7 +2260,7 @@ export const validPayloadsAaveV3Optimism = {
 		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
 			protocol: 'aavev3',
 			position: {

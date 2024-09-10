@@ -3,7 +3,7 @@ import { validPayloadsAaveV3Base, responses, autoTakeProfitResponse } from 'util
 
 const autoTakeProfit = '/api/triggers/8453/aave3/dma-partial-take-profit';
 
-const validPayloads = validPayloadsAaveV3Base.autoTakeProfit.closeToDebt;
+const validPayloads = validPayloadsAaveV3Base.autoTakeProfit.profitInDebt;
 
 const validResponse = autoTakeProfitResponse({
 	dpm: '0xf71dA0973121d949E1CEe818eb519BA364406309',

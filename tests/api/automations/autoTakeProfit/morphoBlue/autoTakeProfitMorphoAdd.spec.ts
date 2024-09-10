@@ -3,7 +3,7 @@ import { validPayloadsMorpho, responses, autoTakeProfitResponse } from 'utils/te
 
 const autoTakeProfit = '/api/triggers/1/morphoblue/dma-partial-take-profit';
 
-const validPayloads = validPayloadsMorpho.autoTakeProfit.closeToDebt;
+const validPayloads = validPayloadsMorpho.autoTakeProfit.profitInDebt;
 
 const validResponse = autoTakeProfitResponse({
 	dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',

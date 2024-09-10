@@ -3,7 +3,7 @@ import { validPayloadsSpark, responses, autoTakeProfitResponse } from 'utils/tes
 
 const autoTakeProfit = '/api/triggers/1/spark/dma-partial-take-profit';
 
-const validPayloads = validPayloadsSpark.autoTakeProfit.closeToDebt;
+const validPayloads = validPayloadsSpark.autoTakeProfit.profitInDebt;
 
 const validResponse = autoTakeProfitResponse({
 	dpm: '0x6be31243E0FfA8F42D1F64834ECa2AB6DC8F7498',

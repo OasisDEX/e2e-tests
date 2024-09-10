@@ -7,7 +7,7 @@ import {
 
 const autoTakeProfit = '/api/triggers/1/aave3/dma-partial-take-profit';
 
-const validPayloads = validPayloadsAaveV3Ethereum.autoTakeProfit.closeToDebt;
+const validPayloads = validPayloadsAaveV3Ethereum.autoTakeProfit.profitInDebt;
 
 const validResponse = autoTakeProfitResponse({
 	dpm: '0x16F2C35E062C14F57475dE0A466F7E08b03A9C7D',
