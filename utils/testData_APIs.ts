@@ -1710,6 +1710,22 @@ export const validPayloadsSpark = {
 				useMinSellPrice: false,
 			},
 		},
+		updateMinSellPrice: {
+			dpm: '0xb2f1349068c1cb6a596a22a3531b8062778c9da4',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '6000',
+				maxBaseFee: '300',
+				minSellPrice: '45000000000',
+				targetLTV: '5000',
+				useMinSellPrice: true,
+			},
+		},
 	},
 	stopLoss: {
 		closeToDebt: {
