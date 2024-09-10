@@ -1487,6 +1487,32 @@ export const validPayloadsAaveV3Ethereum = {
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0x6bb713b56e73a115164b4b56ea1f5a76640c4d19',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xae78736cd615f374d3085123a210448e74fc6393',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '6500',
+				token: '0xae78736cd615f374d3085123a210448e74fc6393',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0xb727aff37c480a0fdba8a6c97fc4fcf3a19f2ac7',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '7700',
+				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
