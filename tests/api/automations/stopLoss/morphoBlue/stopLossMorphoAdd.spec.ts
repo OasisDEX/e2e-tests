@@ -4,7 +4,7 @@ import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
 const stopLossEndpoint = '/api/triggers/1/morphoblue/dma-stop-loss';
 const validPayloads = validPayloadsMorpho.stopLoss.closeToDebt;
 
-test.describe('API tests - Stop-Loss - Morpho Blue - Ethereum', async () => {
+test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () => {
 	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467
 
@@ -290,5 +290,15 @@ test.describe('API tests - Stop-Loss - Morpho Blue - Ethereum', async () => {
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongToken);
+	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsMorpho.stopLoss.updateCloseToCollateral, action: 'add' },
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.stopLossAlreadyExist);
 	});
 });

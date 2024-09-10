@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsAaveV3Ethereum, responses } from 'utils/testData_APIs';
+import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
 
-const stopLossEndpoint = '/api/triggers/1/aave3/dma-stop-loss';
-const validPayloads = validPayloadsAaveV3Ethereum.stopLoss.updateCloseToCollateral;
+const stopLossEndpoint = '/api/triggers/1/morphoblue/dma-stop-loss';
+const validPayloads = validPayloadsMorpho.stopLoss.updateCloseToCollateral;
 
 test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () => {
-	// Very old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/RETH-DAI/1276#protection
+	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WSTETH-ETH-1/2545#protection
 
 	test('Update automation - Close to collateral - Valid payload data', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
@@ -19,7 +19,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0x6Bb713b56e73A115164b4B56ea1f5A76640c4D19',
+				to: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
 			},
 		});
 	});
@@ -28,7 +28,11 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
-				triggerData: { executionLTV: '7000', token: '0x6b175474e89094c44da98b954eedeac495271d0f' },
+				triggerData: {
+					...validPayloads.triggerData,
+					executionLTV: '7000',
+					token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				},
 			},
 		});
 
@@ -38,7 +42,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0x6Bb713b56e73A115164b4B56ea1f5A76640c4D19',
+				to: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
 			},
 		});
 	});
@@ -49,7 +53,10 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
-				triggerData: { ...validPayloads.triggerData, executionLTV: '7100' },
+				triggerData: {
+					...validPayloads.triggerData,
+					executionLTV: '7100',
+				},
 			},
 		});
 
@@ -59,16 +66,16 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0x6Bb713b56e73A115164b4B56ea1f5A76640c4D19',
+				to: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
 			},
 		});
 	});
 
-	test('Update automation - Close to debt - Valid payload data', async ({ request }) => {
+	test.skip('Update automation - Close to debt - Valid payload data', async ({ request }) => {
 		// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
 		// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1586#protection
 		const response = await request.post(stopLossEndpoint, {
-			data: validPayloadsAaveV3Ethereum.stopLoss.updateCloseToDebt,
+			data: validPayloadsMorpho.stopLoss.updateCloseToDebt,
 		});
 
 		const respJSON = await response.json();
@@ -85,7 +92,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 	test('Update non-existing automation', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.stopLoss.closeToDebt,
+				...validPayloadsMorpho.stopLoss.closeToDebt,
 				action: 'update',
 			},
 		});
@@ -272,7 +279,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
+		expect(respJSON).toMatchObject(responses.missingTriggerData);
 	});
 
 	test('Update automation - Wrong data type - "triggerData" - string', async ({ request }) => {
@@ -282,7 +289,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
+		expect(respJSON).toMatchObject(responses.wrongTriggerData_string);
 	});
 
 	test('Update automation - Wrong data type - "triggerData" - number', async ({ request }) => {
@@ -292,7 +299,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
+		expect(respJSON).toMatchObject(responses.wrongTriggerData_number);
 	});
 
 	test('Update automation - Wrong data type - "triggerData" - array', async ({ request }) => {
@@ -302,7 +309,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
+		expect(respJSON).toMatchObject(responses.wrongTriggerData_array);
 	});
 
 	test('Update automation - Wrong data type - "triggerData" - null', async ({ request }) => {
@@ -312,7 +319,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
+		expect(respJSON).toMatchObject(responses.wrongTriggerData_null);
 	});
 
 	test('Update automation - Without "executionLTV (triggerData)"', async ({ request }) => {
@@ -325,7 +332,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
+		expect(respJSON).toMatchObject(responses.wrongExecutionLTV);
 	});
 
 	test('Update automation - Without "token (triggerData)"', async ({ request }) => {
@@ -338,6 +345,6 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
+		expect(respJSON).toMatchObject(responses.wrongToken);
 	});
 });

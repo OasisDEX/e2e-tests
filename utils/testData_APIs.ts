@@ -1641,6 +1641,20 @@ export const validPayloadsMorpho = {
 				token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '9300',
+				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+				token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
@@ -2186,6 +2200,32 @@ export const validPayloadsAaveV3Optimism = {
 			triggerData: {
 				executionLTV: '7890',
 				token: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+			},
+		},
+		updateCloseToCollateral: {
+			dpm: '0xc4cff680a409ebbd1a73a57f1fac92065e2262d8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '7887',
+				token: '0x4200000000000000000000000000000000000006',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0xdfbeb6d4e160aafa441690f11a5f2257021882b1',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '7801',
+				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
 			},
 		},
 	},

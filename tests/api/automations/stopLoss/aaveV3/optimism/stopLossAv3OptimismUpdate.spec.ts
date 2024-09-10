@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsAaveV3Ethereum, responses } from 'utils/testData_APIs';
+import { validPayloadsAaveV3Optimism, responses } from 'utils/testData_APIs';
 
-const stopLossEndpoint = '/api/triggers/1/aave3/dma-stop-loss';
-const validPayloads = validPayloadsAaveV3Ethereum.stopLoss.updateCloseToCollateral;
+const stopLossEndpoint = '/api/triggers/10/aave3/dma-stop-loss';
+const validPayloads = validPayloadsAaveV3Optimism.stopLoss.updateCloseToCollateral;
 
-test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () => {
-	// Very old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/RETH-DAI/1276#protection
+test.describe('API tests - Stop-Loss - Update - Aave V3 - Optimism', async () => {
+	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC/355#protection
 
 	test('Update automation - Close to collateral - Valid payload data', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
@@ -19,7 +19,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0x6Bb713b56e73A115164b4B56ea1f5A76640c4D19',
+				to: '0xc4CfF680A409Ebbd1A73a57f1FaC92065e2262d8',
 			},
 		});
 	});
@@ -28,7 +28,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
-				triggerData: { executionLTV: '7000', token: '0x6b175474e89094c44da98b954eedeac495271d0f' },
+				triggerData: { executionLTV: '7000', token: '0x0b2c639c533813f4aa9d7837caf62653d097ff85' },
 			},
 		});
 
@@ -38,7 +38,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0x6Bb713b56e73A115164b4B56ea1f5A76640c4D19',
+				to: '0xc4CfF680A409Ebbd1A73a57f1FaC92065e2262d8',
 			},
 		});
 	});
@@ -49,7 +49,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
-				triggerData: { ...validPayloads.triggerData, executionLTV: '7100' },
+				triggerData: { ...validPayloads.triggerData, executionLTV: '6800' },
 			},
 		});
 
@@ -59,16 +59,16 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0x6Bb713b56e73A115164b4B56ea1f5A76640c4D19',
+				to: '0xc4CfF680A409Ebbd1A73a57f1FaC92065e2262d8',
 			},
 		});
 	});
 
 	test('Update automation - Close to debt - Valid payload data', async ({ request }) => {
-		// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
-		// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1586#protection
+		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+		// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-DAI/385#protection
 		const response = await request.post(stopLossEndpoint, {
-			data: validPayloadsAaveV3Ethereum.stopLoss.updateCloseToDebt,
+			data: validPayloadsAaveV3Optimism.stopLoss.updateCloseToDebt,
 		});
 
 		const respJSON = await response.json();
@@ -77,7 +77,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0xB727afF37C480a0FDbA8a6c97fC4FcF3A19f2ac7',
+				to: '0xDfBEb6d4E160aAfa441690f11a5F2257021882b1',
 			},
 		});
 	});
@@ -85,7 +85,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 	test('Update non-existing automation', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.stopLoss.closeToDebt,
+				...validPayloadsAaveV3Optimism.stopLoss.closeToDebt,
 				action: 'update',
 			},
 		});

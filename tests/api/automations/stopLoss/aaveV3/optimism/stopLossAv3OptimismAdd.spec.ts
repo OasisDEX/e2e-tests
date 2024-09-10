@@ -4,7 +4,7 @@ import { validPayloadsAaveV3Optimism, responses } from 'utils/testData_APIs';
 const stopLossEndpoint = '/api/triggers/10/aave3/dma-stop-loss';
 const validPayloads = validPayloadsAaveV3Optimism.stopLoss.closeToDebt;
 
-test.describe('API tests - Stop-Loss - Aave V3 - Optimism', async () => {
+test.describe('API tests - Stop-Loss - Add - Aave V3 - Optimism', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC.E/2
 
@@ -290,5 +290,15 @@ test.describe('API tests - Stop-Loss - Aave V3 - Optimism', async () => {
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
+	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsAaveV3Optimism.stopLoss.updateCloseToCollateral, action: 'add' },
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.stopLossAlreadyExist);
 	});
 });
