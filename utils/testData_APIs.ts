@@ -1763,6 +1763,54 @@ export const validPayloadsMorpho = {
 				withdrawStep: '500',
 			},
 		},
+		updateProfitInCollateral: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '3580',
+				executionPrice: '350000000',
+				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '9300',
+						token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+						poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1740',
+				executionPrice: '600000000000',
+				poolId: '0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '8490',
+						token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+						poolId: '0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+				withdrawStep: '500',
+			},
+		},
 	},
 };
 

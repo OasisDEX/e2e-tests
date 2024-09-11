@@ -3,27 +3,29 @@ import { validPayloadsMorpho, responses, autoTakeProfitResponse } from 'utils/te
 
 const autoTakeProfit = '/api/triggers/1/morphoblue/dma-partial-take-profit';
 
-const validPayloads = validPayloadsMorpho.autoTakeProfit.profitInDebt;
+const validPayloads = validPayloadsMorpho.autoTakeProfit.updateProfitInCollateral;
 
 const validResponse = autoTakeProfitResponse({
 	dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
 	collateral: {
-		decimals: 8,
-		symbol: 'WBTC',
-		address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+		decimals: 18,
+		symbol: 'wstETH',
+		address: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
 	},
 	debt: {
-		decimals: 6,
-		symbol: 'USDC',
-		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+		decimals: 18,
+		symbol: 'WETH',
+		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
 	},
 });
 
-test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', async () => {
-	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WBTC-USDC/2545
+test.describe('API tests - Auto Take Profit - Update - Morpho Blue - Ethereum', async () => {
+	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/2545#optimization
 
-	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
+	test('Update existing automation - Profit in collateral - Valid payload data', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: validPayloads,
 		});
@@ -33,20 +35,41 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
+	test('Update existing automation - Profit in debt - Valid payload data', async ({ request }) => {
+		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+		// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-USDC/2545#optimization
+
+		const response = await request.post(autoTakeProfit, {
+			data: validPayloadsMorpho.autoTakeProfit.updateProfitInDebt,
+		});
+
+		const respJSON = await response.json();
+
+		const debtResponse = autoTakeProfitResponse({
+			dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
+			collateral: {
+				decimals: 18,
+				symbol: 'wstETH',
+				address: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+			},
+			debt: {
+				decimals: 6,
+				symbol: 'USDC',
+				address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+			},
+		});
+
+		expect(respJSON).toMatchObject(debtResponse);
+	});
+
+	test('Update existing automation - executionPrice - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
 				...validPayloads,
-				stopLoss: {
-					...validPayloads.triggerData.stopLoss,
-					triggerData: {
-						...validPayloads.triggerData.stopLoss.triggerData,
-						token: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
-					},
-				},
 				triggerData: {
 					...validPayloads.triggerData,
-					withdrawToken: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+					withdrawToken: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+					executionPrice: '400000000',
 				},
 			},
 		});
@@ -56,7 +79,74 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Add automation - Without "dpm"', async ({ request }) => {
+	test('Update existing automation - executionLTV - Valid payload data', async ({ request }) => {
+		const response = await request.post(autoTakeProfit, {
+			data: {
+				...validPayloads,
+				triggerData: {
+					...validPayloads.triggerData,
+					withdrawToken: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+					executionLTV: '3200',
+				},
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(validResponse);
+	});
+
+	test('Update existing automation - withdrawStep - Valid payload data', async ({ request }) => {
+		const response = await request.post(autoTakeProfit, {
+			data: {
+				...validPayloads,
+				triggerData: {
+					...validPayloads.triggerData,
+					withdrawToken: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+					withdrawStep: '800',
+				},
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(validResponse);
+	});
+
+	test('Update existing automation - profit in collateral, executionPrice, executionLTV and withdrawStep - Valid payload data', async ({
+		request,
+	}) => {
+		const response = await request.post(autoTakeProfit, {
+			data: {
+				...validPayloads,
+				triggerData: {
+					...validPayloads.triggerData,
+					executionPrice: '450000000',
+					executionLTV: '3100',
+					withdrawStep: '600',
+				},
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(validResponse);
+	});
+
+	test('Update non-existing automation', async ({ request }) => {
+		const response = await request.post(autoTakeProfit, {
+			data: {
+				...validPayloadsMorpho.autoTakeProfit.profitInDebt,
+				action: 'update',
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.autoTakeProfitDoesNotExist);
+	});
+
+	test('Update existing automation - Without "dpm"', async ({ request }) => {
 		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
 		const response = await request.post(autoTakeProfit, {
@@ -68,7 +158,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: { ...validPayloads, dpm: 1 },
 		});
@@ -78,7 +168,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Update existing automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: { ...validPayloads, dpm: '0xwrong' },
 		});
@@ -88,7 +178,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Without "position"', async ({ request }) => {
+	test('Update existing automation - Without "position"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 
 		const response = await request.post(autoTakeProfit, {
@@ -100,7 +190,9 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.missingPosition);
 	});
 
-	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "position" - string', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: { ...validPayloads, position: 'string' },
 		});
@@ -110,7 +202,9 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongPosition_string);
 	});
 
-	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "position" - number', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: { ...validPayloads, position: 1 },
 		});
@@ -120,7 +214,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongPosition_number);
 	});
 
-	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: { ...validPayloads, position: [] },
 		});
@@ -130,7 +224,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongPosition_array);
 	});
 
-	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: { ...validPayloads, position: null },
 		});
@@ -140,7 +234,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongPosition_null);
 	});
 
-	test('Add automation - Without "collateral (position)"', async ({ request }) => {
+	test('Update existing automation - Without "collateral (position)"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { collateral, ...positionWithoutCollateral } = position;
 
@@ -153,7 +247,9 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "collateral (position)"', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
 				...validPayloads,
@@ -169,7 +265,9 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
+	test('Update existing automation - Wrong value - "collateral (position)"', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
 				...validPayloads,
@@ -185,7 +283,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Without "debt (position)"', async ({ request }) => {
+	test('Update existing automation - Without "debt (position)"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { debt, ...positionWithoutDebt } = position;
 
@@ -198,7 +296,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
 				...validPayloads,
@@ -211,7 +309,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
+	test('Update existing automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
 				...validPayloads,
@@ -227,7 +325,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Without "triggerData"', async ({ request }) => {
+	test('Update existing automation - Without "triggerData"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
 		const response = await request.post(autoTakeProfit, {
@@ -239,7 +337,9 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.missingTriggerData);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "triggerData" - string', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: { ...validPayloads, triggerData: 'string' },
 		});
@@ -249,7 +349,9 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_string);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "triggerData" - number', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: { ...validPayloads, triggerData: 1 },
 		});
@@ -259,7 +361,9 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_number);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "triggerData" - array', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: { ...validPayloads, triggerData: [] },
 		});
@@ -269,7 +373,9 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_array);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "triggerData" - null', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: { ...validPayloads, triggerData: null },
 		});
@@ -279,7 +385,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_null);
 	});
 
-	test('Add automation - Without "executionLTV (triggerData)"', async ({ request }) => {
+	test('Update existing automation - Without "executionLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
@@ -292,7 +398,9 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongExecutionLTV);
 	});
 
-	test('Add automation - Without "executionPrice (triggerData)"', async ({ request }) => {
+	test('Update existing automation - Without "executionPrice (triggerData)"', async ({
+		request,
+	}) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { executionPrice, ...triggerDataWithoutExecutionPrice } = triggerData;
 
@@ -305,7 +413,9 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongExecutionPrice);
 	});
 
-	test('Add automation - Without "withdrawToken (triggerData)"', async ({ request }) => {
+	test('Update existing automation - Without "withdrawToken (triggerData)"', async ({
+		request,
+	}) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { withdrawToken, ...triggerDataWithoutWithdrawToken } = triggerData;
 
@@ -318,7 +428,7 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		expect(respJSON).toMatchObject(responses.wrongWithdrawToken);
 	});
 
-	test('Add automation - Without "withdrawStep (triggerData)"', async ({ request }) => {
+	test('Update existing automation - Without "withdrawStep (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { withdrawStep, ...triggerDataWithoutWithdrawStep } = triggerData;
 
@@ -329,39 +439,6 @@ test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', asy
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongWithdrawStep);
-	});
-
-	test('Add automation - Without "stopLoss > triggerData (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { stopLoss, ...triggerDataWithoutStopLoss } = triggerData;
-		const { triggerData: stopLossTriggerData, ...triggerDataStopLossWithoutTriggerData } = stopLoss;
-
-		const response = await request.post(autoTakeProfit, {
-			data: {
-				...payloadWithoutTriggerData,
-				triggerData: {
-					...triggerDataWithoutStopLoss,
-					stopLoss: triggerDataStopLossWithoutTriggerData,
-				},
-			},
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongStopLossTriggerDataMorpho);
-	});
-
-	test('Add automation - Trigger already exists', async ({ request }) => {
-		const response = await request.post(autoTakeProfit, {
-			data: {
-				...validPayloadsMorpho.autoTakeProfit.updateProfitInCollateral,
-				action: 'add',
-			},
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.autoTakeProfitAlreadyExists);
 	});
 
 	// TO BE DONE - More negative scenarios for missing attribues in 'triggerData > StopLoss'
