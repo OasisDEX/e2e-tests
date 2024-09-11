@@ -71,9 +71,9 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 		});
 	});
 
-	test.skip('Update automation - Close to debt - Valid payload data', async ({ request }) => {
-		// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
-		// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1586#protection
+	test('Update automation - Close to debt - Valid payload data', async ({ request }) => {
+		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+		// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-USDC/2545#protection
 		const response = await request.post(stopLossEndpoint, {
 			data: validPayloadsMorpho.stopLoss.updateCloseToDebt,
 		});
@@ -84,7 +84,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Ethereum', async () =>
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0xB727afF37C480a0FDbA8a6c97fC4FcF3A19f2ac7',
+				to: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
 			},
 		});
 	});

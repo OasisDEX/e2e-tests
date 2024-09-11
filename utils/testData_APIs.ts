@@ -1721,6 +1721,20 @@ export const validPayloadsMorpho = {
 				token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
 			},
 		},
+		updateCloseToDebt: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '8490',
+				poolId: '0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc',
+				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
