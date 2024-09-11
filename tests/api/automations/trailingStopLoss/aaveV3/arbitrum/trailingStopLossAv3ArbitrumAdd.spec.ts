@@ -26,7 +26,7 @@ const validResponse = trailingStopLossResponse({
 	hasStablecoinDebt: true,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () => {
+test.describe('API tests - Trailing Stop-Loss - Add - Aave V3 - Arbitrum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/ETH-DAI/1
 
@@ -306,5 +306,16 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Arbitrum', async () =>
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongToken);
+	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(trailingStopLossEndpoint, {
+			data: {
+				...validPayloadsAaveV3Arbitrum.trailingStopLoss.updateCloseToCollateral,
+				action: 'add',
+			},
+		});
+
+		const respJSON = await response.json();
 	});
 });

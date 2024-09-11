@@ -967,10 +967,15 @@ export const trailingStopLossResponse = ({
 		symbol: string;
 		address: string;
 		oraclesAddress: string;
-		usd_cOptimism?: boolean;
+		usdcVariant?: 'usdceOptimism' | 'usdbcBase';
 	};
 	hasStablecoinDebt: boolean;
 }) => {
+	const usdcVariantId = {
+		usdceOptimism: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+		usdbcBase: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+	};
+
 	const response = {
 		simulation: {
 			latestPrice: {
@@ -986,10 +991,8 @@ export const trailingStopLossResponse = ({
 					],
 				},
 				denomination: {
-					id: debt.usd_cOptimism
-						? '0x0b2c639c533813f4aa9d7837caf62653d097ff85'
-						: debt.address.toLocaleLowerCase(),
-					symbol: debt.symbol,
+					id: debt.usdcVariant ? usdcVariantId[debt.usdcVariant] : debt.address.toLocaleLowerCase(),
+					symbol: debt.usdcVariant && debt.usdcVariant === 'usdbcBase' ? 'USDC' : debt.symbol,
 					oraclesToken: [
 						{
 							address: debt.oraclesAddress,
@@ -1382,6 +1385,28 @@ export const responses = {
 		],
 		warnings: [],
 	},
+	autoTakeProfitDoesNotExist: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Trigger does not exist',
+				code: 'trigger-does-not-exist',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
+	autoTakeProfitAlreadyExists: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				message: 'Trigger already exists',
+				code: 'trigger-already-exists',
+				path: [],
+			},
+		],
+		warnings: [],
+	},
 	stopLossDoesNotExist: {
 		message: 'Validation Errors',
 		errors: [
@@ -1487,6 +1512,32 @@ export const validPayloadsAaveV3Ethereum = {
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0x6bb713b56e73a115164b4b56ea1f5a76640c4d19',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xae78736cd615f374d3085123a210448e74fc6393',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '6500',
+				token: '0xae78736cd615f374d3085123a210448e74fc6393',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0xb727aff37c480a0fdba8a6c97fc4fcf3a19f2ac7',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '7700',
+				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
@@ -1504,7 +1555,7 @@ export const validPayloadsAaveV3Ethereum = {
 		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
 			protocol: 'aavev3',
 			position: {
@@ -1521,6 +1572,50 @@ export const validPayloadsAaveV3Ethereum = {
 						token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 					},
 					action: 'add',
+				},
+				withdrawToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInCollateral: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '3010',
+				executionPrice: '700000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7740',
+						token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0xb727aff37c480a0fdba8a6c97fc4fcf3a19f2ac7',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '2220',
+				executionPrice: '514130825283',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7700',
+						token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+					},
+					action: 'update',
 				},
 				withdrawToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 				withdrawStep: '500',
@@ -1615,6 +1710,34 @@ export const validPayloadsMorpho = {
 				token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '9300',
+				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+				token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '8490',
+				poolId: '0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc',
+				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
@@ -1633,7 +1756,7 @@ export const validPayloadsMorpho = {
 		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
 			protocol: 'morphoblue',
 			position: {
@@ -1652,6 +1775,54 @@ export const validPayloadsMorpho = {
 						poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
 					},
 					action: 'add',
+				},
+				withdrawToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInCollateral: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '3580',
+				executionPrice: '350000000',
+				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '9300',
+						token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+						poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1740',
+				executionPrice: '600000000000',
+				poolId: '0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '8490',
+						token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+						poolId: '0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc',
+					},
+					action: 'update',
 				},
 				withdrawToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 				withdrawStep: '500',
@@ -1741,6 +1912,32 @@ export const validPayloadsSpark = {
 				token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0x9ae9e1fcccb4934f29565121f9982a43a00f53ec',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '7760',
+				token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0xce049ff57d4146d5be3a55e60ef4523bb70798b6',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '7790',
+				token: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
@@ -1758,7 +1955,7 @@ export const validPayloadsSpark = {
 		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0x6be31243e0ffa8f42d1f64834eca2ab6dc8f7498',
 			protocol: 'sparkv3',
 			position: {
@@ -1777,6 +1974,50 @@ export const validPayloadsSpark = {
 					action: 'add',
 				},
 				withdrawToken: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInCollateral: {
+			dpm: '0xce049ff57d4146d5be3a55e60ef4523bb70798b6',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '2000',
+				executionPrice: '650000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7790',
+						token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '2000',
+				executionPrice: '600000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7790',
+						token: '0x6b175474e89094c44da98b954eedeac495271d0f',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
 				withdrawStep: '500',
 			},
 		},
@@ -1905,9 +2146,35 @@ export const validPayloadsAaveV3Arbitrum = {
 				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0x9a8999d48499743b5ca481210dc568018a3b417a',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '3670000000000',
+				token: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0x849c16eb8bdeca1cb1bc7e83f1b92b1926b427ca',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+				debt: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '4080000000000',
+				token: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+			},
+		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
 			protocol: 'aavev3',
 			position: {
@@ -1924,6 +2191,43 @@ export const validPayloadsAaveV3Arbitrum = {
 						token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
 					},
 					action: 'add',
+				},
+				withdrawToken: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInCollateral: {
+			dpm: '0x849c16eb8bdeca1cb1bc7e83f1b92b1926b427ca',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+				debt: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1600',
+				executionPrice: '9000000000000',
+				withdrawToken: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0x5658e378371809d1aef8749ebad8d161cd90d33c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1000',
+				executionPrice: '600000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '8140',
+						token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+					},
+					action: 'update',
 				},
 				withdrawToken: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
 				withdrawStep: '500',
@@ -2054,9 +2358,35 @@ export const validPayloadsAaveV3Base = {
 				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0xe70c8069627a9c7933362e25f033ec0771f0f06e',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '152000000000',
+				token: '0x4200000000000000000000000000000000000006',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0xae294a81d5015d8de3ec55973f207857bd6b1fb4',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '144000000000',
+				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0xf71da0973121d949e1cee818eb519ba364406309',
 			protocol: 'aavev3',
 			position: {
@@ -2073,6 +2403,50 @@ export const validPayloadsAaveV3Base = {
 						token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
 					},
 					action: 'add',
+				},
+				withdrawToken: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInCollateral: {
+			dpm: '0xb3287c2890ed7ea99cb4d5d899434bb64997a609',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '5400',
+				executionPrice: '600000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7855',
+						token: '0x4200000000000000000000000000000000000006',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x4200000000000000000000000000000000000006',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0x20e74013d82fea853afca3b4cb1fd9c2b105f55a',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1400',
+				executionPrice: '600000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7721',
+						token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+					},
+					action: 'update',
 				},
 				withdrawToken: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
 				withdrawStep: '500',
@@ -2162,6 +2536,32 @@ export const validPayloadsAaveV3Optimism = {
 				token: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0xc4cff680a409ebbd1a73a57f1fac92065e2262d8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '7887',
+				token: '0x4200000000000000000000000000000000000006',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0xdfbeb6d4e160aafa441690f11a5f2257021882b1',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '7801',
+				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
@@ -2177,9 +2577,22 @@ export const validPayloadsAaveV3Optimism = {
 				token: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0xc213d697c81e15a2422701c653dc4b9bcad47530',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '151000000000',
+				token: '0x4200000000000000000000000000000000000006',
+			},
+		},
 	},
 	autoTakeProfit: {
-		closeToDebt: {
+		profitInDebt: {
 			dpm: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
 			protocol: 'aavev3',
 			position: {
@@ -2198,6 +2611,50 @@ export const validPayloadsAaveV3Optimism = {
 					action: 'add',
 				},
 				withdrawToken: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInCollateral: {
+			dpm: '0xc4cff680a409ebbd1a73a57f1fac92065e2262d8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '800',
+				executionPrice: '860000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7887',
+						token: '0x4200000000000000000000000000000000000006',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x4200000000000000000000000000000000000006',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0xdfbeb6d4e160aafa441690f11a5f2257021882b1',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1500',
+				executionPrice: '700000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7801',
+						token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
 				withdrawStep: '500',
 			},
 		},

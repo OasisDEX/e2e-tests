@@ -3,7 +3,7 @@ import { validPayloadsMorpho, responses, autoTakeProfitResponse } from 'utils/te
 
 const autoTakeProfit = '/api/triggers/1/morphoblue/dma-partial-take-profit';
 
-const validPayloads = validPayloadsMorpho.autoTakeProfit.closeToDebt;
+const validPayloads = validPayloadsMorpho.autoTakeProfit.profitInDebt;
 
 const validResponse = autoTakeProfitResponse({
 	dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
@@ -19,7 +19,7 @@ const validResponse = autoTakeProfitResponse({
 	},
 });
 
-test.describe('API tests - Auto Take Profit - Morpho Blue - Ethereum', async () => {
+test.describe('API tests - Auto Take Profit - Add - Morpho Blue - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WBTC-USDC/2545
 
@@ -349,6 +349,19 @@ test.describe('API tests - Auto Take Profit - Morpho Blue - Ethereum', async () 
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongStopLossTriggerDataMorpho);
+	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(autoTakeProfit, {
+			data: {
+				...validPayloadsMorpho.autoTakeProfit.updateProfitInCollateral,
+				action: 'add',
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.autoTakeProfitAlreadyExists);
 	});
 
 	// TO BE DONE - More negative scenarios for missing attribues in 'triggerData > StopLoss'

@@ -1,14 +1,14 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
+import { validPayloadsAaveV3Optimism, responses } from 'utils/testData_APIs';
 
-const stopLossEndpoint = '/api/triggers/1/morphoblue/dma-stop-loss';
-const validPayloads = validPayloadsMorpho.stopLoss.closeToDebt;
+const stopLossEndpoint = '/api/triggers/10/aave3/dma-stop-loss';
+const validPayloads = validPayloadsAaveV3Optimism.stopLoss.updateCloseToCollateral;
 
-test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () => {
-	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467
+test.describe('API tests - Stop-Loss - Update - Aave V3 - Optimism', async () => {
+	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC/355#protection
 
-	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
+	test('Update automation - Close to collateral - Valid payload data', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: validPayloads,
 		});
@@ -19,19 +19,16 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0x302a28D7968824f386F278a72368856BC4d82BA4',
+				to: '0xc4CfF680A409Ebbd1A73a57f1FaC92065e2262d8',
 			},
 		});
 	});
 
-	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
+	test('Update automation - executionLTV - Valid payload data', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
-				triggerData: {
-					...validPayloads.triggerData,
-					token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
-				},
+				triggerData: { executionLTV: '7000', token: '0x0b2c639c533813f4aa9d7837caf62653d097ff85' },
 			},
 		});
 
@@ -41,12 +38,64 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 			...responses.stopLoss,
 			transaction: {
 				...responses.stopLoss.transaction,
-				to: '0x302a28D7968824f386F278a72368856BC4d82BA4',
+				to: '0xc4CfF680A409Ebbd1A73a57f1FaC92065e2262d8',
 			},
 		});
 	});
 
-	test('Add automation - Without "dpm"', async ({ request }) => {
+	test('Update automation - Close to collateral & executionLTV - Valid payload data', async ({
+		request,
+	}) => {
+		const response = await request.post(stopLossEndpoint, {
+			data: {
+				...validPayloads,
+				triggerData: { ...validPayloads.triggerData, executionLTV: '6800' },
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject({
+			...responses.stopLoss,
+			transaction: {
+				...responses.stopLoss.transaction,
+				to: '0xc4CfF680A409Ebbd1A73a57f1FaC92065e2262d8',
+			},
+		});
+	});
+
+	test('Update automation - Close to debt - Valid payload data', async ({ request }) => {
+		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+		// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-DAI/385#protection
+		const response = await request.post(stopLossEndpoint, {
+			data: validPayloadsAaveV3Optimism.stopLoss.updateCloseToDebt,
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject({
+			...responses.stopLoss,
+			transaction: {
+				...responses.stopLoss.transaction,
+				to: '0xDfBEb6d4E160aAfa441690f11a5F2257021882b1',
+			},
+		});
+	});
+
+	test('Update non-existing automation', async ({ request }) => {
+		const response = await request.post(stopLossEndpoint, {
+			data: {
+				...validPayloadsAaveV3Optimism.stopLoss.closeToDebt,
+				action: 'update',
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.stopLossDoesNotExist);
+	});
+
+	test('Update automation - Without "dpm"', async ({ request }) => {
 		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
 		const response = await request.post(stopLossEndpoint, {
@@ -58,7 +107,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Update automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, dpm: 1 },
 		});
@@ -68,7 +117,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Update automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, dpm: '0xwrong' },
 		});
@@ -78,7 +127,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Without "position"', async ({ request }) => {
+	test('Update automation - Without "position"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 
 		const response = await request.post(stopLossEndpoint, {
@@ -90,7 +139,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.missingPosition);
 	});
 
-	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
+	test('Update automation - Wrong data type - "position" - string', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, position: 'string' },
 		});
@@ -100,7 +149,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongPosition_string);
 	});
 
-	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
+	test('Update automation - Wrong data type - "position" - number', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, position: 1 },
 		});
@@ -110,7 +159,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongPosition_number);
 	});
 
-	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
+	test('Update automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, position: [] },
 		});
@@ -120,7 +169,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongPosition_array);
 	});
 
-	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
+	test('Update automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, position: null },
 		});
@@ -130,7 +179,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongPosition_null);
 	});
 
-	test('Add automation - Without "collateral (position)"', async ({ request }) => {
+	test('Update automation - Without "collateral (position)"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { collateral, ...positionWithoutCollateral } = position;
 
@@ -143,7 +192,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
+	test('Update automation - Wrong data type - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
@@ -156,7 +205,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
+	test('Update automation - Wrong value - "collateral (position)"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
@@ -172,7 +221,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Without "debt (position)"', async ({ request }) => {
+	test('Update automation - Without "debt (position)"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { debt, ...positionWithoutDebt } = position;
 
@@ -185,7 +234,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
+	test('Update automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
@@ -198,7 +247,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
+	test('Update automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
@@ -214,7 +263,7 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Without "triggerData"', async ({ request }) => {
+	test('Update automation - Without "triggerData"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
 		const response = await request.post(stopLossEndpoint, {
@@ -223,50 +272,50 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.missingTriggerData);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
+	test('Update automation - Wrong data type - "triggerData" - string', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_string);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
+	test('Update automation - Wrong data type - "triggerData" - number', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, triggerData: 1 },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_number);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
+	test('Update automation - Wrong data type - "triggerData" - array', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, triggerData: [] },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_array);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
+	test('Update automation - Wrong data type - "triggerData" - null', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloads, triggerData: null },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_null);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
-	test('Add automation - Without "executionLTV (triggerData)"', async ({ request }) => {
+	test('Update automation - Without "executionLTV (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
 
@@ -276,10 +325,10 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongExecutionLTV);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
-	test('Add automation - Without "token (triggerData)"', async ({ request }) => {
+	test('Update automation - Without "token (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { token, ...triggerDataWithoutToken } = triggerData;
 
@@ -289,16 +338,6 @@ test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () =
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongToken);
-	});
-
-	test('Add automation - Trigger already exists', async ({ request }) => {
-		const response = await request.post(stopLossEndpoint, {
-			data: { ...validPayloadsMorpho.stopLoss.updateCloseToCollateral, action: 'add' },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.stopLossAlreadyExist);
+		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 });

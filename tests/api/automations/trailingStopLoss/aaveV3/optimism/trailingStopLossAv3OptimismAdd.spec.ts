@@ -22,12 +22,12 @@ const validResponse = trailingStopLossResponse({
 		symbol: 'USDC',
 		address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
 		oraclesAddress: '0x16a9fa2fda030272ce99b29cf780dfa30361e0f3',
-		usd_cOptimism: true,
+		usdcVariant: 'usdceOptimism',
 	},
 	hasStablecoinDebt: true,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Aave V3 - Optimism', async () => {
+test.describe('API tests - Trailing Stop-Loss - Add - Aave V3 - Optimism', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC.E/2
 
@@ -307,5 +307,16 @@ test.describe('API tests - Trailing Stop-Loss - Aave V3 - Optimism', async () =>
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongToken);
+	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(trailingStopLossEndpoint, {
+			data: {
+				...validPayloadsAaveV3Optimism.trailingStopLoss.updateCloseToCollateral,
+				action: 'add',
+			},
+		});
+
+		const respJSON = await response.json();
 	});
 });

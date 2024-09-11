@@ -3,7 +3,7 @@ import { validPayloadsAaveV3Base, responses, autoTakeProfitResponse } from 'util
 
 const autoTakeProfit = '/api/triggers/8453/aave3/dma-partial-take-profit';
 
-const validPayloads = validPayloadsAaveV3Base.autoTakeProfit.closeToDebt;
+const validPayloads = validPayloadsAaveV3Base.autoTakeProfit.profitInDebt;
 
 const validResponse = autoTakeProfitResponse({
 	dpm: '0xf71dA0973121d949E1CEe818eb519BA364406309',
@@ -19,7 +19,7 @@ const validResponse = autoTakeProfitResponse({
 	},
 });
 
-test.describe('API tests - Auto Take Profit - Aave V3 - Base', async () => {
+test.describe('API tests - Auto Take Profit - Add - Aave V3 - Base', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDC/435
 
@@ -349,6 +349,19 @@ test.describe('API tests - Auto Take Profit - Aave V3 - Base', async () => {
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongStopLossTriggerData);
+	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(autoTakeProfit, {
+			data: {
+				...validPayloadsAaveV3Base.autoTakeProfit.updateProfitInCollateral,
+				action: 'add',
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.autoTakeProfitAlreadyExists);
 	});
 
 	// TO BE DONE - More negative scenarios for missing attribues in 'triggerData > StopLoss'

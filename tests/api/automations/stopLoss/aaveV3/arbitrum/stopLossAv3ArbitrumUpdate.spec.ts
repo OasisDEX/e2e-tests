@@ -49,7 +49,7 @@ test.describe('API tests - Stop-Loss - Update - Aave V3 - Arbitrum', async () =>
 		const response = await request.post(stopLossEndpoint, {
 			data: {
 				...validPayloads,
-				triggerData: { executionLTV: '7100', token: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1' },
+				triggerData: { ...validPayloads.triggerData, executionLTV: '7100' },
 			},
 		});
 

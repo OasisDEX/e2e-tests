@@ -4,7 +4,7 @@ import { validPayloadsSpark, responses } from 'utils/testData_APIs';
 const stopLossEndpoint = '/api/triggers/1/spark/dma-stop-loss';
 const validPayloads = validPayloadsSpark.stopLoss.closeToDebt;
 
-test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
+test.describe('API tests - Stop-Loss - Add - Spark - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/ethereum/spark/earn/WSTETH-ETH/1417
 
@@ -290,5 +290,15 @@ test.describe('API tests - Stop-Loss - Spark - Ethereum', async () => {
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
+	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(stopLossEndpoint, {
+			data: { ...validPayloadsSpark.stopLoss.updateCloseToCollateral, action: 'add' },
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.stopLossAlreadyExist);
 	});
 });

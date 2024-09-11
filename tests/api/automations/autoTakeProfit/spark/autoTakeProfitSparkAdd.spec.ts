@@ -1,31 +1,27 @@
 import { expect, test } from '@playwright/test';
-import {
-	validPayloadsAaveV3Optimism,
-	responses,
-	autoTakeProfitResponse,
-} from 'utils/testData_APIs';
+import { validPayloadsSpark, responses, autoTakeProfitResponse } from 'utils/testData_APIs';
 
-const autoTakeProfit = '/api/triggers/10/aave3/dma-partial-take-profit';
+const autoTakeProfit = '/api/triggers/1/spark/dma-partial-take-profit';
 
-const validPayloads = validPayloadsAaveV3Optimism.autoTakeProfit.profitInDebt;
+const validPayloads = validPayloadsSpark.autoTakeProfit.profitInDebt;
 
 const validResponse = autoTakeProfitResponse({
-	dpm: '0x2047E97451955c98bF8378f6ac2f04D95578990C',
+	dpm: '0x6be31243E0FfA8F42D1F64834ECa2AB6DC8F7498',
 	collateral: {
 		decimals: 18,
-		symbol: 'WETH',
-		address: '0x4200000000000000000000000000000000000006',
+		symbol: 'wstETH',
+		address: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
 	},
 	debt: {
-		decimals: 6,
-		symbol: 'USDC',
-		address: '0x7F5c764cBc14f9669B88837ca1490cCa17c31607',
+		decimals: 18,
+		symbol: 'WETH',
+		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
 	},
 });
 
-test.describe('API tests - Auto Take Profit - Add - Aave V3 - Optimism', async () => {
+test.describe('API tests - Auto Take Profit - Add - Spark - Ethereum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC.E/2
+	// Position link: https://staging.summer.fi/ethereum/spark/earn/WSTETH-ETH/1417
 
 	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
@@ -45,12 +41,12 @@ test.describe('API tests - Auto Take Profit - Add - Aave V3 - Optimism', async (
 					...validPayloads.triggerData.stopLoss,
 					triggerData: {
 						...validPayloads.triggerData.stopLoss.triggerData,
-						token: '0x4200000000000000000000000000000000000006',
+						token: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 					},
 				},
 				triggerData: {
 					...validPayloads.triggerData,
-					withdrawToken: '0x4200000000000000000000000000000000000006',
+					withdrawToken: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 				},
 			},
 		});
@@ -358,7 +354,7 @@ test.describe('API tests - Auto Take Profit - Add - Aave V3 - Optimism', async (
 	test('Add automation - Trigger already exists', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloadsAaveV3Optimism.autoTakeProfit.updateProfitInCollateral,
+				...validPayloadsSpark.autoTakeProfit.updateProfitInCollateral,
 				action: 'add',
 			},
 		});
@@ -367,5 +363,6 @@ test.describe('API tests - Auto Take Profit - Add - Aave V3 - Optimism', async (
 
 		expect(respJSON).toMatchObject(responses.autoTakeProfitAlreadyExists);
 	});
+
 	// TO BE DONE - More negative scenarios for missing attribues in 'triggerData > StopLoss'
 });

@@ -344,4 +344,14 @@ test.describe('API tests - Auto-Sell - Spark - Ethereum', async () => {
 
 		expect(respJSON).toMatchObject(responses.wrongUseMinSellPrice);
 	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(autoSellEndpoint, {
+			data: { ...validPayloadsSpark.autoSell.updateMinSellPrice, action: 'add' },
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.autoSellAlreadyExists);
+	});
 });
