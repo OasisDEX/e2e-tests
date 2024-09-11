@@ -2177,6 +2177,50 @@ export const validPayloadsAaveV3Base = {
 				withdrawStep: '500',
 			},
 		},
+		updateProfitInCollateral: {
+			dpm: '0xb3287c2890ed7ea99cb4d5d899434bb64997a609',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '5400',
+				executionPrice: '600000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7855',
+						token: '0x4200000000000000000000000000000000000006',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x4200000000000000000000000000000000000006',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0x20e74013d82fea853afca3b4cb1fd9c2b105f55a',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '1400',
+				executionPrice: '600000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7721',
+						token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+				withdrawStep: '500',
+			},
+		},
 	},
 };
 
@@ -2323,6 +2367,28 @@ export const validPayloadsAaveV3Optimism = {
 					action: 'add',
 				},
 				withdrawToken: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInCollateral: {
+			dpm: '0xc4cff680a409ebbd1a73a57f1fac92065e2262d8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '800',
+				executionPrice: '860000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7887',
+						token: '0x4200000000000000000000000000000000000006',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x4200000000000000000000000000000000000006',
 				withdrawStep: '500',
 			},
 		},

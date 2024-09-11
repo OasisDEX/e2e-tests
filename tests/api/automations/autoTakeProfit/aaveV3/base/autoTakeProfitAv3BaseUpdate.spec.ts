@@ -1,31 +1,27 @@
 import { expect, test } from '@playwright/test';
-import {
-	validPayloadsAaveV3Arbitrum,
-	responses,
-	autoTakeProfitResponse,
-} from 'utils/testData_APIs';
+import { validPayloadsAaveV3Base, responses, autoTakeProfitResponse } from 'utils/testData_APIs';
 
-const autoTakeProfit = '/api/triggers/42161/aave3/dma-partial-take-profit';
+const autoTakeProfit = '/api/triggers/8453/aave3/dma-partial-take-profit';
 
-const validPayloads = validPayloadsAaveV3Arbitrum.autoTakeProfit.updateProfitInCollateral;
+const validPayloads = validPayloadsAaveV3Base.autoTakeProfit.updateProfitInCollateral;
 
 const validResponse = autoTakeProfitResponse({
-	dpm: '0x849c16eb8BDeCA1cB1Bc7e83F1B92b1926B427Ca',
+	dpm: '0xb3287c2890Ed7EA99Cb4d5D899434bB64997a609',
 	collateral: {
-		decimals: 8,
-		symbol: 'WBTC',
-		address: '0x2f2a2543B76A4166549F7aaB2e75Bef0aefC5B0f',
+		decimals: 18,
+		symbol: 'WETH',
+		address: '0x4200000000000000000000000000000000000006',
 	},
 	debt: {
 		decimals: 6,
 		symbol: 'USDC',
-		address: '0xaf88d065e77c8cC2239327C5EDb3A432268e5831',
+		address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
 	},
 });
 
-test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', async () => {
+test.describe('API tests - Auto Take Profit - Update - Aave V3 - Base', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/WBTC-USDC/370#optimization
+	// Position link: https://staging.summer.fi/base/aave/v3/borrow/ETH-USDC/677#optimization
 
 	test('Update existing automation - Profit in collateral - Valid payload data', async ({
 		request,
@@ -41,25 +37,25 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', asyn
 
 	test('Update existing automation - Profit in debt - Valid payload data', async ({ request }) => {
 		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-		// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/ETH-DAI/352#optimization
+		// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDC/500#protection
 
 		const response = await request.post(autoTakeProfit, {
-			data: validPayloadsAaveV3Arbitrum.autoTakeProfit.updateProfitInDebt,
+			data: validPayloadsAaveV3Base.autoTakeProfit.updateProfitInDebt,
 		});
 
 		const respJSON = await response.json();
 
 		const debtResponse = autoTakeProfitResponse({
-			dpm: '0x5658E378371809d1aEF8749eBAD8D161CD90D33c',
+			dpm: '0x20e74013d82fea853AfCa3b4CB1Fd9C2B105F55a',
 			collateral: {
 				decimals: 18,
 				symbol: 'WETH',
-				address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+				address: '0x4200000000000000000000000000000000000006',
 			},
 			debt: {
-				decimals: 18,
-				symbol: 'DAI',
-				address: '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1',
+				decimals: 6,
+				symbol: 'USDC',
+				address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
 			},
 		});
 
@@ -72,7 +68,7 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', asyn
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					withdrawToken: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+					withdrawToken: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
 					executionPrice: '8000000000000',
 				},
 			},
@@ -89,8 +85,8 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', asyn
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					withdrawToken: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
-					executionLTV: '1000',
+					withdrawToken: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
+					executionLTV: '2000',
 				},
 			},
 		});
@@ -106,7 +102,7 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', asyn
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					withdrawToken: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+					withdrawToken: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
 					withdrawStep: '800',
 				},
 			},
@@ -140,7 +136,7 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', asyn
 	test('Update non-existing automation', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
-				...validPayloadsAaveV3Arbitrum.autoTakeProfit.profitInDebt,
+				...validPayloadsAaveV3Base.autoTakeProfit.profitInDebt,
 				action: 'update',
 			},
 		});
