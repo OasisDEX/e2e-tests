@@ -967,10 +967,15 @@ export const trailingStopLossResponse = ({
 		symbol: string;
 		address: string;
 		oraclesAddress: string;
-		usd_cOptimism?: boolean;
+		usdcVariant?: 'usdceOptimism' | 'usdbcBase';
 	};
 	hasStablecoinDebt: boolean;
 }) => {
+	const usdcVariantId = {
+		usdceOptimism: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+		usdbcBase: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+	};
+
 	const response = {
 		simulation: {
 			latestPrice: {
@@ -986,10 +991,8 @@ export const trailingStopLossResponse = ({
 					],
 				},
 				denomination: {
-					id: debt.usd_cOptimism
-						? '0x0b2c639c533813f4aa9d7837caf62653d097ff85'
-						: debt.address.toLocaleLowerCase(),
-					symbol: debt.symbol,
+					id: debt.usdcVariant ? usdcVariantId[debt.usdcVariant] : debt.address.toLocaleLowerCase(),
+					symbol: debt.usdcVariant && debt.usdcVariant === 'usdbcBase' ? 'USDC' : debt.symbol,
 					oraclesToken: [
 						{
 							address: debt.oraclesAddress,
@@ -2352,6 +2355,32 @@ export const validPayloadsAaveV3Base = {
 			action: 'add',
 			triggerData: {
 				trailingDistance: '21000000000',
+				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+		},
+		updateCloseToCollateral: {
+			dpm: '0xe70c8069627a9c7933362e25f033ec0771f0f06e',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '152000000000',
+				token: '0x4200000000000000000000000000000000000006',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0xae294a81d5015d8de3ec55973f207857bd6b1fb4',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '144000000000',
 				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
 			},
 		},

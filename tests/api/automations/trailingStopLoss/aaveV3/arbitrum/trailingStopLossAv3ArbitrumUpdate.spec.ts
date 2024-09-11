@@ -121,9 +121,6 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Arbitrum', as
 		expect(respJSON).toMatchObject(responses.stopLossDoesNotExist);
 	});
 
-	// -------------------
-	// -------------------
-
 	test('Update existing automation - Without "dpm"', async ({ request }) => {
 		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
