@@ -1574,6 +1574,50 @@ export const validPayloadsAaveV3Ethereum = {
 				withdrawStep: '500',
 			},
 		},
+		updateProfitInCollateral: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '3010',
+				executionPrice: '700000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7740',
+						token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0xb727aff37c480a0fdba8a6c97fc4fcf3a19f2ac7',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '2220',
+				executionPrice: '514130825283',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7700',
+						token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+				withdrawStep: '500',
+			},
+		},
 	},
 };
 
