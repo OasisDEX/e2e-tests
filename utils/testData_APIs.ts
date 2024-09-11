@@ -2577,6 +2577,19 @@ export const validPayloadsAaveV3Optimism = {
 				token: '0x7f5c764cbc14f9669b88837ca1490cca17c31607',
 			},
 		},
+		updateCloseToCollateral: {
+			dpm: '0xc213d697c81e15a2422701c653dc4b9bcad47530',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '151000000000',
+				token: '0x4200000000000000000000000000000000000006',
+			},
+		},
 	},
 	autoTakeProfit: {
 		profitInDebt: {

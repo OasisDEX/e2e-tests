@@ -41,7 +41,7 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Base', async 
 
 	test('Update existing automation - Close to debt - Valid payload data', async ({ request }) => {
 		// New test wallet: 0x10649c79428d718621821Cf6299e91920284743F
-		// Position link: ???
+		// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDC/816#protection
 
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: validPayloadsAaveV3Base.trailingStopLoss.updateCloseToDebt,
