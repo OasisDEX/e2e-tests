@@ -1934,6 +1934,50 @@ export const validPayloadsSpark = {
 				withdrawStep: '500',
 			},
 		},
+		updateProfitInCollateral: {
+			dpm: '0xce049ff57d4146d5be3a55e60ef4523bb70798b6',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '2000',
+				executionPrice: '650000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7790',
+						token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				withdrawStep: '500',
+			},
+		},
+		updateProfitInDebt: {
+			dpm: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				executionLTV: '2000',
+				executionPrice: '600000000000',
+				stopLoss: {
+					triggerData: {
+						executionLTV: '7790',
+						token: '0x6b175474e89094c44da98b954eedeac495271d0f',
+					},
+					action: 'update',
+				},
+				withdrawToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
+				withdrawStep: '500',
+			},
+		},
 	},
 };
 
