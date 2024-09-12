@@ -1,17 +1,21 @@
 import { expect, test } from '@playwright/test';
-import { validPayloadsSpark, responses, trailingStopLossResponse } from 'utils/testData_APIs';
+import {
+	validPayloadsAaveV3Ethereum,
+	responses,
+	trailingStopLossResponse,
+} from 'utils/testData_APIs';
 
-const trailingStopLossEndpoint = '/api/triggers/1/spark/dma-trailing-stop-loss';
+const trailingStopLossEndpoint = '/api/triggers/1/aave3/dma-trailing-stop-loss';
 
-const validPayloads = validPayloadsSpark.trailingStopLoss.closeToDebt;
+const validPayloads = validPayloadsAaveV3Ethereum.trailingStopLoss.updateCloseToCollateral;
 
 const validResponse = trailingStopLossResponse({
-	dpm: '0x7126E8E9C26832B441a560f4283e09f9c51AB605',
+	dpm: '0x62320F403EA16a143BE7D78485d9e4674C925CC3',
 	collateral: {
-		decimals: 8,
-		symbol: 'WBTC',
-		address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
-		oraclesAddress: '0xf4030086522a5beea4988f8ca5b36dbc97bee88c',
+		decimals: 18,
+		symbol: 'WETH',
+		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+		oraclesAddress: '0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419',
 	},
 	debt: {
 		decimals: 18,
@@ -22,11 +26,13 @@ const validResponse = trailingStopLossResponse({
 	hasStablecoinDebt: true,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async () => {
+test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Ethereum', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/spark/borrow/WBTC-DAI/2592#protection
+	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-DAI/3143#overview
 
-	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
+	test('Update existing automation - Close to collateral - Valid payload data', async ({
+		request,
+	}) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: validPayloads,
 		});
@@ -36,13 +42,45 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
+	test('Update existing automation - Close to debt - Valid payload data', async ({ request }) => {
+		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+		// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/3144#protection
+
+		const response = await request.post(trailingStopLossEndpoint, {
+			data: validPayloadsAaveV3Ethereum.trailingStopLoss.updateCloseToDebt,
+		});
+
+		const respJSON = await response.json();
+
+		const updateCloseToDebtResponse = trailingStopLossResponse({
+			dpm: '0xEd0f85DF55352394F48a68849862f8A15bDe0f8b',
+			collateral: {
+				decimals: 18,
+				symbol: 'WETH',
+				address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+				oraclesAddress: '0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419',
+			},
+			debt: {
+				decimals: 6,
+				symbol: 'USDC',
+				address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+				oraclesAddress: '0x8fffffd4afb6115b954bd326cbe7b4ba576818f6',
+			},
+			hasStablecoinDebt: true,
+		});
+
+		expect(respJSON).toMatchObject(updateCloseToDebtResponse);
+	});
+
+	test('Update existing automation - Trailing distance - Valid payload data', async ({
+		request,
+	}) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
 				...validPayloads,
 				triggerData: {
-					...validPayloads.triggerData,
-					token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+					trailingDistance: '130000000000',
+					token: '0x6b175474e89094c44da98b954eedeac495271d0f',
 				},
 			},
 		});
@@ -52,7 +90,38 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Add automation - Without "dpm"', async ({ request }) => {
+	test('Update existing automation - Close to collateral and trailing distance - Valid payload data', async ({
+		request,
+	}) => {
+		const response = await request.post(trailingStopLossEndpoint, {
+			data: {
+				...validPayloads,
+				triggerData: {
+					...validPayloads.triggerData,
+					trailingDistance: '120000000000',
+				},
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(validResponse);
+	});
+
+	test('Update non-existing automation', async ({ request }) => {
+		const response = await request.post(trailingStopLossEndpoint, {
+			data: {
+				...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
+				action: 'update',
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.stopLossDoesNotExist);
+	});
+
+	test('Update existing automation - Without "dpm"', async ({ request }) => {
 		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
 		const response = await request.post(trailingStopLossEndpoint, {
@@ -64,7 +133,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, dpm: 1 },
 		});
@@ -74,7 +143,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Update existing automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, dpm: '0xwrong' },
 		});
@@ -84,7 +153,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongDpm);
 	});
 
-	test('Add automation - Without "position"', async ({ request }) => {
+	test('Update existing automation - Without "position"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 
 		const response = await request.post(trailingStopLossEndpoint, {
@@ -96,7 +165,9 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.missingPosition);
 	});
 
-	test('Add automation - Wrong data type - "position" - string', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "position" - string', async ({
+		request,
+	}) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, position: 'string' },
 		});
@@ -106,7 +177,9 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongPosition_string);
 	});
 
-	test('Add automation - Wrong data type - "position" - number', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "position" - number', async ({
+		request,
+	}) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, position: 1 },
 		});
@@ -116,7 +189,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongPosition_number);
 	});
 
-	test('Add automation - Wrong data type - "position" - array', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "position" - array', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, position: [] },
 		});
@@ -126,7 +199,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongPosition_array);
 	});
 
-	test('Add automation - Wrong data type - "position" - null', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "position" - null', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, position: null },
 		});
@@ -136,7 +209,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongPosition_null);
 	});
 
-	test('Add automation - Without "collateral (position)"', async ({ request }) => {
+	test('Update existing automation - Without "collateral (position)"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { collateral, ...positionWithoutCollateral } = position;
 
@@ -149,7 +222,9 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Wrong data type - "collateral (position)"', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "collateral (position)"', async ({
+		request,
+	}) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
 				...validPayloads,
@@ -165,7 +240,9 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Wrong value - "collateral (position)"', async ({ request }) => {
+	test('Update existing automation - Wrong value - "collateral (position)"', async ({
+		request,
+	}) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
 				...validPayloads,
@@ -181,7 +258,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongCollateral);
 	});
 
-	test('Add automation - Without "debt (position)"', async ({ request }) => {
+	test('Update existing automation - Without "debt (position)"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { debt, ...positionWithoutDebt } = position;
 
@@ -194,7 +271,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Wrong data type - "debt (position)"', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "debt (position)"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
 				...validPayloads,
@@ -210,7 +287,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Wrong value - "debt (position)"', async ({ request }) => {
+	test('Update existing automation - Wrong value - "debt (position)"', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
 				...validPayloads,
@@ -226,7 +303,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongDebt);
 	});
 
-	test('Add automation - Without "triggerData"', async ({ request }) => {
+	test('Update existing automation - Without "triggerData"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
 		const response = await request.post(trailingStopLossEndpoint, {
@@ -238,7 +315,9 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.missingTriggerData);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - string', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "triggerData" - string', async ({
+		request,
+	}) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, triggerData: 'string' },
 		});
@@ -248,7 +327,9 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_string);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - number', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "triggerData" - number', async ({
+		request,
+	}) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, triggerData: 1 },
 		});
@@ -258,7 +339,9 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_number);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - array', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "triggerData" - array', async ({
+		request,
+	}) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, triggerData: [] },
 		});
@@ -268,7 +351,9 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_array);
 	});
 
-	test('Add automation - Wrong data type - "triggerData" - null', async ({ request }) => {
+	test('Update existing automation - Wrong data type - "triggerData" - null', async ({
+		request,
+	}) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, triggerData: null },
 		});
@@ -278,7 +363,9 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_null);
 	});
 
-	test('Add automation - Without "trailingDistance (triggerData)"', async ({ request }) => {
+	test('Update existing automation - Without "trailingDistance (triggerData)"', async ({
+		request,
+	}) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { trailingDistance, ...triggerDataWithoutTrailingDistance } = triggerData;
 
@@ -291,7 +378,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		expect(respJSON).toMatchObject(responses.wrongTrailingDistance);
 	});
 
-	test('Add automation - Without "token (triggerData)"', async ({ request }) => {
+	test('Update existing automation - Without "token (triggerData)"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 		const { token, ...triggerDataWithoutToken } = triggerData;
 
@@ -302,18 +389,5 @@ test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async (
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongToken);
-	});
-
-	test('Add automation - Trigger already exists', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: {
-				...validPayloadsSpark.trailingStopLoss.updateCloseToCollateral,
-				action: 'add',
-			},
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.stopLossAlreadyExist);
 	});
 });

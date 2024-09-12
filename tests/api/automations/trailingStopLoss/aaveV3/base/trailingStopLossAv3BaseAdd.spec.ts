@@ -313,5 +313,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Aave V3 - Base', async () 
 		});
 
 		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.stopLossAlreadyExist);
 	});
 });

@@ -22,7 +22,7 @@ const validResponse = trailingStopLossResponse({
 	hasStablecoinDebt: false,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async () => {
+test.describe('API tests - Trailing Stop-Loss - Add - Morpho Blue - Ethereum', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WBTC-USDC/2545
 
@@ -302,5 +302,18 @@ test.describe('API tests - Trailing Stop-Loss - Morpho Blue - Ethereum', async (
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongToken);
+	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(trailingStopLossEndpoint, {
+			data: {
+				...validPayloadsMorpho.trailingStopLoss.updateCloseToCollateral,
+				action: 'add',
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.stopLossAlreadyExist);
 	});
 });
