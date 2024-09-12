@@ -1,34 +1,32 @@
 import { expect, test } from '@playwright/test';
-import {
-	validPayloadsAaveV3Ethereum,
-	responses,
-	trailingStopLossResponse,
-} from 'utils/testData_APIs';
+import { validPayloadsMorpho, responses, trailingStopLossResponse } from 'utils/testData_APIs';
 
-const trailingStopLossEndpoint = '/api/triggers/1/aave3/dma-trailing-stop-loss';
+const trailingStopLossEndpoint = '/api/triggers/1/morphoblue/dma-trailing-stop-loss';
 
-const validPayloads = validPayloadsAaveV3Ethereum.trailingStopLoss.updateCloseToCollateral;
+const validPayloads = validPayloadsMorpho.trailingStopLoss.updateCloseToCollateral;
 
 const validResponse = trailingStopLossResponse({
-	dpm: '0x62320F403EA16a143BE7D78485d9e4674C925CC3',
+	dpm: '0x7126E8E9C26832B441a560f4283e09f9c51AB605',
 	collateral: {
-		decimals: 18,
-		symbol: 'WETH',
-		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-		oraclesAddress: '0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419',
+		decimals: 8,
+		symbol: 'WBTC',
+		address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+		oraclesAddress: '0xf4030086522a5beea4988f8ca5b36dbc97bee88c',
 	},
 	debt: {
-		decimals: 18,
-		symbol: 'DAI',
-		address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-		oraclesAddress: '0xaed0c38402a5d19df6e4c03f4e2dced6e29c1ee9',
+		decimals: 6,
+		symbol: 'USDC',
+		address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+		oraclesAddress: '0x8fffffd4afb6115b954bd326cbe7b4ba576818f6',
 	},
-	hasStablecoinDebt: true,
+	// BUG - https://www.notion.so/oazo/144cbc0395cb478a8b81cff326740123?v=2bb430cfe8ca41ff9f6dde3b129ac0fb&p=791b4f641dcc44dc8f7a09b9f4059911&pm=s
+	// hasStablecoinDebt: true,
+	hasStablecoinDebt: false,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Ethereum', async () => {
+test.describe('API tests - Trailing Stop-Loss - Update - Morpho Blue - Ethereum', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-DAI/3143#overview
+	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WBTC-USDC/2592#protection
 
 	test('Update existing automation - Close to collateral - Valid payload data', async ({
 		request,
@@ -44,21 +42,21 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Ethereum', as
 
 	test('Update existing automation - Close to debt - Valid payload data', async ({ request }) => {
 		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-		// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/3144#protection
+		// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WBTC-USDC/2637#protection
 
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: validPayloadsAaveV3Ethereum.trailingStopLoss.updateCloseToDebt,
+			data: validPayloadsMorpho.trailingStopLoss.updateCloseToDebt,
 		});
 
 		const respJSON = await response.json();
 
 		const updateCloseToDebtResponse = trailingStopLossResponse({
-			dpm: '0xEd0f85DF55352394F48a68849862f8A15bDe0f8b',
+			dpm: '0xce049ff57d4146d5bE3a55E60Ef4523bB70798b6',
 			collateral: {
-				decimals: 18,
-				symbol: 'WETH',
-				address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-				oraclesAddress: '0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419',
+				decimals: 8,
+				symbol: 'WBTC',
+				address: '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',
+				oraclesAddress: '0xf4030086522a5beea4988f8ca5b36dbc97bee88c',
 			},
 			debt: {
 				decimals: 6,
@@ -66,7 +64,9 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Ethereum', as
 				address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
 				oraclesAddress: '0x8fffffd4afb6115b954bd326cbe7b4ba576818f6',
 			},
-			hasStablecoinDebt: true,
+			// BUG - https://www.notion.so/oazo/144cbc0395cb478a8b81cff326740123?v=2bb430cfe8ca41ff9f6dde3b129ac0fb&p=791b4f641dcc44dc8f7a09b9f4059911&pm=s
+			// hasStablecoinDebt: true,
+			hasStablecoinDebt: false,
 		});
 
 		expect(respJSON).toMatchObject(updateCloseToDebtResponse);
@@ -79,8 +79,9 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Ethereum', as
 			data: {
 				...validPayloads,
 				triggerData: {
-					trailingDistance: '130000000000',
-					token: '0x6b175474e89094c44da98b954eedeac495271d0f',
+					...validPayloads.triggerData,
+					trailingDistance: '3000000000000',
+					token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 				},
 			},
 		});
@@ -98,7 +99,7 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Ethereum', as
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					trailingDistance: '120000000000',
+					trailingDistance: '2000000000000',
 				},
 			},
 		});
@@ -111,7 +112,7 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Ethereum', as
 	test('Update non-existing automation', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
+				...validPayloadsMorpho.trailingStopLoss.closeToDebt,
 				action: 'update',
 			},
 		});

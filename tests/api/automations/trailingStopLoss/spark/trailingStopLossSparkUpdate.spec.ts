@@ -1,13 +1,9 @@
 import { expect, test } from '@playwright/test';
-import {
-	validPayloadsAaveV3Ethereum,
-	responses,
-	trailingStopLossResponse,
-} from 'utils/testData_APIs';
+import { validPayloadsSpark, responses, trailingStopLossResponse } from 'utils/testData_APIs';
 
 const trailingStopLossEndpoint = '/api/triggers/1/aave3/dma-trailing-stop-loss';
 
-const validPayloads = validPayloadsAaveV3Ethereum.trailingStopLoss.updateCloseToCollateral;
+const validPayloads = validPayloadsSpark.trailingStopLoss.updateCloseToCollateral;
 
 const validResponse = trailingStopLossResponse({
 	dpm: '0x62320F403EA16a143BE7D78485d9e4674C925CC3',
@@ -26,9 +22,9 @@ const validResponse = trailingStopLossResponse({
 	hasStablecoinDebt: true,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Ethereum', async () => {
+test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Base', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-DAI/3143#overview
+	// Position link: https://staging.summer.fi/ethereum/spark/multiply/ETH-DAI/2855#protection
 
 	test('Update existing automation - Close to collateral - Valid payload data', async ({
 		request,
@@ -44,10 +40,10 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Ethereum', as
 
 	test('Update existing automation - Close to debt - Valid payload data', async ({ request }) => {
 		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-		// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/3144#protection
+		// Position link:https://staging.summer.fi/ethereum/spark/multiply/ETH-DAI/3140
 
 		const response = await request.post(trailingStopLossEndpoint, {
-			data: validPayloadsAaveV3Ethereum.trailingStopLoss.updateCloseToDebt,
+			data: validPayloadsSpark.trailingStopLoss.updateCloseToDebt,
 		});
 
 		const respJSON = await response.json();
@@ -111,7 +107,7 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Ethereum', as
 	test('Update non-existing automation', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
+				...validPayloadsSpark.trailingStopLoss.closeToDebt,
 				action: 'update',
 			},
 		});
