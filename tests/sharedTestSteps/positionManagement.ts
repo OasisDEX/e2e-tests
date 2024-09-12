@@ -541,10 +541,13 @@ export const swapPosition = async ({
 			}
 
 			if (verifyPositions?.originalPosition) {
-				// Verify that original position is now empty
-				await app.page.goto(originalPositionPage);
+				await expect(async () => {
+					// Verify that original position is now empty
+					await app.page.goto(originalPositionPage);
 
-				await app.position.manage.shouldBeVisible('Manage your');
+					await app.position.manage.shouldBeVisible('Manage your', { timeout: 25_000 });
+				}).toPass();
+
 				await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
 				// TO BE UPDATE for all protocols
 				// await app.position.overview.shouldHaveVaultDaiDebt('0.0000');

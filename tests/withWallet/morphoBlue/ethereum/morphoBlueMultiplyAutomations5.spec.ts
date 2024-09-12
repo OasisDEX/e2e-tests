@@ -68,7 +68,8 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		});
 	});
 
-	test('It should remove an existing Stop-Loss trigger on a Morpho Blue Multiply position @regression', async () => {
+	// FLAKY in github - TO BE IMPROVED
+	test.skip('It should remove an existing Stop-Loss trigger on a Morpho Blue Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

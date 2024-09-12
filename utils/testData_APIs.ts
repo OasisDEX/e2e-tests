@@ -1679,7 +1679,7 @@ export const validPayloadsMorpho = {
 			triggerData: {
 				executionLTV: '3000',
 				maxBaseFee: '300',
-				maxBuyPrice: '250000000',
+				maxBuyPrice: '280000000000',
 				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
 				targetLTV: '4300',
 				useMaxBuyPrice: true,

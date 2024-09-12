@@ -275,19 +275,17 @@ export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-DAI', 'RETH-USDC', 'WSTETH-D
 
 export const aaveV3ArbitrumMultiplyPools_3 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
 
-export const aaveV3ArbitrumBorrowPools_1 = [
-	'ETH-DAI',
-	'ETH-USDC',
-	'RETH-DAI',
-	'RETH-USDC',
+export const aaveV3ArbitrumBorrowPools_1 = ['ETH-DAI', 'ETH-USDC', 'RETH-DAI', 'RETH-USDC'];
+
+export const aaveV3ArbitrumBorrowPools_2 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
+
+export const aaveV3ArbitrumBorrowPools_3 = [
 	'WSTETH-DAI',
 	'WSTETH-USDC',
 	'WBTC-DAI',
 	'WBTC-USDC',
 	// 'WEETH-USDC',  --> WEETH supply 100%
 ];
-
-export const aaveV3ArbitrumBorrowPools_2 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
 
 export const aaveV3BaseEarnPools = ['CBETH-ETH', 'WSTETH-ETH'];
 // , 'WEETH-ETH'  --> WEETH supply 100%
