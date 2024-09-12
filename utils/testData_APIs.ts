@@ -1794,6 +1794,20 @@ export const validPayloadsMorpho = {
 				token: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
 			},
 		},
+		updateCloseToDebt: {
+			dpm: '0xce049ff57d4146d5be3a55e60ef4523bb70798b6',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '3260000000000',
+				poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
+				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+		},
 	},
 	autoTakeProfit: {
 		profitInDebt: {
@@ -1990,6 +2004,32 @@ export const validPayloadsSpark = {
 			action: 'add',
 			triggerData: {
 				trailingDistance: '350000000000',
+				token: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+		},
+		updateCloseToCollateral: {
+			dpm: '0xff467bc814985c6bcabef2b0a3b3c237cd9be25f',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '120000000000',
+				token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+		},
+		updateCloseToDebt: {
+			dpm: '0x705e65c617bdd31476ff3609a13a138a4100ae6c',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'update',
+			triggerData: {
+				trailingDistance: '128000000000',
 				token: '0x6b175474e89094c44da98b954eedeac495271d0f',
 			},
 		},

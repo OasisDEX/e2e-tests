@@ -313,5 +313,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Morpho Blue - Ethereum', a
 		});
 
 		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.stopLossAlreadyExist);
 	});
 });

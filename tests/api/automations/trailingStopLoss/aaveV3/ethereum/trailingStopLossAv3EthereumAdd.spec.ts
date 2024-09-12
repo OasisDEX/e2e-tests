@@ -317,5 +317,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Aave V3 - Ethereum', async
 		});
 
 		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.stopLossAlreadyExist);
 	});
 });

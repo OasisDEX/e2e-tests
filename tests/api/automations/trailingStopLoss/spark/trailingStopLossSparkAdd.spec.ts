@@ -22,7 +22,7 @@ const validResponse = trailingStopLossResponse({
 	hasStablecoinDebt: true,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Spark - Ethereum', async () => {
+test.describe('API tests - Trailing Stop-Loss - Add - Spark - Ethereum', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/ethereum/spark/borrow/WBTC-DAI/2592#protection
 
@@ -302,5 +302,18 @@ test.describe('API tests - Trailing Stop-Loss - Spark - Ethereum', async () => {
 		const respJSON = await response.json();
 
 		expect(respJSON).toMatchObject(responses.wrongToken);
+	});
+
+	test('Add automation - Trigger already exists', async ({ request }) => {
+		const response = await request.post(trailingStopLossEndpoint, {
+			data: {
+				...validPayloadsSpark.trailingStopLoss.updateCloseToCollateral,
+				action: 'add',
+			},
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.stopLossAlreadyExist);
 	});
 });

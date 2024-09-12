@@ -1,12 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { validPayloadsSpark, responses, trailingStopLossResponse } from 'utils/testData_APIs';
 
-const trailingStopLossEndpoint = '/api/triggers/1/aave3/dma-trailing-stop-loss';
+const trailingStopLossEndpoint = '/api/triggers/1/spark/dma-trailing-stop-loss';
 
 const validPayloads = validPayloadsSpark.trailingStopLoss.updateCloseToCollateral;
 
 const validResponse = trailingStopLossResponse({
-	dpm: '0x62320F403EA16a143BE7D78485d9e4674C925CC3',
+	dpm: '0xFF467BC814985C6bcaBeF2B0A3b3c237cD9Be25f',
 	collateral: {
 		decimals: 18,
 		symbol: 'WETH',
@@ -22,7 +22,7 @@ const validResponse = trailingStopLossResponse({
 	hasStablecoinDebt: true,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Base', async () => {
+test.describe('API tests - Trailing Stop-Loss - Update - Spark', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/ethereum/spark/multiply/ETH-DAI/2855#protection
 
@@ -49,7 +49,7 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Base', async 
 		const respJSON = await response.json();
 
 		const updateCloseToDebtResponse = trailingStopLossResponse({
-			dpm: '0xEd0f85DF55352394F48a68849862f8A15bDe0f8b',
+			dpm: '0x705e65c617BDD31476ff3609a13a138a4100AE6c',
 			collateral: {
 				decimals: 18,
 				symbol: 'WETH',
@@ -57,10 +57,10 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Base', async 
 				oraclesAddress: '0x5f4ec3df9cbd43714fe2740f5e3616155c5b8419',
 			},
 			debt: {
-				decimals: 6,
-				symbol: 'USDC',
-				address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-				oraclesAddress: '0x8fffffd4afb6115b954bd326cbe7b4ba576818f6',
+				decimals: 18,
+				symbol: 'DAI',
+				address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+				oraclesAddress: '0xaed0c38402a5d19df6e4c03f4e2dced6e29c1ee9',
 			},
 			hasStablecoinDebt: true,
 		});
@@ -75,7 +75,7 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Base', async 
 			data: {
 				...validPayloads,
 				triggerData: {
-					trailingDistance: '130000000000',
+					trailingDistance: '100000000000',
 					token: '0x6b175474e89094c44da98b954eedeac495271d0f',
 				},
 			},
@@ -94,7 +94,7 @@ test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Base', async 
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					trailingDistance: '120000000000',
+					trailingDistance: '90000000000',
 				},
 			},
 		});
