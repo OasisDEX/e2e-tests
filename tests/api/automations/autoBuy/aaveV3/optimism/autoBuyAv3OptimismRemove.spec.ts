@@ -31,7 +31,7 @@ test.describe('API tests - Auto-Buy - Remove - Aave V3 - Optimism', async () => 
 	// New test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/WBTC-USDC.E/19
 
-	test('Remove existing automation - Valid payload data', async ({ request }) => {
+	test('Remove existing automation - Valid payload data @regression', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: validPayloads,
 		});

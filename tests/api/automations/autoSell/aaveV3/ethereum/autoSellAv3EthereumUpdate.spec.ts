@@ -27,7 +27,7 @@ const validResponse = autoSellWithoutMinSellPriceResponse({
 	targetLTVWithDeviation: ['4400', '4600'],
 });
 
-test.describe('API tests - Auto-Sell - Aave V3 - Base', async () => {
+test.describe('API tests - Auto-Sell - Aave V3 - Base @regression', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-GHO/2737
 

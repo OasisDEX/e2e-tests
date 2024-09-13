@@ -9,6 +9,7 @@ jobs:
     uses: ./.github/workflows/z_Reusable_Apis.yml
     with:
       base_url: ${{ inputs.base_url }}
+      script: api-tests
 
   no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml

@@ -22,3 +22,4 @@ jobs:
     uses: ./.github/workflows/z_Reusable_Apis.yml
     with:
       base_url: 'https://staging.summer.fi'
+      script: api-tests:regression

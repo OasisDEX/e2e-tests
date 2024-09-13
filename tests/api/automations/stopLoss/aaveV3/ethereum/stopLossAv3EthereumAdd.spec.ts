@@ -4,7 +4,7 @@ import { validPayloadsAaveV3Ethereum, responses } from 'utils/testData_APIs';
 const stopLossEndpoint = '/api/triggers/1/aave3/dma-stop-loss';
 const validPayloads = validPayloadsAaveV3Ethereum.stopLoss.closeToDebt;
 
-test.describe('API tests - Stop-Loss - Add - Aave V3 - Ethereum', async () => {
+test.describe('API tests - Stop-Loss - Add - Aave V3 - Ethereum @regression', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1218
 

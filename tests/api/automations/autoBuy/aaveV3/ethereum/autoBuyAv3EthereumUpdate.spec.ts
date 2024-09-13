@@ -27,7 +27,7 @@ const validResponse = autoBuyWithoutMaxBuyPriceResponse({
 	targetLTVWithDeviation: ['4300', '4500'],
 });
 
-test.describe('API tests - Auto-Buy - Update - Aave V3 - Ethereum', async () => {
+test.describe('API tests - Auto-Buy - Update - Aave V3 - Ethereum @regression', async () => {
 	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
 	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-DAI/1670
 

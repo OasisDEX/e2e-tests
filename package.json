@@ -54,6 +54,7 @@
 		"//-1a": "---------------------------------------------------------------",
 		"//-1b": "---------------------- REGRESSION TESTS -----------------------",
 		"//-1c": "---------------------------------------------------------------",
+		"api-tests:regression": "REPORT_FOLDER=api-tests npx playwright test --grep @regression --project=api-tests",
 		"no-wallet:regression": "REPORT_FOLDER=no-wallet npx playwright test --grep @regression --project=no-wallet",
 		"with-wallet:aave:ethereum:regression": "REPORT_FOLDER=with-wallet-aave-ethereum npx playwright test --grep @regression --project=with-wallet-aave-ethereum --workers=1",
 		"with-wallet:aave:other:regression": "REPORT_FOLDER=with-wallet-aave-other npx playwright test --grep @regression --project=with-wallet-aave-other --workers=1",
