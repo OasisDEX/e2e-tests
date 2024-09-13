@@ -48,7 +48,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Arbitrum', async () =>
 		const response = await request.post(autoSellEndpoint, {
 			data: {
 				...validPayloadsAaveV3Arbitrum.autoSell.addWithoutMinSellPrice,
-				action: 'update',
+				action: 'remove',
 			},
 		});
 

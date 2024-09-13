@@ -48,7 +48,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Optimism', async () =>
 		const response = await request.post(autoSellEndpoint, {
 			data: {
 				...validPayloadsAaveV3Optimism.autoSell.addWithoutMinSellPrice,
-				action: 'update',
+				action: 'remove',
 			},
 		});
 

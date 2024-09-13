@@ -48,7 +48,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 		const response = await request.post(autoSellEndpoint, {
 			data: {
 				...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice,
-				action: 'update',
+				action: 'remove',
 			},
 		});
 

@@ -49,7 +49,7 @@ test.describe('API tests - Auto-Sell - Remove - Morpho Blue - Ethereum', async (
 		const response = await request.post(autoSellEndpoint, {
 			data: {
 				...validPayloadsMorpho.autoSell.addWithoutMinSellPrice,
-				action: 'update',
+				action: 'remove',
 			},
 		});
 
