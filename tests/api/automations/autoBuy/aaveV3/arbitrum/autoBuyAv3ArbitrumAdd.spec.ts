@@ -31,7 +31,9 @@ test.describe('API tests - Auto-Buy - Add - Aave V3 - Arbitrum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/ETH-DAI/1
 
-	test('Add automation - Without Max Buy Price - Valid payload data', async ({ request }) => {
+	test('Add automation - Without Max Buy Price - Valid payload data @regression', async ({
+		request,
+	}) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: validPayloads,
 		});
@@ -41,7 +43,9 @@ test.describe('API tests - Auto-Buy - Add - Aave V3 - Arbitrum', async () => {
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Add automation - With Max Buy Price - Valid payload data', async ({ request }) => {
+	test('Add automation - With Max Buy Price - Valid payload data @regression', async ({
+		request,
+	}) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
 				...validPayloads,

@@ -31,7 +31,9 @@ test.describe('API tests - Auto-Buy - Add - Morpho Blue - Ethereum', async () =>
 	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467
 
-	test('Add automation - Without Max Buy Price - Valid payload data', async ({ request }) => {
+	test('Add automation - Without Max Buy Price - Valid payload data @regression', async ({
+		request,
+	}) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: validPayloads.autoBuy.addWithoutMaxBuyPrice,
 		});
@@ -46,7 +48,9 @@ test.describe('API tests - Auto-Buy - Add - Morpho Blue - Ethereum', async () =>
 		});
 	});
 
-	test('Add automation - With Max Buy Price - Valid payload data', async ({ request }) => {
+	test('Add automation - With Max Buy Price - Valid payload data @regression', async ({
+		request,
+	}) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
 				...validPayloads.autoBuy.addWithoutMaxBuyPrice,

@@ -8,6 +8,11 @@ on:
         type: string
         default: 'https://staging.summer.fi'
         required: false
+      script:
+        description: 'package.json scrip to be run'
+        type: string
+        default: 'api-tests:regression'
+        required: true
 
 jobs:
   api-tests:
@@ -26,7 +31,7 @@ jobs:
         if: ${{ inputs.base_url == 'https://staging.summer.fi' }}
         run: yarn verify-staging
       - name: Run API tests
-        run: yarn api-tests
+        run: yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

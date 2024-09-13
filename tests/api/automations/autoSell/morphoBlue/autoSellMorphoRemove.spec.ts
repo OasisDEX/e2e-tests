@@ -32,7 +32,7 @@ test.describe('API tests - Auto-Sell - Remove - Morpho Blue - Ethereum', async (
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WBTC-USDC/2545#protection
 
-	test('Remove existing automation - Valid payload data', async ({ request }) => {
+	test('Remove existing automation - Valid payload data @regression', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
 			data: validPayloads,
 		});

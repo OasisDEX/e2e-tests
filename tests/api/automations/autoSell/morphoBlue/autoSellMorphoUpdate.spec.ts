@@ -116,7 +116,7 @@ test.describe('API tests - Auto-Sell - Update - Morpho Blue - Ethereum', async (
 		});
 	});
 
-	test('Update existing automation - executionLTV, targetLTV & minSellPrice - Valid payload data', async ({
+	test('Update existing automation - executionLTV, targetLTV & minSellPrice - Valid payload data @regression', async ({
 		request,
 	}) => {
 		const response = await request.post(autoSellEndpoint, {

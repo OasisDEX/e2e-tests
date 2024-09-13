@@ -31,7 +31,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Base', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/base/aave/v3/multiply/CBETH-USDBC/588#optimization
 
-	test('Remove existing automation - Valid payload data', async ({ request }) => {
+	test('Remove existing automation - Valid payload data @regression', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
 			data: validPayloads,
 		});

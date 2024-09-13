@@ -112,7 +112,7 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 		});
 	});
 
-	test('Update existing automation - executionLTV, targetLTV & minSellPrice - Valid payload data', async ({
+	test('Update existing automation - executionLTV, targetLTV & minSellPrice - Valid payload data @regression', async ({
 		request,
 	}) => {
 		const response = await request.post(autoSellEndpoint, {

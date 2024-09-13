@@ -113,7 +113,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 		});
 	});
 
-	test('Update existing automation - executionLTV, targetLTV & maxBuyPrice - Valid payload data', async ({
+	test('Update existing automation - executionLTV, targetLTV & maxBuyPrice - Valid payload data @regression', async ({
 		request,
 	}) => {
 		const response = await request.post(autoBuyEndpoint, {
