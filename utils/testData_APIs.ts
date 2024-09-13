@@ -1623,6 +1623,19 @@ export const validPayloadsAaveV3Ethereum = {
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
 		},
+		remove: {
+			dpm: '0x62320f403ea16a143be7d78485d9e4674c925cc3',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'remove',
+			triggerData: {
+				trailingDistance: '14800000000000000000',
+				token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+		},
 	},
 	autoTakeProfit: {
 		profitInDebt: {
@@ -1915,6 +1928,20 @@ export const validPayloadsMorpho = {
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
 		},
+		remove: {
+			dpm: '0x7126e8e9c26832b441a560f4283e09f9c51ab605',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+			action: 'remove',
+			triggerData: {
+				trailingDistance: '350000000000000000000',
+				poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
+				token: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
+			},
+		},
 	},
 	autoTakeProfit: {
 		profitInDebt: {
@@ -2201,6 +2228,19 @@ export const validPayloadsSpark = {
 				token: '0x6b175474e89094c44da98b954eedeac495271d0f',
 			},
 		},
+		remove: {
+			dpm: '0xff467bc814985c6bcabef2b0a3b3c237cd9be25f',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'remove',
+			triggerData: {
+				trailingDistance: '12000000000000000000',
+				token: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+		},
 	},
 	autoTakeProfit: {
 		profitInDebt: {
@@ -2480,6 +2520,19 @@ export const validPayloadsAaveV3Arbitrum = {
 				token: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
 			},
 		},
+		remove: {
+			dpm: '0x9a8999d48499743b5ca481210dc568018a3b417a',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'remove',
+			triggerData: {
+				trailingDistance: '367000000000000000000',
+				token: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
+			},
+		},
 	},
 	autoTakeProfit: {
 		profitInDebt: {
@@ -2749,6 +2802,19 @@ export const validPayloadsAaveV3Base = {
 			triggerData: {
 				trailingDistance: '144000000000',
 				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+		},
+		remove: {
+			dpm: '0xe70c8069627a9c7933362e25f033ec0771f0f06e',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0xd9aaec86b65d86f6a7b5b1b0c42ffa531710b6ca',
+			},
+			action: 'remove',
+			triggerData: {
+				trailingDistance: '15200000000000000000',
+				token: '0x4200000000000000000000000000000000000006',
 			},
 		},
 	},
@@ -3027,6 +3093,19 @@ export const validPayloadsAaveV3Optimism = {
 			triggerData: {
 				trailingDistance: '120000000000',
 				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+		},
+		remove: {
+			dpm: '0xc213d697c81e15a2422701c653dc4b9bcad47530',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+			},
+			action: 'remove',
+			triggerData: {
+				trailingDistance: '15100000000000000000',
+				token: '0x4200000000000000000000000000000000000006',
 			},
 		},
 	},

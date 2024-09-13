@@ -144,7 +144,7 @@ export const tokenBalances = {
 	USDC_E: '200000',
 	USDE: '200000',
 	USDT: '200000',
-	WBTC: '10',
+	WBTC: '20',
 	WEETH: '1000',
 	WETH: '1000',
 	WOETH: '1000',
