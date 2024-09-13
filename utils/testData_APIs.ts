@@ -1569,6 +1569,19 @@ export const validPayloadsAaveV3Ethereum = {
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
 		},
+		remove: {
+			dpm: '0xd289c4d1ffc484203739aeb5c3f8844ec51c7ad2',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0xae78736cd615f374d3085123a210448e74fc6393',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'remove',
+			triggerData: {
+				executionLTV: '6912',
+				token: '0xae78736cd615f374d3085123a210448e74fc6393',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
@@ -1842,6 +1855,20 @@ export const validPayloadsMorpho = {
 				executionLTV: '8490',
 				poolId: '0xb323495f7e4148be5643a4ea4a8221eef163e4bccfdedc2a6f4696baacbc86cc',
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
+			},
+		},
+		remove: {
+			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			protocol: 'morphoblue',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+			},
+			action: 'remove',
+			triggerData: {
+				executionLTV: '9300',
+				poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+				token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
 			},
 		},
 	},
@@ -2120,6 +2147,19 @@ export const validPayloadsSpark = {
 				token: '0x6b175474e89094c44da98b954eedeac495271d0f',
 			},
 		},
+		remove: {
+			dpm: '0x9ae9e1fcccb4934f29565121f9982a43a00f53ec',
+			protocol: 'sparkv3',
+			position: {
+				collateral: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				debt: '0x6b175474e89094c44da98b954eedeac495271d0f',
+			},
+			action: 'remove',
+			triggerData: {
+				executionLTV: '7760',
+				token: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
@@ -2386,6 +2426,19 @@ export const validPayloadsAaveV3Arbitrum = {
 				token: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
 			},
 		},
+		remove: {
+			dpm: '0x5658e378371809d1aef8749ebad8d161cd90d33c',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+				debt: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+			action: 'remove',
+			triggerData: {
+				executionLTV: '8140',
+				token: '0x82af49447d8a07e3bd95bd0d56f35241523fbab1',
+			},
+		},
 	},
 	trailingStopLoss: {
 		closeToDebt: {
@@ -2642,6 +2695,19 @@ export const validPayloadsAaveV3Base = {
 			triggerData: {
 				executionLTV: '7721',
 				token: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+		},
+		remove: {
+			dpm: '0xb3287c2890ed7ea99cb4d5d899434bb64997a609',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913',
+			},
+			action: 'remove',
+			triggerData: {
+				executionLTV: '7855',
+				token: '0x4200000000000000000000000000000000000006',
 			},
 		},
 	},
@@ -2907,6 +2973,19 @@ export const validPayloadsAaveV3Optimism = {
 			triggerData: {
 				executionLTV: '7801',
 				token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+			},
+		},
+		remove: {
+			dpm: '0xc4cff680a409ebbd1a73a57f1fac92065e2262d8',
+			protocol: 'aavev3',
+			position: {
+				collateral: '0x4200000000000000000000000000000000000006',
+				debt: '0x0b2c639c533813f4aa9d7837caf62653d097ff85',
+			},
+			action: 'remove',
+			triggerData: {
+				executionLTV: '7887',
+				token: '0x4200000000000000000000000000000000000006',
 			},
 		},
 	},
