@@ -14,9 +14,9 @@ export class Manage {
 	}
 
 	@step
-	async shouldBeVisible(header: string) {
+	async shouldBeVisible(header: string, args?: { timeout: number }) {
 		await expect(this.page.getByText(header).first(), `${header} should be visible`).toBeVisible({
-			timeout: positionTimeout,
+			timeout: args?.timeout ?? positionTimeout,
 		});
 	}
 
