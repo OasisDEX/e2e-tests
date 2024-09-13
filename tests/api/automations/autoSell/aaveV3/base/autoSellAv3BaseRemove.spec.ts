@@ -48,7 +48,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Base', async () => {
 		const response = await request.post(autoSellEndpoint, {
 			data: {
 				...validPayloadsAaveV3Base.autoSell.addWithoutMinSellPrice,
-				action: 'update',
+				action: 'remove',
 			},
 		});
 

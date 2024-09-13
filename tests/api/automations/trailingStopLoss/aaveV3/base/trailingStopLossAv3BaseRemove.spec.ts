@@ -1,66 +1,59 @@
 import { expect, test } from '@playwright/test';
-import {
-	validPayloadsAaveV3Ethereum,
-	responses,
-	autoSellWithoutMinSellPriceResponse,
-} from 'utils/testData_APIs';
+import { validPayloadsAaveV3Base, responses, trailingStopLossResponse } from 'utils/testData_APIs';
 
-const autoSellEndpoint = '/api/triggers/1/aave3/auto-sell';
+const trailingStopLossEndpoint = '/api/triggers/8453/aave3/dma-trailing-stop-loss';
 
-const validPayloads = validPayloadsAaveV3Ethereum.autoSell.remove;
+const validPayloads = validPayloadsAaveV3Base.trailingStopLoss.remove;
 
-const validResponse = autoSellWithoutMinSellPriceResponse({
-	dpm: '0xB42D970a6424583618D0013E0D6eBB039dd1c945',
+const validResponse = trailingStopLossResponse({
+	dpm: '0xe70c8069627a9C7933362e25F033Ec0771F0f06e',
 	collateral: {
 		decimals: 18,
 		symbol: 'WETH',
-		address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+		address: '0x4200000000000000000000000000000000000006',
+		oraclesAddress: '0x71041dddad3595f9ced3dccfbe3d1f4b0a16bb70',
 	},
 	debt: {
-		decimals: 18,
-		symbol: 'GHO',
-		address: '0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f',
+		decimals: 6,
+		symbol: 'USDbC',
+		address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
+		oraclesAddress: '0x7e860098f58bbfc8648a4311b374b1d669a2bc6b',
+		usdcVariant: 'usdbcBase',
 	},
 	hasStablecoinDebt: true,
-	executionLTV: '50',
-	targetLTV: '45',
-	targetLTVWithDeviation: ['-55', '145'],
 });
 
-test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () => {
-	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-GHO/2737
+test.describe('API tests - Trailing Stop-Loss - Remove - Aave V3 - Base', async () => {
+	// New test wallet: 0x10649c79428d718621821Cf6299e91920284743F
+	// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDBC/815#protection
 
 	test('Remove existing automation - Valid payload data', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: validPayloads,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject({
-			...validResponse,
-			warnings: [],
-		});
+		expect(respJSON).toMatchObject(validResponse);
 	});
 
 	test('Remove non-existing automation', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
-				...validPayloadsAaveV3Ethereum.autoSell.addWithoutMinSellPrice,
+				...validPayloadsAaveV3Base.trailingStopLoss.closeToDebt,
 				action: 'remove',
 			},
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.autoSellDoesNotExist);
+		expect(respJSON).toMatchObject(responses.stopLossDoesNotExist);
 	});
 
 	test('Remove existing automation - Without "dpm"', async ({ request }) => {
 		const { dpm, ...payloadWithoutDpm } = validPayloads;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: payloadWithoutDpm,
 		});
 
@@ -70,7 +63,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Remove existing automation - Wrong data type - "dpm"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, dpm: 1 },
 		});
 
@@ -80,7 +73,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Remove existing automation - Wrong value - "dpm"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, dpm: '0xwrong' },
 		});
 
@@ -92,7 +85,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	test('Remove existing automation - Without "position"', async ({ request }) => {
 		const { position, ...payloadWithoutPosition } = validPayloads;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: payloadWithoutPosition,
 		});
 
@@ -104,7 +97,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	test('Remove existing automation - Wrong data type - "position" - string', async ({
 		request,
 	}) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, position: 'string' },
 		});
 
@@ -116,7 +109,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	test('Remove existing automation - Wrong data type - "position" - number', async ({
 		request,
 	}) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, position: 1 },
 		});
 
@@ -126,7 +119,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Remove existing automation - Wrong data type - "position" - array', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, position: [] },
 		});
 
@@ -136,7 +129,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Remove existing automation - Wrong data type - "position" - null', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, position: null },
 		});
 
@@ -149,7 +142,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { collateral, ...positionWithoutCollateral } = position;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...payloadWithoutPosition, position: positionWithoutCollateral },
 		});
 
@@ -161,7 +154,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	test('Remove existing automation - Wrong data type - "collateral (position)"', async ({
 		request,
 	}) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
 				...validPayloads,
 				position: {
@@ -179,7 +172,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	test('Remove existing automation - Wrong value - "collateral (position)"', async ({
 		request,
 	}) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
 				...validPayloads,
 				position: {
@@ -198,7 +191,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 		const { position, ...payloadWithoutPosition } = validPayloads;
 		const { debt, ...positionWithoutDebt } = position;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...payloadWithoutPosition, position: positionWithoutDebt },
 		});
 
@@ -208,7 +201,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Remove existing automation - Wrong data type - "debt (position)"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
 				...validPayloads,
 				position: {
@@ -224,7 +217,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	});
 
 	test('Remove existing automation - Wrong value - "debt (position)"', async ({ request }) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
 				...validPayloads,
 				position: {
@@ -242,7 +235,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	test('Remove existing automation - Without "triggerData"', async ({ request }) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: payloadWithoutTriggerData,
 		});
 
@@ -254,11 +247,8 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	test('Remove existing automation - Wrong data type - "triggerData" - string', async ({
 		request,
 	}) => {
-		const response = await request.post(autoSellEndpoint, {
-			data: {
-				...validPayloads,
-				triggerData: 'string',
-			},
+		const response = await request.post(trailingStopLossEndpoint, {
+			data: { ...validPayloads, triggerData: 'string' },
 		});
 
 		const respJSON = await response.json();
@@ -269,7 +259,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	test('Remove existing automation - Wrong data type - "triggerData" - number', async ({
 		request,
 	}) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, triggerData: 1 },
 		});
 
@@ -281,7 +271,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	test('Remove existing automation - Wrong data type - "triggerData" - array', async ({
 		request,
 	}) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, triggerData: [] },
 		});
 
@@ -293,7 +283,7 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 	test('Remove existing automation - Wrong data type - "triggerData" - null', async ({
 		request,
 	}) => {
-		const response = await request.post(autoSellEndpoint, {
+		const response = await request.post(trailingStopLossEndpoint, {
 			data: { ...validPayloads, triggerData: null },
 		});
 
@@ -302,57 +292,31 @@ test.describe('API tests - Auto-Sell - Remove - Aave V3 - Ethereum', async () =>
 		expect(respJSON).toMatchObject(responses.wrongTriggerData_null);
 	});
 
-	test('Remove existing automation - Without "executionLTV (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { executionLTV, ...triggerDataWithoutExecutionLTV } = triggerData;
-
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutExecutionLTV },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongExecutionLTV);
-	});
-
-	test('Remove existing automation - Without "maxBaseFee (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { maxBaseFee, ...triggerDataWithoutMaxBaseFee } = triggerData;
-
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutMaxBaseFee },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongMaxBaseFee);
-	});
-
-	test('Remove existing automation - Without "targetLTV (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { targetLTV, ...triggerDataWithoutTargetLTV } = triggerData;
-
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutTargetLTV },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongTargetLTV);
-	});
-
-	test('Remove existing automation - Without "useMinSellPrice (triggerData)"', async ({
+	test('Remove existing automation - Without "trailingDistance (triggerData)"', async ({
 		request,
 	}) => {
 		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { minSellPrice, useMinSellPrice, ...triggerDataWithoutUseMinSellPrice } = triggerData;
+		const { trailingDistance, ...triggerDataWithoutTrailingDistance } = triggerData;
 
-		const response = await request.post(autoSellEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutUseMinSellPrice },
+		const response = await request.post(trailingStopLossEndpoint, {
+			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutTrailingDistance },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongUseMinSellPrice);
+		expect(respJSON).toMatchObject(responses.wrongTrailingDistance);
+	});
+
+	test('Remove existing automation - Without "token (triggerData)"', async ({ request }) => {
+		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
+		const { token, ...triggerDataWithoutToken } = triggerData;
+
+		const response = await request.post(trailingStopLossEndpoint, {
+			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutToken },
+		});
+
+		const respJSON = await response.json();
+
+		expect(respJSON).toMatchObject(responses.wrongToken);
 	});
 });

@@ -48,7 +48,7 @@ test.describe('API tests - Auto-Sell - Remove - Spark - Ethereum', async () => {
 		const response = await request.post(autoSellEndpoint, {
 			data: {
 				...validPayloadsSpark.autoSell.addWithoutMinSellPrice,
-				action: 'update',
+				action: 'remove',
 			},
 		});
 
