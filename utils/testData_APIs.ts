@@ -1,5 +1,30 @@
 import { expect } from '#noWalletFixtures';
 
+export const postAutomationEndpoint = ({
+	network,
+	protocol,
+	automation,
+}: {
+	network: 'arbitrum' | 'base' | 'ethereum' | 'optimism';
+	protocol: 'aave3' | 'morphoblue' | 'spark';
+	automation:
+		| 'auto-buy'
+		| 'auto-sell'
+		| 'dma-partial-take-profit'
+		| 'dma-stop-loss'
+		| 'dma-trailing-stop-loss';
+}) => {
+	const chainId = {
+		arbitrum: '42161',
+		base: '8453',
+		ethereum: '1',
+		optimism: '10',
+	};
+	const endpoint = `/api/triggers/${chainId[network]}/${protocol}/${automation}`;
+
+	return endpoint;
+};
+
 export const autoTakeProfitResponse = ({
 	dpm,
 	collateral,
