@@ -3,9 +3,14 @@ import {
 	validPayloadsAaveV3Base,
 	responses,
 	autoBuyWithoutMaxBuyPriceResponse,
+	postAutomationEndpoint,
 } from 'utils/testData_APIs';
 
-const autoBuyEndpoint = '/api/triggers/8453/aave3/auto-buy';
+const autoBuyEndpoint = postAutomationEndpoint({
+	network: 'base',
+	protocol: 'aave3',
+	automation: 'auto-buy',
+});
 
 const validPayloads = validPayloadsAaveV3Base.autoBuy.updateMaxBuyPrice;
 

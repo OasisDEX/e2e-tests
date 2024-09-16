@@ -3,9 +3,14 @@ import {
 	validPayloadsSpark,
 	responses,
 	autoBuyWithoutMaxBuyPriceResponse,
+	postAutomationEndpoint,
 } from 'utils/testData_APIs';
 
-const autoBuyEndpoint = '/api/triggers/1/spark/auto-buy';
+const autoBuyEndpoint = postAutomationEndpoint({
+	network: 'ethereum',
+	protocol: 'spark',
+	automation: 'auto-buy',
+});
 
 const validPayloads = validPayloadsSpark.autoBuy.remove;
 

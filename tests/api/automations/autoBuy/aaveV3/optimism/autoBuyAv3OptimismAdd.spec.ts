@@ -3,9 +3,14 @@ import {
 	validPayloadsAaveV3Optimism,
 	responses,
 	autoBuyWithoutMaxBuyPriceResponse,
+	postAutomationEndpoint,
 } from 'utils/testData_APIs';
 
-const autoBuyEndpoint = '/api/triggers/10/aave3/auto-buy';
+const autoBuyEndpoint = postAutomationEndpoint({
+	network: 'optimism',
+	protocol: 'aave3',
+	automation: 'auto-buy',
+});
 
 const validPayloads = validPayloadsAaveV3Optimism;
 

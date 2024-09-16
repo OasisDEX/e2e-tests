@@ -1,5 +1,32 @@
 import { expect } from '#noWalletFixtures';
 
+export const getAutomationEndpoint = '/api/triggers';
+
+export const postAutomationEndpoint = ({
+	network,
+	protocol,
+	automation,
+}: {
+	network: 'arbitrum' | 'base' | 'ethereum' | 'optimism';
+	protocol: 'aave3' | 'morphoblue' | 'spark';
+	automation:
+		| 'auto-buy'
+		| 'auto-sell'
+		| 'dma-partial-take-profit'
+		| 'dma-stop-loss'
+		| 'dma-trailing-stop-loss';
+}) => {
+	const chainId = {
+		arbitrum: '42161',
+		base: '8453',
+		ethereum: '1',
+		optimism: '10',
+	};
+	const endpoint = `/api/triggers/${chainId[network]}/${protocol}/${automation}`;
+
+	return endpoint;
+};
+
 export const autoTakeProfitResponse = ({
 	dpm,
 	collateral,
@@ -1428,6 +1455,48 @@ export const responses = {
 			},
 		],
 		warnings: [],
+	},
+	missingChainIdGetRequest: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				code: 'invalid_union',
+				message: 'Invalid input',
+				path: ['chainId'],
+			},
+		],
+	},
+	wrongChainIdGetRequest: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				code: 'custom',
+				message: 'Invalid input',
+				path: ['chainId'],
+			},
+		],
+	},
+	wrongDpmGetRequest: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				code: 'custom',
+				fatal: true,
+				message: 'Invalid address format',
+				path: ['dpm'],
+			},
+		],
+	},
+	wrongPoolIdGetRequest: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				code: 'custom',
+				fatal: true,
+				message: 'Invalid address format',
+				path: ['poolId'],
+			},
+		],
 	},
 };
 

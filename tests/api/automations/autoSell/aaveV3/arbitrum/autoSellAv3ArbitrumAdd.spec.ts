@@ -3,9 +3,14 @@ import {
 	validPayloadsAaveV3Arbitrum,
 	responses,
 	autoSellWithoutMinSellPriceResponse,
+	postAutomationEndpoint,
 } from 'utils/testData_APIs';
 
-const autoSellEndpoint = '/api/triggers/42161/aave3/auto-sell';
+const autoSellEndpoint = postAutomationEndpoint({
+	network: 'arbitrum',
+	protocol: 'aave3',
+	automation: 'auto-sell',
+});
 
 const validPayloads = validPayloadsAaveV3Arbitrum.autoSell.addWithoutMinSellPrice;
 

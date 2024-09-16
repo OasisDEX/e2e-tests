@@ -3,9 +3,14 @@ import {
 	validPayloadsMorpho,
 	responses,
 	autoBuyWithoutMaxBuyPriceResponse,
+	postAutomationEndpoint,
 } from 'utils/testData_APIs';
 
-const autoBuyEndpoint = '/api/triggers/1/morphoblue/auto-buy';
+const autoBuyEndpoint = postAutomationEndpoint({
+	network: 'ethereum',
+	protocol: 'morphoblue',
+	automation: 'auto-buy',
+});
 
 const validPayloads = validPayloadsMorpho;
 
