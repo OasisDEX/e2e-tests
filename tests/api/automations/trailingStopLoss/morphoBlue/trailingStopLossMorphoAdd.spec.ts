@@ -33,7 +33,18 @@ test.describe('API tests - Trailing Stop-Loss - Add - Morpho Blue - Ethereum', a
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(validResponse);
+		const withWarningResponse = {
+			...validResponse,
+			warnings: [
+				{
+					code: 'stop-loss-makes-auto-sell-not-trigger',
+					message: 'Your stop loss will make the auto-sell not trigger',
+					path: [],
+				},
+			],
+		};
+
+		expect(respJSON).toMatchObject(withWarningResponse);
 	});
 
 	test('Add automation - Close to collateral - Valid payload data', async ({ request }) => {
@@ -49,7 +60,18 @@ test.describe('API tests - Trailing Stop-Loss - Add - Morpho Blue - Ethereum', a
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(validResponse);
+		const withWarningResponse = {
+			...validResponse,
+			warnings: [
+				{
+					code: 'stop-loss-makes-auto-sell-not-trigger',
+					message: 'Your stop loss will make the auto-sell not trigger',
+					path: [],
+				},
+			],
+		};
+
+		expect(respJSON).toMatchObject(withWarningResponse);
 	});
 
 	test('Add automation - Without "dpm"', async ({ request }) => {

@@ -1,4 +1,4 @@
-import { BrowserContext, test } from '@playwright/test';
+import { BrowserContext, expect, test } from '@playwright/test';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Multiply - Swap to Morpho', async () => {
+test.describe('Maker Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,7 +29,7 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('Test setup - Open Maker Mutiply position and start Swap process', async () => {
+	test('Test setup - Open Maker Borrow position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -45,11 +45,11 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'MakerTenderly:true',
 			}));
 		});
 
-		await app.page.goto('/vaults/open-multiply/ETH-C');
+		await app.page.goto('vaults/open/ETH-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -58,6 +58,7 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
+			generate: { token: 'DAI', amount: '5000' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -65,24 +66,24 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 		await swapPosition({
 			app,
 			forkId,
-			reason: 'Switch to higher max Loan To Value',
+			reason: 'Change direction of my position',
 			originalProtocol: 'Maker',
-			targetProtocol: 'Morpho',
-			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
+			targetProtocol: 'Aave V3',
+			targetPool: { colToken: 'SDAI', debtToken: 'ETH' },
 			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-			{ colToken: 'SUSDE', debtToken: 'USDT' },
-			// { colToken: 'SUSDE', debtToken: 'DAI-4' },
+			{ colToken: 'ETH', debtToken: 'DAI' },
+			{ colToken: 'ETH', debtToken: 'USDC' },
+			{ colToken: 'ETH', debtToken: 'USDT' },
+			{ colToken: 'ETH', debtToken: 'WBTC' },
+			// { colToken: 'LDO', debtToken: 'USDT' }, // BUG - 15943 - NOT working
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -90,20 +91,22 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 
 			test.setTimeout(longTestTimeout);
 
-			// Wait an reload to avoid flakiness
-			await app.page.waitForTimeout(1000);
-			await app.page.reload();
+			await expect(async () => {
+				// Wait an reload to avoid flakiness
+				await app.page.waitForTimeout(1000);
+				await app.page.reload();
 
-			await swapPosition({
-				app,
-				forkId,
-				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Maker',
-				targetProtocol: 'Morpho',
-				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
-				existingDpmAndApproval: true,
-				rejectSwap: true,
-			});
+				await swapPosition({
+					app,
+					forkId,
+					reason: 'Switch to higher max Loan To Value',
+					originalProtocol: 'Maker',
+					targetProtocol: 'Aave V3',
+					targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+					existingDpmAndApproval: true,
+					rejectSwap: true,
+				});
+			}).toPass();
 		})
 	);
 });
