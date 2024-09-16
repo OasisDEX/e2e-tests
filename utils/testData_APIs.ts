@@ -1,5 +1,7 @@
 import { expect } from '#noWalletFixtures';
 
+export const getAutomationEndpoint = '/api/triggers';
+
 export const postAutomationEndpoint = ({
 	network,
 	protocol,
@@ -1453,6 +1455,48 @@ export const responses = {
 			},
 		],
 		warnings: [],
+	},
+	missingChainIdGetRequest: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				code: 'invalid_union',
+				message: 'Invalid input',
+				path: ['chainId'],
+			},
+		],
+	},
+	wrongChainIdGetRequest: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				code: 'custom',
+				message: 'Invalid input',
+				path: ['chainId'],
+			},
+		],
+	},
+	wrongDpmGetRequest: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				code: 'custom',
+				fatal: true,
+				message: 'Invalid address format',
+				path: ['dpm'],
+			},
+		],
+	},
+	wrongPoolIdGetRequest: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				code: 'custom',
+				fatal: true,
+				message: 'Invalid address format',
+				path: ['poolId'],
+			},
+		],
 	},
 };
 
