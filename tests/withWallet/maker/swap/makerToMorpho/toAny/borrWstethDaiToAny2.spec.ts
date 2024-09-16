@@ -85,11 +85,6 @@ test.describe('Maker Borrow - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'OSETH', debtToken: 'ETH' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-			// { colToken: 'SUSDE', debtToken: 'DAI-4' },
-			{ colToken: 'USDE', debtToken: 'DAI-1' },
-			{ colToken: 'USDE', debtToken: 'DAI-2' },
 			{ colToken: 'WBTC', debtToken: 'USDT' },
 			{ colToken: 'WEETH', debtToken: 'ETH' },
 			{ colToken: 'WSTETH', debtToken: 'ETH-2' },

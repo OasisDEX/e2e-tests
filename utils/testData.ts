@@ -104,19 +104,19 @@ export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 // , 'CBETH-USDC' --> NO LIQUIDITY
 
 export const morphoBaseEarnPools = [
-	'BSDETH-ETH',
 	'WSTETH-ETH-2',
 	'CBETH-ETH',
 	// 'WSTETH-ETH-1',  -- NO LIQUIDITY FOR MOST OF THE POOLS
 	// 'EZETH-ETH',
 	// 'WEETH-ETH',
+	// 'BSDETH-ETH',
 ];
 
-export const morphoBaseBorrowPools1 = ['BSDETH-ETH', 'CBETH-ETH', 'WSTETH-ETH-2', 'WSTETH-USDC'];
+export const morphoBaseBorrowPools1 = ['CBETH-ETH', 'WSTETH-ETH-2', 'WSTETH-USDC'];
+// 'BSDETH-ETH', -- NO LIQUIDITY
 
 export const morphoBaseBorrowPools2 = [
 	'ETH-USDC',
-	'BSDETH-ETH',
 	'EZETH-USDC',
 	'AERO-USDC',
 	// 'CBETH-USDC', -- NO LIQUIDITY
