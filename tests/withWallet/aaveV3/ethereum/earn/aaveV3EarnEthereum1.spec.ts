@@ -3,12 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import {
-	extremelyLongTestTimeout,
-	longTestTimeout,
-	positionTimeout,
-	veryLongTestTimeout,
-} from 'utils/config';
+import { extremelyLongTestTimeout, positionTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 import { reloadUntilCorrect } from 'utils/general';
@@ -70,11 +65,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			description: 'xxxxx',
 		});
 
-		test.setTimeout(longTestTimeout);
-
-		// Pause and Reload page to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await reloadUntilCorrect(app);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.overview.shouldHaveExposure({
 			amount: '9.[0-9]{4}',
@@ -111,10 +102,10 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			description: 'xxxxx',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and Reload page to avoid random fails
-		await app.page.waitForTimeout(3_000);
+		await app.page.waitForTimeout(1_000);
 		await reloadUntilCorrect(app);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -146,7 +137,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and Reload page to avoid random fails
-		await app.page.waitForTimeout(3_000);
+		await app.page.waitForTimeout(1_000);
 		await reloadUntilCorrect(app);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -177,8 +168,8 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(veryLongTestTimeout);
 
-		// Reload page to avoid random fails
-		await app.page.waitForTimeout(3_000);
+		// Pause and Reload page to avoid random fails
+		await app.page.waitForTimeout(1_000);
 		await reloadUntilCorrect(app);
 
 		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });

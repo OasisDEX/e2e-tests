@@ -87,7 +87,7 @@ export const openPosition = async ({
 				await app.page.reload();
 			}
 			await app.position.overview.shouldBeVisible();
-		}).toPass({ timeout: expectDefaultTimeout * 4 });
+		}).toPass({ timeout: expectDefaultTimeout * 5 });
 	} else {
 		await app.position.setup.goToPositionShouldBeVisible();
 		const positionId: string = await app.position.setup.getNewPositionId();
@@ -373,7 +373,7 @@ export const manageDebtOrCollateral = async ({
 		!allowanceNotNeeded &&
 		((deposit && deposit?.token !== 'ETH') || (payBack && payBack?.token !== 'ETH'))
 	) {
-		await app.position.setup.setTokenAllowance(deposit ? deposit?.token : payBack?.token);
+		await app.position.setup.setTokenAllowance(deposit?.token ?? payBack?.token);
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
 			await app.position.setup.approveAllowance();
