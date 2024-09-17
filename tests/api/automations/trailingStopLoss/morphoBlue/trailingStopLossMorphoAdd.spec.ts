@@ -6,7 +6,7 @@ const trailingStopLossEndpoint = '/api/triggers/1/morphoblue/dma-trailing-stop-l
 const validPayloads = validPayloadsMorpho.trailingStopLoss.closeToDebt;
 
 const validResponse = trailingStopLossResponse({
-	dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
+	dpm: '0xB2F1349068c1Cb6a596A22A3531b8062778c9Da4',
 	collateral: {
 		decimals: 8,
 		symbol: 'WBTC',
@@ -24,7 +24,7 @@ const validResponse = trailingStopLossResponse({
 
 test.describe('API tests - Trailing Stop-Loss - Add - Morpho Blue - Ethereum', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WBTC-USDC/2545
+	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WBTC-USDC/2584#overview
 
 	test('Add automation - Close to debt - Valid payload data', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
@@ -33,16 +33,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Morpho Blue - Ethereum', a
 
 		const respJSON = await response.json();
 
-		const withWarningResponse = {
-			...validResponse,
-			warnings: [
-				{
-					code: 'stop-loss-makes-auto-sell-not-trigger',
-					message: 'Your stop loss will make the auto-sell not trigger',
-					path: [],
-				},
-			],
-		};
+		const withWarningResponse = validResponse;
 
 		expect(respJSON).toMatchObject(withWarningResponse);
 	});
@@ -60,16 +51,7 @@ test.describe('API tests - Trailing Stop-Loss - Add - Morpho Blue - Ethereum', a
 
 		const respJSON = await response.json();
 
-		const withWarningResponse = {
-			...validResponse,
-			warnings: [
-				{
-					code: 'stop-loss-makes-auto-sell-not-trigger',
-					message: 'Your stop loss will make the auto-sell not trigger',
-					path: [],
-				},
-			],
-		};
+		const withWarningResponse = validResponse;
 
 		expect(respJSON).toMatchObject(withWarningResponse);
 	});

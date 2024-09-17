@@ -1956,7 +1956,7 @@ export const validPayloadsMorpho = {
 	},
 	trailingStopLoss: {
 		closeToDebt: {
-			dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
+			dpm: '0xb2f1349068c1cb6a596a22a3531b8062778c9da4',
 			protocol: 'morphoblue',
 			position: {
 				collateral: '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599',
@@ -1964,7 +1964,7 @@ export const validPayloadsMorpho = {
 			},
 			action: 'add',
 			triggerData: {
-				trailingDistance: '1230000000000',
+				trailingDistance: '4050000000000',
 				poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
 				token: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
