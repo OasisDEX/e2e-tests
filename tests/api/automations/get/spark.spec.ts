@@ -1,33 +1,29 @@
 import { expect, test } from '@playwright/test';
-import { morphoAutoSellGetResponse } from 'utils/apisTestData/automationTriggers/getResponses/morphoAutoSell';
-import { morphoStopLossBuyAndProfitResponse } from 'utils/apisTestData/automationTriggers/getResponses/morphoStopLossBuyAndProfit';
-import { morphoTrailingStopLossResponse } from 'utils/apisTestData/automationTriggers/getResponses/morphoTrailingStopLoss';
+import { sparkAutoSellGetResponse } from 'utils/apisTestData/automationTriggers/getResponses/sparkAutoSell';
+import { sparkStopLossBuyAndProfitResponse } from 'utils/apisTestData/automationTriggers/getResponses/sparkStopLossBuyAndProfit';
+import { sparkTrailingStopLossResponse } from 'utils/apisTestData/automationTriggers/getResponses/sparkTrailingStopLoss';
 import { responses, getAutomationEndpoint } from 'utils/testData_APIs';
 
 const autoSellDefaultParams = {
 	chainId: 1,
-	dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
-	protocol: 'morphoblue',
-	poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
+	dpm: '0xb2f1349068c1cb6a596a22a3531b8062778c9da4',
+	protocol: 'sparkv3',
 	getDetails: true,
 };
 
 const otherAutomationsDefaultParams = {
 	...autoSellDefaultParams,
-	poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+	dpm: '0xce049ff57d4146d5be3a55e60ef4523bb70798b6',
 };
 
 const trailingStopLossParams = {
-	chainId: 1,
-	dpm: '0x7126e8e9c26832b441a560f4283e09f9c51ab605',
-	protocol: 'morphoblue',
-	poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
-	getDetails: true,
+	...autoSellDefaultParams,
+	dpm: '0xff467bc814985c6bcabef2b0a3b3c237cd9be25f',
 };
 
-test.describe('API tests - GET - Auto Sell - Morpho Blue - Ethereum', async () => {
+test.describe('API tests - GET - Auto Sell - Spark', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WBTC-USDC/2545#protection
+	// Position link: https://staging.summer.fi/ethereum/spark/multiply/WSTETH-DAI/2584#protection
 
 	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
@@ -36,7 +32,7 @@ test.describe('API tests - GET - Auto Sell - Morpho Blue - Ethereum', async () =
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(morphoAutoSellGetResponse);
+		expect(respJSON).toMatchObject(sparkAutoSellGetResponse);
 	});
 
 	test('Get automation - Without "chainId"', async ({ request }) => {
@@ -104,9 +100,9 @@ test.describe('API tests - GET - Auto Sell - Morpho Blue - Ethereum', async () =
 	});
 });
 
-test.describe('API tests - GET - Stop-Loss, Auto Buy and Auto Take Profit - Morpho Blue - Ethereum', async () => {
+test.describe('API tests - GET - Stop-Loss, Auto Buy and Auto Take Profit - Spark', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WSTETH-ETH-1/2545#optimization
+	// Position link: https://staging.summer.fi/ethereum/spark/multiply/WSTETH-DAI/2637
 
 	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
@@ -115,7 +111,7 @@ test.describe('API tests - GET - Stop-Loss, Auto Buy and Auto Take Profit - Morp
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(morphoStopLossBuyAndProfitResponse);
+		expect(respJSON).toMatchObject(sparkStopLossBuyAndProfitResponse);
 	});
 
 	test('Get automation - Without "chainId"', async ({ request }) => {
@@ -183,9 +179,9 @@ test.describe('API tests - GET - Stop-Loss, Auto Buy and Auto Take Profit - Morp
 	});
 });
 
-test.describe('API tests - GET - Trailing Stop-Loss - Morpho Blue - Ethereum', async () => {
+test.describe('API tests - GET - Trailing Stop-Loss - Spark', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WBTC-USDC/2592#protection
+	// Position link: https://staging.summer.fi/ethereum/spark/multiply/ETH-DAI/2855#protection
 
 	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
@@ -194,7 +190,7 @@ test.describe('API tests - GET - Trailing Stop-Loss - Morpho Blue - Ethereum', a
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(morphoTrailingStopLossResponse);
+		expect(respJSON).toMatchObject(sparkTrailingStopLossResponse);
 	});
 
 	test('Get automation - Without "chainId"', async ({ request }) => {

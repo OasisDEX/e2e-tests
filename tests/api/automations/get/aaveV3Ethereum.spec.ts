@@ -31,7 +31,7 @@ test.describe('API tests - GET - Auto Sell - Aave V3 - Ethereum', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-GHO/2737#protection
 
-	test('Get automation - Valid payload', async ({ request }) => {
+	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
 			params: autoSellDefaultParams,
 		});
@@ -110,7 +110,7 @@ test.describe('API tests - GET - Auto Buy - Aave V3 - Ethereum', async () => {
 	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
 	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-DAI/1670#optimization
 
-	test('Get automation - Valid payload', async ({ request }) => {
+	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
 			params: autoBuyDefaultParams,
 		});
@@ -189,7 +189,7 @@ test.describe('API tests - GET - Stop-Loss and Auto Take Profit - Aave V3 - Ethe
 	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
 	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1586#optimization
 
-	test('Get automation - Valid payload', async ({ request }) => {
+	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
 			params: stoplossAndTakeProfitDefaultParams,
 		});
@@ -268,7 +268,7 @@ test.describe('API tests - GET - Trailing Stop-Loss - Aave V3 - Ethereum', async
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-DAI/3143#overview
 
-	test('Get automation - Valid payload', async ({ request }) => {
+	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
 			params: trailingStopLossDefaultParams,
 		});

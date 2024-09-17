@@ -25,7 +25,7 @@ test.describe('API tests - GET - Auto Sell and Auto Buy - Aave V3 - Base', async
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/base/aave/v3/multiply/CBETH-USDBC/588#optimization
 
-	test('Get automation - Valid payload', async ({ request }) => {
+	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
 			params: autoSellAndBuyDefaultParams,
 		});
@@ -104,7 +104,7 @@ test.describe('API tests - GET - Stop-Loss and Auto Take Profit - Aave V3 - Base
 	// Old test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/base/aave/v3/borrow/ETH-USDC/677#overview
 
-	test('Get automation - Valid payload', async ({ request }) => {
+	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
 			params: stoplossAndTakeProfitDefaultParams,
 		});
@@ -183,7 +183,7 @@ test.describe('API tests - GET - Trailing Stop-Loss - Aave V3 - Base', async () 
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDBC/815#protection
 
-	test('Get automation - Valid payload', async ({ request }) => {
+	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
 			params: trailingStopLossDefaultParams,
 		});
