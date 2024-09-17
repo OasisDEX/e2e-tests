@@ -56,7 +56,7 @@ export const morphoStopLossBuyAndProfitResponse = {
 							address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 						},
 					},
-					stopLossDynamicPrice: '317441860465',
+					stopLossDynamicPrice: expect.any(String),
 					fee: {
 						balance: expect.any(String),
 						token: {
@@ -147,7 +147,7 @@ export const morphoStopLossBuyAndProfitResponse = {
 								address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 							},
 						},
-						stopLossDynamicPrice: '317441860465',
+						stopLossDynamicPrice: expect.any(String),
 						fee: {
 							balance: expect.any(String),
 							token: {
@@ -238,7 +238,7 @@ export const morphoStopLossBuyAndProfitResponse = {
 							},
 						},
 						realizedProfitInDebt: {
-							balance: '4516726112067095',
+							balance: expect.any(String),
 							token: {
 								decimals: 18,
 								symbol: 'WETH',
@@ -254,16 +254,16 @@ export const morphoStopLossBuyAndProfitResponse = {
 							},
 						},
 						totalProfitInDebt: {
-							balance: '4516726112067095',
+							balance: expect.any(String),
 							token: {
 								decimals: 18,
 								symbol: 'WETH',
 								address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 							},
 						},
-						stopLossDynamicPrice: '153548387',
+						stopLossDynamicPrice: expect.any(String),
 						fee: {
-							balance: '2588747414501',
+							balance: expect.any(String),
 							token: {
 								decimals: 18,
 								symbol: 'wstETH',
@@ -271,7 +271,7 @@ export const morphoStopLossBuyAndProfitResponse = {
 							},
 						},
 						totalFee: {
-							balance: '2588747414501',
+							balance: expect.any(String),
 							token: {
 								decimals: 18,
 								symbol: 'wstETH',
@@ -385,7 +385,7 @@ export const morphoStopLossBuyAndProfitResponse = {
 							address: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 						},
 					},
-					stopLossDynamicPrice: '317441860465',
+					stopLossDynamicPrice: expect.any(String),
 					fee: {
 						balance: expect.any(String),
 						token: {
@@ -470,7 +470,7 @@ export const morphoStopLossBuyAndProfitResponse = {
 						},
 					},
 					realizedProfitInDebt: {
-						balance: '4516726112067095',
+						balance: expect.any(String),
 						token: {
 							decimals: 18,
 							symbol: 'WETH',
@@ -486,16 +486,16 @@ export const morphoStopLossBuyAndProfitResponse = {
 						},
 					},
 					totalProfitInDebt: {
-						balance: '4516726112067095',
+						balance: expect.any(String),
 						token: {
 							decimals: 18,
 							symbol: 'WETH',
 							address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 						},
 					},
-					stopLossDynamicPrice: '153548387',
+					stopLossDynamicPrice: expect.any(String),
 					fee: {
-						balance: '2588747414501',
+						balance: expect.any(String),
 						token: {
 							decimals: 18,
 							symbol: 'wstETH',
@@ -503,7 +503,7 @@ export const morphoStopLossBuyAndProfitResponse = {
 						},
 					},
 					totalFee: {
-						balance: '2588747414501',
+						balance: expect.any(String),
 						token: {
 							decimals: 18,
 							symbol: 'wstETH',

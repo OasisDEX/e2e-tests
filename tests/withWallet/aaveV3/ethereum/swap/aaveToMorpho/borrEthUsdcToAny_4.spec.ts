@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
+test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,7 +29,7 @@ test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 	});
 
 	// Create an Aave V3 position as part of the Swap tests setup
-	test('It should open an Aave V3 Multiply position', async () => {
+	test('It should open an Aave V3 Borrow position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -49,7 +49,7 @@ test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 			}));
 		});
 
-		await app.page.goto('/ethereum/aave/v3/multiply/ETH-DAI#setup');
+		await app.page.goto('/ethereum/aave/v3/borrow/ETH-USDC#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -58,6 +58,7 @@ test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
+			borrow: { token: 'USDC', amount: '5000' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -75,13 +76,14 @@ test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'EZETH', debtToken: 'ETH' },
-			{ colToken: 'OSETH', debtToken: 'ETH' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-2' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-3' },
+			{ colToken: 'WSTETH', debtToken: 'USDC' },
+			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap an Aave V3 Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap an Aave V3 Borrow position (ETH/USDC) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
