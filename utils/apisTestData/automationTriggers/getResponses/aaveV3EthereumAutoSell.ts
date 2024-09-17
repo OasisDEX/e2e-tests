@@ -1,0 +1,371 @@
+import { expect } from '#noWalletFixtures';
+
+export const aaveV3EthereumAutoSellGetResponse = {
+	triggers: {
+		aaveBasicSell: {
+			triggerTypeName: 'DmaAaveBasicSellV2',
+			triggerType: '122',
+			triggerId: '10000000646',
+			triggerData:
+				'0x000000000000000000000000b42d970a6424583618d0013e0d6ebb039dd1c945000000000000000000000000000000000000000000000000000000000000007a00000000000000000000000000000000000000000000005150ae84a8cdf0000000000000000000000000000040d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc241646a7573745269736b446f776e414156455633506f736974696f6e5f3600000000000000000000000000000000000000000000000000000000000000001388000000000000000000000000000000000000000000000000000000000000118b00000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000000000000064000000000000000000000000000000000000000000000000000000000000012c',
+			decodedParams: {
+				minSellPrice: '20000000000',
+				positionAddress: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+				triggerType: '122',
+				maxCoverage: '1500000000000000000000',
+				debtToken: '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f',
+				collateralToken: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				operationName: '0x41646a7573745269736b446f776e414156455633506f736974696f6e5f360000',
+				executionLtv: '5000',
+				targetLtv: '4491',
+				deviation: '100',
+				maxBaseFeeInGwei: '300',
+			},
+		},
+		sparkPartialTakeProfit: {
+			triggerTypeName: 'DmaAavePartialTakeProfit',
+			triggerType: '134',
+			triggerId: '10000000664',
+			triggerData:
+				'0x000000000000000000000000b42d970a6424583618d0013e0d6ebb039dd1c945000000000000000000000000000000000000000000000000000000000000008600000000000000000000000000000000000000000000005150ae84a8cdf000000000000000000000000000006b175474e89094c44da98b954eedeac495271d0f0000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca0537061726b57697468647261775f6175746f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007d000000000000000000000000000000000000000000000000000000000000009c40000000000000000000000000000000000000000000000000000008bb2c9700000000000000000000000000000000000000000000000000000000000000000640000000000000000000000000000000000000000000000000000000000000000',
+			decodedParams: {
+				triggerType: '134',
+				positionAddress: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+				maxCoverage: '1500000000000000000000',
+				debtToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
+				collateralToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				operationName: '0x537061726b57697468647261775f6175746f0000000000000000000000000000',
+				withdrawToDebt: 'false',
+				executionLtv: '2000',
+				targetLtv: '2500',
+				deviation: '100',
+				executionPrice: '600000000000',
+			},
+			dynamicParams: {
+				nextProfit: {
+					triggerPrice: '600000000000',
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'wstETH',
+							address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'DAI',
+							address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'wstETH',
+							address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'DAI',
+							address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+						},
+					},
+					fee: {
+						balance: '0',
+						token: {
+							decimals: 18,
+							symbol: 'wstETH',
+							address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+						},
+					},
+					totalFee: {
+						balance: '0',
+						token: {
+							decimals: 18,
+							symbol: 'wstETH',
+							address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+						},
+					},
+					stopLossDynamicPrice: '192554557124',
+				},
+			},
+		},
+		sparkStopLossToCollateralDMA: {
+			triggerTypeName: 'DmaSparkStopLossToCollateralV2',
+			triggerType: '129',
+			triggerId: '10000000665',
+			triggerData:
+				'0x000000000000000000000000b42d970a6424583618d0013e0d6ebb039dd1c945000000000000000000000000000000000000000000000000000000000000008100000000000000000000000000000000000000000000005150ae84a8cdf000000000000000000000000000006b175474e89094c44da98b954eedeac495271d0f0000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca0436c6f7365416e6452656d61696e537061726b506f736974696f6e5f340000000000000000000000000000000000000000000000000000000000000000001e6e',
+			decodedParams: {
+				positionAddress: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+				triggerType: '129',
+				maxCoverage: '1500000000000000000000',
+				executionLtv: '7790',
+				debtToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
+				collateralToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				operationName: '0x436c6f7365416e6452656d61696e537061726b506f736974696f6e5f34000000',
+			},
+		},
+		aave3: {
+			basicSell: {
+				triggerTypeName: 'DmaAaveBasicSellV2',
+				triggerType: '122',
+				triggerId: '10000000646',
+				triggerData:
+					'0x000000000000000000000000b42d970a6424583618d0013e0d6ebb039dd1c945000000000000000000000000000000000000000000000000000000000000007a00000000000000000000000000000000000000000000005150ae84a8cdf0000000000000000000000000000040d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc241646a7573745269736b446f776e414156455633506f736974696f6e5f3600000000000000000000000000000000000000000000000000000000000000001388000000000000000000000000000000000000000000000000000000000000118b00000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000000000000064000000000000000000000000000000000000000000000000000000000000012c',
+				decodedParams: {
+					minSellPrice: '20000000000',
+					positionAddress: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+					triggerType: '122',
+					maxCoverage: '1500000000000000000000',
+					debtToken: '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f',
+					collateralToken: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+					operationName: '0x41646a7573745269736b446f776e414156455633506f736974696f6e5f360000',
+					executionLtv: '5000',
+					targetLtv: '4491',
+					deviation: '100',
+					maxBaseFeeInGwei: '300',
+				},
+			},
+		},
+		spark: {
+			partialTakeProfit: {
+				triggerTypeName: 'DmaAavePartialTakeProfit',
+				triggerType: '134',
+				triggerId: '10000000664',
+				triggerData:
+					'0x000000000000000000000000b42d970a6424583618d0013e0d6ebb039dd1c945000000000000000000000000000000000000000000000000000000000000008600000000000000000000000000000000000000000000005150ae84a8cdf000000000000000000000000000006b175474e89094c44da98b954eedeac495271d0f0000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca0537061726b57697468647261775f6175746f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007d000000000000000000000000000000000000000000000000000000000000009c40000000000000000000000000000000000000000000000000000008bb2c9700000000000000000000000000000000000000000000000000000000000000000640000000000000000000000000000000000000000000000000000000000000000',
+				decodedParams: {
+					triggerType: '134',
+					positionAddress: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+					maxCoverage: '1500000000000000000000',
+					debtToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
+					collateralToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+					operationName: '0x537061726b57697468647261775f6175746f0000000000000000000000000000',
+					withdrawToDebt: 'false',
+					executionLtv: '2000',
+					targetLtv: '2500',
+					deviation: '100',
+					executionPrice: '600000000000',
+				},
+				dynamicParams: {
+					nextProfit: {
+						triggerPrice: '600000000000',
+						realizedProfitInCollateral: {
+							balance: expect.any(String),
+							token: {
+								decimals: 18,
+								symbol: 'wstETH',
+								address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+							},
+						},
+						realizedProfitInDebt: {
+							balance: expect.any(String),
+							token: {
+								decimals: 18,
+								symbol: 'DAI',
+								address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+							},
+						},
+						totalProfitInCollateral: {
+							balance: expect.any(String),
+							token: {
+								decimals: 18,
+								symbol: 'wstETH',
+								address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+							},
+						},
+						totalProfitInDebt: {
+							balance: expect.any(String),
+							token: {
+								decimals: 18,
+								symbol: 'DAI',
+								address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+							},
+						},
+						fee: {
+							balance: '0',
+							token: {
+								decimals: 18,
+								symbol: 'wstETH',
+								address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+							},
+						},
+						totalFee: {
+							balance: '0',
+							token: {
+								decimals: 18,
+								symbol: 'wstETH',
+								address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+							},
+						},
+						stopLossDynamicPrice: '192554557124',
+					},
+				},
+			},
+			stopLossToCollateralDMA: {
+				triggerTypeName: 'DmaSparkStopLossToCollateralV2',
+				triggerType: '129',
+				triggerId: '10000000665',
+				triggerData:
+					'0x000000000000000000000000b42d970a6424583618d0013e0d6ebb039dd1c945000000000000000000000000000000000000000000000000000000000000008100000000000000000000000000000000000000000000005150ae84a8cdf000000000000000000000000000006b175474e89094c44da98b954eedeac495271d0f0000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca0436c6f7365416e6452656d61696e537061726b506f736974696f6e5f340000000000000000000000000000000000000000000000000000000000000000001e6e',
+				decodedParams: {
+					positionAddress: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+					triggerType: '129',
+					maxCoverage: '1500000000000000000000',
+					executionLtv: '7790',
+					debtToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
+					collateralToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+					operationName: '0x436c6f7365416e6452656d61696e537061726b506f736974696f6e5f34000000',
+				},
+			},
+		},
+	},
+	flags: {
+		aave3: {
+			isStopLossEnabled: false,
+			isBasicBuyEnabled: false,
+			isBasicSellEnabled: true,
+			isPartialTakeProfitEnabled: false,
+			isTrailingStopLossEnabled: false,
+		},
+		spark: {
+			isStopLossEnabled: true,
+			isBasicBuyEnabled: false,
+			isBasicSellEnabled: false,
+			isPartialTakeProfitEnabled: true,
+			isTrailingStopLossEnabled: false,
+		},
+		isAaveStopLossEnabled: false,
+		isAaveBasicBuyEnabled: false,
+		isAaveBasicSellEnabled: true,
+		isAavePartialTakeProfitEnabled: false,
+		isSparkStopLossEnabled: true,
+		isSparkBasicBuyEnabled: false,
+		isSparkBasicSellEnabled: false,
+		isSparkPartialTakeProfitEnabled: true,
+	},
+	triggersCount: 3,
+	triggerGroup: {
+		aaveBasicSell: {
+			triggerType: '122',
+			triggerId: '10000000646',
+			triggerData:
+				'0x000000000000000000000000b42d970a6424583618d0013e0d6ebb039dd1c945000000000000000000000000000000000000000000000000000000000000007a00000000000000000000000000000000000000000000005150ae84a8cdf0000000000000000000000000000040d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc241646a7573745269736b446f776e414156455633506f736974696f6e5f3600000000000000000000000000000000000000000000000000000000000000001388000000000000000000000000000000000000000000000000000000000000118b00000000000000000000000000000000000000000000000000000004a817c8000000000000000000000000000000000000000000000000000000000000000064000000000000000000000000000000000000000000000000000000000000012c',
+			decodedParams: {
+				minSellPrice: '20000000000',
+				positionAddress: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+				triggerType: '122',
+				maxCoverage: '1500000000000000000000',
+				debtToken: '0x40d16fc0246ad3160ccc09b8d0d3a2cd28ae6c2f',
+				collateralToken: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+				operationName: '0x41646a7573745269736b446f776e414156455633506f736974696f6e5f360000',
+				executionLtv: '5000',
+				targetLtv: '4491',
+				deviation: '100',
+				maxBaseFeeInGwei: '300',
+			},
+		},
+		sparkPartialTakeProfit: {
+			triggerType: '134',
+			triggerId: '10000000664',
+			triggerData:
+				'0x000000000000000000000000b42d970a6424583618d0013e0d6ebb039dd1c945000000000000000000000000000000000000000000000000000000000000008600000000000000000000000000000000000000000000005150ae84a8cdf000000000000000000000000000006b175474e89094c44da98b954eedeac495271d0f0000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca0537061726b57697468647261775f6175746f000000000000000000000000000000000000000000000000000000000000000000000000000000000000000007d000000000000000000000000000000000000000000000000000000000000009c40000000000000000000000000000000000000000000000000000008bb2c9700000000000000000000000000000000000000000000000000000000000000000640000000000000000000000000000000000000000000000000000000000000000',
+			decodedParams: {
+				triggerType: '134',
+				positionAddress: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+				maxCoverage: '1500000000000000000000',
+				debtToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
+				collateralToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				operationName: '0x537061726b57697468647261775f6175746f0000000000000000000000000000',
+				withdrawToDebt: 'false',
+				executionLtv: '2000',
+				targetLtv: '2500',
+				deviation: '100',
+				executionPrice: '600000000000',
+			},
+			dynamicParams: {
+				nextProfit: {
+					triggerPrice: '600000000000',
+					realizedProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'wstETH',
+							address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+						},
+					},
+					realizedProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'DAI',
+							address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+						},
+					},
+					totalProfitInCollateral: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'wstETH',
+							address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+						},
+					},
+					totalProfitInDebt: {
+						balance: expect.any(String),
+						token: {
+							decimals: 18,
+							symbol: 'DAI',
+							address: '0x6b175474e89094c44da98b954eedeac495271d0f',
+						},
+					},
+					fee: {
+						balance: '0',
+						token: {
+							decimals: 18,
+							symbol: 'wstETH',
+							address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+						},
+					},
+					totalFee: {
+						balance: '0',
+						token: {
+							decimals: 18,
+							symbol: 'wstETH',
+							address: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+						},
+					},
+					stopLossDynamicPrice: '192554557124',
+				},
+			},
+		},
+		sparkStopLoss: {
+			triggerType: '129',
+			triggerId: '10000000665',
+			triggerData:
+				'0x000000000000000000000000b42d970a6424583618d0013e0d6ebb039dd1c945000000000000000000000000000000000000000000000000000000000000008100000000000000000000000000000000000000000000005150ae84a8cdf000000000000000000000000000006b175474e89094c44da98b954eedeac495271d0f0000000000000000000000007f39c581f595b53c5cb19bd0b3f8da6c935e2ca0436c6f7365416e6452656d61696e537061726b506f736974696f6e5f340000000000000000000000000000000000000000000000000000000000000000001e6e',
+			decodedParams: {
+				positionAddress: '0xb42d970a6424583618d0013e0d6ebb039dd1c945',
+				triggerType: '129',
+				maxCoverage: '1500000000000000000000',
+				executionLtv: '7790',
+				debtToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
+				collateralToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
+				operationName: '0x436c6f7365416e6452656d61696e537061726b506f736974696f6e5f34000000',
+			},
+		},
+	},
+	additionalData: {
+		params: {
+			dpm: '0xB42D970a6424583618D0013E0D6eBB039dd1c945',
+			chainId: 1,
+			getDetails: true,
+		},
+	},
+};

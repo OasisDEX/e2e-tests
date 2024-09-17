@@ -1,46 +1,36 @@
 import { expect, test } from '@playwright/test';
-import { morphoAutoSellGetResponse } from 'utils/apisTestData/automationTriggers/getResponses/morphoAutoSell';
-import { morphoStopLossBuyAndProfitResponse } from 'utils/apisTestData/automationTriggers/getResponses/morphoStopLossBuyAndProfit';
-import { morphoTrailingStopLossResponse } from 'utils/apisTestData/automationTriggers/getResponses/morphoTrailingStopLoss';
+import { aaveV3OptimismStopLossSellBuyAndProfitResponse } from 'utils/apisTestData/automationTriggers/getResponses/aaveV3OptimismStopLossSellBuyAndProfit';
+import { aaveV3OptimismTrailingStopLossGetResponse } from 'utils/apisTestData/automationTriggers/getResponses/aaveV3OptimismTrailingStopLoss';
 import { responses, getAutomationEndpoint } from 'utils/testData_APIs';
 
-const autoSellDefaultParams = {
-	chainId: 1,
-	dpm: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
-	protocol: 'morphoblue',
-	poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
+const trailingStopLossDefaultParams = {
+	chainId: 10,
+	dpm: '0xc213d697c81e15a2422701c653dc4b9bcad47530',
+	protocol: 'aavev3',
 	getDetails: true,
 };
 
 const otherAutomationsDefaultParams = {
-	...autoSellDefaultParams,
-	poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
+	...trailingStopLossDefaultParams,
+	dpm: '0xc4cff680a409ebbd1a73a57f1fac92065e2262d8',
 };
 
-const trailingStopLossParams = {
-	chainId: 1,
-	dpm: '0x7126e8e9c26832b441a560f4283e09f9c51ab605',
-	protocol: 'morphoblue',
-	poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
-	getDetails: true,
-};
-
-test.describe('API tests - GET - Auto Sell - Morpho Blue - Ethereum', async () => {
+test.describe('API tests - GET - Trailing Stop-Loss - Aave V3 - Optimism', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WBTC-USDC/2545#protection
+	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC/386#protection
 
 	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: autoSellDefaultParams,
+			params: trailingStopLossDefaultParams,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(morphoAutoSellGetResponse);
+		expect(respJSON).toMatchObject(aaveV3OptimismTrailingStopLossGetResponse);
 	});
 
 	test('Get automation - Without "chainId"', async ({ request }) => {
-		const { chainId, ...paramsWithoutChainId } = autoSellDefaultParams;
+		const { chainId, ...paramsWithoutChainId } = trailingStopLossDefaultParams;
 
 		const response = await request.get(getAutomationEndpoint, {
 			params: paramsWithoutChainId,
@@ -53,7 +43,7 @@ test.describe('API tests - GET - Auto Sell - Morpho Blue - Ethereum', async () =
 
 	test('Get automation - Wrong data type - "chainId"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...autoSellDefaultParams, chainId: true },
+			params: { ...trailingStopLossDefaultParams, chainId: true },
 		});
 
 		const respJSON = await response.json();
@@ -63,7 +53,7 @@ test.describe('API tests - GET - Auto Sell - Morpho Blue - Ethereum', async () =
 
 	test('Get automation - Wrong value - "chainId"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...autoSellDefaultParams, chainId: 111111 },
+			params: { ...trailingStopLossDefaultParams, chainId: 111111 },
 		});
 
 		const respJSON = await response.json();
@@ -72,7 +62,7 @@ test.describe('API tests - GET - Auto Sell - Morpho Blue - Ethereum', async () =
 	});
 
 	test('Get automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...paramsWithoutDpm } = autoSellDefaultParams;
+		const { dpm, ...paramsWithoutDpm } = trailingStopLossDefaultParams;
 
 		const response = await request.get(getAutomationEndpoint, {
 			params: paramsWithoutDpm,
@@ -85,7 +75,7 @@ test.describe('API tests - GET - Auto Sell - Morpho Blue - Ethereum', async () =
 
 	test('Get automation - Wrong data type - "dpm"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...autoSellDefaultParams, dpm: true },
+			params: { ...trailingStopLossDefaultParams, dpm: true },
 		});
 
 		const respJSON = await response.json();
@@ -95,7 +85,7 @@ test.describe('API tests - GET - Auto Sell - Morpho Blue - Ethereum', async () =
 
 	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...autoSellDefaultParams, dpm: '0xwrong' },
+			params: { ...trailingStopLossDefaultParams, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
@@ -104,9 +94,9 @@ test.describe('API tests - GET - Auto Sell - Morpho Blue - Ethereum', async () =
 	});
 });
 
-test.describe('API tests - GET - Stop-Loss, Auto Buy and Auto Take Profit - Morpho Blue - Ethereum', async () => {
+test.describe('API tests - GET - Stop-Loss, Auto Sell, Auto Take Profit and Auto Buy - Aave V3 - Optimism', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WSTETH-ETH-1/2545#optimization
+	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC/355#protection
 
 	test('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
@@ -115,7 +105,7 @@ test.describe('API tests - GET - Stop-Loss, Auto Buy and Auto Take Profit - Morp
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(morphoStopLossBuyAndProfitResponse);
+		expect(respJSON).toMatchObject(aaveV3OptimismStopLossSellBuyAndProfitResponse);
 	});
 
 	test('Get automation - Without "chainId"', async ({ request }) => {
@@ -175,85 +165,6 @@ test.describe('API tests - GET - Stop-Loss, Auto Buy and Auto Take Profit - Morp
 	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
 			params: { ...otherAutomationsDefaultParams, dpm: '0xwrong' },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
-	});
-});
-
-test.describe('API tests - GET - Trailing Stop-Loss - Morpho Blue - Ethereum', async () => {
-	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WBTC-USDC/2592#protection
-
-	test('Get automation - Valid payload @regression', async ({ request }) => {
-		const response = await request.get(getAutomationEndpoint, {
-			params: trailingStopLossParams,
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(morphoTrailingStopLossResponse);
-	});
-
-	test('Get automation - Without "chainId"', async ({ request }) => {
-		const { chainId, ...paramsWithoutChainId } = trailingStopLossParams;
-
-		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutChainId,
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.missingChainIdGetRequest);
-	});
-
-	test('Get automation - Wrong data type - "chainId"', async ({ request }) => {
-		const response = await request.get(getAutomationEndpoint, {
-			params: { ...trailingStopLossParams, chainId: true },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
-	});
-
-	test('Get automation - Wrong value - "chainId"', async ({ request }) => {
-		const response = await request.get(getAutomationEndpoint, {
-			params: { ...trailingStopLossParams, chainId: 111111 },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
-	});
-
-	test('Get automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...paramsWithoutDpm } = trailingStopLossParams;
-
-		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutDpm,
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
-	});
-
-	test('Get automation - Wrong data type - "dpm"', async ({ request }) => {
-		const response = await request.get(getAutomationEndpoint, {
-			params: { ...trailingStopLossParams, dpm: true },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
-	});
-
-	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
-		const response = await request.get(getAutomationEndpoint, {
-			params: { ...trailingStopLossParams, dpm: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
