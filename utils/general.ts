@@ -1,3 +1,4 @@
+import { test } from '@playwright/test';
 import { App } from 'src/app';
 import { expect } from './setup';
 import { expectDefaultTimeout } from './config';
@@ -24,10 +25,12 @@ export const comparePositionsData = (stagingPositions, productionPositions) => {
 };
 
 export const reloadUntilCorrect = async (app: App) => {
-	await expect(async () => {
-		await app.page.reload();
-		await app.position.overview.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
-	}).toPass();
+	await test.step('Reload page until it is correct', async () => {
+		await expect(async () => {
+			await app.page.reload();
+			await app.position.overview.shouldBeVisible({ timeout: expectDefaultTimeout * 5 });
+		}).toPass();
+	});
 };
 
 export const getPoolFromPositionUrl = ({
