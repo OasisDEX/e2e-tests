@@ -2,7 +2,6 @@ import { expect, test } from '@playwright/test';
 import { aaveV3ArbitrumAutoSellAndBuyGetResponse } from 'utils/apisTestData/automationTriggers/getResponses/aaveV3ArbitrumAutoSellAndBuy';
 import { aaveV3ArbitrumStopLossAndProfitGetResponse } from 'utils/apisTestData/automationTriggers/getResponses/aaveV3ArbitrumStopLossAndProfit';
 import { aaveV3ArbitrumTrailingStopLossGetResponse } from 'utils/apisTestData/automationTriggers/getResponses/aaveV3ArbitrumTrailingStopLoss';
-
 import { responses, getAutomationEndpoint } from 'utils/testData_APIs';
 
 const autoSellAndBuyDefaultParams = {
