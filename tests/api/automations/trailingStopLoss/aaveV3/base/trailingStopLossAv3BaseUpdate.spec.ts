@@ -24,7 +24,7 @@ const validResponse = trailingStopLossResponse({
 });
 
 test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Base', async () => {
-	// New test wallet: 0x10649c79428d718621821Cf6299e91920284743F
+	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDBC/815#protection
 
 	test('Update existing automation - Close to collateral - Valid payload data', async ({
