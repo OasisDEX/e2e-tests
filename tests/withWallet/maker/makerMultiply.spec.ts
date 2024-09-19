@@ -182,18 +182,4 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		});
 		await app.position.setup.orderInformation.shouldHaveFees('[0-9]{1,2}(.[0-9]{1,2})?');
 	});
-
-	// Skipping test as Maker position pages don't open when using forks  and also because of BUG 10547
-	test.skip('It should open a Maker Multiply position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11799',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-		// await app.portfolio.multiply.vaults.first.view();
-		// await app.position.manage.shouldBeVisible('Manage collateral');
-	});
 });

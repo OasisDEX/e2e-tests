@@ -1,7 +1,7 @@
 import { expect, test } from '#noWalletFixtures';
 
 test.describe('No-wallet connected - Rays', async () => {
-	test('It should link to Rays blog and open in new tab  @regression', async ({ app }) => {
+	test('It should link to Rays blog and open in new tab @regression', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
