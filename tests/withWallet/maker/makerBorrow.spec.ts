@@ -134,18 +134,4 @@ test.describe.skip('Maker Borrow - Wallet connected', async () => {
 		// Verify that it has beenopened as 'Borrow' type
 		await app.position.manage.shouldHaveButton({ label: 'ETH' });
 	});
-
-	// Skipping test as Maker position pages don't open when using forks
-	test.skip('It should open a Maker Borrow position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11789',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-		// await app.portfolio.borrow.vaults.first.view();
-		// await app.position.manage.shouldBeVisible('Manage collateral');
-	});
 });

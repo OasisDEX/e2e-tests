@@ -131,30 +131,4 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			newSliderPosition: 0.9,
 		});
 	});
-
-	test.skip('It should list an opened Aave v3 Multiply Ethereum position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11770',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-
-		// await app.portfolio.multiply.shouldHaveHeaderCount('1');
-		// await app.portfolio.vaults.first.shouldHave({ assets: 'DAI/WBTC' });
-	});
-
-	test.skip('It should open an Aave v3 Multiply Ethereum position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11771',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		// await app.portfolio.multiply.vaults.first.view();
-		// await app.position.manage.shouldBeVisible('Manage multiply');
-	});
 });

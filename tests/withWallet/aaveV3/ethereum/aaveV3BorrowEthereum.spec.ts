@@ -185,32 +185,4 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			tokenAmountAfterClosing: '[3-8].[0-9]{3,4}',
 		});
 	});
-
-	test.skip('It should list an opened Aave V3 Borrow Ethereum position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11673',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-
-		// await app.header.shouldHavePortfolioCount('1');
-		// await app.portfolio.borrow.shouldHaveHeaderCount('1');
-		// await app.portfolio.borrow.vaults.first.shouldHave({ assets: 'ETH/USDC' });
-	});
-
-	test.skip('It should open an Aave V3 Borrow Ethereum position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11681',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-		// await app.portfolio.borrow.vaults.first.view();
-		// await app.position.manage.shouldBeVisible('Manage collateral');
-	});
 });

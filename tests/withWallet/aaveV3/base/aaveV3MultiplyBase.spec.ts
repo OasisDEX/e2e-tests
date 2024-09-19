@@ -123,30 +123,4 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			tokenAmountAfterClosing: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}([0-9]{1,2})?',
 		});
 	});
-
-	test.skip('It should list an opened Aave v3 Multiply Base position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12467',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-
-		// await app.portfolio.multiply.shouldHaveHeaderCount('1');
-		// await app.portfolio.multiply.vaults.first.shouldHave({ assets: 'CBETH/USDBC' });
-	});
-
-	test.skip('It should open an Aave v3 Multiply Base position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12468',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// await app.portfolio.multiply.vaults.first.view();
-		// await app.position.manage.shouldBeVisible('Manage multiply');
-	});
 });
