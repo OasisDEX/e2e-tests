@@ -145,32 +145,4 @@ test.describe('Maker Earn - Wallet connected', async () => {
 			fee: '\\$[0-9]{1,2}.[0-9]{1,2}',
 		});
 	});
-
-	test.skip('It should list an opened Maker Earn position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11802',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-
-		// await app.portfolio.earn.shouldHaveHeaderCount('1');
-		// await app.portfolio.earn.vaults.first.shouldHave({ assets: 'DAI' });
-	});
-
-	// Skipping test as Maker position pages don't open when using forks and also because of BUG 10547
-	test.skip('It should open a Maker Earn position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11801',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-		// await app.portfolio.earn.vaults.first.view();
-		// await app.position.manage.shouldBeVisible('Manage ');
-	});
 });

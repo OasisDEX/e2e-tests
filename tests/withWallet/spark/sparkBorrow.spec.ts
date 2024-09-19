@@ -179,32 +179,4 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			tokenAmountAfterClosing: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}',
 		});
 	});
-
-	test.skip('It should list an opened Spark Borrow position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11813',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-
-		// await app.header.shouldHavePortfolioCount('1');
-		// await app.portfolio.borrow.shouldHaveHeaderCount('1');
-		// await app.portfolio.borrow.vaults.first.shouldHave({ assets: 'ETH/DAI' });
-	});
-
-	test.skip('It should open an Spark Borrow position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11812',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-		// await app.portfolio.borrow.vaults.first.view();
-		// await app.position.manage.shouldBeVisible('Manage collateral');
-	});
 });
