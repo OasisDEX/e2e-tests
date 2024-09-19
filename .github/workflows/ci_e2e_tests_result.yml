@@ -2,7 +2,7 @@ name: Sending CI E2E tests result to oasis-borrow
 
 on: 
   workflow_run:
-    workflows: [CI E2E tests]
+    workflows: [CI E2E and API tests]
     types: [completed]
 
 jobs:
