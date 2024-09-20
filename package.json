@@ -163,6 +163,8 @@
 		"//-10b": "---------------------- MANUAL TESTING UTILS --------------------------------",
 		"//-10c": "---------------------------------------------------------------",
 		"create-fork": "npx ts-node utilsManualTesting/createFork.ts",
-		"create-fork-github": "npx ts-node utilsManualTesting/createForkGithub.ts"
+		"create-fork-github": "npx ts-node utilsManualTesting/createForkGithub.ts",
+		"create-fork-with-eth": "npx ts-node utilsManualTesting/createForkWithEth.ts",
+		"add-balance": "npx ts-node utilsManualTesting/addBalanceToWallet.ts"
 	}
 }
