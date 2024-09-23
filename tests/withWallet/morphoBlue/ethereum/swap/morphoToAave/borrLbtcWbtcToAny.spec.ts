@@ -30,7 +30,7 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	});
 
 	// Create a Morpho Blue position as part of the Swap tests setup
-	test('It should open a Morpho Blue Borrow position - 2', async () => {
+	test('It should open a Morpho Blue Borrow position - LBTC-WBTC', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -53,12 +53,12 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
+				token: 'LBTC',
+				balance: '50000',
 			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
+		await app.page.goto('/ethereum/morphoblue/borrow/LBTC-WBTC#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -66,18 +66,16 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
-			borrow: { token: 'USDC', amount: '10000' },
+			deposit: { token: 'LBTC', amount: '30000' },
+			borrow: { token: 'WBTC', amount: '0.03' },
 		});
 	});
 
 	(
 		[
-			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			{ colToken: 'WSTETH', debtToken: 'LUSD' },
-			{ colToken: 'WSTETH', debtToken: 'RPL' },
-			{ colToken: 'WSTETH', debtToken: 'USDC' },
-			{ colToken: 'WSTETH', debtToken: 'USDT' },
+			{ colToken: 'RETH', debtToken: 'DAI' },
+			{ colToken: 'RETH', debtToken: 'USDC' },
+			{ colToken: 'RETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Morpho Borrow position (WSTETH/USDC) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {

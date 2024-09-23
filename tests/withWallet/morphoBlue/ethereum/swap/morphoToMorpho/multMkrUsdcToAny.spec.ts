@@ -30,7 +30,7 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 	});
 
 	// Create a Morpho Blue position as part of the Swap tests setup
-	test('It should open a Morpho Blue Borrow position', async () => {
+	test('It should open a Morpho Blue Multiply position - MKR/USDC', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -53,12 +53,12 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
+				token: 'MKR',
+				balance: '20',
 			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
+		await app.page.goto('/ethereum/morphoblue/multiply/MKR-USDC#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -66,8 +66,7 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
-			borrow: { token: 'USDC', amount: '10000' },
+			deposit: { token: 'MKR', amount: '5' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -92,7 +91,7 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Morpho Borrow position (WEETH/ETH) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Morpho Multiply position (MKR/USDC) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',

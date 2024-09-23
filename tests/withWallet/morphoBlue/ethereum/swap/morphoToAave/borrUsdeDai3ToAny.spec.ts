@@ -30,7 +30,7 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	});
 
 	// Create a Morpho Blue position as part of the Swap tests setup
-	test('It should open a Morpho Blue Borrow position', async () => {
+	test('It should open a Morpho Blue Borrow position - USDE/DAI-3#setup', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -53,12 +53,12 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
+				token: 'USDE',
+				balance: '10000',
 			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
+		await app.page.goto('/ethereum/morphoblue/borrow/USDE-DAI-3#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -66,18 +66,19 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
-			borrow: { token: 'USDC', amount: '10000' },
+			deposit: { token: 'USDE', amount: '5000' },
+			borrow: { token: 'DAI', amount: '1000' },
 		});
 	});
 
 	(
 		[
-			{ colToken: 'LINK', debtToken: 'DAI' },
-			{ colToken: 'LINK', debtToken: 'ETH' },
-			{ colToken: 'LINK', debtToken: 'USDC' },
-			{ colToken: 'LINK', debtToken: 'USDT' },
-			// { colToken: 'MKR', debtToken: 'DAI' }, -- MKR supply cap close to 100%
+			{ colToken: 'WBTC', debtToken: 'DAI' },
+			{ colToken: 'WBTC', debtToken: 'ETH' },
+			{ colToken: 'WBTC', debtToken: 'LUSD' },
+			{ colToken: 'WBTC', debtToken: 'USDC' },
+			{ colToken: 'WBTC', debtToken: 'USDT' },
+			{ colToken: 'WSTETH', debtToken: 'CBETH' },
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Morpho Borrow position (WSTETH/USDC) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {

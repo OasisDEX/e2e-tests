@@ -30,7 +30,7 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	});
 
 	// Create a Morpho Blue position as part of the Swap tests setup
-	test('It should open a Morpho Blue Borrow position', async () => {
+	test('It should open a Morpho Blue Borrow position - MKR-/USDC', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -53,12 +53,12 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
+				token: 'MKR',
+				balance: '20',
 			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
+		await app.page.goto('/ethereum/morphoblue/borrow/MKR-USDC#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -66,29 +66,18 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
-			borrow: { token: 'USDC', amount: '10000' },
-		});
-
-		await app.page.waitForTimeout(3000);
-
-		await swapPosition({
-			app,
-			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			originalProtocol: 'Morpho',
-			targetProtocol: 'Aave V3',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
-			upToStep5: true,
+			deposit: { token: 'MKR', amount: '5' },
+			borrow: { token: 'USDC', amount: '1000' },
 		});
 	});
 
 	(
 		[
-			{ colToken: 'CBETH', debtToken: 'USDC' },
-			{ colToken: 'DAI', debtToken: 'ETH' },
-			{ colToken: 'DAI', debtToken: 'MKR' },
-			{ colToken: 'DAI', debtToken: 'WBTC' },
+			{ colToken: 'USDC', debtToken: 'ETH' },
+			{ colToken: 'USDC', debtToken: 'USDT' },
+			{ colToken: 'USDC', debtToken: 'WBTC' },
+			{ colToken: 'USDT', debtToken: 'ETH' },
+			{ colToken: 'USDC', debtToken: 'WSTETH' }, // BUG - 16003
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Morpho Borrow position (WSTETH/USDC) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {

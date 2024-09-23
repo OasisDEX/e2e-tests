@@ -30,7 +30,7 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	});
 
 	// Create a Morpho Blue position as part of the Swap tests setup
-	test('It should open a Morpho Blue Borrow position - 2', async () => {
+	test('It should open a Morpho Blue Borrow position - WBTC/USDT', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -53,12 +53,12 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
+				token: 'WBTC',
+				balance: '2',
 			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
+		await app.page.goto('/ethereum/morphoblue/borrow/WBTC-USDT#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -66,30 +66,18 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
-			borrow: { token: 'USDC', amount: '10000' },
-		});
-
-		await app.page.waitForTimeout(3000);
-
-		await swapPosition({
-			app,
-			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			originalProtocol: 'Morpho',
-			targetProtocol: 'Aave V3',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
-			upToStep5: true,
+			deposit: { token: 'WBTC', amount: '0.2' },
+			borrow: { token: 'USDT', amount: '2000' },
 		});
 	});
 
 	(
 		[
-			{ colToken: 'ETH', debtToken: 'DAI' },
-			{ colToken: 'ETH', debtToken: 'USDC' },
-			{ colToken: 'ETH', debtToken: 'USDT' },
-			{ colToken: 'ETH', debtToken: 'WBTC' },
-			// { colToken: 'LDO', debtToken: 'USDT' }, // BUG - 15943 - NOT working
+			{ colToken: 'LINK', debtToken: 'DAI' },
+			{ colToken: 'LINK', debtToken: 'ETH' },
+			{ colToken: 'LINK', debtToken: 'USDC' },
+			{ colToken: 'LINK', debtToken: 'USDT' },
+			// { colToken: 'MKR', debtToken: 'DAI' }, -- MKR supply cap close to 100%
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Morpho Borrow position (WSTETH/USDC) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {

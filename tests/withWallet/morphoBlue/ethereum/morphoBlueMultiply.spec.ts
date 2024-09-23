@@ -143,7 +143,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		expect(updatedLoanToValue2).toBeLessThan(updatedLoanToValue);
 	});
 
-	test('It should open a Morpho Blue Multiply position @regression', async () => {
+	test('It should open a Morpho Blue Multiply position - WSTETH/USDC @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

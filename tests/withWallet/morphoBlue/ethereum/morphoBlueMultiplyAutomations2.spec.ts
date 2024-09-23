@@ -55,7 +55,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/multiply/WBTC-USDT#setup');
+		await app.page.goto('/ethereum/morphoblue/multiply/WBTC-USDC#setup');
 
 		await openPosition({
 			app,
@@ -83,8 +83,8 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 			verifyTriggerPayload: {
 				protocol: 'morphoblue',
 				collToken: 'mainnetWBTC',
-				debtToken: 'mainnetUSDT',
-				triggerToken: 'mainnetUSDT',
+				debtToken: 'mainnetUSDC',
+				triggerToken: 'mainnetUSDC',
 			},
 		});
 	});
@@ -107,7 +107,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 			verifyTriggerPayload: {
 				protocol: 'morphoblue',
 				collToken: 'mainnetWBTC',
-				debtToken: 'mainnetUSDT',
+				debtToken: 'mainnetUSDC',
 				triggerToken: 'mainnetWBTC',
 			},
 		});
