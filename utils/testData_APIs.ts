@@ -2919,7 +2919,7 @@ export const validPayloadsAaveV3Base = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '5400',
+				executionLTV: '4400',
 				executionPrice: '600000000000',
 				stopLoss: {
 					triggerData: {
