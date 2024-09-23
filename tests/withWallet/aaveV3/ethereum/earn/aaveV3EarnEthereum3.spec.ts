@@ -3,10 +3,9 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { adjustRisk, openPosition } from 'tests/sharedTestSteps/positionManagement';
-import { reloadUntilCorrect } from 'utils/general';
 
 let context: BrowserContext;
 let app: App;
@@ -26,7 +25,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave V3 Earn Ethereum position @regression', async () => {
+	test('It should open an Aave V3 Earn Ethereum position - SDAI-USDT @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11672',
@@ -45,17 +44,17 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '50',
+				token: 'SDAI',
+				balance: '50000',
 			});
 		});
 
-		await app.position.openPage('/ethereum/aave/v3/earn/wsteth-eth#simulate');
+		await app.position.openPage('/ethereum/aave/v3/earn/sdai-usdt#simulate');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'SDAI', amount: '10000' },
 		});
 	});
 
@@ -67,14 +66,11 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await reloadUntilCorrect(app);
-
 		await adjustRisk({
 			forkId,
 			app,
 			earnPosition: true,
+			shortPosition: true,
 			risk: 'up',
 			newSliderPosition: 0.8,
 		});

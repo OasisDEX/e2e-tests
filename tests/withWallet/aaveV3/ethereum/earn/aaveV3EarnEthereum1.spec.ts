@@ -26,7 +26,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave V3 Earn Ethereum position @regression', async () => {
+	test('It should open an Aave V3 Earn Ethereum position - WSTETH-ETH @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11672',

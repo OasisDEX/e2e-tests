@@ -29,7 +29,7 @@ test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 	});
 
 	// Create an Aave V3 position as part of the Swap tests setup
-	test('It should open an Aave V3 Borrow position', async () => {
+	test('It should open an Aave V3 Borrow position - ETH/DAI', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -49,7 +49,7 @@ test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 			}));
 		});
 
-		await app.page.goto('/ethereum/aave/v3/borrow/ETH-USDC#setup');
+		await app.page.goto('/ethereum/aave/v3/borrow/ETH-DAI#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -58,7 +58,7 @@ test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
-			borrow: { token: 'USDC', amount: '5000' },
+			borrow: { token: 'DAI', amount: '5000' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -68,22 +68,19 @@ test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
 			originalProtocol: 'Aave V3',
-			targetProtocol: 'Morpho',
-			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
+			targetProtocol: 'Spark',
+			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
 			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-			// { colToken: 'SUSDE', debtToken: 'DAI-4' },
-			{ colToken: 'SUSDE', debtToken: 'USDT' },
-			{ colToken: 'USDE', debtToken: 'DAI-1' },
-			{ colToken: 'USDE', debtToken: 'DAI-2' },
+			{ colToken: 'ETH', debtToken: 'DAI' },
+			{ colToken: 'SDAI', debtToken: 'ETH' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap an Aave V3 Borrow position (ETH/USDC) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap an Aave V3 Borrow position (ETH/USDC) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -100,7 +97,7 @@ test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
 				originalProtocol: 'Aave V3',
-				targetProtocol: 'Morpho',
+				targetProtocol: 'Spark',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,

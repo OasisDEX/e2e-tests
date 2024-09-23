@@ -3,13 +3,14 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -29,7 +30,7 @@ test.describe('Aave V3 Multiply - Swap to Spark', async () => {
 	});
 
 	// Create an Aave V3 position as part of the Swap tests setup
-	test('It should open an Aave V3 Multiply position', async () => {
+	test('It should open an Aave V3 Multiply position - WSTETH/USDC', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -42,14 +43,22 @@ test.describe('Aave V3 Multiply - Swap to Spark', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({
+			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'EnableRefinance:true',
 			}));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'WSTETH',
+				balance: '20',
+			});
 		});
 
-		await app.page.goto('/ethereum/aave/v3/multiply/ETH-WBTC#setup');
+		await app.page.goto('/ethereum/aave/v3/multiply/WSTETH-USDC#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -57,21 +66,10 @@ test.describe('Aave V3 Multiply - Swap to Spark', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-		});
-	});
-
-	test('It should swap an Aave V3 Multiply position (ETH/WBTC) to Spark Multiply (ETH/DAI)', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
+			deposit: { token: 'WSTETH', amount: '5' },
 		});
 
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// Wait an reload to avoid flakiness
-		await app.page.waitForTimeout(1000);
-		await app.page.reload();
+		await app.page.waitForTimeout(3000);
 
 		await swapPosition({
 			app,
@@ -80,13 +78,39 @@ test.describe('Aave V3 Multiply - Swap to Spark', async () => {
 			originalProtocol: 'Aave V3',
 			targetProtocol: 'Spark',
 			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
-			verifyPositions: {
-				originalPosition: { type: 'Multiply', collateralToken: 'ETH', debtToken: 'DAI' },
-				targetPosition: {
-					exposure: { amount: '1[0-9].[0-9]{2}', token: 'ETH' },
-					debt: { amount: '[2-8],[0-9]{3}.[0-9]{2}', token: 'DAI' },
-				},
-			},
+			upToStep5: true,
 		});
 	});
+
+	(
+		[
+			{ colToken: 'RETH', debtToken: 'DAI' },
+			{ colToken: 'WSTETH', debtToken: 'DAI' },
+			// { colToken: 'WBTC', debtToken: 'DAI' }, -- SPARK WBTC - Not possible to use it as collateral or borrow it
+		] as const
+	).forEach((targetPool) =>
+		test(`It should swap an Aave V3 Multiply position (ETH/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+			test.info().annotations.push({
+				type: 'Test case',
+				description: 'xxx',
+			});
+
+			test.setTimeout(longTestTimeout);
+
+			// Wait an reload to avoid flakiness
+			await app.page.waitForTimeout(1000);
+			await app.page.reload();
+
+			await swapPosition({
+				app,
+				forkId,
+				reason: 'Switch to higher max Loan To Value',
+				originalProtocol: 'Aave V3',
+				targetProtocol: 'Spark',
+				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+				existingDpmAndApproval: true,
+				rejectSwap: true,
+			});
+		})
+	);
 });
