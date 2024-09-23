@@ -25,7 +25,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v3 Multiply Ethereum position @regression', async () => {
+	test('It should open an Aave v3 Multiply Ethereum position - DAI/WBTC @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11769',

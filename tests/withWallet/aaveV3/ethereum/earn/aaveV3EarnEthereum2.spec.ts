@@ -26,7 +26,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave V3 Earn Ethereum position @regression', async () => {
+	test('It should open an Aave V3 Earn Ethereum position - CBETH-ETH @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11672',
@@ -45,17 +45,17 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '50',
+				token: 'CBETH',
+				balance: '20',
 			});
 		});
 
-		await app.position.openPage('/ethereum/aave/v3/earn/wsteth-eth#simulate');
+		await app.position.openPage('/ethereum/aave/v3/earn/cbeth-eth#simulate');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'CBETH', amount: '10' },
 			adjustRisk: { positionType: 'Earn', value: 0.5 },
 		});
 	});
@@ -67,10 +67,6 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		});
 
 		test.setTimeout(longTestTimeout);
-
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await reloadUntilCorrect(app);
 
 		await adjustRisk({
 			forkId,

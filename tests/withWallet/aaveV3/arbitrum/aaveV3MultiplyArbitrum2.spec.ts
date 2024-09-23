@@ -10,6 +10,7 @@ import { close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -37,19 +38,27 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({ app, network: 'arbitrum' }));
+			({ forkId, walletAddress } = await setup({ app, network: 'arbitrum' }));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'arbitrum',
+				token: 'WSTETH',
+				balance: '20',
+			});
 		});
 
-		await app.page.goto('/arbitrum/aave/v3/multiply/eth-usdc');
+		await app.page.goto('/arbitrum/aave/v3/multiply/wsteth-dai');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '8.12345' },
+			deposit: { token: 'WSTETH', amount: '8.12345' },
 		});
 	});
 
-	test('It should close an existent Aave V3 Multiply Arbitrum position - Close to debt token (USDC) @regression', async () => {
+	test('It should close an existent Aave V3 Multiply Arbitrum position - Close to debt token (DAI) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12907',
@@ -61,8 +70,8 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			forkId,
 			app,
 			closeTo: 'debt',
-			collateralToken: 'ETH',
-			debtToken: 'USDC',
+			collateralToken: 'WSTETH',
+			debtToken: 'DAI',
 			tokenAmountAfterClosing: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}',
 		});
 	});

@@ -3,17 +3,18 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
+import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Swap to Aave V3', async () => {
+test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -28,11 +29,11 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Maker position as part of the Swap tests setup
-	test('Test setup - Open Maker Borrow position and start Swap process', async () => {
+	// Create a Morpho Blue position as part of the Swap tests setup
+	test('It should open a Morpho Blue Borrow position - WEETH-ETH', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11788, 11790',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -42,53 +43,50 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({
+			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true',
+				extraFeaturesFlags: 'EnableRefinance:true',
 			}));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'WEETH',
+				balance: '20',
+			});
 		});
 
-		await app.page.goto('vaults/open/ETH-C');
+		await app.page.goto('/ethereum/morphoblue/borrow/WEETH-ETH#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
+		await app.position.overview.waitForComponentToBeStable();
 
-		await openMakerPosition({
+		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-			generate: { token: 'DAI', amount: '5000' },
-		});
-
-		await app.page.waitForTimeout(3000);
-
-		await swapPosition({
-			app,
-			forkId,
-			reason: 'Change direction of my position',
-			originalProtocol: 'Maker',
-			targetProtocol: 'Aave V3',
-			targetPool: { colToken: 'SDAI', debtToken: 'ETH' },
-			upToStep5: true,
+			deposit: { token: 'WEETH', amount: '3' },
+			borrow: { token: 'ETH', amount: '1' },
 		});
 	});
 
 	(
 		[
-			{ colToken: 'ETH', debtToken: 'USDC' },
-			{ colToken: 'ETH', debtToken: 'USDT' },
-			{ colToken: 'ETH', debtToken: 'WBTC' },
-			// { colToken: 'LDO', debtToken: 'USDT' }, // BUG - 15943 - NOT working
+			{ colToken: 'WSTETH', debtToken: 'DAI' },
+			{ colToken: 'WSTETH', debtToken: 'LUSD' },
+			{ colToken: 'WSTETH', debtToken: 'RPL' },
+			{ colToken: 'WSTETH', debtToken: 'USDC' },
+			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Morpho Borrow position (WSTETH/USDC) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
 			});
 
-			test.setTimeout(longTestTimeout);
+			test.setTimeout(veryLongTestTimeout);
 
 			await expect(async () => {
 				// Wait an reload to avoid flakiness
@@ -99,7 +97,7 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 					app,
 					forkId,
 					reason: 'Switch to higher max Loan To Value',
-					originalProtocol: 'Maker',
+					originalProtocol: 'Morpho',
 					targetProtocol: 'Aave V3',
 					targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 					existingDpmAndApproval: true,

@@ -2,40 +2,28 @@ export const wEthContractAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 export const usdcContractAddress = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 export const ajnaPoolAddress = '0x3ba6a019ed5541b5f5555d8593080042cf3ae5f4';
 
-export const sparkEthereumMultiplyPools = [
-	'ETH-DAI',
-	'RETH-DAI',
-	'WSTETH-DAI',
-	// 'WBTC-DAI', --> Not possiblt to use WBTC on Spark (as collateral or borrow)
-	'SDAI-ETH',
-	// 'WEETH-DAI', --> WEETH supply 100%
-];
+export const sparkEthereumMultiplyPools = ['ETH-DAI', 'RETH-DAI', 'WSTETH-DAI'];
+// 'WBTC-DAI', --> Not possiblt to use WBTC on Spark (as collateral or borrow)
+// 'WEETH-DAI', --> WEETH supply 100%
+// 'SDAI-ETH'  --> Already tested in /withWallet/spark
 
-export const sparkEthereumEarnPools = [
-	'RETH-ETH',
-	'WSTETH-ETH',
-	'SDAI-USDC',
-	'SDAI-USDT',
-	// 'WEETH-ETH', --> WEETH supply 100%
-];
+export const sparkEthereumEarnPools = ['WSTETH-ETH', 'SDAI-USDC'];
+// 'WEETH-ETH', --> WEETH supply 100%
+// 'RETH-ETH', --> Already tested in /withWallet/spark
+// 'SDAI-USDT', --> Already tested in /withWallet/spark
 
-export const sparkEthereumBorrowPools = [
-	'ETH-DAI',
-	'RETH-DAI',
-	'WSTETH-DAI',
-	// 'WBTC-DAI',  --> Not possiblt to use WBTC on Spark (as collateral or borrow)
-	'SDAI-ETH',
-	// 'WEETH-DAI', --> WEETH supply 100%
-];
+export const sparkEthereumBorrowPools = ['RETH-DAI', 'WSTETH-DAI', 'SDAI-ETH'];
+// 'WBTC-DAI',  --> Not possiblt to use WBTC on Spark (as collateral or borrow)
+// 'WEETH-DAI', --> WEETH supply 100%
+// 'ETH-DAI',  --> Already tested in /withWallet/spark
 
-export const morphoEthereumMultiplyPools = [
-	'WSTETH-USDC',
-	'WSTETH-USDT',
-	'WBTC-USDC',
-	'WBTC-USDT',
-	'MKR-USDC',
-	// 'WSTETH-USDA' --> BUG 15978 - Pool removed for Multiply
-];
+export const morphoEthereumMultiplyPools = [];
+// 'WSTETH-USDC', --> Already tested in /withWallet/morphoBlue
+// 'WBTC-USDT', --> Already tested in /withWallet/morphoBlue
+// 'WBTC-USDC', --> Already tested in /withWallet/morphoBlue
+// 'MKR-USDC' --> Already tested in /withWallet/morphoBlue
+// 'WSTETH-USDT' --> Already tested in /withWallet/morphoBlue
+// 'WSTETH-USDA' --> BUG 15978 - Pool removed for Multiply
 
 export const morphoEthereumEarnPools_1 = [
 	'flagship-ETH',
@@ -44,8 +32,8 @@ export const morphoEthereumEarnPools_1 = [
 	'steakhouse-ETH',
 	'steakhouse-PYUSD',
 	'steakhouse-USDC',
-	'steakhouse-USDT',
 ];
+// 'steakhouse-USDT', --> Already tested in /withWallet/morphoBlue
 
 export const morphoEthereumEarnPools_2 = [
 	'USDE-DAI-1',
@@ -65,39 +53,25 @@ export const morphoEthereumEarnPools_3 = [
 
 export const morphoEthereumEarnPools_4 = ['EZETH-ETH', 'SUSDE-DAI-1', 'SUSDE-DAI-2', 'SUSDE-DAI-3'];
 
-export const morphoEthereumBorrowPools_1 = [
-	'USDE-DAI-1',
-	'USDE-DAI-2',
-	'USDE-DAI-3',
-	'OSETH-ETH',
-	'EZETH-ETH',
-];
+export const morphoEthereumBorrowPools_1 = ['USDE-DAI-2', 'OSETH-ETH', 'EZETH-ETH'];
+// 'USDE-DAI-1', --> Already tested in /withWallet/morphoBlue
+// 'USDE-DAI-3', --> Already tested in /withWallet/morphoBlue
+// 'SUSDE-DAI-1', --> Already tested in /withWallet/morphoBlue
+// 'SUSDE-DAI-2', --> Already tested in /withWallet/morphoBlue
+// 'WSTETH-ETH-1', --> Already tested in /withWallet/morphoBlue
+// 'WSTETH-ETH-3', --> Already tested in /withWallet/morphoBlue
+// 'WSTETH-USDC', --> Already tested in /withWallet/morphoBlue
+// 'WSTETH-USDT', --> Already tested in /withWallet/morphoBlue
+// 'WBTC-USDC',  --> Already tested in /withWallet/morphoBlue
+// 'WBTC-USDT', --> Already tested in /withWallet/morphoBlue
+// 'MKR-USDC', --> Already tested in /withWallet/morphoBlue
+// 'WEETH-ETH', --> Already tested in /withWallet/morphoBlue
 
-export const morphoEthereumBorrowPools_2 = [
-	'SUSDE-DAI-1',
-	'SUSDE-DAI-2',
-	'SUSDE-DAI-3',
-	'SUSDE-DAI-4',
-	'SUSDE-USDT',
-];
+export const morphoEthereumBorrowPools_2 = ['SUSDE-DAI-3', 'SUSDE-DAI-4', 'SUSDE-USDT'];
 
-export const morphoEthereumBorrowPools_3 = [
-	'WSTETH-ETH-1',
-	'WSTETH-ETH-2',
-	'WSTETH-ETH-3',
-	'WSTETH-USDC',
-	'WSTETH-USDT',
-	'WSTETH-USDA',
-];
+export const morphoEthereumBorrowPools_3 = ['WSTETH-ETH-2', 'WSTETH-USDA'];
 
-export const morphoEthereumBorrowPools_4 = [
-	'WBTC-USDC',
-	'WBTC-USDT',
-	'MKR-USDC',
-	'RSETH-ETH',
-	'WOETH-ETH',
-	'WEETH-ETH',
-];
+export const morphoEthereumBorrowPools_4 = ['RSETH-ETH', 'WOETH-ETH'];
 
 export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 // , 'WEETH-USDC' --> WEETH supply 100%
@@ -105,7 +79,7 @@ export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 
 export const morphoBaseEarnPools = [
 	'WSTETH-ETH-2',
-	'CBETH-ETH',
+	// 'CBETH-ETH', --> Already tested in /withWallet/morphoBlue
 	// 'WSTETH-ETH-1',  -- NO LIQUIDITY FOR MOST OF THE POOLS
 	// 'EZETH-ETH',
 	// 'WEETH-ETH',
@@ -114,9 +88,9 @@ export const morphoBaseEarnPools = [
 
 export const morphoBaseBorrowPools1 = ['CBETH-ETH', 'WSTETH-ETH-2', 'WSTETH-USDC'];
 // 'BSDETH-ETH', -- NO LIQUIDITY
+// 'ETH-USDC',  --> Already tested in /withWallet/morphoBlue
 
 export const morphoBaseBorrowPools2 = [
-	'ETH-USDC',
 	'EZETH-USDC',
 	'AERO-USDC',
 	// 'CBETH-USDC', -- NO LIQUIDITY
@@ -125,40 +99,42 @@ export const morphoBaseBorrowPools2 = [
 	// 'WEETH-USDC', -- Supply cap at 100%
 ];
 
-export const aaveV3EthereumEarnPools_1 = ['WSTETH-CBETH', 'CBETH-ETH', 'RETH-ETH'];
+export const aaveV3EthereumEarnPools_1 = ['WSTETH-CBETH', 'RETH-ETH'];
 
-export const aaveV3EthereumEarnPools_2 = ['SDAI-DAI', 'SDAI-LUSD', 'SDAI-USDC', 'SDAI-USDT'];
+export const aaveV3EthereumEarnPools_2 = ['SDAI-DAI', 'SDAI-LUSD', 'SDAI-USDC'];
 
 export const aaveV3EthereumEarnPools_3 = ['USDC-USDT', 'SDAI-FRAX'];
 // 'USDC-GHO', 'SDAI-GHO' -- NO LIQUIDITY - GHO
+// 'SDAI-USDT', --> Already tested in /withWallet/aaveV3
+// 'CBETH-ETH', --> Already tested in /withWallet/aaveV3
 
 export const aaveV3EthereumEarnPools_4 = ['SUSDE-USDT', 'SUSDE-USDC', 'SUSDE-DAI'];
 // , 'WEETH-ETH' --> WEETH supply 100%
 
 export const aaveV3EthereumMultiplyPools_1 = [
-	'ETH-DAI',
 	'ETH-USDC',
 	'ETH-USDT',
 	'ETH-WBTC',
 	// 'ETH-GHO', -- NO LIQUIDITY - GHO
+	// 'ETH-DAI', --> Already tested in /withWallet/aaveV3
 ];
 
 export const aaveV3EthereumMultiplyPools_2 = [
 	'WBTC-DAI',
-	'WBTC-USDC',
 	'WBTC-USDT',
 	'WBTC-LUSD',
-	// 'WBTC-GHO', -- NO LIQUIDITY - GHO
 	'WBTC-ETH',
+	// 'WBTC-GHO', -- NO LIQUIDITY - GHO
+	// 'WBTC-USDC', --> Already tested in /withWallet/aaveV3
 ];
 
 export const aaveV3EthereumMultiplyPools_3 = [
 	'WSTETH-DAI',
-	'WSTETH-USDC',
 	'WSTETH-USDT',
 	'WSTETH-LUSD',
 	'WSTETH-RPL',
 	// 'WSTETH-GHO', --> skipped as there is no GHO liquidity
+	// 'WSTETH-USDC', --> Already tested in /withWallet/aaveV3
 ];
 
 export const aaveV3EthereumMultiplyPools_4 = [
@@ -177,45 +153,45 @@ export const aaveV3EthereumMultiplyPools_6 = [
 	'LINK-DAI',
 	'LINK-USDC',
 	'LINK-USDT',
-	'LINK-ETH',
 	// 'LINK-GHO', --> skipped as there is no GHO liquidity
+	// 'LINK-ETH', --> Already tested in /withWallet/aaveV3
 ];
 
 export const aaveV3EthereumMultiplyPools_7 = [
 	'DAI-ETH',
 	'DAI-MKR',
-	'DAI-WBTC',
 	'SDAI-WBTC',
 	'SDAI-ETH',
+	// 'DAI-WBTC', --> Already tested in /withWallet/aaveV3
 ];
 
 export const aaveV3EthereumMultiplyPools_8 = ['USDC-ETH', 'USDC-WSTETH', 'USDC-WBTC', 'USDT-ETH'];
 
 export const aaveV3EthereumBorrowPools_1 = [
-	'ETH-DAI',
-	'ETH-USDC',
 	'ETH-USDT',
-	// 'ETH-GHO', -- NO LIQUIDITY - GHO
 	'ETH-WBTC',
+	// 'ETH-GHO', -- NO LIQUIDITY - GHO
+	// 'ETH-DAI', --> Already tested in /withWallet/aaveV3
+	// 'ETH-USDC', --> Already tested in /withWallet/aaveV3
+	// 'WBTC-DAI', --> Already tested in /withWallet/aaveV3
+	// 'WSTETH-USDT', --> Already tested in /withWallet/aaveV3
 ];
 
 export const aaveV3EthereumBorrowPools_2 = [
-	'WBTC-DAI',
 	'WBTC-USDC',
 	'WBTC-USDT',
 	'WBTC-LUSD',
-	// 'WBTC-GHO', -- NO LIQUIDITY - GHO
 	'WBTC-ETH',
+	// 'WBTC-GHO', -- NO LIQUIDITY - GHO
 ];
 
 export const aaveV3EthereumBorrowPools_3 = [
 	'WSTETH-DAI',
 	'WSTETH-USDC',
-	'WSTETH-USDT',
 	'WSTETH-LUSD',
-	// 'WSTETH-GHO', -- NO LIQUIDITY - GHO
 	'WSTETH-RPL',
 	'WSTETH-CBETH',
+	// 'WSTETH-GHO', -- NO LIQUIDITY - GHO
 ];
 
 export const aaveV3EthereumBorrowPools_4 = [
@@ -223,11 +199,10 @@ export const aaveV3EthereumBorrowPools_4 = [
 	'RETH-USDC',
 	'RETH-USDT',
 	// 'RETH-GHO', -- NO LIQUIDITY - GHO
-	'RETH-ETH',
 	// 'WEETH-GHO', --> WEETH supply 100%
 ];
 
-export const aaveV3EthereumBorrowPools_5 = ['CBETH-ETH', 'CBETH-USDC', 'CBETH-GHO'];
+export const aaveV3EthereumBorrowPools_5 = ['CBETH-USDC', 'CBETH-GHO'];
 // 'LDO-USDT' skipped as tenderly_setErc20Balance is not working with LDO
 
 export const aaveV3EthereumBorrowPools_6 = [
@@ -244,11 +219,8 @@ export const aaveV3EthereumBorrowPools_6 = [
 export const aaveV3EthereumBorrowPools_7 = [
 	'SDAI-WBTC',
 	'SDAI-ETH',
-	'SDAI-USDC',
 	'SDAI-USDT',
-	'SDAI-LUSD',
 	// 'SDAI-GHO', -- NO LIQUIDITY - GHO
-	'SDAI-FRAX',
 ];
 
 export const aaveV3EthereumBorrowPools_8 = [
@@ -265,17 +237,18 @@ export const aaveV3ArbitrumEarnPools = ['WSTETH-ETH', 'RETH-ETH'];
 
 export const aaveV3ArbitrumMultiplyPools_1 = [
 	'ETH-DAI',
-	'ETH-USDC',
 	'WBTC-DAI',
 	'WBTC-USDC',
 	// 'WEETH-USDC',  --> WEETH supply 100%
+	// 'ETH-USDC', 'WSTETH-DAI' -- Already tested in /withWallet/aaveV3 test suite
 ];
 
-export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-DAI', 'RETH-USDC', 'WSTETH-DAI', 'WSTETH-USDC'];
+export const aaveV3ArbitrumMultiplyPools_2 = ['RETH-DAI', 'RETH-USDC', 'WSTETH-USDC'];
 
 export const aaveV3ArbitrumMultiplyPools_3 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
 
-export const aaveV3ArbitrumBorrowPools_1 = ['ETH-DAI', 'ETH-USDC', 'RETH-DAI', 'RETH-USDC'];
+export const aaveV3ArbitrumBorrowPools_1 = ['ETH-DAI', 'RETH-DAI', 'RETH-USDC'];
+// 'ETH-USDC', -- Already tested in /withWallet/aaveV3 test suite
 
 export const aaveV3ArbitrumBorrowPools_2 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
 
@@ -287,30 +260,33 @@ export const aaveV3ArbitrumBorrowPools_3 = [
 	// 'WEETH-USDC',  --> WEETH supply 100%
 ];
 
-export const aaveV3BaseEarnPools = ['CBETH-ETH', 'WSTETH-ETH'];
+export const aaveV3BaseEarnPools = ['WSTETH-ETH'];
 // , 'WEETH-ETH'  --> WEETH supply 100%
+// 'CBETH-ETH', --> Already tested in /withWallet/aaveV3 test suite
 
 export const aaveV3BaseMultiplyPools = [
 	'ETH-USDC',
 	'ETH-USDBC',
 	'CBETH-USDC',
-	'CBETH-USDBC',
 	'WSTETH-USDC',
 	// 'WEETH-USDC', --> WEETH supply 100%
+	// 'CBETH-USDBC', --> Already tested in /withWallet/aaveV3 test suite
 ];
 
 export const aaveV3BaseBorrowPools = [
 	'ETH-USDC',
-	'ETH-USDBC',
 	'CBETH-USDC',
 	'CBETH-USDBC',
 	'WSTETH-USDC',
 	// 'WEETH-USDC', --> WEETH supply 100%
+	// 'ETH-USDBC', --> Already tested in /withWallet/aaveV3 test suite
 ];
 
-export const aaveV3OptimismEarnPools = ['USDC.E-SUSD', 'USDC-SUSD', 'WSTETH-ETH']; // BUG - 16013
+export const aaveV3OptimismEarnPools = ['USDC.E-SUSD', 'USDC-SUSD', 'WSTETH-ETH'];
+// BUG - 16013
 
-export const aaveV3OptimismMultiplyPools_1 = ['ETH-DAI', 'ETH-USDC', 'ETH-USDC.E', 'WSTETH-DAI'];
+export const aaveV3OptimismMultiplyPools_1 = ['ETH-DAI', 'ETH-USDC.E', 'WSTETH-DAI'];
+// 'ETH-USDC', --> Already tested in /withWallet/aaveV3 test suite
 
 export const aaveV3OptimismMultiplyPools_2 = [
 	'WSTETH-USDC.E',
@@ -325,7 +301,6 @@ export const aaveV3OptimismMultiplyPools_4 = ['USDC.E-ETH', 'USDC.E-WBTC', 'WSTE
 
 export const aaveV3OptimismBorrowPools_1 = [
 	'ETH-DAI',
-	'ETH-USDC',
 	'ETH-USDC.E',
 	'WSTETH-DAI',
 	'WSTETH-USDC',
@@ -334,17 +309,20 @@ export const aaveV3OptimismBorrowPools_1 = [
 	'WBTC-USDC',
 	'WBTC-USDC.E',
 ];
+// 'ETH-USDC', --> Already tested in /withWallet/aaveV3 test suite
 
 export const aaveV3OptimismBorrowPools_2 = [
 	'DAI-ETH',
-	'DAI-WBTC',
 	'USDC-ETH',
 	'USDC-WBTC',
 	'USDC.E-ETH',
 	'USDC.E-WBTC',
 ];
+// 'DAI-WBTC', --> Already tested in /withWallet/aaveV3 test suite
 
-export const aaveV2EthereumMultiplyPools = ['ETH-USDC', 'WBTC-USDC']; // 'STETH-USDC' skipped - Not able to get funds with 'tenderly_setBalance'
+export const aaveV2EthereumMultiplyPools = ['WBTC-USDC'];
+// 'ETH-USDC', -- Already tested in /withWallet/aaveV2 test suite
+// 'STETH-USDC' -- Not able to get funds with 'tenderly_setBalance'
 
 export type Tokens =
 	| 'AERO'
@@ -392,6 +370,7 @@ export type SetBalanceTokens =
 	| 'EZETH'
 	| 'FRAX'
 	| 'GHO'
+	| 'LBTC'
 	| 'LDO'
 	| 'LINK'
 	| 'LUSD'

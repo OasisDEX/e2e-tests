@@ -25,7 +25,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Earn (Yiel Loop) position @regression', async () => {
+	test('It should open a Spark Earn (Yiel Loop) position - RETH/ETH @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12089',
@@ -45,7 +45,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 				walletAddress,
 				network: 'mainnet',
 				token: 'RETH',
-				balance: '100',
+				balance: '10',
 			});
 		});
 

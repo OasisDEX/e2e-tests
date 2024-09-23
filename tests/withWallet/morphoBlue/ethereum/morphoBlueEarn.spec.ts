@@ -25,7 +25,7 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Morpho Blue Earn position @regression', async () => {
+	test('It should open a Morpho Blue Earn position - steakhouse USDT @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

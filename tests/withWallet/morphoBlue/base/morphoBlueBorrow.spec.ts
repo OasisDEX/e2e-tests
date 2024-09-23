@@ -25,7 +25,7 @@ test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Morpho Blue Base Borrow position @regression', async () => {
+	test('It should open a Morpho Blue Base Borrow position - ETH/USDC @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

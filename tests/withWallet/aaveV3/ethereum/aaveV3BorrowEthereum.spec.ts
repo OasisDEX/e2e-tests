@@ -29,7 +29,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave V3 Borrow Ethereum position @regression', async () => {
+	test('It should open an Aave V3 Borrow Ethereum position - WSTETH/USDT @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11682',
@@ -42,21 +42,22 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		app = new App(page);
 
 		({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+
 		await tenderly.setTokenBalance({
 			forkId,
 			network: 'mainnet',
 			walletAddress,
-			token: 'CBETH',
+			token: 'WSTETH',
 			balance: '50',
 		});
 
-		await app.page.goto('/ethereum/aave/v3/borrow/CBETH-ETH#setup');
+		await app.page.goto('/ethereum/aave/v3/borrow/WSTETH-USDT#setup');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '7.5' },
-			borrow: { token: 'ETH', amount: '3' },
+			deposit: { token: 'WSTETH', amount: '7.5' },
+			borrow: { token: 'USDT', amount: '3000' },
 		});
 	});
 
@@ -72,13 +73,13 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			app,
 			forkId,
 			allowanceNotNeeded: true,
-			deposit: { token: 'CBETH', amount: '1.5' },
-			borrow: { token: 'ETH', amount: '2' },
+			deposit: { token: 'WSTETH', amount: '1.5' },
+			borrow: { token: 'USDT', amount: '1000' },
 			expectedCollateralDeposited: {
 				amount: '9.00',
-				token: 'CBETH',
+				token: 'WSTETH',
 			},
-			expectedDebt: { amount: '5.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '4,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'USDT' },
 			protocol: 'Aave V3',
 		});
 	});
@@ -96,13 +97,13 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			withdraw: { token: 'CBETH', amount: '2' },
-			payBack: { token: 'ETH', amount: '1' },
+			withdraw: { token: 'WSTETH', amount: '2' },
+			payBack: { token: 'USDT', amount: '2000' },
 			expectedCollateralDeposited: {
 				amount: '7.00',
-				token: 'CBETH',
+				token: 'WSTETH',
 			},
-			expectedDebt: { amount: '4.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '2,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'USDT' },
 			protocol: 'Aave V3',
 		});
 	});
@@ -115,20 +116,20 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'CBETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
 		await app.position.manage.select('Manage debt');
 
 		await manageDebtOrCollateral({
 			app,
 			forkId,
 			allowanceNotNeeded: true,
-			borrow: { token: 'ETH', amount: '2' },
-			deposit: { token: 'CBETH', amount: '1' },
+			borrow: { token: 'USDT', amount: '3000' },
+			deposit: { token: 'WSTETH', amount: '3' },
 			expectedCollateralDeposited: {
-				amount: '8.0000',
-				token: 'CBETH',
+				amount: '10.00',
+				token: 'WSTETH',
 			},
-			expectedDebt: { amount: '6.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '5,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'USDT' },
 			protocol: 'Aave V3',
 		});
 	});
@@ -144,26 +145,26 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		// Reload page to avoid random fails
 		await app.page.reload();
 
-		await app.position.manage.openManageOptions({ currentLabel: 'CBETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'WSTETH' });
 		await app.position.manage.select('Manage debt');
 		await app.position.manage.payBackDebt();
 
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			payBack: { token: 'ETH', amount: '3' },
-			withdraw: { token: 'CBETH', amount: '1.5' },
+			payBack: { token: 'USDT', amount: '4000' },
+			withdraw: { token: 'WSTETH', amount: '1.5' },
 			expectedCollateralDeposited: {
-				amount: '6.5000',
-				token: 'CBETH',
+				amount: '8.50',
+				token: 'WSTETH',
 			},
-			expectedDebt: { amount: '3.[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+			expectedDebt: { amount: '1,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'USDT' },
 			protocol: 'Aave V3',
 			allowanceNotNeeded: true,
 		});
 	});
 
-	test('It should close an existent Aave V3 Borrow Ethereum position - Close to collateral token (CBETH)', async () => {
+	test('It should close an existent Aave V3 Borrow Ethereum position - Close to collateral token (WSTETH)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12060',
@@ -180,9 +181,9 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			app,
 			positionType: 'Borrow',
 			closeTo: 'collateral',
-			collateralToken: 'CBETH',
-			debtToken: 'ETH',
-			tokenAmountAfterClosing: '[3-8].[0-9]{3,4}',
+			collateralToken: 'WSTETH',
+			debtToken: 'USDT',
+			tokenAmountAfterClosing: '[4-8].[0-9]{3,4}',
 		});
 	});
 });
