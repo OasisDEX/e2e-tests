@@ -14,8 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// SKIPPED - Not possible to use WBTC as collateral or to borrow it for SPARK
-test.describe.skip('Morpho Blue Multiply - Swap to Spark', async () => {
+test.describe('Morpho Blue Multiply - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -31,7 +30,7 @@ test.describe.skip('Morpho Blue Multiply - Swap to Spark', async () => {
 	});
 
 	// Create a Morpho Blue position as part of the Swap tests setup
-	test('It should open a Morpho Blue Multiply position', async () => {
+	test('It should open a Morpho Blue Multiply position - WSTETH/USDT', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -55,7 +54,7 @@ test.describe.skip('Morpho Blue Multiply - Swap to Spark', async () => {
 				walletAddress,
 				network: 'mainnet',
 				token: 'WSTETH',
-				balance: '100',
+				balance: '10',
 			});
 		});
 
@@ -67,11 +66,11 @@ test.describe.skip('Morpho Blue Multiply - Swap to Spark', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
+			deposit: { token: 'WSTETH', amount: '3' },
 		});
 	});
 
-	test('It should swap a Morpho Blue Multiply position (WSTETH/USDT) to Spark Multiply (WBTC/DAI)', async () => {
+	test('It should swap a Morpho Blue Multiply position (WSTETH/USDT) to Spark Multiply (ETH/DAI)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -91,12 +90,12 @@ test.describe.skip('Morpho Blue Multiply - Swap to Spark', async () => {
 				reason: 'Switch to higher max Loan To Value',
 				originalProtocol: 'Morpho',
 				targetProtocol: 'Spark',
-				targetPool: { colToken: 'WBTC', debtToken: 'DAI' },
+				targetPool: { colToken: 'ETH', debtToken: 'DAI' },
 				verifyPositions: {
 					originalPosition: { type: 'Multiply', collateralToken: 'WSTETH', debtToken: 'USDT' },
 					targetPosition: {
-						exposure: { amount: '[0-1].[0-9]{2}([0-9]{1,2})?', token: 'WBTC' },
-						debt: { amount: '[3-7],[0-9]{3}.[0-9]{2}', token: 'DAI' },
+						exposure: { amount: '[2-6].[0-9]{2}([0-9]{1,2})?', token: 'ETH' },
+						debt: { amount: '([0-9],)?[0-9]{3}.[0-9]{2}', token: 'DAI' },
 					},
 				},
 			});

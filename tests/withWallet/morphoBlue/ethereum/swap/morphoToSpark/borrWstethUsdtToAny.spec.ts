@@ -30,7 +30,7 @@ test.describe('Morpho Blue Borrow - Swap to Spark', async () => {
 	});
 
 	// Create a Morpho Blue position as part of the Swap tests setup
-	test('It should open a Morpho Blue Borrow position', async () => {
+	test('It should open a Morpho Blue Borrow position - WSTETH/USDT', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -58,7 +58,7 @@ test.describe('Morpho Blue Borrow - Swap to Spark', async () => {
 			});
 		});
 
-		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
+		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDT#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -66,8 +66,8 @@ test.describe('Morpho Blue Borrow - Swap to Spark', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
-			borrow: { token: 'USDC', amount: '10000' },
+			deposit: { token: 'WSTETH', amount: '5' },
+			borrow: { token: 'USDT', amount: '3000' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -85,11 +85,9 @@ test.describe('Morpho Blue Borrow - Swap to Spark', async () => {
 
 	(
 		[
-			// { colToken: 'ETH', debtToken: 'DAI' },
 			{ colToken: 'RETH', debtToken: 'DAI' },
 			{ colToken: 'SDAI', debtToken: 'ETH' },
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			// { colToken: 'WBTC', debtToken: 'DAI' }, -- SPARK WBTC - Not possible to use it as collateral or borrow it
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Morpho Borrow position (WEETH/ETH) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {

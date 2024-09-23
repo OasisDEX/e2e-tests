@@ -28,11 +28,12 @@ export const sparkEthereumBorrowPools = [
 	// 'WEETH-DAI', --> WEETH supply 100%
 ];
 
-export const morphoEthereumMultiplyPools = ['WSTETH-USDT'];
+export const morphoEthereumMultiplyPools = [];
 // 'WSTETH-USDC', --> Already tested in /withWallet/morphoBlue
 // 'WBTC-USDT', --> Already tested in /withWallet/morphoBlue
 // 'WBTC-USDC', --> Already tested in /withWallet/morphoBlue
 // 'MKR-USDC' --> Already tested in /withWallet/morphoBlue
+// 'WSTETH-USDT' --> Already tested in /withWallet/morphoBlue
 // 'WSTETH-USDA' --> BUG 15978 - Pool removed for Multiply
 
 export const morphoEthereumEarnPools_1 = [
@@ -63,26 +64,25 @@ export const morphoEthereumEarnPools_3 = [
 
 export const morphoEthereumEarnPools_4 = ['EZETH-ETH', 'SUSDE-DAI-1', 'SUSDE-DAI-2', 'SUSDE-DAI-3'];
 
-export const morphoEthereumBorrowPools_1 = ['USDE-DAI-1', 'USDE-DAI-2', 'OSETH-ETH', 'EZETH-ETH'];
+export const morphoEthereumBorrowPools_1 = ['USDE-DAI-2', 'OSETH-ETH', 'EZETH-ETH'];
+// 'USDE-DAI-1', --> Already tested in /withWallet/morphoBlue
 // 'USDE-DAI-3', --> Already tested in /withWallet/morphoBlue
+// 'SUSDE-DAI-1', --> Already tested in /withWallet/morphoBlue
 // 'SUSDE-DAI-2', --> Already tested in /withWallet/morphoBlue
 // 'WSTETH-ETH-1', --> Already tested in /withWallet/morphoBlue
+// 'WSTETH-ETH-3', --> Already tested in /withWallet/morphoBlue
 // 'WSTETH-USDC', --> Already tested in /withWallet/morphoBlue
+// 'WSTETH-USDT', --> Already tested in /withWallet/morphoBlue
 // 'WBTC-USDC',  --> Already tested in /withWallet/morphoBlue
 // 'WBTC-USDT', --> Already tested in /withWallet/morphoBlue
 // 'MKR-USDC', --> Already tested in /withWallet/morphoBlue
 // 'WEETH-ETH', --> Already tested in /withWallet/morphoBlue
 
-export const morphoEthereumBorrowPools_2 = [
-	'SUSDE-DAI-1',
-	'SUSDE-DAI-3',
-	'SUSDE-DAI-4',
-	'SUSDE-USDT',
-];
+export const morphoEthereumBorrowPools_2 = ['SUSDE-DAI-3', 'SUSDE-DAI-4', 'SUSDE-USDT'];
 
-export const morphoEthereumBorrowPools_3 = ['WSTETH-ETH-2', 'WSTETH-ETH-3', 'WSTETH-USDT'];
+export const morphoEthereumBorrowPools_3 = ['WSTETH-ETH-2', 'WSTETH-USDA'];
 
-export const morphoEthereumBorrowPools_4 = ['RSETH-ETH', 'WOETH-ETH', 'WSTETH-USDA'];
+export const morphoEthereumBorrowPools_4 = ['RSETH-ETH', 'WOETH-ETH'];
 
 export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 // , 'WEETH-USDC' --> WEETH supply 100%
