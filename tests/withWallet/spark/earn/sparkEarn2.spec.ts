@@ -31,7 +31,7 @@ test.describe.skip('Spark Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Earn position @regression', async () => {
+	test('It should open a Spark Earn position - SDAI/USDT @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12089',
