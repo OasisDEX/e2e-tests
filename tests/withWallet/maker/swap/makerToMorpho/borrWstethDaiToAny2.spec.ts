@@ -3,7 +3,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -14,8 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// New spec file that allows running all target pools even if previous ones fail
-test.describe.skip('Maker Borrow - Swap to Spark', async () => {
+test.describe('Maker Borrow - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -31,7 +30,7 @@ test.describe.skip('Maker Borrow - Swap to Spark', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('Test setup - Open Maker Borrow position and start Swap process', async () => {
+	test('It should open a Maker Borrow position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -54,12 +53,12 @@ test.describe.skip('Maker Borrow - Swap to Spark', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WBTC',
-				balance: '20',
+				token: 'WSTETH',
+				balance: '100',
 			});
 		});
 
-		await app.page.goto('vaults/open/WBTC-C');
+		await app.page.goto('/vaults/open/WSTETH-B');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -67,8 +66,8 @@ test.describe.skip('Maker Borrow - Swap to Spark', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '0.2' },
-			generate: { token: 'DAI', amount: '5000' },
+			deposit: { token: 'WSTETH', amount: '10' },
+			generate: { token: 'DAI', amount: '15000' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -78,28 +77,26 @@ test.describe.skip('Maker Borrow - Swap to Spark', async () => {
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
 			originalProtocol: 'Maker',
-			targetProtocol: 'Spark',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
+			targetProtocol: 'Morpho',
+			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
 			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			{ colToken: 'ETH', debtToken: 'DAI' },
-			{ colToken: 'RETH', debtToken: 'DAI' },
-			{ colToken: 'SDAI', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'DAI' },
-			{ colToken: 'WSTETH', debtToken: 'DAI' },
+			{ colToken: 'WBTC', debtToken: 'USDT' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-2' },
+			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Borrow position (WBTC/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (WSTETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
 			});
 
-			test.setTimeout(extremelyLongTestTimeout);
+			test.setTimeout(longTestTimeout);
 
 			// Wait an reload to avoid flakiness
 			await app.page.waitForTimeout(1000);
@@ -110,7 +107,7 @@ test.describe.skip('Maker Borrow - Swap to Spark', async () => {
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
 				originalProtocol: 'Maker',
-				targetProtocol: 'Spark',
+				targetProtocol: 'Morpho',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,

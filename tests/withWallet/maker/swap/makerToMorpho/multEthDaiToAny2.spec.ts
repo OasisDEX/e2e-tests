@@ -10,11 +10,10 @@ import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionM
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Swap to Morpho', async () => {
+test.describe('Maker Multiply - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -30,7 +29,7 @@ test.describe('Maker Borrow - Swap to Morpho', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Maker Borrow position', async () => {
+	test('Test setup - Open Maker Mutiply position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -43,22 +42,14 @@ test.describe('Maker Borrow - Swap to Morpho', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '100',
-			});
 		});
 
-		await app.page.goto('/vaults/open/WSTETH-B');
+		await app.page.goto('/vaults/open-multiply/ETH-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -66,8 +57,7 @@ test.describe('Maker Borrow - Swap to Morpho', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
-			generate: { token: 'DAI', amount: '15000' },
+			deposit: { token: 'ETH', amount: '10' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -85,14 +75,14 @@ test.describe('Maker Borrow - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'OSETH', debtToken: 'ETH' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-			{ colToken: 'USDE', debtToken: 'DAI-1' },
-			{ colToken: 'USDE', debtToken: 'DAI-2' },
-			// { colToken: 'SUSDE', debtToken: 'DAI-4' },
+			{ colToken: 'USDE', debtToken: 'DAI-3' },
+			{ colToken: 'USDE', debtToken: 'DAI-4' },
+			{ colToken: 'WBTC', debtToken: 'USDC' },
+			{ colToken: 'WEETH', debtToken: 'ETH' },
+			{ colToken: 'EZETH', debtToken: 'ETH' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Borrow position (WSTETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',

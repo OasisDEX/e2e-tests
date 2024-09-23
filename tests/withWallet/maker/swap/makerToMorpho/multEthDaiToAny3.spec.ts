@@ -75,11 +75,9 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'OSETH', debtToken: 'ETH' },
-			{ colToken: 'WBTC', debtToken: 'USDC' },
-			{ colToken: 'WBTC', debtToken: 'USDT' },
-			{ colToken: 'WEETH', debtToken: 'ETH' },
-			{ colToken: 'EZETH', debtToken: 'ETH' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-3' },
+			{ colToken: 'WSTETH', debtToken: 'USDC' },
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Maker Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
