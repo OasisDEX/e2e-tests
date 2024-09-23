@@ -29,7 +29,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Multiply Short position @regression', async () => {
+	test('It should open a Spark Multiply Short position - SDAI/ETH @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12463',
