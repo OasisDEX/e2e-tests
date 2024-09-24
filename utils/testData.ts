@@ -71,7 +71,8 @@ export const morphoEthereumBorrowPools_2 = ['SUSDE-DAI-3', 'SUSDE-DAI-4', 'SUSDE
 
 export const morphoEthereumBorrowPools_3 = ['WSTETH-ETH-2', 'WSTETH-USDA', 'SWBTC-WBTC'];
 
-export const morphoEthereumBorrowPools_4 = ['RSETH-ETH', 'WOETH-ETH', 'RSWETH-ETH'];
+export const morphoEthereumBorrowPools_4 = ['WOETH-ETH', 'RSWETH-ETH'];
+// 'RSETH-ETH',  --> NO LIQUIDITY
 
 export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 // , 'WEETH-USDC' --> WEETH supply 100%
