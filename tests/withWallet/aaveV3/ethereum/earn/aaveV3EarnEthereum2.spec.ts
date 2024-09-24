@@ -94,7 +94,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			forkId,
 			positionType: 'Earn (Yield Loop)',
 			closeTo: 'collateral',
-			collateralToken: 'WSTETH',
+			collateralToken: 'CBETH',
 			debtToken: 'ETH',
 			tokenAmountAfterClosing: '[0-9]{2}.[0-9]{1,2}([0-9]{1,2})?',
 		});

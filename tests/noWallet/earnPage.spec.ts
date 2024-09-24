@@ -68,6 +68,8 @@ test.describe('Earn page', async () => {
 
 			if (protocol === 'Maker') {
 				await app.modals.connectWallet.shouldBeVisible();
+			} else if (protocol === 'Sky') {
+				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
 			} else {
 				await app.position.overview.shouldBeVisible();
 			}
@@ -98,6 +100,8 @@ test.describe('Earn page', async () => {
 
 			if (protocol === 'Maker') {
 				await app.modals.connectWallet.shouldBeVisible();
+			} else if (protocol === 'Sky') {
+				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
 			} else {
 				await app.position.overview.shouldBeVisible();
 			}
@@ -132,6 +136,8 @@ test.describe('Earn page', async () => {
 
 			if (protocol === 'Maker') {
 				await app.modals.connectWallet.shouldBeVisible();
+			} else if (protocol === 'Sky') {
+				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
 			} else {
 				await app.position.overview.shouldBeVisible();
 			}
@@ -168,6 +174,8 @@ test.describe('Earn page', async () => {
 
 			if (protocol === 'Maker') {
 				await app.modals.connectWallet.shouldBeVisible();
+			} else if (protocol === 'Sky') {
+				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
 			} else {
 				await app.position.overview.shouldBeVisible();
 			}
@@ -206,6 +214,8 @@ test.describe('Earn page', async () => {
 
 			if (protocol === 'Maker') {
 				await app.modals.connectWallet.shouldBeVisible();
+			} else if (protocol === 'Sky') {
+				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
 			} else {
 				await app.position.overview.shouldBeVisible();
 			}
@@ -246,6 +256,8 @@ test.describe('Earn page', async () => {
 
 			if (protocol === 'Maker') {
 				await app.modals.connectWallet.shouldBeVisible();
+			} else if (protocol === 'Sky') {
+				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
 			} else {
 				await app.position.overview.shouldBeVisible();
 			}
@@ -288,6 +300,8 @@ test.describe('Earn page', async () => {
 
 			if (protocol === 'Maker') {
 				await app.modals.connectWallet.shouldBeVisible();
+			} else if (protocol === 'Sky') {
+				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
 			} else {
 				await app.position.overview.shouldBeVisible();
 			}
