@@ -77,7 +77,6 @@ test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 	(
 		[
 			{ colToken: 'USDE', debtToken: 'DAI-3' },
-			// { colToken: 'USDE', debtToken: 'DAI-4' },
 			{ colToken: 'WBTC', debtToken: 'USDC' },
 			{ colToken: 'WBTC', debtToken: 'USDT' },
 			{ colToken: 'WEETH', debtToken: 'ETH' },

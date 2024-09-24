@@ -116,6 +116,14 @@ export const setup = async ({
 	await wallet.connect(app);
 	await termsAndconditions.accept(app);
 
+	// // Log wallet in database as having accepted ToS
+	// const response = await app.page.request.post('/api/tos', {
+	// 	data: {
+	// 		docVersion: 'version-27.08.2024',
+	// 		walletAddress,
+	// 	},
+	// });
+
 	if (!withoutFork) {
 		const resp = await tenderly.createFork({ network });
 		forkId = resp.data.root_transaction.fork_id;

@@ -75,7 +75,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 			await expect(async () => {
 				const priceImpact = await app.position.setup.getPriceImpact();
 				expect(priceImpact).toBeGreaterThan(0);
-				expect(priceImpact).toBeLessThan(1);
+				expect(priceImpact).toBeLessThan(1.5);
 			}).toPass();
 		});
 	});

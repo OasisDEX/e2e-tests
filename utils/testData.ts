@@ -69,9 +69,9 @@ export const morphoEthereumBorrowPools_1 = ['USDE-DAI-2', 'OSETH-ETH', 'EZETH-ET
 
 export const morphoEthereumBorrowPools_2 = ['SUSDE-DAI-3', 'SUSDE-DAI-4', 'SUSDE-USDT'];
 
-export const morphoEthereumBorrowPools_3 = ['WSTETH-ETH-2', 'WSTETH-USDA'];
+export const morphoEthereumBorrowPools_3 = ['WSTETH-ETH-2', 'WSTETH-USDA', 'SWBTC-WBTC'];
 
-export const morphoEthereumBorrowPools_4 = ['RSETH-ETH', 'WOETH-ETH'];
+export const morphoEthereumBorrowPools_4 = ['RSETH-ETH', 'WOETH-ETH', 'RSWETH-ETH'];
 
 export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 // , 'WEETH-USDC' --> WEETH supply 100%
@@ -351,6 +351,7 @@ export type Tokens =
 	| 'RSETH'
 	| 'SDAI'
 	| 'SUSDE'
+	| 'SWBTC'
 	| 'USDA'
 	| 'USDC'
 	| 'USDC_E'
@@ -379,9 +380,11 @@ export type SetBalanceTokens =
 	| 'PYUSD'
 	| 'RETH'
 	| 'RSETH'
+	| 'RSWETH'
 	| 'SDAI'
 	| 'STETH'
 	| 'SUSDE'
+	| 'SWBTC'
 	| 'USDA'
 	| 'USDC'
 	| 'USDC_E'
@@ -413,9 +416,11 @@ export const depositAmount = {
 	PYUSD: '4000',
 	RETH: '2',
 	RSETH: '2',
+	RSWETH: '2',
 	SDAI: '4000',
 	STETH: '2',
 	SUSDE: '4000',
+	SWBTC: '0.15',
 	TBTC: '100',
 	USDC: '4000',
 	USDC_E: '4000',

@@ -66,7 +66,7 @@ test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'WBTC', amount: '0.1' },
 		});
 
 		await app.page.waitForTimeout(3000);
