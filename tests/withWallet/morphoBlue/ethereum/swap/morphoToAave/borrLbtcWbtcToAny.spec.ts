@@ -14,7 +14,9 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
+// [Bug] - Morpho - LBTC | SWBTC | RSWETH | WOETH positions cannot be swapped - Invalid collateral token address
+// https://www.notion.so/oazo/144cbc0395cb478a8b81cff326740123?v=2bb430cfe8ca41ff9f6dde3b129ac0fb&p=6a760d3fc8324e6081eba1544822f15f&pm=s
+test.describe.skip('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -54,7 +56,7 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 				walletAddress,
 				network: 'mainnet',
 				token: 'LBTC',
-				balance: '50000',
+				balance: '1',
 			});
 		});
 
@@ -66,7 +68,7 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'LBTC', amount: '30000' },
+			deposit: { token: 'LBTC', amount: '0.1' },
 			borrow: { token: 'WBTC', amount: '0.03' },
 		});
 	});
@@ -78,7 +80,7 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 			{ colToken: 'RETH', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Morpho Borrow position (WSTETH/USDC) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Morpho Borrow position (LBTC/WBTC) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',

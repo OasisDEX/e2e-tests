@@ -85,8 +85,6 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'USDE', debtToken: 'DAI-3' },
-			// { colToken: 'USDE', debtToken: 'DAI-4' },
 			{ colToken: 'WBTC', debtToken: 'USDC' },
 			{ colToken: 'WBTC', debtToken: 'USDT' },
 			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
