@@ -10,6 +10,7 @@ import { test, chromium } from '@playwright/test';
 import { initialSetup } from '@synthetixio/synpress/commands/metamask';
 import { prepareMetamask } from '@synthetixio/synpress/helpers';
 import { setExpectInstance } from '@synthetixio/synpress/commands/playwright';
+import { SetBalanceTokens } from './testData';
 
 export const metamaskSetUp = async ({
 	network,
@@ -172,4 +173,93 @@ export const setupNewFork = async ({
 	await tenderly.setTokenBalance({ forkId, walletAddress, network, token: 'ETH', balance: '100' });
 
 	return { forkId };
+};
+
+export const createNewFork = async ({
+	network,
+}: {
+	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+}) => {
+	const resp = await tenderly.createFork({ network });
+	const forkId = resp.data.root_transaction.fork_id;
+
+	return forkId;
+};
+
+export const createAndSetNewFork = async ({
+	walletAddress,
+	network,
+	addTokenBalance,
+	app,
+}: {
+	walletAddress: string;
+	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+	addTokenBalance?: { token: SetBalanceTokens; balance: string };
+	app: App;
+}) => {
+	const chainIds = {
+		arbitrum: 42161,
+		base: 8453,
+		mainnet: 1,
+		optimism: 10,
+	};
+
+	const chainId = chainIds[network];
+
+	const forkId = await createNewFork({ network });
+	console.log('FORK ID:', forkId);
+
+	await tenderly.setTokenBalance({
+		forkId,
+		walletAddress,
+		network,
+		token: 'ETH',
+		balance: '1000',
+	});
+
+	if (addTokenBalance) {
+		await tenderly.setTokenBalance({
+			forkId,
+			network,
+			walletAddress,
+			token: addTokenBalance.token,
+			balance: addTokenBalance.balance,
+		});
+	}
+
+	//
+	console.log('chainId: ', chainId);
+	//
+
+	const newWalletNetwork = {
+		name: 'testFork',
+		rpcUrl: `https://rpc.tenderly.co/fork/${forkId}`,
+		chainId,
+		symbol: 'ETH',
+	};
+
+	await metamask.addNetwork(newWalletNetwork);
+
+	await app.page.evaluate(
+		({
+			forkId,
+			network,
+			chainId,
+		}: {
+			forkId: string;
+			network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+			chainId: number;
+		}) =>
+			window.localStorage.setItem(
+				'ForkNetwork',
+				`{"${
+					network === 'mainnet' ? 'ethereum' : network
+				}": {"url": "https://rpc.tenderly.co/fork/${forkId}", "id": "${chainId}"}}`
+			),
+		{ forkId, network, chainId }
+	);
+
+	await app.page.reload();
+
+	return forkId;
 };
