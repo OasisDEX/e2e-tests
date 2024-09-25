@@ -10,6 +10,7 @@ import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManage
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -29,7 +30,7 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 	});
 
 	// Create a Spark position as part of the Swap tests setup
-	test('It should open a Spark Multiply position', async () => {
+	test('It should open a Spark Multiply position - RETH/DAI', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -42,14 +43,22 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({
+			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'MakerTenderly:true',
 			}));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'RETH',
+				balance: '5',
+			});
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
+		await app.page.goto('/ethereum/spark/multiply/RETH-DAI#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -57,29 +66,19 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-		});
-
-		await app.page.waitForTimeout(3000);
-
-		await swapPosition({
-			app,
-			forkId,
-			reason: 'Switch to higher max Loan To Value',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
-			upToStep5: true,
+			deposit: { token: 'RETH', amount: '3' },
 		});
 	});
 
 	(
 		[
-			{ colToken: 'USDC', debtToken: 'USDT' },
-			{ colToken: 'USDC', debtToken: 'WBTC' },
-			{ colToken: 'USDT', debtToken: 'ETH' },
-			{ colToken: 'USDC', debtToken: 'WSTETH' },
+			{ colToken: 'LINK', debtToken: 'DAI' },
+			{ colToken: 'LINK', debtToken: 'ETH' },
+			{ colToken: 'LINK', debtToken: 'USDC' },
+			{ colToken: 'LINK', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Spark Multiply position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Spark Multiply position (RETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -95,8 +94,6 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
-				// originalProtocol: 'Spark',
-				// targetProtocol: 'Aave V3',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,

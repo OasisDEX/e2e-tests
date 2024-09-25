@@ -2,10 +2,13 @@ export const wEthContractAddress = '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2';
 export const usdcContractAddress = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48';
 export const ajnaPoolAddress = '0x3ba6a019ed5541b5f5555d8593080042cf3ae5f4';
 
-export const sparkEthereumMultiplyPools = ['ETH-DAI', 'RETH-DAI', 'WSTETH-DAI'];
+export const sparkEthereumMultiplyPools = [];
 // 'WBTC-DAI', --> Not possiblt to use WBTC on Spark (as collateral or borrow)
 // 'WEETH-DAI', --> WEETH supply 100%
-// 'SDAI-ETH'  --> Already tested in /withWallet/spark
+// 'SDAI-ETH' --> Already tested in /withWallet/spark
+// 'ETH-DAI', --> Already tested in /withWallet/spark
+// 'RETH-DAI', --> Already tested in /withWallet/spark
+// 'WSTETH-DAI' --> Already tested in /withWallet/spark
 
 export const sparkEthereumEarnPools = ['WSTETH-ETH', 'SDAI-USDC'];
 // 'WEETH-ETH', --> WEETH supply 100%
