@@ -10,10 +10,11 @@ import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManage
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Swap to Aave V3', async () => {
+test.describe('Spark Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,7 +30,7 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 	});
 
 	// Create a Spark position as part of the Swap tests setup
-	test('It should open a Spark Multiply position', async () => {
+	test('It should open a Spark Borrow position - SDAI/ETH', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -42,14 +43,22 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({
+			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'SDAI',
+				balance: '10000',
+			});
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
+		await app.page.goto('/ethereum/spark/borrow/SDAI-ETH#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -57,7 +66,8 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'SDAI', amount: '7000' },
+			borrow: { token: 'ETH', amount: '0.4' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -73,15 +83,14 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'WSTETH', debtToken: 'CBETH' },
-			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			{ colToken: 'WSTETH', debtToken: 'LUSD' },
-			{ colToken: 'WSTETH', debtToken: 'RPL' },
-			{ colToken: 'WSTETH', debtToken: 'USDC' },
-			{ colToken: 'WSTETH', debtToken: 'USDT' },
+			{ colToken: 'WBTC', debtToken: 'DAI' },
+			{ colToken: 'WBTC', debtToken: 'ETH' },
+			{ colToken: 'WBTC', debtToken: 'LUSD' },
+			{ colToken: 'WBTC', debtToken: 'USDC' },
+			{ colToken: 'WBTC', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Spark Multiply position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Spark Borrow position (SDAI/ETH) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',

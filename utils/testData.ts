@@ -15,10 +15,13 @@ export const sparkEthereumEarnPools = ['WSTETH-ETH', 'SDAI-USDC'];
 // 'RETH-ETH', --> Already tested in /withWallet/spark
 // 'SDAI-USDT', --> Already tested in /withWallet/spark
 
-export const sparkEthereumBorrowPools = ['RETH-DAI', 'WSTETH-DAI', 'SDAI-ETH'];
+export const sparkEthereumBorrowPools = [];
 // 'WBTC-DAI',  --> Not possiblt to use WBTC on Spark (as collateral or borrow)
 // 'WEETH-DAI', --> WEETH supply 100%
+// 'SDAI-ETH' --> Already tested in /withWallet/spark
 // 'ETH-DAI',  --> Already tested in /withWallet/spark
+// 'RETH-DAI', --> Already tested in /withWallet/spark
+// 'WSTETH-DAI' --> Already tested in /withWallet/spark
 
 export const morphoEthereumMultiplyPools = [];
 // 'WSTETH-USDC', --> Already tested in /withWallet/morphoBlue
