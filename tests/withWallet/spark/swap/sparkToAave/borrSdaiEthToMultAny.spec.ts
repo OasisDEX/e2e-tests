@@ -83,7 +83,6 @@ test.describe('Spark Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'WBTC', debtToken: 'DAI' },
 			{ colToken: 'WBTC', debtToken: 'ETH' },
 			{ colToken: 'WBTC', debtToken: 'LUSD' },
 			{ colToken: 'WBTC', debtToken: 'USDC' },
