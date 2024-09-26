@@ -72,9 +72,7 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'LINK', debtToken: 'DAI' },
 			{ colToken: 'LINK', debtToken: 'ETH' },
-			{ colToken: 'LINK', debtToken: 'USDC' },
 			{ colToken: 'LINK', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>

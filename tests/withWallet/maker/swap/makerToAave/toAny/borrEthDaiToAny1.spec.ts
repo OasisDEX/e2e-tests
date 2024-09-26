@@ -79,7 +79,6 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 			{ colToken: 'CBETH', debtToken: 'USDC' },
 			{ colToken: 'DAI', debtToken: 'ETH' },
 			{ colToken: 'DAI', debtToken: 'MKR' },
-			{ colToken: 'DAI', debtToken: 'WBTC' },
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {

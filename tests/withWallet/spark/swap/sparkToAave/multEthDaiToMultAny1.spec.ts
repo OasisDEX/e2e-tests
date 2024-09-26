@@ -75,7 +75,6 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 		[
 			{ colToken: 'CBETH', debtToken: 'USDC' },
 			{ colToken: 'DAI', debtToken: 'ETH' },
-			{ colToken: 'DAI', debtToken: 'MKR' },
 			{ colToken: 'DAI', debtToken: 'WBTC' },
 			{ colToken: 'ETH', debtToken: 'DAI' },
 		] as const

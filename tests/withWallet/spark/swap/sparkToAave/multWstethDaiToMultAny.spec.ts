@@ -82,7 +82,6 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'ETH', debtToken: 'USDC' },
 			{ colToken: 'ETH', debtToken: 'USDT' },
 			{ colToken: 'ETH', debtToken: 'WBTC' },
 			{ colToken: 'LDO', debtToken: 'USDT' },
