@@ -79,7 +79,6 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
-			existingDPM: true,
 			deposit: { token: 'ETH', amount: '10' },
 			protocol: 'Ajna',
 		});

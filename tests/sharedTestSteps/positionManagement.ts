@@ -2,9 +2,10 @@ import { expect, test } from '@playwright/test';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { expectDefaultTimeout, longTestTimeout, positionTimeout } from 'utils/config';
-import { Tokens } from 'utils/testData';
+import { SetBalanceTokens, Tokens } from 'utils/testData';
 import { Reason } from 'src/pages/position/swap';
 import { confirmAddToken } from './makerConfirmTx';
+import { createAndSetNewFork } from 'utils/setup';
 
 type ActionData = { token: string; amount: string };
 type SwapProtocols = 'Aave V3' | 'Maker' | 'Morpho' | 'Spark';
@@ -13,23 +14,34 @@ type SwapProtocols = 'Aave V3' | 'Maker' | 'Morpho' | 'Spark';
  *
  * @param adjustRisk should be between '0' and '1' both included | 0: far left in slider | 1: far right
  */
-export const openPosition = async ({
+export const openPositionNEW = async ({
+	walletAddress,
+	network,
+	addTokenBalance,
 	app,
-	forkId,
 	deposit,
 	borrow,
-	existingDPM,
 	adjustRisk,
 	protocol,
 }: {
+	walletAddress: string;
+	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+	addTokenBalance?: { token: SetBalanceTokens; balance: string };
 	app: App;
-	forkId: string;
 	deposit: ActionData;
 	borrow?: ActionData;
-	existingDPM?: boolean;
 	adjustRisk?: { positionType?: 'Borrow' | 'Earn'; value: number };
 	protocol?: 'Ajna' | 'Morpho Blue';
 }) => {
+	let forkId: string;
+
+	forkId = await createAndSetNewFork({
+		walletAddress,
+		network,
+		addTokenBalance,
+		app,
+	});
+
 	await app.position.setup.deposit(deposit);
 	if (borrow) {
 		await app.position.setup.borrow(borrow);
@@ -41,7 +53,36 @@ export const openPosition = async ({
 			await app.position.setup.moveSliderOmni({ value: adjustRisk.value });
 		}
 	}
-	if (!existingDPM) {
+
+	const getButtonLabel = async (): Promise<string> => {
+		// Wait for button to be enabled and correct label to be displayed
+		await expect(async () => {
+			const isEnabled = await app.page
+				.locator('p:has-text("Configure your")')
+				.locator('..')
+				.locator('..')
+				.locator('xpath=//following-sibling::div[2]')
+				.getByRole('button')
+				.isEnabled();
+
+			expect(isEnabled).toBeTruthy();
+		}).toPass();
+
+		// Get Button label
+		const label = await app.page
+			.locator('p:has-text("Configure your")')
+			.locator('..')
+			.locator('..')
+			.locator('xpath=//following-sibling::div[2]')
+			.getByRole('button')
+			.innerText();
+
+		return label;
+	};
+
+	const buttonLabel = await getButtonLabel();
+
+	if (buttonLabel === 'Create Smart DeFi account') {
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
@@ -55,7 +96,140 @@ export const openPosition = async ({
 	}
 
 	if (deposit.token !== 'ETH') {
-		if (existingDPM) {
+		if (buttonLabel === `Set ${deposit.token} allowance`) {
+			await app.position.setup.setTokenAllowance(deposit.token);
+		}
+
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.approveAllowanceOrRetry();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+	}
+
+	// Position creation randomly fails - Retry until it's created.
+	await expect(async () => {
+		await app.position.setup.confirmOrRetry();
+		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
+	}).toPass({ timeout: longTestTimeout });
+
+	if (protocol) {
+		// UI sometimes gets stuck after confirming position creation
+		//   - 'Reload' added to avoid flakines
+		await app.page.reload();
+		await app.position.setup.goToPosition();
+		await expect(async () => {
+			const applicationError = app.page.getByText('Aplication error:');
+
+			if (await applicationError.isVisible()) {
+				await app.page.reload();
+			}
+			await app.position.overview.shouldBeVisible();
+		}).toPass({ timeout: expectDefaultTimeout * 5 });
+
+		return { forkId };
+	} else {
+		await app.position.setup.goToPositionShouldBeVisible();
+		const positionId: string = await app.position.setup.getNewPositionId();
+		//
+		await app.page.waitForTimeout(10_000);
+		//
+
+		await expect(async () => {
+			await app.page.goto(positionId);
+			await expect(async () => {
+				const applicationError = app.page.getByText('Aplication error:');
+
+				if (await applicationError.isVisible()) {
+					await app.page.reload();
+				}
+				await app.position.overview.shouldBeVisible();
+			}).toPass({ timeout: expectDefaultTimeout * 5 });
+		}).toPass();
+
+		return { forkId, positionId };
+	}
+};
+
+/**
+ *
+ * @param adjustRisk should be between '0' and '1' both included | 0: far left in slider | 1: far right
+ */
+export const openPosition = async ({
+	app,
+	forkId,
+	deposit,
+	borrow,
+	adjustRisk,
+	protocol,
+}: {
+	app: App;
+	forkId: string;
+	deposit: ActionData;
+	borrow?: ActionData;
+	adjustRisk?: { positionType?: 'Borrow' | 'Earn'; value: number };
+	protocol?: 'Ajna' | 'Morpho Blue';
+}) => {
+	await app.position.setup.deposit(deposit);
+
+	if (borrow) {
+		await app.position.setup.borrow(borrow);
+	}
+
+	if (adjustRisk) {
+		if (adjustRisk?.positionType) {
+			await app.position.setup.moveSlider({ withWallet: true, value: adjustRisk.value });
+		} else {
+			await app.position.setup.moveSliderOmni({ value: adjustRisk.value });
+		}
+	}
+
+	const getButtonLabel = async (): Promise<string> => {
+		// Wait for button to be enabled and correct label to be displayed
+		await expect(async () => {
+			const isEnabled = await app.page
+				.locator('p:has-text("Configure your")')
+				.locator('..')
+				.locator('..')
+				.locator('xpath=//following-sibling::div[2]')
+				.getByRole('button')
+				.isEnabled();
+
+			expect(isEnabled).toBeTruthy();
+		}).toPass();
+
+		// Get Button label
+		const label = await app.page
+			.locator('p:has-text("Configure your")')
+			.locator('..')
+			.locator('..')
+			.locator('xpath=//following-sibling::div[2]')
+			.getByRole('button')
+			.innerText();
+
+		return label;
+	};
+
+	const buttonLabel = await getButtonLabel();
+
+	if (buttonLabel === 'Create Smart DeFi account') {
+		await app.position.setup.createSmartDeFiAccount();
+
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.createSmartDeFiAccount();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+	}
+
+	if (deposit.token !== 'ETH') {
+		if (buttonLabel === `Set ${deposit.token} allowance`) {
 			await app.position.setup.setTokenAllowance(deposit.token);
 		}
 

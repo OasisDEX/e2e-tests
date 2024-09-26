@@ -24,8 +24,8 @@ const validResponse = autoSellWithoutMinSellPriceResponse({
 	// hasStablecoinDebt: true, --> Morpho bug (?) - Waiting for confirmation
 	hasStablecoinDebt: false,
 	executionLTV: '8000',
-	targetLTV: '7300',
-	targetLTVWithDeviation: ['7200', '7400'],
+	targetLTV: '7299',
+	targetLTVWithDeviation: ['7199', '7399'],
 });
 
 test.describe('API tests - Auto-Sell - Update - Morpho Blue - Ethereum', async () => {
@@ -61,7 +61,12 @@ test.describe('API tests - Auto-Sell - Update - Morpho Blue - Ethereum', async (
 
 		expect(respJSON).toMatchObject({
 			...validResponse,
-			simulation: { ...validResponse.simulation, executionLTV: '8100' },
+			simulation: {
+				...validResponse.simulation,
+				executionLTV: '8100',
+				targetLTV: '7300',
+				targetLTVWithDeviation: ['7200', '7400'],
+			},
 			warnings: [],
 		});
 	});
@@ -84,8 +89,8 @@ test.describe('API tests - Auto-Sell - Update - Morpho Blue - Ethereum', async (
 			...validResponse,
 			simulation: {
 				...validResponse.simulation,
-				targetLTV: '7200',
-				targetLTVWithDeviation: ['7100', '7300'],
+				targetLTV: '7199',
+				targetLTVWithDeviation: ['7099', '7299'],
 			},
 			warnings: [],
 		});
