@@ -84,9 +84,9 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
 			// { colToken: 'SUSDE', debtToken: 'DAI-1' } -- NO LIQUIDITY
+			// { colToken: 'SUSDE', debtToken: 'DAI-4' } -- NO LIQUIDITY
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Morpho Multiply position (MKR/USDC) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {

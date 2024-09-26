@@ -3,9 +3,9 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
+import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Swap to Morpho', async () => {
+test.describe('Maker Multiply - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,10 +29,10 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Spark Multiply position', async () => {
+	test('Test setup - Open Maker Mutiply position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: 'xxx',
+			description: '11788, 11790',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -49,12 +49,12 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 			}));
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
+		await app.page.goto('/vaults/open-multiply/ETH-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable();
+		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 
-		await openPosition({
+		await openMakerPosition({
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
@@ -66,7 +66,7 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 			app,
 			forkId,
 			reason: 'Switch to higher max Loan To Value',
-			originalProtocol: 'Spark',
+			originalProtocol: 'Maker',
 			targetProtocol: 'Morpho',
 			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
 			upToStep5: true,
@@ -75,17 +75,20 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'SUSDE', debtToken: 'USDT' },
-			{ colToken: 'USDE', debtToken: 'DAI-1' },
+			{ colToken: 'WOETH', debtToken: 'ETH' },
+			{ colToken: 'WSTETH', debtToken: 'USDC' },
+			{ colToken: 'USDE', debtToken: 'DAI-4' },
+			{ colToken: 'WBTC', debtToken: 'USDC' },
+			{ colToken: 'WEETH', debtToken: 'ETH' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Spark Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
 			});
 
-			test.setTimeout(extremelyLongTestTimeout);
+			test.setTimeout(longTestTimeout);
 
 			// Wait an reload to avoid flakiness
 			await app.page.waitForTimeout(1000);
@@ -95,7 +98,7 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Spark',
+				originalProtocol: 'Maker',
 				targetProtocol: 'Morpho',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
