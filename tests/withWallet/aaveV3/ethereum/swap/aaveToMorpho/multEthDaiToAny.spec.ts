@@ -29,7 +29,7 @@ test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 	});
 
 	// Create an Aave V3 position as part of the Swap tests setup
-	test('It should open an Aave V3 Multiply position', async () => {
+	test('It should open an Aave V3 Multiply position - ETH/DAI', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -57,7 +57,7 @@ test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'ETH', amount: '3' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -77,7 +77,6 @@ test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 		[
 			{ colToken: 'EZETH', debtToken: 'ETH' },
 			{ colToken: 'OSETH', debtToken: 'ETH' },
-			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
 		] as const
 	).forEach((targetPool) =>

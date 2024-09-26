@@ -356,6 +356,7 @@ export type Tokens =
 	| 'RETH'
 	| 'RPL'
 	| 'RSETH'
+	| 'RSWETH'
 	| 'SDAI'
 	| 'SUSDE'
 	| 'SWBTC'
@@ -366,6 +367,7 @@ export type Tokens =
 	| 'USDT'
 	| 'WBTC'
 	| 'WEETH'
+	| 'WOETH'
 	| 'WSTETH';
 
 export type SetBalanceTokens =

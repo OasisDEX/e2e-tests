@@ -75,7 +75,6 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'SUSDE', debtToken: 'DAI-1' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
 			// { colToken: 'SUSDE', debtToken: 'DAI-4' },

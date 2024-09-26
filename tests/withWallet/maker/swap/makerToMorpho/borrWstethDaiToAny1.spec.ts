@@ -83,12 +83,7 @@ test.describe('Maker Borrow - Swap to Morpho', async () => {
 		});
 	});
 
-	(
-		[
-			{ colToken: 'OSETH', debtToken: 'ETH' },
-			{ colToken: 'USDE', debtToken: 'DAI-1' },
-		] as const
-	).forEach((targetPool) =>
+	([{ colToken: 'RSWETH', debtToken: 'ETH' }] as const).forEach((targetPool) =>
 		test(`It should swap a Maker Borrow position (WSTETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',

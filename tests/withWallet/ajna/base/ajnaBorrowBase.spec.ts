@@ -86,7 +86,6 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
-			existingDPM: true,
 			deposit: { token: 'WSTETH', amount: '2' },
 			borrow: { token: 'ETH', amount: '1' },
 		});

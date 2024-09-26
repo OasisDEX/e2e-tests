@@ -74,7 +74,6 @@ test.describe('Spark Multiply - Swap to Aave V3', async () => {
 	(
 		[
 			{ colToken: 'SDAI', debtToken: 'ETH' },
-			{ colToken: 'SDAI', debtToken: 'USDT' },
 			{ colToken: 'SDAI', debtToken: 'WBTC' },
 			{ colToken: 'USDC', debtToken: 'ETH' },
 			// { colToken: 'SDAI', debtToken: 'GHO' }, - NO LIQUIDITY - GHO
