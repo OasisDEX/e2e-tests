@@ -85,7 +85,7 @@ test.describe('Morpho Blue Borrow - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'SUSDE', debtToken: 'USDT' },
+			{ colToken: 'SWBTC', debtToken: 'WBTC' },
 			{ colToken: 'USDE', debtToken: 'DAI-1' },
 			{ colToken: 'USDE', debtToken: 'DAI-2' },
 		] as const

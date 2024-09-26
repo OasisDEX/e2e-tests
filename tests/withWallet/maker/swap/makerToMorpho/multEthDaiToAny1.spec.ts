@@ -77,7 +77,6 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 		[
 			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
 			{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-			{ colToken: 'SUSDE', debtToken: 'USDT' },
 			{ colToken: 'WOETH', debtToken: 'ETH' },
 		] as const
 	).forEach((targetPool) =>
