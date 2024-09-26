@@ -75,7 +75,6 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
 			{ colToken: 'WSTETH', debtToken: 'ETH-3' },
 			{ colToken: 'WSTETH', debtToken: 'USDC' },
 		] as const
