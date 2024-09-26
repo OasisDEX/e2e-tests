@@ -75,6 +75,8 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 
 	(
 		[
+			{ colToken: 'WOETH', debtToken: 'ETH' },
+			{ colToken: 'WSTETH', debtToken: 'USDC' },
 			{ colToken: 'USDE', debtToken: 'DAI-4' },
 			{ colToken: 'WBTC', debtToken: 'USDC' },
 			{ colToken: 'WEETH', debtToken: 'ETH' },

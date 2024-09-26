@@ -347,6 +347,7 @@ export type Tokens =
 	| 'EZETH'
 	| 'FRAX'
 	| 'GHO'
+	| 'LBTC'
 	| 'LDO'
 	| 'LINK'
 	| 'LUSD'
