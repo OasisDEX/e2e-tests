@@ -109,8 +109,9 @@ export const aaveV3EthereumTrailingStopLossResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0x62320F403EA16a143BE7D78485d9e4674C925CC3',
+			account: '0x62320F403EA16a143BE7D78485d9e4674C925CC3',
 			chainId: 1,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},

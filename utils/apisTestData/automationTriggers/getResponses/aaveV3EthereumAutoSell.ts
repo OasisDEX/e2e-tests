@@ -363,8 +363,9 @@ export const aaveV3EthereumAutoSellGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0xB42D970a6424583618D0013E0D6eBB039dd1c945',
+			account: '0xB42D970a6424583618D0013E0D6eBB039dd1c945',
 			chainId: 1,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},
