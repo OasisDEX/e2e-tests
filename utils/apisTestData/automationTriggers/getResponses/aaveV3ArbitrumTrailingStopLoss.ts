@@ -109,8 +109,9 @@ export const aaveV3ArbitrumTrailingStopLossGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0x9a8999d48499743B5CA481210dc568018a3B417a',
+			account: '0x9a8999d48499743B5CA481210dc568018a3B417a',
 			chainId: 42161,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},

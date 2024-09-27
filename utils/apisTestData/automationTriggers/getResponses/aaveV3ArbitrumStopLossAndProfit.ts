@@ -303,8 +303,9 @@ export const aaveV3ArbitrumStopLossAndProfitGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0x5658E378371809d1aEF8749eBAD8D161CD90D33c',
+			account: '0x5658E378371809d1aEF8749eBAD8D161CD90D33c',
 			chainId: 42161,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},

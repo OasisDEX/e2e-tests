@@ -109,8 +109,9 @@ export const aaveV3OptimismTrailingStopLossGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0xC213D697C81E15a2422701C653DC4b9BCAd47530',
+			account: '0xC213D697C81E15a2422701C653DC4b9BCAd47530',
 			chainId: 10,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},

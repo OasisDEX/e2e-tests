@@ -6,19 +6,19 @@ import { responses, getAutomationEndpoint } from 'utils/testData_APIs';
 
 const autoSellAndBuyDefaultParams = {
 	chainId: 42161,
-	dpm: '0x1816c0d0b0a42b9118a53c2f6d0a305ed54ea74c',
+	account: '0x1816c0d0b0a42b9118a53c2f6d0a305ed54ea74c',
 	protocol: 'aavev3',
 	getDetails: true,
 };
 
 const stoplossAndTakeProfitDefaultParams = {
 	...autoSellAndBuyDefaultParams,
-	dpm: '0x5658e378371809d1aef8749ebad8d161cd90d33c',
+	account: '0x5658e378371809d1aef8749ebad8d161cd90d33c',
 };
 
 const trailingStopLossDefaultParams = {
 	...autoSellAndBuyDefaultParams,
-	dpm: '0x9a8999d48499743b5ca481210dc568018a3b417a',
+	account: '0x9a8999d48499743b5ca481210dc568018a3b417a',
 };
 
 test.describe('API tests - GET - Auto Sell and Auto Buy - Aave V3 - Arbitrum', async () => {
@@ -67,36 +67,36 @@ test.describe('API tests - GET - Auto Sell and Auto Buy - Aave V3 - Arbitrum', a
 		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
 	});
 
-	test('Get automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...paramsWithoutDpm } = autoSellAndBuyDefaultParams;
+	test('Get automation - Without "account"', async ({ request }) => {
+		const { account, ...paramsWithoutAccount } = autoSellAndBuyDefaultParams;
 
 		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutDpm,
+			params: paramsWithoutAccount,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong data type - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...autoSellAndBuyDefaultParams, dpm: true },
+			params: { ...autoSellAndBuyDefaultParams, account: true },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong value - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...autoSellAndBuyDefaultParams, dpm: '0xwrong' },
+			params: { ...autoSellAndBuyDefaultParams, account: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 });
 
@@ -146,36 +146,36 @@ test.describe('API tests - GET - Stop-Loss and Auto Take Profit - Aave V3 - Arbi
 		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
 	});
 
-	test('Get automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...paramsWithoutDpm } = stoplossAndTakeProfitDefaultParams;
+	test('Get automation - Without "account"', async ({ request }) => {
+		const { account, ...paramsWithoutAccount } = stoplossAndTakeProfitDefaultParams;
 
 		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutDpm,
+			params: paramsWithoutAccount,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong data type - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...stoplossAndTakeProfitDefaultParams, dpm: true },
+			params: { ...stoplossAndTakeProfitDefaultParams, account: true },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong value - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...stoplossAndTakeProfitDefaultParams, dpm: '0xwrong' },
+			params: { ...stoplossAndTakeProfitDefaultParams, account: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 });
 
@@ -225,35 +225,35 @@ test.describe('API tests - GET - Trailing Stop-Loss - Aave V3 - Arbitrum', async
 		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
 	});
 
-	test('Get automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...paramsWithoutDpm } = trailingStopLossDefaultParams;
+	test('Get automation - Without "account"', async ({ request }) => {
+		const { account, ...paramsWithoutAccount } = trailingStopLossDefaultParams;
 
 		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutDpm,
+			params: paramsWithoutAccount,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong data type - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...trailingStopLossDefaultParams, dpm: true },
+			params: { ...trailingStopLossDefaultParams, account: true },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong value - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...trailingStopLossDefaultParams, dpm: '0xwrong' },
+			params: { ...trailingStopLossDefaultParams, account: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 });

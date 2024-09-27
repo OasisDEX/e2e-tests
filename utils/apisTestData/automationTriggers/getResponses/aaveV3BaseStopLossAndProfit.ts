@@ -303,8 +303,9 @@ export const aaveV3BaseStopLossAndProfitGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0xb3287c2890Ed7EA99Cb4d5D899434bB64997a609',
+			account: '0xb3287c2890Ed7EA99Cb4d5D899434bB64997a609',
 			chainId: 8453,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},

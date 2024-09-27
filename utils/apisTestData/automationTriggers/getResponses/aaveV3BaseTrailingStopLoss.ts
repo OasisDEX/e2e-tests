@@ -109,8 +109,9 @@ export const aaveV3BaseTrailingStopLossGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0xe70c8069627a9C7933362e25F033Ec0771F0f06e',
+			account: '0xe70c8069627a9C7933362e25F033Ec0771F0f06e',
 			chainId: 8453,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},
