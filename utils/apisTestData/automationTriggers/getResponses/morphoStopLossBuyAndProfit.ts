@@ -531,9 +531,10 @@ export const morphoStopLossBuyAndProfitResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
+			account: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
 			poolId: '0xc54d7acf14de29e0e5527cabd7a576506870346a78a11a6762e2cca66322ec41',
 			chainId: 1,
+			protocol: 'morphoblue',
 			getDetails: true,
 		},
 	},

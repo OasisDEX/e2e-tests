@@ -109,8 +109,9 @@ export const sparkTrailingStopLossResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0xFF467BC814985C6bcaBeF2B0A3b3c237cD9Be25f',
+			account: '0xFF467BC814985C6bcaBeF2B0A3b3c237cD9Be25f',
 			chainId: 1,
+			protocol: 'sparkv3',
 			getDetails: true,
 		},
 	},

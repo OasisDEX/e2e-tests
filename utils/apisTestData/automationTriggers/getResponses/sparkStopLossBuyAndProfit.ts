@@ -410,8 +410,9 @@ export const sparkStopLossBuyAndProfitResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0xce049ff57d4146d5bE3a55E60Ef4523bB70798b6',
+			account: '0xce049ff57d4146d5bE3a55E60Ef4523bB70798b6',
 			chainId: 1,
+			protocol: 'sparkv3',
 			getDetails: true,
 		},
 	},

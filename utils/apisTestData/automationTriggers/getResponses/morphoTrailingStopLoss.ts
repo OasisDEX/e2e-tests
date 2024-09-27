@@ -92,9 +92,10 @@ export const morphoTrailingStopLossResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0x7126E8E9C26832B441a560f4283e09f9c51AB605',
+			account: '0x7126E8E9C26832B441a560f4283e09f9c51AB605',
 			poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
 			chainId: 1,
+			protocol: 'morphoblue',
 			getDetails: true,
 		},
 	},
