@@ -335,8 +335,9 @@ export const aaveV3EthereumStopLossAndProfitResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0xB727afF37C480a0FDbA8a6c97fC4FcF3A19f2ac7',
+			account: '0xB727afF37C480a0FDbA8a6c97fC4FcF3A19f2ac7',
 			chainId: 1,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},

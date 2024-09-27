@@ -421,8 +421,9 @@ export const aaveV3OptimismStopLossSellBuyAndProfitResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0xc4CfF680A409Ebbd1A73a57f1FaC92065e2262d8',
+			account: '0xc4CfF680A409Ebbd1A73a57f1FaC92065e2262d8',
 			chainId: 10,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},

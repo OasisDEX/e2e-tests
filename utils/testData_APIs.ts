@@ -1487,6 +1487,17 @@ export const responses = {
 			},
 		],
 	},
+	wrongAccountGetRequest: {
+		message: 'Validation Errors',
+		errors: [
+			{
+				code: 'custom',
+				fatal: true,
+				message: 'Invalid address format',
+				path: ['account'],
+			},
+		],
+	},
 	wrongPoolIdGetRequest: {
 		message: 'Validation Errors',
 		errors: [

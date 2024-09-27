@@ -6,19 +6,19 @@ import { responses, getAutomationEndpoint } from 'utils/testData_APIs';
 
 const autoSellDefaultParams = {
 	chainId: 1,
-	dpm: '0xb2f1349068c1cb6a596a22a3531b8062778c9da4',
+	account: '0xb2f1349068c1cb6a596a22a3531b8062778c9da4',
 	protocol: 'sparkv3',
 	getDetails: true,
 };
 
 const otherAutomationsDefaultParams = {
 	...autoSellDefaultParams,
-	dpm: '0xce049ff57d4146d5be3a55e60ef4523bb70798b6',
+	account: '0xce049ff57d4146d5be3a55e60ef4523bb70798b6',
 };
 
 const trailingStopLossParams = {
 	...autoSellDefaultParams,
-	dpm: '0xff467bc814985c6bcabef2b0a3b3c237cd9be25f',
+	account: '0xff467bc814985c6bcabef2b0a3b3c237cd9be25f',
 };
 
 test.describe('API tests - GET - Auto Sell - Spark', async () => {
@@ -67,36 +67,36 @@ test.describe('API tests - GET - Auto Sell - Spark', async () => {
 		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
 	});
 
-	test('Get automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...paramsWithoutDpm } = autoSellDefaultParams;
+	test('Get automation - Without "account"', async ({ request }) => {
+		const { account, ...paramsWithoutAccount } = autoSellDefaultParams;
 
 		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutDpm,
+			params: paramsWithoutAccount,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong data type - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...autoSellDefaultParams, dpm: true },
+			params: { ...autoSellDefaultParams, account: true },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong value - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...autoSellDefaultParams, dpm: '0xwrong' },
+			params: { ...autoSellDefaultParams, account: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 });
 
@@ -146,36 +146,36 @@ test.describe('API tests - GET - Stop-Loss, Auto Buy and Auto Take Profit - Spar
 		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
 	});
 
-	test('Get automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...paramsWithoutDpm } = otherAutomationsDefaultParams;
+	test('Get automation - Without "account"', async ({ request }) => {
+		const { account, ...paramsWithoutAccount } = otherAutomationsDefaultParams;
 
 		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutDpm,
+			params: paramsWithoutAccount,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong data type - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...otherAutomationsDefaultParams, dpm: true },
+			params: { ...otherAutomationsDefaultParams, account: true },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong value - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...otherAutomationsDefaultParams, dpm: '0xwrong' },
+			params: { ...otherAutomationsDefaultParams, account: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 });
 
@@ -225,35 +225,35 @@ test.describe('API tests - GET - Trailing Stop-Loss - Spark', async () => {
 		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
 	});
 
-	test('Get automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...paramsWithoutDpm } = trailingStopLossParams;
+	test('Get automation - Without "account"', async ({ request }) => {
+		const { account, ...paramsWithoutAccount } = trailingStopLossParams;
 
 		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutDpm,
+			params: paramsWithoutAccount,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong data type - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...trailingStopLossParams, dpm: true },
+			params: { ...trailingStopLossParams, account: true },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong value - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...trailingStopLossParams, dpm: '0xwrong' },
+			params: { ...trailingStopLossParams, account: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 });

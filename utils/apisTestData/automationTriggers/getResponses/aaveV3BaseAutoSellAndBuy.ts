@@ -154,8 +154,9 @@ export const aaveV3BaseAutoSellAndBuyGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0x5A1f00e5A2C1BF7974688ac1E1343E66598cd526',
+			account: '0x5A1f00e5A2C1BF7974688ac1E1343E66598cd526',
 			chainId: 8453,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},

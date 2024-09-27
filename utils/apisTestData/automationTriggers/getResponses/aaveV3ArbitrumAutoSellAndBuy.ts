@@ -151,8 +151,9 @@ export const aaveV3ArbitrumAutoSellAndBuyGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0x1816c0d0B0a42B9118a53C2f6D0a305eD54EA74C',
+			account: '0x1816c0d0B0a42B9118a53C2f6D0a305eD54EA74C',
 			chainId: 42161,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},

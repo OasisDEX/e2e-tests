@@ -95,8 +95,9 @@ export const aaveV3EthereumAutoBuyGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0x551Eb8395093fDE4B9eeF017C93593a3C7a75138',
+			account: '0x551Eb8395093fDE4B9eeF017C93593a3C7a75138',
 			chainId: 1,
+			protocol: 'aavev3',
 			getDetails: true,
 		},
 	},

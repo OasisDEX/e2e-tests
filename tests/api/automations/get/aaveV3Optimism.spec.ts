@@ -5,14 +5,14 @@ import { responses, getAutomationEndpoint } from 'utils/testData_APIs';
 
 const trailingStopLossDefaultParams = {
 	chainId: 10,
-	dpm: '0xc213d697c81e15a2422701c653dc4b9bcad47530',
+	account: '0xc213d697c81e15a2422701c653dc4b9bcad47530',
 	protocol: 'aavev3',
 	getDetails: true,
 };
 
 const otherAutomationsDefaultParams = {
 	...trailingStopLossDefaultParams,
-	dpm: '0xc4cff680a409ebbd1a73a57f1fac92065e2262d8',
+	account: '0xc4cff680a409ebbd1a73a57f1fac92065e2262d8',
 };
 
 test.describe('API tests - GET - Trailing Stop-Loss - Aave V3 - Optimism', async () => {
@@ -61,36 +61,36 @@ test.describe('API tests - GET - Trailing Stop-Loss - Aave V3 - Optimism', async
 		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
 	});
 
-	test('Get automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...paramsWithoutDpm } = trailingStopLossDefaultParams;
+	test('Get automation - Without "account"', async ({ request }) => {
+		const { account, ...paramsWithoutAccount } = trailingStopLossDefaultParams;
 
 		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutDpm,
+			params: paramsWithoutAccount,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong data type - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...trailingStopLossDefaultParams, dpm: true },
+			params: { ...trailingStopLossDefaultParams, account: true },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong value - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...trailingStopLossDefaultParams, dpm: '0xwrong' },
+			params: { ...trailingStopLossDefaultParams, account: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 });
 
@@ -140,35 +140,35 @@ test.describe('API tests - GET - Stop-Loss, Auto Sell, Auto Take Profit and Auto
 		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
 	});
 
-	test('Get automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...paramsWithoutDpm } = otherAutomationsDefaultParams;
+	test('Get automation - Without "account"', async ({ request }) => {
+		const { account, ...paramsWithoutAccount } = otherAutomationsDefaultParams;
 
 		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutDpm,
+			params: paramsWithoutAccount,
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong data type - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong data type - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...otherAutomationsDefaultParams, dpm: true },
+			params: { ...otherAutomationsDefaultParams, account: true },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 
-	test('Get automation - Wrong value - "dpm"', async ({ request }) => {
+	test('Get automation - Wrong value - "account"', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
-			params: { ...otherAutomationsDefaultParams, dpm: '0xwrong' },
+			params: { ...otherAutomationsDefaultParams, account: '0xwrong' },
 		});
 
 		const respJSON = await response.json();
 
-		expect(respJSON).toMatchObject(responses.wrongDpmGetRequest);
+		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 	});
 });

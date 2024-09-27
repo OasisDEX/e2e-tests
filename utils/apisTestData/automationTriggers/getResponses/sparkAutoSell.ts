@@ -92,8 +92,9 @@ export const sparkAutoSellGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0xB2F1349068c1Cb6a596A22A3531b8062778c9Da4',
+			account: '0xB2F1349068c1Cb6a596A22A3531b8062778c9Da4',
 			chainId: 1,
+			protocol: 'sparkv3',
 			getDetails: true,
 		},
 	},

@@ -351,9 +351,10 @@ export const morphoAutoSellGetResponse = {
 	},
 	additionalData: {
 		params: {
-			dpm: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
+			account: '0x2e0515d7A3eA0276F28c94C426c5d2D1d85FD4d5',
 			poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
 			chainId: 1,
+			protocol: 'morphoblue',
 			getDetails: true,
 		},
 	},
