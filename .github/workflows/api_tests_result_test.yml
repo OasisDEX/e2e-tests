@@ -10,10 +10,15 @@ jobs:
     name: Display results
     runs-on: ubuntu-latest
     steps:
+      - run: echo 'RUN ID --> ${{ github.event.workflow_run.id }}'
       - name: Download math result for job 2
         uses: actions/download-artifact@v4
         with:
           name: nombre_de_paco
+          # github-token: ${{ secrets.E2E_TESTS_PAT }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
       - name: Print the final result
         shell: bash
         run: |
