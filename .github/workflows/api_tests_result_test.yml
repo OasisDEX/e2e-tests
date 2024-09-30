@@ -25,8 +25,8 @@ jobs:
         run: echo "La planta es--> ${{ secrets.planta }}"
       - name: Get animal
         id: animal
-        uses: ./.github/workflows/apiTests2
-      # - run: echo 'El animal es --> ${{ outputs.animal}}'
+        uses: ./.github/workflows/apiTests2.yml
+      - run: echo 'La planta DOS es --> ${{ secrets.planta}}'
       - name: Get color
         env:
           SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}

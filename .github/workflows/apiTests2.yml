@@ -33,6 +33,6 @@ jobs:
         id: color-selector
         run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
       - name: Set output
-        run: echo ::set-output name=planta::arbol
+        run: echo "::set-output name=planta::arbol"
       
 
