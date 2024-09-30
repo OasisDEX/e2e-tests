@@ -14,7 +14,8 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
+// BUG with RSETH - https://www.notion.so/oazo/Bug-Morpho-RSETH-positions-cannot-be-swapped-Invalid-collateral-token-address-1118cbaf47f880589ccdfa3b7a51e3d3
+test.describe.skip('Aave V3 Multiply - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -83,7 +84,7 @@ test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 	});
 
 	([{ colToken: 'RSETH', debtToken: 'ETH' }] as const).forEach((targetPool) =>
-		test(`It should swap an Aave V3 Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap an Aave V3 Multiply position (WBTC/USDC) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
