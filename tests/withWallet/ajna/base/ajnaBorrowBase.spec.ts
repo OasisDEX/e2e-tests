@@ -88,6 +88,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'WSTETH', amount: '2' },
 			borrow: { token: 'ETH', amount: '1' },
+			ajnaExistingDpm: true,
 		});
 	});
 

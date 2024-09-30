@@ -165,6 +165,7 @@ export const openPosition = async ({
 	borrow,
 	adjustRisk,
 	protocol,
+	ajnaExistingDpm,
 }: {
 	app: App;
 	forkId: string;
@@ -172,6 +173,7 @@ export const openPosition = async ({
 	borrow?: ActionData;
 	adjustRisk?: { positionType?: 'Borrow' | 'Earn'; value: number };
 	protocol?: 'Ajna' | 'Morpho Blue';
+	ajnaExistingDpm?: boolean;
 }) => {
 	await app.position.setup.deposit(deposit);
 
@@ -215,7 +217,7 @@ export const openPosition = async ({
 
 	const buttonLabel = await getButtonLabel();
 
-	if (buttonLabel === 'Create Smart DeFi account') {
+	if (buttonLabel === 'Create Smart DeFi account' && !ajnaExistingDpm) {
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
@@ -229,7 +231,7 @@ export const openPosition = async ({
 	}
 
 	if (deposit.token !== 'ETH') {
-		if (buttonLabel === `Set ${deposit.token} allowance`) {
+		if (buttonLabel === `Set ${deposit.token} allowance` || ajnaExistingDpm) {
 			await app.position.setup.setTokenAllowance(deposit.token);
 		}
 

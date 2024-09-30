@@ -81,6 +81,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
 			protocol: 'Ajna',
+			ajnaExistingDpm: true,
 		});
 	});
 
