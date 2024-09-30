@@ -7,14 +7,17 @@ on:
         description: 'Run_id from respository that is triggering this workflow.'
         type: string
         required: true
+      repository:
+        description: 'Name of the respository that is triggering this workflow.'
+        type: string
+        required: true
 
 jobs:
   staging-deployed-trigger-received:
     runs-on: ubuntu-latest 
     steps:
-      - run: echo "Regression E2E and API tests for ${{ github.event.workflow_dispatch.repository.name }} - RUN_ID ${{ inputs.run_id }}"
-      - shell: bash
-        run: echo "${{ github.event.workflow_dispatch.repository.name }}" > trigger_repository.txt
+      - run: echo "Regression E2E and API tests for ${{ inputs.repository }} - RUN_ID ${{ inputs.run_id }}"
+      - run: echo "${{ inputs.repository }}" > trigger_repository.txt
       - name: Upload trigger repository name
         uses: actions/upload-artifact@v4
         with:
