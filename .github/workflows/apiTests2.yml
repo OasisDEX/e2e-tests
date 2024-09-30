@@ -14,27 +14,6 @@ on:
         value: PACO
 
 jobs:
-  # sending-output:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/upload-artifact@v4
-  #       if: always()
-  #       with:
-  #         name: my-output
-  #         path: output.txt
-  #         retention-days: 2
-  # job_1:
-  #   name: Add 3 and 7
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - shell: bash
-  #       run: |
-  #         expr 3 + 7 > math-homework.txt
-  #     - name: Upload math result for job 1
-  #       uses: actions/upload-artifact@v4
-  #       with:
-  #         name: homework_pre
-  #         path: math-homework.txt
   job_2:
     name: Una palabra
     runs-on: ubuntu-latest
@@ -46,19 +25,3 @@ jobs:
         with:
           name: nombre_de_paco
           path: mi_nombre.txt
-  testing-outputs:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Testing workflow outputs"
-      - name: Set muebles
-        id: vars
-        shell: bash
-        run: |
-          echo "::set-output name=mueble::silla"
-      - name: Set color
-        id: color-selector
-        run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
-      - name: Set output
-        run: echo "::set-output name=planta::arbol"
-      
-

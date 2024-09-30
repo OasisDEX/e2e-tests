@@ -6,16 +6,19 @@ on:
     types: [completed]
 
 jobs:
-  job_3:
+  jdownload-artifact-and-get-repository-name:
     name: Display results
     runs-on: ubuntu-latest
+    env:
+      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
+      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
     steps:
       - run: echo 'RUN ID --> ${{ github.event.workflow_run.id }}'
-      - name: Download math result for job 2
+      - name: Download artifact with trigger repository name
         uses: actions/download-artifact@v4
         with:
           name: nombre_de_paco
-          # github-token: ${{ secrets.E2E_TESTS_PAT }}
           github-token: ${{ github.token }}
           repository: ${{ github.repository }}
           run-id: ${{ github.event.workflow_run.id }}
@@ -24,16 +27,20 @@ jobs:
         run: |
           value=`cat mi_nombre.txt`
           echo El nombre es $value
-  tests-result:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get color
-        env:
-          SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
-        run: echo "The selected color is $SELECTED_COLOR"
-      - name: Get color DOS
-        env:
-          SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
-        run: echo "The selected color is $SELECTED_COLOR"
-      - run: echo '${{ github.event.workflow_run.outputs.SELECTED_COLOR }} -- CI E2E tests result -- ${{ github.event.workflow_run.conclusion }}'
+      - name: Set the value
+        id: step_one
+        run: |
+          value=`cat mi_nombre.txt`
+          echo "action_state=value" >> "$GITHUB_ENV"
+      - name: PRINT the value
+        run: |
+          echo "La ENV variable es --> ${{ env.action_state }}"
+      - name: "Manda a e2e-tests"
+        if: ${{ env.action_state == 'SOY_PACO' }}
+        run: echo 'Si soy PAco!!!'
+      - name: "Manda a monorepo"
+        if: ${{ env.action_state == 'SOY_PACO' }}
+        run: echo 'NO soy PAco :( '
+
+
       
