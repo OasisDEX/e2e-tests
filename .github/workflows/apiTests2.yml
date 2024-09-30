@@ -1,0 +1,26 @@
+name: API tests - OUTPUTS
+
+on: 
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on.'
+        type: string
+        default: 'https://staging.summer.fi'
+        required: true
+    outputs:
+      persona: # Define the output name
+        description: 'El nombre de una persona'
+        value: PACO
+
+jobs:
+  testing-outputs:
+    runs-on: ubuntu-latest
+    # outputs:
+    #   trigger_repository: JUANJO 
+    outputs:
+      animal: # Define the output name
+        description: 'Es un animal'
+        value: Gato
+    steps:
+      - run: echo "Testing workflow outputs"
