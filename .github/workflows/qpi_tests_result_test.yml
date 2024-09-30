@@ -1,0 +1,28 @@
+name: Testing workflow outputs
+
+on: 
+  workflow_run:
+    workflows: [API tests - OUTPUTS]
+    types: [completed]
+
+jobs:
+  # generate-number:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Get Random Number
+  #       id: set-random-number
+  #       uses: ./.github/actions/random-number-action
+  #     - name: Display Random Number
+  #       run: echo "Random Number: ${{ steps.set-random-number.outputs.random-number }}"
+  tests-result:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Persona
+        id: persona
+        uses: ./.github/workflows/apiTests2
+      - run: echo 'La persona es --> ${{ outputs.persona}}'
+      - name: Get animal
+        id: animal
+        uses: ./.github/workflows/apiTests2
+      - run: echo 'El animal es --> ${{ outputs.animal}}'
+      
