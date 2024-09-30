@@ -1,0 +1,33 @@
+name: API tests - OUTPUTS - Triggered
+
+on: 
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on.'
+        type: string
+        default: 'https://staging.summer.fi'
+        required: true
+
+jobs:
+  staging-deployed-trigger-received:
+    runs-on: ubuntu-latest 
+    steps:
+      - run: echo "Regression E2E and API tests for ${{ github.event.workflow_dispatch.repository.name }} - RUN_ID ${{ inputs.run_id }}"
+      - shell: bash
+        run: echo "${{ github.event.workflow_dispatch.repository.name }}" > trigger_repository.txt
+      - name: Upload trigger repository name
+        uses: actions/upload-artifact@v4
+        with:
+          name: trigger_repository_name
+          path: trigger_repository.txt
+  job_2:
+    name: Something else
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Something else running"
+  job_3:
+    name: Something something else
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Something something else running"
