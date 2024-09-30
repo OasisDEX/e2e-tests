@@ -22,7 +22,7 @@ jobs:
       #   uses: ./.github/workflows/apiTests2
       # - run: echo 'La persona es --> ${{ outputs.persona}}'
       - name: Use output from Workflow A
-        run: echo "L aplanta es--> ${{ secrets.planta }}
+        run: echo "La planta es--> ${{ secrets.planta }}"
       - name: Get animal
         id: animal
         uses: ./.github/workflows/apiTests2
