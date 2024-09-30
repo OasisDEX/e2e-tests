@@ -46,6 +46,10 @@ jobs:
         with:
           name: nombre_de_paco
           path: mi_nombre.txt
+          # github-token: ${{ secrets.E2E_TESTS_PAT }}
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ github.event.workflow_run.id }}
   testing-outputs:
     runs-on: ubuntu-latest
     steps:
