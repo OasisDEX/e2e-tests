@@ -8,12 +8,26 @@ on:
         type: string
         default: 'https://staging.summer.fi'
         required: true
+      repository:
+        description: 'Repository name that triggered the tests.'
+        type: string
+        default: '${{ github.event.workflow_dispatch.repository.name }}'
+        required: true
     outputs:
       persona: # Define the output name
         description: 'El nombre de una persona'
         value: PACO
 
 jobs:
+  # sending-output:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: my-output
+  #         path: output.txt
+  #         retention-days: 2
   testing-outputs:
     runs-on: ubuntu-latest
     # outputs:
