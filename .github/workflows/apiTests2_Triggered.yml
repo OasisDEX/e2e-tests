@@ -3,10 +3,9 @@ name: API tests - OUTPUTS - Triggered
 on: 
   workflow_dispatch:
     inputs:
-      base_url:
-        description: 'Environment base URL to run the tests on.'
+      run_id:
+        description: 'Run_id from respository that is triggering this workflow.'
         type: string
-        default: 'https://staging.summer.fi'
         required: true
 
 jobs:
