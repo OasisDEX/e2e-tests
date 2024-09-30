@@ -18,9 +18,21 @@ jobs:
     runs-on: ubuntu-latest
     # outputs:
     #   trigger_repository: JUANJO 
-    outputs:
-      animal: # Define the output name
-        description: 'Es un animal'
-        value: Gato
+    # outputs:
+    #   animal: # Define the output name
+    #     description: 'Es un animal'
+    #     value: Gato
     steps:
       - run: echo "Testing workflow outputs"
+      - name: Set muebles
+        id: vars
+        shell: bash
+        run: |
+          echo "::set-output name=mueble::silla"
+      - name: Set color
+        id: color-selector
+        run: echo "SELECTED_COLOR=green" >> "$GITHUB_OUTPUT"
+      - name: Set output
+        run: echo ::set-output name=planta::arbol
+      
+

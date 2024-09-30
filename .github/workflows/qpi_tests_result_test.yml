@@ -17,12 +17,23 @@ jobs:
   tests-result:
     runs-on: ubuntu-latest
     steps:
-      - name: Get Persona
-        id: persona
-        uses: ./.github/workflows/apiTests2
+      # - name: Get Persona
+      #   id: persona
+      #   uses: ./.github/workflows/apiTests2
       - run: echo 'La persona es --> ${{ outputs.persona}}'
+      - name: Use output from Workflow A
+        run: echo "L aplanta es--> ${{ secrets.planta }}
       - name: Get animal
         id: animal
         uses: ./.github/workflows/apiTests2
       - run: echo 'El animal es --> ${{ outputs.animal}}'
+      - name: Get color
+        env:
+          SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
+        run: echo "The selected color is $SELECTED_COLOR"
+      - name: Get color DOS
+        env:
+          SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
+        run: echo "The selected color is $SELECTED_COLOR"
+              - run: echo '${{ github.event.workflow_run.repository.name }} -- CI E2E tests result -- ${{ github.event.workflow_run.conclusion }}'
       
