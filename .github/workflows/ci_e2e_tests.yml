@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       run_id:
-        description: 'Run_id from ${{ github.event.workflow_dispatch.repository.name }} run that is triggering this workflow.'
+        description: 'Run_id from respository that is triggering this workflow.'
         type: string
         required: true
 

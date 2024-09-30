@@ -35,5 +35,5 @@ jobs:
         env:
           SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
         run: echo "The selected color is $SELECTED_COLOR"
-              - run: echo '${{ github.event.workflow_run.repository.name }} -- CI E2E tests result -- ${{ github.event.workflow_run.conclusion }}'
+      - run: echo '${{ github.event.workflow_run.repository.name }} -- CI E2E tests result -- ${{ github.event.workflow_run.conclusion }}'
       
