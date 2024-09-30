@@ -26,7 +26,7 @@ jobs:
       - name: Get animal
         id: animal
         uses: ./.github/workflows/apiTests2
-      - run: echo 'El animal es --> ${{ outputs.animal}}'
+      # - run: echo 'El animal es --> ${{ outputs.animal}}'
       - name: Get color
         env:
           SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
