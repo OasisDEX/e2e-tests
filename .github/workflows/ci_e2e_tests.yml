@@ -10,9 +10,7 @@ on:
 
 jobs:
   staging-deployed-trigger-received:
-    runs-on: ubuntu-latest
-    outputs:
-      trigger_repository: ${{ github.event.workflow_dispatch.repository.name }} 
+    runs-on: ubuntu-latest 
     steps:
       - run: echo "Regression E2E and API tests for ${{ github.event.workflow_dispatch.repository.name }} - RUN_ID ${{ inputs.run_id }}"
   no-wallet-tests:
