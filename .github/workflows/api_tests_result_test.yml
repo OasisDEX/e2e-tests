@@ -6,23 +6,22 @@ on:
     types: [completed]
 
 jobs:
-  # generate-number:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Get Random Number
-  #       id: set-random-number
-  #       uses: ./.github/actions/random-number-action
-  #     - name: Display Random Number
-  #       run: echo "Random Number: ${{ steps.set-random-number.outputs.random-number }}"
+  job_3:
+    name: Display results
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download math result for job 2
+        uses: actions/download-artifact@v4
+        with:
+          name: nombre_de_paco
+      - name: Print the final result
+        shell: bash
+        run: |
+          value=`cat mi_nombre.txt`
+          echo El nombre es $value
   tests-result:
     runs-on: ubuntu-latest
     steps:
-      # - name: Get Persona
-      #   id: persona
-      #   uses: ./.github/workflows/apiTests2
-      # - run: echo 'La persona es --> ${{ outputs.persona}}'
-      - name: Use output from Workflow A
-        run: echo "EL repo es --> ${{ github.event.workflow_dispatch.inputs.repository }}"
       - name: Get color
         env:
           SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
