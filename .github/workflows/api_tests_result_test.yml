@@ -31,7 +31,7 @@ jobs:
         id: step_one
         run: |
           value=`cat mi_nombre.txt`
-          echo "action_state=value" >> "$GITHUB_ENV"
+          echo "action_state=$value" >> "$GITHUB_ENV"
       - name: PRINT the value
         run: |
           echo "La ENV variable es --> ${{ env.action_state }}"
