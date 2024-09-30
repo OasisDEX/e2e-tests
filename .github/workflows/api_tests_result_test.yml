@@ -22,7 +22,7 @@ jobs:
       #   uses: ./.github/workflows/apiTests2
       # - run: echo 'La persona es --> ${{ outputs.persona}}'
       - name: Use output from Workflow A
-        run: echo "La planta es--> ${{ secrets.planta }}"
+        run: echo "EL repo es --> ${{ github.event.workflow_dispatch.inputs.repository }}"
       - name: Get color
         env:
           SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
@@ -31,5 +31,5 @@ jobs:
         env:
           SELECTED_COLOR: ${{ steps.color-selector.outputs.SELECTED_COLOR }}
         run: echo "The selected color is $SELECTED_COLOR"
-      - run: echo '${{ github.event.workflow_run.repository.name }} -- CI E2E tests result -- ${{ github.event.workflow_run.conclusion }}'
+      - run: echo '${{ github.event.workflow_run.outputs.SELECTED_COLOR }} -- CI E2E tests result -- ${{ github.event.workflow_run.conclusion }}'
       
