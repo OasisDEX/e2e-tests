@@ -66,6 +66,9 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
+		// To avoid flakiness
+		await app.page.waitForTimeout(2_000);
+
 		await close({
 			forkId,
 			app,

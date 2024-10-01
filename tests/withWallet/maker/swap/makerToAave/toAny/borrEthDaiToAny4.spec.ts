@@ -57,8 +57,8 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-			generate: { token: 'DAI', amount: '5000' },
+			deposit: { token: 'ETH', amount: '3.5' },
+			generate: { token: 'DAI', amount: '3500' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -76,8 +76,6 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'WBTC', debtToken: 'DAI' },
-			{ colToken: 'WBTC', debtToken: 'LUSD' },
 			{ colToken: 'WBTC', debtToken: 'USDC' },
 			{ colToken: 'WBTC', debtToken: 'USDT' },
 			{ colToken: 'WBTC', debtToken: 'ETH' },

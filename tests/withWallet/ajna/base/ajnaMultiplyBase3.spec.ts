@@ -10,7 +10,8 @@ let app: App;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Ajna Base Multiply - Wallet connected', async () => {
+// NO LIQUIDITY
+test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await app.page.close();
 

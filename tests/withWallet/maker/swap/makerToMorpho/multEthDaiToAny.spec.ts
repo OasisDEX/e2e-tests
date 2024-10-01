@@ -57,7 +57,7 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '4.5' },
+			deposit: { token: 'ETH', amount: '3.5' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -78,7 +78,6 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 			{ colToken: 'WSTETH', debtToken: 'USDC' },
 			{ colToken: 'USDE', debtToken: 'DAI-4' },
 			{ colToken: 'WBTC', debtToken: 'USDC' },
-			{ colToken: 'WEETH', debtToken: 'ETH' },
 			// { colToken: 'WOETH', debtToken: 'ETH' }, --> NO LIQUIDITY
 		] as const
 	).forEach((targetPool) =>

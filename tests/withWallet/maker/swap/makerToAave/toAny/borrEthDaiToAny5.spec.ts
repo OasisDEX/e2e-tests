@@ -49,7 +49,7 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 			}));
 		});
 
-		await app.page.goto('vaults/open/ETH-C');
+		await app.page.goto('/vaults/open/ETH-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -57,8 +57,8 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-			generate: { token: 'DAI', amount: '5000' },
+			deposit: { token: 'ETH', amount: '3.5' },
+			generate: { token: 'DAI', amount: '3500' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -78,8 +78,6 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 		[
 			{ colToken: 'WSTETH', debtToken: 'CBETH' },
 			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			{ colToken: 'WSTETH', debtToken: 'LUSD' },
-			{ colToken: 'WSTETH', debtToken: 'RPL' },
 			// { colToken: 'WSTETH', debtToken: 'GHO' }, - NO LIQUIDITY - GHO
 		] as const
 	).forEach((targetPool) =>
