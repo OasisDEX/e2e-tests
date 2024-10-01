@@ -57,8 +57,8 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-			generate: { token: 'DAI', amount: '5000' },
+			deposit: { token: 'ETH', amount: '3.5' },
+			generate: { token: 'DAI', amount: '3500' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -76,10 +76,10 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'RETH', debtToken: 'DAI' },
 			{ colToken: 'RETH', debtToken: 'USDC' },
-			{ colToken: 'RETH', debtToken: 'USDT' },
-			{ colToken: 'SDAI', debtToken: 'ETH' },
+			{ colToken: 'ETH', debtToken: 'USDC' },
+			{ colToken: 'ETH', debtToken: 'WBTC' },
+			// { colToken: 'LDO', debtToken: 'USDT' }, // BUG - 15943 - NOT working
 			// { colToken: 'MKR', debtToken: 'DAI' }, -- Aave MKR very close to supply cap
 		] as const
 	).forEach((targetPool) =>

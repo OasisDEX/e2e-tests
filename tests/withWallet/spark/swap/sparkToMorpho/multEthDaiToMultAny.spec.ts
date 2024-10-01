@@ -57,7 +57,7 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'ETH', amount: '3' },
 		});
 
 		await app.page.waitForTimeout(3000);
