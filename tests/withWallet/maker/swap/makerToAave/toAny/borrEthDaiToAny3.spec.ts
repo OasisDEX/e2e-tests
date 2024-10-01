@@ -57,8 +57,8 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-			generate: { token: 'DAI', amount: '5000' },
+			deposit: { token: 'ETH', amount: '3.5' },
+			generate: { token: 'DAI', amount: '3500' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -77,9 +77,8 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 	(
 		[
 			{ colToken: 'SDAI', debtToken: 'ETH' },
-			// { colToken: 'SDAI', debtToken: 'GHO' }, - NO LIQUIDITY - GHO
-			{ colToken: 'SDAI', debtToken: 'WBTC' },
-			{ colToken: 'USDC', debtToken: 'ETH' },
+			{ colToken: 'USDC', debtToken: 'USDT' },
+			{ colToken: 'USDC', debtToken: 'WSTETH' }, // BUG - 16003
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {

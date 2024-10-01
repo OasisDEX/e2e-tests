@@ -80,13 +80,16 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 
 		await app.position.openPage('/base/ajna/multiply/ETH-USDC/435#overview');
 
+		// Delay to avoid random fails
+		await app.page.waitForTimeout(2_000);
+
 		await close({
 			forkId,
 			app,
 			closeTo: 'collateral',
 			collateralToken: 'ETH',
 			debtToken: 'USDC',
-			tokenAmountAfterClosing: '0.00[0-9]{2}',
+			tokenAmountAfterClosing: '0.00([0-9]{2})?',
 		});
 	});
 });

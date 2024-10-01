@@ -72,16 +72,12 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
 		await adjustRisk({
 			forkId,
 			app,
 			earnPosition: true,
 			risk: 'up',
-			newSliderPosition: 0.6,
+			newSliderPosition: 0.8,
 		});
 	});
 
@@ -92,10 +88,6 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		});
 
 		test.setTimeout(longTestTimeout);
-
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
 
 		await adjustRisk({
 			forkId,
@@ -114,9 +106,8 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(2_000);
 
 		await close({
 			app,
