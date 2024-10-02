@@ -13,7 +13,6 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// New spec file that allows running all target pools even if previous ones fail
 test.describe('Maker Multiply - Swap to Spark', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
@@ -58,7 +57,7 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'ETH', amount: '3' },
 		});
 
 		await app.page.waitForTimeout(3000);
