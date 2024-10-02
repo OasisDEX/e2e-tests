@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Earn - Wallet connected', async () => {
+test.describe('Maker Earn - DSR - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -25,7 +25,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Maker Earn position @regression', async () => {
+	test('It should open a Maker Earn DSR position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11800',
@@ -85,7 +85,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await app.position.setup.shouldShowSuccessScreen();
 	});
 
-	test('It should allow to simulate a Maker Earn position before opening it - Deposit', async () => {
+	test('It should allow to simulate a Maker Earn DSR position before opening it - Deposit', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12543, 12557',
@@ -123,7 +123,7 @@ test.describe('Maker Earn - Wallet connected', async () => {
 		await app.position.setup.setAllowanceShouldBeVisible();
 	});
 
-	test('It should allow to simulate a Maker Earn position before opening it - Convert', async () => {
+	test('It should allow to simulate a Maker Earn DSR position before opening it - Convert', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12556',

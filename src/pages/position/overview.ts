@@ -316,17 +316,17 @@ export class Overview {
 			amount,
 			token,
 			timeout,
-			srr,
+			stakingUsds,
 		}: {
 			amount: string;
 			token: string;
 			timeout?: number;
-			srr?: boolean;
+			stakingUsds?: boolean;
 		} = { amount: '', token: '', timeout: expectDefaultTimeout }
 	) {
 		const regExp = new RegExp(`${amount}.*${token}`);
 
-		if (srr) {
+		if (stakingUsds) {
 			await expect(this.page.locator('li:has-text("USDS Deposited")')).toContainText(regExp, {
 				timeout,
 			});

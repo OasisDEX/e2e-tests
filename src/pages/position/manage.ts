@@ -299,4 +299,9 @@ export class Manage {
 	async shouldNotHaveReduceRays() {
 		await expect(this.page.getByText('Reduce Rays by')).not.toBeVisible();
 	}
+
+	@step
+	async unstake() {
+		await this.page.getByRole('button', { exact: true, name: 'Unstake' }).nth(0).click();
+	}
 }

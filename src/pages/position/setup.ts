@@ -83,6 +83,15 @@ export class Setup {
 	}
 
 	@step
+	async unstake({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Unstake ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
+	@step
 	async borrow({ token, amount }: { token: string; amount: string }) {
 		await this.page
 			.getByText(`Borrow ${token}`)
@@ -282,6 +291,11 @@ export class Setup {
 	@step
 	async confirmStake() {
 		await this.page.getByRole('button', { exact: true, name: 'Stake' }).nth(1).click();
+	}
+
+	@step
+	async confirmUnstake() {
+		await this.page.getByRole('button', { exact: true, name: 'Unstake' }).nth(1).click();
 	}
 
 	@step
@@ -547,8 +561,8 @@ export class Setup {
 	}
 
 	@step
-	async shouldShowSuccessScreen(args?: { depositType: 'srr' }) {
-		if (args?.depositType === 'srr') {
+	async shouldShowSuccessScreen(args?: { depositType: 'srr' | 'cle' }) {
+		if (args?.depositType) {
 			await expect(
 				this.page.getByText('Transaction successful.'),
 				'"Transaction uccessful" should be visible'
