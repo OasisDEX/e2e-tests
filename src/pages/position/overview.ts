@@ -509,7 +509,11 @@ export class Overview {
 	async shouldHaveSkyEarned(amount: string) {
 		const regExp = new RegExp(`${amount}SKY`);
 
-		await expect(this.page.locator('li:has-text("SKY Earned")')).toContainText(regExp);
+		await expect(
+			this.page
+				.getByRole('listitem')
+				.filter({ has: this.page.getByText('SKY Earned', { exact: true }) })
+		).toContainText(regExp);
 	}
 
 	@step

@@ -304,4 +304,12 @@ export class Manage {
 	async unstake() {
 		await this.page.getByRole('button', { exact: true, name: 'Unstake' }).nth(0).click();
 	}
+
+	@step
+	async shouldHaveConnectWalletButton() {
+		await expect(
+			this.page.locator('main').getByRole('button', { name: 'Connect wallet' }),
+			'"Connect wallet" button should be visible'
+		).toBeVisible();
+	}
 }
