@@ -316,17 +316,25 @@ export class Overview {
 			amount,
 			token,
 			timeout,
+			srr,
 		}: {
 			amount: string;
 			token: string;
 			timeout?: number;
+			srr?: boolean;
 		} = { amount: '', token: '', timeout: expectDefaultTimeout }
 	) {
 		const regExp = new RegExp(`${amount}.*${token}`);
 
-		await expect(this.page.locator('li:has-text("Collateral Deposited")')).toContainText(regExp, {
-			timeout,
-		});
+		if (srr) {
+			await expect(this.page.locator('li:has-text("USDS Deposited")')).toContainText(regExp, {
+				timeout,
+			});
+		} else {
+			await expect(this.page.locator('li:has-text("Collateral Deposited")')).toContainText(regExp, {
+				timeout,
+			});
+		}
 	}
 
 	@step
@@ -488,5 +496,33 @@ export class Overview {
 		const raysNumber = parseFloat(raysText.slice(2, -12).replace(',', ''));
 
 		return raysNumber;
+	}
+
+	@step
+	async shouldHaveSkyRewardsRate(rate: string) {
+		const regExp = new RegExp(rate);
+
+		await expect(this.page.locator('li:has-text("SKY Reward Rate")')).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveSkyEarned(amount: string) {
+		const regExp = new RegExp(`${amount}SKY`);
+
+		await expect(this.page.locator('li:has-text("SKY Earned")')).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveTotalSkyEarned(amount: string) {
+		const regExp = new RegExp(amount);
+
+		await expect(this.page.locator('li:has-text("Total SKY Earned")')).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveTotalUsdsLocked(amount: string) {
+		const regExp = new RegExp(amount);
+
+		await expect(this.page.locator('li:has-text("Total USDS Locked")')).toContainText(regExp);
 	}
 }
