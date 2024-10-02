@@ -91,7 +91,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		});
 	});
 
-	test('It should stake extra USDS on a SRR position', async () => {
+	test('It should stake extra USDS on an existing SRR position', async () => {
 		test.setTimeout(longTestTimeout);
 
 		// Delay to avoid random fails
@@ -112,6 +112,31 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		await app.position.overview.shouldHaveCollateralDeposited({
 			srr: true,
 			amount: '27,500.50',
+			token: 'USDS',
+		});
+	});
+
+	test('It should unstake USDS from an existing SRR position', async () => {
+		test.setTimeout(longTestTimeout);
+
+		await app.position.manage.unstake();
+
+		// Delay to avoid random fails
+		await app.page.waitForTimeout(2_000);
+
+		await app.position.setup.unstake({ token: 'USDS', amount: '15000' });
+
+		// Delay to avoid random fails
+		await app.page.waitForTimeout(2_000);
+
+		await app.position.setup.confirmUnstake();
+		await confirmAddToken({ app });
+
+		await app.position.setup.shouldShowSuccessScreen({ depositType: 'srr' });
+
+		await app.position.overview.shouldHaveCollateralDeposited({
+			srr: true,
+			amount: '12,500.50',
 			token: 'USDS',
 		});
 	});
