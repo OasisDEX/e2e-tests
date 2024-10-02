@@ -561,8 +561,8 @@ export class Setup {
 	}
 
 	@step
-	async shouldShowSuccessScreen(args?: { depositType: 'srr' }) {
-		if (args?.depositType === 'srr') {
+	async shouldShowSuccessScreen(args?: { depositType: 'srr' | 'cle' }) {
+		if (args?.depositType) {
 			await expect(
 				this.page.getByText('Transaction successful.'),
 				'"Transaction uccessful" should be visible'

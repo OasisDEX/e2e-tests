@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Earn - SRR - Wallet connected', async () => {
+test.describe('Maker Earn - CLE - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -25,7 +25,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should show show amount of SKY in wallet', async () => {
+	test('It should open a Maker Earn CLE position - Stake', async () => {
 		test.setTimeout(longTestTimeout);
 
 		await test.step('Test setup', async () => {
@@ -43,31 +43,12 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'SKY',
-				balance: '50000',
-			});
-		});
-
-		await app.page.goto(`/earn/srr/${walletAddress}#overview`);
-
-		await app.position.overview.shouldHaveTotalSkyEarned('50,000.00');
-		await app.position.overview.shouldHaveTotalUsdsLocked('[0-9]{3}.[0-9]{2}M');
-	});
-
-	test('It should open a Maker Earn SRR position - Stake', async () => {
-		test.setTimeout(longTestTimeout);
-
-		await test.step('Test setup', async () => {
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
 				token: 'USDS',
 				balance: '50000',
 			});
 		});
 
-		await app.page.goto(`/earn/srr/${walletAddress}#overview`);
+		await app.page.goto(`/earn/cle/${walletAddress}#overview`);
 
 		// Delay to avoid random fails
 		await app.page.waitForTimeout(2_000);
@@ -82,7 +63,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		await app.position.setup.confirmStake();
 		await confirmAddToken({ app });
 
-		await app.position.setup.shouldShowSuccessScreen({ depositType: 'srr' });
+		await app.position.setup.shouldShowSuccessScreen({ depositType: 'cle' });
 
 		await app.position.overview.shouldHaveCollateralDeposited({
 			stakingUsds: true,
@@ -91,7 +72,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		});
 	});
 
-	test('It should stake extra USDS on an existing SRR position', async () => {
+	test('It should stake extra USDS on a CLE position', async () => {
 		test.setTimeout(longTestTimeout);
 
 		// Delay to avoid random fails
@@ -107,7 +88,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		await app.position.setup.confirmStake();
 		await confirmAddToken({ app });
 
-		await app.position.setup.shouldShowSuccessScreen({ depositType: 'srr' });
+		await app.position.setup.shouldShowSuccessScreen({ depositType: 'cle' });
 
 		await app.position.overview.shouldHaveCollateralDeposited({
 			stakingUsds: true,
@@ -116,7 +97,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		});
 	});
 
-	test('It should unstake USDS from an existing SRR position', async () => {
+	test('It should unstake USDS from an existing CLE position', async () => {
 		test.setTimeout(longTestTimeout);
 
 		await app.position.manage.unstake();
@@ -132,7 +113,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		await app.position.setup.confirmUnstake();
 		await confirmAddToken({ app });
 
-		await app.position.setup.shouldShowSuccessScreen({ depositType: 'srr' });
+		await app.position.setup.shouldShowSuccessScreen({ depositType: 'cle' });
 
 		await app.position.overview.shouldHaveCollateralDeposited({
 			stakingUsds: true,
