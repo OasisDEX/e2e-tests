@@ -86,8 +86,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await reloadUntilCorrect(app);
+		await app.page.waitForTimeout(2_000);
 
 		await close({
 			app,

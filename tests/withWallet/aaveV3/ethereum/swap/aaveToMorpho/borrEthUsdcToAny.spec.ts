@@ -57,8 +57,8 @@ test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-			borrow: { token: 'USDC', amount: '5000' },
+			deposit: { token: 'ETH', amount: '2.5' },
+			borrow: { token: 'USDC', amount: '1000' },
 		});
 
 		await app.page.waitForTimeout(3000);

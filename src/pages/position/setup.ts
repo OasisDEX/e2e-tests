@@ -74,6 +74,15 @@ export class Setup {
 	}
 
 	@step
+	async stake({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Stake ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
+	@step
 	async borrow({ token, amount }: { token: string; amount: string }) {
 		await this.page
 			.getByText(`Borrow ${token}`)
@@ -266,13 +275,18 @@ export class Setup {
 	}
 
 	@step
-	async goToDeposit() {
-		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
+	async confirmDeposit() {
+		await this.page.getByRole('button', { exact: true, name: 'Deposit' }).nth(1).click();
 	}
 
 	@step
-	async confirmDeposit() {
-		await this.page.getByRole('button', { exact: true, name: 'Deposit' }).nth(1).click();
+	async confirmStake() {
+		await this.page.getByRole('button', { exact: true, name: 'Stake' }).nth(1).click();
+	}
+
+	@step
+	async goToDeposit() {
+		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
 	}
 
 	@step
@@ -371,7 +385,7 @@ export class Setup {
 		await expect(
 			this.page.getByRole('button', { name: 'Go to position' }),
 			'"Go to position" should be visible'
-		).toBeVisible({ timeout: 20_000 });
+		).toBeVisible({ timeout: expectDefaultTimeout * 5 });
 	}
 
 	@step
@@ -533,10 +547,19 @@ export class Setup {
 	}
 
 	@step
-	async shouldShowSuccessScreen() {
-		await expect(this.page.getByText('Success'), '"Success" should be visible').toBeVisible({
-			timeout: positionTimeout,
-		});
+	async shouldShowSuccessScreen(args?: { depositType: 'srr' }) {
+		if (args?.depositType === 'srr') {
+			await expect(
+				this.page.getByText('Transaction successful.'),
+				'"Transaction uccessful" should be visible'
+			).toBeVisible({
+				timeout: positionTimeout,
+			});
+		} else {
+			await expect(this.page.getByText('Success'), '"Success" should be visible').toBeVisible({
+				timeout: positionTimeout,
+			});
+		}
 	}
 
 	@step
