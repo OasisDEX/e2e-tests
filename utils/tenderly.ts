@@ -58,6 +58,7 @@ export const tokenAddresses = {
 	mainnet: {
 		AJNA: '0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079',
 		CBETH: '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
+		CLE: '0x8308515d052b52589D66823792021e6e2FbAc405',
 		DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
 		ENA: '0x57e114b691db790c35207b2e685d4a43181e6061',
 		EZETH: '0xbf5495Efe5DB9ce00f80364C8B423567e58d2110',
@@ -126,6 +127,7 @@ export const tokenBalances = {
 	AERO: '300000',
 	BSDETH: '1000',
 	CBETH: '1000',
+	CLE: '200000',
 	DAI: '200000',
 	ENA: '400000',
 	ETH: '1000',

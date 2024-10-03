@@ -299,6 +299,11 @@ export class Setup {
 	}
 
 	@step
+	async confirmClaim() {
+		await this.page.getByRole('button', { exact: true, name: 'Claim' }).nth(1).click();
+	}
+
+	@step
 	async goToDeposit() {
 		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
 	}
