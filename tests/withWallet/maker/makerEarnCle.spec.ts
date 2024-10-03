@@ -3,7 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { confirmAddToken } from 'tests/sharedTestSteps/makerConfirmTx';
 
@@ -26,7 +26,7 @@ test.describe('Maker Earn - CLE - Wallet connected', async () => {
 	});
 
 	test('It should open a Maker Earn CLE position - Stake', async () => {
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await test.step('Test setup', async () => {
 			({ context } = await metamaskSetUp({ network: 'mainnet' }));

@@ -517,6 +517,17 @@ export class Overview {
 	}
 
 	@step
+	async shouldHaveClePointsEarned(amount: string) {
+		const regExp = new RegExp(`${amount}CLE`);
+
+		await expect(
+			this.page
+				.getByRole('listitem')
+				.filter({ has: this.page.getByText('Chronicle Points Earned', { exact: true }) })
+		).toContainText(regExp);
+	}
+
+	@step
 	async shouldHaveTotalSkyEarned(amount: string) {
 		const regExp = new RegExp(amount);
 

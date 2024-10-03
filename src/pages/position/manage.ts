@@ -306,6 +306,18 @@ export class Manage {
 	}
 
 	@step
+	async claim() {
+		await this.page.getByRole('button', { exact: true, name: 'Claim' }).nth(0).click();
+	}
+
+	@step
+	async shouldReceiveSky(amount: string) {
+		const regExp = new RegExp(`${amount} SKY`);
+
+		await expect(this.page.getByText('You will receive')).toContainText(regExp);
+	}
+
+	@step
 	async shouldHaveConnectWalletButton() {
 		await expect(
 			this.page.locator('main').getByRole('button', { name: 'Connect wallet' }),

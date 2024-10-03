@@ -63,7 +63,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 				walletAddress,
 				network: 'mainnet',
 				token: 'USDS',
-				balance: '50000',
+				balance: '500000',
 			});
 		});
 
@@ -72,7 +72,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		// Delay to avoid random fails
 		await app.page.waitForTimeout(2_000);
 
-		await app.position.setup.stake({ token: 'USDS', amount: '17500.50' });
+		await app.position.setup.stake({ token: 'USDS', amount: '400000.50' });
 
 		// Delay to avoid random fails
 		await app.page.waitForTimeout(2_000);
@@ -86,7 +86,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 
 		await app.position.overview.shouldHaveCollateralDeposited({
 			stakingUsds: true,
-			amount: '17,500.50',
+			amount: '400,000.50',
 			token: 'USDS',
 		});
 	});
@@ -111,7 +111,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 
 		await app.position.overview.shouldHaveCollateralDeposited({
 			stakingUsds: true,
-			amount: '27,500.50',
+			amount: '410,000.50',
 			token: 'USDS',
 		});
 	});
@@ -124,7 +124,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		// Delay to avoid random fails
 		await app.page.waitForTimeout(2_000);
 
-		await app.position.setup.unstake({ token: 'USDS', amount: '15000' });
+		await app.position.setup.unstake({ token: 'USDS', amount: '20000' });
 
 		// Delay to avoid random fails
 		await app.page.waitForTimeout(2_000);
@@ -136,8 +136,25 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 
 		await app.position.overview.shouldHaveCollateralDeposited({
 			stakingUsds: true,
-			amount: '12,500.50',
+			amount: '390,000.50',
 			token: 'USDS',
 		});
+	});
+
+	test('It should claim SKY earned from an existing SRR position', async () => {
+		test.setTimeout(longTestTimeout);
+
+		await app.position.overview.shouldHaveSkyEarned('0.[0-9]{4}');
+
+		await app.position.manage.claim();
+		await app.position.manage.shouldReceiveSky('0.[0-9]{4}');
+
+		// Delay to avoid random fails
+		await app.page.waitForTimeout(2_000);
+
+		await app.position.setup.confirmClaim();
+		await confirmAddToken({ app });
+
+		await app.position.overview.shouldHaveSkyEarned('0.00');
 	});
 });
