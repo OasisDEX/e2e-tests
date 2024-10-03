@@ -144,7 +144,7 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 	test('It should claim SKY earned from an existing SRR position', async () => {
 		test.setTimeout(longTestTimeout);
 
-		await app.position.overview.shouldHaveSkyEarned('0.[0-9]{4}');
+		await app.position.overview.shouldHaveSkyEarned({ greaterThanZero: true });
 
 		await app.position.manage.claim();
 		await app.position.manage.shouldReceiveSky('0.[0-9]{4}');
@@ -155,6 +155,6 @@ test.describe('Maker Earn - SRR - Wallet connected', async () => {
 		await app.position.setup.confirmClaim();
 		await confirmAddToken({ app });
 
-		await app.position.overview.shouldHaveSkyEarned('0.00');
+		await app.position.overview.shouldHaveSkyEarned({ amount: '0.00' });
 	});
 });

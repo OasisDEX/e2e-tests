@@ -506,25 +506,53 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveSkyEarned(amount: string) {
-		const regExp = new RegExp(`${amount}SKY`);
+	async shouldHaveSkyEarned({
+		amount,
+		greaterThanZero,
+	}: {
+		amount?: string;
+		greaterThanZero?: boolean;
+	}) {
+		const skyEarnedLocator = this.page
+			.getByText('SKY Earned', { exact: true })
+			.locator('xpath=//following-sibling::p[1]');
 
-		await expect(
-			this.page
-				.getByRole('listitem')
-				.filter({ has: this.page.getByText('SKY Earned', { exact: true }) })
-		).toContainText(regExp);
+		if (amount) {
+			const regExp = new RegExp(`${amount}SKY`);
+
+			await expect(skyEarnedLocator).toContainText(regExp);
+		}
+		if (greaterThanZero) {
+			const skyEarnedText = await skyEarnedLocator.innerText();
+			const skyEarnedNumber = parseFloat(skyEarnedText.replace('SKY', ''));
+
+			expect(skyEarnedNumber).toBeGreaterThan(0);
+		}
 	}
 
 	@step
-	async shouldHaveClePointsEarned(amount: string) {
-		const regExp = new RegExp(`${amount}CLE`);
+	async shouldHaveClePointsEarned({
+		amount,
+		greaterThanZero,
+	}: {
+		amount?: string;
+		greaterThanZero?: boolean;
+	}) {
+		const cleLocator = this.page
+			.getByText('Chronicle Points Earned', { exact: true })
+			.locator('xpath=//following-sibling::p[1]');
 
-		await expect(
-			this.page
-				.getByRole('listitem')
-				.filter({ has: this.page.getByText('Chronicle Points Earned', { exact: true }) })
-		).toContainText(regExp);
+		if (amount) {
+			const regExp = new RegExp(`${amount}CLE`);
+
+			await expect(cleLocator).toContainText(regExp);
+		}
+		if (greaterThanZero) {
+			const cleText = await cleLocator.innerText();
+			const cleNumber = parseFloat(cleText.replace('CLE', ''));
+
+			expect(cleNumber).toBeGreaterThan(0);
+		}
 	}
 
 	@step

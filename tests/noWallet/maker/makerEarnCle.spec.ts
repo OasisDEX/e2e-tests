@@ -20,9 +20,9 @@ test.describe('Maker Earn - CLE - No wallet connected', async () => {
 			amount: '[0-9]{1,2}.[0-9]{2}',
 			token: 'USDS',
 		});
-		await app.position.overview.shouldHaveClePointsEarned('[0-9]{1,2}.[0-9]{2}([0-9]{2})?');
+		await app.position.overview.shouldHaveClePointsEarned({ greaterThanZero: true });
 		await app.position.overview.shouldHaveTotalUsdsLocked('[0-9]{2,3}.[0-9]{2}M');
 
-		await app.position.manage.shouldHaveConnectWalletButton();
+		await app.position.manage.shouldHaveButton({ label: 'Connect wallet' });
 	});
 });
