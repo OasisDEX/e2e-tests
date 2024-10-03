@@ -37,4 +37,10 @@ export class Positions {
 				.filter({ has: this.page.getByText(protocol, { exact: true }) })
 		);
 	}
+
+	byUsdsStakingType(type: 'Sky Rewards Rate' | 'Chronicle Points') {
+		return new Position(
+			this.listLocator.filter({ has: this.page.getByText(type, { exact: true }) })
+		);
+	}
 }

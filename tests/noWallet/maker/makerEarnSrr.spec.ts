@@ -21,11 +21,11 @@ test.describe('Maker Earn - SRR - No wallet connected', async () => {
 			token: 'USDS',
 		});
 		await app.position.overview.shouldHaveSkyRewardsRate('[0-9]{1,2}.[0-9]{2}%');
-		await app.position.overview.shouldHaveSkyEarned('[0-9]{1,2}.[0-9]{2}([0-9]{2})?');
+		await app.position.overview.shouldHaveSkyEarned({ greaterThanZero: true });
 
 		await app.position.overview.shouldHaveTotalUsdsLocked('[0-9]{3}.[0-9]{2}M');
 		await app.position.overview.shouldHaveTotalSkyEarned('[0-9]{1,2}.[0-9]{2}');
 
-		await app.position.manage.shouldHaveConnectWalletButton();
+		await app.position.manage.shouldHaveButton({ label: 'Connect wallet' });
 	});
 });

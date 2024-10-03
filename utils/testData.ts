@@ -366,6 +366,7 @@ export type Tokens =
 	| 'USDC_E'
 	| 'USDE'
 	| 'USDT'
+	| 'USDS'
 	| 'WBTC'
 	| 'WEETH'
 	| 'WOETH'

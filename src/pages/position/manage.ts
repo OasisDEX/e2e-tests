@@ -316,12 +316,4 @@ export class Manage {
 
 		await expect(this.page.getByText('You will receive')).toContainText(regExp);
 	}
-
-	@step
-	async shouldHaveConnectWalletButton() {
-		await expect(
-			this.page.locator('main').getByRole('button', { name: 'Connect wallet' }),
-			'"Connect wallet" button should be visible'
-		).toBeVisible();
-	}
 }
