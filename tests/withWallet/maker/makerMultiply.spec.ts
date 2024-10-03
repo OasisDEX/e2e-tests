@@ -24,7 +24,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Maker Multiply position @regression', async () => {
+	test('It should open a Maker Multiply ETH-B/DAI position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11797, 11798',

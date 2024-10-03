@@ -1,9 +1,9 @@
-import { BrowserContext, test } from '@playwright/test';
+import { BrowserContext, expect, test } from '@playwright/test';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -13,7 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Multiply - Swap to Spark', async () => {
+test.describe('Maker Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,7 +29,7 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('Test setup - Open Maker Mutiply position and start Swap process', async () => {
+	test('Test setup - Open Maker Borrow ETH-C/DAI position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -45,11 +45,11 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 			({ forkId } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'MakerTenderly:true',
 			}));
 		});
 
-		await app.page.goto('/vaults/open-multiply/ETH-C');
+		await app.page.goto('vaults/open/ETH-C');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -57,7 +57,8 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '3' },
+			deposit: { token: 'ETH', amount: '3.5' },
+			generate: { token: 'DAI', amount: '3500' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -65,42 +66,46 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 		await swapPosition({
 			app,
 			forkId,
-			reason: 'Switch to higher max Loan To Value',
+			reason: 'Change direction of my position',
 			originalProtocol: 'Maker',
-			targetProtocol: 'Spark',
-			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
+			targetProtocol: 'Aave V3',
+			targetPool: { colToken: 'SDAI', debtToken: 'ETH' },
 			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			{ colToken: 'ETH', debtToken: 'DAI' },
-			{ colToken: 'SDAI', debtToken: 'ETH' },
+			{ colToken: 'CBETH', debtToken: 'USDC' },
+			{ colToken: 'DAI', debtToken: 'MKR' },
+			{ colToken: 'LINK', debtToken: 'DAI' },
+			{ colToken: 'WSTETH', debtToken: 'DAI' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Multiply position (ETH/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (ETH-C/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
 			});
 
-			test.setTimeout(extremelyLongTestTimeout);
+			test.setTimeout(longTestTimeout);
 
-			// Wait an reload to avoid flakiness
-			await app.page.waitForTimeout(1000);
-			await app.page.reload();
+			await expect(async () => {
+				// Wait an reload to avoid flakiness
+				await app.page.waitForTimeout(1000);
+				await app.page.reload();
 
-			await swapPosition({
-				app,
-				forkId,
-				reason: 'Switch to higher max Loan To Value',
-				originalProtocol: 'Maker',
-				targetProtocol: 'Spark',
-				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
-				existingDpmAndApproval: true,
-				rejectSwap: true,
-			});
+				await swapPosition({
+					app,
+					forkId,
+					reason: 'Switch to higher max Loan To Value',
+					originalProtocol: 'Maker',
+					targetProtocol: 'Aave V3',
+					targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
+					existingDpmAndApproval: true,
+					rejectSwap: true,
+				});
+			}).toPass();
 		})
 	);
 });
