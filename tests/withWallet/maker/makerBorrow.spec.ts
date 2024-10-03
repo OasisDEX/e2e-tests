@@ -93,7 +93,7 @@ test.describe.skip('Maker Borrow - Wallet connected', async () => {
 		});
 	});
 
-	test('It should open a Maker Borrow position @regression', async () => {
+	test('It should open a Maker Borrow ETH-A/DAI position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',

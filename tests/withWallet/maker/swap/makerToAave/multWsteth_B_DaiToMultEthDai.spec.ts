@@ -10,6 +10,7 @@ import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionM
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -29,7 +30,7 @@ test.describe('Maker Multiply - Swap to Aave V3', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('Test setup - Open Maker Mutiply position', async () => {
+	test('Test setup - Open Maker Mutiply WSTETH-B/DAI position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -42,14 +43,22 @@ test.describe('Maker Multiply - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({
+			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'WSTETH',
+				balance: '10',
+			});
 		});
 
-		await app.position.openPage('/vaults/open-multiply/ETH-C', { positionType: 'Maker' });
+		await app.position.openPage('/vaults/open-multiply/WSTETH-B', { positionType: 'Maker' });
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -57,11 +66,11 @@ test.describe('Maker Multiply - Swap to Aave V3', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'WSTETH', amount: '9' },
 		});
 	});
 
-	test('It should swap a Maker Multiply position (ETH/DAI) to Aave V3 Multiply (ETH/DAI)', async () => {
+	test('It should swap a Maker Multiply position (WSTETH-B/DAI) to Aave V3 Multiply (ETH/DAI)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -82,7 +91,7 @@ test.describe('Maker Multiply - Swap to Aave V3', async () => {
 			targetProtocol: 'Aave V3',
 			targetPool: { colToken: 'ETH', debtToken: 'DAI' },
 			verifyPositions: {
-				originalPosition: { type: 'Multiply', collateralToken: 'ETH', debtToken: 'DAI' },
+				originalPosition: { type: 'Multiply', collateralToken: 'WSTETH', debtToken: 'DAI' },
 				targetPosition: {
 					exposure: { amount: '[0-9]{1,2}.[0-9]{2}', token: 'ETH' },
 					debt: { amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}', token: 'DAI' },

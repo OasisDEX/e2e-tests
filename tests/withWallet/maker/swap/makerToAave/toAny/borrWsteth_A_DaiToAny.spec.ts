@@ -10,6 +10,7 @@ import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionM
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -29,7 +30,7 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('Test setup - Open Maker Borrow position and start Swap process', async () => {
+	test('Test setup - Open Maker Borrow WSTETH-A/DAI position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -42,14 +43,22 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({
+			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'WSTETH',
+				balance: '20',
+			});
 		});
 
-		await app.page.goto('/vaults/open/ETH-C');
+		await app.page.goto('vaults/open/WSTETH-A');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -57,8 +66,8 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '3.5' },
-			generate: { token: 'DAI', amount: '3500' },
+			deposit: { token: 'WSTETH', amount: '8' },
+			generate: { token: 'DAI', amount: '7500' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -76,12 +85,12 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'WSTETH', debtToken: 'CBETH' },
-			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			// { colToken: 'WSTETH', debtToken: 'GHO' }, - NO LIQUIDITY - GHO
+			{ colToken: 'SDAI', debtToken: 'ETH' },
+			{ colToken: 'USDC', debtToken: 'USDT' },
+			{ colToken: 'USDC', debtToken: 'WSTETH' }, // BUG - 16003
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Borrow position (WSTETH-A/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',

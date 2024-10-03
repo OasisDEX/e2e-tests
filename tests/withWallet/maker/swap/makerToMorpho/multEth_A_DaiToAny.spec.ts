@@ -29,7 +29,7 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('Test setup - Open Maker Mutiply position and start Swap process', async () => {
+	test('Test setup - Open Maker Mutiply ETH-A/DAI position and start Swap process', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -49,7 +49,7 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 			}));
 		});
 
-		await app.page.goto('/vaults/open-multiply/ETH-C');
+		await app.page.goto('/vaults/open-multiply/ETH-A');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -81,7 +81,7 @@ test.describe('Maker Multiply - Swap to Morpho', async () => {
 			// { colToken: 'WOETH', debtToken: 'ETH' }, --> NO LIQUIDITY
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Multiply position (ETH-A/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',

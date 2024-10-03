@@ -10,10 +10,11 @@ import { openMakerPosition, swapPosition } from 'tests/sharedTestSteps/positionM
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Swap to Aave V3', async () => {
+test.describe('Maker Borrow - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,7 +30,7 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('Test setup - Open Maker Borrow position and start Swap process', async () => {
+	test('It should open a Maker Multiply WSTETH-A/DAI position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11788, 11790',
@@ -42,14 +43,22 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({
+			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
 			}));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'WSTETH',
+				balance: '10',
+			});
 		});
 
-		await app.page.goto('vaults/open/ETH-C');
+		await app.page.goto('/vaults/open-multiply/WSTETH-A');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
@@ -57,8 +66,7 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 		await openMakerPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '3.5' },
-			generate: { token: 'DAI', amount: '3500' },
+			deposit: { token: 'WSTETH', amount: '3.5' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -66,22 +74,22 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 		await swapPosition({
 			app,
 			forkId,
-			reason: 'Change direction of my position',
+			reason: 'Switch to higher max Loan To Value',
 			originalProtocol: 'Maker',
-			targetProtocol: 'Aave V3',
-			targetPool: { colToken: 'SDAI', debtToken: 'ETH' },
+			targetProtocol: 'Morpho',
+			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
 			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			{ colToken: 'WBTC', debtToken: 'USDC' },
 			{ colToken: 'WBTC', debtToken: 'USDT' },
-			{ colToken: 'WBTC', debtToken: 'ETH' },
+			{ colToken: 'WSTETH', debtToken: 'ETH-2' },
+			{ colToken: 'RSWETH', debtToken: 'ETH' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Maker Borrow position (ETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Maker Multiply position (WSTETH-A/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -98,7 +106,7 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
 				originalProtocol: 'Maker',
-				targetProtocol: 'Aave V3',
+				targetProtocol: 'Morpho',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,
