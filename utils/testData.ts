@@ -86,25 +86,25 @@ export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 
 export const morphoBaseEarnPools = [
 	'WSTETH-ETH-2',
+	'WSUPEROETHB-ETH',
+	'WEETH-ETH',
 	// 'CBETH-ETH', --> Already tested in /withWallet/morphoBlue
 	// 'WSTETH-ETH-1',  -- NO LIQUIDITY FOR MOST OF THE POOLS
 	// 'EZETH-ETH',
-	// 'WEETH-ETH',
 	// 'BSDETH-ETH',
 ];
 
-export const morphoBaseBorrowPools1 = ['CBETH-ETH', 'WSTETH-ETH-2', 'WSTETH-USDC'];
+export const morphoBaseBorrowPools1 = [
+	'CBETH-ETH',
+	'WSTETH-ETH-2',
+	'WSTETH-USDC',
+	'WEETH-ETH',
+	'WEETH-USDC',
+];
 // 'BSDETH-ETH', -- NO LIQUIDITY
 // 'ETH-USDC',  --> Already tested in /withWallet/morphoBlue
 
-export const morphoBaseBorrowPools2 = [
-	'EZETH-USDC',
-	'AERO-USDC',
-	// 'CBETH-USDC', -- NO LIQUIDITY
-	// 'EZETH-USDC', -- NO LIQUIDITY
-	// 'WEETH-ETH', -- Supply cap at 100%
-	// 'WEETH-USDC', -- Supply cap at 100%
-];
+export const morphoBaseBorrowPools2 = ['EZETH-USDC', 'AERO-USDC', 'WSUPEROETHB-ETH', 'CBETH-USDC'];
 
 export const aaveV3EthereumEarnPools_1 = ['WSTETH-CBETH', 'RETH-ETH'];
 
