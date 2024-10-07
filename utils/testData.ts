@@ -86,12 +86,12 @@ export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 
 export const morphoBaseEarnPools = [
 	'WSTETH-ETH-2',
-	'WSUPEROETHB-ETH',
 	'WEETH-ETH',
 	// 'CBETH-ETH', --> Already tested in /withWallet/morphoBlue
-	// 'WSTETH-ETH-1',  -- NO LIQUIDITY FOR MOST OF THE POOLS
-	// 'EZETH-ETH',
-	// 'BSDETH-ETH',
+	// 'WSUPEROETHB-ETH', -- NO 'SWAP' LIQUIDITY
+	// 'WSTETH-ETH-1', -- NO 'SWAP' LIQUIDITY
+	// 'EZETH-ETH', -- NO 'SWAP' LIQUIDITY
+	// 'BSDETH-ETH', -- NO 'SWAP' LIQUIDITY
 ];
 
 export const morphoBaseBorrowPools1 = [
@@ -335,6 +335,7 @@ export type Tokens =
 	| 'AERO'
 	| 'BSDETH'
 	| 'CBETH'
+	| 'CLE'
 	| 'DAI'
 	| 'DAI-1'
 	| 'DAI-2'
@@ -359,6 +360,7 @@ export type Tokens =
 	| 'RSETH'
 	| 'RSWETH'
 	| 'SDAI'
+	| 'SKY'
 	| 'SUSDE'
 	| 'SWBTC'
 	| 'USDA'

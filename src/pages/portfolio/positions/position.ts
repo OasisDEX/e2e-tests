@@ -1,6 +1,7 @@
 import { step } from '#noWalletFixtures';
 import { expect, Locator } from '@playwright/test';
 import { portfolioTimeout } from 'utils/config';
+import { Tokens } from 'utils/testData';
 
 type AutomationStatus = {
 	automation: 'Stop-Loss' | 'Auto Sell' | 'Auto Buy' | 'Take Profit';
@@ -15,16 +16,75 @@ export class Position {
 	}
 
 	@step
-	async shouldHave(args: { assets?: string; rays?: string }) {
+	async shouldHave(args: {
+		assets?: string | { usdsStakingType: 'Sky Rewards Rate' | 'Chronicle Points' };
+		rays?: string;
+		netValue?: { token?: Tokens; greaterThanZero?: boolean; amount?: string };
+		earnings?: { token?: Tokens; greaterThanZero?: boolean; amount?: string };
+		currentAPY?: string;
+	}) {
 		if (args.assets) {
-			await expect(
-				this.positionLocator.getByText('Position').locator('xpath=//preceding::span[1]')
-			).toContainText(args.assets, { timeout: portfolioTimeout });
+			const assetsLocator = this.positionLocator
+				.getByText(typeof args.assets === 'string' ? 'Position' : args.assets.usdsStakingType)
+				.locator('xpath=//preceding::*[1]');
+
+			const assetsText = typeof args.assets === 'string' ? args.assets : 'USDS';
+
+			await expect(assetsLocator).toContainText(assetsText);
 		}
 
 		if (args.rays) {
 			const regExp = new RegExp(`\\+ ${args.rays}`);
 			await expect(this.positionLocator.getByText('Rays / year')).toHaveText(regExp);
+		}
+
+		if (args.netValue) {
+			const netValueLocator = this.positionLocator
+				.getByTestId('portfolio-position-details')
+				.filter({ hasText: 'Net Value is the current value of the collateral ' })
+				.locator('span')
+				.nth(1);
+
+			if (args.netValue?.amount) {
+				const regExp = new RegExp(`${args.netValue?.amount} ${args.netValue?.token ?? ''}`);
+				await expect(netValueLocator).toHaveText(regExp);
+			}
+
+			if (args.netValue?.greaterThanZero) {
+				const netValueText = await netValueLocator.innerText();
+				const netValueNumber = parseFloat(netValueText.replace(args.netValue?.token ?? '$', ''));
+
+				expect(netValueNumber).toBeGreaterThan(0);
+			}
+		}
+
+		if (args.earnings) {
+			const netValueLocator = this.positionLocator
+				.getByTestId('portfolio-position-details')
+				.filter({ hasText: 'The earnings show the additional ' })
+				.locator('span')
+				.nth(1);
+
+			if (args.netValue?.amount) {
+				const regExp = new RegExp(`${args.netValue?.amount} ${args.netValue?.token ?? ''}`);
+				await expect(netValueLocator).toHaveText(regExp);
+			}
+
+			if (args.netValue?.greaterThanZero) {
+				const netValueText = await netValueLocator.innerText();
+				const netValueNumber = parseFloat(netValueText.replace(args.netValue?.token ?? '$', ''));
+
+				expect(netValueNumber).toBeGreaterThan(0);
+			}
+		}
+
+		if (args.currentAPY) {
+			const regExp = new RegExp(`${args.currentAPY}%`);
+			await expect(
+				this.positionLocator
+					.getByTestId('portfolio-position-details')
+					.filter({ hasText: 'Annualised rate this position is currently earning' })
+			).toHaveText(regExp);
 		}
 	}
 
