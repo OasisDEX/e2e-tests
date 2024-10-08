@@ -88,7 +88,8 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 			{ colToken: 'ETH', debtToken: 'DAI' },
 			{ colToken: 'ETH', debtToken: 'USDC' },
 			{ colToken: 'ETH', debtToken: 'WBTC' },
-			// { colToken: 'LDO', debtToken: 'USDT' }, // BUG - 15943 - NOT working
+			{ colToken: 'ETH', debtToken: 'USDT' },
+			{ colToken: 'LDO', debtToken: 'USDT' }, // BUG - 15943 - NOT working
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Morpho Borrow position (WSTETH/USDC) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {

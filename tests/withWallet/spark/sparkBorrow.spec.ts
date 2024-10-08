@@ -3,7 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	close,
@@ -14,6 +14,7 @@ import {
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -28,7 +29,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Borrow position - ETH/DAI @regression', async () => {
+	test('It should open a Spark Borrow position - RETH/DAI @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11811',
@@ -41,15 +42,23 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({ app, network: 'mainnet' }));
+			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'RETH',
+				balance: '20',
+			});
 		});
 
-		await app.page.goto('/ethereum/spark/borrow/eth-dai#simulate');
+		await app.page.goto('/ethereum/spark/borrow/reth-dai#simulate');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '7.5' },
+			deposit: { token: 'RETH', amount: '7.5' },
 			borrow: { token: 'DAI', amount: '5000' },
 		});
 	});
@@ -60,17 +69,17 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			description: '13659',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await manageDebtOrCollateral({
 			app,
 			forkId,
 			allowanceNotNeeded: true,
-			deposit: { token: 'ETH', amount: '1.5' },
+			deposit: { token: 'RETH', amount: '1.5' },
 			borrow: { token: 'DAI', amount: '1000' },
 			expectedCollateralDeposited: {
 				amount: '9.00',
-				token: 'ETH',
+				token: 'RETH',
 			},
 			expectedDebt: { amount: '6,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
 			protocol: 'Spark',
@@ -83,18 +92,18 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			description: '13660',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await app.position.manage.withdrawCollateral();
 
 		await manageDebtOrCollateral({
 			app,
 			forkId,
-			withdraw: { token: 'ETH', amount: '1.5' },
+			withdraw: { token: 'RETH', amount: '1.5' },
 			payBack: { token: 'DAI', amount: '1000' },
 			expectedCollateralDeposited: {
 				amount: '7.50',
-				token: 'ETH',
+				token: 'RETH',
 			},
 			expectedDebt: { amount: '5,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
 			protocol: 'Spark',
@@ -107,9 +116,9 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			description: '13661',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'ETH' });
+		await app.position.manage.openManageOptions({ currentLabel: 'RETH' });
 		await app.position.manage.select('Manage debt');
 
 		await manageDebtOrCollateral({
@@ -117,10 +126,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			forkId,
 			allowanceNotNeeded: true,
 			borrow: { token: 'DAI', amount: '1000' },
-			deposit: { token: 'ETH', amount: '1.5' },
+			deposit: { token: 'RETH', amount: '1.5' },
 			expectedCollateralDeposited: {
 				amount: '9.00',
-				token: 'ETH',
+				token: 'RETH',
 			},
 			expectedDebt: { amount: '6,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
 			protocol: 'Spark',
@@ -133,23 +142,21 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			description: '13662',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
-		// Reload page to avoid random fails
-		await app.page.reload();
+		// Wait to avoid random fails
+		await app.page.waitForTimeout(2_000);
 
-		await app.position.manage.openManageOptions({ currentLabel: 'ETH' });
-		await app.position.manage.select('Manage debt');
 		await app.position.manage.payBackDebt();
 
 		await manageDebtOrCollateral({
 			app,
 			forkId,
 			payBack: { token: 'DAI', amount: '1000' },
-			withdraw: { token: 'ETH', amount: '1.5' },
+			withdraw: { token: 'RETH', amount: '1.5' },
 			expectedCollateralDeposited: {
 				amount: '7.50',
-				token: 'ETH',
+				token: 'RETH',
 			},
 			expectedDebt: { amount: '5,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
 			protocol: 'Spark',
@@ -163,18 +170,18 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			description: '12060',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and relaod to avoid random fails
-		await app.page.waitForTimeout(1000);
-		await app.page.reload();
+		await app.page.waitForTimeout(2_000);
 
 		await close({
 			forkId,
 			app,
 			positionType: 'Borrow',
+			openManagementOptionsDropdown: { currentLabel: 'DAI' },
 			closeTo: 'debt',
-			collateralToken: 'ETH',
+			collateralToken: 'RETH',
 			debtToken: 'DAI',
 			tokenAmountAfterClosing: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}',
 		});

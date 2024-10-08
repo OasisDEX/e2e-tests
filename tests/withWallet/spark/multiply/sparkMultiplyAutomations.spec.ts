@@ -25,7 +25,7 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Multiply position @regression', async () => {
+	test('It should open a Spark Multiply ETH/DAI position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

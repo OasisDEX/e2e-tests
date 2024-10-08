@@ -3,7 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -25,7 +25,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Multiply ETH/DAI Long position @regression', async () => {
+	test('It should open a Spark Multiply WSTETH/DAI Long position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12463',
@@ -44,17 +44,17 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'DAI',
-				balance: '50000',
+				token: 'WSTETH',
+				balance: '20',
 			});
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/eth-dai');
+		await app.page.goto('/ethereum/spark/multiply/wsteth-dai');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'WSTETH', amount: '10' },
 		});
 	});
 
@@ -64,7 +64,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			description: 'xxx',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -84,7 +84,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			description: '12898',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -104,7 +104,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			description: 'xxx',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -115,7 +115,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			forkId,
 			positionType: 'Multiply',
 			closeTo: 'collateral',
-			collateralToken: 'ETH',
+			collateralToken: 'WSTETH',
 			debtToken: 'DAI',
 			tokenAmountAfterClosing: '9.[0-9]{1,4}',
 		});

@@ -43,6 +43,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			app = new App(page);
 
 			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+
 			await tenderly.setTokenBalance({
 				forkId,
 				walletAddress,
