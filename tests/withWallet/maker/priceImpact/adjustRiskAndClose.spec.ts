@@ -25,7 +25,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('Test setup - Open Maker Mutiply position', async () => {
+	test('Test setup - Open Maker Mutiply WSTETH-B/DAI position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',

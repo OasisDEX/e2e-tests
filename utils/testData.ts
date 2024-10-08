@@ -54,8 +54,8 @@ export const morphoEthereumEarnPools_3 = [
 	'WSTETH-ETH-2',
 	'WSTETH-ETH-3',
 	'WEETH-ETH',
-	'WOETH-ETH',
 ];
+// 'WOETH-ETH', --> NO LIQUIDITY
 
 export const morphoEthereumEarnPools_4 = ['EZETH-ETH', 'SUSDE-DAI-1', 'SUSDE-DAI-2', 'SUSDE-DAI-3'];
 
@@ -77,8 +77,9 @@ export const morphoEthereumBorrowPools_2 = ['SUSDE-DAI-3', 'SUSDE-DAI-4', 'SUSDE
 
 export const morphoEthereumBorrowPools_3 = ['WSTETH-ETH-2', 'WSTETH-USDA', 'SWBTC-WBTC'];
 
-export const morphoEthereumBorrowPools_4 = ['WOETH-ETH', 'RSWETH-ETH'];
-// 'RSETH-ETH',  --> NO LIQUIDITY
+export const morphoEthereumBorrowPools_4 = ['RSWETH-ETH'];
+// 'RSETH-ETH', --> NO LIQUIDITY
+// 'WOETH-ETH', --> NO LIQUIDITY
 
 export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 // , 'WEETH-USDC' --> WEETH supply 100%
@@ -372,7 +373,8 @@ export type Tokens =
 	| 'WBTC'
 	| 'WEETH'
 	| 'WOETH'
-	| 'WSTETH';
+	| 'WSTETH'
+	| 'WSUPEROETHB';
 
 export type SetBalanceTokens =
 	| 'AERO'
@@ -410,6 +412,7 @@ export type SetBalanceTokens =
 	| 'WEETH'
 	| 'WOETH'
 	| 'WSTETH'
+	| 'WSUPEROETHB'
 	| 'YFI';
 
 export const depositAmount = {
@@ -447,6 +450,7 @@ export const depositAmount = {
 	WETH: '2',
 	WOETH: '2',
 	WSTETH: '2',
+	WSUPEROETHB: '2',
 	YFI: '1',
 };
 
