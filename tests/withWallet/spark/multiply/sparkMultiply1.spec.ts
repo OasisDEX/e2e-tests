@@ -14,8 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// SKIPPED - Not possible to use WBTC as collateral or to borrow it for SPARK
-test.describe.skip('Spark Multiply - Wallet connected', async () => {
+test.describe('Spark Multiply - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -26,7 +25,7 @@ test.describe.skip('Spark Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Multiply Long position @regression', async () => {
+	test('It should open a Spark Multiply ETH/DAI Long position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12463',
@@ -45,17 +44,17 @@ test.describe.skip('Spark Multiply - Wallet connected', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'WBTC',
-				balance: '10',
+				token: 'DAI',
+				balance: '50000',
 			});
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/wbtc-dai#simulate');
+		await app.page.goto('/ethereum/spark/multiply/eth-dai');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '1' },
+			deposit: { token: 'ETH', amount: '10' },
 		});
 	});
 
@@ -75,7 +74,7 @@ test.describe.skip('Spark Multiply - Wallet connected', async () => {
 			forkId,
 			app,
 			risk: 'up',
-			newSliderPosition: 0.7,
+			newSliderPosition: 0.8,
 		});
 	});
 
@@ -99,7 +98,7 @@ test.describe.skip('Spark Multiply - Wallet connected', async () => {
 		});
 	});
 
-	test('It should close an existent Spark Multiply Long position - Close to debt token (DAI)', async () => {
+	test('It should close an existent Spark Multiply Long position - Close to collateral token (ETH)', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -115,10 +114,10 @@ test.describe.skip('Spark Multiply - Wallet connected', async () => {
 			app,
 			forkId,
 			positionType: 'Multiply',
-			closeTo: 'debt',
-			collateralToken: 'WBTC',
+			closeTo: 'collateral',
+			collateralToken: 'ETH',
 			debtToken: 'DAI',
-			tokenAmountAfterClosing: '[0-9]{2},[0-9]{3}.[0-9]{1,2}',
+			tokenAmountAfterClosing: '9.[0-9]{1,4}',
 		});
 	});
 });
