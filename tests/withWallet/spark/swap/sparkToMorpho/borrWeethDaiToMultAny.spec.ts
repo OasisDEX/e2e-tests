@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Borrow - Swap to Aave V3', async () => {
+test.describe('Spark Borrow - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,8 +29,8 @@ test.describe('Spark Borrow - Swap to Aave V3', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Spark position as part of the Swap tests setup
-	test('It should open a Spark Borrow position - RETH/DAI', async () => {
+	// Create a Maker position as part of the Swap tests setup
+	test('It should open a Spark Borrow WEETH/DAI position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -53,12 +53,12 @@ test.describe('Spark Borrow - Swap to Aave V3', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'RETH',
+				token: 'WEETH',
 				balance: '5',
 			});
 		});
 
-		await app.page.goto('/ethereum/spark/borrow/RETH-DAI#setup');
+		await app.page.goto('/ethereum/spark/borrow/WEETH-DAI#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -66,18 +66,30 @@ test.describe('Spark Borrow - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'RETH', amount: '3' },
+			deposit: { token: 'WEETH', amount: '3' },
 			borrow: { token: 'DAI', amount: '1000' },
+		});
+
+		await app.page.waitForTimeout(3000);
+
+		await swapPosition({
+			app,
+			forkId,
+			reason: 'Switch to higher max Loan To Value',
+			originalProtocol: 'Spark',
+			targetProtocol: 'Morpho',
+			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
+			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			// { colToken: 'RETH', debtToken: 'USDC' },
-			{ colToken: 'DAI', debtToken: 'WBTC' },
+			{ colToken: 'WBTC', debtToken: 'USDC' },
+			{ colToken: 'SUSDE', debtToken: 'USDT' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Spark Borrow position (RETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Spark Borrow position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
@@ -93,6 +105,8 @@ test.describe('Spark Borrow - Swap to Aave V3', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
+				originalProtocol: 'Spark',
+				targetProtocol: 'Morpho',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,
