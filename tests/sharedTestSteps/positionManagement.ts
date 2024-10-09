@@ -288,7 +288,6 @@ export const openPosition = async ({
 
 export const openMakerPosition = async ({
 	app,
-	forkId,
 	deposit,
 	generate,
 	existingProxy,
@@ -428,6 +427,7 @@ export const close = async ({
 	collateralToken,
 	debtToken,
 	tokenAmountAfterClosing,
+	openManagementOptionsDropdown,
 }: {
 	forkId: string;
 	app: App;
@@ -436,10 +436,18 @@ export const close = async ({
 	collateralToken: string;
 	debtToken: string;
 	tokenAmountAfterClosing: string;
+	openManagementOptionsDropdown?: { currentLabel: string };
 }) => {
-	await app.position.manage.openManageOptions({
-		currentLabel: positionType === 'Borrow' ? collateralToken : 'Adjust',
-	});
+	if (openManagementOptionsDropdown) {
+		await app.position.manage.openManageOptions({
+			currentLabel: openManagementOptionsDropdown.currentLabel,
+		});
+	} else {
+		await app.position.manage.openManageOptions({
+			currentLabel: positionType === 'Borrow' ? collateralToken : 'Adjust',
+		});
+	}
+
 	await app.position.manage.select('Close position');
 
 	// Delay to avoid random fails

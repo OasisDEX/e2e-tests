@@ -10,10 +10,11 @@ import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManage
 let context: BrowserContext;
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Spark Multiply - Swap to Morpho', async () => {
+test.describe('Spark Borrow - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -29,7 +30,7 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 	});
 
 	// Create a Maker position as part of the Swap tests setup
-	test('It should open a Spark Multiply position', async () => {
+	test('It should open a Spark Borrow WEETH/DAI position', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -42,14 +43,22 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId } = await setup({
+			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true EnableRefinance:true',
+				extraFeaturesFlags: 'MakerTenderly:true',
 			}));
+
+			await tenderly.setTokenBalance({
+				forkId,
+				walletAddress,
+				network: 'mainnet',
+				token: 'WEETH',
+				balance: '5',
+			});
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
+		await app.page.goto('/ethereum/spark/borrow/WEETH-DAI#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -57,7 +66,8 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '3' },
+			deposit: { token: 'WEETH', amount: '3' },
+			borrow: { token: 'DAI', amount: '1000' },
 		});
 
 		await app.page.waitForTimeout(3000);
@@ -77,11 +87,9 @@ test.describe('Spark Multiply - Swap to Morpho', async () => {
 		[
 			{ colToken: 'WBTC', debtToken: 'USDC' },
 			{ colToken: 'SUSDE', debtToken: 'USDT' },
-			{ colToken: 'USDE', debtToken: 'DAI-1' },
-			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Spark Multiply position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Spark Borrow position (ETH/DAI) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
