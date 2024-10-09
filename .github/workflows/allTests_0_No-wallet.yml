@@ -1,0 +1,23 @@
+name: All Tests - No wallet
+
+on: 
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on.'
+        type: string
+        default: 'https://staging.summer.fi'
+        required: true
+      flags_features:
+        description: 'Features Flags to enable / disable. For example: "flag1:true flag2:false"'
+        type: string
+        default: ''
+        required: false
+
+jobs:
+  no-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      flags_features: ${{ inputs.flags_features}}
+      script: nightly:no-wallet
