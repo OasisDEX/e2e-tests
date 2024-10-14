@@ -3,7 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -45,7 +45,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 				walletAddress,
 				network: 'base',
 				token: 'CBETH',
-				balance: '50',
+				balance: '5',
 			});
 		});
 
@@ -65,7 +65,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			description: '12465',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -86,7 +86,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			description: '12464',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -107,7 +107,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			description: '12466',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);

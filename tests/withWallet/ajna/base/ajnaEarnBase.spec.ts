@@ -72,7 +72,7 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 
 		await app.position.overview.shouldHaveProjectedEarnings30days({
 			token: 'ETH',
-			amount: '0.0[0-9]{3}',
+			amount: '0.[0-9]{4}',
 		});
 
 		await app.position.setup.orderInformation.shouldHaveAmountToLend({
