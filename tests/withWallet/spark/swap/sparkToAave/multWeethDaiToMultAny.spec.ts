@@ -31,7 +31,7 @@ test.describe.skip('Spark Multiply - Swap to Aave V3', async () => {
 	});
 
 	// Create a Spark position as part of the Swap tests setup
-	test('It should open a Spark Multiply position - RETH/DAI', async () => {
+	test('It should open a Spark Multiply position - WEETH/DAI', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -54,12 +54,12 @@ test.describe.skip('Spark Multiply - Swap to Aave V3', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'RETH',
+				token: 'WEETH',
 				balance: '5',
 			});
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/RETH-DAI#setup');
+		await app.page.goto('/ethereum/spark/multiply/WEETH-DAI#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -67,17 +67,17 @@ test.describe.skip('Spark Multiply - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'RETH', amount: '3' },
+			deposit: { token: 'WEETH', amount: '3' },
 		});
 	});
 
 	(
 		[
-			{ colToken: 'LINK', debtToken: 'ETH' },
-			{ colToken: 'USDC', debtToken: 'WBTC' },
+			{ colToken: 'USDT', debtToken: 'ETH' },
+			{ colToken: 'DAI', debtToken: 'WBTC' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Spark Multiply position (RETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap a Spark Multiply position (WEETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',

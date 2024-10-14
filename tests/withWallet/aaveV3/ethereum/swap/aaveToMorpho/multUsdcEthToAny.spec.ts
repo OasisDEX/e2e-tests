@@ -3,7 +3,7 @@ import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { metamaskSetUp } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -14,8 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// BUG 'Any' TO 'Aave'
-test.describe.skip('Spark Multiply - Swap to Aave V3', async () => {
+test.describe.only('Aave V3 Multiply - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -30,8 +29,8 @@ test.describe.skip('Spark Multiply - Swap to Aave V3', async () => {
 		viewport: { width: 1400, height: 720 },
 	});
 
-	// Create a Spark position as part of the Swap tests setup
-	test('It should open a Spark Multiply position - RETH/DAI', async () => {
+	// Create an Aave V3 position as part of the Swap tests setup
+	test('It should open an Aave V3 Multiply position - USDC/ETH', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -47,19 +46,19 @@ test.describe.skip('Spark Multiply - Swap to Aave V3', async () => {
 			({ forkId, walletAddress } = await setup({
 				app,
 				network: 'mainnet',
-				extraFeaturesFlags: 'MakerTenderly:true',
+				extraFeaturesFlags: 'EnableRefinance:true',
 			}));
 
 			await tenderly.setTokenBalance({
 				forkId,
-				walletAddress,
 				network: 'mainnet',
-				token: 'RETH',
-				balance: '5',
+				walletAddress,
+				token: 'USDC',
+				balance: '5000',
 			});
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/RETH-DAI#setup');
+		await app.page.goto('/ethereum/aave/v3/multiply/USDC-ETH#setup');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable();
@@ -67,23 +66,35 @@ test.describe.skip('Spark Multiply - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'RETH', amount: '3' },
+			deposit: { token: 'USDC', amount: '3000' },
+		});
+
+		await app.page.waitForTimeout(3000);
+
+		await swapPosition({
+			app,
+			forkId,
+			reason: 'Switch to higher max Loan To Value',
+			originalProtocol: 'Aave V3',
+			targetProtocol: 'Morpho',
+			targetPool: { colToken: 'WSTETH', debtToken: 'USDC' },
+			upToStep5: true,
 		});
 	});
 
 	(
 		[
-			{ colToken: 'LINK', debtToken: 'ETH' },
-			{ colToken: 'USDC', debtToken: 'WBTC' },
+			{ colToken: 'SUSDE', debtToken: 'DAI-2' },
+			{ colToken: 'LBTC', debtToken: 'WBTC' },
 		] as const
 	).forEach((targetPool) =>
-		test(`It should swap a Spark Multiply position (RETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
+		test(`It should swap an Aave V3 Multiply position (USDC/ETH) to Morpho Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',
 				description: 'xxx',
 			});
 
-			test.setTimeout(extremelyLongTestTimeout);
+			test.setTimeout(longTestTimeout);
 
 			// Wait an reload to avoid flakiness
 			await app.page.waitForTimeout(1000);
@@ -93,6 +104,8 @@ test.describe.skip('Spark Multiply - Swap to Aave V3', async () => {
 				app,
 				forkId,
 				reason: 'Switch to higher max Loan To Value',
+				originalProtocol: 'Aave V3',
+				targetProtocol: 'Morpho',
 				targetPool: { colToken: targetPool.colToken, debtToken: targetPool.debtToken },
 				existingDpmAndApproval: true,
 				rejectSwap: true,
