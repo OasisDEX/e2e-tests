@@ -54,7 +54,7 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 				walletAddress,
 				network: 'mainnet',
 				token: 'WSTETH',
-				balance: '10',
+				balance: '5',
 			});
 		});
 
@@ -66,8 +66,8 @@ test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WSTETH', amount: '5' },
-			borrow: { token: 'ETH', amount: '2' },
+			deposit: { token: 'WSTETH', amount: '3' },
+			borrow: { token: 'ETH', amount: '1' },
 		});
 	});
 

@@ -105,7 +105,8 @@ export const morphoBaseBorrowPools1 = [
 // 'BSDETH-ETH', -- NO LIQUIDITY
 // 'ETH-USDC',  --> Already tested in /withWallet/morphoBlue
 
-export const morphoBaseBorrowPools2 = ['EZETH-USDC', 'AERO-USDC', 'WSUPEROETHB-ETH', 'CBETH-USDC'];
+export const morphoBaseBorrowPools2 = ['EZETH-USDC', 'WSUPEROETHB-ETH', 'CBETH-USDC'];
+// 'AERO-USDC', -- NO LIQUIDITY
 
 export const aaveV3EthereumEarnPools_1 = ['WSTETH-CBETH', 'RETH-ETH'];
 

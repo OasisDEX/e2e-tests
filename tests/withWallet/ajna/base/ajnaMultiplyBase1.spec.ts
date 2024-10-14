@@ -79,7 +79,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'ETH', amount: '10' },
+			deposit: { token: 'ETH', amount: '2' },
 			protocol: 'Ajna',
 			ajnaExistingDpm: true,
 		});
@@ -97,7 +97,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 			forkId,
 			app,
 			risk: 'up',
-			newSliderPosition: 0.2,
+			newSliderPosition: 0.3,
 		});
 	});
 
