@@ -120,79 +120,57 @@ export const aaveV3EthereumEarnPools_3 = ['USDC-USDT', 'SDAI-FRAX'];
 export const aaveV3EthereumEarnPools_4 = ['SUSDE-USDT', 'SUSDE-USDC', 'SUSDE-DAI'];
 // , 'WEETH-ETH' --> WEETH supply 100%
 
-export const aaveV3EthereumMultiplyPools_1 = [
-	'ETH-USDC',
-	'ETH-USDT',
-	'ETH-WBTC',
-	// 'ETH-GHO', -- NO LIQUIDITY - GHO
-	// 'ETH-DAI', --> Already tested in /withWallet/aaveV3
-];
+export const aaveV3EthereumMultiplyPools_1 = ['ETH-USDC', 'ETH-USDT', 'ETH-WBTC'];
+// 'LDO-USDT' --> skipped as tenderly_setErc20Balance is not working with LDO
+// 'WBTC-GHO', -- NO LIQUIDITY - GHO
+// 'ETH-GHO', -- NO LIQUIDITY - GHO
+// 'CBETH-GHO', -- NO LIQUIDITY - GHO
+// 'WSTETH-GHO', -- NO LIQUIDITY - GHO
+// 'RETH-GHO', -- NO LIQUIDITY - GHO
+// 'WEETH-GHO', -- NO LIQUIDITY - GHO
+// 'LINK-GHO', -- NO LIQUIDITY - GHO
+// 'ETH-DAI', --> Already tested in /withWallet/aaveV3
+// 'USDC-ETH', --> Already tested in /withWallet/aaveV3
+// 'WBTC-USDC', --> Already tested in /withWallet/aaveV3
+// 'WSTETH-USDC', --> Already tested in /withWallet/aaveV3
+// 'LINK-ETH', --> Already tested in /withWallet/aaveV3
+// 'DAI-WBTC', --> Already tested in /withWallet/aaveV3
 
-export const aaveV3EthereumMultiplyPools_2 = [
-	'WBTC-DAI',
-	'WBTC-USDT',
-	'WBTC-LUSD',
-	'WBTC-ETH',
-	// 'WBTC-GHO', -- NO LIQUIDITY - GHO
-	// 'WBTC-USDC', --> Already tested in /withWallet/aaveV3
-];
+export const aaveV3EthereumMultiplyPools_2 = ['WBTC-DAI', 'WBTC-USDT', 'WBTC-LUSD', 'WBTC-ETH'];
 
 export const aaveV3EthereumMultiplyPools_3 = [
 	'WSTETH-DAI',
 	'WSTETH-USDT',
 	'WSTETH-LUSD',
 	'WSTETH-RPL',
-	// 'WSTETH-GHO', --> skipped as there is no GHO liquidity
-	// 'WSTETH-USDC', --> Already tested in /withWallet/aaveV3
 ];
 
-export const aaveV3EthereumMultiplyPools_4 = [
-	'RETH-DAI',
-	'RETH-USDC',
-	'RETH-USDT',
-	// 'RETH-GHO', --> skipped as there is no GHO liquidity
-	// 'WEETH-GHO', --> WEETH supply 100%
-];
+export const aaveV3EthereumMultiplyPools_4 = ['RETH-DAI', 'RETH-USDC', 'RETH-USDT'];
 
 export const aaveV3EthereumMultiplyPools_5 = ['CBETH-DAI', 'CBETH-USDC'];
-// 'CBETH-GHO' --> skipped as there is no GHO liquidity
-// 'LDO-USDT' --> skipped as tenderly_setErc20Balance is not working with LDO
 
-export const aaveV3EthereumMultiplyPools_6 = [
-	'LINK-DAI',
-	'LINK-USDC',
-	'LINK-USDT',
-	// 'LINK-GHO', --> skipped as there is no GHO liquidity
-	// 'LINK-ETH', --> Already tested in /withWallet/aaveV3
-];
+export const aaveV3EthereumMultiplyPools_6 = ['LINK-DAI', 'LINK-USDC', 'LINK-USDT'];
 
-export const aaveV3EthereumMultiplyPools_7 = [
-	'DAI-ETH',
-	'DAI-MKR',
-	'SDAI-WBTC',
-	'SDAI-ETH',
-	// 'DAI-WBTC', --> Already tested in /withWallet/aaveV3
-];
+export const aaveV3EthereumMultiplyPools_7 = ['DAI-ETH', 'DAI-MKR', 'SDAI-WBTC', 'SDAI-ETH'];
 
-export const aaveV3EthereumMultiplyPools_8 = ['USDC-ETH', 'USDC-WSTETH', 'USDC-WBTC', 'USDT-ETH'];
+export const aaveV3EthereumMultiplyPools_8 = ['USDC-WSTETH', 'USDC-WBTC', 'USDT-ETH'];
 
-export const aaveV3EthereumBorrowPools_1 = [
-	'ETH-USDT',
-	'ETH-WBTC',
-	// 'ETH-GHO', -- NO LIQUIDITY - GHO
-	// 'ETH-DAI', --> Already tested in /withWallet/aaveV3
-	// 'ETH-USDC', --> Already tested in /withWallet/aaveV3
-	// 'WBTC-DAI', --> Already tested in /withWallet/aaveV3
-	// 'WSTETH-USDT', --> Already tested in /withWallet/aaveV3
-];
+export const aaveV3EthereumBorrowPools_1 = ['ETH-USDT', 'ETH-WBTC'];
+// 'LDO-USDT' skipped as tenderly_setErc20Balance is not working with LDO
+// 'ETH-GHO', -- NO LIQUIDITY - GHO
+// 'WBTC-GHO', -- NO LIQUIDITY - GHO
+// 'WSTETH-GHO', -- NO LIQUIDITY - GHO
+// 'RETH-GHO', -- NO LIQUIDITY - GHO
+// 'WEETH-GHO', -- NO LIQUIDITY - GHO
+// 'LINK-GHO', -- NO LIQUIDITY - GHO
+// 'SDAI-GHO', -- NO LIQUIDITY - GHO
+// 'USDC-GHO', -- NO LIQUIDITY - GHO
+// 'ETH-DAI', --> Already tested in /withWallet/aaveV3
+// 'ETH-USDC', --> Already tested in /withWallet/aaveV3
+// 'WBTC-DAI', --> Already tested in /withWallet/aaveV3
+// 'WSTETH-USDT', --> Already tested in /withWallet/aaveV3
 
-export const aaveV3EthereumBorrowPools_2 = [
-	'WBTC-USDC',
-	'WBTC-USDT',
-	'WBTC-LUSD',
-	'WBTC-ETH',
-	// 'WBTC-GHO', -- NO LIQUIDITY - GHO
-];
+export const aaveV3EthereumBorrowPools_2 = ['WBTC-USDC', 'WBTC-USDT', 'WBTC-LUSD', 'WBTC-ETH'];
 
 export const aaveV3EthereumBorrowPools_3 = [
 	'WSTETH-DAI',
@@ -200,44 +178,29 @@ export const aaveV3EthereumBorrowPools_3 = [
 	'WSTETH-LUSD',
 	'WSTETH-RPL',
 	'WSTETH-CBETH',
-	// 'WSTETH-GHO', -- NO LIQUIDITY - GHO
 ];
 
-export const aaveV3EthereumBorrowPools_4 = [
-	'RETH-DAI',
-	'RETH-USDC',
-	'RETH-USDT',
-	// 'RETH-GHO', -- NO LIQUIDITY - GHO
-	// 'WEETH-GHO', --> WEETH supply 100%
-];
+export const aaveV3EthereumBorrowPools_4 = ['RETH-DAI', 'RETH-USDC', 'RETH-USDT'];
 
 export const aaveV3EthereumBorrowPools_5 = ['CBETH-USDC', 'CBETH-GHO'];
-// 'LDO-USDT' skipped as tenderly_setErc20Balance is not working with LDO
 
 export const aaveV3EthereumBorrowPools_6 = [
 	'LINK-DAI',
 	'LINK-USDC',
 	'LINK-USDT',
-	// 'LINK-GHO', -- NO LIQUIDITY - GHO
 	'LINK-ETH',
 	'DAI-ETH',
 	'DAI-MKR',
 	'DAI-WBTC',
 ];
 
-export const aaveV3EthereumBorrowPools_7 = [
-	'SDAI-WBTC',
-	'SDAI-ETH',
-	'SDAI-USDT',
-	// 'SDAI-GHO', -- NO LIQUIDITY - GHO
-];
+export const aaveV3EthereumBorrowPools_7 = ['SDAI-WBTC', 'SDAI-ETH', 'SDAI-USDT'];
 
 export const aaveV3EthereumBorrowPools_8 = [
 	'USDC-WBTC',
 	'USDC-ETH',
 	'USDC-WSTETH',
 	'USDC-USDT',
-	// 'USDC-GHO', -- NO LIQUIDITY - GHO
 	'USDT-ETH',
 ];
 

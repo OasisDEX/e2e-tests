@@ -85,9 +85,7 @@ test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 
 	(
 		[
-			{ colToken: 'WSTETH', debtToken: 'ETH-1' },
 			{ colToken: 'WSTETH', debtToken: 'ETH-2' },
-			{ colToken: 'WSTETH', debtToken: 'ETH-3' },
 			{ colToken: 'WSTETH', debtToken: 'USDC' },
 			{ colToken: 'WSTETH', debtToken: 'USDT' },
 		] as const

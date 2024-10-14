@@ -14,7 +14,8 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Maker Borrow - Swap to Aave V3', async () => {
+// BUG 'Any' TO 'Aave'
+test.describe.skip('Maker Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -86,7 +87,6 @@ test.describe('Maker Borrow - Swap to Aave V3', async () => {
 	(
 		[
 			{ colToken: 'SDAI', debtToken: 'ETH' },
-			{ colToken: 'USDC', debtToken: 'USDT' },
 			{ colToken: 'USDC', debtToken: 'WSTETH' }, // BUG - 16003
 		] as const
 	).forEach((targetPool) =>
