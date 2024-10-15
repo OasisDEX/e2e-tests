@@ -14,7 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe.only('Aave V3 Multiply - Swap to Morpho', async () => {
+test.describe('Aave V3 Multiply - Swap to Morpho', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
