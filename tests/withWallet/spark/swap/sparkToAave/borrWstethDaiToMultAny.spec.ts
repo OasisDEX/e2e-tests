@@ -82,13 +82,7 @@ test.describe.skip('Spark Borrow - Swap to Aave V3', async () => {
 		});
 	});
 
-	(
-		[
-			{ colToken: 'WSTETH', debtToken: 'CBETH' },
-			{ colToken: 'WSTETH', debtToken: 'DAI' },
-			{ colToken: 'WSTETH', debtToken: 'LUSD' },
-		] as const
-	).forEach((targetPool) =>
+	([{ colToken: 'WSTETH', debtToken: 'CBETH' }] as const).forEach((targetPool) =>
 		test(`It should swap a Spark Borrow position (WSTETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',

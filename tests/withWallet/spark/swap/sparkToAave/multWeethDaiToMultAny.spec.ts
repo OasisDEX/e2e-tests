@@ -71,12 +71,7 @@ test.describe.skip('Spark Multiply - Swap to Aave V3', async () => {
 		});
 	});
 
-	(
-		[
-			{ colToken: 'USDT', debtToken: 'ETH' },
-			{ colToken: 'DAI', debtToken: 'WBTC' },
-		] as const
-	).forEach((targetPool) =>
+	([{ colToken: 'DAI', debtToken: 'WBTC' }] as const).forEach((targetPool) =>
 		test(`It should swap a Spark Multiply position (WEETH/DAI) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',

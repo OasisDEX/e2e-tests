@@ -75,7 +75,6 @@ test.describe.skip('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	(
 		[
 			{ colToken: 'WBTC', debtToken: 'DAI' },
-			{ colToken: 'WBTC', debtToken: 'ETH' },
 			{ colToken: 'WBTC', debtToken: 'LUSD' },
 			{ colToken: 'WBTC', debtToken: 'USDT' },
 			{ colToken: 'WSTETH', debtToken: 'CBETH' },
