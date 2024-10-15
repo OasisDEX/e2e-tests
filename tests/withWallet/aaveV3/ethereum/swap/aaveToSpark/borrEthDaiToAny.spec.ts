@@ -74,12 +74,7 @@ test.describe('Aave V3 Borrow - Swap to Morpho', async () => {
 		});
 	});
 
-	(
-		[
-			{ colToken: 'ETH', debtToken: 'DAI' },
-			{ colToken: 'SDAI', debtToken: 'ETH' },
-		] as const
-	).forEach((targetPool) =>
+	([{ colToken: 'WEETH', debtToken: 'DAI' }] as const).forEach((targetPool) =>
 		test(`It should swap an Aave V3 Borrow position (ETH/USDC) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',

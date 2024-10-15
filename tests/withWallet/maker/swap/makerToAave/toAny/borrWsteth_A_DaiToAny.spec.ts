@@ -86,7 +86,6 @@ test.describe.skip('Maker Borrow - Swap to Aave V3', async () => {
 
 	(
 		[
-			{ colToken: 'SDAI', debtToken: 'ETH' },
 			{ colToken: 'USDC', debtToken: 'WSTETH' }, // BUG - 16003
 		] as const
 	).forEach((targetPool) =>

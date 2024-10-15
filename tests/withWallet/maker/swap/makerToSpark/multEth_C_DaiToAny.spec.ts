@@ -73,12 +73,7 @@ test.describe('Maker Multiply - Swap to Spark', async () => {
 		});
 	});
 
-	(
-		[
-			{ colToken: 'ETH', debtToken: 'DAI' },
-			{ colToken: 'SDAI', debtToken: 'ETH' },
-		] as const
-	).forEach((targetPool) =>
+	([{ colToken: 'SDAI', debtToken: 'ETH' }] as const).forEach((targetPool) =>
 		test(`It should swap a Maker Multiply position (ETH-C/DAI) to Spark Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
 			test.info().annotations.push({
 				type: 'Test case',

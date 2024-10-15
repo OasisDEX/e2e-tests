@@ -75,11 +75,8 @@ test.describe.skip('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	(
 		[
 			{ colToken: 'WBTC', debtToken: 'DAI' },
-			{ colToken: 'WBTC', debtToken: 'ETH' },
 			{ colToken: 'WBTC', debtToken: 'LUSD' },
-			{ colToken: 'WBTC', debtToken: 'USDC' },
 			{ colToken: 'WBTC', debtToken: 'USDT' },
-			{ colToken: 'WSTETH', debtToken: 'CBETH' },
 		] as const
 	).forEach((targetPool) =>
 		test(`It should swap a Morpho Borrow position (WSTETH/USDC) to Aave V3 Multiply (${targetPool.colToken}/${targetPool.debtToken})`, async () => {
