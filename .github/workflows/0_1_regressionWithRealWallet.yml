@@ -35,6 +35,7 @@ jobs:
         run: |
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
+          VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
           yarn ci:with-real-wallet
       - uses: actions/upload-artifact@v4
         if: always()
