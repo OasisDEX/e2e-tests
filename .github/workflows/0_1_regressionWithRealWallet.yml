@@ -21,31 +21,3 @@ jobs:
       base_url: 'https://staging.summer.fi'
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
-  # with-real-wallet-tests:
-  #   name: 'Tests with real wallet'
-  #   runs-on: ubuntu-latest
-  #   container:
-  #     image: synthetixio/docker-node:18.16-ubuntu
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: actions/setup-node@v4
-  #       with:
-  #         node-version: 18
-  #     - name: Install dependencies
-  #       run: yarn
-  #     - name: Install playwright
-  #       run: npx playwright install && npx playwright install-deps
-  #     - name: Install xvfb
-  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-  #     - name: Run 'With real wallet' tests
-  #       run: |
-  #         BASE_URL=${{ inputs.base_url }} \
-  #         FLAGS_FEATURES=${{ inputs.flags_features}} \
-  #         VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
-  #         yarn ci:with-real-wallet
-  #     - uses: actions/upload-artifact@v4
-  #       if: always()
-  #       with:
-  #         name: playwright-report-with-real-wallet
-  #         path: playwright-reports/with-real-wallet
-  #         retention-days: 30
