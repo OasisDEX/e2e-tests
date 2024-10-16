@@ -15,10 +15,12 @@
 		"ethers": "^6.7.1"
 	},
 	"scripts": {
+		"earn-protocol": "REPORT_FOLDER=earn-protocol npx playwright test --project=earn-protocol",
 		"api-tests": "REPORT_FOLDER=api-tests npx playwright test --project=api-tests",
 		"verify-staging": "REPORT_FOLDER=verify-staging npx playwright test --project=verify-staging",
 		"no-wallet": "REPORT_FOLDER=no-wallet npx playwright test --project=no-wallet",
 		"no-wallet:portfolio": "REPORT_FOLDER=no-wallet-portfolio npx playwright test --project=no-wallet-portfolio",
+		"with-real-wallet": "REPORT_FOLDER=with-real-wallet npx playwright test --project=with-real-wallet --workers=1",
 		"with-wallet:rays": "REPORT_FOLDER=with-wallet-rays npx playwright test --project=with-wallet-rays --workers=1",
 		"with-wallet:token-swap-rate": "REPORT_FOLDER=with-wallet-token-swap-rate npx playwright test --project=with-wallet-token-swap-rate --workers=1",
 		"with-wallet:rays-and-token-swap-rate": "REPORT_FOLDER=with-wallet-rays-and-token-swap-rate npx playwright test --project=with-wallet-rays-and-token-swap-rate --workers=1",

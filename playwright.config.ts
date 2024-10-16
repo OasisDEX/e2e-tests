@@ -1,6 +1,6 @@
 require('dotenv').config();
 import { devices, type PlaywrightTestConfig, type ReporterDescription } from '@playwright/test';
-import { baseUrl } from 'utils/config';
+import { baseUrl, earnProtocolBaseUrl } from 'utils/config';
 
 // Config to hold extra property
 interface TestConfig extends PlaywrightTestConfig {
@@ -37,6 +37,15 @@ const defaultConfig: PlaywrightTestConfig = {
 	/* Configure projects for major browsers */
 	projects: [
 		{
+			name: 'earn-protocol',
+			testMatch: ['earnProtocol/**'],
+			use: {
+				baseURL: earnProtocolBaseUrl,
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
 			name: 'api-tests',
 			testMatch: ['api/**'],
 			use: {
@@ -66,6 +75,12 @@ const defaultConfig: PlaywrightTestConfig = {
 			use: {
 				...devices['Desktop Chrome'],
 			},
+		},
+
+		{
+			name: 'with-real-wallet',
+			testMatch: ['withRealWallet/**'],
+			use: { ...devices['Desktop Chrome'] },
 		},
 
 		{
@@ -99,6 +114,12 @@ const defaultConfig: PlaywrightTestConfig = {
 		{
 			name: 'with-wallet-aave-ethereum',
 			testMatch: ['withWallet/aaveV2/**', 'withWallet/aaveV3/ethereum/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-aave-ethereum-new',
+			testMatch: ['withWallet/aaveV3_new/ethereum/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
