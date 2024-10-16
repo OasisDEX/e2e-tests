@@ -80,6 +80,7 @@
 		"//-2b": "---------------------- CI REGRESSION TESTS -----------------------",
 		"//-2c": "---------------------------------------------------------------",
 		"ci:no-wallet:regression": "WORKERS='2' FULLY_PARALLEL='true' RETRIES='2' yarn no-wallet:regression",
+		"ci:with-real-wallet": "xvfb-run yarn with-real-wallet",
 		"ci:with-wallet:aave:ethereum:regression": "xvfb-run yarn with-wallet:aave:ethereum:regression",
 		"ci:with-wallet:aave:other:regression": "xvfb-run yarn with-wallet:aave:other:regression",
 		"ci:with-wallet:aave:arbitrum:regression": "xvfb-run yarn with-wallet:aave:arbitrum:regression",
