@@ -80,10 +80,6 @@ export const setup = async ({
 	withExistingWallet?: { privateKey: string };
 }) => {
 	let forkId: string;
-	const walletAddress = await metamask.walletAddress();
-	// Logging walletAddress for debugging purposes
-	//  - Info displayed in 'Attachments > stdout' section of playwright reports
-	console.log(' Wallet Address: ', walletAddress);
 
 	await app.page.goto('');
 	await app.homepage.shouldBeVisible();
@@ -113,6 +109,11 @@ export const setup = async ({
 	if (withExistingWallet) {
 		await metamask.importAccount(withExistingWallet?.privateKey);
 	}
+
+	const walletAddress = await metamask.getWalletAddress();
+	// Logging walletAddress for debugging purposes
+	//  - Info displayed in 'Attachments > stdout' section of playwright reports
+	console.log(' Wallet Address: ', walletAddress);
 
 	await wallet.connect(app);
 	await termsAndconditions.accept(app);

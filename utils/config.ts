@@ -2,6 +2,9 @@ require('dotenv').config();
 
 export const baseUrl = process.env.BASE_URL ?? 'https://staging.summer.fi';
 
+export const earnProtocolBaseUrl =
+	process.env.BASE_URL_EARN_PROTOCOL ?? 'https://earn-protocol-staging.oasisapp.dev/';
+
 export const expectDefaultTimeout: number = 5_000;
 
 export const hooksTimeout: number =
