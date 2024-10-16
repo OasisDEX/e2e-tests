@@ -1,4 +1,4 @@
-name: 0.1. Regression - Tests ith real wallet
+name: 0.1. Regression - With real wallet
 
 on: 
   workflow_dispatch:
@@ -35,7 +35,7 @@ jobs:
         run: |
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
-          yarn ci:with-real-wallet:
+          yarn ci:with-real-wallet
       - uses: actions/upload-artifact@v4
         if: always()
         with:
