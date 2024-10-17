@@ -1,3 +1,4 @@
+import { Earn } from './earn';
 import { Header } from './header';
 
-export { Header };
+export { Earn, Header };

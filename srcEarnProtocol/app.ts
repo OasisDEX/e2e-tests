@@ -2,7 +2,7 @@ import { Page } from '@playwright/test';
 // import { Modals } from './modals';
 import {
 	// 	Borrow,
-	// 	Earn,
+	Earn,
 	Header,
 	// 	Homepage,
 	// 	Multiply,
@@ -16,7 +16,7 @@ export class App {
 
 	// readonly borrow: Borrow;
 
-	// readonly earn: Earn;
+	readonly earn: Earn;
 
 	readonly header: Header;
 
@@ -35,7 +35,7 @@ export class App {
 	constructor(page: Page) {
 		this.page = page;
 		// this.borrow = new Borrow(page);
-		// this.earn = new Earn(page);
+		this.earn = new Earn(page);
 		this.header = new Header(page);
 		// this.homepage = new Homepage(page);
 		// this.modals = new Modals(page);
