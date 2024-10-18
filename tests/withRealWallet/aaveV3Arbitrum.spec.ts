@@ -56,7 +56,8 @@ test.describe('Aave v3 - Arbitrum - Wallet connected', async () => {
 		});
 	});
 
-	test('It should open an Aave v3 Earn correlated Arbitrum position - WEETH/ETH @regression', async () => {
+	// NO LIQUIDITY --> To be replaced with another pool
+	test.skip('It should open an Aave v3 Earn correlated Arbitrum position - WEETH/ETH @regression', async () => {
 		test.setTimeout(longTestTimeout);
 
 		await app.page.goto('/arbitrum/aave/v3/multiply/WEETH-ETH#setup');

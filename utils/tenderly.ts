@@ -57,6 +57,7 @@ export const getTxCount = async (forkId: string) => {
 export const tokenAddresses = {
 	mainnet: {
 		AJNA: '0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079',
+		CBBTC: '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf',
 		CBETH: '0xbe9895146f7af43049ca1c1ae358b0541ea49704',
 		CLE: '0x8308515d052b52589D66823792021e6e2FbAc405',
 		DAI: '0x6b175474e89094c44da98b954eedeac495271d0f',
@@ -104,6 +105,7 @@ export const tokenAddresses = {
 	base: {
 		AERO: '0x940181a94a35a4569e4529a3cdfb74e38fd98631',
 		BSDETH: '0xCb327b99fF831bF8223cCEd12B1338FF3aA322Ff',
+		CBBTC: '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf',
 		CBETH: '0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22',
 		DAI: '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb',
 		EZETH: '0x2416092f143378750bb29b79ed961ab195cceea5',
@@ -127,6 +129,7 @@ export const tokenBalances = {
 	AJNA: '10000',
 	AERO: '300000',
 	BSDETH: '1000',
+	CBBTC: '20',
 	CBETH: '1000',
 	CLE: '200000',
 	DAI: '200000',
@@ -201,7 +204,7 @@ export const setTokenBalance = async ({
 		await provider.send('tenderly_setErc20Balance', [
 			tokenAddresses[network][token],
 			walletAddress,
-			token === 'WBTC'
+			['CBBTC', 'WBTC'].includes(token)
 				? ethers.toQuantity(ethers.parseUnits(balance, 8))
 				: token === 'PYUSD' ||
 				  token === 'USDC' ||
