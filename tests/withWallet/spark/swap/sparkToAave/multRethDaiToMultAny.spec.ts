@@ -14,8 +14,7 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// BUG 'Any' TO 'Aave'
-test.describe.skip('Spark Multiply - Swap to Aave V3', async () => {
+test.describe('Spark Multiply - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 

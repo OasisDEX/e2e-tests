@@ -13,8 +13,7 @@ let forkId: string;
 
 test.describe.configure({ mode: 'serial' });
 
-// BUG 'Any' TO 'Aave'
-test.describe.skip('Maker Borrow - Swap to Aave V3', async () => {
+test.describe('Maker Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 

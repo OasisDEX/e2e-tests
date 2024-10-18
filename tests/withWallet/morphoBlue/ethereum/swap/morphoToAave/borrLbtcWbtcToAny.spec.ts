@@ -16,7 +16,7 @@ test.describe.configure({ mode: 'serial' });
 
 // [Bug] - Morpho - LBTC | SWBTC | RSWETH | WOETH positions cannot be swapped - Invalid collateral token address
 // https://www.notion.so/oazo/144cbc0395cb478a8b81cff326740123?v=2bb430cfe8ca41ff9f6dde3b129ac0fb&p=6a760d3fc8324e6081eba1544822f15f&pm=s
-test.describe.skip('Morpho Blue Borrow - Swap to Aave V3', async () => {
+test.describe('Morpho Blue Borrow - Swap to Aave V3', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
