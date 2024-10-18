@@ -33,7 +33,7 @@ test.describe('Open exisiting position pages - Maker', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('https://summer.fi/ethereum/maker/30639#overview');
+		await app.page.goto('/ethereum/maker/30639#overview');
 
 		await app.position.shouldHaveHeader('ETH-C Vault 30639');
 		await app.position.overview.shouldHaveLiquidationPrice({
