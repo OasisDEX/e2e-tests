@@ -150,7 +150,7 @@ export const tokenBalances = {
 	RSETH: '1000',
 	RSWETH: '1000',
 	SDAI: '200000',
-	SKY: '10000000',
+	SKY: '100000000',
 	STETH: '1000',
 	SUSDE: '200000',
 	SUSDS: '200000',
