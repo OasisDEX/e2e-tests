@@ -1,8 +1,21 @@
-import { expect, test } from '#noWalletFixtures';
+import { test } from '#noWalletFixtures';
 import { longTestTimeout } from 'utils/config';
 
-test.describe('Aave v3 Multiply Arbitrum', async () => {
-	test('It should open an existing Aave V3 Multiply Arbitrum vault page @regression', async ({
+test.describe('Open exisiting position pages - Aave v3 Arbitrum', async () => {
+	test('It should open an existing Aave V3 Arbitrum Earn yield multiple RETH/ETH position page @regression', async ({
+		app,
+	}) => {
+		test.setTimeout(longTestTimeout);
+
+		await app.page.goto('/arbitrum/aave/v3/multiply/RETH-ETH/540#overview');
+
+		await app.position.shouldHaveHeader('RETH/ETH yield multiple #540');
+		await app.position.overview.shouldHaveNetValue({
+			value: '[0-9].[0-9]{2}',
+		});
+	});
+
+	test('It should open an existing Aave V3 Arbitrum Borrow ETH/DAI position page @regression', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);
@@ -39,5 +52,19 @@ test.describe('Aave v3 Multiply Arbitrum', async () => {
 			pair: 'ETH/DAI',
 		});
 		await app.position.setup.shouldHaveLoanToValue('[2-9][0-9].[0-9]{1,2}');
+	});
+
+	test('It should open an existing Aave V3 Arbitrum Multiply DAI/WBTC position page @regression', async ({
+		app,
+	}) => {
+		test.setTimeout(longTestTimeout);
+
+		await app.page.goto('/arbitrum/aave/v3/multiply/DAI-WBTC/2#overview');
+
+		await app.position.shouldHaveHeader('DAI/WBTC Multiply #2');
+		await app.position.overview.shouldHaveLiquidationPrice({
+			price: '0.00',
+		});
+		await app.position.overview.shouldHaveLoanToValue('0.00');
 	});
 });

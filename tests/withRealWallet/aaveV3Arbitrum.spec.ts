@@ -56,13 +56,12 @@ test.describe('Aave v3 - Arbitrum - Wallet connected', async () => {
 		});
 	});
 
-	// NO LIQUIDITY --> To be replaced with another pool
-	test.skip('It should open an Aave v3 Earn correlated Arbitrum position - WEETH/ETH @regression', async () => {
+	test('It should open an Aave v3 Earn correlated Arbitrum position - WSTETH/ETH @regression', async () => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/arbitrum/aave/v3/multiply/WEETH-ETH#setup');
+		await app.page.goto('/arbitrum/aave/v3/multiply/WSTETH-ETH#setup');
 
-		await app.position.setup.deposit({ token: 'WEETH', amount: '0.0007' });
+		await app.position.setup.deposit({ token: 'WSTETH', amount: '0.0006' });
 
 		await app.position.setup.confirm();
 		// Thre are two 'confirm' steps

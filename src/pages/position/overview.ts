@@ -153,10 +153,21 @@ export class Overview {
 	 	@param value - It must be regExp representing the the whole amount
 	*/
 	@step
-	async shouldHaveNetValue({ value, token }: { value: string; token?: string }) {
-		const regExp = new RegExp(`${value}${token ? ` ${token}` : ''}`);
+	async shouldHaveNetValue({
+		value,
+		token,
+		sdr,
+	}: {
+		value: string;
+		token?: string;
+		sdr?: { savingsToken: 'DAI' | 'SDAI' };
+	}) {
+		const regExp = new RegExp(`${value}${token ? (sdr ? `${token}` : ` ${token}`) : ''}`);
 		await expect(
-			this.page.getByText('Net Value').locator('xpath=//following-sibling::p[1]')
+			this.page
+				.getByText('Net Value')
+				.nth(sdr?.savingsToken === 'SDAI' ? 1 : 0)
+				.locator('xpath=//following-sibling::p[1]')
 		).toHaveText(regExp, { timeout: positionTimeout });
 	}
 
