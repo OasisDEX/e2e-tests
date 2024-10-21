@@ -18,7 +18,8 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
+// NO LIQUIDITY
+test.describe.skip('Ajna Ethereum Borrow - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
