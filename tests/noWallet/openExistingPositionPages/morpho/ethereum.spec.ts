@@ -29,7 +29,7 @@ test.describe('Open exisiting position pages - Morpho Ethereum', async () => {
 		});
 	});
 
-	test('It should open an existing Morpho Ethereum WBTC-USDC position page @regression', async ({
+	test('It should open an existing Morpho Ethereum Multiply WBTC-USDC position page @regression', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);
