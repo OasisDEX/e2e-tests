@@ -15,8 +15,7 @@ test.describe('Open exisiting position pages - Morpho Ethereum', async () => {
 		});
 	});
 
-	// UI rendomly shows 'Borrow' or 'Multiply'
-	test.skip('It should open an existing Morpho Ethereum Borrow WSTETH-ETH-1 position page @regression', async ({
+	test('It should open an existing Morpho Ethereum Borrow WSTETH-ETH-1 position page @regression', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);
