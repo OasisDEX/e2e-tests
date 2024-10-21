@@ -2624,11 +2624,11 @@ export const validPayloadsAaveV3Arbitrum = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '5300',
+				executionLTV: '3000',
 				executionPrice: '0',
 				stopLoss: {
 					triggerData: {
-						executionLTV: '8140',
+						executionLTV: '7890',
 						token: '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
 					},
 					action: 'add',
