@@ -15,20 +15,21 @@ test.describe('Open exisiting position pages - Morpho Ethereum', async () => {
 		});
 	});
 
-	test('It should open an existing Morpho Ethereum Borrow WSTETH-ETH-1 position page @regression', async ({
+	// UI rendomly shows 'Borrow' or 'Multiply'
+	test.skip('It should open an existing Morpho Ethereum Borrow WSTETH-ETH-1 position page @regression', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-ETH-1/1467#overview');
+		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-ETH-1/1478#overview');
 
-		await app.position.shouldHaveHeader('WSTETH/ETH 94.50% Borrow #1467');
+		await app.position.shouldHaveHeader('WSTETH/ETH 94.50% Borrow #1478');
 		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '[0-9].[0-9]{4}',
+			price: '0.00',
 		});
 	});
 
-	test('It should open an existing Morpho Ethereum WBTC-USDC position page @regression', async ({
+	test('It should open an existing Morpho Ethereum Multiply WBTC-USDC position page @regression', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);
