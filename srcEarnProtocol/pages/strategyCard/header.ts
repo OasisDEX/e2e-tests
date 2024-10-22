@@ -21,7 +21,7 @@ export class Header {
 	async getNetwork(): Promise<string> {
 		const network = await this.headerLocator
 			.getByTestId('strategy-network')
-			.getByRole('img')
+			.locator('img')
 			.getAttribute('alt');
 		return network.replace('network_', '');
 	}
