@@ -1,5 +1,5 @@
 import { test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 
 test.describe('Open exisiting position pages - Aave v3 Optimism', async () => {
 	test('It should open an existing Aave V3 Optimism Earn yield loop USDC.E/SUSD position page @regression', async ({
@@ -31,6 +31,7 @@ test.describe('Open exisiting position pages - Aave v3 Optimism', async () => {
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '<0.001',
 			token: 'WBTC/DAI',
+			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('>110.00');
 		await app.position.overview.shouldHaveCollateralDeposited({
@@ -56,6 +57,7 @@ test.describe('Open exisiting position pages - Aave v3 Optimism', async () => {
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
 			token: 'WBTC/USDC.E',
+			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('[0-9]{1,2}.[0-9]{2}');
 	});

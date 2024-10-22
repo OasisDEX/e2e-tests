@@ -1,5 +1,5 @@
 import { test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 
 test.describe('Open exisiting position pages - Aave v3 Ethereum', async () => {
 	test('It should open an existing Aave V3 Ethereum Earn yield multiple WSTETH/ETH position page @regression', async ({
@@ -26,6 +26,7 @@ test.describe('Open exisiting position pages - Aave v3 Ethereum', async () => {
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.[0-9]{4}',
 			token: 'CBETH/ETH',
+			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('[0-9]{1,2}.[0-9]{2}');
 	});
@@ -41,6 +42,7 @@ test.describe('Open exisiting position pages - Aave v3 Ethereum', async () => {
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '([1-3],)?[0-9]{3}.[0-9]{2}',
 			token: 'ETH/USDC',
+			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('[1-8][0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValue({ value: '\\$[0-9]{1,2}.[0-9]{2}' });

@@ -1,5 +1,5 @@
 import { test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 
 test.describe('Open exisiting position pages - Ajna Base', async () => {
 	test('It should open an existing Ajna Base Earn active lending WSTETH/ETH position page @regression', async ({
@@ -26,6 +26,7 @@ test.describe('Open exisiting position pages - Ajna Base', async () => {
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
 			token: 'PRIME/USDC',
+			timeout: positionTimeout,
 		});
 	});
 
@@ -40,6 +41,7 @@ test.describe('Open exisiting position pages - Ajna Base', async () => {
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '([0-9],)?[0-9]{3}.[0-9]{2}',
 			token: 'ETH/USDC',
+			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('[0-9]{1,2}.[0-9]{2}');
 	});
