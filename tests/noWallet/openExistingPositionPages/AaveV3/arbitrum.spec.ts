@@ -1,5 +1,5 @@
 import { test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 
 test.describe('Open exisiting position pages - Aave v3 Arbitrum', async () => {
 	test('It should open an existing Aave V3 Arbitrum Earn yield multiple RETH/ETH position page @regression', async ({
@@ -31,6 +31,7 @@ test.describe('Open exisiting position pages - Aave v3 Arbitrum', async () => {
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '[1-2],[0-9]{3}.[0-9]{2}',
 			token: 'ETH/DAI',
+			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('[3-9][0-9].[0-9]{2}');
 		await app.position.overview.shouldHaveNetValue({ value: '\\$[0-9]{1,2}.[0-9]{1,2}' });
@@ -64,6 +65,7 @@ test.describe('Open exisiting position pages - Aave v3 Arbitrum', async () => {
 		await app.position.shouldHaveHeader('DAI/WBTC Multiply #2');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
+			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 	});

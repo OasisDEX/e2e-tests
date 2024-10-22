@@ -1,5 +1,5 @@
 import { test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 
 test.describe('Open exisiting position pages - Spark', async () => {
 	test('It should open an existing Spark Earn WSTETH/ETH position page @regression', async ({
@@ -26,6 +26,7 @@ test.describe('Open exisiting position pages - Spark', async () => {
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '([0-9]{1,2},)?[0-9]{3}.[0-9]{2}',
 			token: 'ETH/DAI',
+			timeout: positionTimeout,
 		});
 	});
 
@@ -39,6 +40,7 @@ test.describe('Open exisiting position pages - Spark', async () => {
 		await app.position.shouldHaveHeader('SDAI/ETH Multiply #1448');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '([0-9]{1,2},)?[0-9]{3}.[0-9]{2}',
+			timeout: positionTimeout,
 		});
 	});
 });

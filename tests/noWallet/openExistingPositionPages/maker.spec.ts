@@ -1,5 +1,5 @@
 import { test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 
 test.describe('Open exisiting position pages - Maker', async () => {
 	test('It should open an existing Maker Earn DSR position page @regression', async ({ app }) => {
@@ -25,6 +25,7 @@ test.describe('Open exisiting position pages - Maker', async () => {
 		await app.position.shouldHaveHeader('ETH-C Vault 30640');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
+			timeout: positionTimeout,
 		});
 	});
 
@@ -38,6 +39,7 @@ test.describe('Open exisiting position pages - Maker', async () => {
 		await app.position.shouldHaveHeader('ETH-C Vault 30639');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
+			timeout: positionTimeout,
 		});
 	});
 });

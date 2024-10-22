@@ -1,5 +1,5 @@
 import { test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 
 test.describe('Open exisiting position pages - Ajna Ethereum', async () => {
 	test('It should open an existing Ajna Ethereum Earn active lending ETH/USDC position page @regression', async ({
@@ -28,6 +28,7 @@ test.describe('Open exisiting position pages - Ajna Ethereum', async () => {
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '[0-9].[0-9]{4}',
 			token: 'APXETH/ETH',
+			timeout: positionTimeout,
 		});
 	});
 
@@ -41,6 +42,7 @@ test.describe('Open exisiting position pages - Ajna Ethereum', async () => {
 		await app.position.shouldHaveHeader('USDC/ETH Multiply #1467');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
+			timeout: positionTimeout,
 		});
 		await app.position.overview.shouldHaveLoanToValue('0.00');
 	});

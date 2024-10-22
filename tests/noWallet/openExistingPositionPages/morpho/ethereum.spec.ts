@@ -1,5 +1,5 @@
 import { test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 
 test.describe('Open exisiting position pages - Morpho Ethereum', async () => {
 	test('It should open an existing Morpho Ethereum Earn Steakhouse USDC position page @regression', async ({
@@ -25,6 +25,7 @@ test.describe('Open exisiting position pages - Morpho Ethereum', async () => {
 		await app.position.shouldHaveHeader('WSTETH/ETH 94.50% Borrow #1478');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
+			timeout: positionTimeout,
 		});
 	});
 
@@ -38,6 +39,7 @@ test.describe('Open exisiting position pages - Morpho Ethereum', async () => {
 		await app.position.shouldHaveHeader('WBTC/USDC Multiply #1467');
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
+			timeout: positionTimeout,
 		});
 	});
 });
