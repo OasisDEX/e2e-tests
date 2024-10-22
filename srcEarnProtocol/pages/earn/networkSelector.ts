@@ -1,20 +1,21 @@
-import { expect } from '#earnProtocolFixtures';
-import { step } from '#noWalletFixtures';
-import { Page } from '@playwright/test';
+import { expect, step } from '#earnProtocolFixtures';
+import { Locator, Page } from '@playwright/test';
 
 export class NetworkSelector {
 	readonly page: Page;
 
+	readonly networksLocator: Locator;
+
 	constructor(page: Page) {
 		this.page = page;
+		this.networksLocator = page.locator(
+			'[class*="_titleWithSelectWrapper_"] [class*="_dropdown_"]'
+		);
 	}
 
 	@step
-	async open({ currentLabel }: { currentLabel: 'All Networks' | 'base' | 'ethereum' }) {
-		const dropdownLocator = this.page
-			.locator('div[class*="dropdownSelected"]')
-			.filter({ has: this.page.locator(`span:has-text("${currentLabel}")`) });
-
+	async open() {
+		const dropdownLocator = this.networksLocator.locator('[class*="dropdownSelected"]');
 		// Wait for image to load to avoid random fails
 		const imageLocator = dropdownLocator.locator('img').nth(0);
 		await expect(imageLocator).toBeVisible();
@@ -25,16 +26,16 @@ export class NetworkSelector {
 
 	@step
 	async select({ option }: { option: 'All Networks' | 'base' | 'ethereum' }) {
-		await this.page
-			.locator('div[class*="dropdownOptions"]')
-			.filter({ has: this.page.locator(`span:has-text("${option}")`) })
+		await this.networksLocator
+			.locator('div[class*="_dropdownOption_"]')
+			.filter({ hasText: option })
 			.click();
 	}
 
 	@step
 	async shouldBe({ option }: { option: 'All Networks' | 'base' | 'ethereum' }) {
 		await expect(
-			this.page
+			this.networksLocator
 				.locator('div[class*="dropdownSelected"]')
 				.filter({ has: this.page.locator(`span:has-text("${option}")`) })
 		).toBeVisible();

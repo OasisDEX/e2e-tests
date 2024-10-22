@@ -4,7 +4,7 @@ test.describe(`Earn page`, async () => {
 	test('It should select network', async ({ app }) => {
 		await app.earn.openPage();
 
-		await app.earn.networkSelector.open({ currentLabel: 'All Networks' });
+		await app.earn.networkSelector.open();
 
 		await app.earn.networkSelector.select({ option: 'base' });
 
