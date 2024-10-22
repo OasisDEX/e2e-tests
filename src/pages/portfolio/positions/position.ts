@@ -102,7 +102,7 @@ export class Position {
 	@step
 	async shouldHaveAutomations(automations: AutomationStatus) {
 		for (let i = 0; i < automations.length; i++) {
-			const automationIcon: Locator = await this.positionLocator
+			const automationIcon: Locator = this.positionLocator
 				.getByText(automations[i].automation)
 				.locator('..');
 
