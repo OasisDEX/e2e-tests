@@ -9,7 +9,7 @@ export class VaultChanges {
 
 	constructor(page: Page) {
 		this.page = page;
-		this.vaultChangesLocator = page.getByRole('list').filter({ hasText: 'Vault changes' }); // locator('ul:has-text("Order information")');
+		this.vaultChangesLocator = page.getByRole('list').filter({ hasText: 'Vault changes' });
 	}
 
 	@step

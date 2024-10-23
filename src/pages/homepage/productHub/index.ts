@@ -11,9 +11,13 @@ export class ProductHub {
 	readonly list: ProductsList;
 
 	constructor(page: Page) {
-		this.productHubLocator = page.locator('#product-hub').locator('..');
-		this.header = new Header(this.productHubLocator);
-		this.list = new ProductsList(page, this.productHubLocator);
+		this.productHubLocator = page.locator('#product-hub');
+		this.header = new Header(page.locator('#product-hub > div:nth-child(1)'));
+		this.list = new ProductsList(
+			page,
+			this.productHubLocator,
+			this.productHubLocator.locator('tbody tr[role="link"]')
+		);
 	}
 
 	@step

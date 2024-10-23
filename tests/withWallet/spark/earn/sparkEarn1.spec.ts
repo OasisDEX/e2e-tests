@@ -25,7 +25,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Earn position @regression', async () => {
+	test('It should open a Spark Earn (Yiel Loop) position - RETH/ETH @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12089',
@@ -44,26 +44,17 @@ test.describe('Spark Earn - Wallet connected', async () => {
 				forkId,
 				walletAddress,
 				network: 'mainnet',
-				token: 'DAI',
-				balance: '30000',
-			});
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
 				token: 'RETH',
-				balance: '100',
+				balance: '10',
 			});
 		});
 
-		await app.page.goto('/ethereum/spark/earn/reth-eth#simulate');
+		await app.page.goto('/ethereum/spark/multiply/RETH-ETH#setup');
 
 		await openPosition({
 			app,
 			forkId,
 			deposit: { token: 'RETH', amount: '7.5' },
-			omni: { network: 'ethereum' },
 		});
 	});
 
@@ -81,15 +72,12 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
 		await adjustRisk({
 			forkId,
 			app,
+			earnPosition: true,
 			risk: 'up',
-			newSliderPosition: 0.6,
+			newSliderPosition: 0.8,
 		});
 	});
 
@@ -101,13 +89,10 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
 		await adjustRisk({
 			forkId,
 			app,
+			earnPosition: true,
 			risk: 'down',
 			newSliderPosition: 0.2,
 		});
@@ -121,14 +106,13 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(2_000);
 
 		await close({
 			app,
 			forkId,
-			positionType: 'Earn',
+			positionType: 'Earn (Yield Loop)',
 			closeTo: 'collateral',
 			collateralToken: 'RETH',
 			debtToken: 'ETH',

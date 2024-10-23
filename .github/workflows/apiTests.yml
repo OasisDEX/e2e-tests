@@ -1,0 +1,17 @@
+name: API tests
+
+on: 
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on.'
+        type: string
+        default: 'https://staging.summer.fi'
+        required: true
+
+jobs:
+  api-tests:
+    uses: ./.github/workflows/z_Reusable_Apis.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      script: api-tests

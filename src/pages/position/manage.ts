@@ -14,15 +14,15 @@ export class Manage {
 	}
 
 	@step
-	async shouldBeVisible(header: string) {
+	async shouldBeVisible(header: string, args?: { timeout: number }) {
 		await expect(this.page.getByText(header).first(), `${header} should be visible`).toBeVisible({
-			timeout: positionTimeout,
+			timeout: args?.timeout ?? positionTimeout,
 		});
 	}
 
 	@step
-	async getLiquidationPrice(): Promise<number> {
-		return await this.base.getLiquidationPrice();
+	async getLiquidationPrice(protocol?: 'Maker'): Promise<number> {
+		return await this.base.getLiquidationPrice(protocol ?? undefined);
 	}
 
 	@step
@@ -83,6 +83,11 @@ export class Manage {
 	}
 
 	@step
+	async shouldHaveConfirmButton() {
+		await this.base.shouldHaveConfirmButton();
+	}
+
+	@step
 	async shouldShowSuccessScreen() {
 		await expect(this.page.getByText('Success!'), '"Success!" should be visible').toBeVisible({
 			timeout: positionTimeout,
@@ -131,9 +136,7 @@ export class Manage {
 				.getByText(`${token} after closing`)
 				.locator('..')
 				.locator('xpath=//following-sibling::span[1]')
-				.filter({ hasText: regExp }),
-			`Token amount (${token} - ${amount}) should be visible`
-		).toBeVisible({ timeout: positionTimeout });
+		).toContainText(regExp, { timeout: positionTimeout });
 	}
 
 	@step
@@ -219,5 +222,98 @@ export class Manage {
 	@step
 	async takeMeToTheMultiplyInterface() {
 		await this.page.getByRole('button', { name: 'Take me to the Multiply interface' }).click();
+	}
+
+	@step
+	async shouldHaveAutomationBoostRays({
+		raysCount,
+		automations,
+	}: {
+		raysCount: string;
+		automations?: ('Stop Loss' | 'Auto Sell' | 'Auto Buy' | 'Take Profit')[];
+	}) {
+		const regExp = new RegExp(`${raysCount} Rays a year`);
+		await expect(this.page.getByText('Boost your Rays by an extra')).toHaveText(regExp);
+		if (automations) {
+			for (const automation of automations) {
+				await expect(
+					this.page.getByText('Boost your Rays by an extra').locator('..').getByText(automation),
+					`${automation} should be listed`
+				).toBeVisible();
+			}
+		}
+	}
+
+	@step
+	async shouldHaveAutomationTriggerEarnRays() {
+		const regExp = new RegExp('[E-e]arn extra Rays each time automation triggers');
+		await expect(this.page.getByText(regExp)).toBeVisible();
+	}
+
+	@step
+	async shouldNotHaveAutomationTriggerEarnRays() {
+		const regExp = new RegExp('[E-e]arn extra Rays each time automation triggers');
+		await expect(this.page.getByText(regExp)).not.toBeVisible();
+	}
+
+	@step
+	async shouldUpdateEarnRays() {
+		const initialRaysToEarn = await this.page.getByText('Rays Instantly').innerText();
+		await expect(this.page.getByText('Rays Instantly')).not.toContainText(initialRaysToEarn, {
+			timeout: expectDefaultTimeout * 3,
+		});
+	}
+
+	@step
+	async shouldEarnRays(raysCount: string) {
+		const regExp = new RegExp(`Earn ${raysCount}`);
+		await expect(this.page.getByText('Rays Instantly')).toContainText(regExp, {
+			timeout: expectDefaultTimeout * 3,
+		});
+	}
+
+	@step
+	async shouldIncreaseRays(raysCount: string) {
+		const regExp = new RegExp(raysCount);
+		await expect(
+			this.page.getByText('You will increase your yearly Rays on this position by')
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldReduceRays({ raysCount, automation }: { raysCount: string; automation?: boolean }) {
+		if (automation) {
+			const regExp = new RegExp(
+				`Reduce Rays by ${raysCount} Rays a yearWhen you remove this automation`
+			);
+			await expect(this.page.getByText('Reduce Rays by').locator('..')).toContainText(regExp);
+		} else {
+			const regExp = new RegExp(raysCount);
+			await expect(
+				this.page.getByText('You will reduce your yearly Rays on this position by')
+			).toContainText(regExp);
+		}
+	}
+
+	@step
+	async shouldNotHaveReduceRays() {
+		await expect(this.page.getByText('Reduce Rays by')).not.toBeVisible();
+	}
+
+	@step
+	async unstake() {
+		await this.page.getByRole('button', { exact: true, name: 'Unstake' }).nth(0).click();
+	}
+
+	@step
+	async claim() {
+		await this.page.getByRole('button', { exact: true, name: 'Claim' }).nth(0).click();
+	}
+
+	@step
+	async shouldReceiveSky(amount: string) {
+		const regExp = new RegExp(`${amount} SKY`);
+
+		await expect(this.page.getByText('You will receive')).toContainText(regExp);
 	}
 }

@@ -1,25 +1,56 @@
 import { expect, Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
-import { Positions } from './positions';
+import { PositionsHub } from './positionsHub';
 import { Wallet } from './wallet';
 import { expectDefaultTimeout, portfolioTimeout } from 'utils/config';
+
+export type PortfolioData = {
+	reasons: number;
+	totalValue: number;
+	portfolioValue: number;
+	totalSupplied: number;
+	totalBorrowed: number;
+	emptyPositionsCount: number;
+	positionsListedCount: number;
+	positionsListedData: {
+		id: string;
+		pool: string;
+		type: string;
+	}[];
+};
 
 export class Portfolio {
 	readonly page: Page;
 
-	readonly positions: Positions;
+	readonly positionsHub: PositionsHub;
 
 	readonly wallet: Wallet;
 
 	constructor(page: Page) {
 		this.page = page;
-		this.positions = new Positions(page);
+		this.positionsHub = new PositionsHub(page);
 		this.wallet = new Wallet(page);
 	}
 
 	@step
-	async open(wallet?: string) {
-		await this.page.goto(`/portfolio/${wallet ?? ''}`);
+	async open(wallet?: string, args?: { withPositions?: boolean }) {
+		if (args?.withPositions) {
+			await expect(async () => {
+				await this.page.goto(`/portfolio/${wallet}`);
+				await expect(
+					this.page
+						.getByRole('link')
+						.filter({ hasText: 'View Position' })
+						.locator('span:has-text("$")')
+						.nth(0),
+					`First position's Net Value should be visible`
+				).toBeVisible({
+					timeout: 10_000,
+				});
+			}).toPass();
+		} else {
+			await this.page.goto(`/portfolio/${wallet ?? ''}`);
+		}
 	}
 
 	@step
@@ -38,7 +69,7 @@ export class Portfolio {
 	@step
 	async getReasonsValue() {
 		const value = await this.page.getByText('worth of reasons to open').locator('span').innerText();
-		return value;
+		return parseFloat(value.replace(',', '').replace('$', '').replace('M', ''));
 	}
 
 	@step
@@ -82,7 +113,7 @@ export class Portfolio {
 	@step
 	async getTotalValue() {
 		const value = await this.page.locator('span:has-text("Total Value") + h2').innerText();
-		return value;
+		return parseFloat(value.replace(',', '').replace('$', '').replace('M', ''));
 	}
 
 	@step
@@ -95,7 +126,7 @@ export class Portfolio {
 	@step
 	async getPortfolioValue() {
 		const value = await this.page.locator('span:has-text("Summer.fi Portfolio") + h2').innerText();
-		return value;
+		return parseFloat(value.replace(',', '').replace('$', '').replace('M', ''));
 	}
 
 	@step
@@ -108,7 +139,7 @@ export class Portfolio {
 	@step
 	async getTotalSupplied() {
 		const value = await this.page.locator('span:has-text("Total Supplied") + h2').innerText();
-		return value;
+		return parseFloat(value.replace(',', '').replace('$', '').replace('M', ''));
 	}
 
 	@step
@@ -121,27 +152,32 @@ export class Portfolio {
 	@step
 	async getTotalBorrowed() {
 		const value = await this.page.locator('span:has-text("Total Borrowed") + h2').innerText();
-		return value;
+		return parseFloat(value.replace(',', '').replace('$', '').replace('M', ''));
 	}
 
 	@step
 	async shouldHavePositionsPanelWithoutErrors() {
 		const noPositions = this.page.getByText('There are no positions');
-		const positionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
+		const positionsListed = this.page.getByRole('button', { name: 'View Position', exact: true });
 		const migratePositions = this.page.getByText('Why migrate?');
 		const errorLoadingPositions = this.page.getByText('error trying to load positions');
 
+		let errorLoadingPositionsCount: number;
+
+		// Initial check to make sure that positions component has either loaded or shown error
 		await expect(async () => {
 			const noPositionsCount = await noPositions.count();
 			const positionsListedCount = await positionsListed.count();
 			const migratePositionsCount = await migratePositions.count();
-			const errorLoadingPositionsCount = await errorLoadingPositions.count();
+			errorLoadingPositionsCount = await errorLoadingPositions.count();
 
 			expect(
 				noPositionsCount + positionsListedCount + migratePositionsCount + errorLoadingPositionsCount
 			).toBeGreaterThan(0);
-			expect(errorLoadingPositionsCount).toEqual(0);
 		}).toPass();
+
+		// Check that positions component loaded without errors
+		expect(errorLoadingPositionsCount).toEqual(0);
 	}
 
 	@step
@@ -164,25 +200,12 @@ export class Portfolio {
 
 	@step
 	async getPortfolioData() {
-		let data: {
-			reasons: string;
-			totalValue: string;
-			portfolioValue: string;
-			totalSupplied: string;
-			totalBorrowed: string;
-			emptyPositionsCount: number;
-			positionsListedCount: number;
-			positionsListedData: {
-				id: string;
-				pool: string;
-				type: string;
-			}[];
-		} = {
-			reasons: '',
-			totalValue: '',
-			portfolioValue: '',
-			totalSupplied: '',
-			totalBorrowed: '',
+		let data: PortfolioData = {
+			reasons: 0,
+			totalValue: 0,
+			portfolioValue: 0,
+			totalSupplied: 0,
+			totalBorrowed: 0,
 			emptyPositionsCount: 0,
 			positionsListedCount: 0,
 			positionsListedData: [],
@@ -195,10 +218,10 @@ export class Portfolio {
 		data.totalBorrowed = await this.getTotalBorrowed();
 
 		const { emptyPositionsCount, positionsListedCount } =
-			await this.positions.getNumberOfPositions();
+			await this.positionsHub.getNumberOfPositions();
 		data.emptyPositionsCount = emptyPositionsCount;
 		data.positionsListedCount = positionsListedCount;
-		data.positionsListedData = await this.positions.getPositionsData();
+		data.positionsListedData = await this.positionsHub.getPositionsData();
 
 		return data;
 	}

@@ -42,7 +42,7 @@ test.describe('Empty wallet - Wallet not connected', async () => {
 			description: '13023',
 		});
 
-		await app.portfolio.positions.shouldNotHavePositions();
+		await app.portfolio.positionsHub.shouldNotHavePositions();
 	});
 
 	test('It should show no assets in Wallet tab @regression', async () => {

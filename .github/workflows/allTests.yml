@@ -1,4 +1,4 @@
-name: All Tests - Staging
+name: All Tests
 
 on: 
   workflow_dispatch:
@@ -16,25 +16,12 @@ on:
 
 jobs:
   no-wallet-tests:
-    name: 'No wallet'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.37.1-jammy
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Run NO-WALLET tests
-        run: BASE_URL=${{ inputs.base_url }} FLAGS_FEATURES=${{ inputs.flags_features}} yarn nightly:no-wallet
-      - uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: playwright-report-no-wallet
-          path: playwright-reports/no-wallet
-          retention-days: 30
+    uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      flags_features: ${{ inputs.flags_features}}
+      script: nightly:no-wallet
+
   with-wallet-aave-ethereum-tests:
     name: 'With wallet - Aave - Ethereum'
     runs-on: ubuntu-latest
@@ -69,6 +56,7 @@ jobs:
           name: playwright-report-with-wallet-aave-ethereum
           path: playwright-reports/with-wallet-aave-ethereum
           retention-days: 30
+  
   with-wallet-aave-other-tests:
     name: 'With wallet - Aave - Arbitrum, Optimism & Base'
     runs-on: ubuntu-latest
@@ -103,6 +91,7 @@ jobs:
           name: playwright-report-with-wallet-aave-other
           path: playwright-reports/with-wallet-aave-other
           retention-days: 30
+  
   with-wallet-ajna-and-morphoblue-tests:
     name: 'With wallet - Ajna & Morpho Blue'
     runs-on: ubuntu-latest
@@ -137,6 +126,7 @@ jobs:
           name: playwright-report-with-wallet-ajna-and-morphoblue
           path: playwright-reports/with-wallet-ajna-and-morphoblue
           retention-days: 30
+  
   with-wallet-maker-and-spark-tests:
     name: 'With wallet - Maker & Spark'
     runs-on: ubuntu-latest

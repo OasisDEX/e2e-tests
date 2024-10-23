@@ -53,7 +53,15 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 
 		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
-		await automations.testAutoBuy({ app, forkId });
+		await automations.testAutoBuy({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'optimismETH',
+				debtToken: 'optimismUSDC_E',
+			},
+		});
 	});
 
 	test('It should set Auto-Sell on an Aave v3 Optimism Multiply position @regression', async () => {
@@ -68,7 +76,15 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testAutoSell({ app, forkId });
+		await automations.testAutoSell({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'optimismETH',
+				debtToken: 'optimismUSDC_E',
+			},
+		});
 	});
 
 	test('It should set Regular Stop-Loss on an Aave v3 Optimism Multiply position @regression', async () => {
@@ -83,6 +99,15 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testRegularStopLoss({ app, forkId });
+		await automations.testRegularStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'optimismETH',
+				debtToken: 'optimismUSDC_E',
+				triggerToken: 'optimismUSDC_E',
+			},
+		});
 	});
 });

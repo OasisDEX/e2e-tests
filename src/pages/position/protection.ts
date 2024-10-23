@@ -1,7 +1,6 @@
-import { step } from '#noWalletFixtures';
-import { expect, Page } from '@playwright/test';
+import { expect, step } from '#noWalletFixtures';
+import { Page } from '@playwright/test';
 import { Base } from './base';
-import { expectDefaultTimeout } from 'utils/config';
 
 export class Protection {
 	readonly page: Page;
@@ -68,5 +67,18 @@ export class Protection {
 	@step
 	async addStopLossProtection() {
 		await this.page.getByRole('button', { name: 'Add Stop-Loss Protection' }).click();
+	}
+
+	@step
+	async shouldHaveAutomationOn(automation: 'Stop-Loss' | 'Trailing Stop-Loss' | 'Auto-Sell') {
+		await expect(
+			this.page.locator(`p:has-text("${automation}") + div:has-text("ON")`),
+			`'${automation} ON' should be visible`
+		).toBeVisible();
+	}
+
+	@step
+	async removeTrigger() {
+		await this.base.removeTrigger();
 	}
 }

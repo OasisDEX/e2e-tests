@@ -12,7 +12,6 @@ test.describe('Pool finder - Earn', async () => {
 			description: '11559',
 		});
 
-		await app.earn.open();
 		await app.poolFinder.shouldHaveHeader('Earn');
 		await app.poolFinder.shouldLinkToBlog('Earn');
 	});

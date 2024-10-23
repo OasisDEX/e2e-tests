@@ -8,3 +8,16 @@ export const allowToAddRPC = async () => {
 	);
 	return true;
 };
+
+export const changeToCustomGasSettings = async () => {
+	const notificationPage = await playwright.switchToMetamaskNotification();
+	await playwright.waitAndClick('button[data-testid="edit-gas-fee-button"]', notificationPage);
+	await playwright.waitAndClick('button[aria-label="custom"]', notificationPage);
+	await playwright.waitAndSetValue('55', 'input[data-testid="base-fee-input"]', notificationPage);
+	await playwright.waitAndClick(
+		'#popover-content .popover-footer button.btn-primary',
+		notificationPage
+	);
+
+	return true;
+};

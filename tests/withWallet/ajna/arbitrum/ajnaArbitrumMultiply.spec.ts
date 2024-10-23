@@ -55,12 +55,13 @@ test.describe.skip('Ajna Arbitrum Multiply - Wallet connected', async () => {
 		});
 		await app.page.goto('/arbitrum/ajna/multiply/RETH-ETH#setup');
 
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
 			forkId,
 			deposit: { token: 'RETH', amount: '0.5' },
+			protocol: 'Ajna',
 		});
 	});
 });

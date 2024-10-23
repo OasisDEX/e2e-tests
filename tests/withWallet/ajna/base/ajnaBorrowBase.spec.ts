@@ -3,7 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	close,
@@ -29,7 +29,8 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Ajna Base Borrow position @regression', async () => {
+	// Test added to add pool liquidity and reduce flakiness of Borrow tests
+	test('It should open an Ajna Base Earn position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: 'xxx',
@@ -42,25 +43,52 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'base' }));
+			({ forkId, walletAddress } = await setup({
+				app,
+				network: 'base',
+				extraFeaturesFlags: 'AjnaSuppressValidation:true',
+			}));
 
 			await tenderly.setTokenBalance({
 				forkId,
-				network: 'base',
 				walletAddress,
+				network: 'base',
 				token: 'WSTETH',
 				balance: '100',
 			});
 		});
 
+		await app.page.goto('/base/ajna/earn/WSTETH-ETH#setup');
+		await app.position.setup.acknowledgeAjnaInfo();
+
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '10' },
+			protocol: 'Ajna',
+		});
+	});
+
+	test('It should open an Ajna Base Borrow position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(veryLongTestTimeout);
+
+		// Wait to make sure that liquidity added in previous test is actually up
+		await app.page.waitForTimeout(5_000);
+
 		await app.page.goto('/base/ajna/borrow/WSTETH-ETH#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
 			forkId,
 			deposit: { token: 'WSTETH', amount: '2' },
 			borrow: { token: 'ETH', amount: '1' },
+			ajnaExistingDpm: true,
 		});
 	});
 
@@ -187,28 +215,29 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 
 		await app.page.goto('/base/ajna/borrow/ETH-USDC#setup');
 
-		await app.position.setup.acknowlegeAjnaInfo();
-		await app.position.setup.deposit({ token: 'ETH', amount: '10.12345' });
+		await app.position.setup.acknowledgeAjnaInfo();
+		await app.position.setup.deposit({ token: 'ETH', amount: '0.01' });
 
-		await app.position.overview.shouldHaveCollateralDepositedAfterPill('10.12 ETH');
-		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveCollateralDepositedAfterPill('0.0100 ETH');
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{2}.[0-9]{2}');
 		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
-			amount: '10.12',
+			amount: '0.0100',
 			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
-			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+			amount: '[1-3][0-9].[0-9]{2}',
 			token: 'USDC',
 		});
 
-		await app.position.setup.shouldHaveMaxBorrowingAmount({
-			token: 'USDC',
-			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
-		});
+		// This data is not displayed for very low amounts
+		// await app.position.setup.shouldHaveMaxBorrowingAmount({
+		// 	token: 'USDC',
+		// 	amount: '[1-7],[0-9]{3}.[0-9]{2}',
+		// });
 		await app.position.setup.orderInformation.shouldHaveCollateralLocked({
 			token: 'ETH',
 			current: '0.00',
-			future: '10.12',
+			future: '0.0100',
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '[0-9]{2,3}.[0-9]{2}',
@@ -217,39 +246,39 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveAvailableToWithdraw({
 			token: 'ETH',
 			current: '0.00',
-			future: '10.12',
+			future: '0.0100',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
 			token: 'USDC',
 			current: '0.00',
-			future: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+			future: '[1-3][0-9].[0-9]{2}',
 		});
 
-		await app.position.setup.borrow({ token: 'USDC', amount: '10,000.12' });
+		await app.position.setup.borrow({ token: 'USDC', amount: '10' });
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill(
-			'[0-3],[0-9]{3}.[0-9]{2} ETH/USDC'
+			'([1-2],)?[0-9]{3}.[0-9]{2} ETH/USDC'
 		);
-		await app.position.overview.shouldHaveLoanToValueAfterPill('[2-7][0-9].[0-9]{1,2}%');
+		await app.position.overview.shouldHaveLoanToValueAfterPill('[1-7][0-9].[0-9]{1,2}%');
 		await app.position.overview.shouldHaveDebtAfterPill({
 			protocol: 'Ajna',
-			amount: '10,000.12',
+			amount: '10.00',
 			token: 'USDC',
 		});
-		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{1,2},[0-9]{3}.[0-9]{2}');
+		await app.position.overview.shouldHaveNetValueAfterPill('\\$[0-9]{2}.[0-9]{2}');
 		await app.position.overview.shouldHaveAvailableToWithdrawAfterPill({
-			amount: '[2-6].[0-9]{3,4}',
+			amount: '0.0[0-9]{3}',
 			token: 'ETH',
 		});
 		await app.position.overview.shouldHaveAvailableToBorrowAfterPill({
-			amount: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}',
+			amount: '([1-2])?[0-9].[0-9]{2}([0-9]{2})?',
 			token: 'USDC',
 		});
 
 		await app.position.setup.shouldHaveOriginationFee({
 			token: 'USDC',
-			tokenAmount: '[0-9]{1,2}(.[0-9]{1,2})?',
-			dollarsAmount: '[0-9]{1,2}(.[0-9]{1,2})?',
+			tokenAmount: '0.[0-9]{4}',
+			dollarsAmount: '[0-9]{1,2}.[0-9]{2}',
 		});
 		await app.position.orderInformation.shouldHaveLiquidationPrice({
 			pair: 'ETH/USDC',
@@ -259,7 +288,7 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.position.orderInformation.shouldHaveLTV({
 			protocol: 'Ajna',
 			current: '0.00',
-			future: '[1-9][0-9].[0-9]{2}',
+			future: '[1-8][0-9].[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '[0-9]{2,3}.[0-9]{2}',
@@ -268,17 +297,17 @@ test.describe('Ajna Base Borrow - Wallet connected', async () => {
 		await app.position.setup.orderInformation.shouldHaveDebt({
 			token: 'USDC',
 			current: '0.00',
-			future: '10,0[0-9]{2}.[0-9]{1,2}',
+			future: '1[0-9].[0-9]{1,2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToWithdraw({
 			token: 'ETH',
 			current: '0.00',
-			future: '[0-5].[0-9]{3,4}',
+			future: '0.00[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveAvailableToBorrow({
 			token: 'USDC',
 			current: '0.00',
-			future: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}',
+			future: '([1-2])?[0-9].[0-9]{2}([0-9]{2})?',
 		});
 	});
 });

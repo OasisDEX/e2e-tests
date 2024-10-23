@@ -21,6 +21,11 @@ export class Header {
 	}
 
 	@step
+	async portfolioShouldBeVisible() {
+		await expect(this.headerLocator.getByText('Portfolio')).toBeVisible();
+	}
+
+	@step
 	async shouldHavePortfolioCount(count: string) {
 		await expect(this.headerLocator.getByText('Portfolio')).toContainText(count, {
 			timeout: portfolioTimeout,
@@ -40,5 +45,10 @@ export class Header {
 	@step
 	async connectWallet() {
 		await this.headerLocator.getByText('Connect Wallet').click();
+	}
+
+	@step
+	async openRaysPage() {
+		await this.page.getByRole('link').filter({ hasText: 'Get $RAYS' }).click();
 	}
 }

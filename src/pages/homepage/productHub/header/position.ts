@@ -1,23 +1,32 @@
 import { step } from '#noWalletFixtures';
 import { expect, Locator } from '@playwright/test';
 
-export class Position {
-	readonly positionLocator: Locator;
+export class PositionType {
+	readonly headerLocator: Locator;
 
 	constructor(headerLocator: Locator) {
-		this.positionLocator = headerLocator.locator('h1 > div').nth(0);
+		this.headerLocator = headerLocator;
 	}
 
 	@step
-	async shouldBe(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
-		await expect(this.positionLocator.locator('span').nth(0)).toContainText(positionCategory, {
-			timeout: 15_000,
-		});
+	async shouldBe(positionCategory: 'Borrow' | 'Earn' | 'Multiply') {
+		const introText = {
+			borrow: 'Easily borrow stablecoins or other crypto-assets against your collateral',
+			earn: 'Earn long term yields to compound your crypto capital',
+			multiply:
+				'Multiply allows you to simply and securely increase your exposure to any crypto asset',
+		};
+
+		const categoryText = introText[positionCategory.toLowerCase()];
+
+		await expect(
+			this.headerLocator.getByText(categoryText),
+			`'${categoryText}' should be visible`
+		).toBeVisible();
 	}
 
 	@step
 	async select(positionCategory: 'Borrow' | 'Multiply' | 'Earn') {
-		await this.positionLocator.click();
-		await this.positionLocator.locator(`li:has-text("${positionCategory}")`).click();
+		await this.headerLocator.locator(`li:has-text("${positionCategory}")`).click();
 	}
 }

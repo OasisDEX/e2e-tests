@@ -1,0 +1,15 @@
+name: 'Set Up Action'
+description: 'Composite action to install playwright and depencies needed for e2e tests'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install dependencies
+      shell: bash
+      run: yarn
+    - name: Install playwright
+      shell: bash
+      run: npx playwright install && npx playwright install-deps
+    - name: Install xvfb
+      shell: bash
+      run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*

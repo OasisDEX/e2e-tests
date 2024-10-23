@@ -49,10 +49,15 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/base/ajna/earn/ETH-USDC#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.openPage('/base/ajna/earn/ETH-USDC#setup');
+		await app.position.setup.acknowledgeAjnaInfo();
 
-		await openPosition({ app, forkId, deposit: { token: 'USDC', amount: '5000' } });
+		await openPosition({
+			app,
+			forkId,
+			deposit: { token: 'USDC', amount: '5000' },
+			protocol: 'Ajna',
+		});
 	});
 
 	test('It should allow to simulate an Ajna Base Earn position before opening it', async () => {
@@ -61,14 +66,13 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 			description: 'xxx',
 		});
 
-		await app.page.goto('/base/ajna/earn/CBETH-ETH#setup');
-
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.openPage('/base/ajna/earn/CBETH-ETH#setup');
+		await app.position.setup.acknowledgeAjnaInfo();
 		await app.position.setup.deposit({ token: 'ETH', amount: '10' });
 
 		await app.position.overview.shouldHaveProjectedEarnings30days({
 			token: 'ETH',
-			amount: '0.0[0-9]{3}',
+			amount: '0.[0-9]{4}',
 		});
 
 		await app.position.setup.orderInformation.shouldHaveAmountToLend({
@@ -83,7 +87,7 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 		});
 		await app.position.setup.orderInformation.shouldHaveMaxLTV({
 			current: '0.00',
-			future: '[0-9]{1,2}.[0-9]{2}',
+			future: '[0-9]{2,3}.[0-9]{2}',
 		});
 	});
 

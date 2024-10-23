@@ -1,31 +1,47 @@
-import { expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
-import { longTestTimeout, positionTimeout } from 'utils/config';
+import { expectDefaultTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import { SetBalanceTokens, Tokens } from 'utils/testData';
+import { Reason } from 'src/pages/position/swap';
+import { confirmAddToken } from './makerConfirmTx';
+import { createAndSetNewFork } from 'utils/setup';
 
 type ActionData = { token: string; amount: string };
+type SwapProtocols = 'Aave V3' | 'Maker' | 'Morpho' | 'Spark';
 
 /**
  *
  * @param adjustRisk should be between '0' and '1' both included | 0: far left in slider | 1: far right
  */
-export const openPosition = async ({
+export const openPositionNEW = async ({
+	walletAddress,
+	network,
+	addTokenBalance,
 	app,
-	forkId,
 	deposit,
 	borrow,
-	existingDPM,
 	adjustRisk,
-	omni,
+	protocol,
 }: {
+	walletAddress: string;
+	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+	addTokenBalance?: { token: SetBalanceTokens; balance: string };
 	app: App;
-	forkId: string;
 	deposit: ActionData;
 	borrow?: ActionData;
-	existingDPM?: boolean;
-	adjustRisk?: { positionType?: 'Borrow'; value: number };
-	omni?: { network: 'ethereum' | 'arbitrum' | 'base' | 'optimism' };
+	adjustRisk?: { positionType?: 'Borrow' | 'Earn'; value: number };
+	protocol?: 'Ajna' | 'Morpho Blue';
 }) => {
+	let forkId: string;
+
+	forkId = await createAndSetNewFork({
+		walletAddress,
+		network,
+		addTokenBalance,
+		app,
+	});
+
 	await app.position.setup.deposit(deposit);
 	if (borrow) {
 		await app.position.setup.borrow(borrow);
@@ -37,7 +53,36 @@ export const openPosition = async ({
 			await app.position.setup.moveSliderOmni({ value: adjustRisk.value });
 		}
 	}
-	if (!existingDPM) {
+
+	const getButtonLabel = async (): Promise<string> => {
+		// Wait for button to be enabled and correct label to be displayed
+		await expect(async () => {
+			const isEnabled = await app.page
+				.locator('p:has-text("Configure your")')
+				.locator('..')
+				.locator('..')
+				.locator('xpath=//following-sibling::div[2]')
+				.getByRole('button')
+				.isEnabled();
+
+			expect(isEnabled).toBeTruthy();
+		}).toPass();
+
+		// Get Button label
+		const label = await app.page
+			.locator('p:has-text("Configure your")')
+			.locator('..')
+			.locator('..')
+			.locator('xpath=//following-sibling::div[2]')
+			.getByRole('button')
+			.innerText();
+
+		return label;
+	};
+
+	const buttonLabel = await getButtonLabel();
+
+	if (buttonLabel === 'Create Smart DeFi account') {
 		await app.position.setup.createSmartDeFiAccount();
 
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
@@ -48,14 +93,16 @@ export const openPosition = async ({
 		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.continue();
-	} else if (deposit.token !== 'ETH') {
-		await app.position.setup.setTokenAllowance(deposit.token);
 	}
 
 	if (deposit.token !== 'ETH') {
+		if (buttonLabel === `Set ${deposit.token} allowance`) {
+			await app.position.setup.setTokenAllowance(deposit.token);
+		}
+
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
-			await app.position.setup.approveAllowance();
+			await app.position.setup.approveAllowanceOrRetry();
 			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
@@ -66,27 +113,244 @@ export const openPosition = async ({
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
-		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
 	}).toPass({ timeout: longTestTimeout });
 
-	if (omni) {
-		await app.position.setup.goToPositionShouldBeVisible();
-		const positionId = await app.position.setup.getNewPositionId();
-		//
-		await app.page.waitForTimeout(10_000);
-		//
-		await expect(async () => {
-			// await app.page.goto(positionId.replace(omni.network, `${omni.network}/omni`));
-			await app.page.goto(positionId);
-			await app.position.overview.shouldBeVisible();
-		}).toPass();
-	} else {
+	if (protocol) {
 		// UI sometimes gets stuck after confirming position creation
 		//   - 'Reload' added to avoid flakines
 		await app.page.reload();
 		await app.position.setup.goToPosition();
-		await app.position.overview.shouldBeVisible();
+		await expect(async () => {
+			const applicationError = app.page.getByText('Aplication error:');
+
+			if (await applicationError.isVisible()) {
+				await app.page.reload();
+			}
+			await app.position.overview.shouldBeVisible();
+		}).toPass({ timeout: expectDefaultTimeout * 5 });
+
+		return { forkId };
+	} else {
+		await app.position.setup.goToPositionShouldBeVisible();
+		const positionId: string = await app.position.setup.getNewPositionId();
+		//
+		await app.page.waitForTimeout(10_000);
+		//
+
+		await expect(async () => {
+			await app.page.goto(positionId);
+			await expect(async () => {
+				const applicationError = app.page.getByText('Aplication error:');
+
+				if (await applicationError.isVisible()) {
+					await app.page.reload();
+				}
+				await app.position.overview.shouldBeVisible();
+			}).toPass({ timeout: expectDefaultTimeout * 5 });
+		}).toPass();
+
+		return { forkId, positionId };
 	}
+};
+
+/**
+ *
+ * @param adjustRisk should be between '0' and '1' both included | 0: far left in slider | 1: far right
+ */
+export const openPosition = async ({
+	app,
+	forkId,
+	deposit,
+	borrow,
+	adjustRisk,
+	protocol,
+	ajnaExistingDpm,
+}: {
+	app: App;
+	forkId: string;
+	deposit: ActionData;
+	borrow?: ActionData;
+	adjustRisk?: { positionType?: 'Borrow' | 'Earn'; value: number };
+	protocol?: 'Ajna' | 'Morpho Blue';
+	ajnaExistingDpm?: boolean;
+}) => {
+	await app.position.setup.deposit(deposit);
+
+	if (borrow) {
+		await app.position.setup.borrow(borrow);
+	}
+
+	if (adjustRisk) {
+		if (adjustRisk?.positionType) {
+			await app.position.setup.moveSlider({ withWallet: true, value: adjustRisk.value });
+		} else {
+			await app.position.setup.moveSliderOmni({ value: adjustRisk.value });
+		}
+	}
+
+	const getButtonLabel = async (): Promise<string> => {
+		// Wait for button to be enabled and correct label to be displayed
+		await expect(async () => {
+			const isEnabled = await app.page
+				.locator('p:has-text("Configure your")')
+				.locator('..')
+				.locator('..')
+				.locator('xpath=//following-sibling::div[2]')
+				.getByRole('button')
+				.isEnabled();
+
+			expect(isEnabled).toBeTruthy();
+		}).toPass();
+
+		// Get Button label
+		const label = await app.page
+			.locator('p:has-text("Configure your")')
+			.locator('..')
+			.locator('..')
+			.locator('xpath=//following-sibling::div[2]')
+			.getByRole('button')
+			.innerText();
+
+		return label;
+	};
+
+	const buttonLabel = await getButtonLabel();
+
+	if (buttonLabel === 'Create Smart DeFi account' && !ajnaExistingDpm) {
+		await app.position.setup.createSmartDeFiAccount();
+
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.createSmartDeFiAccount();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+	}
+
+	if (deposit.token !== 'ETH') {
+		if (buttonLabel === `Set ${deposit.token} allowance` || ajnaExistingDpm) {
+			await app.position.setup.setTokenAllowance(deposit.token);
+		}
+
+		// Setting up allowance  randomly fails - Retry until it's set.
+		await expect(async () => {
+			await app.position.setup.approveAllowanceOrRetry();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+	}
+
+	// Position creation randomly fails - Retry until it's created.
+	await expect(async () => {
+		await app.position.setup.confirmOrRetry();
+		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
+	}).toPass({ timeout: longTestTimeout });
+
+	if (protocol) {
+		// UI sometimes gets stuck after confirming position creation
+		//   - 'Reload' added to avoid flakines
+		await app.page.reload();
+		await app.position.setup.goToPosition();
+		await expect(async () => {
+			const applicationError = app.page.getByText('Aplication error:');
+
+			if (await applicationError.isVisible()) {
+				await app.page.reload();
+			}
+			await app.position.overview.shouldBeVisible();
+		}).toPass({ timeout: expectDefaultTimeout * 5 });
+	} else {
+		await app.position.setup.goToPositionShouldBeVisible();
+		const positionId: string = await app.position.setup.getNewPositionId();
+		//
+		await app.page.waitForTimeout(10_000);
+		//
+		await expect(async () => {
+			await app.page.goto(positionId);
+			await expect(async () => {
+				const applicationError = app.page.getByText('Aplication error:');
+
+				if (await applicationError.isVisible()) {
+					await app.page.reload();
+				}
+				await app.position.overview.shouldBeVisible();
+			}).toPass({ timeout: expectDefaultTimeout * 5 });
+		}).toPass();
+
+		return positionId;
+	}
+};
+
+export const openMakerPosition = async ({
+	app,
+	deposit,
+	generate,
+	existingProxy,
+	adjustRisk,
+}: {
+	app: App;
+	forkId: string;
+	deposit: ActionData;
+	generate?: ActionData;
+	existingProxy?: boolean;
+	adjustRisk?: { value: number };
+}) => {
+	await app.position.setup.deposit(deposit);
+	if (generate) {
+		await app.position.setup.generate(generate);
+	}
+
+	if (!existingProxy) {
+		await app.position.setup.setupProxy();
+		await app.position.setup.createProxy();
+		await confirmAddToken({ app });
+
+		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
+		await app.page.waitForTimeout(5_000);
+		await app.page.reload();
+
+		await app.position.setup.deposit(deposit);
+		if (generate) {
+			await app.position.setup.generate(generate);
+		}
+	}
+
+	if (deposit.token !== 'ETH') {
+		await app.position.setup.setTokenAllowance(deposit.token);
+		await app.position.setup.setTokenAllowance(deposit.token);
+
+		await expect(async () => {
+			// await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await confirmAddToken({ app });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+	}
+
+	if (adjustRisk) {
+		await app.position.setup.moveSlider({
+			protocol: 'Maker',
+			value: adjustRisk?.value,
+		});
+	}
+
+	await app.position.setup.confirm();
+	await app.position.setup.continueWithoutStopLoss();
+
+	await expect(async () => {
+		await app.position.setup.createOrRetry();
+		// await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
+		await confirmAddToken({ app });
+	}).toPass();
+
+	await app.position.setup.goToVault();
+	await app.position.manage.shouldBeVisible('Manage your vault');
 };
 
 export const adjustRisk = async ({
@@ -163,19 +427,32 @@ export const close = async ({
 	collateralToken,
 	debtToken,
 	tokenAmountAfterClosing,
+	openManagementOptionsDropdown,
 }: {
 	forkId: string;
 	app: App;
-	positionType?: 'Multiply' | 'Borrow' | 'Earn';
+	positionType?: 'Multiply' | 'Borrow' | 'Earn (Liquidity Provision)' | 'Earn (Yield Loop)';
 	closeTo: 'collateral' | 'debt';
 	collateralToken: string;
 	debtToken: string;
 	tokenAmountAfterClosing: string;
+	openManagementOptionsDropdown?: { currentLabel: string };
 }) => {
-	await app.position.manage.openManageOptions({
-		currentLabel: positionType === 'Borrow' ? collateralToken : 'Adjust',
-	});
+	if (openManagementOptionsDropdown) {
+		await app.position.manage.openManageOptions({
+			currentLabel: openManagementOptionsDropdown.currentLabel,
+		});
+	} else {
+		await app.position.manage.openManageOptions({
+			currentLabel: positionType === 'Borrow' ? collateralToken : 'Adjust',
+		});
+	}
+
 	await app.position.manage.select('Close position');
+
+	// Delay to avoid random fails
+	await app.page.waitForTimeout(2_000);
+
 	if (closeTo === 'debt') {
 		await app.position.manage.closeTo(debtToken);
 	}
@@ -205,15 +482,16 @@ export const close = async ({
 
 	// ============================================================
 
-	if (positionType !== 'Earn') {
-		await app.position.overview.shouldHaveLoanToValue('0.00');
-	}
 	await app.position.overview.shouldHaveNetValue({ value: '0.00' });
 	await app.position.overview.shouldHaveDebt({
 		amount: '0.00',
 		token: debtToken,
 		protocol: 'Ajna',
 	});
+
+	if (positionType !== 'Earn (Liquidity Provision)') {
+		await app.position.overview.shouldHaveLoanToValue('0.00');
+	}
 
 	if (positionType === 'Borrow') {
 		await app.position.overview.shouldHaveCollateralDeposited({
@@ -227,10 +505,11 @@ export const close = async ({
 		await app.position.overview.shouldHaveAvailableToBorrow({ token: debtToken, amount: '0.00' });
 	} else {
 		await app.position.overview.shouldHaveExposure({ token: collateralToken, amount: '0.00' });
-		if (positionType !== 'Earn') {
-			await app.position.overview.shouldHaveBuyingPower('0.00');
-			await app.position.overview.shouldHaveMultiple('1.00');
-		}
+	}
+
+	if (positionType == 'Multiply') {
+		await app.position.overview.shouldHaveBuyingPower('0.00');
+		await app.position.overview.shouldHaveMultiple('1.00');
 	}
 };
 
@@ -244,6 +523,7 @@ export const manageDebtOrCollateral = async ({
 	borrow,
 	payBack,
 	expectedCollateralDeposited,
+	expectedAvailableToWithdraw,
 	expectedCollateralExposure,
 	expectedDebt,
 }: {
@@ -256,6 +536,7 @@ export const manageDebtOrCollateral = async ({
 	borrow?: ActionData;
 	payBack?: ActionData;
 	expectedCollateralDeposited?: { token: string; amount: string };
+	expectedAvailableToWithdraw?: { token: string; amount: string };
 	expectedCollateralExposure?: { token: string; amount: string };
 	expectedDebt?: { token: string; amount: string };
 }) => {
@@ -276,7 +557,7 @@ export const manageDebtOrCollateral = async ({
 		!allowanceNotNeeded &&
 		((deposit && deposit?.token !== 'ETH') || (payBack && payBack?.token !== 'ETH'))
 	) {
-		await app.position.setup.setTokenAllowance(deposit ? deposit?.token : payBack?.token);
+		await app.position.setup.setTokenAllowance(deposit?.token ?? payBack?.token);
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
 			await app.position.setup.approveAllowance();
@@ -307,6 +588,12 @@ export const manageDebtOrCollateral = async ({
 			...expectedCollateralDeposited,
 		});
 	}
+	if (expectedAvailableToWithdraw) {
+		await app.position.overview.shouldHaveAvailableToWithdraw({
+			timeout: positionTimeout,
+			...expectedAvailableToWithdraw,
+		});
+	}
 	if (expectedCollateralExposure) {
 		await app.position.overview.shouldHaveExposure({
 			timeout: positionTimeout,
@@ -319,5 +606,157 @@ export const manageDebtOrCollateral = async ({
 			protocol: 'Ajna',
 			...expectedDebt,
 		});
+	}
+};
+
+export const swapPosition = async ({
+	app,
+	forkId,
+	originalProtocol,
+	reason,
+	targetProtocol,
+	targetPool,
+	verifyPositions,
+	existingDpmAndApproval,
+	upToStep5,
+	rejectSwap,
+}: {
+	app: App;
+	forkId: string;
+	originalProtocol?: SwapProtocols;
+	originalPosition?: { type: 'Borrow' | 'Multiply'; collateralToken: string; debtToken?: string };
+	reason: Reason;
+	targetProtocol?: SwapProtocols;
+	targetPool: { colToken: Tokens; debtToken: Tokens };
+	verifyPositions?: {
+		originalPosition?: { type: 'Borrow' | 'Multiply'; collateralToken: string; debtToken?: string };
+		targetPosition?: { exposure?: ActionData; debt?: ActionData };
+	};
+	existingDpmAndApproval?: boolean;
+	upToStep5?: boolean;
+	rejectSwap?: boolean;
+}) => {
+	let originalPositionPage: string;
+	if (verifyPositions?.originalPosition) {
+		originalPositionPage = app.page.url();
+	}
+
+	await app.position.overview.swap();
+	await app.position.swap.selectReason(reason);
+
+	if (targetProtocol) {
+		await app.position.swap.productHub.filters.protocols.select({
+			protocols: [targetProtocol],
+		});
+	}
+
+	await app.position.swap.productHub.filters.collateralTokens.select(targetPool.colToken);
+
+	let trimmedDebtToken: Tokens;
+	if (targetPool.debtToken.includes('-')) {
+		trimmedDebtToken = targetPool.debtToken.includes('ETH') ? 'ETH' : 'DAI';
+	}
+	await app.position.swap.productHub.filters.debtTokens.select(
+		targetPool.debtToken.includes('-') ? trimmedDebtToken : targetPool.debtToken
+	);
+
+	await app.position.swap.productList
+		.byPairPool(`${targetPool.colToken}/${targetPool.debtToken}`)
+		.open();
+
+	if (originalProtocol === 'Maker' && !existingDpmAndApproval) {
+		// Smart DeFi Acount creation randomly fails - Retry until it's created.
+		await expect(async () => {
+			await app.position.setup.createSmartDeFiAccount();
+			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await app.position.setup.continueShouldBeVisible();
+		}).toPass({ timeout: longTestTimeout });
+
+		await app.position.setup.continue();
+		await app.position.swap.shouldHaveMaxTransactionCost('\\$[0-9]{1,2}.[0-9]{1,2}');
+		await app.position.swap.confirm();
+		await test.step('Confirm automation setup', async () => {
+			await expect(async () => {
+				await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+				await app.position.setup.continueShouldBeVisible();
+			}).toPass();
+		});
+
+		await app.position.setup.continue();
+	}
+
+	if (!upToStep5) {
+		await app.position.swap.shouldHaveMaxTransactionCost('.[0-9]{1,2}');
+		await app.position.swap.confirmOrRetry();
+
+		if (rejectSwap) {
+			await test.step('Reject Permission To Spend', async () => {
+				await expect(async () => {
+					await tx.rejectPermissionToSpend();
+				}).toPass();
+			});
+		} else {
+			await test.step('Confirm automation setup', async () => {
+				await expect(async () => {
+					await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+					await app.position.setup.goToPositionShouldBeVisible();
+				}).toPass();
+			});
+
+			await app.position.setup.goToPosition();
+
+			if (verifyPositions?.targetPosition) {
+				// Verify new target position
+				await app.position.manage.shouldBeVisible(`Manage your ${targetProtocol}`);
+				await app.position.overview.shouldHaveExposure(verifyPositions.targetPosition.exposure);
+
+				let trimmedDebtToken: Tokens;
+				if (verifyPositions.targetPosition.debt.token.includes('-')) {
+					trimmedDebtToken = verifyPositions.targetPosition.debt.token.includes('ETH')
+						? 'ETH'
+						: 'DAI';
+				}
+
+				await app.position.overview.shouldHaveDebt(
+					verifyPositions.targetPosition.debt.token.includes('-')
+						? { ...verifyPositions.targetPosition.debt, token: trimmedDebtToken }
+						: verifyPositions.targetPosition.debt
+				);
+			}
+
+			if (verifyPositions?.originalPosition) {
+				await expect(async () => {
+					// Verify that original position is now empty
+					await app.page.goto(originalPositionPage);
+
+					await app.position.manage.shouldBeVisible('Manage your', { timeout: 25_000 });
+				}).toPass();
+
+				await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
+				// TO BE UPDATE for all protocols
+				// await app.position.overview.shouldHaveVaultDaiDebt('0.0000');
+				// if (verifyPositions.originalPosition.type === 'Multiply') {
+				// 	await app.position.overview.shouldHaveNetValue({ value: '\\$(<)?0.0[0-1]' });
+				// 	// TO BE UPDATE for all protocols
+				// 	// await app.position.overview.shouldHaveTotalCollateral({
+				// 	// 	amount: '0.00',
+				// 	// 	token: verifyPositions.originalPosition.collateralToken,
+				// 	// });
+				// }
+				if (verifyPositions.originalPosition.type === 'Borrow') {
+					await app.position.overview.shouldHaveLiquidationPrice({ price: '0.00' });
+					await app.position.overview.shouldHaveCollateralizationRatio('0.00');
+					await app.position.overview.shouldHaveCollateralLocked('0.00');
+					await app.position.overview.shouldHaveAvailableToWithdraw({
+						amount: '0.00000',
+						token: verifyPositions.originalPosition.collateralToken,
+					});
+					await app.position.overview.shouldHaveAvailableToGenerate({
+						amount: '0.0000',
+						token: verifyPositions.originalPosition.debtToken,
+					});
+				}
+			}
+		}
 	}
 };

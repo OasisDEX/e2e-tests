@@ -19,7 +19,7 @@ test.describe('Aave v3 Borrow Ethereum', async () => {
 	});
 
 	// To be moved to WITH-WALLET tests
-	test.skip('It should validate "Borrow <quote>" field - Over maximum borrowing amount @regression', async ({
+	test.skip('It should validate "Borrow <quote>" field - Over maximum borrowing amount', async ({
 		app,
 	}) => {
 		test.info().annotations.push({

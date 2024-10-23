@@ -25,7 +25,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v3 Multiply Ethereum position @regression', async () => {
+	test('It should open an Aave v3 Multiply Ethereum position - DAI/WBTC @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11769',
@@ -55,12 +55,11 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'DAI', amount: '15000.1234' },
-			omni: { network: 'ethereum' },
 		});
 	});
 
 	// SKIP if DB collision still hapenning with omni
-	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC)', async () => {
+	test('It should close an existent Aave V3 Multiply Ethereum position - Close to debt token (WBTC) @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12057',
@@ -79,42 +78,13 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	// SKIP if DB collision still hapenning with omni
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12055',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		await tenderly.changeAccountOwner({
-			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
-			newOwner: walletAddress,
-			forkId,
-		});
-
-		await app.page.goto('/ethereum/aave/v3/multiply/ETH-USDC/1218#overview');
-
-		await adjustRisk({
-			forkId,
-			app,
-			risk: 'up',
-			newSliderPosition: 0.9,
-		});
-	});
-
-	// SKIP if DB collision still hapenning with omni
-	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down', async () => {
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Down @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12056',
 		});
 
 		test.setTimeout(veryLongTestTimeout);
-		// New fork needed to be able to close a Multiply position
-		await test.step('Test setup - New fork', async () => {
-			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
-		});
 
 		await tenderly.changeAccountOwner({
 			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
@@ -132,29 +102,33 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		});
 	});
 
-	test.skip('It should list an opened Aave v3 Multiply Ethereum position in portfolio', async () => {
+	// SKIP if DB collision still hapenning with omni
+	test('It should adjust risk of an existent Aave V3 Multiply Ethereum position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '11770',
+			description: '12055',
 		});
 
 		test.setTimeout(veryLongTestTimeout);
 
-		// await app.page.goto(`/owner/${walletAddress}`);
-
-		// await app.portfolio.multiply.shouldHaveHeaderCount('1');
-		// await app.portfolio.vaults.first.shouldHave({ assets: 'DAI/WBTC' });
-	});
-
-	test.skip('It should open an Aave v3 Multiply Ethereum position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11771',
+		// New fork needed to be able to close a Multiply position
+		await test.step('Test setup - New fork', async () => {
+			({ forkId } = await setupNewFork({ app, network: 'mainnet' }));
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		await tenderly.changeAccountOwner({
+			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
+			newOwner: walletAddress,
+			forkId,
+		});
 
-		// await app.portfolio.multiply.vaults.first.view();
-		// await app.position.manage.shouldBeVisible('Manage multiply');
+		await app.page.goto('/ethereum/aave/v3/multiply/ETH-USDC/1218#overview');
+
+		await adjustRisk({
+			forkId,
+			app,
+			risk: 'up',
+			newSliderPosition: 0.9,
+		});
 	});
 });

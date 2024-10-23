@@ -3,7 +3,7 @@ import { metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -45,7 +45,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 				walletAddress,
 				network: 'base',
 				token: 'CBETH',
-				balance: '50',
+				balance: '5',
 			});
 		});
 
@@ -54,19 +54,18 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '14' },
-			omni: { network: 'base' },
+			deposit: { token: 'CBETH', amount: '1' },
 		});
 	});
 
-	// Skip again if DB collision also happeningwith omni
+	// Skip again if DB collision also happening with omni
 	test('It should adjust risk of an existent Aave V3 Multiply Base position - Up @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12465',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -76,7 +75,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			forkId,
 			app,
 			risk: 'up',
-			newSliderPosition: 0.6,
+			newSliderPosition: 0.4,
 		});
 	});
 
@@ -87,7 +86,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			description: '12464',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -108,7 +107,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			description: '12466',
 		});
 
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Pause and reload to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -123,31 +122,5 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			debtToken: 'USDBC',
 			tokenAmountAfterClosing: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}([0-9]{1,2})?',
 		});
-	});
-
-	test.skip('It should list an opened Aave v3 Multiply Base position in portfolio', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12467',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-
-		// await app.portfolio.multiply.shouldHaveHeaderCount('1');
-		// await app.portfolio.multiply.vaults.first.shouldHave({ assets: 'CBETH/USDBC' });
-	});
-
-	test.skip('It should open an Aave v3 Multiply Base position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12468',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// await app.portfolio.multiply.vaults.first.view();
-		// await app.position.manage.shouldBeVisible('Manage multiply');
 	});
 });

@@ -27,7 +27,7 @@ Tests with a wallet connected (Metamask) and, in most of the cases, with a Tende
 
 The tests and framework have been written using Playwright and Typescript. 
 - The 'No wallet' tests use Playwright only.
-- The 'With wallet' tests use Playwright, Synpress (for Metamask wallet) and Tenderly APIs (for forks).
+- The 'With wallet' tests use Playwright, **Synpress** (for Metamask wallet) and **Tenderly APIs** (for forks).
 
 ## 2. Installation
 First, install the programs required to run the application:
@@ -61,6 +61,8 @@ The following environment variables are **mandatory** for **with wallet** tests:
 | TENDERLY_PROJECT | Your project in Tenderly. Or create a new one. |
 | TENDERLY_USER | Your user in Tenderly. Or create a new one. |
 | TENDERLY_ACCESS_KEY | Your access key in Tenderly. Create one if you don't have any. |
+| OLD_WALLET_PK | Password key of your Rays testing wallet. Note that such wallet should have Summer.fi positions. |
+| ONE_INCH_API_KEY | Your 1inch API key. Create one if you don't have any. |
 
 You can also use these other environment variables:
 
@@ -84,7 +86,12 @@ For now the tests have been setup so that they run only on desktop Chrome.
 
 2. For running **with wallet** tests, set `TENDERLY_PROJECT`, `TENDERLY_USER` and `TENDERLY_ACCESS_KEY` variables in `.env` file.
 
-3. Run tests by running, for example:
+3. For running **with wallet - tokenSwapRate** tests, set `ONE_INCH_API_KEY`variable in `.env` file.
+
+4. For running **with wallet - Rays** tests, set `OLD_WALLET_PK`variable in `.env` file, but note that such wallet will need to contain Summer.fi positions. Moreover, you'll need to update the position path in *tests > withWallet > rays > positionPages.spec.ts*: 
+`await app.position.openPage('/arbitrum/aave/v3/multiply/eth-dai/1#overview')` 
+
+5. Run tests by running, for example:
 - Run all tests:
 `yarn test:e2e`
 - Run all **regression** tests:
@@ -98,7 +105,7 @@ For now the tests have been setup so that they run only on desktop Chrome.
 - Run **with wallet regression** tests:
 `yarn with-wallet:all:regression`
 
-Check all the scripts in [ package.json ](https://github.com/OasisDEX/e2e-tests/blob/main/package.json) file
+Check all the scripts in [ package.json ](https://github.com/OasisDEX/e2e-tests/blob/main/package.json#L17) file
 
 ## 6. Test reports
 > The test reports for the test runs executed in gitHub can be found in https://github.com/OasisDEX/e2e-tests/actions.
@@ -106,7 +113,7 @@ Check all the scripts in [ package.json ](https://github.com/OasisDEX/e2e-tests/
 > 2. Scroll down to the **Artifacts** section and click on the report name you wish to download.
 > 3. Unzip the report file you just downloaded and double click on the **index.html** file to open the report in the browser.  
 
-After running one or more tests locally you can run the following commands to open test reports in the browser:
+After running one or more tests locally you can run the following commands to open test reports in the browser *(check all the scripts in [ package.json ](https://github.com/OasisDEX/e2e-tests/blob/main/package.json#L124) file)*:
 - `yarn test:report:no-wallet`
 - `yarn test:report:with-wallet:aave:ethereum`
 - `yarn test:report:with-wallet:aave:other`
@@ -122,13 +129,28 @@ A project is a logical group of tests running with the same configuration. For n
 - Applying different configuration to **no wallet** and **with wallet** tests.
 - Splitting **with wallet** tests so that they can run in parallel containers, and so reducing significantly the test execution time.
 
-At the moment we are using the following projects:
-- `no-wallet`
-- `with-wallet-aave-other'`
-- `with-wallet-aave-ethereum`
-- `with-wallet-maker-and-spark`
+Check all the projects that are used at the moment in [ playwright.config.ts ](https://github.com/OasisDEX/e2e-tests/blob/main/playwright.config.ts#L31) file.
 
-## 9. License
+## 9. Utils for manual testing
+Some scripts have been added for easily creating a tenderly fork and adding funds for most of the tokens supported by Summer.fi. 
+They can be foud in [ utilsManualTesting ](https://github.com/OasisDEX/e2e-tests/tree/main/utilsManualTesting) folder.
+
+**Running command in console**
+1. Create `.env` file.
+
+2. Set `TENDERLY_PROJECT`, `TENDERLY_USER`, `TENDERLY_ACCESS_KEY`, `NETWORK` and `WALLET_ADDRESS` variables in `.env` file.
+
+3. Run `yarn create-fork-github` in the console. 
+
+4. Wait for the console to log the network, wallet address, funds added and fork RPC. 
+
+**Using GitHub Actions**
+1. Go to repository `Actions > Create fork and add funds to wallet`: https://github.com/OasisDEX/e2e-tests/actions/workflows/createForkWithFunds.yml
+2. Click on `Run workflow` drop down button.
+3. Enter the network you wish and your testing wallet address.
+4. Click on `Run workflow` green button.
+
+## 10. License
 
 Copyright (C) 2021 Oazo Apps Limited, Licensed under the Apache License, Version 2.0 (the
 "License"); you may not use this file except in compliance with the License. You may obtain a copy

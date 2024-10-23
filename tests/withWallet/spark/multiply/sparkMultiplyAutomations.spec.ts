@@ -11,7 +11,6 @@ import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 let context: BrowserContext;
 let app: App;
 let forkId: string;
-let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
@@ -26,10 +25,10 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Spark Multiply position @regression', async () => {
+	test('It should open a Spark Multiply ETH/DAI position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12463',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -39,51 +38,17 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WBTC',
-				balance: '5',
-			});
+			({ forkId } = await setup({ app, network: 'mainnet' }));
 		});
 
-		await app.page.goto('/ethereum/spark/multiply/wbtc-dai#simulate');
+		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '1' },
-			omni: { network: 'ethereum' },
+			deposit: { token: 'ETH', amount: '10' },
 			adjustRisk: { positionType: 'Borrow', value: 0.5 },
 		});
-	});
-
-	test('It should set Auto-Buy on an Spark Mainnet Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await automations.testAutoBuy({ app, forkId, triggerLTV: 0.1 });
-	});
-
-	test('It should set Auto-Sell on an Spark Mainnet Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Reload page to avoid random fails
-		await app.page.reload();
-		await app.position.overview.shouldBeVisible();
-
-		await automations.testAutoSell({ app, forkId });
 	});
 
 	test('It should set Regular Stop-Loss on an Spark Mainnet Multiply position @regression', async () => {
@@ -98,7 +63,16 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testRegularStopLoss({ app, forkId });
+		await automations.testRegularStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'spark',
+				collToken: 'mainnetETH',
+				debtToken: 'mainnetDAI',
+				triggerToken: 'mainnetDAI',
+			},
+		});
 	});
 
 	test('It should set Trailing Stop-Loss on an Spark Mainnet Multiply position @regression', async () => {
@@ -113,6 +87,85 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testTrailingStopLoss({ app, forkId });
+		await automations.testTrailingStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'spark',
+				collToken: 'mainnetETH',
+				debtToken: 'mainnetDAI',
+				triggerToken: 'mainnetDAI',
+			},
+		});
+	});
+
+	test('It should set Auto-Buy on an Spark Mainnet Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
+		await automations.testAutoBuy({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'spark',
+				collToken: 'mainnetETH',
+				debtToken: 'mainnetDAI',
+			},
+		});
+	});
+
+	test('It should set Auto-Sell on an Spark Mainnet Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
+		await automations.testAutoSell({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'spark',
+				collToken: 'mainnetETH',
+				debtToken: 'mainnetDAI',
+			},
+		});
+	});
+
+	test('It should set Partial Take Profit on an Spark Mainnet Multiply position @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		// Reload page to avoid random fails
+		await app.page.reload();
+		await app.position.overview.shouldBeVisible();
+
+		await automations.testPartialTakeProfit({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'spark',
+				collToken: 'mainnetETH',
+				debtToken: 'mainnetDAI',
+				triggerToken: 'mainnetETH',
+			},
+		});
 	});
 });

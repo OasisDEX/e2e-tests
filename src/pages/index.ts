@@ -7,5 +7,17 @@ import { PoolCreator } from './poolCreator';
 import { PoolFinder } from './poolFinder';
 import { Portfolio } from './portfolio';
 import { Position } from './position';
+import { Rays } from './rays';
 
-export { Borrow, Earn, Header, Homepage, Multiply, PoolCreator, PoolFinder, Portfolio, Position };
+export {
+	Borrow,
+	Earn,
+	Header,
+	Homepage,
+	Multiply,
+	PoolCreator,
+	PoolFinder,
+	Portfolio,
+	Position,
+	Rays,
+};

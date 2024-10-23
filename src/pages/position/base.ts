@@ -9,9 +9,14 @@ export class Base {
 	}
 
 	@step
-	async getLiquidationPrice(): Promise<number> {
+	async getLiquidationPrice(protocol?: 'Maker'): Promise<number> {
 		const value = await this.page.locator('span:has-text("Liquidation Price") + span').innerText();
-		return parseFloat(value.slice(0, value.indexOf(' ')).replace(',', ''));
+		const slicedValue = (protocol ? value.slice(1) : value.slice(0, value.indexOf(' '))).replace(
+			',',
+			''
+		);
+
+		return parseFloat(slicedValue);
 	}
 
 	@step
@@ -91,7 +96,7 @@ export class Base {
 		automation,
 		value,
 	}: {
-		automation: 'AutoSell' | 'AutoBuy' | 'Stop-Loss';
+		automation?: 'AutoSell' | 'AutoBuy' | 'Stop-Loss';
 		value: number;
 	}) {
 		await expect(async () => {
@@ -117,10 +122,20 @@ export class Base {
 	}
 
 	@step
-	async moveSliderAutomationsOmni({ value }: { value: number }) {
+	async moveSliderAutomationsOmni({
+		value,
+		sliderPosition,
+	}: {
+		value: number;
+		sliderPosition?: 1 | 2 | 3;
+	}) {
 		await expect(async () => {
-			const sliderRail = this.page.locator('.rc-slider-rail').nth(0);
-			const sliderPill = this.page.locator('[role="slider"]').nth(0);
+			const sliderRail = this.page
+				.locator('.rc-slider-rail')
+				.nth(sliderPosition ? sliderPosition - 1 : 0);
+			const sliderPill = this.page
+				.locator('[role="slider"]')
+				.nth(sliderPosition ? sliderPosition - 1 : 0);
 
 			const initialPillValue = await sliderPill.getAttribute('aria-valuenow');
 
@@ -181,5 +196,18 @@ export class Base {
 	@step
 	async confirm() {
 		await this.page.getByRole('button', { name: 'Confirm' }).click();
+	}
+
+	@step
+	async shouldHaveConfirmButton() {
+		await expect(
+			this.page.getByRole('button', { name: 'Confirm' }),
+			'Should show "Confirm" button'
+		).toBeVisible();
+	}
+
+	@step
+	async removeTrigger() {
+		await this.page.getByRole('button', { name: 'Remove trigger' }).click();
 	}
 }

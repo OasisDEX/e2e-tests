@@ -10,6 +10,7 @@ import { test, chromium } from '@playwright/test';
 import { initialSetup } from '@synthetixio/synpress/commands/metamask';
 import { prepareMetamask } from '@synthetixio/synpress/helpers';
 import { setExpectInstance } from '@synthetixio/synpress/commands/playwright';
+import { SetBalanceTokens } from './testData';
 
 export const metamaskSetUp = async ({
 	network,
@@ -68,13 +69,17 @@ export const setup = async ({
 	network,
 	extraFeaturesFlags,
 	automationMinNetValueFlags,
+	withoutFork,
+	withExistingWallet,
 }: {
 	app: App;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 	extraFeaturesFlags?: string;
 	automationMinNetValueFlags?: string;
+	withoutFork?: boolean;
+	withExistingWallet?: { privateKey: string };
 }) => {
-	const walletAddress = await metamask.walletAddress();
+	let forkId: string;
 
 	await app.page.goto('');
 	await app.homepage.shouldBeVisible();
@@ -101,20 +106,44 @@ export const setup = async ({
 		automationMinNetValueFlags: setupAutomationMinNetValueFlags,
 	});
 
+	if (withExistingWallet) {
+		await metamask.importAccount(withExistingWallet?.privateKey);
+	}
+
+	const walletAddress = await metamask.getWalletAddress();
+	// Logging walletAddress for debugging purposes
+	//  - Info displayed in 'Attachments > stdout' section of playwright reports
+	console.log(' Wallet Address: ', walletAddress);
+
 	await wallet.connect(app);
 	await termsAndconditions.accept(app);
 
-	const resp = await tenderly.createFork({ network });
-	const forkId = resp.data.root_transaction.fork_id;
+	// // Log wallet in database as having accepted ToS
+	// const response = await app.page.request.post('/api/tos', {
+	// 	data: {
+	// 		docVersion: 'version-27.08.2024',
+	// 		walletAddress,
+	// 	},
+	// });
 
-	await fork.addToApp({ app, forkId, network });
+	if (!withoutFork) {
+		const resp = await tenderly.createFork({ network });
+		forkId = resp.data.root_transaction.fork_id;
 
-	await tenderly.setTokenBalance({ forkId, walletAddress, network, token: 'ETH', balance: '1000' });
+		await fork.addToApp({ app, forkId, network });
 
-	// Logging forkId and walletAddress for debugging purposes
-	//  - Info displayed in 'Attachments > stdout' section of playwright reports
-	console.log('+++ Fork Id: ', forkId);
-	console.log('+++ Wallet Address: ', walletAddress);
+		await tenderly.setTokenBalance({
+			forkId,
+			walletAddress,
+			network,
+			token: 'ETH',
+			balance: '1000',
+		});
+
+		// Logging forkId for debugging purposes
+		//  - Info displayed in 'Attachments > stdout' section of playwright reports
+		console.log(' Fork Id: ', forkId);
+	}
 
 	return { forkId, walletAddress };
 };
@@ -137,8 +166,7 @@ export const setupNewFork = async ({
 
 	await expect(async () => {
 		await app.page.goto('');
-		await app.header.useCasesShouldBeVisible();
-		await app.header.connectWalletShouldNotBeVisible();
+		await app.header.portfolioShouldBeVisible();
 	}).toPass();
 
 	await fork.addToApp({ app, forkId, network });
@@ -146,4 +174,93 @@ export const setupNewFork = async ({
 	await tenderly.setTokenBalance({ forkId, walletAddress, network, token: 'ETH', balance: '100' });
 
 	return { forkId };
+};
+
+export const createNewFork = async ({
+	network,
+}: {
+	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+}) => {
+	const resp = await tenderly.createFork({ network });
+	const forkId = resp.data.root_transaction.fork_id;
+
+	return forkId;
+};
+
+export const createAndSetNewFork = async ({
+	walletAddress,
+	network,
+	addTokenBalance,
+	app,
+}: {
+	walletAddress: string;
+	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+	addTokenBalance?: { token: SetBalanceTokens; balance: string };
+	app: App;
+}) => {
+	const chainIds = {
+		arbitrum: 42161,
+		base: 8453,
+		mainnet: 1,
+		optimism: 10,
+	};
+
+	const chainId = chainIds[network];
+
+	const forkId = await createNewFork({ network });
+	console.log('FORK ID:', forkId);
+
+	await tenderly.setTokenBalance({
+		forkId,
+		walletAddress,
+		network,
+		token: 'ETH',
+		balance: '1000',
+	});
+
+	if (addTokenBalance) {
+		await tenderly.setTokenBalance({
+			forkId,
+			network,
+			walletAddress,
+			token: addTokenBalance.token,
+			balance: addTokenBalance.balance,
+		});
+	}
+
+	//
+	console.log('chainId: ', chainId);
+	//
+
+	const newWalletNetwork = {
+		name: 'testFork',
+		rpcUrl: `https://rpc.tenderly.co/fork/${forkId}`,
+		chainId,
+		symbol: 'ETH',
+	};
+
+	await metamask.addNetwork(newWalletNetwork);
+
+	await app.page.evaluate(
+		({
+			forkId,
+			network,
+			chainId,
+		}: {
+			forkId: string;
+			network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+			chainId: number;
+		}) =>
+			window.localStorage.setItem(
+				'ForkNetwork',
+				`{"${
+					network === 'mainnet' ? 'ethereum' : network
+				}": {"url": "https://rpc.tenderly.co/fork/${forkId}", "id": "${chainId}"}}`
+			),
+		{ forkId, network, chainId }
+	);
+
+	await app.page.reload();
+
+	return forkId;
 };

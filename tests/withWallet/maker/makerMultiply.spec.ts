@@ -2,10 +2,10 @@ import { BrowserContext, test } from '@playwright/test';
 import { expect, metamaskSetUp } from 'utils/setup';
 import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
-import * as tx from 'utils/tx';
 import { setup } from 'utils/setup';
 import { expectDefaultTimeout, extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
+import { confirmAddToken } from 'tests/sharedTestSteps/makerConfirmTx';
 
 let context: BrowserContext;
 let app: App;
@@ -24,7 +24,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open a Maker Multiply position @regression', async () => {
+	test('It should open a Maker Multiply ETH-B/DAI position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11797, 11798',
@@ -47,24 +47,15 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await app.page.goto('/vaults/open-multiply/ETH-B');
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable({ tab: 'Overview' });
+		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
-
-		// If proxy was not previous setup extra steps will need to be executed
-		const button = app.page
-			.getByText('Configure your Vault')
-			.locator('../../..')
-			.locator('div:nth-child(3) > button')
-			.nth(1);
-		await expect(button).toBeVisible();
-
-		const buttonLabel = await button.innerText();
 
 		await app.position.setup.setupProxy1Of4();
 
 		await expect(async () => {
 			await app.position.setup.createOrRetry();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			// await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await confirmAddToken({ app });
 		}).toPass();
 
 		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
@@ -72,7 +63,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 		await app.page.reload();
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable({ tab: 'Overview' });
+		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 		await app.position.setup.deposit({ token: 'ETH', amount: '10.543' });
 
 		await app.position.setup.confirm();
@@ -80,7 +71,8 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 		await expect(async () => {
 			await app.position.setup.createOrRetry();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			// await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await confirmAddToken({ app });
 			await app.position.setup.goToVaultShouldBeVisible();
 		}).toPass();
 
@@ -134,10 +126,10 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 		test.setTimeout(longTestTimeout);
 
-		await app.position.openPage('/vaults/open-multiply/WSTETH-A', { tab: 'Overview' });
+		await app.position.openPage('/vaults/open-multiply/WSTETH-A', { positionType: 'Maker' });
 
 		// Depositing collateral too quickly after loading page returns wrong simulation results
-		await app.position.overview.waitForComponentToBeStable({ tab: 'Overview' });
+		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 		await app.position.setup.deposit({ token: 'WSTETH', amount: '20.12345' });
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill('[0-9]{3}.[0-9]{2}');
 		await app.position.overview.shouldHaveBuyingPowerAfterPill({
@@ -145,7 +137,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 			protocol: 'Maker',
 		});
 		await app.position.overview.shouldHaveNetValueAfterPill('[0-9]{2},[0-9]{3}.[0-9]{2}');
-		await app.position.overview.shouldHaveVaultDaiDebt('[0-9]{1,2},[0-9]{3}.[0-9]{4}');
+		await app.position.overview.shouldHaveVaultDaiDebtAfterPill('[0-9]{1,2},[0-9]{3}.[0-9]{4}');
 		await app.position.overview.shouldHaveTotalCollateral({
 			token: 'WSTETH',
 			amount: '[0-9]{2}.[0-9]{2}',
@@ -189,19 +181,5 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 			future: '[0-9]{3}.[0-9]{2}',
 		});
 		await app.position.setup.orderInformation.shouldHaveFees('[0-9]{1,2}(.[0-9]{1,2})?');
-	});
-
-	// Skipping test as Maker position pages don't open when using forks  and also because of BUG 10547
-	test.skip('It should open a Maker Multiply position from portfolio page', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11799',
-		});
-
-		test.setTimeout(extremelyLongTestTimeout);
-
-		// await app.page.goto(`/owner/${walletAddress}`);
-		// await app.portfolio.multiply.vaults.first.view();
-		// await app.position.manage.shouldBeVisible('Manage collateral');
 	});
 });

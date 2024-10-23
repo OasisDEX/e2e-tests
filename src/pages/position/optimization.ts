@@ -31,6 +31,11 @@ export class Optimization {
 	}
 
 	@step
+	async adjustPartialTakeProfitStopLossTrigger({ value }: { value: number }) {
+		await this.base.moveSliderAutomationsOmni({ value, sliderPosition: 3 });
+	}
+
+	@step
 	async shouldHaveMessage(text: string) {
 		await this.base.shouldHaveMessage(text);
 	}

@@ -33,7 +33,7 @@ export class Setup {
 	}
 
 	@step
-	async acknowlegeAjnaInfo() {
+	async acknowledgeAjnaInfo() {
 		await this.page.getByText('I understand').click();
 	}
 
@@ -68,6 +68,24 @@ export class Setup {
 	async deposit({ token, amount }: { token: string; amount: string }) {
 		await this.page
 			.getByText(`Deposit ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
+	@step
+	async stake({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Stake ${token}`)
+			.locator('../..')
+			.getByPlaceholder(`0 ${token}`)
+			.fill(amount);
+	}
+
+	@step
+	async unstake({ token, amount }: { token: string; amount: string }) {
+		await this.page
+			.getByText(`Unstake ${token}`)
 			.locator('../..')
 			.getByPlaceholder(`0 ${token}`)
 			.fill(amount);
@@ -117,7 +135,7 @@ export class Setup {
 		withWallet,
 	}: {
 		value: number;
-		protocol?: 'Ajna' | 'Morpho';
+		protocol?: 'Ajna' | 'Morpho' | 'Maker';
 		withWallet?: boolean;
 	}) {
 		if (protocol) {
@@ -209,8 +227,23 @@ export class Setup {
 	}
 
 	@step
+	async setupProxy1Of5() {
+		await this.page.getByRole('button', { name: 'Set up Proxy (1/5)' }).click();
+	}
+
+	@step
+	async createProxy() {
+		await this.page.getByRole('button', { name: 'Create Proxy' }).click();
+	}
+
+	@step
 	async createProxy2Of4() {
 		await this.page.getByRole('button', { name: 'Create Proxy (2/4)' }).click();
+	}
+
+	@step
+	async createProxy2Of5() {
+		await this.page.getByRole('button', { name: 'Create Proxy (2/5)' }).click();
 	}
 
 	@step
@@ -251,13 +284,28 @@ export class Setup {
 	}
 
 	@step
-	async goToDeposit() {
-		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
+	async confirmDeposit() {
+		await this.page.getByRole('button', { exact: true, name: 'Deposit' }).nth(1).click();
 	}
 
 	@step
-	async confirmDeposit() {
-		await this.page.getByRole('button', { exact: true, name: 'Deposit' }).nth(1).click();
+	async confirmStake() {
+		await this.page.getByRole('button', { exact: true, name: 'Stake' }).nth(1).click();
+	}
+
+	@step
+	async confirmUnstake() {
+		await this.page.getByRole('button', { exact: true, name: 'Unstake' }).nth(1).click();
+	}
+
+	@step
+	async confirmClaim() {
+		await this.page.getByRole('button', { exact: true, name: 'Claim' }).nth(1).click();
+	}
+
+	@step
+	async goToDeposit() {
+		await this.page.getByRole('button', { name: 'Go to deposit' }).click();
 	}
 
 	@step
@@ -266,10 +314,16 @@ export class Setup {
 	}
 
 	@step
-	async finishedShouldBeVisible(
-		feature?: 'Auto Take Profit' | 'Auto-Buy' | 'Auto-Sell' | 'Stop-Loss'
-	) {
-		if (feature) {
+	async finishedShouldBeVisible(args?: {
+		feature: 'Auto Take Profit' | 'Auto-Buy' | 'Auto-Sell' | 'Stop-Loss';
+		action?: 'update' | 'remove';
+	}) {
+		if (args.action === 'remove') {
+			await expect(
+				this.page.getByText('has been successfully cancelled'),
+				'Success message should be visible'
+			).toBeVisible();
+		} else if (args?.feature) {
 			await expect(
 				this.page.getByText('You have successfully set up a'),
 				'Success message should be visible'
@@ -350,7 +404,7 @@ export class Setup {
 		await expect(
 			this.page.getByRole('button', { name: 'Go to position' }),
 			'"Go to position" should be visible'
-		).toBeVisible({ timeout: 10_000 });
+		).toBeVisible({ timeout: expectDefaultTimeout * 5 });
 	}
 
 	@step
@@ -512,10 +566,19 @@ export class Setup {
 	}
 
 	@step
-	async shouldShowSuccessScreen() {
-		await expect(this.page.getByText('Success'), '"Success" should be visible').toBeVisible({
-			timeout: positionTimeout,
-		});
+	async shouldShowSuccessScreen(args?: { depositType: 'srr' | 'cle' }) {
+		if (args?.depositType) {
+			await expect(
+				this.page.getByText('Transaction successful.'),
+				'"Transaction uccessful" should be visible'
+			).toBeVisible({
+				timeout: positionTimeout,
+			});
+		} else {
+			await expect(this.page.getByText('Success'), '"Success" should be visible').toBeVisible({
+				timeout: positionTimeout,
+			});
+		}
 	}
 
 	@step
@@ -523,5 +586,43 @@ export class Setup {
 		await this.page
 			.getByRole('button', { name: 'Open new position' })
 			.click({ clickCount: 2, timeout: expectDefaultTimeout * 3 });
+	}
+
+	@step
+	async openTokenSelector() {
+		await this.page.getByTestId('deposit-token-selector').click();
+	}
+
+	@step
+	async selectDepositToken(token: 'USTD' | 'ETH') {
+		await this.page
+			.getByTestId('deposit-token-list')
+			.getByRole('listitem')
+			.filter({ hasText: token })
+			.click();
+	}
+
+	@step
+	async getTokenSwapRate() {
+		let rate: string;
+		await expect(async () => {
+			rate = await this.page.locator('p:has-text("Price (impact)") + div').innerText();
+			expect(rate).toContain('.');
+		}).toPass({ timeout: expectDefaultTimeout * 2 });
+		const rateNumber = parseFloat(rate.slice(0, rate.indexOf(' ')).replace(',', ''));
+
+		return rateNumber;
+	}
+
+	@step
+	async getPriceImpact() {
+		const impact = await this.page
+			.getByRole('listitem')
+			.filter({ hasText: 'Price (impact)' })
+			.locator('span > span:has-text("%")')
+			.innerText();
+		const impactNumber = parseFloat(impact.slice(1, -2));
+
+		return impactNumber;
 	}
 }

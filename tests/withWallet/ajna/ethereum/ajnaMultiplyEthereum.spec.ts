@@ -44,30 +44,18 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 				forkId,
 				network: 'mainnet',
 				walletAddress,
-				token: 'RETH',
-				balance: '100',
+				token: 'WBTC',
+				balance: '5',
 			});
 		});
 
-		await app.page.goto('/ethereum/ajna/multiply/RETH-ETH#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.page.goto('/ethereum/ajna/multiply/WBTC-DAI#setup');
+		await app.position.setup.acknowledgeAjnaInfo();
 
-		await openPosition({ app, forkId, deposit: { token: 'RETH', amount: '2' } });
-	});
-
-	test('It should adjust risk of an existing Ajna Ethereum Multiply position - Up @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		await adjustRisk({
-			forkId,
+		await openPosition({
 			app,
-			risk: 'up',
-			newSliderPosition: 0.6,
+			forkId,
+			deposit: { token: 'WBTC', amount: '0.1' },
 		});
 	});
 
@@ -83,7 +71,23 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 			forkId,
 			app,
 			risk: 'down',
-			newSliderPosition: 0.5,
+			newSliderPosition: 0.05,
+		});
+	});
+
+	test('It should adjust risk of an existing Ajna Ethereum Multiply position - Up @regression', async () => {
+		test.info().annotations.push({
+			type: 'Test case',
+			description: 'xxx',
+		});
+
+		test.setTimeout(longTestTimeout);
+
+		await adjustRisk({
+			forkId,
+			app,
+			risk: 'up',
+			newSliderPosition: 0.1,
 		});
 	});
 
@@ -99,9 +103,9 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 			forkId,
 			app,
 			closeTo: 'collateral',
-			collateralToken: 'RETH',
-			debtToken: 'ETH',
-			tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{1,2}',
+			collateralToken: 'WBTC',
+			debtToken: 'DAI',
+			tokenAmountAfterClosing: '0.[0-9]{3,4}',
 		});
 	});
 
@@ -112,7 +116,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/ethereum/ajna/multiply/WBTC-DAI#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 		await app.position.setup.deposit({ token: 'WBTC', amount: '0.654321' });
 
 		await app.position.overview.shouldHaveLiquidationPriceAfterPill(

@@ -14,7 +14,8 @@ let walletAddress: string;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
+// Base ETH borrow cap at 100%
+test.describe.skip('Aave V3 Earn - Base - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
@@ -25,7 +26,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave V3 Earn Base position @regression', async () => {
+	test('It should open an Aave V3 Earn (Yield Loop) Base position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12471',
@@ -49,13 +50,12 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			});
 		});
 
-		await app.page.goto('/base/aave/v3/multiply/cbeth-eth#simulate');
+		await app.page.goto('/base/aave/v3/multiply/CBETH-ETH#setup');
 
 		await openPosition({
 			app,
 			forkId,
-			deposit: { token: 'CBETH', amount: '5' },
-			omni: { network: 'base' },
+			deposit: { token: 'CBETH', amount: '1' },
 		});
 	});
 
@@ -74,8 +74,9 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await adjustRisk({
 			forkId,
 			app,
+			earnPosition: true,
 			risk: 'up',
-			newSliderPosition: 0.6,
+			newSliderPosition: 0.3,
 		});
 	});
 
@@ -94,6 +95,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await adjustRisk({
 			forkId,
 			app,
+			earnPosition: true,
 			risk: 'down',
 			newSliderPosition: 0.1,
 		});
@@ -114,7 +116,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await close({
 			app,
 			forkId,
-			positionType: 'Multiply',
+			positionType: 'Earn (Yield Loop)',
 			closeTo: 'debt',
 			collateralToken: 'CBETH',
 			debtToken: 'ETH',

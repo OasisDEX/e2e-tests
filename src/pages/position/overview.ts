@@ -12,19 +12,25 @@ export class Overview {
 	@step
 	async shouldBeVisible(args?: { tab?: 'Overview' | 'Position Info'; timeout?: number }) {
 		await expect(
-			this.page.getByText(args?.tab ?? 'Position Info'),
-			'"Position Info" should be visible'
+			this.page.getByRole('button', { name: args?.tab ?? 'Position Info', exact: true }),
+			`${args?.tab ?? 'Position Info'} should be visible`
 		).toBeVisible({
 			timeout: args?.timeout ?? positionTimeout,
 		});
 	}
 
 	@step
-	async waitForComponentToBeStable(args?: {
-		tab?: 'Overview' | 'Position Info';
-		timeout?: number;
-	}) {
-		await this.shouldBeVisible({ tab: args?.tab, timeout: args?.timeout });
+	async waitForComponentToBeStable(args?: { positionType?: 'Maker'; timeout?: number }) {
+		if (args?.positionType) {
+			await expect(
+				this.page.getByText('Overview', { exact: true }),
+				`"Overview" should be visible`
+			).toBeVisible({
+				timeout: args?.timeout ?? positionTimeout,
+			});
+		} else {
+			await this.shouldBeVisible();
+		}
 	}
 
 	@step
@@ -96,9 +102,6 @@ export class Overview {
 		).toContainText(regExp, { timeout: positionTimeout });
 	}
 
-	/**
-	 	@param price - It must be regExp representing the the whole amount
-	*/
 	@step
 	async shouldHaveLoanToValue(percentage: string) {
 		const regExp = new RegExp(`${percentage}%`);
@@ -150,10 +153,21 @@ export class Overview {
 	 	@param value - It must be regExp representing the the whole amount
 	*/
 	@step
-	async shouldHaveNetValue({ value, token }: { value: string; token?: string }) {
-		const regExp = new RegExp(`${value}${token ? ` ${token}` : ''}`);
+	async shouldHaveNetValue({
+		value,
+		token,
+		sdr,
+	}: {
+		value: string;
+		token?: string;
+		sdr?: { savingsToken: 'DAI' | 'SDAI' };
+	}) {
+		const regExp = new RegExp(`${value}${token ? (sdr ? `${token}` : ` ${token}`) : ''}`);
 		await expect(
-			this.page.getByText('Net Value').locator('xpath=//following-sibling::p[1]')
+			this.page
+				.getByText('Net Value')
+				.nth(sdr?.savingsToken === 'SDAI' ? 1 : 0)
+				.locator('xpath=//following-sibling::p[1]')
 		).toHaveText(regExp, { timeout: positionTimeout });
 	}
 
@@ -313,16 +327,40 @@ export class Overview {
 			amount,
 			token,
 			timeout,
+			stakingUsds,
 		}: {
 			amount: string;
 			token: string;
 			timeout?: number;
+			stakingUsds?: boolean;
 		} = { amount: '', token: '', timeout: expectDefaultTimeout }
 	) {
 		const regExp = new RegExp(`${amount}.*${token}`);
 
-		await expect(this.page.locator('li:has-text("Collateral Deposited")')).toContainText(regExp, {
-			timeout,
+		if (stakingUsds) {
+			await expect(this.page.locator('li:has-text("USDS Deposited")')).toContainText(regExp, {
+				timeout,
+			});
+		} else {
+			await expect(this.page.locator('li:has-text("Collateral Deposited")')).toContainText(regExp, {
+				timeout,
+			});
+		}
+	}
+
+	@step
+	async shouldHaveCollateralDepositedAfterPill(collateral: string) {
+		const regExp = new RegExp(collateral);
+		await expect(
+			this.page.getByText('Collateral Deposited').locator('..').getByText('After')
+		).toContainText(regExp, { timeout: positionTimeout });
+	}
+
+	@step
+	async shouldHaveCollateralLocked(collateral: string) {
+		const regExp = new RegExp(collateral);
+		await expect(this.page.getByText('Collateral Locked').locator('..')).toContainText(regExp, {
+			timeout: positionTimeout,
 		});
 	}
 
@@ -335,21 +373,21 @@ export class Overview {
 	}
 
 	@step
-	async shouldHaveCollateralDepositedAfterPill(collateral: string) {
-		const regExp = new RegExp(collateral);
-		await expect(
-			this.page.getByText('Collateral Deposited').locator('..').getByText('After')
-		).toContainText(regExp, { timeout: positionTimeout });
-	}
-
-	@step
-	async shouldHaveAvailableToWithdraw({ amount, token }: { amount: string; token: string }) {
+	async shouldHaveAvailableToWithdraw({
+		amount,
+		token,
+		timeout,
+	}: {
+		amount: string;
+		token: string;
+		timeout?: number;
+	}) {
 		const regExp = new RegExp(`${amount} ${token}`);
 
 		await expect(this.page.locator('li:has-text("Available to Withdraw") p')).toContainText(
 			regExp,
 			{
-				timeout: positionTimeout,
+				timeout: timeout ?? expectDefaultTimeout,
 			}
 		);
 	}
@@ -421,6 +459,18 @@ export class Overview {
 	@step
 	async shouldHaveCollateralizationRatio(percentage: string) {
 		const regExp = new RegExp(percentage);
+		await expect(this.page.getByText('Collateralization Ratio').locator('..')).toContainText(
+			regExp,
+			{ timeout: positionTimeout }
+		);
+	}
+
+	/**
+	 	@param price - It must be regExp representing the the whole amount
+	*/
+	@step
+	async shouldHaveCollateralizationRatioAfterPill(percentage: string) {
+		const regExp = new RegExp(percentage);
 		await expect(
 			this.page.getByText('Collateralization Ratio').locator('..').getByText('After')
 		).toContainText(regExp, { timeout: positionTimeout });
@@ -429,8 +479,104 @@ export class Overview {
 	@step
 	async shouldHaveVaultDaiDebt(amount: string) {
 		const regExp = new RegExp(`${amount} DAI`);
+		await expect(this.page.locator('li:has-text("Vault Dai Debt")')).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveVaultDaiDebtAfterPill(amount: string) {
+		const regExp = new RegExp(`${amount} DAI`);
 		await expect(
 			this.page.locator('li:has-text("Vault Dai Debt")').getByText('After')
 		).toContainText(regExp);
+	}
+
+	@step
+	async swap() {
+		await this.page.getByRole('button', { name: 'Get Started' }).click();
+	}
+
+	@step
+	async shouldHaveRays(count: string) {
+		const regExp = new RegExp(`\\+ ${count}`);
+		await expect(this.page.getByText('Rays / year')).toHaveText(regExp);
+	}
+
+	@step
+	async getRaysPerYear() {
+		const raysText = await this.page.getByText('Rays / year').innerText();
+		const raysNumber = parseFloat(raysText.slice(2, -12).replace(',', ''));
+
+		return raysNumber;
+	}
+
+	@step
+	async shouldHaveSkyRewardsRate(rate: string) {
+		const regExp = new RegExp(rate);
+
+		await expect(this.page.locator('li:has-text("SKY Reward Rate")')).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveSkyEarned({
+		amount,
+		greaterThanZero,
+	}: {
+		amount?: string;
+		greaterThanZero?: boolean;
+	}) {
+		const skyEarnedLocator = this.page
+			.getByText('SKY Earned', { exact: true })
+			.locator('xpath=//following-sibling::p[1]');
+
+		if (amount) {
+			const regExp = new RegExp(`${amount}SKY`);
+
+			await expect(skyEarnedLocator).toContainText(regExp);
+		}
+		if (greaterThanZero) {
+			const skyEarnedText = await skyEarnedLocator.innerText();
+			const skyEarnedNumber = parseFloat(skyEarnedText.replace('SKY', ''));
+
+			expect(skyEarnedNumber).toBeGreaterThan(0);
+		}
+	}
+
+	@step
+	async shouldHaveClePointsEarned({
+		amount,
+		greaterThanZero,
+	}: {
+		amount?: string;
+		greaterThanZero?: boolean;
+	}) {
+		const cleLocator = this.page
+			.getByText('Chronicle Points Earned', { exact: true })
+			.locator('xpath=//following-sibling::p[1]');
+
+		if (amount) {
+			const regExp = new RegExp(`${amount}CLE`);
+
+			await expect(cleLocator).toContainText(regExp);
+		}
+		if (greaterThanZero) {
+			const cleText = await cleLocator.innerText();
+			const cleNumber = parseFloat(cleText.replace('CLE', ''));
+
+			expect(cleNumber).toBeGreaterThan(0);
+		}
+	}
+
+	@step
+	async shouldHaveTotalSkyEarned(amount: string) {
+		const regExp = new RegExp(amount);
+
+		await expect(this.page.locator('li:has-text("Total SKY Earned")')).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveTotalUsdsLocked(amount: string) {
+		const regExp = new RegExp(amount);
+
+		await expect(this.page.locator('li:has-text("Total USDS Locked")')).toContainText(regExp);
 	}
 }

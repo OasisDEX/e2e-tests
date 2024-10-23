@@ -25,7 +25,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v3 Multiply Optimism position @regression', async () => {
+	test('It should open an Aave v3 Multiply Optimism position - ETH/USDC @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '12067',
@@ -47,7 +47,6 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10.12345' },
-			omni: { network: 'optimism' },
 		});
 	});
 

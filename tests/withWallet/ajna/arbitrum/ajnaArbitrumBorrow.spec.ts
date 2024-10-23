@@ -58,13 +58,14 @@ test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 		});
 		await app.page.goto('/arbitrum/ajna/borrow/RETH-ETH#setup');
 
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
 			forkId,
 			deposit: { token: 'RETH', amount: '0.1' },
 			borrow: { token: 'ETH', amount: '0.01' },
+			protocol: 'Ajna',
 		});
 	});
 

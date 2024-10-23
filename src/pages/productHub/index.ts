@@ -14,8 +14,12 @@ export class ProductHub {
 
 	constructor(page: Page) {
 		this.productHubLocator = page.locator('#product-hub').locator('..');
-		this.filters = new Filters(this.productHubLocator);
+		this.filters = new Filters(page, this.productHubLocator);
 		this.header = new Header(this.productHubLocator);
-		this.list = new ProductsList(page, this.productHubLocator);
+		this.list = new ProductsList(
+			page,
+			this.productHubLocator,
+			this.productHubLocator.locator('tbody tr[role="link"]')
+		);
 	}
 }

@@ -53,13 +53,14 @@ test.describe('Ajna Optimism Earn & Borrow - Wallet connected', async () => {
 		});
 
 		await app.page.goto('/optimism/ajna/earn/OP-ETH#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 
 		await openPosition({
 			app,
 			forkId,
 			deposit: { token: 'ETH', amount: '10' },
 			adjustRisk: { value: 0.8 },
+			protocol: 'Ajna',
 		});
 	});
 
@@ -72,7 +73,7 @@ test.describe('Ajna Optimism Earn & Borrow - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		await app.page.goto('/optimism/ajna/earn/WBTC-DAI#setup');
-		await app.position.setup.acknowlegeAjnaInfo();
+		await app.position.setup.acknowledgeAjnaInfo();
 		await app.position.setup.deposit({ token: 'DAI', amount: '20000' });
 
 		await app.position.overview.shouldHaveProjectedEarnings30days({

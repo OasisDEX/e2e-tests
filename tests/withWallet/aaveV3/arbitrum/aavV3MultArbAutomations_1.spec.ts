@@ -6,7 +6,6 @@ import * as automations from 'tests/sharedTestSteps/automations';
 import { setup } from 'utils/setup';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let context: BrowserContext;
 let app: App;
@@ -26,10 +25,10 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await resetState();
 	});
 
-	test('It should open an Aave v3 Multiply Arbitrum position @regression', async () => {
+	test('It should set Auto-Buy on an Aave v3 Arbitrum Multiply position @regression', async () => {
 		test.info().annotations.push({
 			type: 'Test case',
-			description: '12070',
+			description: 'xxx',
 		});
 
 		test.setTimeout(extremelyLongTestTimeout);
@@ -39,41 +38,30 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 			let page = await context.newPage();
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({ app, network: 'arbitrum' }));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
+			({ forkId, walletAddress } = await setup({
+				app,
 				network: 'arbitrum',
-				token: 'WBTC',
-				balance: '2',
-			});
+				automationMinNetValueFlags: 'arbitrum:aavev3:0.001',
+			}));
 		});
 
-		await app.page.goto('/arbitrum/aave/v3/multiply/wbtc-dai#simulate');
+		await tenderly.changeAccountOwner({
+			account: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
+			newOwner: walletAddress,
+			forkId,
+		});
 
-		await openPosition({
+		await app.position.openPage('/arbitrum/aave/v3/multiply/eth-dai/1#overview');
+
+		await automations.testAutoBuy({
 			app,
 			forkId,
-			deposit: { token: 'WBTC', amount: '0.5' },
-			adjustRisk: { positionType: 'Borrow', value: 0.5 },
-			omni: { network: 'arbitrum' },
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'arbitrumETH',
+				debtToken: 'arbitrumDAI',
+			},
 		});
-	});
-
-	test('It should set Auto-Buy on an Aave v3 Arbitrum Multiply position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
-		test.setTimeout(longTestTimeout);
-
-		// Reload page to avoid random fails
-		await app.page.reload();
-		await app.position.overview.shouldBeVisible();
-
-		await automations.testAutoBuy({ app, forkId });
 	});
 
 	test('It should set Auto-Sell on an Aave v3 Arbitrum Multiply position @regression', async () => {
@@ -88,7 +76,15 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testAutoSell({ app, forkId });
+		await automations.testAutoSell({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'arbitrumETH',
+				debtToken: 'arbitrumDAI',
+			},
+		});
 	});
 
 	test('It should set Regular Stop-Loss on an Aave v3 Arbitrum Multiply position @regression', async () => {
@@ -103,6 +99,15 @@ test.describe('Aave v3 Multiply - Arbitrum - Wallet connected', async () => {
 		await app.page.reload();
 		await app.position.overview.shouldBeVisible();
 
-		await automations.testRegularStopLoss({ app, forkId });
+		await automations.testRegularStopLoss({
+			app,
+			forkId,
+			verifyTriggerPayload: {
+				protocol: 'aave3',
+				collToken: 'arbitrumETH',
+				debtToken: 'arbitrumDAI',
+				triggerToken: 'arbitrumDAI',
+			},
+		});
 	});
 });

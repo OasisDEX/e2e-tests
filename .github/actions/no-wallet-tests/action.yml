@@ -1,0 +1,27 @@
+name: 'No wallet tests Action'
+description: 'Composite action to to run "No wallet" tests'
+
+inputs:
+  base_url:
+    description: 'Environment base URL to run the tests on.'
+    type: string
+    default: 'https://staging.summer.fi'
+    required: true
+  flags_features:
+    description: 'Features Flags to enable / disable. For example: "flag1:true flag2:false"'
+    type: string
+    default: ''
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run NO-WALLET tests
+      shell: bash
+      run: BASE_URL=${{ inputs.base_url }} FLAGS_FEATURES=${{ inputs.flags_features}} yarn ci:no-wallet:regression
+    - uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-report-no-wallet
+        path: playwright-reports/no-wallet
+        retention-days: 30

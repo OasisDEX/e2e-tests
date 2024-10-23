@@ -6,16 +6,13 @@ import { step } from '#noWalletFixtures';
 export class PoolFinder {
 	readonly page: Page;
 
-	readonly finderLocator: Locator;
-
 	readonly list: ProductsList;
 
 	readonly noItems: NoItems;
 
 	constructor(page: Page) {
 		this.page = page;
-		this.finderLocator = page.locator('main:has-text("using Ajna")');
-		this.list = new ProductsList(page, this.finderLocator);
+		this.list = new ProductsList(page, this.page.locator('main'), this.page.locator('tbody tr'));
 		this.noItems = new NoItems(page);
 	}
 
@@ -26,12 +23,12 @@ export class PoolFinder {
 
 	@step
 	async shouldHaveHeader(positionCategory: 'Borrow' | 'Earn') {
-		await expect(this.finderLocator.locator('h1 span').nth(0)).toHaveText(positionCategory);
+		await expect(this.page.locator('h1 span').nth(0)).toHaveText(positionCategory);
 	}
 
 	@step
 	async shouldLinkToBlog(positionCategory: 'Borrow' | 'Earn') {
-		const element = this.finderLocator.getByRole('link', { name: `Summer.fi ${positionCategory}` });
+		const element = this.page.getByRole('link', { name: `Summer.fi ${positionCategory} →` });
 
 		await expect(element).toHaveAttribute(
 			'href',
@@ -42,8 +39,8 @@ export class PoolFinder {
 
 	@step
 	async selectPositionCategory(positionCategory: 'Borrow' | 'Earn') {
-		await this.finderLocator.locator('h1 > div').click();
-		await this.finderLocator.locator(`h1 li:has-text("${positionCategory}")`).click();
+		await this.page.locator('h1 > div').click();
+		await this.page.locator(`h1 li:has-text("${positionCategory}")`).click();
 	}
 
 	@step
@@ -54,6 +51,6 @@ export class PoolFinder {
 		filter: 'Pool address' | 'Collateral token' | 'Quote token';
 		value: string;
 	}) {
-		await this.finderLocator.locator(`[id="${filter}"]`).fill(value);
+		await this.page.locator(`[id="${filter}"]`).fill(value);
 	}
 }
