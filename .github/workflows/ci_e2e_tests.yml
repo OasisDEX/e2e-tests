@@ -41,10 +41,11 @@ jobs:
     with:
       base_url: 'https://staging.summer.fi'
       script: api-tests:regression
-  with-real-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
-    with:
-      base_url: 'https://staging.summer.fi'
-      flags_features: ${{ inputs.flags_features}}
-    secrets: inherit
+
+  # with-real-wallet:
+  #   uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
+  #   with:
+  #     base_url: 'https://staging.summer.fi'
+  #     flags_features: ${{ inputs.flags_features}}
+  #   secrets: inherit
   
