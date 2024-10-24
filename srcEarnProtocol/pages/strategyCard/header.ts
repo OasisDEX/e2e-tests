@@ -31,4 +31,13 @@ export class Header {
 		const risk = await this.headerLocator.getByText(' risk').innerText();
 		return risk;
 	}
+
+	@step
+	async getDetails() {
+		const token = await this.getToken();
+		const network = await this.getToken();
+		const risk = await this.getRisk();
+
+		return { token, network, risk };
+	}
 }

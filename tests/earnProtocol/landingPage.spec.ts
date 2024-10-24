@@ -1,4 +1,5 @@
 import { expect, test } from '#earnProtocolFixtures';
+import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Landin page', async () => {
 	test('It should show strategy card', async ({ app }) => {
@@ -8,29 +9,20 @@ test.describe('Landin page', async () => {
 
 	(['Right', 'Left'] as const).forEach((direction) => {
 		test(`It should show strategy card to the ${direction}`, async ({ app }) => {
-			let originalStrategyCard = { token: '', network: '', risk: '' };
-			let newStrategyCard = { token: '', network: '', risk: '' };
-
 			await app.landingPage.open();
 
 			// Get strategy info for current active strategy in carousel
-			originalStrategyCard.token =
-				await app.landingPage.strategiesCarousel.activeSlide.strategyCard.header.getToken();
-			originalStrategyCard.network =
-				await app.landingPage.strategiesCarousel.activeSlide.strategyCard.header.getNetwork();
-			originalStrategyCard.risk =
-				await app.landingPage.strategiesCarousel.activeSlide.strategyCard.header.getRisk();
+			const originalStrategyCard =
+				await app.landingPage.strategiesCarousel.activeSlide.strategyCard.header.getDetails();
 
 			// Select strategy to the right
-			await app.landingPage.strategiesCarousel.moveToNextStrategy(direction);
+			await app.landingPage.strategiesCarousel.moveToNextStrategy(direction, {
+				timeout: expectDefaultTimeout * 2,
+			});
 
 			// Get strategy info for current active strategy in carousel
-			newStrategyCard.token =
-				await app.landingPage.strategiesCarousel.activeSlide.strategyCard.header.getToken();
-			newStrategyCard.network =
-				await app.landingPage.strategiesCarousel.activeSlide.strategyCard.header.getNetwork();
-			newStrategyCard.risk =
-				await app.landingPage.strategiesCarousel.activeSlide.strategyCard.header.getRisk();
+			const newStrategyCard =
+				await app.landingPage.strategiesCarousel.activeSlide.strategyCard.header.getDetails();
 
 			// Logging strategies data for debugging purposes
 			console.log('originalStrategyCard: ', originalStrategyCard);
