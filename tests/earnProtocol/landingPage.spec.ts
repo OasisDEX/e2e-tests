@@ -35,4 +35,11 @@ test.describe('Landin page', async () => {
 			).not.toBeTruthy();
 		});
 	});
+
+	test('It should launch app', async ({ app }) => {
+		await app.landingPage.open();
+
+		await app.header.launchApp();
+		await app.earn.shouldBeVisible();
+	});
 });

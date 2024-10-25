@@ -27,4 +27,9 @@ export class Header {
 	async earn() {
 		await this.headerLocator.getByRole('link', { name: 'Earn' }).click();
 	}
+
+	@step
+	async launchApp() {
+		await this.headerLocator.getByRole('button', { name: 'Launch app' }).click();
+	}
 }
