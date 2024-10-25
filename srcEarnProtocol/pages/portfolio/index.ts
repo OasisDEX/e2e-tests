@@ -5,6 +5,7 @@ import { Overview } from './overview';
 import { Wallet } from './wallet';
 import { RebalanceActivity } from './rebalanceActivity';
 import { Rewards } from './rewards';
+import { YouMightLike } from './youMightLike';
 
 export class Portfolio {
 	readonly page: Page;
@@ -17,6 +18,8 @@ export class Portfolio {
 
 	readonly wallet: Wallet;
 
+	readonly youMightLike: YouMightLike;
+
 	readonly portfolioHeaderLocator: Locator;
 
 	constructor(page: Page) {
@@ -25,6 +28,7 @@ export class Portfolio {
 		this.rebalanceActivity = new RebalanceActivity(page);
 		this.rewards = new Rewards(page);
 		this.wallet = new Wallet(page);
+		this.youMightLike = new YouMightLike(page);
 		this.portfolioHeaderLocator = this.page.locator('[class*="PortfolioHeader_"]');
 	}
 
