@@ -4,7 +4,7 @@ import { IAccountGuardAbi, IAccountImplementationAbi } from './abis';
 import { expect } from '@playwright/test';
 import { SetBalanceTokens } from './testData';
 
-require('dotenv').config();
+import 'dotenv/config';
 
 const { TENDERLY_USER, TENDERLY_PROJECT, TENDERLY_ACCESS_KEY } = process.env;
 
@@ -54,7 +54,7 @@ export const getTxCount = async (forkId: string) => {
 	return txCount;
 };
 
-export const tokenAddresses = {
+export const tokenAddresses: any = {
 	mainnet: {
 		AJNA: '0x9a96ec9b57fb64fbc60b423d1f4da7691bd35079',
 		CBBTC: '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf',

@@ -1,13 +1,15 @@
 import { test, expect } from '@playwright/test';
-import * as metamask from '@synthetixio/synpress/commands/metamask';
+import { MetaMask } from '@synthetixio/synpress/playwright';
 import * as tenderly from './tenderly';
 import { expectDefaultTimeout } from './config';
 
 export const confirmAndVerifySuccess = async ({
+	metamask,
 	metamaskAction,
 	forkId,
 }: {
-	metamaskAction: 'confirmAddToken' | 'confirmPermissionToSpend';
+	metamask: MetaMask;
+	metamaskAction: 'confirmSignature' | 'confirmTransaction';
 	forkId: string;
 }) => {
 	const txCountBefore = await tenderly.getTxCount(forkId);
@@ -25,6 +27,6 @@ export const confirmAndVerifySuccess = async ({
 	await tenderly.verifyTxReceiptStatusSuccess(forkId);
 };
 
-export const rejectPermissionToSpend = async () => {
-	await metamask.rejectPermissionToSpend();
+export const rejectPermissionToSpend = async ({ metamask }: { metamask: MetaMask }) => {
+	await metamask.rejectTransaction();
 };

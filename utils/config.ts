@@ -1,4 +1,4 @@
-require('dotenv').config();
+// import 'dotenv/config';
 
 export const baseUrl = process.env.BASE_URL ?? 'https://staging.summer.fi';
 

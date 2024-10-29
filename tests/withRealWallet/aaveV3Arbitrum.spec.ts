@@ -1,44 +1,38 @@
-import { BrowserContext, expect, test } from '@playwright/test';
-import { resetState } from '@synthetixio/synpress/commands/synpress';
-import { metamaskSetUp, setup } from 'utils/setup';
+import { testWithSynpress } from '@synthetixio/synpress';
+import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
+import arbitrumRealWalletSetup from 'utils/synpress/wallet-setup/arbitrumRealWallet.setup';
+import { setup } from 'utils/setup';
 import { longTestTimeout } from 'utils/config';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
+import 'dotenv/config';
 
-let context: BrowserContext;
 let app: App;
 
-const walletPK: string = process.env.VERY_OLD_TEST_WALLET_PK;
-
-test.describe.configure({ mode: 'serial' });
+const test = testWithSynpress(metaMaskFixtures(arbitrumRealWalletSetup));
+const { expect } = test;
 
 test.describe('Aave v3 - Arbitrum - Wallet connected', async () => {
-	test.beforeAll(async () => {
+	test.beforeEach(async ({ page, metamask }) => {
 		test.setTimeout(longTestTimeout);
 
-		({ context } = await metamaskSetUp({ network: 'arbitrum' }));
-		let page = await context.newPage();
 		app = new App(page);
 
 		await setup({
+			metamask,
 			app,
 			network: 'arbitrum',
 			withoutFork: true,
-			withExistingWallet: {
-				privateKey: walletPK,
-			},
 		});
 	});
 
-	test.afterAll(async () => {
+	test.afterEach(async () => {
 		await app.page.close();
-
-		await context.close();
-
-		await resetState();
 	});
 
-	test('It should open an Aave v3 Multiply Arbitrum position - ETH/USDC @regression', async () => {
+	test('It should open an Aave v3 Multiply Arbitrum position - ETH/USDC @regression', async ({
+		metamask,
+	}) => {
 		test.setTimeout(longTestTimeout);
 
 		await app.page.goto('/arbitrum/aave/v3/multiply/eth-usdc#setup');
@@ -51,12 +45,14 @@ test.describe('Aave v3 - Arbitrum - Wallet connected', async () => {
 
 		await test.step('Reject Permission To Spend', async () => {
 			await expect(async () => {
-				await tx.rejectPermissionToSpend();
+				await tx.rejectPermissionToSpend({ metamask });
 			}).toPass();
 		});
 	});
 
-	test('It should open an Aave v3 Earn correlated Arbitrum position - WSTETH/ETH @regression', async () => {
+	test('It should open an Aave v3 Earn correlated Arbitrum position - WSTETH/ETH @regression', async ({
+		metamask,
+	}) => {
 		test.setTimeout(longTestTimeout);
 
 		await app.page.goto('/arbitrum/aave/v3/multiply/WSTETH-ETH#setup');
@@ -69,7 +65,7 @@ test.describe('Aave v3 - Arbitrum - Wallet connected', async () => {
 
 		await test.step('Reject Permission To Spend', async () => {
 			await expect(async () => {
-				await tx.rejectPermissionToSpend();
+				await tx.rejectPermissionToSpend({ metamask });
 			}).toPass();
 		});
 	});

@@ -6,6 +6,7 @@ import { SetBalanceTokens, Tokens } from 'utils/testData';
 import { Reason } from 'src/pages/position/swap';
 import { confirmAddToken } from './makerConfirmTx';
 import { createAndSetNewFork } from 'utils/setup';
+import { MetaMask } from '@synthetixio/synpress/playwright';
 
 type ActionData = { token: string; amount: string };
 type SwapProtocols = 'Aave V3' | 'Maker' | 'Morpho' | 'Spark';
@@ -15,6 +16,7 @@ type SwapProtocols = 'Aave V3' | 'Maker' | 'Morpho' | 'Spark';
  * @param adjustRisk should be between '0' and '1' both included | 0: far left in slider | 1: far right
  */
 export const openPositionNEW = async ({
+	metamask,
 	walletAddress,
 	network,
 	addTokenBalance,
@@ -24,6 +26,7 @@ export const openPositionNEW = async ({
 	adjustRisk,
 	protocol,
 }: {
+	metamask: MetaMask;
 	walletAddress: string;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 	addTokenBalance?: { token: SetBalanceTokens; balance: string };
@@ -36,6 +39,7 @@ export const openPositionNEW = async ({
 	let forkId: string;
 
 	forkId = await createAndSetNewFork({
+		metamask,
 		walletAddress,
 		network,
 		addTokenBalance,
@@ -88,7 +92,11 @@ export const openPositionNEW = async ({
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.createSmartDeFiAccount();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await tx.confirmAndVerifySuccess({
+				metamask,
+				forkId,
+				metamaskAction: 'confirmSignature',
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
@@ -103,7 +111,11 @@ export const openPositionNEW = async ({
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
 			await app.position.setup.approveAllowanceOrRetry();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await tx.confirmAndVerifySuccess({
+				metamask,
+				forkId,
+				metamaskAction: 'confirmSignature',
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
@@ -113,7 +125,7 @@ export const openPositionNEW = async ({
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
-		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
+		await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmSignature', forkId });
 	}).toPass({ timeout: longTestTimeout });
 
 	if (protocol) {
@@ -133,7 +145,7 @@ export const openPositionNEW = async ({
 		return { forkId };
 	} else {
 		await app.position.setup.goToPositionShouldBeVisible();
-		const positionId: string = await app.position.setup.getNewPositionId();
+		const positionId: string = (await app.position.setup.getNewPositionId()) as string;
 		//
 		await app.page.waitForTimeout(10_000);
 		//
@@ -159,6 +171,7 @@ export const openPositionNEW = async ({
  * @param adjustRisk should be between '0' and '1' both included | 0: far left in slider | 1: far right
  */
 export const openPosition = async ({
+	metamask,
 	app,
 	forkId,
 	deposit,
@@ -167,6 +180,7 @@ export const openPosition = async ({
 	protocol,
 	ajnaExistingDpm,
 }: {
+	metamask: MetaMask;
 	app: App;
 	forkId: string;
 	deposit: ActionData;
@@ -223,7 +237,11 @@ export const openPosition = async ({
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.createSmartDeFiAccount();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await tx.confirmAndVerifySuccess({
+				metamask,
+				forkId,
+				metamaskAction: 'confirmSignature',
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
@@ -238,7 +256,11 @@ export const openPosition = async ({
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
 			await app.position.setup.approveAllowanceOrRetry();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await tx.confirmAndVerifySuccess({
+				metamask,
+				forkId,
+				metamaskAction: 'confirmSignature',
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
@@ -248,7 +270,7 @@ export const openPosition = async ({
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
-		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
+		await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmSignature', forkId });
 	}).toPass({ timeout: longTestTimeout });
 
 	if (protocol) {
@@ -266,7 +288,7 @@ export const openPosition = async ({
 		}).toPass({ timeout: expectDefaultTimeout * 5 });
 	} else {
 		await app.position.setup.goToPositionShouldBeVisible();
-		const positionId: string = await app.position.setup.getNewPositionId();
+		const positionId: string = (await app.position.setup.getNewPositionId()) as string;
 		//
 		await app.page.waitForTimeout(10_000);
 		//
@@ -287,12 +309,14 @@ export const openPosition = async ({
 };
 
 export const openMakerPosition = async ({
+	metamask,
 	app,
 	deposit,
 	generate,
 	existingProxy,
 	adjustRisk,
 }: {
+	metamask: MetaMask;
 	app: App;
 	forkId: string;
 	deposit: ActionData;
@@ -308,7 +332,7 @@ export const openMakerPosition = async ({
 	if (!existingProxy) {
 		await app.position.setup.setupProxy();
 		await app.position.setup.createProxy();
-		await confirmAddToken({ app });
+		await confirmAddToken({ metamask, app });
 
 		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
 		await app.page.waitForTimeout(5_000);
@@ -325,8 +349,8 @@ export const openMakerPosition = async ({
 		await app.position.setup.setTokenAllowance(deposit.token);
 
 		await expect(async () => {
-			// await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
-			await confirmAddToken({ app });
+			// await tx.confirmAndVerifySuccess({ metamask, metamask,forkId, metamaskAction: 'confirmSignature' });
+			await confirmAddToken({ metamask, app });
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
@@ -345,8 +369,8 @@ export const openMakerPosition = async ({
 
 	await expect(async () => {
 		await app.position.setup.createOrRetry();
-		// await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmAddToken', forkId });
-		await confirmAddToken({ app });
+		// await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmSignature', forkId });
+		await confirmAddToken({ metamask, app });
 	}).toPass();
 
 	await app.position.setup.goToVault();
@@ -354,6 +378,7 @@ export const openMakerPosition = async ({
 };
 
 export const adjustRisk = async ({
+	metamask,
 	forkId,
 	app,
 	earnPosition,
@@ -361,6 +386,7 @@ export const adjustRisk = async ({
 	risk,
 	newSliderPosition,
 }: {
+	metamask: MetaMask;
 	forkId: string;
 	app: App;
 	earnPosition?: boolean;
@@ -381,7 +407,11 @@ export const adjustRisk = async ({
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
-		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+		await tx.confirmAndVerifySuccess({
+			metamask,
+			metamaskAction: 'confirmTransaction',
+			forkId,
+		});
 	}).toPass({ timeout: longTestTimeout });
 
 	// UI sometimes gets stuck after confirming position creation
@@ -392,7 +422,7 @@ export const adjustRisk = async ({
 	// Wait for Liq price to update
 	await expect(async () => {
 		const updatedLiqPrice: number = await app.position.manage.getLiquidationPrice();
-		let updatedLoanToValue: number;
+		let updatedLoanToValue: number = 0;
 		if (!earnPosition) {
 			updatedLoanToValue = await app.position.manage.getLoanToValue();
 		}
@@ -420,6 +450,7 @@ export const adjustRisk = async ({
 };
 
 export const close = async ({
+	metamask,
 	forkId,
 	app,
 	positionType,
@@ -429,6 +460,7 @@ export const close = async ({
 	tokenAmountAfterClosing,
 	openManagementOptionsDropdown,
 }: {
+	metamask: MetaMask;
 	forkId: string;
 	app: App;
 	positionType?: 'Multiply' | 'Borrow' | 'Earn (Liquidity Provision)' | 'Earn (Yield Loop)';
@@ -466,7 +498,11 @@ export const close = async ({
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
-		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+		await tx.confirmAndVerifySuccess({
+			metamask,
+			metamaskAction: 'confirmTransaction',
+			forkId,
+		});
 	}).toPass({ timeout: longTestTimeout });
 
 	// UI sometimes gets stuck after confirming position update
@@ -514,6 +550,7 @@ export const close = async ({
 };
 
 export const manageDebtOrCollateral = async ({
+	metamask,
 	app,
 	forkId,
 	protocol,
@@ -527,6 +564,7 @@ export const manageDebtOrCollateral = async ({
 	expectedCollateralExposure,
 	expectedDebt,
 }: {
+	metamask: MetaMask;
 	app: App;
 	forkId: string;
 	protocol?: 'Aave V2' | 'Aave V3' | 'Spark';
@@ -557,11 +595,15 @@ export const manageDebtOrCollateral = async ({
 		!allowanceNotNeeded &&
 		((deposit && deposit?.token !== 'ETH') || (payBack && payBack?.token !== 'ETH'))
 	) {
-		await app.position.setup.setTokenAllowance(deposit?.token ?? payBack?.token);
+		await app.position.setup.setTokenAllowance((deposit?.token as string) ?? payBack?.token);
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
 			await app.position.setup.approveAllowance();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await tx.confirmAndVerifySuccess({
+				metamask,
+				forkId,
+				metamaskAction: 'confirmSignature',
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
@@ -571,7 +613,11 @@ export const manageDebtOrCollateral = async ({
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
-		await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+		await tx.confirmAndVerifySuccess({
+			metamask,
+			metamaskAction: 'confirmTransaction',
+			forkId,
+		});
 	}).toPass({ timeout: longTestTimeout });
 
 	if (protocol) {
@@ -610,6 +656,7 @@ export const manageDebtOrCollateral = async ({
 };
 
 export const swapPosition = async ({
+	metamask,
 	app,
 	forkId,
 	originalProtocol,
@@ -621,6 +668,7 @@ export const swapPosition = async ({
 	upToStep5,
 	rejectSwap,
 }: {
+	metamask: MetaMask;
 	app: App;
 	forkId: string;
 	originalProtocol?: SwapProtocols;
@@ -652,7 +700,7 @@ export const swapPosition = async ({
 
 	await app.position.swap.productHub.filters.collateralTokens.select(targetPool.colToken);
 
-	let trimmedDebtToken: Tokens;
+	let trimmedDebtToken: Tokens = 'ETH';
 	if (targetPool.debtToken.includes('-')) {
 		trimmedDebtToken = targetPool.debtToken.includes('ETH') ? 'ETH' : 'DAI';
 	}
@@ -668,7 +716,11 @@ export const swapPosition = async ({
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.createSmartDeFiAccount();
-			await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
+			await tx.confirmAndVerifySuccess({
+				metamask,
+				forkId,
+				metamaskAction: 'confirmSignature',
+			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
@@ -677,7 +729,11 @@ export const swapPosition = async ({
 		await app.position.swap.confirm();
 		await test.step('Confirm automation setup', async () => {
 			await expect(async () => {
-				await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+				await tx.confirmAndVerifySuccess({
+					metamask,
+					metamaskAction: 'confirmTransaction',
+					forkId,
+				});
 				await app.position.setup.continueShouldBeVisible();
 			}).toPass();
 		});
@@ -692,13 +748,17 @@ export const swapPosition = async ({
 		if (rejectSwap) {
 			await test.step('Reject Permission To Spend', async () => {
 				await expect(async () => {
-					await tx.rejectPermissionToSpend();
+					await tx.rejectPermissionToSpend({ metamask });
 				}).toPass();
 			});
 		} else {
 			await test.step('Confirm automation setup', async () => {
 				await expect(async () => {
-					await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+					await tx.confirmAndVerifySuccess({
+						metamask,
+						metamaskAction: 'confirmTransaction',
+						forkId,
+					});
 					await app.position.setup.goToPositionShouldBeVisible();
 				}).toPass();
 			});
@@ -710,15 +770,15 @@ export const swapPosition = async ({
 				await app.position.manage.shouldBeVisible(`Manage your ${targetProtocol}`);
 				await app.position.overview.shouldHaveExposure(verifyPositions.targetPosition.exposure);
 
-				let trimmedDebtToken: Tokens;
-				if (verifyPositions.targetPosition.debt.token.includes('-')) {
+				let trimmedDebtToken: Tokens = 'ETH';
+				if (verifyPositions.targetPosition.debt?.token.includes('-')) {
 					trimmedDebtToken = verifyPositions.targetPosition.debt.token.includes('ETH')
 						? 'ETH'
 						: 'DAI';
 				}
 
 				await app.position.overview.shouldHaveDebt(
-					verifyPositions.targetPosition.debt.token.includes('-')
+					verifyPositions.targetPosition.debt?.token.includes('-')
 						? { ...verifyPositions.targetPosition.debt, token: trimmedDebtToken }
 						: verifyPositions.targetPosition.debt
 				);
@@ -753,7 +813,7 @@ export const swapPosition = async ({
 					});
 					await app.position.overview.shouldHaveAvailableToGenerate({
 						amount: '0.0000',
-						token: verifyPositions.originalPosition.debtToken,
+						token: verifyPositions.originalPosition.debtToken as Tokens,
 					});
 				}
 			}

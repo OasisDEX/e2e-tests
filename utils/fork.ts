@@ -1,6 +1,6 @@
-import * as metamask from '@synthetixio/synpress/commands/metamask';
 import * as customMetamask from 'utils/customMetamask';
 import { App } from 'src/app';
+import { MetaMask } from '@synthetixio/synpress/playwright';
 
 const networks = {
 	mainnet: { locator: '5', placeholder: '1' },
@@ -10,10 +10,12 @@ const networks = {
 };
 
 export const addToApp = async ({
+	metamask,
 	app,
 	forkId,
 	network,
 }: {
+	metamask: MetaMask;
 	app: App;
 	forkId: string;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
@@ -30,10 +32,10 @@ export const addToApp = async ({
 	await app.page.getByRole('button', { name: 'save' }).click();
 
 	// Accepting network switch in Metamamask wallet
-	await metamask.allowToAddNetwork();
+	await metamask.approveSwitchNetwork();
 
 	if (network === 'mainnet') {
 		await customMetamask.allowToAddRPC();
 	}
-	await metamask.allowToSwitchNetwork();
+	await metamask.approveNewNetwork();
 };

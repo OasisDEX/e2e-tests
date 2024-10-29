@@ -1,85 +1,32 @@
-import * as metamask from '@synthetixio/synpress/commands/metamask';
+import { Expect } from '@playwright/test';
 import * as wallet from '#walletUtils';
 import * as termsAndconditions from '#termsAndConditions';
 import * as tenderly from 'utils/tenderly';
 import * as localStorage from 'utils/localStorage';
 import * as fork from 'utils/fork';
 import { App } from 'src/app';
-
-import { test, chromium } from '@playwright/test';
-import { initialSetup } from '@synthetixio/synpress/commands/metamask';
-import { prepareMetamask } from '@synthetixio/synpress/helpers';
-import { setExpectInstance } from '@synthetixio/synpress/commands/playwright';
 import { SetBalanceTokens } from './testData';
-
-export const metamaskSetUp = async ({
-	network,
-}: {
-	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
-}) => {
-	// required for synpress as it shares same expect instance as playwright
-	await setExpectInstance(expect);
-
-	// download metamask
-	const metamaskPath = await prepareMetamask(process.env.METAMASK_VERSION || '10.25.0');
-
-	// prepare browser args
-	const browserArgs = [
-		`--disable-extensions-except=${metamaskPath}`,
-		`--load-extension=${metamaskPath}`,
-		'--remote-debugging-port=9222',
-	];
-
-	if (process.env.CI) {
-		browserArgs.push('--disable-gpu');
-	}
-
-	if (process.env.HEADLESS_MODE) {
-		browserArgs.push('--headless=new');
-	}
-
-	// launch browser
-	const context = await chromium.launchPersistentContext('', {
-		headless: false,
-		args: browserArgs,
-	});
-
-	// wait for metamask
-	await context.pages()[0].waitForTimeout(3000);
-
-	// setup metamask
-	await initialSetup(chromium, {
-		secretWordsOrPrivateKey: 'test test test test test test test test test test test junk',
-		network,
-		password: 'Tester@1234',
-		enableAdvancedSettings: true,
-		enableExperimentalSettings: false,
-	});
-
-	return { context };
-};
-
-export const expect = test.expect;
+import { MetaMask } from '@synthetixio/synpress/playwright';
 
 /**
  * @param extraFeaturesFlags should be a string, for example, 'flag1:true flag2:false'
  */
 export const setup = async ({
+	metamask,
 	app,
-	network,
+	network = 'mainnet',
 	extraFeaturesFlags,
 	automationMinNetValueFlags,
 	withoutFork,
-	withExistingWallet,
 }: {
+	metamask: MetaMask;
 	app: App;
-	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
+	network?: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 	extraFeaturesFlags?: string;
 	automationMinNetValueFlags?: string;
 	withoutFork?: boolean;
-	withExistingWallet?: { privateKey: string };
 }) => {
-	let forkId: string;
+	let forkId: string = '';
 
 	await app.page.goto('');
 	await app.homepage.shouldBeVisible();
@@ -106,31 +53,23 @@ export const setup = async ({
 		automationMinNetValueFlags: setupAutomationMinNetValueFlags,
 	});
 
-	if (withExistingWallet) {
-		await metamask.importAccount(withExistingWallet?.privateKey);
-	}
+	await wallet.connect({ metamask, app });
+	await termsAndconditions.accept({ metamask, app });
 
-	const walletAddress = await metamask.getWalletAddress();
-	// Logging walletAddress for debugging purposes
-	//  - Info displayed in 'Attachments > stdout' section of playwright reports
-	console.log(' Wallet Address: ', walletAddress);
-
-	await wallet.connect(app);
-	await termsAndconditions.accept(app);
-
-	// // Log wallet in database as having accepted ToS
-	// const response = await app.page.request.post('/api/tos', {
-	// 	data: {
-	// 		docVersion: 'version-27.08.2024',
-	// 		walletAddress,
-	// 	},
-	// });
+	// Log wallet in database as having accepted ToS
+	const walletAddress = await metamask.getAccountAddress();
+	await app.page.request.post('/api/tos', {
+		data: {
+			docVersion: 'version-27.08.2024',
+			walletAddress,
+		},
+	});
 
 	if (!withoutFork) {
 		const resp = await tenderly.createFork({ network });
 		forkId = resp.data.root_transaction.fork_id;
 
-		await fork.addToApp({ app, forkId, network });
+		await fork.addToApp({ metamask, app, forkId, network });
 
 		await tenderly.setTokenBalance({
 			forkId,
@@ -149,13 +88,17 @@ export const setup = async ({
 };
 
 export const setupNewFork = async ({
+	metamask,
+	expect,
 	app,
 	network,
 }: {
+	metamask: MetaMask;
+	expect: Expect;
 	app: App;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 }) => {
-	const walletAddress = await metamask.walletAddress();
+	const walletAddress = await metamask.getAccountAddress();
 	await app.page.evaluate(() => window.localStorage.removeItem('ForkNetwork'));
 
 	await app.page.goto('');
@@ -169,7 +112,7 @@ export const setupNewFork = async ({
 		await app.header.portfolioShouldBeVisible();
 	}).toPass();
 
-	await fork.addToApp({ app, forkId, network });
+	await fork.addToApp({ metamask, app, forkId, network });
 
 	await tenderly.setTokenBalance({ forkId, walletAddress, network, token: 'ETH', balance: '100' });
 
@@ -188,11 +131,13 @@ export const createNewFork = async ({
 };
 
 export const createAndSetNewFork = async ({
+	metamask,
 	walletAddress,
 	network,
 	addTokenBalance,
 	app,
 }: {
+	metamask: MetaMask;
 	walletAddress: string;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 	addTokenBalance?: { token: SetBalanceTokens; balance: string };
