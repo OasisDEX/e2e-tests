@@ -84,6 +84,7 @@
 		"//-2a": "---------------------------------------------------------------",
 		"//-2b": "---------------------- CI REGRESSION TESTS -----------------------",
 		"//-2c": "---------------------------------------------------------------",
+		"ci:synpress-build-cache": "xvfb-run yarn synpress-build-cache",
 		"ci:no-wallet:regression": "WORKERS='2' FULLY_PARALLEL='true' RETRIES='2' yarn no-wallet:regression",
 		"ci:with-real-wallet": "xvfb-run yarn with-real-wallet",
 		"ci:with-wallet:aave:ethereum:regression": "xvfb-run yarn with-wallet:aave:ethereum:regression",
