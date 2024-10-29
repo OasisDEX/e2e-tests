@@ -1,6 +1,6 @@
-require('dotenv').config();
 import { devices, type PlaywrightTestConfig, type ReporterDescription } from '@playwright/test';
 import { baseUrl, earnProtocolBaseUrl } from 'utils/config';
+import 'dotenv/config';
 
 // Config to hold extra property
 interface TestConfig extends PlaywrightTestConfig {
@@ -21,7 +21,10 @@ const defaultConfig: PlaywrightTestConfig = {
 
 	use: {
 		baseURL: baseUrl,
-		headless: process.env.HEADLESS === 'false' ? false : true,
+		/* 'headless' setting coming from synpress 
+			--> Add 'HEADLESS=<any value> to.env file for headless mode
+		*/
+		// headless: process.env.HEADLESS === 'false' ? false : true,
 		// trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 		video: 'retain-on-failure',
@@ -36,6 +39,14 @@ const defaultConfig: PlaywrightTestConfig = {
 
 	/* Configure projects for major browsers */
 	projects: [
+		{
+			name: 'synpress-v4',
+			testMatch: ['synpressV4/**'],
+			use: {
+				...devices['Desktop Chrome'],
+			},
+		},
+
 		{
 			name: 'earn-protocol',
 			testMatch: ['earnProtocol/**'],

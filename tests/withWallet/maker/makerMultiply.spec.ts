@@ -38,6 +38,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 			app = new App(page);
 
 			({ forkId } = await setup({
+				metamask,
 				app,
 				network: 'mainnet',
 				extraFeaturesFlags: 'MakerTenderly:true',
@@ -54,8 +55,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 		await expect(async () => {
 			await app.position.setup.createOrRetry();
-			// await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
-			await confirmAddToken({ app });
+			await confirmAddToken({ metamask, app });
 		}).toPass();
 
 		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
@@ -71,8 +71,7 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 		await expect(async () => {
 			await app.position.setup.createOrRetry();
-			// await tx.confirmAndVerifySuccess({ forkId, metamaskAction: 'confirmAddToken' });
-			await confirmAddToken({ app });
+			await confirmAddToken({ metamask, app });
 			await app.position.setup.goToVaultShouldBeVisible();
 		}).toPass();
 

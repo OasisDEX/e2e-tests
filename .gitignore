@@ -2,4 +2,6 @@ node_modules/
 /test-results/
 /playwright-reports/
 /playwright/.cache/
+/blob-report/
 .env
+.cache-synpress

@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
+import { MetaMask } from '@synthetixio/synpress/playwright';
 
 type Protocols = 'aave3' | 'spark' | 'morphoblue';
 
@@ -71,7 +72,7 @@ let matchObject = ({
 				executionLTV: expect.any(String),
 			}),
 			...(['dma-stop-loss', 'dma-trailing-stop-loss'].includes(automation) && {
-				token: tokenAddresses[triggerToken],
+				token: tokenAddresses[triggerToken as Tokens],
 			}),
 			...(automation === 'dma-trailing-stop-loss' && {
 				trailingDistance: expect.any(String),
@@ -84,11 +85,14 @@ let matchObject = ({
 					action !== 'remove' ? true : false,
 			}),
 			...(automation === 'dma-partial-take-profit' && {
-				withdrawToken: tokenAddresses[triggerToken],
+				withdrawToken: tokenAddresses[triggerToken as Tokens],
 				withdrawStep: expect.any(String),
 				executionPrice: '0',
 				stopLoss: {
-					triggerData: { executionLTV: expect.any(String), token: tokenAddresses[triggerToken] },
+					triggerData: {
+						executionLTV: expect.any(String),
+						token: tokenAddresses[triggerToken as Tokens],
+					},
 					action: 'add',
 				},
 			}),
@@ -158,11 +162,13 @@ const verifyTriggerApiRequestPayload = async ({
 };
 
 export const testRegularStopLoss = async ({
+	metamask,
 	app,
 	forkId,
 	verifyTriggerPayload,
 	action,
 }: {
+	metamask: MetaMask;
 	app: App;
 	forkId: string;
 	verifyTriggerPayload?: {
@@ -199,17 +205,19 @@ export const testRegularStopLoss = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Stop-Loss', action });
 		}).toPass();
 	});
 };
 
 export const testTrailingStopLoss = async ({
+	metamask,
 	app,
 	forkId,
 	verifyTriggerPayload,
 }: {
+	metamask: MetaMask;
 	app: App;
 	forkId: string;
 	verifyTriggerPayload?: {
@@ -241,13 +249,14 @@ export const testTrailingStopLoss = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Stop-Loss' });
 		}).toPass({ timeout: longTestTimeout });
 	});
 };
 
 export const testAutoSell = async ({
+	metamask,
 	app,
 	forkId,
 	protocol,
@@ -255,6 +264,7 @@ export const testAutoSell = async ({
 	verifyTriggerPayload,
 	action,
 }: {
+	metamask: MetaMask;
 	app: App;
 	forkId: string;
 	protocol?: 'Morpho Blue';
@@ -307,13 +317,14 @@ export const testAutoSell = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto-Sell', action });
 		}).toPass({ timeout: longTestTimeout });
 	});
 };
 
 export const testAutoBuy = async ({
+	metamask,
 	app,
 	forkId,
 	protocol,
@@ -322,6 +333,7 @@ export const testAutoBuy = async ({
 	verifyTriggerPayload,
 	action,
 }: {
+	metamask: MetaMask;
 	app: App;
 	forkId: string;
 	protocol?: 'Morpho Blue';
@@ -375,17 +387,19 @@ export const testAutoBuy = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto-Buy', action });
 		}).toPass({ timeout: longTestTimeout });
 	});
 };
 
 export const testPartialTakeProfit = async ({
+	metamask,
 	app,
 	forkId,
 	verifyTriggerPayload,
 }: {
+	metamask: MetaMask;
 	app: App;
 	forkId: string;
 	verifyTriggerPayload?: {
@@ -425,7 +439,7 @@ export const testPartialTakeProfit = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamaskAction: 'confirmPermissionToSpend', forkId });
+			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto Take Profit' });
 		}).toPass({ timeout: longTestTimeout });
 	});

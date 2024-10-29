@@ -1,8 +1,5 @@
-import { expect, Page } from '@playwright/test';
-import { baseUrl, positionTimeout } from 'utils/config';
+import { Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
-
-require('dotenv').config();
 
 export class Dsr {
 	readonly page: Page;

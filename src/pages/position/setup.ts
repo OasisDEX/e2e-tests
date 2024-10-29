@@ -6,8 +6,6 @@ import { baseUrl, expectDefaultTimeout, positionTimeout } from 'utils/config';
 import { Dsr } from './dsr';
 import { VaultChanges } from './vaultChanges';
 
-require('dotenv').config();
-
 export class Setup {
 	readonly page: Page;
 
@@ -318,7 +316,7 @@ export class Setup {
 		feature: 'Auto Take Profit' | 'Auto-Buy' | 'Auto-Sell' | 'Stop-Loss';
 		action?: 'update' | 'remove';
 	}) {
-		if (args.action === 'remove') {
+		if (args?.action === 'remove') {
 			await expect(
 				this.page.getByText('has been successfully cancelled'),
 				'Success message should be visible'
@@ -604,7 +602,7 @@ export class Setup {
 
 	@step
 	async getTokenSwapRate() {
-		let rate: string;
+		let rate: string = '';
 		await expect(async () => {
 			rate = await this.page.locator('p:has-text("Price (impact)") + div').innerText();
 			expect(rate).toContain('.');
