@@ -1,6 +1,5 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { App } from 'src/app';
-import { expect } from './setup';
 import { expectDefaultTimeout } from './config';
 
 export const shortenAddress = (address: string) =>
