@@ -1,6 +1,6 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
-import arbitrumRealWalletSetup from 'utils/synpress/wallet-setup/arbitrumRealWallet.setup';
+import arbitrumSetup from 'utils/synpress/test-wallet-setup/arbitrum.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
@@ -10,7 +10,7 @@ import { adjustRisk, openPosition } from 'tests/sharedTestSteps/positionManageme
 let app: App;
 let forkId: string;
 
-const test = testWithSynpress(metaMaskFixtures(arbitrumRealWalletSetup));
+const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
 
 test.describe.configure({ mode: 'serial' });
 

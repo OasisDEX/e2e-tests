@@ -1,6 +1,6 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
-import baseRealWalletSetup from 'utils/synpress/wallet-setup/baseRealWallet.setup';
+import baseRealWalletSetup from 'utils/synpress/real-wallet-setup/baseRealWallet.setup';
 import { setup } from 'utils/setup';
 import { longTestTimeout } from 'utils/config';
 import * as tx from 'utils/tx';

@@ -36,7 +36,7 @@ jobs:
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
           VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache
+          yarn ci:synpress-build-cache:real-wallet
       - name: Run 'With real wallet' tests
         run: |
           BASE_URL=${{ inputs.base_url }} \
