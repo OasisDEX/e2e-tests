@@ -1,9 +1,8 @@
 import { BrowserContext, test } from '@playwright/test';
-import { resetState } from '@synthetixio/synpress/commands/synpress';
 import * as tenderly from 'utils/tenderly';
 import { App } from 'src/app';
 import { extremelyLongTestTimeout } from 'utils/config';
-import { metamaskSetUp, setup } from 'utils/setup';
+import { setup } from 'utils/setup';
 import { SetBalanceTokens, depositAmount } from 'utils/testData';
 import { openPosition } from './positionManagement';
 
@@ -30,8 +29,6 @@ export const openNewPosition = async ({
 			await app.page.close();
 
 			await context.close();
-
-			await resetState();
 		});
 
 		test(`It should open a position - ${positionType.toUpperCase()} - ${pool}`, async () => {

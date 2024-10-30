@@ -30,7 +30,7 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 		await tenderly.deleteFork(forkId);
 	});
 
-	test('It should open an Aave v2 Earn position @regression', async () => {
+	test('It should open an Aave v2 Earn position @regression', async ({ metamask }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11772',
@@ -38,15 +38,17 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v2/earn/stETH-eth#simulate');
+		await app.page.goto('/ethereum/aave/v2/multiply/stETH-eth#simulate');
 
 		//
 		await app.pause();
 		//
-		// await openPosition({
-		// 	app,
-		// 	forkId,
-		// 	deposit: { token: 'ETH', amount: '10.09' },
-		// });
+
+		await openPosition({
+			metamask,
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '10.09' },
+		});
 	});
 });

@@ -1,8 +1,7 @@
 import { BrowserContext, expect, request, test } from '@playwright/test';
-import { resetState } from '@synthetixio/synpress/commands/synpress';
 import { App } from 'src/app';
 import { longTestTimeout } from 'utils/config';
-import { metamaskSetUp, setup } from 'utils/setup';
+import { setup } from 'utils/setup';
 import { tokenAddresses } from 'utils/tenderly';
 import { depositAmount, tokenDecimals } from 'utils/testData';
 
@@ -25,8 +24,6 @@ export const compareTokenSwapRate = async ({
 			await app.page.close();
 
 			await context.close();
-
-			await resetState();
 		});
 
 		test(`It should use Swap rate very similar to 1inch's - Opening position - ${positionType.toUpperCase()} - ${pool}`, async () => {
