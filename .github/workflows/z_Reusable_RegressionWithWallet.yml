@@ -46,6 +46,11 @@ jobs:
         run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          BASE_URL=${{ inputs.base_url }} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
+          yarn ci:synpress-build-cache
       - name: Run With wallet ${{ inputs.protocol }}-${{ inputs.network }} tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
