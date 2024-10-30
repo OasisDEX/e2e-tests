@@ -1,4 +1,4 @@
-FROM  mcr.microsoft.com/playwright:v1.37.1-jammy
+FROM  mcr.microsoft.com/playwright:v1.48.2-jammy
 
 # Sets argument as environmental variable
 ENV BASE_URL=https://staging.summer.fi/
