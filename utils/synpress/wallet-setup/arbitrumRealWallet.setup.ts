@@ -1,6 +1,6 @@
 import { defineWalletSetup } from '@synthetixio/synpress';
-import 'dotenv/config';
 import { addNetwork, commonMetamaskSetup, PASSWORD } from './common';
+import 'dotenv/config';
 
 const walletPK = process.env.VERY_OLD_TEST_WALLET_PK as string;
 

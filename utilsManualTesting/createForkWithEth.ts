@@ -1,11 +1,12 @@
 import * as tenderly from '../utils/tenderly';
+import 'dotenv/config';
 
 type Networks = 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 
 const { NETWORK, WALLET_ADDRESS } = process.env;
 const network = NETWORK as Networks;
 
-let walletAddress: string = WALLET_ADDRESS;
+let walletAddress: string = WALLET_ADDRESS as string;
 
 (async () => {
 	const resp = await tenderly.createFork({ network });

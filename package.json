@@ -15,6 +15,7 @@
 		"axios": "^1.6.0",
 		"dotenv": "^16.4.5",
 		"ethers": "^6.7.1",
+		"tsx": "^4.19.2",
 		"typescript": "^5.6.3"
 	},
 	"scripts": {
@@ -171,9 +172,9 @@
 		"//-10a": "---------------------------------------------------------------",
 		"//-10b": "---------------------- MANUAL TESTING UTILS --------------------------------",
 		"//-10c": "---------------------------------------------------------------",
-		"create-fork": "npx ts-node utilsManualTesting/createFork.ts",
-		"create-fork-github": "npx ts-node utilsManualTesting/createForkGithub.ts",
-		"create-fork-with-eth": "npx ts-node utilsManualTesting/createForkWithEth.ts",
-		"add-balance": "npx ts-node utilsManualTesting/addBalanceToWallet.ts"
+		"create-fork": "tsx utilsManualTesting/createFork.ts",
+		"create-fork-github": "tsx utilsManualTesting/createForkGithub.ts",
+		"create-fork-with-eth": "tsx utilsManualTesting/createForkWithEth.ts",
+		"add-balance": "tsx utilsManualTesting/addBalanceToWallet.ts"
 	}
 }

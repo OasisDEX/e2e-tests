@@ -7,6 +7,7 @@ import * as fork from 'utils/fork';
 import { App } from 'src/app';
 import { SetBalanceTokens } from './testData';
 import { MetaMask } from '@synthetixio/synpress/playwright';
+import 'dotenv/config';
 
 /**
  * @param extraFeaturesFlags should be a string, for example, 'flag1:true flag2:false'
@@ -68,8 +69,19 @@ export const setup = async ({
 	if (!withoutFork) {
 		const resp = await tenderly.createFork({ network });
 		forkId = resp.data.root_transaction.fork_id;
+		const forkRpcUrl = `https://rpc.tenderly.co/fork/${forkId}`;
+		//
+		console.log('forkRpcUrl: ', forkRpcUrl);
+		//
 
-		await fork.addToApp({ metamask, app, forkId, network });
+		// const forkParameters = {
+		// 	name: 'TestFork',
+		// 	rpcUrl: forkRpcUrl,
+		// 	chainId: 1,
+		// 	symbol: 'ETH',
+		// };
+		// await metamask.addNetwork(forkParameters);
+		// await metamask.switchNetwork('TestFork', true);
 
 		await tenderly.setTokenBalance({
 			forkId,
@@ -78,6 +90,16 @@ export const setup = async ({
 			token: 'ETH',
 			balance: '1000',
 		});
+
+		await fork.addToApp({ metamask, app, forkId, network });
+
+		// await tenderly.setTokenBalance({
+		// 	forkId,
+		// 	walletAddress,
+		// 	network,
+		// 	token: 'ETH',
+		// 	balance: '1000',
+		// });
 
 		// Logging forkId for debugging purposes
 		//  - Info displayed in 'Attachments > stdout' section of playwright reports

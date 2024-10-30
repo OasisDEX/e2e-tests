@@ -1,4 +1,3 @@
-import * as customMetamask from 'utils/customMetamask';
 import { App } from 'src/app';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 
@@ -31,11 +30,15 @@ export const addToApp = async ({
 		.fill(networks[network].placeholder);
 	await app.page.getByRole('button', { name: 'save' }).click();
 
+	// //
+	// await app.pause();
+	// //
+
 	// Accepting network switch in Metamamask wallet
 	await metamask.approveSwitchNetwork();
 
-	if (network === 'mainnet') {
-		await customMetamask.allowToAddRPC();
-	}
+	// if (network === 'mainnet') {
+	// 	await customMetamask.allowToAddRPC();
+	// }
 	await metamask.approveNewNetwork();
 };
