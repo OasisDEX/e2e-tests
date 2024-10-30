@@ -19,7 +19,8 @@
 		"typescript": "^5.6.3"
 	},
 	"scripts": {
-		"synpress-build-cache": "yarn synpress ./utils/synpress/wallet-setup",
+		"synpress-build-cache:real-wallet": "yarn synpress ./utils/synpress/real-wallet-setup",
+		"synpress-build-cache:test-wallet": "yarn synpress ./utils/synpress/test-wallet-setup",
 		"synpress-v4": "REPORT_FOLDER=synpress-v4 npx playwright test --project=synpress-v4",
 		"earn-protocol": "REPORT_FOLDER=earn-protocol npx playwright test --project=earn-protocol",
 		"api-tests": "REPORT_FOLDER=api-tests npx playwright test --project=api-tests",
@@ -85,7 +86,8 @@
 		"//-2a": "---------------------------------------------------------------",
 		"//-2b": "---------------------- CI REGRESSION TESTS -----------------------",
 		"//-2c": "---------------------------------------------------------------",
-		"ci:synpress-build-cache": "xvfb-run yarn synpress-build-cache",
+		"ci:synpress-build-cache:real-wallet": "xvfb-run yarn synpress-build-cache:real-wallet",
+		"ci:synpress-build-cache:test-wallet": "xvfb-run yarn synpress-build-cache:test-wallet",
 		"ci:no-wallet:regression": "WORKERS='2' FULLY_PARALLEL='true' RETRIES='2' yarn no-wallet:regression",
 		"ci:with-real-wallet": "xvfb-run yarn with-real-wallet",
 		"ci:with-wallet:aave:ethereum:regression": "xvfb-run yarn with-wallet:aave:ethereum:regression",

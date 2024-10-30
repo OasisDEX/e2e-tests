@@ -50,7 +50,7 @@ jobs:
         run: |
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
-          yarn ci:synpress-build-cache
+          yarn ci:synpress-build-cache:test-wallet
       - name: Run With wallet ${{ inputs.protocol }}-${{ inputs.network }} tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \

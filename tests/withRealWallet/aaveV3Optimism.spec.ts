@@ -1,6 +1,6 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
-import optimismRealWalletSetup from 'utils/synpress/wallet-setup/optimismRealWallet.setup';
+import optimismRealWalletSetup from 'utils/synpress/real-wallet-setup/optimismRealWallet.setup';
 import { setup } from 'utils/setup';
 import { longTestTimeout } from 'utils/config';
 import * as tx from 'utils/tx';
