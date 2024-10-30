@@ -267,6 +267,11 @@ export const openPosition = async ({
 		await app.position.setup.continue();
 	}
 
+	// =================
+	// Recently added for Arbitrum Borrow ETH/USDC
+	await app.position.setup.confirm();
+	// =================
+
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
@@ -602,13 +607,19 @@ export const manageDebtOrCollateral = async ({
 			await tx.confirmAndVerifySuccess({
 				metamask,
 				forkId,
-				metamaskAction: 'confirmSignature',
+				// metamaskAction: 'confirmSignature',
+				metamaskAction: 'approveTokenPermission',
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
 		await app.position.setup.continue();
 	}
+
+	// =================
+	// Recently added for Arbitrum Borrow ETH/USDC
+	await app.position.setup.confirm();
+	// =================
 
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
