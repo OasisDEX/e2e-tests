@@ -13,8 +13,6 @@ let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
 
-test.describe.configure({ mode: 'serial' });
-
 test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
@@ -43,11 +41,6 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 	test('It should set Auto-Buy, Auto-Sell & Regular Stop-Loss on an Aave v3 Arbitrum Multiply position @regression', async ({
 		metamask,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12068',
-		});
-
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.position.openPage('/arbitrum/aave/v3/multiply/eth-dai/1#overview');
