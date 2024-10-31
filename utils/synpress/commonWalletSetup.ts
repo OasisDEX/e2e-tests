@@ -1,4 +1,4 @@
-import { MetaMask } from '@synthetixio/synpress/playwright';
+import { getExtensionId, MetaMask } from '@synthetixio/synpress/playwright';
 import { BrowserContext, Page } from '@playwright/test';
 
 const SEED_PHRASE = 'test test test test test test test test test test test junk';
@@ -32,7 +32,8 @@ export const commonMetamaskSetup = async ({
 	context: BrowserContext;
 	walletPage: Page;
 }) => {
-	const metamask = new MetaMask(context, walletPage, PASSWORD);
+	const extensionId = await getExtensionId(context, 'MetaMask');
+	const metamask = new MetaMask(context, walletPage, PASSWORD, extensionId);
 
 	await metamask.importWallet(SEED_PHRASE);
 

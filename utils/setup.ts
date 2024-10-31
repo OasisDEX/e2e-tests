@@ -93,14 +93,6 @@ export const setup = async ({
 
 		await fork.addToApp({ metamask, app, forkId, network });
 
-		// await tenderly.setTokenBalance({
-		// 	forkId,
-		// 	walletAddress,
-		// 	network,
-		// 	token: 'ETH',
-		// 	balance: '1000',
-		// });
-
 		// Logging forkId for debugging purposes
 		//  - Info displayed in 'Attachments > stdout' section of playwright reports
 		console.log(' Fork Id: ', forkId);

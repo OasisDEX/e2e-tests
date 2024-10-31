@@ -1,5 +1,6 @@
-import { App } from 'src/app';
 import { MetaMask } from '@synthetixio/synpress/playwright';
+import * as customMetamask from 'utils/customMetamask';
+import { App } from 'src/app';
 
 const networks = {
 	mainnet: { locator: '5', placeholder: '1' },
@@ -30,15 +31,12 @@ export const addToApp = async ({
 		.fill(networks[network].placeholder);
 	await app.page.getByRole('button', { name: 'save' }).click();
 
-	// //
-	// await app.pause();
-	// //
-
 	// Accepting network switch in Metamamask wallet
 	await metamask.approveSwitchNetwork();
 
-	// if (network === 'mainnet') {
-	// 	await customMetamask.allowToAddRPC();
-	// }
+	if (network === 'mainnet') {
+		await customMetamask.approveRPC(metamask.extensionId as string, metamask.context);
+	}
+
 	await metamask.approveNewNetwork();
 };

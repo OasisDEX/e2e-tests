@@ -50,6 +50,9 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 		});
 
 		await test.step('It should Deposit and Borrow in a single tx', async () => {
+			// Pause to avoid random fails
+			await app.page.waitForTimeout(2_000);
+
 			await manageDebtOrCollateral({
 				metamask,
 				app,
@@ -67,6 +70,9 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 
 		await test.step('It should Withdraw and Pay back in a single tx', async () => {
 			await app.position.manage.withdrawCollateral();
+
+			// Pause to avoid random fails
+			await app.page.waitForTimeout(2_000);
 
 			await manageDebtOrCollateral({
 				metamask,
