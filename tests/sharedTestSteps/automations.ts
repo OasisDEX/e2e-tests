@@ -243,6 +243,9 @@ export const testTrailingStopLoss = async ({
 		await app.position.protection.adjustTrailingStopLossTrigger({ value: 0.8 });
 	}
 
+	// Pause needed to avoid random fails
+	await app.page.waitForTimeout(5_000);
+
 	await app.position.setup.confirm();
 
 	// Automation setup randomly fails - Retry until it's set.
