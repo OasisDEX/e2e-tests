@@ -12,9 +12,7 @@ let forkId: string;
 
 const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
 
-test.describe.configure({ mode: 'serial' });
-
-test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
+test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
@@ -30,14 +28,9 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 	test('It should open and manage an Aave V3 Multiply Arbitrum ETH/USDC position @regression', async ({
 		metamask,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12068',
-		});
-
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/arbitrum/aave/v3/multiply/eth-usdc');
+		await app.page.goto('/arbitrum/aave/v3/multiply/ETH-USDC#setup');
 
 		await test.step('It should Open a position', async () => {
 			await openPosition({

@@ -15,7 +15,7 @@ const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
+test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
