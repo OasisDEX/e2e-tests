@@ -48,6 +48,9 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		await app.page.goto('/arbitrum/aave/v3/multiply/wsteth-dai');
 
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(2_000);
+
 		await test.step('It should Open a position', async () => {
 			await openPosition({
 				metamask,
