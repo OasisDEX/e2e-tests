@@ -33,7 +33,7 @@
 		"with-wallet:rays-and-token-swap-rate": "REPORT_FOLDER=with-wallet-rays-and-token-swap-rate npx playwright test --project=with-wallet-rays-and-token-swap-rate --workers=1",
 		"with-wallet:aave:ethereum": "REPORT_FOLDER=with-wallet-aave-ethereum npx playwright test --project=with-wallet-aave-ethereum --workers=1",
 		"with-wallet:aave:other": "REPORT_FOLDER=with-wallet-aave-other npx playwright test --project=with-wallet-aave-other --workers=1",
-		"with-wallet:aave:arbitrum": "REPORT_FOLDER=with-wallet-aave-arbitrum npx playwright test --project=with-wallet-aave-arbitrum --workers=2",
+		"with-wallet:aave:arbitrum": "REPORT_FOLDER=with-wallet-aave-arbitrum npx playwright test --project=with-wallet-aave-arbitrum --workers=1",
 		"with-wallet:aave:base": "REPORT_FOLDER=with-wallet-aave-base npx playwright test --project=with-wallet-aave-base --workers=1",
 		"with-wallet:aave:optimism": "REPORT_FOLDER=with-wallet-aave-optimism npx playwright test --project=with-wallet-aave-optimism --workers=1",
 		"with-wallet:aave:arbitrum-and-optimism": "REPORT_FOLDER=with-wallet-aave-arbitrum-and-optimism npx playwright test --project=with-wallet-aave-arbitrum-and-optimism --workers=1",
