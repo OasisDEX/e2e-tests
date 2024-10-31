@@ -15,7 +15,7 @@ const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
+test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
@@ -47,6 +47,9 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.page.goto('/arbitrum/aave/v3/multiply/wsteth-dai');
+
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(2_000);
 
 		await test.step('It should Open a position', async () => {
 			await openPosition({
