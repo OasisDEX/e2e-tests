@@ -9,7 +9,11 @@ export const confirmAndVerifySuccess = async ({
 	forkId,
 }: {
 	metamask: MetaMask;
-	metamaskAction: 'approveTokenPermission' | 'confirmSignature' | 'confirmTransaction';
+	metamaskAction:
+		| 'approveTokenPermission'
+		| 'confirmSignature'
+		| 'confirmTransaction'
+		| 'confirmTransactionAndWaitForMining';
 	forkId: string;
 }) => {
 	const txCountBefore = await tenderly.getTxCount(forkId);

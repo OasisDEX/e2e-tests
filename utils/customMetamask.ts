@@ -1,25 +1,4 @@
-// import playwright from '@synthetixio/synpress/commands/playwright';
-
-// import * as playwright from '@synthetixio/synpress/commands';
-
-import * as playwright from '@synthetixio/synpress';
-
-import { Page } from '@playwright/test';
-import { MetaMask } from '@synthetixio/synpress/playwright';
-
-export const allowToAddRPC = async (metamask: MetaMask) => {
-	// await metamask.notificationPage.page.
-
-	// ============
-
-	const notificationPage = await playwright.switchToMetamaskNotification();
-    const notificationPage = await playwright.();
-	await playwright.waitAndClick(
-		'#popover-content .confirmation-warning-modal__footer__approve-button',
-		notificationPage
-	);
-	return true;
-};
+import { BrowserContext, Page } from '@playwright/test';
 
 export const changeToCustomGasSettings = async () => {
 	const notificationPage = await playwright.switchToMetamaskNotification();
@@ -34,20 +13,41 @@ export const changeToCustomGasSettings = async () => {
 	return true;
 };
 
-// export async function addNewAccount(page: Page, accountName: string) {
-// 	// TODO: Use zod to validate this.
-// 	if (accountName.length === 0) {
-// 		throw new Error('[AddNewAccount] Account name cannot be an empty string');
-// 	}
+export const waitUntilStable = async (page: Page) => {
+	await page.waitForLoadState('domcontentloaded');
+	await page.waitForLoadState('networkidle');
+};
 
-// 	await page.locator(Selectors.accountMenu.accountButton).click();
+async function getNotificationPageAndWaitForLoad(context: BrowserContext, extensionId: string) {
+	const notificationPageUrl = `chrome-extension://${extensionId}/notification.html`;
 
-// 	await page.locator(Selectors.accountMenu.addAccountMenu.addAccountButton).click();
-// 	await page.locator(Selectors.accountMenu.addAccountMenu.addNewAccountButton).click();
+	const isNotificationPage = (page: Page) => page.url().includes(notificationPageUrl);
 
-// 	await page
-// 		.locator(Selectors.accountMenu.addAccountMenu.addNewAccountMenu.accountNameInput)
-// 		.fill(accountName);
+	// Check if notification page is already open.
+	let notificationPage = context.pages().find(isNotificationPage);
 
-// 	await page.locator(Selectors.accountMenu.addAccountMenu.addNewAccountMenu.createButton).click();
-// }
+	if (!notificationPage) {
+		notificationPage = await context.waitForEvent('page', {
+			predicate: isNotificationPage,
+		});
+	}
+
+	await waitUntilStable(notificationPage as Page);
+
+	// Set pop-up window viewport size to resemble the actual MetaMask pop-up window.
+	await notificationPage.setViewportSize({
+		width: 360,
+		height: 592,
+	});
+
+	return notificationPage;
+}
+
+export const approveRPC = async (extensionId: string, context: BrowserContext) => {
+	const notificationPage = await getNotificationPageAndWaitForLoad(context, extensionId);
+
+	await notificationPage
+		// .locator('.confirmation-warning-modal__content section .mm-button-primary--type-danger')
+		.locator('.confirmation-warning-modal__content .mm-button-primary--type-danger')
+		.click();
+};

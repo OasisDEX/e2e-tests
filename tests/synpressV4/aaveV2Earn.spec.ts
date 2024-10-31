@@ -1,6 +1,6 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
-import basicSetup from 'utils/synpress/wallet-setup/basic.setup';
+import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
