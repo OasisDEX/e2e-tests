@@ -18,6 +18,13 @@ jobs:
       flags_features: ${{ inputs.flags_features}}
       script: nightly:no-wallet
 
+  with-real-wallet:
+    uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      flags_features: ${{ inputs.flags_features}}
+    secrets: inherit
+
   # with-wallet-aave-ethereum-tests:
   #   name: 'With wallet - Aave - Ethereum'
   #   runs-on: ubuntu-latest

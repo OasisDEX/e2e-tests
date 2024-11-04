@@ -104,7 +104,7 @@ export const openPosition = async ({
 			await tx.confirmAndVerifySuccess({
 				metamask,
 				forkId,
-				metamaskAction: 'confirmSignature',
+				metamaskAction: 'approveTokenPermission',
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });

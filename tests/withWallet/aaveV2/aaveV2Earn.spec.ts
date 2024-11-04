@@ -1,6 +1,6 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
-import basicSetup from 'utils/synpress/wallet-setup/basic.setup';
+import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
@@ -11,42 +11,30 @@ let app: App;
 let forkId: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
-const { expect } = test;
 
 test.describe('Aave V2 Earn - Wallet connected', async () => {
-	test.beforeEach(async ({ page, metamask }) => {
+	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-
 		({ forkId } = await setup({ metamask, app, network: 'mainnet' }));
 	});
 
 	test.afterEach(async () => {
+		await tenderly.deleteFork(forkId);
 		await app.page.close();
 	});
 
-	test.afterAll(async () => {
-		await tenderly.deleteFork(forkId);
-	});
-
-	test('It should open an Aave v2 Earn position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11772',
-		});
-
+	test('It should open an Aave v2 Earn position @regression', async ({ metamask }) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v2/earn/stETH-eth#simulate');
+		await app.page.goto('/ethereum/aave/v2/multiply/stETH-eth#simulate');
 
-		//
-		await app.pause();
-		//
-		// await openPosition({
-		// 	app,
-		// 	forkId,
-		// 	deposit: { token: 'ETH', amount: '10.09' },
-		// });
+		await openPosition({
+			metamask,
+			app,
+			forkId,
+			deposit: { token: 'ETH', amount: '10.09' },
+		});
 	});
 });

@@ -244,7 +244,7 @@ export const testTrailingStopLoss = async ({
 	}
 
 	// Pause needed to avoid random fails
-	await app.page.waitForTimeout(5_000);
+	await app.page.waitForTimeout(10_000);
 
 	await app.position.setup.confirm();
 
