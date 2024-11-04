@@ -8,6 +8,6 @@ export const confirmAddToken = async ({ metamask, app }: { metamask: MetaMask; a
 		await app.page.waitForTimeout(1_000);
 		// await customMetamask.changeToCustomGasSettings();
 		await app.page.waitForTimeout(1_000);
-		await metamask.confirmSignature();
+		await metamask.addNewToken(); //confirmSignature();
 	});
 };
