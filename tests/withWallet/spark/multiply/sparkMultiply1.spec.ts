@@ -1,123 +1,98 @@
-import { BrowserContext, test } from '@playwright/test';
-import { metamaskSetUp } from 'utils/setup';
-import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as tenderly from 'utils/tenderly';
+import { testWithSynpress } from '@synthetixio/synpress';
+import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
+import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import * as tenderly from 'utils/tenderly';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
-let context: BrowserContext;
 let app: App;
 let forkId: string;
 let walletAddress: string;
 
-test.describe.configure({ mode: 'serial' });
+const test = testWithSynpress(metaMaskFixtures(basicSetup));
+const { expect } = test;
 
 test.describe('Spark Multiply - Wallet connected', async () => {
-	test.afterAll(async () => {
-		await tenderly.deleteFork(forkId);
+	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
 
-		await app.page.close();
+		app = new App(page);
+		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
-		await context.close();
-
-		await resetState();
+		await tenderly.setTokenBalance({
+			forkId,
+			network: 'mainnet',
+			walletAddress,
+			token: 'WSTETH',
+			balance: '20',
+		});
 	});
 
-	test('It should open a Spark Multiply WSTETH/DAI Long position @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12463',
-		});
+	test.afterEach(async () => {
+		await tenderly.deleteFork(forkId);
+		await app.page.close();
+	});
 
+	test('It should open and manage a Spark Multiply WSTETH/DAI Long position @regression', async ({
+		metamask,
+	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
-
-		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'mainnet' }));
-			let page = await context.newPage();
-			app = new App(page);
-
-			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '20',
-			});
-		});
 
 		await app.page.goto('/ethereum/spark/multiply/wsteth-dai');
 
-		await openPosition({
-			app,
-			forkId,
-			deposit: { token: 'WSTETH', amount: '10' },
-		});
-	});
+		await test.step('It should Open a position', async () => {
+			await app.page.waitForTimeout(1_000);
 
-	test('It should adjust risk of an existing Spark Multiply Long position - Up', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
+			await openPosition({
+				metamask,
+				app,
+				forkId,
+				deposit: { token: 'WSTETH', amount: '10' },
+			});
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		await test.step('It should Adjust risk - Up', async () => {
+			await app.page.waitForTimeout(1_000);
+			await app.page.reload();
 
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
-		await adjustRisk({
-			forkId,
-			app,
-			risk: 'up',
-			newSliderPosition: 0.8,
-		});
-	});
-
-	test('It should adjust risk of an existing Spark Multiply Long position - Down', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12898',
+			await adjustRisk({
+				metamask,
+				forkId,
+				app,
+				risk: 'up',
+				newSliderPosition: 0.8,
+			});
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		await test.step('It should Adjust risk - Down', async () => {
+			await app.page.waitForTimeout(1_000);
+			await app.page.reload();
 
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
-		await adjustRisk({
-			forkId,
-			app,
-			risk: 'down',
-			newSliderPosition: 0.2,
-		});
-	});
-
-	test('It should close an existent Spark Multiply Long position - Close to collateral token (ETH)', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
+			await adjustRisk({
+				metamask,
+				forkId,
+				app,
+				risk: 'down',
+				newSliderPosition: 0.2,
+			});
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		await test.step('It should Close a position', async () => {
+			await app.page.waitForTimeout(1_000);
+			await app.page.reload();
 
-		// Pause and reload to avoid random fails
-		await app.page.waitForTimeout(3_000);
-		await app.page.reload();
-
-		await close({
-			app,
-			forkId,
-			positionType: 'Multiply',
-			closeTo: 'collateral',
-			collateralToken: 'WSTETH',
-			debtToken: 'DAI',
-			tokenAmountAfterClosing: '9.[0-9]{1,4}',
+			await close({
+				metamask,
+				app,
+				forkId,
+				positionType: 'Multiply',
+				closeTo: 'collateral',
+				collateralToken: 'WSTETH',
+				debtToken: 'DAI',
+				tokenAmountAfterClosing: '9.[0-9]{1,4}',
+			});
 		});
 	});
 });
