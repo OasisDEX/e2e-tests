@@ -97,7 +97,6 @@ export const openPosition = async ({
 		if (buttonLabel === `Set ${deposit.token} allowance` || ajnaExistingDpm) {
 			await app.position.setup.setTokenAllowance(deposit.token);
 		}
-
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
 			await app.position.setup.approveAllowanceOrRetry();
@@ -108,7 +107,6 @@ export const openPosition = async ({
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
-
 		await app.position.setup.continue();
 	}
 
@@ -458,7 +456,11 @@ export const manageDebtOrCollateral = async ({
 
 	// =================
 	// Recently added for Arbitrum Borrow ETH/USDC
-	await app.position.setup.confirm();
+	const manageHeader = app.page.getByText('Manage your ');
+	const confirmButton = app.page.getByRole('button', { name: 'Confirm' });
+	if ((await manageHeader.isVisible()) && (await confirmButton.isVisible())) {
+		await app.position.setup.confirm();
+	}
 	// =================
 
 	// Position creation randomly fails - Retry until it's created.

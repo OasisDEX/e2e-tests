@@ -25,71 +25,71 @@ jobs:
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
-  # with-wallet-aave-ethereum-tests:
-  #   name: 'With wallet - Aave - Ethereum'
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-  #     TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-  #     TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
-  #   container:
-  #     image: synthetixio/docker-node:18.16-ubuntu
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18
-  #     - name: Install dependencies
-  #       run: yarn
-  #     - name: Install playwright
-  #       run: npx playwright install && npx playwright install-deps
-  #     - name: Install xvfb
-  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-  #     - name: Run With wallet Aave Ethereum tests
-  #       run: |
-  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-  #         yarn nightly:with-wallet:aave:ethereum
-  #     - uses: actions/upload-artifact@v3
-  #       if: always()
-  #       with:
-  #         name: playwright-report-with-wallet-aave-ethereum
-  #         path: playwright-reports/with-wallet-aave-ethereum
-  #         retention-days: 30
+  with-wallet-aave-ethereum-tests:
+    name: 'With wallet - Aave - Ethereum'
+    runs-on: ubuntu-latest
+    env:
+      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
+      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Run With wallet Aave Ethereum tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          yarn nightly:with-wallet:aave:ethereum
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report-with-wallet-aave-ethereum
+          path: playwright-reports/with-wallet-aave-ethereum
+          retention-days: 30
   
-  # with-wallet-aave-other-tests:
-  #   name: 'With wallet - Aave - Arbitrum, Optimism & Base'
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-  #     TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-  #     TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
-  #   container:
-  #     image: synthetixio/docker-node:18.16-ubuntu
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 18
-  #     - name: Install dependencies
-  #       run: yarn
-  #     - name: Install playwright
-  #       run: npx playwright install && npx playwright install-deps
-  #     - name: Install xvfb
-  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-  #     - name: Run With wallet Aave Arbitrum, Optimism and Base tests
-  #       run: |
-  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-  #         yarn nightly:with-wallet:aave:other
-  #     - uses: actions/upload-artifact@v3
-  #       if: always()
-  #       with:
-  #         name: playwright-report-with-wallet-aave-other
-  #         path: playwright-reports/with-wallet-aave-other
-  #         retention-days: 30
+  with-wallet-aave-other-tests:
+    name: 'With wallet - Aave - Arbitrum, Optimism & Base'
+    runs-on: ubuntu-latest
+    env:
+      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
+      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Run With wallet Aave Arbitrum, Optimism and Base tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          yarn nightly:with-wallet:aave:other
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report-with-wallet-aave-other
+          path: playwright-reports/with-wallet-aave-other
+          retention-days: 30
   
   # with-wallet-ajna-and-morphoblue-tests:
   #   name: 'With wallet - Ajna & Morpho Blue'

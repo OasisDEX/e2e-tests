@@ -1,193 +1,168 @@
-import { BrowserContext, test } from '@playwright/test';
-import { metamaskSetUp } from 'utils/setup';
-import { resetState } from '@synthetixio/synpress/commands/synpress';
-import * as tenderly from 'utils/tenderly';
+import { testWithSynpress } from '@synthetixio/synpress';
+import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
+import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
-import { extremelyLongTestTimeout, positionTimeout, veryLongTestTimeout } from 'utils/config';
+import * as tenderly from 'utils/tenderly';
+import { extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 import { reloadUntilCorrect } from 'utils/general';
 
-let context: BrowserContext;
 let app: App;
 let forkId: string;
 let walletAddress: string;
 
-test.describe.configure({ mode: 'serial' });
+const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
 test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
-	test.afterAll(async () => {
-		await tenderly.deleteFork(forkId);
+	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
 
-		await app.page.close();
+		app = new App(page);
+		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
-		await context.close();
-
-		await resetState();
+		await tenderly.setTokenBalance({
+			forkId,
+			network: 'mainnet',
+			walletAddress,
+			token: 'WSTETH',
+			balance: '50',
+		});
 	});
 
-	test('It should open an Aave V3 Earn Ethereum position - WSTETH-ETH @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '11672',
-		});
+	test.afterEach(async () => {
+		await tenderly.deleteFork(forkId);
+		await app.page.close();
+	});
 
+	test('It should open and manage an Aave V3 Earn Ethereum position - WSTETH-ETH @regression', async ({
+		metamask,
+	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'mainnet' }));
-			let page = await context.newPage();
-			app = new App(page);
+		await app.page.goto('/ethereum/aave/v3/earn/wsteth-eth#simulate');
 
-			({ forkId, walletAddress } = await setup({ app, network: 'mainnet' }));
+		await test.step('It should Open a position', async () => {
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(2_000);
 
-			await tenderly.setTokenBalance({
+			await openPosition({
+				metamask,
+				app,
 				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'WSTETH',
-				balance: '50',
+				deposit: { token: 'ETH', amount: '10' },
 			});
 		});
 
-		await app.position.openPage('/ethereum/aave/v3/earn/wsteth-eth#simulate');
+		await test.step('It should Deposti extra collateral', async () => {
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(1_000);
 
-		await openPosition({
-			app,
-			forkId,
-			deposit: { token: 'ETH', amount: '10' },
-		});
-	});
-
-	test('It should Deposit extra collateral on an existing Aave V3 Ethereum Earn position', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxxxx',
-		});
-
-		test.setTimeout(veryLongTestTimeout);
-
-		await app.position.overview.shouldHaveExposure({
-			amount: '9.[0-9]{4}',
-			token: 'WSTETH',
-			timeout: positionTimeout,
-		});
-		await app.position.overview.shouldHaveDebt({
-			amount: '1.[0-9]{4}',
-			token: 'ETH',
-		});
-
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Manage collateral');
-
-		await manageDebtOrCollateral({
-			app,
-			forkId,
-			deposit: { token: 'WSTETH', amount: '20' },
-			expectedCollateralExposure: {
-				amount: '29.[0-9]{2}',
+			await app.position.overview.shouldHaveExposure({
+				amount: '9.[0-9]{4}',
 				token: 'WSTETH',
-			},
-			expectedDebt: {
+				timeout: positionTimeout,
+			});
+			await app.position.overview.shouldHaveDebt({
 				amount: '1.[0-9]{4}',
 				token: 'ETH',
-			},
-			protocol: 'Aave V3',
-		});
-	});
+			});
 
-	test('It should Withdraw from an existing Aave V3 Ethereum Earn position', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxxxx',
-		});
+			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+			await app.position.manage.select('Manage collateral');
 
-		test.setTimeout(veryLongTestTimeout);
-
-		// Pause and Reload page to avoid random fails
-		await app.page.waitForTimeout(1_000);
-		await reloadUntilCorrect(app);
-
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Manage collateral');
-		await app.position.manage.withdrawCollateral();
-
-		await manageDebtOrCollateral({
-			app,
-			forkId,
-			withdraw: { token: 'WSTETH', amount: '10' },
-			expectedCollateralExposure: {
-				amount: '19.[0-9]{2}',
-				token: 'WSTETH',
-			},
-			expectedDebt: {
-				amount: '1.[0-9]{2}',
-				token: 'ETH',
-			},
-			protocol: 'Aave V3',
-		});
-	});
-
-	test('It should Borrow from an existing Aave V3 Ethereum Earn position', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxxx',
+			await manageDebtOrCollateral({
+				metamask,
+				app,
+				forkId,
+				deposit: { token: 'WSTETH', amount: '20' },
+				expectedCollateralExposure: {
+					amount: '29.[0-9]{2}',
+					token: 'WSTETH',
+				},
+				expectedDebt: {
+					amount: '1.[0-9]{4}',
+					token: 'ETH',
+				},
+				protocol: 'Aave V3',
+			});
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		await test.step('It should Withdraw collateral', async () => {
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(1_000);
+			await reloadUntilCorrect(app);
 
-		// Pause and Reload page to avoid random fails
-		await app.page.waitForTimeout(1_000);
-		await reloadUntilCorrect(app);
+			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+			await app.position.manage.select('Manage collateral');
+			await app.position.manage.withdrawCollateral();
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Manage debt');
-		await app.position.manage.withdrawDebt();
-
-		await manageDebtOrCollateral({
-			app,
-			forkId,
-			borrow: { token: 'ETH', amount: '10' },
-			expectedCollateralExposure: {
-				amount: '19.[0-9]{2}',
-				token: 'WSTETH',
-			},
-			expectedDebt: {
-				amount: '11.[0-9]{2}',
-				token: 'ETH',
-			},
-			protocol: 'Aave V3',
-		});
-	});
-
-	test('It should Pay back on an existing Aave V3 Ethereum Earn position', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxxx',
+			await manageDebtOrCollateral({
+				metamask,
+				app,
+				forkId,
+				withdraw: { token: 'WSTETH', amount: '10' },
+				expectedCollateralExposure: {
+					amount: '19.[0-9]{2}',
+					token: 'WSTETH',
+				},
+				expectedDebt: {
+					amount: '1.[0-9]{2}',
+					token: 'ETH',
+				},
+				protocol: 'Aave V3',
+			});
 		});
 
-		test.setTimeout(veryLongTestTimeout);
+		await test.step('It should Borrow', async () => {
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(1_000);
+			await reloadUntilCorrect(app);
 
-		// Pause and Reload page to avoid random fails
-		await app.page.waitForTimeout(1_000);
-		await reloadUntilCorrect(app);
+			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+			await app.position.manage.select('Manage debt');
+			await app.position.manage.withdrawDebt();
 
-		await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
-		await app.position.manage.select('Manage debt');
+			await manageDebtOrCollateral({
+				metamask,
+				app,
+				forkId,
+				borrow: { token: 'ETH', amount: '10' },
+				expectedCollateralExposure: {
+					amount: '19.[0-9]{2}',
+					token: 'WSTETH',
+				},
+				expectedDebt: {
+					amount: '11.[0-9]{2}',
+					token: 'ETH',
+				},
+				protocol: 'Aave V3',
+			});
+		});
 
-		await manageDebtOrCollateral({
-			app,
-			forkId,
-			payBack: { token: 'ETH', amount: '5' },
-			expectedCollateralExposure: {
-				amount: '19.[0-9]{2}',
-				token: 'WSTETH',
-			},
-			expectedDebt: {
-				amount: '6.[0-9]{2}',
-				token: 'ETH',
-			},
-			protocol: 'Aave V3',
+		await test.step('It should Pay back', async () => {
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(1_000);
+			await reloadUntilCorrect(app);
+
+			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
+			await app.position.manage.select('Manage debt');
+
+			await manageDebtOrCollateral({
+				metamask,
+				app,
+				forkId,
+				payBack: { token: 'ETH', amount: '5' },
+				expectedCollateralExposure: {
+					amount: '19.[0-9]{2}',
+					token: 'WSTETH',
+				},
+				expectedDebt: {
+					amount: '6.[0-9]{2}',
+					token: 'ETH',
+				},
+				protocol: 'Aave V3',
+			});
 		});
 	});
 });
