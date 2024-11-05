@@ -18,6 +18,6 @@ jobs:
   with-real-tests:
     uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
     with:
-      base_url: 'https://staging.summer.fi'
+      base_url: ${{ inputs.base_url }}
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
