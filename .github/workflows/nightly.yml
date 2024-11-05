@@ -22,7 +22,6 @@ jobs:
 
   with-real-wallet:
     uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
-    with:
     secrets: inherit
 
   with-wallet-aave-ethereum-tests:
