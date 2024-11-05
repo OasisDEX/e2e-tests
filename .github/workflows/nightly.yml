@@ -15,8 +15,6 @@ jobs:
   no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
     with:
-      base_url: ${{ inputs.base_url }}
-      flags_features: ${{ inputs.flags_features}}
       script: nightly:no-wallet
 
   with-real-wallet:
@@ -138,10 +136,10 @@ jobs:
   with-wallet-maker-tests:
     name: 'With wallet - Maker'
     runs-on: ubuntu-latest
-    env:
-      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
+    # env:
+    #   TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
+    #   TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
+    #   TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
