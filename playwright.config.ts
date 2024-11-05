@@ -41,7 +41,7 @@ const defaultConfig: PlaywrightTestConfig = {
 	projects: [
 		{
 			name: 'synpress-v4',
-			testMatch: ['synpressV4/**'],
+			testMatch: ['**synpressV4/**'],
 			use: {
 				...devices['Desktop Chrome'],
 			},

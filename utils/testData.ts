@@ -73,7 +73,7 @@ export const morphoEthereumBorrowPools_1 = ['USDE-DAI-2', 'OSETH-ETH', 'EZETH-ET
 // 'MKR-USDC', --> Already tested in /withWallet/morphoBlue
 // 'WEETH-ETH', --> Already tested in /withWallet/morphoBlue
 
-export const morphoEthereumBorrowPools_2 = ['SUSDE-DAI-3', 'SUSDE-DAI-4', 'SUSDE-USDT'];
+export const morphoEthereumBorrowPools_2 = ['SUSDE-DAI-4']; // ['SUSDE-DAI-3', 'SUSDE-DAI-4', 'SUSDE-USDT'];
 
 export const morphoEthereumBorrowPools_3 = ['WSTETH-ETH-2', 'WSTETH-USDA', 'SWBTC-WBTC'];
 
@@ -379,7 +379,7 @@ export type SetBalanceTokens =
 	| 'WSUPEROETHB'
 	| 'YFI';
 
-export const depositAmount = {
+export const depositAmount: { [index: string]: string } = {
 	AJNA: '100',
 	AERO: '4000',
 	BSDETH: '2',

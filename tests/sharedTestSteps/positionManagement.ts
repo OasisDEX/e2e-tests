@@ -2,10 +2,9 @@ import { expect, test } from '@playwright/test';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { expectDefaultTimeout, longTestTimeout, positionTimeout } from 'utils/config';
-import { SetBalanceTokens, Tokens } from 'utils/testData';
+import { Tokens } from 'utils/testData';
 import { Reason } from 'src/pages/position/swap';
 import { confirmAddToken } from './makerConfirmTx';
-import { createAndSetNewFork } from 'utils/setup';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 
 type ActionData = { token: string; amount: string };
