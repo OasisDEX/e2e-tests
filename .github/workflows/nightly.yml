@@ -24,11 +24,6 @@ jobs:
   with-wallet-aave-ethereum-tests:
     name: 'With wallet - Aave - Ethereum'
     runs-on: ubuntu-latest
-    env:
-      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
-      EMPTY_TEST_WALLET_PK: ${{ secrets.EMPTY_TEST_WALLET_PK }}
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -62,10 +57,6 @@ jobs:
   with-wallet-aave-other-tests:
     name: 'With wallet - Aave - Arbitrum, Optimism & Base'
     runs-on: ubuntu-latest
-    env:
-      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -99,10 +90,6 @@ jobs:
   with-wallet-ajna-and-morphoblue-tests:
     name: 'With wallet - Ajna & Morpho Blue'
     runs-on: ubuntu-latest
-    env:
-      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -136,10 +123,6 @@ jobs:
   with-wallet-maker-tests:
     name: 'With wallet - Maker'
     runs-on: ubuntu-latest
-    # env:
-    #   TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-    #   TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-    #   TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -173,10 +156,6 @@ jobs:
   with-wallet-spark-tests:
     name: 'With wallet - Spark'
     runs-on: ubuntu-latest
-    env:
-      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -210,10 +189,6 @@ jobs:
   # with-wallet-open-positions-tests-aave-ethereum-borrow:
   #   name: 'Open Positions - Aave - Ethereum - Borrow'
   #   runs-on: ubuntu-latest
-  #   env:
-  #     TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-  #     TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-  #     TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
   #   container:
   #     image: synthetixio/docker-node:18.16-ubuntu
   #   steps:
@@ -243,10 +218,6 @@ jobs:
   # with-wallet-open-positions-tests-aave-ethereum-earn-multiply:
   #   name: 'Open Positions - Aave - Ethereum - Earn & Multiply'
   #   runs-on: ubuntu-latest
-  #   env:
-  #     TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-  #     TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-  #     TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
   #   container:
   #     image: synthetixio/docker-node:18.16-ubuntu
   #   steps:
@@ -276,10 +247,6 @@ jobs:
   # with-wallet-open-positions-tests-aave-l2s:
   #   name: 'Open Positions - Aave - L2s'
   #   runs-on: ubuntu-latest
-  #   env:
-  #     TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-  #     TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-  #     TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
   #   container:
   #     image: synthetixio/docker-node:18.16-ubuntu
   #   steps:
@@ -309,10 +276,6 @@ jobs:
   # with-wallet-open-positions-tests-other:
   #   name: 'Open Positions - Other'
   #   runs-on: ubuntu-latest
-  #   env:
-  #     TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-  #     TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-  #     TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
   #   container:
   #     image: synthetixio/docker-node:18.16-ubuntu
   #   steps:
@@ -342,12 +305,6 @@ jobs:
   with-wallet-open-rays:
     name: 'With wallet - Rays & Swap rate'
     runs-on: ubuntu-latest
-    env:
-      TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-      TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-      TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
-      OLD_WALLET_PK: ${{ secrets.OLD_WALLET_PK }}
-      ONE_INCH_API_KEY: ${{ secrets.ONE_INCH_API_KEY }}
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -383,10 +340,6 @@ jobs:
   # with-wallet-aave-ethereum-tests-new:
   #   name: 'With wallet - Aave - Ethereum - NEW'
   #   runs-on: ubuntu-latest
-  #   env:
-  #     TENDERLY_PROJECT: ${{ secrets.TENDERLY_PROJECT }}
-  #     TENDERLY_USER: ${{ secrets.TENDERLY_USER }}
-  #     TENDERLY_ACCESS_KEY: ${{ secrets.TENDERLY_ACCESS_KEY }}
   #   container:
   #     image: synthetixio/docker-node:18.16-ubuntu
   #   steps:
