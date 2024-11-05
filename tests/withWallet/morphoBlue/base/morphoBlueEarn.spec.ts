@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import baseSetup from 'utils/synpress/test-wallet-setup/base.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	close,
@@ -53,6 +53,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 				app,
 				forkId,
 				deposit: { token: 'CBETH', amount: '10' },
+				protocol: 'Morpho Blue',
 			});
 		});
 
