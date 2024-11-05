@@ -15,7 +15,7 @@ on:
         required: false
 
 jobs:
-  with-real-tests:
+  with-real-wallet:
     uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
     with:
       base_url: ${{ inputs.base_url }}

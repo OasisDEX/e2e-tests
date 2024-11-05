@@ -1,4 +1,4 @@
-name: Reusable Workflow - Regression - With-wallet tests
+name: Reusable Workflow - Regression - With real wallet tests
 
 on: 
   workflow_call:
@@ -31,6 +31,9 @@ jobs:
         run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Verify that staging environment is ready for testing
+        if: ${{ inputs.base_url == 'https://staging.summer.fi' }}
+        run: yarn verify-staging
       - name: Build Synpress cache
         run: |
           BASE_URL=${{ inputs.base_url }} \

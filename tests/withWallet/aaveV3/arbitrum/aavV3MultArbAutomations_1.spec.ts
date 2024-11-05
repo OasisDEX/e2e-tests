@@ -45,6 +45,9 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		await app.position.openPage('/arbitrum/aave/v3/multiply/eth-dai/1#overview');
 
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(1_000);
+
 		await test.step('It should set Auto-Buy', async () => {
 			await automations.testAutoBuy({
 				metamask,
@@ -63,6 +66,9 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 			await app.page.reload();
 			await app.position.overview.shouldBeVisible();
 
+			// Pause to avoid random fails
+			await app.page.waitForTimeout(1_000);
+
 			await automations.testAutoSell({
 				metamask,
 				app,
@@ -79,6 +85,9 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 			// Reload page to avoid random fails
 			await app.page.reload();
 			await app.position.overview.shouldBeVisible();
+
+			// Pause to avoid random fails
+			await app.page.waitForTimeout(1_000);
 
 			await automations.testRegularStopLoss({
 				metamask,
