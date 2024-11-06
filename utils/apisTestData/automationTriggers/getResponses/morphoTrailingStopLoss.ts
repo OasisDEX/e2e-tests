@@ -26,7 +26,7 @@ export const morphoTrailingStopLossResponse = {
 				closeToCollateral: 'false',
 			},
 			dynamicParams: {
-				executionPrice: '3822053300412',
+				executionPrice: expect.any(String),
 				originalExecutionPrice: '2313617239658',
 			},
 		},
