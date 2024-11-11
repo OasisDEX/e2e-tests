@@ -41,7 +41,7 @@ test.describe('Aave v3 - Base - Wallet connected', async () => {
 
 		await app.position.setup.confirm();
 		// Thre are two 'confirm' steps
-		await app.position.setup.confirm();
+		await app.position.setup.confirmOrRetry();
 
 		await test.step('Reject Permission To Spend', async () => {
 			await expect(async () => {

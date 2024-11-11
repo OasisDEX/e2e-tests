@@ -21,10 +21,11 @@ const defaultConfig: PlaywrightTestConfig = {
 
 	use: {
 		baseURL: baseUrl,
-		/* 'headless' setting coming from synpress 
+		/* 'headless' setting coming from synpress for tests with wallet
 			--> Add 'HEADLESS=<any value> to.env file for headless mode
 		*/
 		// headless: process.env.HEADLESS === 'false' ? false : true,
+		headless: process.env.HEADLESS ? true : false,
 		// trace: 'retain-on-failure',
 		screenshot: 'only-on-failure',
 		video: 'retain-on-failure',

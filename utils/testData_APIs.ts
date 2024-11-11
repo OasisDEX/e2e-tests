@@ -1727,7 +1727,7 @@ export const validPayloadsAaveV3Ethereum = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '3200',
+				executionLTV: '1500',
 				executionPrice: '0',
 				stopLoss: {
 					triggerData: {
@@ -2033,7 +2033,7 @@ export const validPayloadsMorpho = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '3300',
+				executionLTV: '1500',
 				executionPrice: '0',
 				poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
 				stopLoss: {
@@ -2354,8 +2354,8 @@ export const validPayloadsSpark = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '2000',
-				executionPrice: '650000000000',
+				executionLTV: '910',
+				executionPrice: '784098516167',
 				stopLoss: {
 					triggerData: {
 						executionLTV: '7790',
@@ -2376,8 +2376,8 @@ export const validPayloadsSpark = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '2000',
-				executionPrice: '600000000000',
+				executionLTV: '910',
+				executionPrice: '763487710510',
 				stopLoss: {
 					triggerData: {
 						executionLTV: '7790',
@@ -2433,9 +2433,9 @@ export const validPayloadsAaveV3Arbitrum = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '4400',
+				executionLTV: '3500',
 				maxBaseFee: '300',
-				maxBuyPrice: '450000000000',
+				maxBuyPrice: '950000000000',
 				targetLTV: '5300',
 				useMaxBuyPrice: true,
 			},
@@ -2449,9 +2449,9 @@ export const validPayloadsAaveV3Arbitrum = {
 			},
 			action: 'remove',
 			triggerData: {
-				executionLTV: '44',
+				executionLTV: '35',
 				maxBaseFee: '300',
-				maxBuyPrice: '350000000000',
+				maxBuyPrice: '850000000000',
 				targetLTV: '53',
 				useMaxBuyPrice: false,
 			},
@@ -2646,8 +2646,8 @@ export const validPayloadsAaveV3Arbitrum = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '1600',
-				executionPrice: '9000000000000',
+				executionLTV: '600',
+				executionPrice: '20125523638539',
 				withdrawToken: '0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f',
 				withdrawStep: '500',
 			},
@@ -2908,7 +2908,7 @@ export const validPayloadsAaveV3Base = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '2800',
+				executionLTV: '1500',
 				executionPrice: '0',
 				stopLoss: {
 					triggerData: {
@@ -2994,7 +2994,7 @@ export const validPayloadsAaveV3Optimism = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '3100',
+				executionLTV: '1500',
 				maxBaseFee: '300',
 				targetLTV: '3900',
 				useMaxBuyPrice: false,
@@ -3199,7 +3199,7 @@ export const validPayloadsAaveV3Optimism = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '3500',
+				executionLTV: '1800',
 				executionPrice: '0',
 				stopLoss: {
 					triggerData: {
@@ -3243,7 +3243,7 @@ export const validPayloadsAaveV3Optimism = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '1500',
+				executionLTV: '800',
 				executionPrice: '700000000000',
 				stopLoss: {
 					triggerData: {
