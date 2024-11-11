@@ -196,7 +196,7 @@ export class PositionsHub {
 		const positionsListed = this.page.getByRole('link').filter({ hasText: 'Position #' });
 		const migratePositions = this.page.getByText('Why migrate?');
 
-		let noPositionsCount: number;
+		let noPositionsCount: number = 0;
 		let positionsCount: {
 			emptyPositionsCount: number;
 			positionsListedCount: number;

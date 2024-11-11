@@ -63,7 +63,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 				} else {
 					if (stagingData[property] !== 0 && stagingData[property] !== 0) {
 						const diff =
-							((stagingData[property] - productionData[property]) / stagingData[property]) * 100;
+							((+stagingData[property] - +productionData[property]) / +stagingData[property]) * 100;
 						expect(Math.abs(diff)).toBeLessThan(0.15);
 					}
 				}

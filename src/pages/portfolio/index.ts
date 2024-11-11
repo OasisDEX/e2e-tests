@@ -5,6 +5,7 @@ import { Wallet } from './wallet';
 import { expectDefaultTimeout, portfolioTimeout } from 'utils/config';
 
 export type PortfolioData = {
+	[index: string]: number | { id: string; pool: string; type: string }[];
 	reasons: number;
 	totalValue: number;
 	portfolioValue: number;
@@ -162,7 +163,7 @@ export class Portfolio {
 		const migratePositions = this.page.getByText('Why migrate?');
 		const errorLoadingPositions = this.page.getByText('error trying to load positions');
 
-		let errorLoadingPositionsCount: number;
+		let errorLoadingPositionsCount: number = 0;
 
 		// Initial check to make sure that positions component has either loaded or shown error
 		await expect(async () => {
