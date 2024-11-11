@@ -1727,7 +1727,7 @@ export const validPayloadsAaveV3Ethereum = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '3200',
+				executionLTV: '1500',
 				executionPrice: '0',
 				stopLoss: {
 					triggerData: {
@@ -2033,7 +2033,7 @@ export const validPayloadsMorpho = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '3300',
+				executionLTV: '1500',
 				executionPrice: '0',
 				poolId: '0x3a85e619751152991742810df6ec69ce473daef99e28a64ab2340d7b7ccfee49',
 				stopLoss: {
@@ -2908,7 +2908,7 @@ export const validPayloadsAaveV3Base = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '2800',
+				executionLTV: '1500',
 				executionPrice: '0',
 				stopLoss: {
 					triggerData: {
@@ -2994,7 +2994,7 @@ export const validPayloadsAaveV3Optimism = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '3100',
+				executionLTV: '1500',
 				maxBaseFee: '300',
 				targetLTV: '3900',
 				useMaxBuyPrice: false,
@@ -3199,7 +3199,7 @@ export const validPayloadsAaveV3Optimism = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '3500',
+				executionLTV: '1800',
 				executionPrice: '0',
 				stopLoss: {
 					triggerData: {
@@ -3243,7 +3243,7 @@ export const validPayloadsAaveV3Optimism = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '1500',
+				executionLTV: '800',
 				executionPrice: '700000000000',
 				stopLoss: {
 					triggerData: {
