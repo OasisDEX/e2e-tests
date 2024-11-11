@@ -53,7 +53,6 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 				app,
 				forkId,
 				deposit: { token: 'CBETH', amount: '10' },
-				protocol: 'Morpho Blue',
 			});
 		});
 

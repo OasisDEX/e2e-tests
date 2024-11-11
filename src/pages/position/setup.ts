@@ -50,6 +50,20 @@ export class Setup {
 	}
 
 	@step
+	async shouldHaveSpinningIconInButton(label: string) {
+		await expect(this.page.getByRole('button', { name: label }).locator('svg')).toBeVisible({
+			timeout: expectDefaultTimeout * 3,
+		});
+	}
+
+	@step
+	async shouldNotHaveSpinningIconInButton(label: string) {
+		await expect(this.page.getByRole('button', { name: label }).locator('svg')).not.toBeVisible({
+			timeout: expectDefaultTimeout * 3,
+		});
+	}
+
+	@step
 	async waitForComponentToBeStable() {
 		await expect(
 			this.page.getByText('Historical Ratio'),
