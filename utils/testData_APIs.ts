@@ -1522,7 +1522,7 @@ export const validPayloadsAaveV3Ethereum = {
 			},
 			protocol: 'aavev3',
 			triggerData: {
-				executionLTV: '3200',
+				executionLTV: '1500',
 				maxBaseFee: '300',
 				targetLTV: '5000',
 				useMaxBuyPrice: false,
@@ -2418,7 +2418,7 @@ export const validPayloadsAaveV3Arbitrum = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '4900',
+				executionLTV: '2900',
 				maxBaseFee: '300',
 				targetLTV: '5800',
 				useMaxBuyPrice: false,
@@ -2703,7 +2703,7 @@ export const validPayloadsAaveV3Base = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '2800',
+				executionLTV: '1200',
 				maxBaseFee: '300',
 				targetLTV: '3300',
 				useMaxBuyPrice: false,
