@@ -29,7 +29,9 @@ jobs:
         run: yarn
       - name: Verify that staging environment is ready for testing
         if: ${{ inputs.base_url == 'https://staging.summer.fi' }}
-        run: yarn verify-staging
+        run: |
+          HEADLESS=true \ 
+          yarn verify-staging
       - name: Run API tests
         run: yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4
