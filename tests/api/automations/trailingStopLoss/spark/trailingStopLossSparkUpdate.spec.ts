@@ -40,7 +40,7 @@ test.describe('API tests - Trailing Stop-Loss - Update - Spark', async () => {
 
 	test('Update existing automation - Close to debt - Valid payload data', async ({ request }) => {
 		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-		// Position link:https://staging.summer.fi/ethereum/spark/multiply/ETH-DAI/3140
+		// Position link: https://staging.summer.fi/ethereum/spark/multiply/ETH-DAI/3140
 
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: validPayloadsSpark.trailingStopLoss.updateCloseToDebt,
@@ -65,7 +65,16 @@ test.describe('API tests - Trailing Stop-Loss - Update - Spark', async () => {
 			hasStablecoinDebt: true,
 		});
 
-		expect(respJSON).toMatchObject(updateCloseToDebtResponse);
+		expect(respJSON).toMatchObject({
+			...updateCloseToDebtResponse,
+			warnings: [
+				{
+					message: 'Your stop loss will make the auto-sell not trigger',
+					code: 'stop-loss-makes-auto-sell-not-trigger',
+					path: [],
+				},
+			],
+		});
 	});
 
 	test('Update existing automation - Trailing distance - Valid payload data', async ({
