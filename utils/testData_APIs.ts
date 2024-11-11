@@ -2930,7 +2930,7 @@ export const validPayloadsAaveV3Base = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '4400',
+				executionLTV: '2000',
 				executionPrice: '600000000000',
 				stopLoss: {
 					triggerData: {
@@ -2952,7 +2952,7 @@ export const validPayloadsAaveV3Base = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '1400',
+				executionLTV: '700',
 				executionPrice: '600000000000',
 				stopLoss: {
 					triggerData: {
