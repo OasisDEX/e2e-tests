@@ -18,7 +18,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		app = new App(page);
-		({ forkId } = await setup({ metamask, app, network: 'optimism' }));
+		({ forkId, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
 	});
 
 	test.afterEach(async () => {
@@ -31,7 +31,7 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc');
+		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc#setup');
 
 		await test.step('It should Open a position', async () => {
 			await app.page.waitForTimeout(1_000);

@@ -15,29 +15,26 @@ const test = testWithSynpress(metaMaskFixtures(optimismSetup));
 const { expect } = test;
 
 test.describe('Ajna Optimism Earn - Wallet connected', async () => {
-	test.afterEach(async () => {
-		await app.page.close();
+	test.beforeEach(async ({ metamask, page }) => {
+		app = new App(page);
+		({ forkId, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
+
+		await tenderly.setTokenBalance({
+			forkId,
+			network: 'optimism',
+			walletAddress,
+			token: 'DAI',
+			balance: '100000',
+		});
 	});
 
-	test.afterAll(async () => {
+	test.afterEach(async () => {
+		await app.page.close();
 		await tenderly.deleteFork(forkId);
 	});
 
 	test('It should open an Ajna Optimism Earn position @regression', async ({ metamask, page }) => {
 		test.setTimeout(extremelyLongTestTimeout);
-
-		await test.step('Test setup', async () => {
-			app = new App(page);
-			({ forkId, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				network: 'optimism',
-				walletAddress,
-				token: 'DAI',
-				balance: '100000',
-			});
-		});
 
 		await app.page.goto('/optimism/ajna/earn/OP-ETH#setup');
 		await app.position.setup.acknowledgeAjnaInfo();
@@ -54,17 +51,20 @@ test.describe('Ajna Optimism Earn - Wallet connected', async () => {
 			protocol: 'Ajna',
 		});
 	});
+});
 
-	test('It should allow to simulate an Ajna Optimism Earn position before opening it', async ({
-		metamask,
-		page,
-	}) => {
+test.describe('Ajna Optimism Earn - Wallet connected', async () => {
+	test.beforeEach(async ({ metamask, page }) => {
+		app = new App(page);
+		await setup({ metamask, app, network: 'base', withoutFork: true });
+	});
+
+	test.afterEach(async () => {
+		await app.page.close();
+	});
+
+	test('It should allow to simulate an Ajna Optimism Earn position before opening it', async () => {
 		test.setTimeout(veryLongTestTimeout);
-
-		await test.step('Test setup', async () => {
-			app = new App(page);
-			await setup({ metamask, app, network: 'base', withoutFork: true });
-		});
 
 		await app.page.goto('/optimism/ajna/earn/WBTC-DAI#setup');
 		await app.position.setup.acknowledgeAjnaInfo();
@@ -105,8 +105,8 @@ test.describe('Ajna Optimism Earn - Wallet connected', async () => {
 			});
 
 			// Wait for simulation to update with new risk
-			await app.position.setup.shouldHaveButtonDisabled('Set DAI allowance');
-			await app.position.setup.shouldHaveButtonEnabled('Set DAI allowance');
+			await app.position.setup.shouldHaveSpinningIconInButton('Create Smart DeFi account');
+			await app.position.setup.shouldNotHaveSpinningIconInButton('Create Smart DeFi account');
 
 			const updatedLendingPrice = await app.position.manage.getLendingPrice();
 			const updatedMaxLTV = await app.position.manage.getMaxLTV();
@@ -129,8 +129,8 @@ test.describe('Ajna Optimism Earn - Wallet connected', async () => {
 			});
 
 			// Wait for simulation to update with new risk
-			await app.position.setup.shouldHaveButtonDisabled('Set DAI allowance');
-			await app.position.setup.shouldHaveButtonEnabled('Set DAI allowance');
+			await app.position.setup.shouldHaveSpinningIconInButton('Create Smart DeFi account');
+			await app.position.setup.shouldNotHaveSpinningIconInButton('Create Smart DeFi account');
 
 			const updatedLendingPrice = await app.position.manage.getLendingPrice();
 			const updatedMaxLTV = await app.position.manage.getMaxLTV();
