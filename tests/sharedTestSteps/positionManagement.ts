@@ -345,7 +345,9 @@ export const close = async ({
 			metamaskAction: 'confirmTransaction',
 			forkId,
 		});
-	}).toPass({ timeout: longTestTimeout });
+	}, 'Confirm transaction in Summer.fi and Metamask').toPass({
+		timeout: longTestTimeout,
+	});
 
 	// UI sometimes gets stuck after confirming position update
 	//   - 'Reload' added to avoid flakines
