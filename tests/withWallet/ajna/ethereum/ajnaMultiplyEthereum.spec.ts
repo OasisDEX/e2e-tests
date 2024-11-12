@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -16,86 +16,17 @@ const { expect } = test;
 
 test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
-		test.setTimeout(extremelyLongTestTimeout);
-
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
-
-		await tenderly.setTokenBalance({
-			forkId,
-			network: 'mainnet',
-			walletAddress,
-			token: 'WBTC',
-			balance: '5',
-		});
+		await setup({ metamask, app, network: 'mainnet', withoutFork: true });
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
 		await app.page.close();
 	});
 
-	// NO LIQUIDITY
-	test.skip('It should open an Ajna Ethereum Multiply position @regression', async ({
-		metamask,
-	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
-
-		await app.page.goto('/ethereum/ajna/multiply/WBTC-DAI#setup');
-
-		await app.position.setup.acknowledgeAjnaInfo();
-
-		await test.step('It should Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
-
-			await openPosition({
-				metamask,
-				app,
-				forkId,
-				deposit: { token: 'WBTC', amount: '0.01' },
-			});
-		});
-
-		await test.step('It should Adjust risk - Down', async () => {
-			await app.page.waitForTimeout(1_000);
-
-			await adjustRisk({
-				metamask,
-				forkId,
-				app,
-				risk: 'down',
-				newSliderPosition: 0.05,
-			});
-		});
-
-		await test.step('It should Adjust risk - Up', async () => {
-			await app.page.waitForTimeout(1_000);
-
-			await adjustRisk({
-				metamask,
-				forkId,
-				app,
-				risk: 'up',
-				newSliderPosition: 0.1,
-			});
-		});
-
-		await test.step('It should Close a position', async () => {
-			await app.page.waitForTimeout(1_000);
-
-			await close({
-				metamask,
-				forkId,
-				app,
-				closeTo: 'collateral',
-				collateralToken: 'WBTC',
-				debtToken: 'DAI',
-				tokenAmountAfterClosing: '0.[0-9]{3,4}',
-			});
-		});
-	});
-
 	test('It should allow to simulate an Ajna Ethereum Multiply position before opening it', async () => {
+		test.setTimeout(longTestTimeout);
+
 		await app.page.goto('/ethereum/ajna/multiply/WBTC-DAI#setup');
 		await app.position.setup.acknowledgeAjnaInfo();
 		await app.position.setup.deposit({ token: 'WBTC', amount: '0.654321' });
@@ -188,6 +119,89 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 			const updatedLoanToValue2 = await app.position.manage.getLoanToValue('Ajna');
 			expect(updatedLiqPrice2).toBeLessThan(updatedLiqPrice);
 			expect(updatedLoanToValue2).toBeLessThan(updatedLoanToValue);
+		});
+	});
+});
+
+// NO LIQUIDITY
+test.describe.skip('Ajna Ethereum Multiply - Wallet connected', async () => {
+	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(extremelyLongTestTimeout);
+
+		app = new App(page);
+		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+
+		await tenderly.setTokenBalance({
+			forkId,
+			network: 'mainnet',
+			walletAddress,
+			token: 'WBTC',
+			balance: '5',
+		});
+	});
+
+	test.afterEach(async () => {
+		await tenderly.deleteFork(forkId);
+		await app.page.close();
+	});
+
+	// NO LIQUIDITY
+	test.skip('It should open an Ajna Ethereum Multiply position @regression', async ({
+		metamask,
+	}) => {
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await app.page.goto('/ethereum/ajna/multiply/WBTC-DAI#setup');
+
+		await app.position.setup.acknowledgeAjnaInfo();
+
+		await test.step('It should Open a position', async () => {
+			await app.page.waitForTimeout(1_000);
+
+			await openPosition({
+				metamask,
+				app,
+				forkId,
+				deposit: { token: 'WBTC', amount: '0.01' },
+			});
+		});
+
+		await test.step('It should Adjust risk - Down', async () => {
+			await app.page.waitForTimeout(1_000);
+
+			await adjustRisk({
+				metamask,
+				forkId,
+				app,
+				risk: 'down',
+				newSliderPosition: 0.05,
+			});
+		});
+
+		await test.step('It should Adjust risk - Up', async () => {
+			await app.page.waitForTimeout(1_000);
+
+			await adjustRisk({
+				metamask,
+				forkId,
+				app,
+				risk: 'up',
+				newSliderPosition: 0.1,
+			});
+		});
+
+		await test.step('It should Close a position', async () => {
+			await app.page.waitForTimeout(1_000);
+
+			await close({
+				metamask,
+				forkId,
+				app,
+				closeTo: 'collateral',
+				collateralToken: 'WBTC',
+				debtToken: 'DAI',
+				tokenAmountAfterClosing: '0.[0-9]{3,4}',
+			});
 		});
 	});
 });

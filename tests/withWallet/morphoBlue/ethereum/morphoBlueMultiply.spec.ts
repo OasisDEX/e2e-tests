@@ -92,6 +92,17 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 			});
 		});
 	});
+});
+
+test.describe('Morpho Blue Multiply - Wallet connected', async () => {
+	test.beforeEach(async ({ metamask, page }) => {
+		app = new App(page);
+		await setup({ metamask, app, network: 'mainnet', withoutFork: true });
+	});
+
+	test.afterEach(async () => {
+		await app.page.close();
+	});
 
 	test('It should allow to simulate a Morpho Blue Multiply position before opening it @regression', async () => {
 		test.setTimeout(veryLongTestTimeout);
