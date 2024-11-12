@@ -103,7 +103,7 @@ export const openNewPosition = async ({
 						? {
 								token: debtToken,
 								amount: (
-									+depositAmount[debtToken === 'USDC.E' ? 'USDC_E' : debtToken] / 5
+									+depositAmount[debtToken === 'USDC.E' ? 'USDC_E' : debtToken] / 7
 								).toString(),
 						  }
 						: undefined,
