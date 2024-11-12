@@ -21,8 +21,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -37,7 +37,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn ci:with-wallet:swap
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-swap
