@@ -17,9 +17,10 @@ export const confirmAndVerifySuccess = async ({
 	forkId: string;
 }) => {
 	const txCountBefore = await tenderly.getTxCount(forkId);
-	await test.step(`Metamask: ${metamaskAction}`, async () => {
-		await metamask[metamaskAction]();
-	});
+
+	await expect(async () => {
+		await metamask.confirmTransaction();
+	}, `Metamask: ${metamaskAction}`).toPass({ timeout: expectDefaultTimeout * 2 });
 
 	// Wait for tx count to increase
 	await expect(async () => {
