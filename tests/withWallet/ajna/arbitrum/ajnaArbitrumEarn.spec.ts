@@ -15,38 +15,29 @@ const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
 const { expect } = test;
 
 test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
-	test.afterEach(async () => {
-		await app.page.close();
+	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
+
+		app = new App(page);
+
+		({ forkId, walletAddress } = await setup({ metamask, app, network: 'arbitrum' }));
+
+		await tenderly.setTokenBalance({
+			forkId,
+			walletAddress,
+			network: 'arbitrum',
+			token: 'WBTC',
+			balance: '5',
+		});
 	});
 
-	test.afterAll(async () => {
+	test.afterEach(async () => {
+		await app.page.close();
 		await tenderly.deleteFork(forkId);
 	});
 
 	test('It should open an Ajna Arbitrum Earn position @regression', async ({ metamask, page }) => {
 		test.setTimeout(extremelyLongTestTimeout);
-
-		await test.step('Test setup', async () => {
-			app = new App(page);
-
-			({ forkId, walletAddress } = await setup({ metamask, app, network: 'arbitrum' }));
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'arbitrum',
-				token: 'WBTC',
-				balance: '5',
-			});
-
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'arbitrum',
-				token: 'USDC',
-				balance: '100000',
-			});
-		});
 
 		await app.position.openPage('/arbitrum/ajna/earn/USDC-WBTC#setup');
 		await app.position.setup.acknowledgeAjnaInfo();
@@ -63,25 +54,23 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 			protocol: 'Ajna',
 		});
 	});
+});
 
-	test('It should allow to simulate an Ajna Arbitrum Earn position before opening it', async ({
-		metamask,
-		page,
-	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
+test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
+	test.beforeEach(async ({ metamask, page }) => {
+		app = new App(page);
+		await setup({ metamask, app, network: 'arbitrum', withoutFork: true });
+	});
 
-		await test.step('Test setup', async () => {
-			app = new App(page);
+	test.afterEach(async () => {
+		await app.page.close();
+	});
 
-			await setup({
-				metamask,
-				app,
-				network: 'arbitrum',
-				withoutFork: true,
-			});
-		});
+	test('It should allow to simulate an Ajna Arbitrum Earn position before opening it', async () => {
+		test.setTimeout(longTestTimeout);
 
 		await app.position.openPage('/arbitrum/ajna/earn/RETH-ETH#setup');
+
 		await app.position.setup.acknowledgeAjnaInfo();
 
 		// Pause to avoid random fails

@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import optimismSetup from 'utils/synpress/test-wallet-setup/optimism.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -16,6 +16,8 @@ const { expect } = test;
 
 test.describe('Ajna Optimism Earn - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
+
 		app = new App(page);
 		({ forkId, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
 
