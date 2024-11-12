@@ -25,8 +25,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -45,7 +45,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn nightly:with-wallet:aave:ethereum
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-aave-ethereum
@@ -58,8 +58,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -78,7 +78,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn nightly:with-wallet:aave:other
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-aave-other
@@ -91,8 +91,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -111,7 +111,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn nightly:with-wallet:ajna-and-morphoblue
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-ajna-and-morphoblue
@@ -124,8 +124,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -144,7 +144,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn nightly:with-wallet:maker
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-maker-ethereum
@@ -157,8 +157,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -177,7 +177,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn nightly:with-wallet:spark
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-spark-ethereum
@@ -190,8 +190,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -210,7 +210,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn nightly:with-wallet:open-positions:aave:ethereum:borrow
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-open-positions-aave-ethereum-borrow
@@ -223,8 +223,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -243,7 +243,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn nightly:with-wallet:open-positions:aave:ethereum:earn-multiply
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-open-positions-aave-ethereum-earn-multiply
@@ -256,8 +256,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -276,7 +276,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn nightly:with-wallet:open-positions:aave:l2s
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-open-positions-aave-l2s
@@ -289,8 +289,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -309,7 +309,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn nightly:with-wallet:open-positions:other
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-open-positions-other
@@ -322,8 +322,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -344,7 +344,7 @@ jobs:
           OLD_WALLET_PK=${{ secrets.OLD_WALLET_PK }} \
           ONE_INCH_API_KEY=${{ secrets.ONE_INCH_API_KEY }} \
           yarn nightly:with-wallet:rays-and-token-swap-rate
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-rays-and-token-swap-rate
@@ -357,8 +357,8 @@ jobs:
   #   container:
   #     image: synthetixio/docker-node:18.16-ubuntu
   #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
   #       with:
   #         node-version: 18
   #     - name: Install dependencies
@@ -373,7 +373,7 @@ jobs:
   #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
   #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
   #         yarn nightly:with-wallet:aave:ethereum-new
-  #     - uses: actions/upload-artifact@v3
+  #     - uses: actions/upload-artifact@v4
   #       if: always()
   #       with:
   #         name: playwright-report-with-wallet-aave-ethereum-new

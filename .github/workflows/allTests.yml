@@ -28,8 +28,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -46,7 +46,7 @@ jobs:
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
           yarn nightly:with-wallet:aave:ethereum
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-aave-ethereum
@@ -59,8 +59,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -77,7 +77,7 @@ jobs:
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
           yarn nightly:with-wallet:aave:other
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-aave-other
@@ -90,8 +90,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -108,7 +108,7 @@ jobs:
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
           yarn nightly:with-wallet:ajna-and-morphoblue
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-ajna-and-morphoblue
@@ -121,8 +121,8 @@ jobs:
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
       - name: Install dependencies
@@ -139,7 +139,7 @@ jobs:
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
           yarn nightly:with-wallet:maker-and-spark
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report-with-wallet-maker-and-spark
