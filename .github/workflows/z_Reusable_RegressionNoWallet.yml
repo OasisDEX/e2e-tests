@@ -32,15 +32,17 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Verify that staging environment is ready for testing
         if: ${{ inputs.base_url == 'https://staging.summer.fi' }}
-        run: HEADLESS='true' yarn verify-staging
+        run: xvfb-run yarn verify-staging
       - name: Run NO-WALLET tests (with parameters)
         if: inputs.base_url
-        run: BASE_URL=${{ inputs.base_url }} FLAGS_FEATURES=${{ inputs.flags_features}} yarn ${{ inputs.script }}
+        run: BASE_URL=${{ inputs.base_url }} FLAGS_FEATURES=${{ inputs.flags_features}} xvfb-run yarn ${{ inputs.script }}
       - name: Run NO-WALLET tests (without parameters)
         if: ${{ ! inputs.base_url }}
-        run: yarn ${{ inputs.script }}
+        run: xvfb-run yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -5,10 +5,10 @@ type Networks = 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 
 const { NETWORK, WALLET_ADDRESS, FORK_ID, TOKENS } = process.env;
 const network = NETWORK as Networks;
-const forkId = FORK_ID;
-const tokens = TOKENS.split(' ') as SetBalanceTokens[];
+const forkId = FORK_ID ?? '';
+const tokens = (TOKENS ?? '').split(' ') as SetBalanceTokens[];
 
-let walletAddress: string = WALLET_ADDRESS;
+let walletAddress: string = WALLET_ADDRESS ?? '';
 
 (async () => {
 	for (const token of tokens) {
