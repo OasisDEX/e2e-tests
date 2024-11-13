@@ -12,7 +12,8 @@ let app: App;
 const test = testWithSynpress(metaMaskFixtures(arbitrumRealWalletSetup));
 const { expect } = test;
 
-test.describe('Aave v3 - Arbitrum - Wallet connected', async () => {
+// SKIP -- Not working with automation - 1inch might be blocking the walletwhen using automation tools
+test.describe.skip('Aave v3 - Arbitrum - Wallet connected', async () => {
 	test.beforeEach(async ({ page, metamask }) => {
 		test.setTimeout(longTestTimeout);
 
@@ -37,6 +38,9 @@ test.describe('Aave v3 - Arbitrum - Wallet connected', async () => {
 
 		await app.page.goto('/arbitrum/aave/v3/multiply/eth-usdc#setup');
 
+		//
+		await app.pause();
+		//
 		await app.position.setup.deposit({ token: 'ETH', amount: '0.001' });
 
 		await app.position.setup.confirm();

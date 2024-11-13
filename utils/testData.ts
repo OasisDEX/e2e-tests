@@ -192,17 +192,35 @@ export const aaveV3EthereumBorrowPools_6 = [
 	'DAI-ETH',
 	'DAI-MKR',
 	'DAI-WBTC',
-];
-
-export const aaveV3EthereumBorrowPools_7 = ['SDAI-WBTC', 'SDAI-ETH', 'SDAI-USDT'];
-
-export const aaveV3EthereumBorrowPools_8 = [
+	'SDAI-WBTC',
+	'SDAI-ETH',
+	'SDAI-USDT',
 	'USDC-WBTC',
 	'USDC-ETH',
 	'USDC-WSTETH',
 	'USDC-USDT',
 	'USDT-ETH',
 ];
+
+// export const aaveV3EthereumBorrowPools_6 = [
+// 	'LINK-DAI',
+// 	'LINK-USDC',
+// 	'LINK-USDT',
+// 	'LINK-ETH',
+// 	'DAI-ETH',
+// 	'DAI-MKR',
+// 	'DAI-WBTC',
+// ];
+
+// export const aaveV3EthereumBorrowPools_7 = ['SDAI-WBTC', 'SDAI-ETH', 'SDAI-USDT'];
+
+// export const aaveV3EthereumBorrowPools_8 = [
+// 	'USDC-WBTC',
+// 	'USDC-ETH',
+// 	'USDC-WSTETH',
+// 	'USDC-USDT',
+// 	'USDT-ETH',
+// ];
 
 export const aaveV3ArbitrumEarnPools = ['WSTETH-ETH', 'RETH-ETH'];
 // 'WEETH-ETH' --> WEETH supply 100%
