@@ -1,6 +1,8 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 
+type Networks = 'All Networks' | 'BASE' | 'ARBITRUM_ONE';
+
 export class NetworkSelector {
 	readonly page: Page;
 
@@ -16,16 +18,22 @@ export class NetworkSelector {
 	@step
 	async open() {
 		const dropdownLocator = this.networksLocator.locator('[class*="dropdownSelected"]');
-		// Wait for image to load to avoid random fails
-		const imageLocator = dropdownLocator.locator('img').nth(0);
-		await expect(imageLocator).toBeVisible();
 
-		// Click on drop down element
-		await dropdownLocator.click();
+		await expect(async () => {
+			// Click on drop down element
+			await dropdownLocator.click({ force: true });
+
+			// Verify dropdown options are visible - Step addedto avoidflakiness
+			await expect(
+				this.networksLocator
+					.locator('div[class*="_dropdownOption_"]')
+					.filter({ hasText: 'All Networks' })
+			).toBeVisible();
+		}).toPass();
 	}
 
 	@step
-	async select({ option }: { option: 'All Networks' | 'base' | 'ethereum' }) {
+	async select({ option }: { option: Networks }) {
 		await this.networksLocator
 			.locator('div[class*="_dropdownOption_"]')
 			.filter({ hasText: option })
@@ -33,7 +41,7 @@ export class NetworkSelector {
 	}
 
 	@step
-	async shouldBe({ option }: { option: 'All Networks' | 'base' | 'ethereum' }) {
+	async shouldBe({ option }: { option: Networks }) {
 		await expect(
 			this.networksLocator
 				.locator('div[class*="dropdownSelected"]')
