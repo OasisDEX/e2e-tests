@@ -42,7 +42,7 @@ jobs:
       base_url: 'https://staging.summer.fi'
       script: api-tests:regression
 
-  # SKIP -- Not working with automation - 1inch might be blocking the walletwhen using automation tools
+  # SKIP - Staging broken for tests using wallet
   # with-real-wallet:
   #   uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
   #   with:

@@ -12,7 +12,7 @@ let forkId: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
-test.describe('Aave V2 Earn - Wallet connected', async () => {
+test.describe.only('Aave V2 Earn - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
