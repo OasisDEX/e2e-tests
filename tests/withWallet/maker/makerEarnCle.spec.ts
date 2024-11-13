@@ -12,7 +12,6 @@ let forkId: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
-const { expect } = test;
 
 test.describe('Maker Earn - CLE - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
@@ -50,7 +49,9 @@ test.describe('Maker Earn - CLE - Wallet connected', async () => {
 
 			await app.position.setup.setupAllowance();
 			// Confirm metamask popup twice
+			await app.page.waitForTimeout(1_000);
 			await metamask.addNewToken();
+			await app.page.waitForTimeout(1_000);
 			await metamask.addNewToken();
 
 			await app.position.setup.confirmStake();

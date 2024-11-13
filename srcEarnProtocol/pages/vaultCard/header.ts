@@ -8,7 +8,7 @@ export class Header {
 
 	constructor(page: Page, cardLocator: Locator) {
 		this.page = page;
-		this.headerLocator = cardLocator.locator('[class*="_strategyCardHeaderWrapper"]');
+		this.headerLocator = cardLocator.locator('[class*="_vaultCardHeaderWrapper"]');
 	}
 
 	@step

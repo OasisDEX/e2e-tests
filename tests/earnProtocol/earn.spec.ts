@@ -1,13 +1,17 @@
 import { test } from '#earnProtocolFixtures';
 
-test.describe(`Earn page`, async () => {
-	test('It should select network', async ({ app }) => {
+test.describe.only(`Earn page`, async () => {
+	test.beforeEach(async ({ app }) => {
 		await app.earn.openPage();
+	});
 
-		await app.earn.networkSelector.open();
+	(['BASE', 'ARBITRUM_ONE'] as const).forEach((network) => {
+		test(`It should select ${network} network`, async ({ app }) => {
+			await app.earn.networkSelector.open();
 
-		await app.earn.networkSelector.select({ option: 'base' });
+			await app.earn.networkSelector.select({ option: network });
 
-		await app.earn.networkSelector.shouldBe({ option: 'base' });
+			await app.earn.networkSelector.shouldBe({ option: network });
+		});
 	});
 });
