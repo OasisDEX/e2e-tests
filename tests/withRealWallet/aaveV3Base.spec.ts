@@ -12,7 +12,8 @@ let app: App;
 const test = testWithSynpress(metaMaskFixtures(baseRealWalletSetup));
 const { expect } = test;
 
-test.describe('Aave v3 - Base - Wallet connected', async () => {
+// SKIP -- Not working with automation - 1inch might be blocking the walletwhen using automation tools
+test.describe.skip('Aave v3 - Base - Wallet connected', async () => {
 	test.beforeEach(async ({ page, metamask }) => {
 		test.setTimeout(longTestTimeout);
 

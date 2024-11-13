@@ -15,9 +15,10 @@ jobs:
     with:
       script: nightly:no-wallet
 
-  with-real-wallet:
-    uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
-    secrets: inherit
+  # SKIP -- Not working with automation - 1inch might be blocking the walletwhen using automation tools
+  # with-real-wallet:
+  #   uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
+  #   secrets: inherit
 
   with-wallet-aave-ethereum-tests:
     name: 'With wallet - Aave - Ethereum'
