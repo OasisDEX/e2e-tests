@@ -1,6 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 
-test.describe.only(`Earn page`, async () => {
+test.describe(`Earn page`, async () => {
 	test.beforeEach(async ({ app }) => {
 		await app.earn.openPage();
 	});
