@@ -37,9 +37,9 @@ test.describe('Aave v3 - Arbitrum - Wallet connected', async () => {
 
 		await app.page.goto('/arbitrum/aave/v3/multiply/eth-usdc#setup');
 
-		//
-		await app.pause();
-		//
+		// To avoid flakiness
+		await app.page.waitForTimeout(2_000);
+
 		await app.position.setup.deposit({ token: 'ETH', amount: '0.001' });
 
 		await app.position.setup.confirm();
