@@ -28,6 +28,6 @@ test.describe('MorphoBlue - Multiply', async () => {
 			token: 'DAI',
 		});
 
-		await app.position.manage.shouldBeVisible('Manage your Morpho Blue Earn');
+		await app.position.manage.shouldBeVisible('Manage your Morpho Earn');
 	});
 });
