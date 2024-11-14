@@ -2,36 +2,40 @@ import { expect, test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Landin page', async () => {
-	test('It should show strategy card', async ({ app }) => {
+	test('It should show vault card', async ({ app }) => {
 		await app.landingPage.open();
-		await app.landingPage.shouldShowStrategyCard();
+		await app.landingPage.shouldShowVaultCard();
 	});
 
 	(['Right', 'Left'] as const).forEach((direction) => {
-		test(`It should show strategy card to the ${direction}`, async ({ app }) => {
+		test(`It should show vault card to the ${direction}`, async ({ app }) => {
 			await app.landingPage.open();
 
-			// Get strategy info for current active strategy in carousel
-			const originalStrategyCard =
-				await app.landingPage.strategiesCarousel.activeSlide.strategyCard.header.getDetails();
+			// To avoid flakiness
+			await app.page.waitForTimeout(2_000);
 
-			// Select strategy to the right
-			await app.landingPage.strategiesCarousel.moveToNextStrategy(direction, {
+			// Get vault info for current active vault in carousel
+			const originalVaultCard =
+				await app.landingPage.vaultsCarousel.activeSlide.vaultCard.header.getDetails();
+
+			// Move to vault to the right/left
+			await app.landingPage.vaultsCarousel.moveToNextVault(direction, {
 				timeout: expectDefaultTimeout * 2,
 			});
 
-			// Get strategy info for current active strategy in carousel
-			const newStrategyCard =
-				await app.landingPage.strategiesCarousel.activeSlide.strategyCard.header.getDetails();
+			// Get vault info for current active vault in carousel
+			const newVaultCard =
+				await app.landingPage.vaultsCarousel.activeSlide.vaultCard.header.getDetails();
 
-			// Logging strategies data for debugging purposes
-			console.log('originalStrategyCard: ', originalStrategyCard);
-			console.log('newStrategyCard: ', newStrategyCard);
+			// Logging vaults data for debugging purposes
+			console.log('originalVaultCard: ', originalVaultCard);
+			console.log('newVaultCard: ', newVaultCard);
 
 			expect(
-				originalStrategyCard.token == newStrategyCard.token &&
-					originalStrategyCard.network == newStrategyCard.network &&
-					originalStrategyCard.risk == newStrategyCard.risk
+				originalVaultCard.token == newVaultCard.token &&
+					originalVaultCard.network == newVaultCard.network &&
+					originalVaultCard.risk == newVaultCard.risk,
+				'Vault details should not be equal'
 			).not.toBeTruthy();
 		});
 	});

@@ -20,8 +20,10 @@ export class Header {
 	@step
 	async getNetwork(): Promise<string> {
 		const network =
-			(await this.headerLocator.getByTestId('vault-network').locator('img').getAttribute('alt')) ??
-			'';
+			(await this.headerLocator
+				.getByTestId('vault-network')
+				.locator('svg')
+				.getAttribute('title')) ?? '';
 		return network.replace('network_', '');
 	}
 
@@ -34,7 +36,7 @@ export class Header {
 	@step
 	async getDetails() {
 		const token = await this.getToken();
-		const network = await this.getToken();
+		const network = await this.getNetwork();
 		const risk = await this.getRisk();
 
 		return { token, network, risk };

@@ -3,7 +3,7 @@ import { Header } from './header';
 import { expect, step } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
-export class StrategyCard {
+export class VaultCard {
 	readonly page: Page;
 
 	readonly header: Header;

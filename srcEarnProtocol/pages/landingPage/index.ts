@@ -1,15 +1,15 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Page } from '@playwright/test';
-import { StrategiesCarousel } from './strategiesCarousel';
+import { VaultsCarousel } from './vaultsCarousel';
 
 export class LandingPage {
 	readonly page: Page;
 
-	readonly strategiesCarousel: StrategiesCarousel;
+	readonly vaultsCarousel: VaultsCarousel;
 
 	constructor(page: Page) {
 		this.page = page;
-		this.strategiesCarousel = new StrategiesCarousel(page);
+		this.vaultsCarousel = new VaultsCarousel(page);
 	}
 
 	@step
@@ -29,10 +29,10 @@ export class LandingPage {
 	}
 
 	@step
-	async shouldShowStrategyCard() {
+	async shouldShowVaultCard() {
 		await expect(
-			this.page.locator('[class*="_strategyCardHeaderWrapper"]').nth(0),
-			'Strategy card should be visible'
+			this.page.locator('[class*="_vaultCardHeaderWrapper"]').nth(0),
+			'Vault card should be visible'
 		).toBeVisible();
 	}
 }

@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { StrategyCard } from '../strategyCard';
+import { VaultCard } from '../vaultCard';
 import { step } from '#earnProtocolFixtures';
 
 export class YouMightLike {
@@ -13,9 +13,9 @@ export class YouMightLike {
 	}
 
 	nthCard(nth: number) {
-		return new StrategyCard(
+		return new VaultCard(
 			this.page,
-			this.youMightLikeLocator.locator('[class*="_strategyCard_"]').nth(nth)
+			this.youMightLikeLocator.locator('[class*="_vaultCard_"]').nth(nth)
 		);
 	}
 

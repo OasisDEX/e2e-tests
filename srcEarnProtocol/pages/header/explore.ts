@@ -1,10 +1,10 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 
+export type ExplorePages = 'User activity' | 'Rebalancing Activity' | 'Yield Trend';
+
 export class Explore {
 	readonly page: Page;
-
-	readonly headerLocator: Locator;
 
 	readonly exploreLocator: Locator;
 
@@ -19,11 +19,19 @@ export class Explore {
 	}
 
 	@step
-	async shouldList(menuOptions: ('User activity' | 'Rebalancing Activity' | 'Yield Trend')[]) {
+	async shouldList(menuOptions: ExplorePages[]) {
 		for (const menuOption in menuOptions) {
 			await expect(
 				this.exploreLocator.getByText(menuOptions[menuOption], { exact: true })
 			).toBeVisible();
 		}
+	}
+
+	@step
+	async select(page: ExplorePages) {
+		await this.exploreLocator
+			.getByRole('link')
+			.filter({ has: this.page.getByText(page, { exact: true }) })
+			.click();
 	}
 }

@@ -3,7 +3,7 @@ import { ActiveSlide } from './activeSlide';
 import { expect, step } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
-export class StrategiesCarousel {
+export class VaultsCarousel {
 	readonly page: Page;
 
 	readonly activeSlide: ActiveSlide;
@@ -14,11 +14,11 @@ export class StrategiesCarousel {
 	}
 
 	@step
-	async moveToNextStrategy(direction: 'Right' | 'Left', args?: { timeout: number }) {
+	async moveToNextVault(direction: 'Right' | 'Left', args?: { timeout: number }) {
 		const arrowButtonLocator = this.page.locator(`[class*="_button${direction}_"]`);
 
 		// Wait for button to be fully visible
-		await expect(arrowButtonLocator.locator('img')).toBeVisible({
+		await expect(arrowButtonLocator.locator('svg')).toBeVisible({
 			timeout: args?.timeout ?? expectDefaultTimeout,
 		});
 
@@ -28,11 +28,11 @@ export class StrategiesCarousel {
 		// Button should be disabled after click
 		await expect(async () => {
 			expect(await arrowButtonLocator.isDisabled()).toBeTruthy();
-		}).toPass();
+		}, 'Arrow button should be disabled').toPass();
 
 		// Button should be enabled back after a little while
 		await expect(async () => {
 			expect(await arrowButtonLocator.isDisabled()).not.toBeTruthy();
-		}).toPass();
+		}, 'Arrow button should be enabled').toPass();
 	}
 }
