@@ -2,15 +2,19 @@ import { expect, step } from '#earnProtocolFixtures';
 import { Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
 import { NetworkSelector } from './networkSelector';
+import { Vaults } from './vaults';
 
 export class Earn {
 	readonly page: Page;
 
 	readonly networkSelector: NetworkSelector;
 
+	readonly vaults: Vaults;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.networkSelector = new NetworkSelector(page);
+		this.vaults = new Vaults(page);
 	}
 
 	@step

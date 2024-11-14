@@ -20,8 +20,10 @@ export class Header {
 	@step
 	async getNetwork(): Promise<string> {
 		const network =
-			(await this.headerLocator.getByTestId('vault-network').locator('img').getAttribute('alt')) ??
-			'';
+			(await this.headerLocator
+				.getByTestId('vault-network')
+				.locator('svg')
+				.getAttribute('title')) ?? '';
 		return network.replace('network_', '');
 	}
 
