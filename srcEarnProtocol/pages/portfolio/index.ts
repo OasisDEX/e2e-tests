@@ -20,7 +20,7 @@ export class Portfolio {
 
 	readonly youMightLike: YouMightLike;
 
-	readonly portfolioHeaderLocator: Locator;
+	readonly portfolioSecondHeaderLocator: Locator;
 
 	constructor(page: Page) {
 		this.page = page;
@@ -29,7 +29,9 @@ export class Portfolio {
 		this.rewards = new Rewards(page);
 		this.wallet = new Wallet(page);
 		this.youMightLike = new YouMightLike(page);
-		this.portfolioHeaderLocator = this.page.locator('[class*="PortfolioHeader_"]');
+		this.portfolioSecondHeaderLocator = this.page.locator(
+			'[class*="PortfolioHeader_secondRowWrapper_"]'
+		);
 	}
 
 	@step
@@ -42,15 +44,13 @@ export class Portfolio {
 
 	@step
 	async open(wallet: string) {
-		await this.page.goto(`/portfolio/${wallet}`);
+		await this.page.goto(`/earn/portfolio/${wallet}`);
 		await this.shoulBeVisible({ timeout: portfolioTimeout });
 	}
 
 	@step
 	async shouldShowWalletAddress(shortenedWalletAddress: string) {
-		await expect(this.page.locator('[class*="PortfolioHeader_secondRowWrapper_"]')).toContainText(
-			shortenedWalletAddress
-		);
+		await expect(this.portfolioSecondHeaderLocator).toContainText(shortenedWalletAddress);
 	}
 
 	@step
@@ -64,20 +64,20 @@ export class Portfolio {
 		if (total$SUMR) {
 			const regExp = new RegExp(total$SUMR);
 			await expect(
-				this.portfolioHeaderLocator
-					.getByText('Total $SUMR')
-					.locator('..')
-					.locator('xpath=//following-sibling::span[1]')
+				this.portfolioSecondHeaderLocator
+					.locator('[class*="_dataBlockWrapper_"]')
+					.filter({ has: this.page.getByText('Total $SUMR', { exact: true }) })
+					.locator('span')
 			).toContainText(regExp);
 		}
 
 		if (totalWallet) {
 			const regExp = new RegExp(`\\$${totalWallet}`);
 			await expect(
-				this.portfolioHeaderLocator
-					.getByText('Total Wallet Value')
-					.locator('..')
-					.locator('xpath=//following-sibling::span[1]')
+				this.portfolioSecondHeaderLocator
+					.locator('[class*="_dataBlockWrapper_"]')
+					.filter({ has: this.page.getByText('Total Wallet Value', { exact: true }) })
+					.locator('span')
 			).toContainText(regExp);
 		}
 	}
