@@ -36,7 +36,7 @@ export class Header {
 	@step
 	async getDetails() {
 		const token = await this.getToken();
-		const network = await this.getToken();
+		const network = await this.getNetwork();
 		const risk = await this.getRisk();
 
 		return { token, network, risk };

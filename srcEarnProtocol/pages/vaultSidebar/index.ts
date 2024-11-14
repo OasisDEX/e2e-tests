@@ -1,6 +1,6 @@
 import { Locator, Page } from '@playwright/test';
 
-export class StrategySidebar {
+export class VaultSidebar {
 	readonly page: Page;
 
 	readonly sideBarLocator: Locator;

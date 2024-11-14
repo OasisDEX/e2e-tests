@@ -1,6 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 
-test.describe.only('Header', async () => {
+test.describe('Header', async () => {
 	test('It should open Earn page', async ({ app }) => {
 		await app.header.shouldHaveSummerfiLogo();
 
