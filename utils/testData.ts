@@ -57,9 +57,23 @@ export const morphoEthereumEarnPools_3 = [
 ];
 // 'WOETH-ETH', --> NO LIQUIDITY
 
-export const morphoEthereumEarnPools_4 = ['EZETH-ETH', 'SUSDE-DAI-1', 'SUSDE-DAI-2', 'SUSDE-DAI-3'];
+export const morphoEthereumEarnPools_4 = ['EZETH-ETH', 'SUSDE-DAI-1', 'SUSDE-DAI-3'];
+// 'USDE-DAI-2', --> NO LIQUIDITY
 
-export const morphoEthereumBorrowPools_1 = ['USDE-DAI-2', 'OSETH-ETH', 'EZETH-ETH'];
+export const morphoEthereumBorrowPools = [
+	'OSETH-ETH',
+	'EZETH-ETH',
+	'SUSDE-DAI-3',
+	'SUSDE-DAI-4',
+	'SUSDE-USDT',
+	'WSTETH-ETH-2',
+	'WSTETH-USDA',
+	'SWBTC-WBTC',
+	'RSWETH-ETH',
+];
+// 'USDE-DAI-2', --> NO LIQUIDITY
+// 'RSETH-ETH', --> NO LIQUIDITY
+// 'WOETH-ETH', --> NO LIQUIDITY
 // 'USDE-DAI-1', --> Already tested in /withWallet/morphoBlue
 // 'USDE-DAI-3', --> Already tested in /withWallet/morphoBlue
 // 'SUSDE-DAI-1', --> Already tested in /withWallet/morphoBlue
@@ -73,13 +87,13 @@ export const morphoEthereumBorrowPools_1 = ['USDE-DAI-2', 'OSETH-ETH', 'EZETH-ET
 // 'MKR-USDC', --> Already tested in /withWallet/morphoBlue
 // 'WEETH-ETH', --> Already tested in /withWallet/morphoBlue
 
-export const morphoEthereumBorrowPools_2 = ['SUSDE-DAI-4']; // ['SUSDE-DAI-3', 'SUSDE-DAI-4', 'SUSDE-USDT'];
+// export const morphoEthereumBorrowPools_1 = ['USDE-DAI-2', 'OSETH-ETH', 'EZETH-ETH'];
 
-export const morphoEthereumBorrowPools_3 = ['WSTETH-ETH-2', 'WSTETH-USDA', 'SWBTC-WBTC'];
+// export const morphoEthereumBorrowPools_2 = ['SUSDE-DAI-3', 'SUSDE-DAI-4', 'SUSDE-USDT'];
 
-export const morphoEthereumBorrowPools_4 = ['RSWETH-ETH'];
-// 'RSETH-ETH', --> NO LIQUIDITY
-// 'WOETH-ETH', --> NO LIQUIDITY
+// export const morphoEthereumBorrowPools_3 = ['WSTETH-ETH-2', 'WSTETH-USDA', 'SWBTC-WBTC'];
+
+// export const morphoEthereumBorrowPools_4 = ['RSWETH-ETH'];
 
 export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 // , 'WEETH-USDC' --> WEETH supply 100%
