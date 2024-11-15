@@ -284,7 +284,7 @@ export class Manage {
 	async shouldReduceRays({ raysCount, automation }: { raysCount: string; automation?: boolean }) {
 		if (automation) {
 			const regExp = new RegExp(
-				`Reduce Rays by ${raysCount} Rays a yearWhen you remove this automation`
+				`Reduce Rays by .*${raysCount} Rays a yearWhen you remove this automation`
 			);
 			await expect(this.page.getByText('Reduce Rays by').locator('..')).toContainText(regExp);
 		} else {

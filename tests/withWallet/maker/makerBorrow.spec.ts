@@ -76,7 +76,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 	});
 });
 
-test.describe.only('Maker Borrow - Wallet connected', async () => {
+test.describe('Maker Borrow - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
