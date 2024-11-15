@@ -32,11 +32,6 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 	test('It should open and magage an Aave V3 Borrow Base position @regression', async ({
 		metamask,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: '12473',
-		});
-
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.page.goto('/base/aave/v3/borrow/eth-usdbc#simulate');
@@ -53,7 +48,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			});
 		});
 
-		// Skip again if DB collision also happeningwith omni
+		// Skip again if DB collision also happening with omni
 		await test.step('It should Deposit and Borrow in a single tx', async () => {
 			await app.page.waitForTimeout(1_000);
 

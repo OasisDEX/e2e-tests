@@ -1,7 +1,7 @@
-import { morphoBaseBorrowPools1 } from 'utils/testData';
+import { morphoBaseBorrowPools } from 'utils/testData';
 import { openNewPosition } from 'tests/sharedTestSteps/openNewPosition';
 
-morphoBaseBorrowPools1.forEach(async (pool) => {
+morphoBaseBorrowPools.forEach(async (pool) => {
 	await openNewPosition({
 		network: 'base',
 		protocol: 'morphoblue',
