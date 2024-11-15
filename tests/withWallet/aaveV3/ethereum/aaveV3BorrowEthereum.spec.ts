@@ -58,10 +58,10 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			});
 		});
 
-		// Pause to avoid flakiness
-		await app.page.waitForTimeout(2_000);
-
 		await test.step('It should Deposit and Borrow in a single tx', async () => {
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(2_000);
+
 			await manageDebtOrCollateral({
 				metamask,
 				app,
@@ -78,10 +78,10 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			});
 		});
 
-		// Pause to avoid flakiness
-		await app.page.waitForTimeout(2_000);
-
 		await test.step('It should Withdraw and Pay back in a single tx', async () => {
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(2_000);
+
 			await app.position.manage.withdrawCollateral();
 
 			await manageDebtOrCollateral({
