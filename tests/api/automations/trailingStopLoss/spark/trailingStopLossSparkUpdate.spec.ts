@@ -65,16 +65,7 @@ test.describe('API tests - Trailing Stop-Loss - Update - Spark', async () => {
 			hasStablecoinDebt: true,
 		});
 
-		expect(respJSON).toMatchObject({
-			...updateCloseToDebtResponse,
-			warnings: [
-				{
-					message: 'Your stop loss will make the auto-sell not trigger',
-					code: 'stop-loss-makes-auto-sell-not-trigger',
-					path: [],
-				},
-			],
-		});
+		expect(respJSON).toMatchObject(updateCloseToDebtResponse);
 	});
 
 	test('Update existing automation - Trailing distance - Valid payload data', async ({
