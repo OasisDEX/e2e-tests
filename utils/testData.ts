@@ -155,36 +155,23 @@ export const aaveV3EthereumMultiplyPools_7 = ['DAI-ETH', 'DAI-MKR', 'SDAI-WBTC',
 
 export const aaveV3EthereumMultiplyPools_8 = ['USDC-WSTETH', 'USDC-WBTC', 'USDT-ETH'];
 
-export const aaveV3EthereumBorrowPools_1 = ['ETH-USDT', 'ETH-WBTC'];
-// 'LDO-USDT' skipped as tenderly_setErc20Balance is not working with LDO
-// 'ETH-GHO', -- NO LIQUIDITY - GHO
-// 'WBTC-GHO', -- NO LIQUIDITY - GHO
-// 'WSTETH-GHO', -- NO LIQUIDITY - GHO
-// 'RETH-GHO', -- NO LIQUIDITY - GHO
-// 'WEETH-GHO', -- NO LIQUIDITY - GHO
-// 'LINK-GHO', -- NO LIQUIDITY - GHO
-// 'SDAI-GHO', -- NO LIQUIDITY - GHO
-// 'USDC-GHO', -- NO LIQUIDITY - GHO
-// 'ETH-DAI', --> Already tested in /withWallet/aaveV3
-// 'ETH-USDC', --> Already tested in /withWallet/aaveV3
-// 'WBTC-DAI', --> Already tested in /withWallet/aaveV3
-// 'WSTETH-USDT', --> Already tested in /withWallet/aaveV3
-
-export const aaveV3EthereumBorrowPools_2 = ['WBTC-USDC', 'WBTC-USDT', 'WBTC-LUSD', 'WBTC-ETH'];
-
-export const aaveV3EthereumBorrowPools_3 = [
+export const aaveV3EthereumBorrowPools = [
+	'ETH-USDT',
+	'ETH-WBTC',
+	'WBTC-USDC',
+	'WBTC-USDT',
+	'WBTC-LUSD',
+	'WBTC-ETH',
 	'WSTETH-DAI',
 	'WSTETH-USDC',
 	'WSTETH-LUSD',
 	'WSTETH-RPL',
 	'WSTETH-CBETH',
-];
-
-export const aaveV3EthereumBorrowPools_4 = ['RETH-DAI', 'RETH-USDC', 'RETH-USDT'];
-
-export const aaveV3EthereumBorrowPools_5 = ['CBETH-USDC', 'CBETH-GHO'];
-
-export const aaveV3EthereumBorrowPools_6 = [
+	'RETH-DAI',
+	'RETH-USDC',
+	'RETH-USDT',
+	'CBETH-USDC',
+	'CBETH-GHO',
 	'LINK-DAI',
 	'LINK-USDC',
 	'LINK-USDT',
@@ -201,6 +188,35 @@ export const aaveV3EthereumBorrowPools_6 = [
 	'USDC-USDT',
 	'USDT-ETH',
 ];
+
+// export const aaveV3EthereumBorrowPools_1 = ['ETH-USDT', 'ETH-WBTC'];
+// 'LDO-USDT' skipped as tenderly_setErc20Balance is not working with LDO
+// 'ETH-GHO', -- NO LIQUIDITY - GHO
+// 'WBTC-GHO', -- NO LIQUIDITY - GHO
+// 'WSTETH-GHO', -- NO LIQUIDITY - GHO
+// 'RETH-GHO', -- NO LIQUIDITY - GHO
+// 'WEETH-GHO', -- NO LIQUIDITY - GHO
+// 'LINK-GHO', -- NO LIQUIDITY - GHO
+// 'SDAI-GHO', -- NO LIQUIDITY - GHO
+// 'USDC-GHO', -- NO LIQUIDITY - GHO
+// 'ETH-DAI', --> Already tested in /withWallet/aaveV3
+// 'ETH-USDC', --> Already tested in /withWallet/aaveV3
+// 'WBTC-DAI', --> Already tested in /withWallet/aaveV3
+// 'WSTETH-USDT', --> Already tested in /withWallet/aaveV3
+
+// export const aaveV3EthereumBorrowPools_2 = ['WBTC-USDC', 'WBTC-USDT', 'WBTC-LUSD', 'WBTC-ETH'];
+
+// export const aaveV3EthereumBorrowPools_3 = [
+// 	'WSTETH-DAI',
+// 	'WSTETH-USDC',
+// 	'WSTETH-LUSD',
+// 	'WSTETH-RPL',
+// 	'WSTETH-CBETH',
+// ];
+
+// export const aaveV3EthereumBorrowPools_4 = ['RETH-DAI', 'RETH-USDC', 'RETH-USDT'];
+
+// export const aaveV3EthereumBorrowPools_5 = ['CBETH-USDC', 'CBETH-GHO'];
 
 // export const aaveV3EthereumBorrowPools_6 = [
 // 	'LINK-DAI',
