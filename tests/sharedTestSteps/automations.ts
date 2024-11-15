@@ -49,6 +49,7 @@ let matchObject = ({
 	triggerToken,
 	protocol,
 	action,
+	noThreshold,
 }: {
 	automation: Automations;
 	collToken: Tokens;
@@ -56,6 +57,7 @@ let matchObject = ({
 	triggerToken?: Tokens;
 	protocol?: 'morphoblue';
 	action?: 'update' | 'remove';
+	noThreshold?: boolean | undefined;
 }) => {
 	return {
 		action: action ?? 'add',
@@ -82,7 +84,7 @@ let matchObject = ({
 				targetLTV: expect.any(String),
 				maxBaseFee: '300',
 				[automation === 'auto-sell' ? 'useMinSellPrice' : 'useMaxBuyPrice']:
-					action !== 'remove' ? true : false,
+					noThreshold || action === 'remove' ? false : true,
 			}),
 			...(automation === 'dma-partial-take-profit' && {
 				withdrawToken: tokenAddresses[triggerToken as Tokens],
@@ -111,6 +113,7 @@ const verifyTriggerApiRequestPayload = async ({
 	debtToken,
 	triggerToken,
 	action,
+	noThreshold,
 }: {
 	app: App;
 	automation: Automations;
@@ -119,6 +122,7 @@ const verifyTriggerApiRequestPayload = async ({
 	debtToken: Tokens;
 	triggerToken?: Tokens;
 	action?: 'update' | 'remove';
+	noThreshold?: boolean | undefined;
 }) => {
 	const requestPromise = app.page.waitForRequest(
 		(request) =>
@@ -139,7 +143,7 @@ const verifyTriggerApiRequestPayload = async ({
 			await app.position.optimization.adjustAutoBuyTrigger({ value: 0.1 });
 		}
 		if (automation === 'auto-sell') {
-			await app.position.protection.adjustAutoSellTrigger({ value: 0.9 });
+			await app.position.protection.adjustAutoSellTrigger({ value: 0.96 });
 		}
 		if (automation === 'dma-partial-take-profit') {
 			await app.position.optimization.adjustPartialTakeProfitTrigger({ value: 0.1 });
@@ -156,6 +160,7 @@ const verifyTriggerApiRequestPayload = async ({
 		...(triggerToken && { triggerToken }),
 		...(protocol === 'morphoblue' && { protocol }),
 		...(action && { action }),
+		noThreshold,
 	};
 
 	expect(requestJson).toMatchObject(matchObject(matchObjectParameters));
@@ -335,6 +340,8 @@ export const testAutoBuy = async ({
 	triggerLTV,
 	verifyTriggerPayload,
 	action,
+	otherOptimizationsOn,
+	setNoThreshold,
 }: {
 	metamask: MetaMask;
 	app: App;
@@ -349,10 +356,23 @@ export const testAutoBuy = async ({
 		action?: 'update' | 'remove';
 	};
 	action?: 'update' | 'remove';
+	otherOptimizationsOn?: boolean;
+	setNoThreshold?: boolean;
 }) => {
 	await app.position.openTab('Optimization');
 	if (!action) {
 		await app.position.optimization.setupOptimization('Auto-Buy');
+	}
+
+	if (otherOptimizationsOn) {
+		await app.position.optimization.openOptimizationDropDown({
+			selectedOptimization: 'Auto Take Profit',
+		});
+		await app.position.optimization.selectOptimization('Auto-Buy');
+	}
+
+	if (setNoThreshold) {
+		await app.position.optimization.setNoThreshold();
 	}
 
 	if (verifyTriggerPayload) {
@@ -363,6 +383,7 @@ export const testAutoBuy = async ({
 			collToken: verifyTriggerPayload.collToken,
 			debtToken: verifyTriggerPayload.debtToken,
 			action,
+			noThreshold: setNoThreshold,
 		});
 	} else {
 		await app.position.optimization.adjustAutoBuyTrigger({ value: triggerLTV ?? 0.2 });

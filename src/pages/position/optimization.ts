@@ -2,6 +2,8 @@ import { step } from '#noWalletFixtures';
 import { expect, Page } from '@playwright/test';
 import { Base } from './base';
 
+type Optimizations = 'Auto Take Profit' | 'Auto-Buy';
+
 export class Optimization {
 	readonly page: Page;
 
@@ -13,7 +15,7 @@ export class Optimization {
 	}
 
 	@step
-	async setupOptimization(optimization: 'Auto-Buy' | 'Auto Take Profit') {
+	async setupOptimization(optimization: Optimizations) {
 		const locator = this.page.getByRole('button', { name: `Set up ${optimization}` });
 		expect(locator).toBeVisible();
 		await this.page.waitForTimeout(1000);
@@ -51,10 +53,24 @@ export class Optimization {
 	}
 
 	@step
-	async add(optimization: 'Auto-Buy' | 'Auto Take Profit') {
+	async add(optimization: Optimizations) {
 		if (optimization === 'Auto Take Profit') {
 			await this.page.getByRole('button', { name: `Add ${optimization}` }).scrollIntoViewIfNeeded();
 		}
 		await this.page.getByRole('button', { name: `Add ${optimization}` }).click();
+	}
+
+	@step
+	async openOptimizationDropDown({
+		selectedOptimization,
+	}: {
+		selectedOptimization: Optimizations;
+	}) {
+		await this.page.locator(`button:has-text("${selectedOptimization}")`).click();
+	}
+
+	@step
+	async selectOptimization(optimization: Optimizations) {
+		await this.page.locator(`li:has-text("${optimization}")`).click();
 	}
 }

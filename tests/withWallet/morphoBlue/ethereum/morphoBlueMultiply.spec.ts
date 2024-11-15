@@ -32,7 +32,6 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 
 	test.afterEach(async () => {
 		await tenderly.deleteFork(forkId);
-		await app.page.close();
 	});
 
 	test('It should open and manage a Morpho Blue Multiply position - WSTETH/USDC @regression', async ({
