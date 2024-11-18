@@ -286,21 +286,25 @@ export const aaveV3BaseBorrowPools = [
 export const aaveV3OptimismEarnPools = ['USDC.E-SUSD', 'USDC-SUSD', 'WSTETH-ETH'];
 // BUG - 16013
 
-export const aaveV3OptimismMultiplyPools_1 = ['ETH-DAI', 'ETH-USDC.E', 'WSTETH-DAI'];
-// 'ETH-USDC', --> Already tested in /withWallet/aaveV3 test suite
-
-export const aaveV3OptimismMultiplyPools_2 = [
+export const aaveV3OptimismMultiplyPools = [
+	'ETH-DAI',
+	'ETH-USDC.E',
+	'WSTETH-DAI',
 	'WSTETH-USDC.E',
 	'WBTC-DAI',
 	'WBTC-USDC',
 	'WBTC-USDC.E',
+	'DAI-ETH',
+	'DAI-WBTC',
+	'USDC-ETH',
+	'USDC-WBTC',
+	'USDC.E-ETH',
+	'USDC.E-WBTC',
+	'WSTETH-USDC',
 ];
+// 'ETH-USDC', --> Already tested in /withWallet/aaveV3 test suite
 
-export const aaveV3OptimismMultiplyPools_3 = ['DAI-ETH', 'DAI-WBTC', 'USDC-ETH', 'USDC-WBTC'];
-
-export const aaveV3OptimismMultiplyPools_4 = ['USDC.E-ETH', 'USDC.E-WBTC', 'WSTETH-USDC'];
-
-export const aaveV3OptimismBorrowPools_1 = [
+export const aaveV3OptimismBorrowPools = [
 	'ETH-DAI',
 	'ETH-USDC.E',
 	'WSTETH-DAI',
@@ -309,16 +313,13 @@ export const aaveV3OptimismBorrowPools_1 = [
 	'WBTC-DAI',
 	'WBTC-USDC',
 	'WBTC-USDC.E',
-];
-// 'ETH-USDC', --> Already tested in /withWallet/aaveV3 test suite
-
-export const aaveV3OptimismBorrowPools_2 = [
 	'DAI-ETH',
 	'USDC-ETH',
 	'USDC-WBTC',
 	'USDC.E-ETH',
 	'USDC.E-WBTC',
 ];
+// 'ETH-USDC', --> Already tested in /withWallet/aaveV3 test suite
 // 'DAI-WBTC', --> Already tested in /withWallet/aaveV3 test suite
 
 export const aaveV2EthereumMultiplyPools = ['WBTC-USDC'];

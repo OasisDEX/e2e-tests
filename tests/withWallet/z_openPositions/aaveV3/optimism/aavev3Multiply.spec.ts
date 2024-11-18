@@ -1,43 +1,13 @@
-import {
-	aaveV3OptimismMultiplyPools_1,
-	aaveV3OptimismMultiplyPools_2,
-	aaveV3OptimismMultiplyPools_3,
-	aaveV3OptimismMultiplyPools_4,
-} from 'utils/testData';
-import { openNewPosition } from 'tests/sharedTestSteps/openNewPosition';
+import { aaveV3OptimismMultiplyPools } from 'utils/testData';
+import { openNewPosition, test } from 'tests/sharedTestSteps/openNewPosition';
 
-aaveV3OptimismMultiplyPools_1.forEach(async (pool) => {
-	await openNewPosition({
-		network: 'optimism',
-		protocol: 'aave/v3',
-		pool,
-		positionType: 'multiply',
-	});
-});
-
-aaveV3OptimismMultiplyPools_2.forEach(async (pool) => {
-	await openNewPosition({
-		network: 'optimism',
-		protocol: 'aave/v3',
-		pool,
-		positionType: 'multiply',
-	});
-});
-
-aaveV3OptimismMultiplyPools_3.forEach(async (pool) => {
-	await openNewPosition({
-		network: 'optimism',
-		protocol: 'aave/v3',
-		pool,
-		positionType: 'multiply',
-	});
-});
-
-aaveV3OptimismMultiplyPools_4.forEach(async (pool) => {
-	await openNewPosition({
-		network: 'optimism',
-		protocol: 'aave/v3',
-		pool,
-		positionType: 'multiply',
+aaveV3OptimismMultiplyPools.forEach(async (pool) => {
+	test.describe('Aave V3 Ethereum Multiply', async () => {
+		await openNewPosition({
+			network: 'optimism',
+			protocol: 'aave/v3',
+			pool,
+			positionType: 'multiply',
+		});
 	});
 });
