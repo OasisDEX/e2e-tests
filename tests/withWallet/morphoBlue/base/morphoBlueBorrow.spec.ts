@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import baseSetup from 'utils/synpress/test-wallet-setup/base.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -14,7 +14,7 @@ const test = testWithSynpress(metaMaskFixtures(baseSetup));
 
 test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
 		({ forkId } = await setup({ metamask, app, network: 'base' }));
