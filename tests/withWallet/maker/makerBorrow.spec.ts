@@ -14,6 +14,8 @@ const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
 test.describe('Maker Borrow - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
+
 		app = new App(page);
 		await setup({
 			metamask,
