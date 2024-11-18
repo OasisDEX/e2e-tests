@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -12,7 +12,6 @@ let forkId: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
-const { expect } = test;
 
 test.describe('Spark Multiply - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
@@ -32,7 +31,6 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 
 	test.afterEach(async () => {
 		await tenderly.deleteFork(forkId);
-		await app.page.close();
 	});
 
 	test('It should open and manage a Spark Multiply WSTETH/DAI Long position @regression', async ({
