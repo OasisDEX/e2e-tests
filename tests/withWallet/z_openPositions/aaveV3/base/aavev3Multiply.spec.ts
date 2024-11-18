@@ -1,11 +1,13 @@
 import { aaveV3BaseMultiplyPools } from 'utils/testData';
-import { openNewPosition } from 'tests/sharedTestSteps/openNewPosition';
+import { openNewPosition, test } from 'tests/sharedTestSteps/openNewPosition';
 
 aaveV3BaseMultiplyPools.forEach(async (pool) => {
-	await openNewPosition({
-		network: 'base',
-		protocol: 'aave/v3',
-		pool,
-		positionType: 'multiply',
+	test.describe('Aave V3 Ethereum Multiply', async () => {
+		await openNewPosition({
+			network: 'base',
+			protocol: 'aave/v3',
+			pool,
+			positionType: 'multiply',
+		});
 	});
 });
