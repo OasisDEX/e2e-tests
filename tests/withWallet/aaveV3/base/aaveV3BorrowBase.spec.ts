@@ -26,7 +26,6 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 
 	test.afterEach(async () => {
 		await tenderly.deleteFork(forkId);
-		await app.page.close();
 	});
 
 	test('It should open and magage an Aave V3 Borrow Base position @regression', async ({
