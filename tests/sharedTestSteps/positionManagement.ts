@@ -442,7 +442,7 @@ export const manageDebtOrCollateral = async ({
 		await app.position.setup.setTokenAllowance((deposit?.token as string) ?? payBack?.token);
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
-			await app.position.setup.approveAllowance();
+			await app.position.setup.approveAllowanceOrRetry();
 			await tx.confirmAndVerifySuccess({
 				metamask,
 				forkId,
