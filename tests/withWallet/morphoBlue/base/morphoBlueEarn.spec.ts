@@ -35,7 +35,6 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 
 	test.afterEach(async () => {
 		await tenderly.deleteFork(forkId);
-		await app.page.close();
 	});
 
 	test('It should open and manage a Morpho Blue Base Earn position - CBETH/ETH @regression', async ({
@@ -45,7 +44,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 
 		await app.position.openPage('/base/morphoblue/multiply/CBETH-ETH#setup');
 
-		await test.step('It should open a position', async () => {
+		await test.step('Open a position', async () => {
 			await app.page.waitForTimeout(1_000);
 
 			await openPosition({
@@ -56,7 +55,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 			});
 		});
 
-		await test.step('It should Deposit extra collateral', async () => {
+		await test.step('Deposit extra collateral', async () => {
 			await app.page.waitForTimeout(1_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -75,7 +74,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 			});
 		});
 
-		await test.step('It should Withdraw collateral', async () => {
+		await test.step('Withdraw collateral', async () => {
 			await app.page.waitForTimeout(1_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -95,7 +94,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 			});
 		});
 
-		await test.step('It should close a postion', async () => {
+		await test.step('Close a postion', async () => {
 			await app.page.waitForTimeout(1_000);
 
 			await close({
