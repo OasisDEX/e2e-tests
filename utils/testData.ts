@@ -42,17 +42,20 @@ export const morphoEthereumEarnPools_1 = [
 // 'steakhouse-USDT', --> Already tested in /withWallet/morphoBlue
 // 'USDE-DAI-2', --> NO LIQUIDITY
 
-export const morphoEthereumEarnPools_2 = ['USDE-DAI-1', 'USDE-DAI-3', 'SUSDE-USDT', 'OSETH-ETH'];
-
-export const morphoEthereumEarnPools_3 = [
+export const morphoEthereumEarnPools_2 = [
+	'USDE-DAI-1',
+	'USDE-DAI-3',
+	'SUSDE-USDT',
+	'OSETH-ETH',
 	'WSTETH-ETH-1',
 	'WSTETH-ETH-2',
 	'WSTETH-ETH-3',
 	'WEETH-ETH',
+	'EZETH-ETH',
+	'SUSDE-DAI-1',
+	'SUSDE-DAI-3',
 ];
 // 'WOETH-ETH', --> NO LIQUIDITY
-
-export const morphoEthereumEarnPools_4 = ['EZETH-ETH', 'SUSDE-DAI-1', 'SUSDE-DAI-3'];
 // 'USDE-DAI-2', --> NO LIQUIDITY
 
 export const morphoEthereumBorrowPools = [
