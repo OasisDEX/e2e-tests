@@ -1,11 +1,13 @@
 import { aaveV3OptimismEarnPools } from 'utils/testData';
-import { openNewPosition } from 'tests/sharedTestSteps/openNewPosition';
+import { openNewPosition, test } from 'tests/sharedTestSteps/openNewPosition';
 
 aaveV3OptimismEarnPools.forEach(async (pool) => {
-	await openNewPosition({
-		network: 'optimism',
-		protocol: 'aave/v3',
-		pool,
-		positionType: 'multiply',
+	test.describe('Aave V3 Ethereum Earn', async () => {
+		await openNewPosition({
+			network: 'optimism',
+			protocol: 'aave/v3',
+			pool,
+			positionType: 'multiply',
+		});
 	});
 });
