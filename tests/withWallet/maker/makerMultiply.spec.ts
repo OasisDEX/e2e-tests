@@ -98,6 +98,8 @@ test.describe('Maker Multiply - Wallet connected', async () => {
 
 test.describe('Maker Multiply - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
+
 		app = new App(page);
 		await setup({ metamask, app, network: 'mainnet', withoutFork: true });
 	});

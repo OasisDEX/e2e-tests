@@ -40,14 +40,9 @@ export const morphoEthereumEarnPools_1 = [
 	'steakhouse-USDC',
 ];
 // 'steakhouse-USDT', --> Already tested in /withWallet/morphoBlue
+// 'USDE-DAI-2', --> NO LIQUIDITY
 
-export const morphoEthereumEarnPools_2 = [
-	'USDE-DAI-1',
-	'USDE-DAI-2',
-	'USDE-DAI-3',
-	'SUSDE-USDT',
-	'OSETH-ETH',
-];
+export const morphoEthereumEarnPools_2 = ['USDE-DAI-1', 'USDE-DAI-3', 'SUSDE-USDT', 'OSETH-ETH'];
 
 export const morphoEthereumEarnPools_3 = [
 	'WSTETH-ETH-1',
@@ -135,9 +130,8 @@ export const aaveV3EthereumEarnPools_3 = ['USDC-USDT', 'SDAI-FRAX'];
 // 'USDC-GHO', 'SDAI-GHO' -- NO LIQUIDITY - GHO
 // 'SDAI-USDT', --> Already tested in /withWallet/aaveV3
 // 'CBETH-ETH', --> Already tested in /withWallet/aaveV3
-
-export const aaveV3EthereumEarnPools_4 = ['SUSDE-USDT', 'SUSDE-USDC', 'SUSDE-DAI'];
 // , 'WEETH-ETH' --> WEETH supply 100%
+// 'SUSDE-USDT', 'SUSDE-USDC', 'SUSDE-DAI' --> SUSDE supply 100%
 
 export const aaveV3EthereumMultiplyPools_1 = ['ETH-USDC', 'ETH-USDT', 'ETH-WBTC'];
 // 'LDO-USDT' --> skipped as tenderly_setErc20Balance is not working with LDO
