@@ -33,7 +33,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		await tenderly.deleteFork(forkId);
 	});
 
-	test('It should open a Spark Earn (Yiel Loop) position - RETH/ETH @regression', async ({
+	test('It should open and manage a Spark Earn (Yiel Loop) position - RETH/ETH @regression', async ({
 		metamask,
 	}) => {
 		test.setTimeout(extremelyLongTestTimeout);

@@ -47,7 +47,6 @@ export const approveRPC = async (extensionId: string, context: BrowserContext) =
 	const notificationPage = await getNotificationPageAndWaitForLoad(context, extensionId);
 
 	await notificationPage
-		// .locator('.confirmation-warning-modal__content section .mm-button-primary--type-danger')
 		.locator('.confirmation-warning-modal__content .mm-button-primary--type-danger')
 		.click();
 };

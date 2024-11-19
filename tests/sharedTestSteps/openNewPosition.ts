@@ -11,14 +11,10 @@ import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
-export const test = testWithSynpress(metaMaskFixtures(basicSetup));
-
-const setUp = {
-	arbitrum: arbitrumSetup,
-	base: baseSetup,
-	ethereum: basicSetup,
-	optimism: optimismSetup,
-};
+export const testArbitrum = testWithSynpress(metaMaskFixtures(arbitrumSetup));
+export const testBase = testWithSynpress(metaMaskFixtures(baseSetup));
+export const testEthereum = testWithSynpress(metaMaskFixtures(basicSetup));
+export const testOptimism = testWithSynpress(metaMaskFixtures(optimismSetup));
 
 export const openNewPosition = async ({
 	network,
@@ -49,7 +45,14 @@ export const openNewPosition = async ({
 
 	const debtToken: string = pool.split('-')[1];
 
-	// const test = testWithSynpress(metaMaskFixtures(setUp[network]));
+	const test =
+		network === 'arbitrum'
+			? testArbitrum
+			: network === 'base'
+			? testBase
+			: network === 'ethereum'
+			? testEthereum
+			: testOptimism;
 
 	test.describe(`${protocol} - ${network}`, async () => {
 		test.beforeEach(async ({ metamask, page }) => {
