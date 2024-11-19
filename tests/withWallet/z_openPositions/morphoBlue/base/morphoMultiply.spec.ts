@@ -1,8 +1,8 @@
 import { morphoBaseMultiplyPools } from 'utils/testData';
-import { openNewPosition, test } from 'tests/sharedTestSteps/openNewPosition';
+import { openNewPosition, testBase } from 'tests/sharedTestSteps/openNewPosition';
 
 morphoBaseMultiplyPools.forEach(async (pool) => {
-	test.describe('Morpho Base Multiply', async () => {
+	testBase.describe('Morpho Base Multiply', async () => {
 		await openNewPosition({
 			network: 'base',
 			protocol: 'morphoblue',

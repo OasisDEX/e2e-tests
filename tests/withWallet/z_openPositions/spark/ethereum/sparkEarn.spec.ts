@@ -1,8 +1,8 @@
 import { sparkEthereumEarnPools } from 'utils/testData';
-import { openNewPosition, test } from 'tests/sharedTestSteps/openNewPosition';
+import { openNewPosition, testEthereum } from 'tests/sharedTestSteps/openNewPosition';
 
 sparkEthereumEarnPools.forEach(async (pool) => {
-	test.describe('Morpho Ethereum Earn', async () => {
+	testEthereum.describe('Morpho Ethereum Earn', async () => {
 		await openNewPosition({
 			network: 'ethereum',
 			protocol: 'spark',

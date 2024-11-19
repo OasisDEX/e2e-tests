@@ -12,7 +12,8 @@ let forkId: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
 
-test.describe('Morpho Blue Base - Borrow - Wallet connected', async () => {
+// SKIP - NO LIQUIDITY
+test.describe.skip('Morpho Blue Base - Borrow - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
