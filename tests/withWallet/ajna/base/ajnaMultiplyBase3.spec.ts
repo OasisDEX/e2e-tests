@@ -1,40 +1,26 @@
-import { BrowserContext, test } from '@playwright/test';
-import { expect, metamaskSetUp } from 'utils/setup';
-import { resetState } from '@synthetixio/synpress/commands/synpress';
+import { testWithSynpress } from '@synthetixio/synpress';
+import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
+import baseSetup from 'utils/synpress/test-wallet-setup/base.setup';
 import { setup } from 'utils/setup';
 import { longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 
-let context: BrowserContext;
 let app: App;
 
-test.describe.configure({ mode: 'serial' });
+const test = testWithSynpress(metaMaskFixtures(baseSetup));
+const { expect } = test;
 
 // NO LIQUIDITY
 test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
-	test.afterAll(async () => {
-		await app.page.close();
+	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
 
-		await context.close();
-
-		await resetState();
+		app = new App(page);
+		await setup({ metamask, app, network: 'base', withoutFork: true });
 	});
 
 	test('It should allow to simulate an Ajna Base Multiply position before opening it', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		test.setTimeout(longTestTimeout);
-
-		await test.step('Test setup', async () => {
-			({ context } = await metamaskSetUp({ network: 'base' }));
-			let page = await context.newPage();
-			app = new App(page);
-
-			await setup({ app, network: 'base', withoutFork: true });
-		});
 
 		await app.page.goto('/base/ajna/multiply/SNX-USDC#setup');
 		await app.position.setup.acknowledgeAjnaInfo();
@@ -99,37 +85,32 @@ test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
 			current: '[0-9]{2}.[0-9]{2}',
 			future: '[0-9]{2}.[0-9]{2}',
 		});
-	});
 
-	test('It should allow to simulate risk adjustment (Up & Down) with slider in an Ajna Base Multiply position before opening it', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
+		await test.step('Simulate Risk adjustment with slider (Up & Down)', async () => {
+			const initialLiqPrice = await app.position.manage.getLiquidationPrice();
+			const initialLoanToValue = await app.position.manage.getLoanToValue('Ajna');
+
+			// RISK UP
+			await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.5 });
+
+			// Wait for simulation to update with new risk
+			await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'SNX/USDC' });
+
+			const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue = await app.position.manage.getLoanToValue('Ajna');
+			expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
+			expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
+
+			// RISK DOWN
+			await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.3 });
+
+			// Wait for simulation to update with new risk
+			await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'SNX/USDC' });
+
+			const updatedLiqPrice2 = await app.position.manage.getLiquidationPrice();
+			const updatedLoanToValue2 = await app.position.manage.getLoanToValue('Ajna');
+			expect(updatedLiqPrice2).toBeLessThan(updatedLiqPrice);
+			expect(updatedLoanToValue2).toBeLessThan(updatedLoanToValue);
 		});
-
-		const initialLiqPrice = await app.position.manage.getLiquidationPrice();
-		const initialLoanToValue = await app.position.manage.getLoanToValue('Ajna');
-
-		// RISK UP
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.5 });
-
-		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'SNX/USDC' });
-
-		const updatedLiqPrice = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue = await app.position.manage.getLoanToValue('Ajna');
-		expect(updatedLiqPrice).toBeGreaterThan(initialLiqPrice);
-		expect(updatedLoanToValue).toBeGreaterThan(initialLoanToValue);
-
-		// RISK DOWN
-		await app.position.setup.moveSlider({ protocol: 'Ajna', value: 0.3 });
-
-		// Wait for simulation to update with new risk
-		await app.position.setup.shouldHaveLiquidationPrice({ amount: '.', pair: 'SNX/USDC' });
-
-		const updatedLiqPrice2 = await app.position.manage.getLiquidationPrice();
-		const updatedLoanToValue2 = await app.position.manage.getLoanToValue('Ajna');
-		expect(updatedLiqPrice2).toBeLessThan(updatedLiqPrice);
-		expect(updatedLoanToValue2).toBeLessThan(updatedLoanToValue);
 	});
 });

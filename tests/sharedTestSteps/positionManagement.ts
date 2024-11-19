@@ -337,6 +337,9 @@ export const close = async ({
 
 	await app.position.setup.confirm();
 
+	// Delay to reduce flakiness
+	await app.page.waitForTimeout(10_000);
+
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
