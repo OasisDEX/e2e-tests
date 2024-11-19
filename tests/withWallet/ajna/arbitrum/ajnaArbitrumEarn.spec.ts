@@ -32,7 +32,6 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await app.page.close();
 		await tenderly.deleteFork(forkId);
 	});
 
