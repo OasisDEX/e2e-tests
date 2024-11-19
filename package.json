@@ -37,7 +37,7 @@
 		"with-wallet:aave:base": "REPORT_FOLDER=with-wallet-aave-base npx playwright test --project=with-wallet-aave-base --workers=1",
 		"with-wallet:aave:optimism": "REPORT_FOLDER=with-wallet-aave-optimism npx playwright test --project=with-wallet-aave-optimism --workers=1",
 		"with-wallet:aave:arbitrum-and-optimism": "REPORT_FOLDER=with-wallet-aave-arbitrum-and-optimism npx playwright test --project=with-wallet-aave-arbitrum-and-optimism --workers=1",
-		"with-wallet:ajna-and-morphoblue": "REPORT_FOLDER=with-wallet-ajna-and-morphoblue npx playwright test --project=with-wallet-ajna-and-morphoblue --workers=1",
+		"with-wallet:ajna-and-morphoblue": "REPORT_FOLDER=with-wallet-ajna-and-morphoblue npx playwright test --project=with-wallet-ajna-and-morphoblue --workers=2",
 		"with-wallet:ajna": "REPORT_FOLDER=with-wallet-ajna npx playwright test --project=with-wallet-ajna --workers=2",
 		"with-wallet:ajna:ethereum": "REPORT_FOLDER=with-wallet-ajna-ethereum npx playwright test --project=with-wallet-ajna-ethereum --workers=1",
 		"with-wallet:ajna:arbitrum": "REPORT_FOLDER=with-wallet-ajna-arbitrum npx playwright test --project=with-wallet-ajna-arbitrum --workers=1",
