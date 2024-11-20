@@ -49,7 +49,7 @@ import {
 		},
 	] as Scenario[]
 ).forEach((scenario) =>
-	test.describe.only('Aave V3 Borrow - Swap to Morpho', async () => {
+	test.describe('Swap from Aave V3 to Morpho', async () => {
 		await openNewPositionAndSwap({ ...scenario, protocol: 'aave/v3', targetProtocol: 'Morpho' });
 	})
 );
