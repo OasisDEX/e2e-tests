@@ -45,7 +45,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/ethereum/morphoblue/multiply/WBTC-USDC#setup');
+		await app.position.openPage('/ethereum/morphoblue/multiply/WBTC-USDC#setup');
 
 		await test.step('It should Open a position', async () => {
 			await app.page.waitForTimeout(1_000);

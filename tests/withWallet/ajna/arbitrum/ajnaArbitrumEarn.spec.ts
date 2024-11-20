@@ -57,12 +57,10 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 
 test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
+
 		app = new App(page);
 		await setup({ metamask, app, network: 'arbitrum', withoutFork: true });
-	});
-
-	test.afterEach(async () => {
-		await app.page.close();
 	});
 
 	test('It should allow to simulate an Ajna Arbitrum Earn position before opening it', async () => {
