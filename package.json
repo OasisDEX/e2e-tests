@@ -135,7 +135,7 @@
 		"//-5b": "---------- SWAP TESTS ------------",
 		"//-5c": "---------------------------------------------------------------",
 		"with-wallet:swap": "REPORT_FOLDER=with-wallet-swap npx playwright test --project=with-wallet-swap --workers=1",
-		"with-wallet:swap:aavev3": "REPORT_FOLDER=with-wallet-swap-aavev3 npx playwright test --project=with-wallet-swap-aavev3 --workers=1",
+		"with-wallet:swap:aavev3": "REPORT_FOLDER=with-wallet-swap-aavev3 npx playwright test --project=with-wallet-swap-aavev3 --workers=2",
 		"with-wallet:swap:maker": "REPORT_FOLDER=with-wallet-swap-maker npx playwright test --project=with-wallet-swap-maker --workers=1",
 		"with-wallet:swap:morphoblue": "REPORT_FOLDER=with-wallet-swap-morphoblue npx playwright test --project=with-wallet-swap-morphoblue --workers=1",
 		"with-wallet:swap:spark": "REPORT_FOLDER=with-wallet-swap-spark npx playwright test --project=with-wallet-swap-spark --workers=1",

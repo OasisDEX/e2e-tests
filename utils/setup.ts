@@ -71,7 +71,7 @@ export const setup = async ({
 		forkId = resp.data.root_transaction.fork_id;
 		const forkRpcUrl = `https://rpc.tenderly.co/fork/${forkId}`;
 		//
-		console.log('forkRpcUrl: ', forkRpcUrl);
+		console.log('Fork RPC url: ', forkRpcUrl);
 		//
 
 		// const forkParameters = {
@@ -95,7 +95,7 @@ export const setup = async ({
 
 		// Logging forkId for debugging purposes
 		//  - Info displayed in 'Attachments > stdout' section of playwright reports
-		console.log(' Fork Id: ', forkId);
+		console.log('Fork Id: ', forkId);
 	}
 
 	return { forkId, walletAddress };
