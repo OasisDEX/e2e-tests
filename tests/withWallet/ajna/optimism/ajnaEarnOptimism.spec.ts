@@ -31,7 +31,6 @@ test.describe('Ajna Optimism Earn - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await app.page.close();
 		await tenderly.deleteFork(forkId);
 	});
 
@@ -57,12 +56,10 @@ test.describe('Ajna Optimism Earn - Wallet connected', async () => {
 
 test.describe('Ajna Optimism Earn - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
+
 		app = new App(page);
 		await setup({ metamask, app, network: 'base', withoutFork: true });
-	});
-
-	test.afterEach(async () => {
-		await app.page.close();
 	});
 
 	test('It should allow to simulate an Ajna Optimism Earn position before opening it', async () => {

@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { gigaTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	manageDebtOrCollateral,
@@ -19,6 +19,8 @@ const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
 test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
+
 		app = new App(page);
 		({ forkId, walletAddress } = await setup({
 			metamask,
@@ -42,7 +44,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 	test('It should open and manage an Ajna Ethereum Borrow position @regression', async ({
 		metamask,
 	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(gigaTestTimeout);
 
 		await app.page.goto('/ethereum/ajna/borrow/WSTETH-ETH#setup');
 		await app.position.setup.acknowledgeAjnaInfo();

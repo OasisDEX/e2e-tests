@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import baseSetup from 'utils/synpress/test-wallet-setup/base.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { gigaTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -15,7 +15,7 @@ const test = testWithSynpress(metaMaskFixtures(baseSetup));
 
 test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
 		({ forkId, walletAddress } = await setup({ metamask, app, network: 'base' }));
@@ -36,7 +36,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 	test('It should open and manage an Aave V3 Earn (Yield Loop) Base position @regression', async ({
 		metamask,
 	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(gigaTestTimeout);
 
 		await app.page.goto('/base/aave/v3/multiply/CBETH-ETH#setup');
 

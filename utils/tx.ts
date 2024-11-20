@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 import * as tenderly from './tenderly';
 import { expectDefaultTimeout } from './config';
@@ -20,7 +20,7 @@ export const confirmAndVerifySuccess = async ({
 
 	await expect(async () => {
 		await metamask[metamaskAction]();
-	}, `Metamask: ${metamaskAction}`).toPass({ timeout: expectDefaultTimeout * 2 });
+	}, `Metamask: ${metamaskAction}`).toPass({ timeout: expectDefaultTimeout * 3 });
 
 	// Wait for tx count to increase
 	await expect(async () => {

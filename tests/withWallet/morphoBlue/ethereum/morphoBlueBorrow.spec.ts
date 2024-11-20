@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { gigaTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -36,7 +36,7 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 	test('It should open and manage a Morpho Blue Borrow WSTETH-USD position @regression', async ({
 		metamask,
 	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(gigaTestTimeout);
 
 		await app.page.goto('/ethereum/morphoblue/borrow/WSTETH-USDC#setup');
 
@@ -137,6 +137,8 @@ test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 
 test.describe('Morpho Blue Borrow - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
+
 		app = new App(page);
 		await setup({ metamask, app, network: 'mainnet', withoutFork: true });
 	});

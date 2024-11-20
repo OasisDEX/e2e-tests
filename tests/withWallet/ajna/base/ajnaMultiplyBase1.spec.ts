@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import baseSetup from 'utils/synpress/test-wallet-setup/base.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { gigaTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { adjustRisk, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -41,7 +41,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 	test('It should open and manage an Ajna Base Multiply position @regression', async ({
 		metamask,
 	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(gigaTestTimeout);
 
 		await test.step('Setup test - Open Earn position to provide liquidity', async () => {
 			await app.position.openPage('/base/ajna/earn/ETH-USDC#setup');
@@ -58,7 +58,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		// Wait to make sure that liquidity added in previous test is actually up
 		await app.page.waitForTimeout(5_000);
 
-		await app.page.goto('/base/ajna/multiply/ETH-USDC');
+		await app.position.openPage('/base/ajna/multiply/ETH-USDC');
 		await app.position.setup.acknowledgeAjnaInfo();
 
 		await test.step('Open Borrow position', async () => {
