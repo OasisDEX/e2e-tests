@@ -77,7 +77,10 @@ export const openNewPositionAndSwap = async ({
 			test.setTimeout(gigaTestTimeout);
 
 			await test.step('Open position Aave V3 Borrow position - ETH/USDC', async () => {
-				await app.position.openPage(`/ethereum/${protocol}/${positionType}/${pool}#setup`);
+				// !!!! Production path to be removed when staging updated
+				await app.position.openPage(
+					`https://summer.fi/ethereum/${protocol}/${positionType}/${pool}#setup`
+				);
 
 				// Depositing collateral too quickly after loading page returns wrong simulation results
 				await app.position.overview.waitForComponentToBeStable();
