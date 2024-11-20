@@ -35,7 +35,6 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 	test.afterEach(async () => {
 		await tenderly.deleteFork(forkId);
-		await app.page.close();
 	});
 
 	test('It should open and manage an Aave V3 Borrow Ethereum position - WSTETH/USDT @regression', async ({
