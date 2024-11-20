@@ -16,12 +16,10 @@ const { expect } = test;
 
 test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
+		test.setTimeout(longTestTimeout);
+
 		app = new App(page);
 		await setup({ metamask, app, network: 'mainnet', withoutFork: true });
-	});
-
-	test.afterEach(async () => {
-		await app.page.close();
 	});
 
 	test('It should allow to simulate an Ajna Ethereum Multiply position before opening it', async () => {
@@ -126,7 +124,7 @@ test.describe('Ajna Ethereum Multiply - Wallet connected', async () => {
 // NO LIQUIDITY
 test.describe.skip('Ajna Ethereum Multiply - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
 		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
@@ -142,7 +140,6 @@ test.describe.skip('Ajna Ethereum Multiply - Wallet connected', async () => {
 
 	test.afterEach(async () => {
 		await tenderly.deleteFork(forkId);
-		await app.page.close();
 	});
 
 	// NO LIQUIDITY
