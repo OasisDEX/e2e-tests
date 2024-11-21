@@ -25,7 +25,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await tenderly.deleteFork(forkId);
 	});
 
-	test('It should open and manage an Aave V3 Borrow Optimism position @regression', async ({
+	test('It should open and manage an Aave V3 Borrow Optimism ETH/USDC position @regression', async ({
 		metamask,
 	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
