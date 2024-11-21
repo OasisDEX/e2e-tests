@@ -59,7 +59,7 @@ export class Position {
 					timeout: expectDefaultTimeout * 5,
 				});
 			}
-		}).toPass();
+		}, 'It should open position page').toPass();
 	}
 
 	@step

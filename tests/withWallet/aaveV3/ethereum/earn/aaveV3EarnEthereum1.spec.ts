@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import { gigaTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 import { reloadUntilCorrect } from 'utils/general';
@@ -38,7 +38,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 	test('It should open and manage an Aave V3 Earn Ethereum position - WSTETH-ETH @regression', async ({
 		metamask,
 	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(gigaTestTimeout);
 
 		await app.page.goto('/ethereum/aave/v3/earn/wsteth-eth#simulate');
 
