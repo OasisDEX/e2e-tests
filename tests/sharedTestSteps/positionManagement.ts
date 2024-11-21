@@ -112,8 +112,12 @@ export const openPosition = async ({
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
-		// await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
-		await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmSignature', forkId });
+		// await tx.confirmAndVerifySuccess({ metamask, forkId, metamaskAction: 'confirmSignature' });
+		await tx.confirmAndVerifySuccess({
+			metamask,
+			forkId,
+			metamaskAction: 'confirmTransaction',
+		});
 	}).toPass({ timeout: longTestTimeout });
 
 	if (protocol) {
@@ -192,7 +196,7 @@ export const openMakerPosition = async ({
 		await app.position.setup.setTokenAllowance(deposit.token);
 
 		await expect(async () => {
-			// await tx.confirmAndVerifySuccess({ metamask, metamask,forkId, metamaskAction: 'confirmSignature' });
+			// await tx.confirmAndVerifySuccess({ metamask, forkId, metamaskAction: 'confirmSignature' });
 			await confirmAddToken({ metamask, app });
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
