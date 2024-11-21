@@ -33,7 +33,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await tenderly.deleteFork(forkId);
 	});
 
-	test('It should open and manage an Aave V3 Borrow Optimism position @regression', async ({
+	test('It should open and manage an Aave V3 Borrow Optimism DAI/WBTC position @regression', async ({
 		metamask,
 	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
@@ -48,7 +48,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 				app,
 				forkId,
 				deposit: { token: 'DAI', amount: '30000' },
-				borrow: { token: 'WBTC', amount: '0.2' },
+				borrow: { token: 'WBTC', amount: '0.1' },
 			});
 		});
 

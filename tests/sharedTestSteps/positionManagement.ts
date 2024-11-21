@@ -112,6 +112,7 @@ export const openPosition = async ({
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
+		// await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
 		await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmSignature', forkId });
 	}).toPass({ timeout: longTestTimeout });
 

@@ -17,7 +17,8 @@ let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
 
-test.describe('Ajna Base Borrow - Wallet connected', async () => {
+// NO WSTETH liquidity
+test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
