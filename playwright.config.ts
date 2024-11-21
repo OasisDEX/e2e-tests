@@ -233,12 +233,7 @@ const defaultConfig: PlaywrightTestConfig = {
 
 		{
 			name: 'with-wallet-swap',
-			testMatch: [
-				'withWallet/aaveV3/swap/**',
-				'withWallet/maker/swap/**',
-				'withWallet/morphoBlue/swap/**',
-				'withWallet/spark/swap/**',
-			],
+			testMatch: ['withWallet/swap/**'],
 			use: { ...devices['Desktop Chrome'] },
 		},
 
