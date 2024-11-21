@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { gigaTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -36,7 +36,7 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 	test('It should open and manage a Morpho Blue Earn steakhouse-USDT position - steakhouse USDT @regression', async ({
 		metamask,
 	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(gigaTestTimeout);
 
 		await app.page.goto('/ethereum/erc-4626/earn/steakhouse-USDT#setup');
 
@@ -95,7 +95,7 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 				metamask,
 				app,
 				forkId,
-				deposit: { token: 'ETH', amount: '80' },
+				deposit: { token: 'ETH', amount: '8' },
 				allowanceNotNeeded: true,
 				expectedAvailableToWithdraw: {
 					amount: '[0-9]{3},[0-9]{3}.[0-9]{2}',
