@@ -13,7 +13,8 @@ let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
 
-test.describe('Ajna Base Multiply - Wallet connected', async () => {
+// No Multiply liquidity and very flaky opening an Earn position as setup
+test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
@@ -61,7 +62,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await app.position.openPage('/base/ajna/multiply/ETH-USDC');
 		await app.position.setup.acknowledgeAjnaInfo();
 
-		await test.step('Open Borrow position', async () => {
+		await test.step('Open Multiply position', async () => {
 			// For avoiding flakiness
 			await app.page.waitForTimeout(1_000);
 
@@ -72,6 +73,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 				deposit: { token: 'ETH', amount: '2' },
 				protocol: 'Ajna',
 				ajnaExistingDpm: true,
+				doubleConfirmStep: true,
 			});
 		});
 

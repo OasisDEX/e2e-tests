@@ -1,5 +1,6 @@
 import { step } from '#noWalletFixtures';
 import { expect, Page } from '@playwright/test';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class Base {
 	readonly page: Page;
@@ -66,7 +67,7 @@ export class Base {
 				.getAttribute('value');
 
 			const slider = this.page.locator('input[type="range"]');
-			const sliderBoundingBox = await slider.boundingBox();
+			const sliderBoundingBox = (await slider.boundingBox()) ?? { x: 0, y: 0, width: 0, height: 0 };
 
 			// Scroll down so that slider is fully visible and next dragTo doesn't fail
 			if (!withWallet && process) {
@@ -209,5 +210,23 @@ export class Base {
 	@step
 	async removeTrigger() {
 		await this.page.getByRole('button', { name: 'Remove trigger' }).click();
+	}
+
+	@step
+	async shouldHaveTransactionCostOrFee() {
+		const regExpCost = new RegExp(`(([0-9])\|(n/a))`);
+		const regExpFee = new RegExp(`((\\$.*\\$)\|(n/a))`);
+
+		const MaxTransactionCost = this.page.getByText('Max transaction cost');
+
+		const assertedText = (await MaxTransactionCost.isVisible())
+			? 'Max transaction cost'
+			: 'Transaction fee';
+		const expectedRegExp = (await MaxTransactionCost.isVisible()) ? regExpCost : regExpFee;
+
+		await expect(
+			this.page.getByText(assertedText).locator('..'),
+			'Should have `n/a` or expected amount'
+		).toHaveText(expectedRegExp, { timeout: expectDefaultTimeout * 5 });
 	}
 }

@@ -10,7 +10,7 @@
 		"@ethersproject/providers": "^5.7.2",
 		"@inquirer/prompts": "^3.3.0",
 		"@playwright/test": "^1.48.1",
-		"@synthetixio/synpress": "^4.0.0-alpha.9",
+		"@synthetixio/synpress": "^4.0.3",
 		"@types/node": "^22.8.0",
 		"axios": "^1.6.0",
 		"dotenv": "^16.4.5",

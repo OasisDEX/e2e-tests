@@ -637,4 +637,9 @@ export class Setup {
 
 		return impactNumber;
 	}
+
+	@step
+	async shouldHaveTransactionCostOrFee() {
+		await this.base.shouldHaveTransactionCostOrFee();
+	}
 }
