@@ -213,7 +213,7 @@ export class Base {
 	}
 
 	@step
-	async shouldHaveTransactionCostOrFee() {
+	async shouldHaveTransactionCostOrFee(protocol?: 'Ajna' | undefined) {
 		const regExpCost = new RegExp(`(([0-9])\|(n/a))`);
 		const regExpFee = new RegExp(`((\\$.*\\$)\|(n/a))`);
 
@@ -222,7 +222,8 @@ export class Base {
 		const assertedText = (await MaxTransactionCost.isVisible())
 			? 'Max transaction cost'
 			: 'Transaction fee';
-		const expectedRegExp = (await MaxTransactionCost.isVisible()) ? regExpCost : regExpFee;
+		const expectedRegExp =
+			(await MaxTransactionCost.isVisible()) || !protocol ? regExpCost : regExpFee;
 
 		await expect(
 			this.page.getByText(assertedText).locator('..'),

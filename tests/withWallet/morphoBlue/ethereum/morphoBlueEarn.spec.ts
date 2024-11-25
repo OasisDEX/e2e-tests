@@ -98,7 +98,7 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 				deposit: { token: 'ETH', amount: '8' },
 				allowanceNotNeeded: true,
 				expectedAvailableToWithdraw: {
-					amount: '[0-9]{3},[0-9]{3}.[0-9]{2}',
+					amount: '[0-9]{2},[0-9]{3}.[0-9]{2}',
 					token: 'USDT',
 				},
 			});

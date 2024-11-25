@@ -111,7 +111,7 @@ export const openPosition = async ({
 		await app.position.setup.continue();
 	}
 
-	await app.position.setup.shouldHaveTransactionCostOrFee();
+	await app.position.setup.shouldHaveTransactionCostOrFee(protocol);
 
 	if (doubleConfirmStep) {
 		await app.position.setup.confirm();

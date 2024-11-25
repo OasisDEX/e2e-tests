@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, gigaTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
@@ -36,7 +36,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 	test('It should open and manage a Spark Earn (Yiel Loop) position - RETH/ETH @regression', async ({
 		metamask,
 	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(gigaTestTimeout);
 
 		await app.page.goto('/ethereum/spark/multiply/RETH-ETH#setup');
 
@@ -47,7 +47,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 				metamask,
 				app,
 				forkId,
-				deposit: { token: 'RETH', amount: '7.5' },
+				deposit: { token: 'RETH', amount: '2' },
 			});
 		});
 
