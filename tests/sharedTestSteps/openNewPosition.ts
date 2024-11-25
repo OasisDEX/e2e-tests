@@ -82,7 +82,6 @@ export const openNewPosition = async ({
 
 		test.afterEach(async () => {
 			await tenderly.deleteFork(forkId);
-			await app.page.close();
 		});
 
 		test(`It should open a position - ${positionType.toUpperCase()} - ${pool}`, async ({
@@ -93,7 +92,7 @@ export const openNewPosition = async ({
 			await app.position.openPage(`/${network}/${protocol}/${positionType}/${pool}#setup`);
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await openPosition({
 				metamask,

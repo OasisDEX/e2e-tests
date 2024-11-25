@@ -99,7 +99,7 @@ export const morphoBaseMultiplyPools = ['ETH-USDC', 'WSTETH-USDC'];
 
 export const morphoBaseEarnPools = [
 	'WSTETH-ETH-2',
-	'WEETH-ETH',
+	// 'WEETH-ETH', --> NO LIQUIDITY
 	// 'CBETH-ETH', --> Already tested in /withWallet/morphoBlue
 	// 'WSUPEROETHB-ETH', -- NO 'SWAP' LIQUIDITY
 	// 'WSTETH-ETH-1', -- NO 'SWAP' LIQUIDITY
@@ -112,10 +112,10 @@ export const morphoBaseBorrowPools = [
 	'WSTETH-ETH-2',
 	'WSTETH-USDC',
 	'WEETH-ETH',
-	'EZETH-USDC',
 	'WSUPEROETHB-ETH',
 	'CBETH-USDC',
 ];
+// 'EZETH-USDC', -- NO LIQUIDITY
 // 'WEETH-USDC', -- NO LIQUIDITY
 // 'BSDETH-ETH', -- NO LIQUIDITY
 // 'AERO-USDC', -- NO LIQUIDITY
@@ -268,14 +268,9 @@ export const aaveV3BaseEarnPools = ['WSTETH-ETH'];
 // , 'WEETH-ETH'  --> WEETH supply 100%
 // 'CBETH-ETH', --> Already tested in /withWallet/aaveV3 test suite
 
-export const aaveV3BaseMultiplyPools = [
-	'ETH-USDC',
-	'ETH-USDBC',
-	'CBETH-USDC',
-	'WSTETH-USDC',
-	// 'WEETH-USDC', --> WEETH supply 100%
-	// 'CBETH-USDBC', --> Already tested in /withWallet/aaveV3 test suite
-];
+export const aaveV3BaseMultiplyPools = ['ETH-USDC', 'ETH-USDBC', 'CBETH-USDC', 'WSTETH-USDC'];
+// 'WEETH-USDC', --> WEETH supply 100%
+// 'CBETH-USDBC', --> Already tested in /withWallet/aaveV3 test suite
 
 export const aaveV3BaseBorrowPools = [
 	'ETH-USDC',
