@@ -103,6 +103,7 @@ export const openPosition = async ({
 				metamask,
 				forkId,
 				metamaskAction: 'approveTokenPermission',
+				app,
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
@@ -117,6 +118,7 @@ export const openPosition = async ({
 			metamask,
 			forkId,
 			metamaskAction: 'confirmTransaction',
+			app,
 		});
 	}).toPass({ timeout: longTestTimeout });
 
@@ -258,6 +260,7 @@ export const adjustRisk = async ({
 			metamask,
 			metamaskAction: 'confirmTransaction',
 			forkId,
+			app,
 		});
 	}).toPass({ timeout: longTestTimeout });
 
@@ -352,6 +355,7 @@ export const close = async ({
 			metamask,
 			metamaskAction: 'confirmTransaction',
 			forkId,
+			app,
 		});
 	}, 'Confirm transaction in Summer.fi and Metamask').toPass({
 		timeout: longTestTimeout,
@@ -456,6 +460,7 @@ export const manageDebtOrCollateral = async ({
 				forkId,
 				// metamaskAction: 'confirmSignature',
 				metamaskAction: 'approveTokenPermission',
+				app,
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
@@ -479,6 +484,7 @@ export const manageDebtOrCollateral = async ({
 			metamask,
 			metamaskAction: 'confirmTransaction',
 			forkId,
+			app,
 		});
 	}).toPass({ timeout: longTestTimeout });
 
@@ -582,6 +588,7 @@ export const swapPosition = async ({
 				metamask,
 				forkId,
 				metamaskAction: 'confirmSignature',
+				app,
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });

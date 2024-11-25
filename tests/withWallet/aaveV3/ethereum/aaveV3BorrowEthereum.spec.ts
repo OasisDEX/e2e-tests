@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
+import { gigaTestTimeout, longTestTimeout } from 'utils/config';
 import { App } from 'src/app';
 import {
 	close,
@@ -40,7 +40,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 	test('It should open and manage an Aave V3 Borrow Ethereum position - WSTETH/USDT @regression', async ({
 		metamask,
 	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
+		test.setTimeout(gigaTestTimeout);
 
 		await app.page.goto('/ethereum/aave/v3/borrow/WSTETH-USDT#setup');
 

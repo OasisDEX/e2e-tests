@@ -2,11 +2,13 @@ import { expect } from '@playwright/test';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 import * as tenderly from './tenderly';
 import { expectDefaultTimeout } from './config';
+import { App } from 'src/app';
 
 export const confirmAndVerifySuccess = async ({
 	metamask,
 	metamaskAction,
 	forkId,
+	app,
 }: {
 	metamask: MetaMask;
 	metamaskAction:
@@ -15,7 +17,13 @@ export const confirmAndVerifySuccess = async ({
 		| 'confirmTransaction'
 		| 'confirmTransactionAndWaitForMining';
 	forkId: string;
+	app?: App;
 }) => {
+	// Delay to avoid random fails
+	if (app) {
+		await app.page.waitForTimeout(2_000);
+	}
+
 	const txCountBefore = await tenderly.getTxCount(forkId);
 
 	await expect(async () => {
