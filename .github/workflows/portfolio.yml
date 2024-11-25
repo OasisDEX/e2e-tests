@@ -22,7 +22,7 @@ jobs:
     name: 'Portfolio - Staging vs Production'
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.48.2-jammy
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
