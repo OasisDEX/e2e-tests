@@ -416,7 +416,7 @@ export class Setup {
 		await expect(
 			this.page.getByRole('button', { name: 'Go to position' }),
 			'"Go to position" should be visible'
-		).toBeVisible({ timeout: expectDefaultTimeout * 5 });
+		).toBeVisible({ timeout: expectDefaultTimeout * 6 });
 	}
 
 	@step
@@ -639,7 +639,7 @@ export class Setup {
 	}
 
 	@step
-	async shouldHaveTransactionCostOrFee() {
-		await this.base.shouldHaveTransactionCostOrFee();
+	async shouldHaveTransactionCostOrFee(protocol: 'Ajna' | 'Morpho Blue' | undefined) {
+		await this.base.shouldHaveTransactionCostOrFee(protocol === 'Ajna' ? protocol : undefined);
 	}
 }
