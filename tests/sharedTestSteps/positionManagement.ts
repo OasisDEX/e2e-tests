@@ -23,6 +23,7 @@ export const openPosition = async ({
 	adjustRisk,
 	protocol,
 	ajnaExistingDpm,
+	doubleConfirmStep,
 }: {
 	metamask: MetaMask;
 	app: App;
@@ -32,6 +33,7 @@ export const openPosition = async ({
 	adjustRisk?: { positionType?: 'Borrow' | 'Earn'; value: number };
 	protocol?: 'Ajna' | 'Morpho Blue';
 	ajnaExistingDpm?: boolean;
+	doubleConfirmStep?: boolean;
 }) => {
 	await app.position.setup.deposit(deposit);
 
@@ -103,22 +105,25 @@ export const openPosition = async ({
 				metamask,
 				forkId,
 				metamaskAction: 'approveTokenPermission',
-				app,
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 		await app.position.setup.continue();
 	}
 
+	await app.position.setup.shouldHaveTransactionCostOrFee();
+
+	if (doubleConfirmStep) {
+		await app.position.setup.confirm();
+	}
+
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
-		// await tx.confirmAndVerifySuccess({ metamask, forkId, metamaskAction: 'confirmSignature' });
 		await tx.confirmAndVerifySuccess({
 			metamask,
 			forkId,
-			metamaskAction: 'confirmTransaction',
-			app,
+			metamaskAction: 'confirmSignature',
 		});
 	}).toPass({ timeout: longTestTimeout });
 
@@ -139,7 +144,7 @@ export const openPosition = async ({
 		await app.position.setup.goToPositionShouldBeVisible();
 		const positionId: string = (await app.position.setup.getNewPositionId()) as string;
 		//
-		await app.page.waitForTimeout(10_000);
+		await app.page.waitForTimeout(8_000);
 		//
 		await expect(async () => {
 			await app.page.goto(positionId);
@@ -260,7 +265,6 @@ export const adjustRisk = async ({
 			metamask,
 			metamaskAction: 'confirmTransaction',
 			forkId,
-			app,
 		});
 	}).toPass({ timeout: longTestTimeout });
 
@@ -355,7 +359,6 @@ export const close = async ({
 			metamask,
 			metamaskAction: 'confirmTransaction',
 			forkId,
-			app,
 		});
 	}, 'Confirm transaction in Summer.fi and Metamask').toPass({
 		timeout: longTestTimeout,
@@ -460,7 +463,6 @@ export const manageDebtOrCollateral = async ({
 				forkId,
 				// metamaskAction: 'confirmSignature',
 				metamaskAction: 'approveTokenPermission',
-				app,
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
@@ -484,7 +486,6 @@ export const manageDebtOrCollateral = async ({
 			metamask,
 			metamaskAction: 'confirmTransaction',
 			forkId,
-			app,
 		});
 	}).toPass({ timeout: longTestTimeout });
 
@@ -588,7 +589,6 @@ export const swapPosition = async ({
 				metamask,
 				forkId,
 				metamaskAction: 'confirmSignature',
-				app,
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
