@@ -69,7 +69,7 @@ test.describe('API tests - Auto Take Profit - Update - Spark - Ethereum', async 
 				triggerData: {
 					...validPayloads.triggerData,
 					withdrawToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
-					executionPrice: '750000000000',
+					executionPrice: '1000000000000',
 				},
 			},
 		});
@@ -86,7 +86,7 @@ test.describe('API tests - Auto Take Profit - Update - Spark - Ethereum', async 
 				triggerData: {
 					...validPayloads.triggerData,
 					withdrawToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
-					executionLTV: '1800',
+					executionLTV: '1100',
 				},
 			},
 		});
@@ -121,7 +121,7 @@ test.describe('API tests - Auto Take Profit - Update - Spark - Ethereum', async 
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					executionPrice: '800000000000',
+					executionPrice: '1100000000000',
 					executionLTV: '1500',
 					withdrawStep: '600',
 				},
