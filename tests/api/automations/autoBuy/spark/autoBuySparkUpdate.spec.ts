@@ -27,7 +27,7 @@ const validResponse = autoBuyWithoutMaxBuyPriceResponse({
 		address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
 	},
 	hasStablecoinDebt: true,
-	executionLTV: '1700',
+	executionLTV: '1100',
 	targetLTV: '2300',
 	targetLTVWithDeviation: ['2200', '2400'],
 });
