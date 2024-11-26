@@ -45,7 +45,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 		await app.position.openPage('/base/morphoblue/multiply/CBETH-ETH#setup');
 
 		await test.step('Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await openPosition({
 				metamask,
@@ -56,7 +56,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 		});
 
 		await test.step('Deposit extra collateral', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 			await app.position.manage.select('Manage collateral');
@@ -75,7 +75,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 		});
 
 		await test.step('Withdraw collateral', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 			await app.position.manage.select('Manage collateral');
@@ -95,7 +95,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 		});
 
 		await test.step('Close a postion', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await close({
 				metamask,

@@ -41,7 +41,7 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 		await app.position.setup.acknowledgeAjnaInfo();
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(1_000);
+		await app.page.waitForTimeout(2_000);
 
 		await openPosition({
 			metamask,
