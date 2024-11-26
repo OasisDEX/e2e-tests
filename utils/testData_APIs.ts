@@ -2141,9 +2141,9 @@ export const validPayloadsSpark = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '1700',
+				executionLTV: '1100',
 				maxBaseFee: '300',
-				maxBuyPrice: '700000000000',
+				maxBuyPrice: '900000000000',
 				targetLTV: '2300',
 				useMaxBuyPrice: true,
 			},
