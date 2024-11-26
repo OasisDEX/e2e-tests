@@ -49,7 +49,8 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 
 		// Skip again if DB collision also happening with omni
 		await test.step('It should Deposit and Borrow in a single tx', async () => {
-			await app.page.waitForTimeout(1_000);
+			// Delay to reduce flakiness
+			await app.page.waitForTimeout(2_000);
 
 			await manageDebtOrCollateral({
 				metamask,
@@ -67,9 +68,13 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		});
 
 		await test.step('It should Withdraw and Pay back in a single tx', async () => {
+			// Delay to reduce flakiness
 			await app.page.waitForTimeout(1_000);
 
 			await app.position.manage.withdrawCollateral();
+
+			// Delay to reduce flakiness
+			await app.page.waitForTimeout(2_000);
 
 			await manageDebtOrCollateral({
 				metamask,
@@ -91,6 +96,9 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 
 			await app.position.manage.openManageOptions({ currentLabel: 'ETH' });
 			await app.position.manage.select('Manage debt');
+
+			// Delay to reduce flakiness
+			await app.page.waitForTimeout(2_000);
 
 			await manageDebtOrCollateral({
 				metamask,
@@ -116,6 +124,9 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			await app.position.manage.select('Manage debt');
 			await app.position.manage.payBackDebt();
 
+			// Delay to reduce flakiness
+			await app.page.waitForTimeout(2_000);
+
 			await manageDebtOrCollateral({
 				metamask,
 				app,
@@ -136,7 +147,7 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 		await test.step('It should Close a position', async () => {
 			// Pause and Reload page to avoid random fails
 			await app.page.reload();
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await close({
 				metamask,

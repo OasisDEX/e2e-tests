@@ -144,7 +144,7 @@ export const openPosition = async ({
 		await app.position.setup.goToPositionShouldBeVisible();
 		const positionId: string = (await app.position.setup.getNewPositionId()) as string;
 		//
-		await app.page.waitForTimeout(8_000);
+		await app.page.waitForTimeout(10_000);
 		//
 		await expect(async () => {
 			await app.page.goto(positionId);
@@ -478,6 +478,8 @@ export const manageDebtOrCollateral = async ({
 		await app.position.setup.confirm();
 	}
 	// =================
+
+	await app.position.setup.shouldHaveTransactionCostOrFee();
 
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {

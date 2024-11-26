@@ -55,7 +55,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await adjustRisk({
 				metamask,
@@ -71,7 +71,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await adjustRisk({
 				metamask,
@@ -87,8 +87,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await close({
 				metamask,
