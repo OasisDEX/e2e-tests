@@ -45,7 +45,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await test.step('Set Auto-Buy', async () => {
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await automations.testAutoBuy({
 				metamask,
@@ -61,11 +61,12 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await test.step('Set Auto-Sell', async () => {
 			// Reload page to avoid random fails
+			await app.page.waitForTimeout(1_000);
 			await app.page.reload();
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await automations.testAutoSell({
 				metamask,
@@ -81,11 +82,12 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await test.step('Partial Take Profit', async () => {
 			// Reload page to avoid random fails
+			await app.page.waitForTimeout(1_000);
 			await app.page.reload();
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await automations.testPartialTakeProfit({
 				metamask,
@@ -131,7 +133,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await automations.testTrailingStopLoss({
 				metamask,

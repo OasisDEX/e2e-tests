@@ -639,7 +639,7 @@ export class Setup {
 	}
 
 	@step
-	async shouldHaveTransactionCostOrFee(protocol: 'Ajna' | 'Morpho Blue' | undefined) {
+	async shouldHaveTransactionCostOrFee(protocol?: 'Ajna' | 'Morpho Blue' | undefined) {
 		await this.base.shouldHaveTransactionCostOrFee(protocol === 'Ajna' ? protocol : undefined);
 	}
 }

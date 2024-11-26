@@ -50,7 +50,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 				metamask,
 				app,
 				forkId,
-				deposit: { token: 'ETH', amount: '10' },
+				deposit: { token: 'ETH', amount: '1' },
 			});
 		});
 
@@ -59,29 +59,32 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await app.page.waitForTimeout(1_000);
 
 			await app.position.overview.shouldHaveExposure({
-				amount: '9.[0-9]{4}',
+				amount: '0.9[0-9]{3}',
 				token: 'WSTETH',
 				timeout: positionTimeout,
 			});
 			await app.position.overview.shouldHaveDebt({
-				amount: '1.[0-9]{4}',
+				amount: '0.1[0-9]{3}',
 				token: 'ETH',
 			});
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 			await app.position.manage.select('Manage collateral');
 
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(2_000);
+
 			await manageDebtOrCollateral({
 				metamask,
 				app,
 				forkId,
-				deposit: { token: 'WSTETH', amount: '20' },
+				deposit: { token: 'WSTETH', amount: '2' },
 				expectedCollateralExposure: {
-					amount: '29.[0-9]{2}',
+					amount: '2.9[0-9]{3}',
 					token: 'WSTETH',
 				},
 				expectedDebt: {
-					amount: '1.[0-9]{4}',
+					amount: '0.1[0-9]{3}',
 					token: 'ETH',
 				},
 				protocol: 'Aave V3',
@@ -97,17 +100,20 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await app.position.manage.select('Manage collateral');
 			await app.position.manage.withdrawCollateral();
 
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(2_000);
+
 			await manageDebtOrCollateral({
 				metamask,
 				app,
 				forkId,
-				withdraw: { token: 'WSTETH', amount: '10' },
+				withdraw: { token: 'WSTETH', amount: '1' },
 				expectedCollateralExposure: {
-					amount: '19.[0-9]{2}',
+					amount: '1.9[0-9]{3}',
 					token: 'WSTETH',
 				},
 				expectedDebt: {
-					amount: '1.[0-9]{2}',
+					amount: '0.1[0-9]{3}',
 					token: 'ETH',
 				},
 				protocol: 'Aave V3',
@@ -123,17 +129,20 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await app.position.manage.select('Manage debt');
 			await app.position.manage.withdrawDebt();
 
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(2_000);
+
 			await manageDebtOrCollateral({
 				metamask,
 				app,
 				forkId,
-				borrow: { token: 'ETH', amount: '10' },
+				borrow: { token: 'ETH', amount: '1' },
 				expectedCollateralExposure: {
-					amount: '19.[0-9]{2}',
+					amount: '1.9[0-9]{3}',
 					token: 'WSTETH',
 				},
 				expectedDebt: {
-					amount: '11.[0-9]{2}',
+					amount: '1.1[0-9]{3}',
 					token: 'ETH',
 				},
 				protocol: 'Aave V3',
@@ -148,17 +157,20 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 			await app.position.manage.select('Manage debt');
 
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(2_000);
+
 			await manageDebtOrCollateral({
 				metamask,
 				app,
 				forkId,
-				payBack: { token: 'ETH', amount: '5' },
+				payBack: { token: 'ETH', amount: '1' },
 				expectedCollateralExposure: {
-					amount: '19.[0-9]{2}',
+					amount: '1.9[0-9]{3}',
 					token: 'WSTETH',
 				},
 				expectedDebt: {
-					amount: '6.[0-9]{2}',
+					amount: '0.1[0-9]{3}',
 					token: 'ETH',
 				},
 				protocol: 'Aave V3',

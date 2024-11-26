@@ -2355,7 +2355,7 @@ export const validPayloadsSpark = {
 			action: 'update',
 			triggerData: {
 				executionLTV: '910',
-				executionPrice: '784098516167',
+				executionPrice: '900000000000',
 				stopLoss: {
 					triggerData: {
 						executionLTV: '7790',

@@ -124,8 +124,9 @@ export const openNewPositionAndSwap = async ({
 			for (const targetPool of targetPools) {
 				await test.step(`Swap to Morpho Multiply ${targetPool.colToken}/${targetPool.debtToken}`, async () => {
 					// Wait an reload to avoid flakiness
-					await app.page.waitForTimeout(1000);
+					await app.page.waitForTimeout(3000);
 					await app.page.reload();
+					await app.page.waitForTimeout(2000);
 
 					await swapPosition({
 						metamask,

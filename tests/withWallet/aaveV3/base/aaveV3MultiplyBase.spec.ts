@@ -41,7 +41,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.page.goto('/base/aave/v3/multiply/cbeth-usdbc#setup');
 
 		await test.step('Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await openPosition({
 				metamask,
@@ -56,7 +56,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await adjustRisk({
 				metamask,
@@ -72,7 +72,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await adjustRisk({
 				metamask,
@@ -88,7 +88,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await close({
 				metamask,
