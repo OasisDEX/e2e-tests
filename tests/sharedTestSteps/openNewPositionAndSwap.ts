@@ -78,7 +78,7 @@ export const openNewPositionAndSwap = async ({
 
 			await app.position.openPage(`/ethereum/${protocol}/${positionType}/${pool}#setup`);
 
-			await test.step('Open position Aave V3 Borrow position - ETH/USDC', async () => {
+			await test.step('Open position', async () => {
 				// Depositing collateral too quickly after loading page returns wrong simulation results
 				await app.position.overview.waitForComponentToBeStable();
 
@@ -122,7 +122,7 @@ export const openNewPositionAndSwap = async ({
 			// });
 
 			for (const targetPool of targetPools) {
-				await test.step(`Swap to Morpho Multiply ${targetPool.colToken}/${targetPool.debtToken}`, async () => {
+				await test.step(`Swap position`, async () => {
 					// Wait an reload to avoid flakiness
 					await app.page.waitForTimeout(3000);
 					await app.page.reload();
