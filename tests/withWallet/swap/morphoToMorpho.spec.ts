@@ -27,16 +27,15 @@ import {
 				// { colToken: 'USDE', debtToken: 'DAI-2' }, -- Very low liquidity
 			],
 		},
-		// SKIP - Cannot open Morpho MKR/USDC position -> https://discord.com/channels/837076147694207067/1310977091403251713
-		// {
-		// 	pool: 'MKR-USDC',
-		// 	positionType: 'multiply',
-		// 	targetPools: [
-		// 		{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-		// 		{ colToken: 'SUSDE', debtToken: 'DAI-1' },
-		// 		// { colToken: 'SUSDE', debtToken: 'DAI-4' } -- NO LIQUIDITY
-		// 	],
-		// },
+		{
+			pool: 'MKR-USDC',
+			positionType: 'multiply',
+			targetPools: [
+				{ colToken: 'SUSDE', debtToken: 'DAI-3' },
+				{ colToken: 'SUSDE', debtToken: 'DAI-1' },
+				// { colToken: 'SUSDE', debtToken: 'DAI-4' } -- NO LIQUIDITY
+			],
+		},
 	] as Scenario[]
 ).forEach((scenario) =>
 	test.describe('Swap from Morpho to Morpho', async () => {
