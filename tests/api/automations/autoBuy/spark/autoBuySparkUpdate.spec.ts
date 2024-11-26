@@ -123,7 +123,7 @@ test.describe('API tests - Auto-Buy - Update - Spark', async () => {
 					...validPayloads.triggerData,
 					executionLTV: '1300',
 					targetLTV: '2300',
-					maxBuyPrice: '850000000000',
+					maxBuyPrice: '1100000000000',
 				},
 			},
 		});

@@ -93,7 +93,7 @@ export const morphoEthereumBorrowPools = [
 
 // export const morphoEthereumBorrowPools_4 = ['RSWETH-ETH'];
 
-export const morphoBaseMultiplyPools = ['ETH-USDC'];
+export const morphoBaseMultiplyPools = ['ETH-USDC', 'CBBTC-ETH', 'CBBTC-USDC', 'CBETH-EURC'];
 // , 'WSTETH-USDC' --> NO LIQUIDITY
 // , 'WEETH-USDC' --> WEETH supply 100%
 // , 'CBETH-USDC' --> NO LIQUIDITY
@@ -109,11 +109,14 @@ export const morphoBaseEarnPools = [
 ];
 
 export const morphoBaseBorrowPools = [
+	'CBBTC-ETH',
+	'CBBTC-USDC',
 	'CBETH-ETH',
 	'WSTETH-ETH-2',
 	'WEETH-ETH',
 	'WSUPEROETHB-ETH',
 	'CBETH-USDC',
+	'CBETH-EURC',
 ];
 // 'WSTETH-USDC', -- NO LIQUIDITY
 // 'EZETH-USDC', -- NO LIQUIDITY
@@ -328,6 +331,7 @@ export const aaveV2EthereumMultiplyPools = ['WBTC-USDC'];
 export type Tokens =
 	| 'AERO'
 	| 'BSDETH'
+	| 'CBBTC'
 	| 'CBETH'
 	| 'CLE'
 	| 'DAI'
@@ -372,6 +376,7 @@ export type Tokens =
 export type SetBalanceTokens =
 	| 'AERO'
 	| 'BSDETH'
+	| 'CBBTC'
 	| 'CBETH'
 	| 'DAI'
 	| 'ENA'
@@ -412,6 +417,7 @@ export const depositAmount: { [index: string]: string } = {
 	AJNA: '100',
 	AERO: '4000',
 	BSDETH: '2',
+	CBBTC: '0.15',
 	CBETH: '2',
 	DAI: '4000',
 	ENA: '4000',
