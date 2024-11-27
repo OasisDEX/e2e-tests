@@ -1749,7 +1749,7 @@ export const validPayloadsAaveV3Ethereum = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '3010',
+				executionLTV: '1520',
 				executionPrice: '700000000000',
 				stopLoss: {
 					triggerData: {
@@ -1793,10 +1793,10 @@ export const validPayloadsAaveV3Ethereum = {
 			},
 			action: 'remove',
 			triggerData: {
-				executionLTV: '3010',
+				executionLTV: '1520',
 				executionPrice: '700000000000',
 				withdrawToken: '0x7f39c581f595b53c5cb19bd0b3f8da6c935e2ca0',
-				withdrawStep: '3510',
+				withdrawStep: '2020',
 			},
 		},
 	},

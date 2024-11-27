@@ -90,7 +90,7 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Ethereum @regre
 				triggerData: {
 					...validPayloads.triggerData,
 					withdrawToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
-					executionLTV: '2000',
+					executionLTV: '1400',
 				},
 			},
 		});
