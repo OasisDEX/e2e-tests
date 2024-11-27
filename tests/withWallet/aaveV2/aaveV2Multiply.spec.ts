@@ -9,6 +9,7 @@ import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionM
 
 let app: App;
 let forkId: string;
+let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
@@ -17,15 +18,14 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId } = await setup({ metamask, app, network: 'mainnet' }));
+		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 	});
 
 	test.afterEach(async () => {
 		await tenderly.deleteFork(forkId);
-		await app.page.close();
 	});
 
-	test('It should open and manage an Aave v2 Multiply position @regression', async ({
+	test('It should open and manage an Aave v2 Multiply position - ETH/USDC @regression', async ({
 		metamask,
 	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
@@ -53,6 +53,34 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 				newSliderPosition: 0.6,
 			});
 		});
+	});
+
+	test('It should open and manage an Aave v2 Multiply position - WBTC/USDC @regression', async ({
+		metamask,
+	}) => {
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await tenderly.setTokenBalance({
+			forkId,
+			network: 'mainnet',
+			walletAddress,
+			token: 'WBTC',
+			balance: '1',
+		});
+
+		await test.step('It should open a position', async () => {
+			await app.page.goto('/ethereum/aave/v2/multiply/wbtc-usdc#simulate');
+
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(2_000);
+
+			await openPosition({
+				metamask,
+				app,
+				forkId,
+				deposit: { token: 'WBTC', amount: '0.1' },
+			});
+		});
 
 		await test.step('It should Adjust Risk - Down', async () => {
 			await adjustRisk({
@@ -60,7 +88,7 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 				forkId,
 				app,
 				risk: 'down',
-				newSliderPosition: 0.5,
+				newSliderPosition: 0.05,
 			});
 		});
 
@@ -70,9 +98,9 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 				forkId,
 				app,
 				closeTo: 'collateral',
-				collateralToken: 'ETH',
+				collateralToken: 'WBTC',
 				debtToken: 'USDC',
-				tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{3,4}',
+				tokenAmountAfterClosing: '0.[0-9]{3,4}',
 			});
 		});
 	});
