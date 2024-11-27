@@ -131,7 +131,6 @@ export const morphoBaseBorrowPools = [
 
 export const aaveV3EthereumEarnPools = [
 	'WSTETH-CBETH',
-	'RETH-ETH',
 	'SDAI-DAI',
 	'SDAI-LUSD',
 	'SDAI-USDC',
@@ -139,6 +138,7 @@ export const aaveV3EthereumEarnPools = [
 	'SDAI-FRAX',
 ];
 // 'USDC-GHO', 'SDAI-GHO' -- NO LIQUIDITY - GHO
+// 'RETH-ETH', --> Already tested in /withWallet/aaveV3
 // 'SDAI-USDT', --> Already tested in /withWallet/aaveV3
 // 'CBETH-ETH', --> Already tested in /withWallet/aaveV3
 // , 'WEETH-ETH' --> WEETH supply 100%
@@ -324,7 +324,8 @@ export const aaveV3OptimismBorrowPools = [
 // 'ETH-USDC', --> Already tested in /withWallet/aaveV3 test suite
 // 'DAI-WBTC', --> Already tested in /withWallet/aaveV3 test suite
 
-export const aaveV2EthereumMultiplyPools = ['WBTC-USDC'];
+// export const aaveV2EthereumMultiplyPools = [];
+// 'WBTC-USDC', -- Already tested in /withWallet/aaveV2 test suite
 // 'ETH-USDC', -- Already tested in /withWallet/aaveV2 test suite
 // 'STETH-USDC' -- Not able to get funds with 'tenderly_setBalance'
 

@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
-import { gigaTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 import { reloadUntilCorrect } from 'utils/general';
@@ -20,6 +20,16 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		app = new App(page);
 		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+	});
+
+	test.afterEach(async () => {
+		await tenderly.deleteFork(forkId);
+	});
+
+	test('It should open and manage an Aave V3 Earn Ethereum position - WSTETH/ETH @regression', async ({
+		metamask,
+	}) => {
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await tenderly.setTokenBalance({
 			forkId,
@@ -28,19 +38,8 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			token: 'WSTETH',
 			balance: '50',
 		});
-	});
 
-	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
-		await app.page.close();
-	});
-
-	test('It should open and manage an Aave V3 Earn Ethereum position - WSTETH-ETH @regression', async ({
-		metamask,
-	}) => {
-		test.setTimeout(gigaTestTimeout);
-
-		await app.page.goto('/ethereum/aave/v3/earn/wsteth-eth#simulate');
+		await app.position.openPage('/ethereum/aave/v3/multiply/WSTETH-ETH#setup');
 
 		await test.step('It should Open a position', async () => {
 			// Pause to avoid flakiness
@@ -119,6 +118,34 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 				protocol: 'Aave V3',
 			});
 		});
+	});
+
+	test('It should open and manage an Aave V3 Earn Ethereum position - RETH/ETH', async ({
+		metamask,
+	}) => {
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await tenderly.setTokenBalance({
+			forkId,
+			network: 'mainnet',
+			walletAddress,
+			token: 'RETH',
+			balance: '5',
+		});
+
+		await app.position.openPage('/ethereum/aave/v3/multiply/RETH-ETH#setup');
+
+		await test.step('It should Open a position', async () => {
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(2_000);
+
+			await openPosition({
+				metamask,
+				app,
+				forkId,
+				deposit: { token: 'RETH', amount: '2' },
+			});
+		});
 
 		await test.step('It should Borrow', async () => {
 			// Pause to avoid flakiness
@@ -138,11 +165,11 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 				forkId,
 				borrow: { token: 'ETH', amount: '1' },
 				expectedCollateralExposure: {
-					amount: '1.9[0-9]{3}',
-					token: 'WSTETH',
+					amount: '2.[0-9]{4}',
+					token: 'RETH',
 				},
 				expectedDebt: {
-					amount: '1.1[0-9]{3}',
+					amount: '1.[0-9]{4}',
 					token: 'ETH',
 				},
 				protocol: 'Aave V3',
@@ -166,11 +193,11 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 				forkId,
 				payBack: { token: 'ETH', amount: '1' },
 				expectedCollateralExposure: {
-					amount: '1.9[0-9]{3}',
-					token: 'WSTETH',
+					amount: '2.[0-9]{4}',
+					token: 'RETH',
 				},
 				expectedDebt: {
-					amount: '0.1[0-9]{3}',
+					amount: '0.[0-9]{4}',
 					token: 'ETH',
 				},
 				protocol: 'Aave V3',
