@@ -2661,7 +2661,7 @@ export const validPayloadsAaveV3Arbitrum = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '1000',
+				executionLTV: '500',
 				executionPrice: '600000000000',
 				stopLoss: {
 					triggerData: {

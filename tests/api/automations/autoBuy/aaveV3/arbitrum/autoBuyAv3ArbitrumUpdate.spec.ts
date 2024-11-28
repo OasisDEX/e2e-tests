@@ -125,8 +125,8 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Arbitrum', async () => 
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					executionLTV: '4200',
-					targetLTV: '4700',
+					executionLTV: '3800',
+					targetLTV: '4100',
 					maxBuyPrice: '500000000000',
 				},
 			},
@@ -138,9 +138,9 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Arbitrum', async () => 
 			...validResponse,
 			simulation: {
 				...validResponse.simulation,
-				executionLTV: '4200',
-				targetLTV: '4700',
-				targetLTVWithDeviation: ['4600', '4800'],
+				executionLTV: '3800',
+				targetLTV: '4100',
+				targetLTVWithDeviation: ['4000', '4200'],
 			},
 			warnings: [],
 		});
