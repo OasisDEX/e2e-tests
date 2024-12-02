@@ -98,7 +98,8 @@ test.describe('API tests - GET - Stop-Loss, Auto Sell, Auto Take Profit and Auto
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC/355#protection
 
-	test('Get automation - Valid payload @regression', async ({ request }) => {
+	// Position in new testing wallet being updated by other people - Replace with another positionthat nobody uses
+	test.skip('Get automation - Valid payload @regression', async ({ request }) => {
 		const response = await request.get(getAutomationEndpoint, {
 			params: otherAutomationsDefaultParams,
 		});
