@@ -52,7 +52,7 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 		});
 
 		await test.step('Deposit (same token - USDT)', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await manageDebtOrCollateral({
 				metamask,
@@ -68,7 +68,7 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 		});
 
 		await test.step('Withdraw', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await app.position.manage.withdrawCollateral();
 
@@ -86,7 +86,7 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 		});
 
 		await test.step('Deposit (different token - ETH)', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await app.position.setup.openTokenSelector();
 			await app.position.setup.selectDepositToken('ETH');

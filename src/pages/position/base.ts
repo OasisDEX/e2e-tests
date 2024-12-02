@@ -217,13 +217,20 @@ export class Base {
 		const regExpCost = new RegExp(`(([0-9])\|(n/a))`);
 		const regExpFee = new RegExp(`((\\$.*\\$)\|(n/a))`);
 
-		const MaxTransactionCost = this.page.getByText('Max transaction cost');
+		let assertedText: string | RegExp = '';
+		let expectedRegExp: string | RegExp = '';
 
-		const assertedText = (await MaxTransactionCost.isVisible())
-			? 'Max transaction cost'
-			: 'Transaction fee';
-		const expectedRegExp =
-			(await MaxTransactionCost.isVisible()) || !protocol ? regExpCost : regExpFee;
+		await expect(async () => {
+			const maxTransactionCostIsVisible = await this.page
+				.getByText('Max transaction cost')
+				.isVisible();
+			const transactionFeeIsVisible = await this.page.getByText('Transaction fee').isVisible();
+
+			expect(maxTransactionCostIsVisible || transactionFeeIsVisible).toBeTruthy();
+
+			assertedText = maxTransactionCostIsVisible ? 'Max transaction cost' : 'Transaction fee';
+			expectedRegExp = maxTransactionCostIsVisible || !protocol ? regExpCost : regExpFee;
+		}).toPass();
 
 		await expect(
 			this.page.getByText(assertedText).locator('..'),

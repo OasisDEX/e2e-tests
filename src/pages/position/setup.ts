@@ -195,7 +195,7 @@ export class Setup {
 		await expect(
 			this.page.getByRole('button', { name: 'Continue' }),
 			'"Continue" should be visible'
-		).toBeVisible();
+		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 	}
 
 	@step
