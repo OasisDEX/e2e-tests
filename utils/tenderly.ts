@@ -92,6 +92,7 @@ export const tokenAddresses: any = {
 		WETH: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
 		WOETH: '0xdcee70654261af21c44c093c300ed3bb97b78192',
 		WSTETH: '0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0',
+		WUSDL: '0x7751E2F4b8ae93EF6B79d86419d42FE3295A4559',
 		YFI: '0x0bc529c00C6401aEF6D220BE8C6Ea1667F6Ad93e',
 	},
 	arbitrum: {
@@ -168,6 +169,7 @@ export const tokenBalances = {
 	WOETH: '1000',
 	WSTETH: '1000',
 	WSUPEROETHB: '1000',
+	WUSDL: '10000',
 	YFI: '100',
 };
 
