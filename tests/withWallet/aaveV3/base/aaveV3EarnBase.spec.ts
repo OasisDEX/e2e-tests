@@ -33,7 +33,7 @@ test.describe('Aave V3 Earn - Base - Wallet connected', async () => {
 		await tenderly.deleteFork(forkId);
 	});
 
-	test('It should open and manage an Aave V3 Earn (Yield Loop) Base position @regression', async ({
+	test('It should open and manage an Aave V3 Earn (Yield Loop) Base position - CBETH/ETH @regression', async ({
 		metamask,
 	}) => {
 		test.setTimeout(gigaTestTimeout);
