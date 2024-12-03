@@ -213,9 +213,10 @@ export class Base {
 	}
 
 	@step
-	async shouldHaveTransactionCostOrFee(protocol?: 'Ajna' | undefined) {
+	async shouldHaveTransactionCostOrFee(protocol?: 'Ajna' | 'Maker' | undefined) {
 		const regExpCost = new RegExp(`(([0-9])\|(n/a))`);
 		const regExpFee = new RegExp(`((\\$.*\\$)\|(n/a))`);
+		const regExpFeePlusMaxGasFee = new RegExp(`(([0-9].*\\$)\|(n/a))`);
 
 		let assertedText: string | RegExp = '';
 		let expectedRegExp: string | RegExp = '';
@@ -225,15 +226,29 @@ export class Base {
 				.getByText('Max transaction cost')
 				.isVisible();
 			const transactionFeeIsVisible = await this.page.getByText('Transaction fee').isVisible();
+			const feesPlusMaxGasFeeIsVisible = await this.page
+				.getByText('Fees + (max gas fee)')
+				.isVisible();
 
-			expect(maxTransactionCostIsVisible || transactionFeeIsVisible).toBeTruthy();
+			expect(
+				maxTransactionCostIsVisible || transactionFeeIsVisible || feesPlusMaxGasFeeIsVisible
+			).toBeTruthy();
 
-			assertedText = maxTransactionCostIsVisible ? 'Max transaction cost' : 'Transaction fee';
-			expectedRegExp = maxTransactionCostIsVisible || !protocol ? regExpCost : regExpFee;
+			assertedText = maxTransactionCostIsVisible
+				? 'Max transaction cost'
+				: transactionFeeIsVisible
+				? 'Transaction fee'
+				: 'Fees + (max gas fee)';
+			expectedRegExp =
+				maxTransactionCostIsVisible || !protocol
+					? regExpCost
+					: protocol === 'Maker'
+					? regExpFeePlusMaxGasFee
+					: regExpFee;
 		}).toPass();
 
 		await expect(
-			this.page.getByText(assertedText).locator('..'),
+			this.page.getByText(assertedText).locator(protocol === 'Maker' ? '../..' : '..'),
 			'Should have `n/a` or expected amount'
 		).toHaveText(expectedRegExp, { timeout: expectDefaultTimeout * 5 });
 	}
