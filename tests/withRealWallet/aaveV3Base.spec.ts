@@ -35,11 +35,16 @@ test.describe('Aave v3 - Base - Wallet connected', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/base/aave/v3/multiply/ETH-USDBC#setup');
+		await app.position.openPage('/base/aave/v3/multiply/ETH-USDBC#setup');
+
+		// Delay to reduce flakiness
+		await app.page.waitForTimeout(2_000);
 
 		await app.position.setup.deposit({ token: 'ETH', amount: '0.001' });
 
 		await app.position.setup.confirm();
+		// Delay to reduce flakiness
+		await app.page.waitForTimeout(1_000);
 		// Thre are two 'confirm' steps
 		await app.position.setup.confirmOrRetry();
 
@@ -55,13 +60,18 @@ test.describe('Aave v3 - Base - Wallet connected', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/base/aave/v3/multiply/CBETH-ETH#setup');
+		await app.position.openPage('/base/aave/v3/multiply/CBETH-ETH#setup');
+
+		// Delay to reduce flakiness
+		await app.page.waitForTimeout(2_000);
 
 		await app.position.setup.deposit({ token: 'CBETH', amount: '0.0007' });
 
 		await app.position.setup.confirm();
+		// Delay to reduce flakiness
+		await app.page.waitForTimeout(1_000);
 		// Thre are two 'confirm' steps
-		await app.position.setup.confirm();
+		await app.position.setup.confirmOrRetry();
 
 		await test.step('Reject Permission To Spend', async () => {
 			await expect(async () => {
