@@ -35,14 +35,18 @@ test.describe('Aave v3 - Arbitrum - Wallet connected', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/arbitrum/aave/v3/multiply/eth-usdc#setup');
+		await app.position.openPage('/arbitrum/aave/v3/multiply/eth-usdc#setup');
 
-		// To avoid flakiness
+		// Delay to reduce flakiness
 		await app.page.waitForTimeout(2_000);
 
 		await app.position.setup.deposit({ token: 'ETH', amount: '0.001' });
 
+		await app.position.setup.shouldHaveTransactionCostOrFee();
+
 		await app.position.setup.confirm();
+		// Delay to reduce flakiness
+		await app.page.waitForTimeout(1_000);
 		// Thre are two 'confirm' steps
 		await app.position.setup.confirmOrRetry();
 
@@ -58,13 +62,20 @@ test.describe('Aave v3 - Arbitrum - Wallet connected', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/arbitrum/aave/v3/multiply/WSTETH-ETH#setup');
+		await app.position.openPage('/arbitrum/aave/v3/multiply/WSTETH-ETH#setup');
+
+		// Delay to reduce flakiness
+		await app.page.waitForTimeout(2_000);
 
 		await app.position.setup.deposit({ token: 'WSTETH', amount: '0.0006' });
 
+		await app.position.setup.shouldHaveTransactionCostOrFee();
+
 		await app.position.setup.confirm();
+		// Delay to reduce flakiness
+		await app.page.waitForTimeout(1_000);
 		// Thre are two 'confirm' steps
-		await app.position.setup.confirm();
+		await app.position.setup.confirmOrRetry();
 
 		await test.step('Reject Permission To Spend', async () => {
 			await expect(async () => {
