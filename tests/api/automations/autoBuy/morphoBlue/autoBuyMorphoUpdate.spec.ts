@@ -128,7 +128,7 @@ test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async ()
 					...validPayloads.triggerData,
 					executionLTV: '2000',
 					targetLTV: '3300',
-					maxBuyPrice: '40000000000000',
+					maxBuyPrice: '300000000',
 				},
 			},
 		});

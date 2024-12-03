@@ -121,9 +121,9 @@ test.describe('API tests - Auto-Buy - Update - Spark', async () => {
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					executionLTV: '1300',
-					targetLTV: '2300',
-					maxBuyPrice: '1100000000000',
+					executionLTV: '1000',
+					targetLTV: '2500',
+					maxBuyPrice: '890000000000',
 				},
 			},
 		});
@@ -134,9 +134,9 @@ test.describe('API tests - Auto-Buy - Update - Spark', async () => {
 			...validResponse,
 			simulation: {
 				...validResponse.simulation,
-				executionLTV: '1300',
-				targetLTV: '2300',
-				targetLTVWithDeviation: ['2200', '2400'],
+				executionLTV: '1000',
+				targetLTV: '2500',
+				targetLTVWithDeviation: ['2400', '2600'],
 			},
 			warnings: [],
 		});
