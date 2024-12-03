@@ -218,13 +218,18 @@ export const openMakerPosition = async ({
 		});
 	}
 
+	await app.position.setup.shouldHaveTransactionCostOrFee('Maker');
+
 	await app.position.setup.confirm();
 	await app.position.setup.continueWithoutStopLoss();
+
+	await app.position.setup.shouldHaveTransactionCostOrFee('Maker');
 
 	await expect(async () => {
 		await app.position.setup.createOrRetry();
 		// await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmSignature', forkId });
 		await confirmAddToken({ metamask, app });
+		await app.position.setup.goToVaultShouldBeVisible();
 	}).toPass();
 
 	await app.position.setup.goToVault();
