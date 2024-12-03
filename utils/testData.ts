@@ -272,9 +272,10 @@ export const aaveV3BaseEarnPools = ['WSTETH-ETH'];
 // , 'WEETH-ETH'  --> WEETH supply 100%
 // 'CBETH-ETH', --> Already tested in /withWallet/aaveV3 test suite
 
-export const aaveV3BaseMultiplyPools = ['ETH-USDC', 'ETH-USDBC', 'CBETH-USDC', 'WSTETH-USDC'];
+export const aaveV3BaseMultiplyPools = ['ETH-USDBC', 'CBETH-USDC', 'WSTETH-USDC'];
 // 'WEETH-USDC', --> WEETH supply 100%
 // 'CBETH-USDBC', --> Already tested in /withWallet/aaveV3 test suite
+// 'ETH-USDC', --> Already tested in /withWallet/aaveV3 test suite
 
 export const aaveV3BaseBorrowPools = [
 	'ETH-USDC',

@@ -19,6 +19,16 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		app = new App(page);
 		({ forkId, walletAddress } = await setup({ metamask, app, network: 'base' }));
+	});
+
+	test.afterEach(async () => {
+		await tenderly.deleteFork(forkId);
+	});
+
+	test('It should open and manage an Aave v3 Multiply Base position - CBETH/USDBC @regression', async ({
+		metamask,
+	}) => {
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await tenderly.setTokenBalance({
 			forkId,
@@ -27,18 +37,8 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			token: 'CBETH',
 			balance: '5',
 		});
-	});
 
-	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
-	});
-
-	test('It should open and manage an Aave v3 Multiply Base position @regression', async ({
-		metamask,
-	}) => {
-		test.setTimeout(extremelyLongTestTimeout);
-
-		await app.page.goto('/base/aave/v3/multiply/cbeth-usdbc#setup');
+		await app.position.openPage('/base/aave/v3/multiply/cbeth-usdbc#setup');
 
 		await test.step('Open a position', async () => {
 			await app.page.waitForTimeout(2_000);
@@ -56,6 +56,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
+			await app.position.overview.shouldBeVisible();
 			await app.page.waitForTimeout(2_000);
 
 			await adjustRisk({
@@ -68,26 +69,11 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		});
 
 		// Skip again if DB collision also happening with omni
-		await test.step('Adjust risk - DOWN', async () => {
+		await test.step('Close position - To debt', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(2_000);
-
-			await adjustRisk({
-				metamask,
-				forkId,
-				app,
-				risk: 'down',
-				newSliderPosition: 0.1,
-			});
-		});
-
-		// Skip again if DB collision also happening with omni
-		await test.step('Close position', async () => {
-			// Pause and reload to avoid random fails
-			await app.page.waitForTimeout(3_000);
-			await app.page.reload();
+			await app.position.overview.shouldBeVisible();
 			await app.page.waitForTimeout(2_000);
 
 			await close({
@@ -99,6 +85,62 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 				collateralToken: 'CBETH',
 				debtToken: 'USDBC',
 				tokenAmountAfterClosing: '[0-9]{1,2},[0-9]{3}.[0-9]{1,2}([0-9]{1,2})?',
+			});
+		});
+	});
+
+	test('It should open and manage an Aave v3 Multiply Base position - ETH/USDC @regression', async ({
+		metamask,
+	}) => {
+		test.setTimeout(extremelyLongTestTimeout);
+
+		await app.position.openPage('/base/aave/v3/multiply/ETH-USDC#setup');
+
+		await test.step('Open a position', async () => {
+			await app.page.waitForTimeout(2_000);
+
+			await openPosition({
+				metamask,
+				app,
+				forkId,
+				deposit: { token: 'ETH', amount: '1' },
+			});
+		});
+
+		// Skip again if DB collision also happening with omni
+		await test.step('Adjust risk - DOWN', async () => {
+			// Pause and reload to avoid random fails
+			await app.page.waitForTimeout(3_000);
+			await app.page.reload();
+			await app.position.overview.shouldBeVisible();
+			await app.page.waitForTimeout(2_000);
+
+			await adjustRisk({
+				metamask,
+				forkId,
+				app,
+				risk: 'down',
+				newSliderPosition: 0.05,
+			});
+		});
+
+		// Skip again if DB collision also happening with omni
+		await test.step('Close position - To collateral', async () => {
+			// Pause and reload to avoid random fails
+			await app.page.waitForTimeout(3_000);
+			await app.page.reload();
+			await app.position.overview.shouldBeVisible();
+			await app.page.waitForTimeout(2_000);
+
+			await close({
+				metamask,
+				app,
+				forkId,
+				positionType: 'Multiply',
+				closeTo: 'collateral',
+				collateralToken: 'ETH',
+				debtToken: 'USDC',
+				tokenAmountAfterClosing: '[0-1].[0-9]{1,2}([0-9]{1,2})?',
 			});
 		});
 	});

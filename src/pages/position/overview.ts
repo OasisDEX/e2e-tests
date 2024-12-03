@@ -302,12 +302,12 @@ export class Overview {
 		protocol?: 'Maker' | 'Ajna' | 'Morpho Blue';
 	}) {
 		let regexObj = new RegExp(amount);
-		const locator =
-			protocol === 'Maker'
-				? this.page.getByText('Buying Power').locator('..')
-				: ['Ajna', 'Morpho Blue'].includes(protocol)
-				? this.page.locator('li:has-text("Buying Power")').locator('div')
-				: this.page.locator('li:has-text("Buying Power")');
+
+		const locator = !protocol
+			? this.page.locator('li:has-text("Buying Power")')
+			: protocol === 'Maker'
+			? this.page.getByText('Buying Power').locator('..')
+			: this.page.locator('li:has-text("Buying Power")').locator('div');
 
 		await expect(locator.getByText('After')).toContainText(regexObj);
 	}

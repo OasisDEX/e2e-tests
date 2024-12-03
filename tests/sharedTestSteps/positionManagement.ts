@@ -461,7 +461,6 @@ export const manageDebtOrCollateral = async ({
 			await tx.confirmAndVerifySuccess({
 				metamask,
 				forkId,
-				// metamaskAction: 'confirmSignature',
 				metamaskAction: 'approveTokenPermission',
 			});
 			await app.position.setup.continueShouldBeVisible();
@@ -489,6 +488,7 @@ export const manageDebtOrCollateral = async ({
 			metamaskAction: 'confirmTransaction',
 			forkId,
 		});
+		await app.position.setup.continueShouldBeVisible();
 	}).toPass({ timeout: longTestTimeout });
 
 	if (protocol) {
