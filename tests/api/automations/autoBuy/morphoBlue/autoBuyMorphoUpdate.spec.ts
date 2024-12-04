@@ -33,7 +33,7 @@ const validResponse = autoBuyWithoutMaxBuyPriceResponse({
 });
 
 test.describe('API tests - Auto-Buy - Update - Morpho Blue - Ethereum', async () => {
-	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA#overview
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/borrow/WSTETH-ETH-1/2545
 
 	test('Update existing automation - maxBuyPrice - Valid payload data', async ({ request }) => {
