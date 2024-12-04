@@ -71,7 +71,7 @@ export const openNewPositionAndSwap = async ({
 			await tenderly.deleteFork(forkId);
 		});
 
-		test(`It should OPEN a position - ${originalProtocol} ${positionType} ${pool} - & SWAP it to ${targetProtocol} ${targetPoolsString}`, async ({
+		test(`It should OPEN a '${originalProtocol} ${positionType} ${pool}' position & SWAP it to '${targetProtocol} ${targetPoolsString}'`, async ({
 			metamask,
 		}) => {
 			test.setTimeout(gigaTestTimeout);
