@@ -33,6 +33,14 @@ export const confirmAndVerifySuccess = async ({
 	await tenderly.verifyTxReceiptStatusSuccess(forkId);
 };
 
-export const rejectPermissionToSpend = async ({ metamask }: { metamask: MetaMask }) => {
-	await metamask.rejectTransaction();
+export const rejectPermissionToSpend = async ({
+	metamask,
+	timeout,
+}: {
+	metamask: MetaMask;
+	timeout?: number;
+}) => {
+	await expect(async () => {
+		await metamask.rejectTransaction();
+	}).toPass({ timeout: timeout ?? expectDefaultTimeout * 2 });
 };

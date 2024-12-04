@@ -5,10 +5,10 @@ test.describe(`Earn page`, async () => {
 		await app.earn.openPage();
 	});
 
-	(['BASE', 'ARBITRUM_ONE'] as const).forEach((network) => {
+	(['BASE', 'ARBITRUM'] as const).forEach((network) => {
 		const networkShortName: { [index: string]: 'base' | 'arbitrum' } = {
 			BASE: 'base',
-			ARBITRUM_ONE: 'arbitrum',
+			ARBITRUM: 'arbitrum',
 		};
 		test(`It should select ${network} network`, async ({ app }) => {
 			await app.earn.networkSelector.open();

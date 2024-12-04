@@ -24,7 +24,7 @@ export class Header {
 				.getByTestId('vault-network')
 				.locator('svg')
 				.getAttribute('title')) ?? '';
-		return network.replace('network_', '');
+		return network.split('network_')[1];
 	}
 
 	@step

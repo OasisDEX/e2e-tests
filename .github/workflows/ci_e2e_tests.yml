@@ -42,11 +42,10 @@ jobs:
       base_url: 'https://staging.summer.fi'
       script: api-tests:regression
 
-  # SKIP - Tests has become very flaky - Retry action to confirm needs to be added
-  # with-real-wallet:
-  #   uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
-  #   with:
-  #     base_url: 'https://staging.summer.fi'
-  #     flags_features: ${{ inputs.flags_features}}
-  #   secrets: inherit
+  with-real-wallet:
+    uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
+    with:
+      base_url: 'https://staging.summer.fi'
+      flags_features: ${{ inputs.flags_features}}
+    secrets: inherit
   
