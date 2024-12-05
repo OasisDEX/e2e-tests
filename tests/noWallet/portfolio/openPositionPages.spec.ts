@@ -20,14 +20,15 @@ test.describe('Open position pages', async () => {
 			});
 
 			await app.portfolio.positionsHub.showEmptyPositions();
-			const positionPageLink = await app.portfolio.positionsHub.getNthPositionLink(positionIndex);
+			const positionPageLink =
+				(await app.portfolio.positionsHub.getNthPositionLink(positionIndex)) ?? '';
 			// Console log for debugging purposes in case of test fail
 			console.log('Position page: ', positionPageLink);
 
 			await app.portfolio.positionsHub.openNthPosition(positionIndex);
 			await expect(async () => {
 				const lostConnection = app.page.getByText('Lost connection');
-				if (lostConnection.isVisible) {
+				if (await lostConnection.isVisible()) {
 					await app.position.openPage(positionPageLink, { tab: 'Overview' });
 				}
 				await app.position.overview.shouldBeVisible({ tab: 'Overview' });

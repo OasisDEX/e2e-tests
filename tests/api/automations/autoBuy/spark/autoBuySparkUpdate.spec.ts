@@ -55,7 +55,7 @@ test.describe('API tests - Auto-Buy - Update - Spark', async () => {
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					executionLTV: '1500',
+					executionLTV: '900',
 				},
 			},
 		});
@@ -64,7 +64,7 @@ test.describe('API tests - Auto-Buy - Update - Spark', async () => {
 
 		expect(respJSON).toMatchObject({
 			...validResponse,
-			simulation: { ...validResponse.simulation, executionLTV: '1500' },
+			simulation: { ...validResponse.simulation, executionLTV: '900' },
 			warnings: [],
 		});
 	});
