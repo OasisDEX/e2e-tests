@@ -1,8 +1,6 @@
-import { test } from '#noWalletFixtures';
-import { positionTimeout } from 'utils/config';
-
-const numberOfPools = Array.from({ length: 20 }, (_, index) => 0 + index);
-const numberOfPoolsPage10 = Array.from({ length: 7 }, (_, index) => 0 + index);
+import { expect, test } from '#noWalletFixtures';
+import { longTestTimeout, positionTimeout } from 'utils/config';
+import { arrayWithNthElements } from 'utils/general';
 
 test.describe('Borrow page', async () => {
 	test('It should open Borrow pool finder', async ({ app }) => {
@@ -35,436 +33,74 @@ test.describe('Borrow page', async () => {
 		await app.borrow.productHub.list.shouldBePage('1');
 	});
 
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 1 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			await app.borrow.open();
-
-			// Set Min Liquidity to '0' so that all pools are listed
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 2 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			await app.borrow.open();
-
-			// Set Min Liquidity to '0' so that all pools are listed
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
-
-			// Move to page 2 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 3 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			await app.borrow.open();
-
-			// Set Min Liquidity to '0' so that all pools are listed
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
-
-			// Move to page 2 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 4 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.borrow.open();
-
-			// Set Min Liquidity to '0' so that all pools are listed
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
-
-			// Move to page 2 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 5 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.borrow.open();
-
-			// Set Min Liquidity to '0' so that all pools are listed
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
-
-			// Move to page 2 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 5 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 6 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.borrow.open();
-
-			// Set Min Liquidity to '0' so that all pools are listed
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
-
-			// Move to page 2 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 5 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 6 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 7 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.borrow.open();
-
-			// Set Min Liquidity to '0' so that all pools are listed
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
-
-			// Move to page 2 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 5 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 6 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 7 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 8 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.borrow.open();
-
-			// Set Min Liquidity to '0' so that all pools are listed
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
-
-			// Move to page 2 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 5 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 6 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 7 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 8 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 9 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.borrow.open();
-
-			// Set Min Liquidity to '0' so that all pools are listed
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
-
-			// Move to page 2 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 5 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 6 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 7 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 8 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 9 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPoolsPage10.forEach((poolIndex) => {
-		test(`It should open position page for all available BORROW pools - Page 10 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.borrow.open();
-
-			// Set Min Liquidity to '0' so that all pools are listed
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
-			await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
-
-			// Move to page 2 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 5 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 6 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 7 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 8 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 9 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-			// Move to page 10 inproduct hub
-			await app.borrow.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
+	[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].forEach((page) => {
+		const numberOfPools = page != 10 ? arrayWithNthElements(20) : arrayWithNthElements(7);
+
+		numberOfPools.forEach((poolIndex) => {
+			test(`It should open position page for all available Borrow pools - Page ${page} - ${poolIndex}`, async ({
+				app,
+			}) => {
+				test.setTimeout(longTestTimeout);
+
+				await app.borrow.open();
+
+				// Set Min Liquidity to '0' so that all pools are listed
+				await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
+				await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
+
+				// Move to page 2 inproduct hub
+				for (const pageNumber of arrayWithNthElements(page - 1)) {
+					// Move to next in product hub
+					await app.borrow.productHub.list.nextPage();
+				}
+
+				// Logging pool info for debugging purposes
+				const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
+				const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
+				const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
+				const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
+				console.log('Pool Index: ', poolIndex);
+				console.log('Pool: ', pool);
+				console.log('Strategy: ', strategy);
+				console.log('Protocol: ', protocol);
+				console.log('Network: ', network);
+
+				await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
+				await app.homepage.productHub.list.nthPool(poolIndex).open();
+
+				if (protocol === 'Maker') {
+					await app.modals.connectWallet.shouldBeVisible();
+				} else {
+					await expect(async () => {
+						const lostConnection = app.page.getByText('Lost connection');
+						const applicationError = app.page.getByText('Application error');
+						const positionInfoTab = app.page.getByRole('button', {
+							name: 'Position Info',
+							exact: true,
+						});
+
+						let lostConnectionIsVisible: boolean | undefined;
+						let applicationErrorIsVisible: boolean | undefined;
+
+						await expect(async () => {
+							lostConnectionIsVisible = await lostConnection.isVisible();
+							applicationErrorIsVisible = await applicationError.isVisible();
+							const positionInfoTabIsVisible = await positionInfoTab.isVisible();
+
+							expect(
+								lostConnectionIsVisible || applicationErrorIsVisible || positionInfoTabIsVisible
+							).toBeTruthy();
+						}).toPass({ timeout: positionTimeout });
+
+						if (lostConnectionIsVisible || applicationErrorIsVisible) {
+							await app.page.reload();
+							await app.position.overview.shouldBeVisible(); // default positionTimeout
+						} else {
+							await app.position.overview.shouldBeVisible({ timeout: 1_000 });
+						}
+					}).toPass();
+				}
+			});
 		});
 	});
 });

@@ -1,8 +1,7 @@
 import { expect, test } from '#noWalletFixtures';
-import { positionTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
+import { arrayWithNthElements } from 'utils/general';
 
-const numberOfPools = Array.from({ length: 20 }, (_, index) => 0 + index);
-const numberOfPoolsPage7 = Array.from({ length: 7 }, (_, index) => 0 + index);
 const susdePools = Array.from({ length: 5 }, (_, index) => 0 + index);
 
 test.describe('Earn page', async () => {
@@ -15,6 +14,88 @@ test.describe('Earn page', async () => {
 		await app.earn.open();
 		await app.earn.productHub.list.openPoolFinder();
 		await app.poolFinder.shouldHaveHeader('Earn');
+	});
+
+	[1, 2, 3, 4, 5, 6, 7].forEach((page) => {
+		const numberOfPools = page != 10 ? arrayWithNthElements(20) : arrayWithNthElements(7);
+
+		numberOfPools.forEach((poolIndex) => {
+			test(`It should open position page for all available Earn pools - Page ${page} - ${poolIndex}`, async ({
+				app,
+			}) => {
+				test.setTimeout(longTestTimeout);
+
+				await app.earn.open();
+
+				// Move to page 2 inproduct hub
+				for (const pageNumber of arrayWithNthElements(page - 1)) {
+					// Move to next in product hub
+					await app.earn.productHub.list.nextPage();
+				}
+
+				// Logging pool info for debugging purposes
+				const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
+				const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
+				const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
+				const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
+				console.log('Pool Index: ', poolIndex);
+				console.log('Pool: ', pool);
+				console.log('Strategy: ', strategy);
+				console.log('Protocol: ', protocol);
+				console.log('Network: ', network);
+
+				await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
+				await app.homepage.productHub.list.nthPool(poolIndex).open();
+
+				if (protocol === 'Maker') {
+					await app.modals.connectWallet.shouldBeVisible();
+				} else {
+					await expect(async () => {
+						const lostConnection = app.page.getByText('Lost connection');
+						const applicationError = app.page.getByText('Application error');
+						const positionInfoTab = app.page.getByRole('button', {
+							name: 'Position Info',
+							exact: true,
+						});
+						const overviewTab = app.page.getByRole('button', {
+							name: 'Overview',
+							exact: true,
+						});
+
+						let lostConnectionIsVisible: boolean | undefined;
+						let applicationErrorIsVisible: boolean | undefined;
+						let positionInfoTabIsVisible: boolean | undefined;
+						let overviewTabIsVisible: boolean | undefined;
+
+						await expect(async () => {
+							lostConnectionIsVisible = await lostConnection.isVisible();
+							applicationErrorIsVisible = await applicationError.isVisible();
+							positionInfoTabIsVisible = await positionInfoTab.isVisible();
+							overviewTabIsVisible = await overviewTab.isVisible();
+
+							expect(
+								lostConnectionIsVisible ||
+									applicationErrorIsVisible ||
+									positionInfoTabIsVisible ||
+									overviewTabIsVisible
+							).toBeTruthy();
+						}).toPass({ timeout: positionTimeout });
+
+						if (lostConnectionIsVisible || applicationErrorIsVisible) {
+							await app.page.reload();
+							await app.position.overview.shouldBeVisible({
+								tab: overviewTabIsVisible ? 'Overview' : 'Position Info',
+							}); // default positionTimeout
+						} else {
+							await app.position.overview.shouldBeVisible({
+								tab: overviewTabIsVisible ? 'Overview' : 'Position Info',
+								timeout: 1_000,
+							});
+						}
+					}).toPass();
+				}
+			});
+		});
 	});
 
 	susdePools.forEach((poolIndex) => {
@@ -43,268 +124,6 @@ test.describe('Earn page', async () => {
 			const positionPageAPY = await app.position.getAPY();
 
 			expect(Math.abs(positionPageAPY - productHubAPY)).toBeLessThan(0.1);
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available EARN pools - Page 1 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			await app.earn.open();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else if (protocol === 'Sky') {
-				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available EARN pools - Page 2 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			await app.earn.open();
-			// Move to page 2 inproduct hub
-			await app.earn.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else if (protocol === 'Sky') {
-				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available EARN pools - Page 3 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.earn.open();
-			// Move to page 2 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.earn.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else if (protocol === 'Sky') {
-				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available EARN pools - Page 4 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.earn.open();
-			// Move to page 2 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.earn.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else if (protocol === 'Sky') {
-				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available EARN pools - Page 5 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.earn.open();
-			// Move to page 2 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 5 inproduct hub
-			await app.earn.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else if (protocol === 'Sky') {
-				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPools.forEach((poolIndex) => {
-		test(`It should open position page for all available EARN pools - Page 6 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.earn.open();
-			// Move to page 2 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 5 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 6 inproduct hub
-			await app.earn.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else if (protocol === 'Sky') {
-				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
-		});
-	});
-
-	numberOfPoolsPage7.forEach((poolIndex) => {
-		test(`It should open position page for all available EARN pools - Page 7 - ${poolIndex}`, async ({
-			app,
-		}) => {
-			test.setTimeout(positionTimeout);
-
-			await app.earn.open();
-			// Move to page 2 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 3 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 4 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 5 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 6 inproduct hub
-			await app.earn.productHub.list.nextPage();
-			// Move to page 7 inproduct hub
-			await app.earn.productHub.list.nextPage();
-
-			// Logging pool info for debugging purposes
-			const pool = await app.homepage.productHub.list.nthPool(poolIndex).getPool();
-			const strategy = await app.homepage.productHub.list.nthPool(poolIndex).getStrategy();
-			const protocol = await app.homepage.productHub.list.nthPool(poolIndex).getProtocol();
-			const network = await app.homepage.productHub.list.nthPool(poolIndex).getNetwork();
-			console.log('Pool Index: ', poolIndex);
-			console.log('Pool: ', pool);
-			console.log('Strategy: ', strategy);
-			console.log('Protocol: ', protocol);
-			console.log('Network: ', network);
-
-			await app.homepage.productHub.list.nthPool(poolIndex).shouldBevisible();
-			await app.homepage.productHub.list.nthPool(poolIndex).open();
-
-			if (protocol === 'Maker') {
-				await app.modals.connectWallet.shouldBeVisible();
-			} else if (protocol === 'Sky') {
-				await app.position.overview.shouldBeVisible({ tab: 'Overview' });
-			} else {
-				await app.position.overview.shouldBeVisible();
-			}
 		});
 	});
 });
