@@ -2,6 +2,9 @@ import { expect, test } from '@playwright/test';
 import { App } from 'src/app';
 import { expectDefaultTimeout } from './config';
 
+export const arrayWithNthElements = (nth: number) =>
+	Array.from({ length: nth }, (_, index) => 0 + index);
+
 export const shortenAddress = (address: string) =>
 	`${address.slice(0, 6)}...${address.slice(-5)}`.toLowerCase();
 

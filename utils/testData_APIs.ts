@@ -2718,9 +2718,9 @@ export const validPayloadsAaveV3Base = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '5100',
+				executionLTV: '3000',
 				maxBaseFee: '300',
-				maxBuyPrice: '600000000000',
+				maxBuyPrice: '1000000000000',
 				targetLTV: '5600',
 				useMaxBuyPrice: true,
 			},

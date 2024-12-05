@@ -27,7 +27,7 @@ const validResponse = autoBuyWithoutMaxBuyPriceResponse({
 		address: '0xd9aAEc86B65D86f6A7B5B1b0c42FFA531710b6CA',
 	},
 	hasStablecoinDebt: true,
-	executionLTV: '5100',
+	executionLTV: '3000',
 	targetLTV: '5600',
 	targetLTVWithDeviation: ['5500', '5700'],
 });
@@ -55,8 +55,8 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Base', async () => {
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					executionLTV: '4700',
-					maxBuyPrice: '500000000000',
+					executionLTV: '3600',
+					maxBuyPrice: '800000000000',
 				},
 			},
 		});
@@ -65,7 +65,7 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Base', async () => {
 
 		expect(respJSON).toMatchObject({
 			...validResponse,
-			simulation: { ...validResponse.simulation, executionLTV: '4700' },
+			simulation: { ...validResponse.simulation, executionLTV: '3600' },
 			warnings: [],
 		});
 	});
@@ -76,8 +76,8 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Base', async () => {
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					targetLTV: '5800',
-					maxBuyPrice: '500000000000',
+					targetLTV: '4800',
+					maxBuyPrice: '800000000000',
 				},
 			},
 		});
@@ -88,8 +88,8 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Base', async () => {
 			...validResponse,
 			simulation: {
 				...validResponse.simulation,
-				targetLTV: '5800',
-				targetLTVWithDeviation: ['5700', '5900'],
+				targetLTV: '4800',
+				targetLTVWithDeviation: ['4700', '4900'],
 			},
 			warnings: [],
 		});
