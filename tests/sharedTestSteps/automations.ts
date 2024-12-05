@@ -190,6 +190,9 @@ export const testRegularStopLoss = async ({
 		await app.position.protection.setup('Stop-Loss');
 	}
 
+	// Delay to reduce flakiness
+	await app.page.waitForTimeout(2_000);
+
 	if (verifyTriggerPayload) {
 		await verifyTriggerApiRequestPayload({
 			app,
@@ -204,7 +207,12 @@ export const testRegularStopLoss = async ({
 		await app.position.protection.adjustStopLossTrigger({ value: 0.7 });
 	}
 
+	// Delay to reduce flakiness
+	await app.page.waitForTimeout(2_000);
+
 	await app.position.setup.confirm();
+	// Delay to reduce flakiness
+	await app.page.waitForTimeout(2_000);
 
 	// Automation setup randomly fails - Retry until it's set.
 	await test.step('Confirm automation setup', async () => {
