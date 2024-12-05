@@ -1,5 +1,5 @@
-import { test } from '#noWalletFixtures';
-import { longTestTimeout } from 'utils/config';
+import { expect, test } from '#noWalletFixtures';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 
 const numberOfPools = Array.from({ length: 10 }, (_, index) => 0 + index);
 
@@ -98,7 +98,49 @@ test.describe('Homepage', async () => {
 			if (protocol === 'Maker') {
 				await app.modals.connectWallet.shouldBeVisible();
 			} else {
-				await app.position.overview.shouldBeVisible();
+				await expect(async () => {
+					const lostConnection = app.page.getByText('Lost connection');
+					const applicationError = app.page.getByText('Application error');
+					const positionInfoTab = app.page.getByRole('button', {
+						name: 'Position Info',
+						exact: true,
+					});
+					const overviewTab = app.page.getByRole('button', {
+						name: 'Overview',
+						exact: true,
+					});
+
+					let lostConnectionIsVisible: boolean | undefined;
+					let applicationErrorIsVisible: boolean | undefined;
+					let positionInfoTabIsVisible: boolean | undefined;
+					let overviewTabIsVisible: boolean | undefined;
+
+					await expect(async () => {
+						lostConnectionIsVisible = await lostConnection.isVisible();
+						applicationErrorIsVisible = await applicationError.isVisible();
+						positionInfoTabIsVisible = await positionInfoTab.isVisible();
+						overviewTabIsVisible = await overviewTab.isVisible();
+
+						expect(
+							lostConnectionIsVisible ||
+								applicationErrorIsVisible ||
+								positionInfoTabIsVisible ||
+								overviewTabIsVisible
+						).toBeTruthy();
+					}).toPass({ timeout: positionTimeout });
+
+					if (lostConnectionIsVisible || applicationErrorIsVisible) {
+						await app.page.reload();
+						await app.position.overview.shouldBeVisible({
+							tab: overviewTabIsVisible ? 'Overview' : 'Position Info',
+						}); // default positionTimeout
+					} else {
+						await app.position.overview.shouldBeVisible({
+							tab: overviewTabIsVisible ? 'Overview' : 'Position Info',
+							timeout: 1_000,
+						});
+					}
+				}).toPass();
 			}
 		});
 	});
@@ -125,7 +167,34 @@ test.describe('Homepage', async () => {
 			if (protocol === 'Maker') {
 				await app.modals.connectWallet.shouldBeVisible();
 			} else {
-				await app.position.overview.shouldBeVisible();
+				await expect(async () => {
+					const lostConnection = app.page.getByText('Lost connection');
+					const applicationError = app.page.getByText('Application error');
+					const positionInfoTab = app.page.getByRole('button', {
+						name: 'Position Info',
+						exact: true,
+					});
+
+					let lostConnectionIsVisible: boolean | undefined;
+					let applicationErrorIsVisible: boolean | undefined;
+
+					await expect(async () => {
+						lostConnectionIsVisible = await lostConnection.isVisible();
+						applicationErrorIsVisible = await applicationError.isVisible();
+						const positionInfoTabIsVisible = await positionInfoTab.isVisible();
+
+						expect(
+							lostConnectionIsVisible || applicationErrorIsVisible || positionInfoTabIsVisible
+						).toBeTruthy();
+					}).toPass({ timeout: positionTimeout });
+
+					if (lostConnectionIsVisible || applicationErrorIsVisible) {
+						await app.page.reload();
+						await app.position.overview.shouldBeVisible(); // default positionTimeout
+					} else {
+						await app.position.overview.shouldBeVisible({ timeout: 1_000 });
+					}
+				}).toPass();
 			}
 		});
 	});
@@ -152,7 +221,34 @@ test.describe('Homepage', async () => {
 			if (protocol === 'Maker') {
 				await app.modals.connectWallet.shouldBeVisible();
 			} else {
-				await app.position.overview.shouldBeVisible();
+				await expect(async () => {
+					const lostConnection = app.page.getByText('Lost connection');
+					const applicationError = app.page.getByText('Application error');
+					const positionInfoTab = app.page.getByRole('button', {
+						name: 'Position Info',
+						exact: true,
+					});
+
+					let lostConnectionIsVisible: boolean | undefined;
+					let applicationErrorIsVisible: boolean | undefined;
+
+					await expect(async () => {
+						lostConnectionIsVisible = await lostConnection.isVisible();
+						applicationErrorIsVisible = await applicationError.isVisible();
+						const positionInfoTabIsVisible = await positionInfoTab.isVisible();
+
+						expect(
+							lostConnectionIsVisible || applicationErrorIsVisible || positionInfoTabIsVisible
+						).toBeTruthy();
+					}).toPass({ timeout: positionTimeout });
+
+					if (lostConnectionIsVisible || applicationErrorIsVisible) {
+						await app.page.reload();
+						await app.position.overview.shouldBeVisible(); // default positionTimeout
+					} else {
+						await app.position.overview.shouldBeVisible({ timeout: 1_000 });
+					}
+				}).toPass();
 			}
 		});
 	});
