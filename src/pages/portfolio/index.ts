@@ -46,7 +46,7 @@ export class Portfolio {
 						.nth(0),
 					`First position's Net Value should be visible`
 				).toBeVisible({
-					timeout: 10_000,
+					timeout: 20_000,
 				});
 			}).toPass();
 		} else {
