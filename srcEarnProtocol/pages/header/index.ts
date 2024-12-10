@@ -1,6 +1,7 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 import { Explore } from './explore';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class Header {
 	readonly page: Page;
@@ -26,5 +27,18 @@ export class Header {
 	@step
 	async earn() {
 		await this.headerLocator.getByRole('link', { name: 'Earn' }).click();
+	}
+
+	@step
+	async logIn() {
+		await this.headerLocator.getByRole('button', { name: 'Log in', exact: true }).click();
+	}
+
+	@step
+	async shouldHaveWalletAddress(shortenedWalletAddress: string) {
+		await expect(
+			this.headerLocator.locator(`button:has-text("${shortenedWalletAddress}")`),
+			'Button with shortened wallet address should be visible'
+		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 	}
 }
