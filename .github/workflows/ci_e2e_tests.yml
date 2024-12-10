@@ -42,10 +42,11 @@ jobs:
       base_url: 'https://staging.summer.fi'
       script: api-tests:regression
 
-  with-real-wallet:
-    uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
-    with:
-      base_url: 'https://staging.summer.fi'
-      flags_features: ${{ inputs.flags_features}}
-    secrets: inherit
+  # SKIPPED - Staging environment still very unreliable for tests with wallet
+  # with-real-wallet:
+  #   uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
+  #   with:
+  #     base_url: 'https://staging.summer.fi'
+  #     flags_features: ${{ inputs.flags_features}}
+  #   secrets: inherit
   
