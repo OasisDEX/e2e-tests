@@ -58,6 +58,24 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'earn-protocol-no-wallet',
+			testMatch: ['earnProtocol/noWallet/**'],
+			use: {
+				baseURL: earnProtocolBaseUrl,
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
+			name: 'earn-protocol-with-wallet',
+			testMatch: ['earnProtocol/withWallet/**'],
+			use: {
+				baseURL: earnProtocolBaseUrl,
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
 			name: 'api-tests',
 			testMatch: ['api/**'],
 			use: {
