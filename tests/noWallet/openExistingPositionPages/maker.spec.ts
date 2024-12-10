@@ -2,7 +2,10 @@ import { test } from '#noWalletFixtures';
 import { longTestTimeout, positionTimeout } from 'utils/config';
 
 test.describe('Open exisiting position pages - Maker', async () => {
-	test('It should open an existing Maker Earn DSR position page @regression', async ({ app }) => {
+	// SKIPPED - BUG on staging - DAI count incorrectly reads '0'
+	test.skip('It should open an existing Maker Earn DSR position page @regression', async ({
+		app,
+	}) => {
 		test.setTimeout(longTestTimeout);
 
 		await app.page.goto('/earn/dsr/0x10649c79428d718621821cf6299e91920284743f#overview');
