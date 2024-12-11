@@ -14,6 +14,22 @@ export class VaultSidebar {
 	}
 
 	@step
+	async openBalanceTokens() {
+		await expect(async () => {
+			await this.sideBarLocator.locator('[class*="_dropdownSelected_"]').click();
+			await expect(
+				this.sideBarLocator.locator('[class*="_dropdownOptions_"]'),
+				'Tokens drop-downshould be visible'
+			).toBeVisible();
+		}).toPass();
+	}
+
+	@step
+	async selectBalanceToken(token: EarnTokens) {
+		await this.sideBarLocator.locator(`[class*="_dropdownOption_"]:has-text("${token}")`).click();
+	}
+
+	@step
 	async shouldHaveBalance({
 		balance,
 		token,
@@ -21,11 +37,20 @@ export class VaultSidebar {
 	}: {
 		balance: string;
 		token: EarnTokens;
-		timeout: number;
+		timeout?: number;
 	}) {
 		const regExp = new RegExp(`${balance}.*${token}`);
 		await expect(this.sideBarLocator.getByText('Balance').locator('..')).toContainText(regExp, {
 			timeout: timeout ?? expectDefaultTimeout,
 		});
+	}
+
+	@step
+	async changeNetwork(options?: { delay: number }) {
+		await expect(this.sideBarLocator.getByRole('button', { name: 'Change network' })).toBeVisible();
+		if (options?.delay) {
+			await this.page.waitForTimeout(options.delay);
+		}
+		await this.sideBarLocator.getByRole('button', { name: 'Change network' }).click();
 	}
 }

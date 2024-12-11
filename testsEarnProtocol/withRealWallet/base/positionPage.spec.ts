@@ -1,5 +1,5 @@
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../../../srcEarnProtocol/fixtures/withRealWalletBase';
+import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout } from 'utils/config';
 
@@ -22,6 +22,19 @@ test.describe('With reaal wallet - Base', async () => {
 		await app.positionPage.sideBar.shouldHaveBalance({
 			balance: '1.5',
 			token: 'USDC',
+			timeout: expectDefaultTimeout * 2,
+		});
+	});
+
+	test('It should show USDBC balance in Base USDC position', async ({ app }) => {
+		await app.page.goto('/earn/base/position/usdc-ya-later');
+
+		await app.positionPage.sideBar.openBalanceTokens();
+		await app.positionPage.sideBar.selectBalanceToken('USDBC');
+
+		await app.positionPage.sideBar.shouldHaveBalance({
+			balance: '1.05',
+			token: 'USDBC',
 			timeout: expectDefaultTimeout * 2,
 		});
 	});
