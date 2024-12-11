@@ -50,7 +50,7 @@ const defaultConfig: PlaywrightTestConfig = {
 
 		{
 			name: 'earn-protocol',
-			testMatch: ['earnProtocol/**'],
+			testDir: './testsEarnProtocol',
 			use: {
 				baseURL: earnProtocolBaseUrl,
 				...devices['Desktop Chrome'],
@@ -59,7 +59,8 @@ const defaultConfig: PlaywrightTestConfig = {
 
 		{
 			name: 'earn-protocol-no-wallet',
-			testMatch: ['earnProtocol/noWallet/**'],
+			testDir: './testsEarnProtocol',
+			testMatch: ['noWallet/**'],
 			use: {
 				baseURL: earnProtocolBaseUrl,
 				...devices['Desktop Chrome'],
@@ -68,7 +69,8 @@ const defaultConfig: PlaywrightTestConfig = {
 
 		{
 			name: 'earn-protocol-with-real-wallet',
-			testMatch: ['earnProtocol/withRealWallet/**'],
+			testDir: './testsEarnProtocol',
+			testMatch: ['withRealWallet/**'],
 			use: {
 				baseURL: earnProtocolBaseUrl,
 				...devices['Desktop Chrome'],
@@ -77,7 +79,8 @@ const defaultConfig: PlaywrightTestConfig = {
 
 		{
 			name: 'earn-protocol-with-test-wallet',
-			testMatch: ['earnProtocol/withTestWallet/**'],
+			testDir: './testsEarnProtocol',
+			testMatch: ['withTestWallet/**'],
 			use: {
 				baseURL: earnProtocolBaseUrl,
 				...devices['Desktop Chrome'],
