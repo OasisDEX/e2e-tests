@@ -7,8 +7,8 @@ export const test = metaMaskFixtures(arbitrumSetup).extend<{
 	deployPiggyBank: () => Promise<void>;
 	app: App;
 }>({
-	app: async ({ metamaskPage }, use) => {
-		const app = new App(metamaskPage);
+	app: async ({ page }, use) => {
+		const app = new App(page);
 
 		await app.page.goto('');
 

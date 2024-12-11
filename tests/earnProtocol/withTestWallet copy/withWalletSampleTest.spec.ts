@@ -1,5 +1,5 @@
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withWalletArbitrumFixtures } from '../../../srcEarnProtocol/fixtures/withWalletArbitrum';
+import { test as withWalletArbitrumFixtures } from '../../../srcEarnProtocol/fixtures/withTestWalletArbitrum';
 
 const test = testWithSynpress(withWalletArbitrumFixtures);
 
