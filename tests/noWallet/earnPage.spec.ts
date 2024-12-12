@@ -83,10 +83,7 @@ test.describe('Earn page', async () => {
 
 						if (lostConnectionIsVisible || applicationErrorIsVisible) {
 							await app.page.reload();
-							await app.position.overview.shouldBeVisible({
-								tab: overviewTabIsVisible ? 'Overview' : 'Position Info',
-								timeout: expectDefaultTimeout * 6,
-							});
+							throw new Error('Go back to loop (expect.toPass) starting point');
 						} else {
 							await app.position.overview.shouldBeVisible({
 								tab: overviewTabIsVisible ? 'Overview' : 'Position Info',

@@ -64,7 +64,7 @@ test.describe('Multiply page', async () => {
 
 						if (lostConnectionIsVisible || applicationErrorIsVisible) {
 							await app.page.reload();
-							await app.position.overview.shouldBeVisible(); // default positionTimeout
+							throw new Error('Go back to loop (expect.toPass) starting point');
 						} else {
 							await app.position.overview.shouldBeVisible({ timeout: 1_000 });
 						}
