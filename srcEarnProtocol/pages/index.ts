@@ -2,7 +2,7 @@ import { Earn } from './earn';
 import { Header } from './header';
 import { LandingPage } from './landingPage';
 import { Portfolio } from './portfolio';
-import { PositionPage } from './positionPage';
+import { VaultPage } from './vaultPage';
 import { RebalancingActivity } from './rebalancingActivity';
 import { UserActivity } from './userActivity';
 import { YieldTrend } from './yieldTrend';
@@ -12,7 +12,7 @@ export {
 	Header,
 	LandingPage,
 	Portfolio,
-	PositionPage,
+	VaultPage,
 	RebalancingActivity,
 	UserActivity,
 	YieldTrend,

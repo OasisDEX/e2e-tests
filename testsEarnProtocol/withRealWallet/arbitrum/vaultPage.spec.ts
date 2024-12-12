@@ -17,18 +17,18 @@ test.describe('With reaal wallet - Arbitrum', async () => {
 		});
 	});
 
-	test('It should show USDC balance in Arbitrum USDC position', async ({ app, metamask }) => {
+	test('It should show USDC balance in Arbitrum USDC vault', async ({ app, metamask }) => {
 		await app.page.goto('/earn/arbitrum/position/earn-mcyieldface-usdc');
 
 		/* 
-			Changing network in position page to avoid weird issue with Arbitrum
-			when switching network in main page (/) and the visiting position page
+			Changing network in vault page to avoid weird issue with Arbitrum
+			when switching network in main page (/) and the visiting vault page
 		*/
-		await app.positionPage.sideBar.changeNetwork({ delay: 500 });
+		await app.vaultPage.sideBar.changeNetwork({ delay: 500 });
 		await metamask.approveSwitchNetwork();
 		await app.page.reload();
 
-		await app.positionPage.sideBar.shouldHaveBalance({
+		await app.vaultPage.sideBar.shouldHaveBalance({
 			balance: '1.00',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
@@ -36,13 +36,13 @@ test.describe('With reaal wallet - Arbitrum', async () => {
 	});
 
 	// TODO - Add one or more tokens once it'sworking
-	// test.skip('It should show ??? balance in Arbitrum USDC position', async ({ app }) => {
+	// test.skip('It should show ??? balance in Arbitrum USDC vault', async ({ app }) => {
 	// 	await app.page.goto('/earn/arbitrum/position/earn-mcyieldface-usdc');
 
-	// 	await app.positionPage.sideBar.openBalanceTokens();
-	// 	await app.positionPage.sideBar.selectBalanceToken('USDBC');
+	// 	await app.vaultPage.sideBar.openBalanceTokens();
+	// 	await app.vaultPage.sideBar.selectBalanceToken('USDBC');
 
-	// 	await app.positionPage.sideBar.shouldHaveBalance({
+	// 	await app.vaultPage.sideBar.shouldHaveBalance({
 	// 		balance: '1.05',
 	// 		token: 'USDBC',
 	// 		timeout: expectDefaultTimeout * 2,
