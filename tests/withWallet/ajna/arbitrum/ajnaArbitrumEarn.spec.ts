@@ -35,7 +35,7 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 		await tenderly.deleteFork(forkId);
 	});
 
-	test('It should open an Ajna Arbitrum Earn position @regression', async ({ metamask, page }) => {
+	test('It should open an Ajna Arbitrum Earn position @regression', async ({ metamask }) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.position.openPage('/arbitrum/ajna/earn/USDC-WBTC#setup');
