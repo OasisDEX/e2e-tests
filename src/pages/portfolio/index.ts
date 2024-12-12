@@ -38,16 +38,39 @@ export class Portfolio {
 		if (args?.withPositions) {
 			await expect(async () => {
 				await this.page.goto(`/portfolio/${wallet}`);
-				await expect(
-					this.page
-						.getByRole('link')
-						.filter({ hasText: 'View Position' })
-						.locator('span:has-text("$")')
-						.nth(0),
-					`First position's Net Value should be visible`
-				).toBeVisible({
-					timeout: expectDefaultTimeout * 4,
-				});
+
+				const errorLoadingPositions = this.page.getByText(
+					'There was an error trying to load positions'
+				);
+				const firstPosition = this.page
+					.getByRole('link')
+					.filter({ hasText: 'View Position' })
+					.locator('span:has-text("$")')
+					.nth(0);
+
+				let errorLoadingPositionsIsVisible: boolean | undefined;
+				let firstPositionIsVisible: boolean | undefined;
+
+				await expect(async () => {
+					errorLoadingPositionsIsVisible = await errorLoadingPositions.isVisible();
+					firstPositionIsVisible = await firstPosition.isVisible();
+
+					expect(errorLoadingPositionsIsVisible || firstPositionIsVisible).toBeTruthy();
+				}).toPass();
+
+				if (errorLoadingPositionsIsVisible)
+					throw new Error('Go back to loop (expect.toPass) starting point');
+
+				// await expect(
+				// 	this.page
+				// 		.getByRole('link')
+				// 		.filter({ hasText: 'View Position' })
+				// 		.locator('span:has-text("$")')
+				// 		.nth(0),
+				// 	`First position's Net Value should be visible`
+				// ).toBeVisible({
+				// 	timeout: expectDefaultTimeout * 4,
+				// });
 			}).toPass();
 		} else {
 			await this.page.goto(`/portfolio/${wallet ?? ''}`);
