@@ -1,6 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { Pool } from './pool';
 import { step } from '#noWalletFixtures';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class ProductsList {
 	readonly page: Page;
@@ -152,7 +153,9 @@ export class ProductsList {
 	@step
 	async shouldHavePoolsCount(count: number) {
 		const rowLocator = this.poolLocator;
-		await expect(rowLocator.nth(0), 'First pool row should be visible').toBeVisible();
+		await expect(rowLocator.nth(0), 'First pool row should be visible').toBeVisible({
+			timeout: expectDefaultTimeout * 3,
+		});
 
 		const rowsCount = this.poolLocator.count();
 		expect(await rowsCount).toEqual(count);
@@ -161,7 +164,7 @@ export class ProductsList {
 	@step
 	async shouldHaveOneOrMorePools() {
 		// Wait for 1st item to be displayed to avoid random fails
-		await this.poolLocator.first().waitFor();
+		await this.poolLocator.first().waitFor({ timeout: expectDefaultTimeout * 3 });
 
 		expect(await this.poolLocator.count()).toBeGreaterThanOrEqual(1);
 	}

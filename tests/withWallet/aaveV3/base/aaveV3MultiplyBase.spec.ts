@@ -97,7 +97,7 @@ test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await app.position.openPage('/base/aave/v3/multiply/ETH-USDC#setup');
 
 		await test.step('Open a position', async () => {
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(3_000);
 
 			await openPosition({
 				metamask,

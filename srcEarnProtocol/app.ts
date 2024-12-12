@@ -4,7 +4,7 @@ import {
 	Header,
 	LandingPage,
 	Portfolio,
-	PositionPage,
+	VaultPage,
 	RebalancingActivity,
 	UserActivity,
 	YieldTrend,
@@ -24,11 +24,11 @@ export class App {
 
 	readonly portfolio: Portfolio;
 
-	readonly positionPage: PositionPage;
-
 	readonly rebalancingActivity: RebalancingActivity;
 
 	readonly userActivity: UserActivity;
+
+	readonly vaultPage: VaultPage;
 
 	readonly yieldTrend: YieldTrend;
 
@@ -39,9 +39,9 @@ export class App {
 		this.landingPage = new LandingPage(page);
 		this.modals = new Modals(page);
 		this.portfolio = new Portfolio(page);
-		this.positionPage = new PositionPage(page);
 		this.rebalancingActivity = new RebalancingActivity(page);
 		this.userActivity = new UserActivity(page);
+		this.vaultPage = new VaultPage(page);
 		this.yieldTrend = new YieldTrend(page);
 	}
 

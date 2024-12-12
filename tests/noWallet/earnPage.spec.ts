@@ -1,5 +1,5 @@
 import { expect, test } from '#noWalletFixtures';
-import { longTestTimeout, positionTimeout } from 'utils/config';
+import { expectDefaultTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { arrayWithNthElements } from 'utils/general';
 
 const susdePools = Array.from({ length: 5 }, (_, index) => 0 + index);
@@ -83,9 +83,7 @@ test.describe('Earn page', async () => {
 
 						if (lostConnectionIsVisible || applicationErrorIsVisible) {
 							await app.page.reload();
-							await app.position.overview.shouldBeVisible({
-								tab: overviewTabIsVisible ? 'Overview' : 'Position Info',
-							}); // default positionTimeout
+							throw new Error('Go back to loop (expect.toPass) starting point');
 						} else {
 							await app.position.overview.shouldBeVisible({
 								tab: overviewTabIsVisible ? 'Overview' : 'Position Info',
