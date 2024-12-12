@@ -53,4 +53,19 @@ export class VaultSidebar {
 		}
 		await this.sideBarLocator.getByRole('button', { name: 'Change network' }).click();
 	}
+
+	@step
+	async deposit(amount: string) {
+		await this.sideBarLocator.locator('input').fill(amount);
+	}
+
+	@step
+	async preview() {
+		await this.sideBarLocator.getByRole('button', { name: 'Preview' }).click();
+	}
+
+	@step
+	async approve(token: EarnTokens) {
+		await this.sideBarLocator.getByRole('button', { name: `Approve ${token}` }).click();
+	}
 }
