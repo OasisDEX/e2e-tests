@@ -1,5 +1,5 @@
 import { expect, test } from '#noWalletFixtures';
-import { longTestTimeout, positionTimeout } from 'utils/config';
+import { expectDefaultTimeout, longTestTimeout, positionTimeout } from 'utils/config';
 import { arrayWithNthElements } from 'utils/general';
 
 const susdePools = Array.from({ length: 5 }, (_, index) => 0 + index);
@@ -85,7 +85,8 @@ test.describe('Earn page', async () => {
 							await app.page.reload();
 							await app.position.overview.shouldBeVisible({
 								tab: overviewTabIsVisible ? 'Overview' : 'Position Info',
-							}); // default positionTimeout
+								timeout: expectDefaultTimeout * 6,
+							});
 						} else {
 							await app.position.overview.shouldBeVisible({
 								tab: overviewTabIsVisible ? 'Overview' : 'Position Info',

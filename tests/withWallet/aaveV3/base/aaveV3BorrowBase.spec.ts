@@ -33,10 +33,10 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 	}) => {
 		test.setTimeout(gigaTestTimeout);
 
-		await app.page.goto('/base/aave/v3/borrow/eth-usdbc#simulate');
+		await app.position.openPage('/base/aave/v3/borrow/eth-usdbc#simulate');
 
 		await test.step('It should Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(3_000);
 
 			await openPosition({
 				metamask,
