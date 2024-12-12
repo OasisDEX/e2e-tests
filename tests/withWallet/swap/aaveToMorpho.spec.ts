@@ -26,7 +26,7 @@ import {
 			pool: 'ETH-DAI',
 			positionType: 'multiply',
 			targetPools: [
-				{ colToken: 'EZETH', debtToken: 'ETH' },
+				// { colToken: 'EZETH', debtToken: 'ETH' }, --> Low liquidity
 				{ colToken: 'OSETH', debtToken: 'ETH' },
 			],
 		},
