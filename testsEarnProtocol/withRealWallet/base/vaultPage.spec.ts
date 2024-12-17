@@ -52,18 +52,25 @@ test.describe('With reaal wallet - Base', async () => {
 		await metamask.rejectTransaction();
 	});
 
-	test('It should deposit USDBC - (until rejecting "approve" tx)', async ({ app, metamask }) => {
+	test.skip('It should deposit USDBC - (until rejecting "approve" tx)', async ({
+		app,
+		metamask,
+	}) => {
 		// TODO !!!!
 		// THERE IS A BUG => Error when clicking 'Preview' for USDBC
-		// // Wait for balance to be visible to avoind random fails
-		// await app.vaultPage.sideBar.shouldHaveBalance({
-		// 	balance: '[0-9]',
-		// 	token: 'USDC',
-		// 	timeout: expectDefaultTimeout * 3,
-		// });
-		// await app.vaultPage.sideBar.deposit('1');
-		// await app.vaultPage.sideBar.preview();
-		// await app.vaultPage.sideBar.approve('USDC');
-		// await metamask.rejectTransaction();
+
+		await app.vaultPage.sideBar.openBalanceTokens();
+		await app.vaultPage.sideBar.selectBalanceToken('USDBC');
+
+		// Wait for balance to be visible to avoind random fails
+		await app.vaultPage.sideBar.shouldHaveBalance({
+			balance: '[0-9]',
+			token: 'USDBC',
+			timeout: expectDefaultTimeout * 3,
+		});
+		await app.vaultPage.sideBar.deposit('1');
+		await app.vaultPage.sideBar.preview();
+		await app.vaultPage.sideBar.approve('USDC');
+		await metamask.rejectTransaction();
 	});
 });
