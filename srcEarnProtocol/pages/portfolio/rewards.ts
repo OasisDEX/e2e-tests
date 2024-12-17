@@ -12,18 +12,13 @@ export class Rewards {
 	@step
 	async shouldBeVisible() {
 		await expect(
-			this.page.getByText('What are $SUMR?'),
-			'"What are $SUMR?" should be visible'
+			this.page.getByText('Your Total $SUMR'),
+			'"Your Total $SUMR" should be visible'
 		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 
 		await expect(
-			this.page.getByText('Boost your $SUMR', { exact: true }),
-			'"Boost your $SUMR" should be visible'
-		).toBeVisible();
-
-		await expect(
-			this.page.getByText('More about Rewards & $SUMR', { exact: true }),
-			'"More about Rewards & $SUMR" should be visible'
+			this.page.getByText('$SUMR available to claim', { exact: true }),
+			'"$SUMR available to claim" should be visible'
 		).toBeVisible();
 	}
 }

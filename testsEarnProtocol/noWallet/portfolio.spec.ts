@@ -14,7 +14,7 @@ test.describe('Portfolio', async () => {
 		});
 	});
 
-	test('It should show switch to all Portfolio main tabs', async ({ app }) => {
+	test('It should switch to all Portfolio main tabs', async ({ app }) => {
 		await app.portfolio.open('0xA1B008dBA9F6143c6211767cbA826296f95Fe3B3');
 
 		// Switch to 'Wallet' tab
@@ -26,7 +26,7 @@ test.describe('Portfolio', async () => {
 		await app.portfolio.rebalanceActivity.shouldBeVisible();
 
 		// Switch to 'Rewards' tab
-		await app.portfolio.selectTab('Rewards');
+		await app.portfolio.selectTab('SUMR Rewards');
 		await app.portfolio.rewards.shouldBeVisible();
 
 		// Switch to 'Overview' tab

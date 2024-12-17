@@ -83,7 +83,7 @@ export class Portfolio {
 	}
 
 	@step
-	async selectTab(tab: 'Wallet' | 'Rebalance Activity' | 'Rewards' | 'Overview') {
+	async selectTab(tab: 'Wallet' | 'Rebalance Activity' | 'SUMR Rewards' | 'Overview') {
 		// Wait for tabs bar to fully load
 		await expect(
 			this.page.locator('[class*="_tabBar_"] [class*="_underline_"]').nth(0),
