@@ -13,7 +13,7 @@ test.describe('Vault page - Base - Generic page', async () => {
 	});
 });
 
-test.describe.only('Vault page - Base - Specific user page', async () => {
+test.describe('Vault page - Base - Specific user page', async () => {
 	test.beforeEach(async ({ app }) => {
 		await app.page.goto(
 			'/earn/base/position/usdc-ya-later/0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA'

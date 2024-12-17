@@ -24,7 +24,7 @@ test.describe('With reaal wallet - Arbitrum', async () => {
 			Changing network in vault page to avoid weird issue with Arbitrum
 			when switching network in main page (/) and the visiting vault page
 		*/
-		await app.vaultPage.sideBar.changeNetwork({ delay: 500 });
+		await app.vaultPage.sideBar.changeNetwork({ delay: 1000 });
 		await metamask.approveSwitchNetwork();
 		await app.page.reload();
 
