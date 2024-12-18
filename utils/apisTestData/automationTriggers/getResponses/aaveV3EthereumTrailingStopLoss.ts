@@ -65,7 +65,7 @@ export const aaveV3EthereumTrailingStopLossResponse = {
 			isTrailingStopLossEnabled: true,
 		},
 		spark: {
-			isStopLossEnabled: true,
+			isStopLossEnabled: false,
 			isBasicBuyEnabled: false,
 			isBasicSellEnabled: false,
 			isPartialTakeProfitEnabled: false,
@@ -75,12 +75,12 @@ export const aaveV3EthereumTrailingStopLossResponse = {
 		isAaveBasicBuyEnabled: false,
 		isAaveBasicSellEnabled: false,
 		isAavePartialTakeProfitEnabled: false,
-		isSparkStopLossEnabled: true,
+		isSparkStopLossEnabled: false,
 		isSparkBasicBuyEnabled: false,
 		isSparkBasicSellEnabled: false,
 		isSparkPartialTakeProfitEnabled: false,
 	},
-	triggersCount: 2,
+	triggersCount: 1,
 	triggerGroup: {
 		aaveStopLoss: {
 			triggerType: '10006',
@@ -104,21 +104,6 @@ export const aaveV3EthereumTrailingStopLossResponse = {
 			dynamicParams: {
 				executionPrice: expect.any(String),
 				originalExecutionPrice: expect.any(String),
-			},
-		},
-		sparkStopLoss: {
-			triggerType: '130',
-			triggerId: '10000000832',
-			triggerData:
-				'0x00000000000000000000000062320f403ea16a143be7d78485d9e4674c925cc3000000000000000000000000000000000000000000000000000000000000008200000000000000000000000000000000000000000000005150ae84a8cdf000000000000000000000000000006b175474e89094c44da98b954eedeac495271d0f000000000000000000000000cbb7c0000ab88b473b1f5afd9ef808440eed33bf537061726b436c6f7365506f736974696f6e5f340000000000000000000000000000000000000000000000000000000000000000000000000000000000000eed',
-			decodedParams: {
-				collateralToken: '0xcbb7c0000ab88b473b1f5afd9ef808440eed33bf',
-				debtToken: '0x6b175474e89094c44da98b954eedeac495271d0f',
-				executionLtv: '3821',
-				maxCoverage: '1500000000000000000000',
-				operationName: '0x537061726b436c6f7365506f736974696f6e5f34000000000000000000000000',
-				positionAddress: '0x62320f403ea16a143be7d78485d9e4674c925cc3',
-				triggerType: '130',
 			},
 		},
 	},
