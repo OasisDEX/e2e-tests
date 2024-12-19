@@ -20,4 +20,14 @@ export class VaultCard {
 	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(this.cardLocator).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
+
+	@step
+	async select() {
+		await this.cardLocator.click();
+	}
+
+	@step
+	async shouldBeSelected() {
+		await expect(this.cardLocator.locator('..')).toHaveClass(/_selected_/);
+	}
 }

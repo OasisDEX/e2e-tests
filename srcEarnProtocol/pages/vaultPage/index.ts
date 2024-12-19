@@ -9,43 +9,45 @@ export class VaultPage {
 
 	readonly exposure: VaultExposure;
 
-	readonly sideBar: VaultSidebar;
+	readonly sidebar: VaultSidebar;
 
 	constructor(page: Page) {
 		this.page = page;
 		this.exposure = new VaultExposure(page);
-		this.sideBar = new VaultSidebar(page, this.page.locator('[class*="_sidebarWrapper_"]'));
+		this.sidebar = new VaultSidebar(page, this.page.locator('[class*="_sidebarWrapper_"]'));
 	}
 
 	@step
 	async shouldHaveEarned({
 		token,
-		tokenAmount,
-		usdAmount,
+		totalAmount,
+		earnedAmount,
 	}: {
 		token: EarnTokens;
-		tokenAmount: string;
-		usdAmount: string;
+		totalAmount: string;
+		earnedAmount: string;
 	}) {
-		const tokenRegExp = new RegExp(`${tokenAmount}.*${token}`);
-		const usdRegExp = new RegExp(`\\$.*${usdAmount}`);
+		const totalRegExp = new RegExp(`${totalAmount}.*${token}`);
+		const earnedRegExp = new RegExp(`${earnedAmount}.*${token}`);
 		const earnedBlockLocator = this.page.locator(
 			'[class*="_dataBlockWrapper_"]:has-text("Earned")'
 		);
 
-		await expect(earnedBlockLocator.locator('span').first()).toContainText(tokenRegExp);
-		await expect(earnedBlockLocator.locator('span').last()).toContainText(usdRegExp);
+		await expect(earnedBlockLocator.locator('span').first()).toContainText(totalRegExp);
+		await expect(earnedBlockLocator.locator('span').last()).toContainText(earnedRegExp);
 	}
 
 	@step
 	async shouldHaveNetContribution({
-		usdAmount,
+		token,
+		amount,
 		numberOfDeposits,
 	}: {
-		usdAmount: string;
+		token: EarnTokens;
+		amount: string;
 		numberOfDeposits: string;
 	}) {
-		const usdRegExp = new RegExp(`\\$.*${usdAmount}`);
+		const usdRegExp = new RegExp(`${amount}.*${token}`);
 		const depositsRegExp = new RegExp(`# of Deposits: ${numberOfDeposits}`);
 
 		const netContributionLocator = this.page.locator(
@@ -66,7 +68,7 @@ export class VaultPage {
 	}) {
 		const thirtyDayRegExp = new RegExp(`${thirtyDayApy}%`);
 		const currentRegExp = new RegExp(`Current APY: ${currentApy}%`);
-		//# of Deposits:
+		// # of Deposits:
 		const netContributionLocator = this.page.locator(
 			'[class*="_dataBlockWrapper_"]:has-text("30d APY")'
 		);

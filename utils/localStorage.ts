@@ -7,8 +7,8 @@ export const updateFlags = async ({
 	automationMinNetValueFlags,
 }: {
 	app: App;
-	featuresFlags?: string[];
-	automationMinNetValueFlags?: string[];
+	featuresFlags?: string[] | null;
+	automationMinNetValueFlags?: string[] | null;
 }) => {
 	let localStorage: any;
 	localStorage = await app.page.evaluate(() => window.localStorage);
@@ -58,8 +58,8 @@ export const updateFlagsAndRejectCookies = async ({
 	automationMinNetValueFlags,
 }: {
 	app: App;
-	featuresFlags?: string[];
-	automationMinNetValueFlags?: string[];
+	featuresFlags?: string[] | null;
+	automationMinNetValueFlags?: string[] | null;
 }) => {
 	// 'ob-config-overrides' takes some time to be loaded to Local Storage
 
