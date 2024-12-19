@@ -2,23 +2,27 @@ import { expect, step } from '#noWalletFixtures';
 import { Locator, Page } from '@playwright/test';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
+import { ApproveStep } from './approveStep';
 
 export class VaultSidebar {
 	readonly page: Page;
 
-	readonly sideBarLocator: Locator;
+	readonly approveStep: ApproveStep;
 
-	constructor(page: Page, sideBarLocator: Locator) {
+	readonly sidebarLocator: Locator;
+
+	constructor(page: Page, sidebarLocator: Locator) {
 		this.page = page;
-		this.sideBarLocator = sideBarLocator;
+		this.approveStep = new ApproveStep(page);
+		this.sidebarLocator = sidebarLocator;
 	}
 
 	@step
 	async openBalanceTokens() {
 		await expect(async () => {
-			await this.sideBarLocator.locator('[class*="_dropdownSelected_"]').click();
+			await this.sidebarLocator.locator('[class*="_dropdownSelected_"]').click();
 			await expect(
-				this.sideBarLocator.locator('[class*="_dropdownOptions_"]'),
+				this.sidebarLocator.locator('[class*="_dropdownOptions_"]'),
 				'Tokens drop-downshould be visible'
 			).toBeVisible();
 		}).toPass();
@@ -26,7 +30,7 @@ export class VaultSidebar {
 
 	@step
 	async selectBalanceToken(token: EarnTokens) {
-		await this.sideBarLocator.locator(`[class*="_dropdownOption_"]:has-text("${token}")`).click();
+		await this.sidebarLocator.locator(`[class*="_dropdownOption_"]:has-text("${token}")`).click();
 	}
 
 	@step
@@ -40,32 +44,55 @@ export class VaultSidebar {
 		timeout?: number;
 	}) {
 		const regExp = new RegExp(`${balance}.*${token}`);
-		await expect(this.sideBarLocator.getByText('Balance').locator('..')).toContainText(regExp, {
+		await expect(this.sidebarLocator.getByText('Balance').locator('..')).toContainText(regExp, {
 			timeout: timeout ?? expectDefaultTimeout,
 		});
 	}
 
 	@step
 	async changeNetwork(options?: { delay: number }) {
-		await expect(this.sideBarLocator.getByRole('button', { name: 'Change network' })).toBeVisible();
+		await expect(this.sidebarLocator.getByRole('button', { name: 'Change network' })).toBeVisible();
 		if (options?.delay) {
 			await this.page.waitForTimeout(options.delay);
 		}
-		await this.sideBarLocator.getByRole('button', { name: 'Change network' }).click();
+		await this.sidebarLocator.getByRole('button', { name: 'Change network' }).click();
+	}
+
+	@step
+	async depositButtonShouldBeVisible() {
+		await expect(this.sidebarLocator.getByRole('button', { name: 'Deposit' })).toBeVisible();
 	}
 
 	@step
 	async deposit(amount: string) {
-		await this.sideBarLocator.locator('input').fill(amount);
+		await this.sidebarLocator.locator('input').fill(amount);
+	}
+
+	@step
+	async shouldBeinUsdc(usdcAmount: string) {
+		const regExp = new RegExp(`${usdcAmount}.*USDC`);
+		await expect(this.sidebarLocator.locator('input + p')).toContainText(regExp);
 	}
 
 	@step
 	async preview() {
-		await this.sideBarLocator.getByRole('button', { name: 'Preview' }).click();
+		await this.sidebarLocator.getByRole('button', { name: 'Preview' }).click();
+	}
+
+	@step
+	async getStarted() {
+		await this.sidebarLocator.getByRole('button', { name: 'Get Started' }).click();
 	}
 
 	@step
 	async approve(token: EarnTokens) {
-		await this.sideBarLocator.getByRole('button', { name: `Approve ${token}` }).click();
+		await this.sidebarLocator
+			.getByRole('button', { name: `Approve ${token === 'USDBC' ? 'USDbC' : token}` })
+			.click();
+	}
+
+	@step
+	async confirmDeposit() {
+		await this.sidebarLocator.getByRole('button', { name: 'Deposit' }).click();
 	}
 }

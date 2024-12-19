@@ -3,17 +3,21 @@ import { Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
 import { NetworkSelector } from './networkSelector';
 import { Vaults } from './vaults';
+import { VaultSidebar } from '../vaultSidebar';
 
 export class Earn {
 	readonly page: Page;
 
 	readonly networkSelector: NetworkSelector;
 
+	readonly sidebar: VaultSidebar;
+
 	readonly vaults: Vaults;
 
 	constructor(page: Page) {
 		this.page = page;
 		this.networkSelector = new NetworkSelector(page);
+		this.sidebar = new VaultSidebar(page, this.page.locator('[class*="_sidebarWrapper_"]'));
 		this.vaults = new Vaults(page);
 	}
 

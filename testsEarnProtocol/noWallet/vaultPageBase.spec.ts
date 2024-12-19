@@ -23,13 +23,14 @@ test.describe('Vault page - Base - Specific user page', async () => {
 	test('It should show Earned, Net Contribution and 30d APY info', async ({ app }) => {
 		await app.vaultPage.shouldHaveEarned({
 			token: 'USDC',
-			tokenAmount: '[0-9]{2}.[0-9]{2}',
-			usdAmount: '[0-9]{2}.[0-9]{2}',
+			totalAmount: '[0-9]{2,3}.[0-9]{2}',
+			earnedAmount: '[0-9]{1,2}.[0-9]{2}',
 		});
 
 		await app.vaultPage.shouldHaveNetContribution({
-			usdAmount: '[0-9]{2}.[0-9]{2}',
-			numberOfDeposits: '[0-9]',
+			token: 'USDC',
+			amount: '[0-9]{2}.[0-9]{2}',
+			numberOfDeposits: '[0-9]{2,3}',
 		});
 
 		await app.vaultPage.shouldHave30dApy({
