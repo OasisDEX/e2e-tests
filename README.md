@@ -36,19 +36,19 @@ First, install the programs required to run the application:
 
 
 Next, clone this repository:
-```
+```bash
 git clone https://github.com/OasisDEX/e2e-tests.git
 ```
 
 Go to the repo directory and install the dependencies:
-```
+```bash
 yarn install
 ```
 
 
 ## 3. Environment variables
 To run the tests locally you will need to create a `.env` file. You can create a copy from `.env.example` file by running: 
-```
+```bash
 cp .env.example .env
 ```
 
