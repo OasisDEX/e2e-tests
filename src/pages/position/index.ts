@@ -54,10 +54,31 @@ export class Position {
 					timeout: expectDefaultTimeout * 5,
 				});
 			} else {
-				await this.overview.shouldBeVisible({
-					tab: args?.tab ?? 'Position Info',
-					timeout: expectDefaultTimeout * 5,
+				const lostConnection = this.page.getByText('Lost connection');
+				const applicationError = this.page.getByText('Application error');
+				const positionInfoTab = this.page.getByRole('button', {
+					name: args?.tab ?? 'Position Info',
+					exact: true,
 				});
+
+				let lostConnectionIsVisible: boolean | undefined;
+				let applicationErrorIsVisible: boolean | undefined;
+
+				await expect(async () => {
+					lostConnectionIsVisible = await lostConnection.isVisible();
+					applicationErrorIsVisible = await applicationError.isVisible();
+
+					if (lostConnectionIsVisible || applicationErrorIsVisible) {
+						await this.page.reload();
+						throw new Error('Go back to loop (expect.toPass) starting point');
+					}
+
+					const positionInfoTabIsVisible = await positionInfoTab.isVisible();
+
+					expect(
+						lostConnectionIsVisible || applicationErrorIsVisible || positionInfoTabIsVisible
+					).toBeTruthy();
+				}).toPass({ timeout: positionTimeout });
 			}
 		}, 'It should open position page').toPass();
 	}

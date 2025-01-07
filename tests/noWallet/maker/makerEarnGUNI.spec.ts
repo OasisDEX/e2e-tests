@@ -1,11 +1,9 @@
 import { test } from '#noWalletFixtures';
+import { longTestTimeout } from 'utils/config';
 
 test.describe('Maker Earn - GUNI', async () => {
 	test('It should open an existing Maker Earn GUNI vault page @regression', async ({ app }) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
+		test.setTimeout(longTestTimeout);
 
 		await app.position.openPage('/ethereum/maker/29929#overview');
 
