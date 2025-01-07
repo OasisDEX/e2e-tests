@@ -23,7 +23,8 @@ import {
 			pool: 'WSTETH-ETH-3',
 			positionType: 'borrow',
 			targetPools: [
-				{ colToken: 'SWBTC', debtToken: 'WBTC' },
+				{ colToken: 'SUSDE', debtToken: 'DAI-1' },
+				// { colToken: 'SWBTC', debtToken: 'WBTC' },  -- NO LIQUIDITY
 				// { colToken: 'USDE', debtToken: 'DAI-2' }, -- Very low liquidity
 			],
 		},
@@ -32,8 +33,7 @@ import {
 			positionType: 'multiply',
 			targetPools: [
 				{ colToken: 'SUSDE', debtToken: 'DAI-3' },
-				{ colToken: 'SUSDE', debtToken: 'DAI-1' },
-				// { colToken: 'SUSDE', debtToken: 'DAI-4' } -- NO LIQUIDITY
+				// { colToken: 'SUSDE', debtToken: 'DAI-4' }, -- NO LIQUIDITY
 			],
 		},
 	] as Scenario[]
