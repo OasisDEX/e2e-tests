@@ -8,7 +8,7 @@ on:
 
 jobs:
   tests-result:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - run: echo 'CI E2E tests result -- ${{ github.event.workflow_run.conclusion }}'
       - name: Get trigger repository name

@@ -17,7 +17,7 @@ on:
 jobs:
   with-wallet-open-positions-tests-aave-ethereum-borrow:
     name: 'Open Positions - Aave - Ethereum - Borrow'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -46,7 +46,7 @@ jobs:
  
   with-wallet-open-positions-tests-aave-ethereum-earn-multiply:
     name: 'Open Positions - Aave - Ethereum - Earn & Multiply'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -75,7 +75,7 @@ jobs:
 
   with-wallet-open-positions-tests-aave-l2s:
     name: 'Open Positions - Aave - L2s'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -104,7 +104,7 @@ jobs:
 
   with-wallet-open-positions-tests-other:
     name: 'Open Positions - Other'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
