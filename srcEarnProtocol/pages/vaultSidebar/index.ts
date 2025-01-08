@@ -3,17 +3,21 @@ import { Locator, Page } from '@playwright/test';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 import { ApproveStep } from './approveStep';
+import { PreviewStep } from './previewStep';
 
 export class VaultSidebar {
 	readonly page: Page;
 
 	readonly approveStep: ApproveStep;
 
+	readonly previewStep: PreviewStep;
+
 	readonly sidebarLocator: Locator;
 
 	constructor(page: Page, sidebarLocator: Locator) {
 		this.page = page;
 		this.approveStep = new ApproveStep(page);
+		this.previewStep = new PreviewStep(page);
 		this.sidebarLocator = sidebarLocator;
 	}
 
@@ -75,6 +79,15 @@ export class VaultSidebar {
 	}
 
 	@step
+	async shouldHaveEstimatedEarnings({ amount, token }: { amount: string; token: EarnTokens }) {
+		const regExp = new RegExp(`${amount}.*${token}`);
+
+		await expect(
+			this.sidebarLocator.locator('p:has-text("Estimated earnings after") + p')
+		).toContainText(regExp);
+	}
+
+	@step
 	async preview() {
 		await this.sidebarLocator.getByRole('button', { name: 'Preview' }).click();
 	}
@@ -94,5 +107,10 @@ export class VaultSidebar {
 	@step
 	async confirmDeposit() {
 		await this.sidebarLocator.getByRole('button', { name: 'Deposit' }).click();
+	}
+
+	@step
+	async goBack() {
+		await this.page.locator('[class*="_goBackButton_"]').click();
 	}
 }

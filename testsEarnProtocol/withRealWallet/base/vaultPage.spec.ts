@@ -39,40 +39,60 @@ test.describe('With real wallet - Base', async () => {
 		});
 	});
 
-	// TODO --> BUGS
-	test.skip('It should show correct token in "Approve" step', async ({ app }) => {
-		// USDC
+	test('It should show Deposit Amount and Transaction Fee in "Preview" step', async ({ app }) => {
+		test.setTimeout(longTestTimeout);
+
+		// === USDC ===
+
+		// Wait for page to fully load
+		await app.vaultPage.sidebar.shouldHaveBalance({
+			balance: '[0-9].[0-9]',
+			token: 'USDC',
+			timeout: expectDefaultTimeout * 2,
+		});
+
+		await app.vaultPage.sidebar.deposit('0.4');
+		// Wait for Estimated Earnings to avoid random fails
+		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+			amount: '0.[0-9]{2,3}',
+			token: 'USDC',
+		});
 		await app.vaultPage.sidebar.preview();
-		await app.vaultPage.sidebar.approveStep.depositBlockShouldHave('USDC');
-		await app.vaultPage.sidebar.approveStep.approveButtonShouldHave('USDC');
 
-		// ===========
+		await app.vaultPage.sidebar.previewStep.shouldHave({
+			depositAmount: { amount: '0.4', token: 'USDC' },
+			transactionFee: '[0-2].[0-9]{2}',
+		});
 
-		// === TEMPORARY STEPS because of BUG ===
-		await app.page.goto('/earn');
+		// === USDBC ===
 
-		await app.earn.vaults.nth(1).shouldBeVisible();
-		await app.earn.vaults.nth(1).select();
-		await app.earn.vaults.nth(1).shouldBeSelected();
-
+		await app.earn.sidebar.goBack();
 		await app.earn.sidebar.openBalanceTokens();
 		await app.earn.sidebar.selectBalanceToken('USDBC');
 
-		// Wait for balance to be visible to avoind random fails
-		await app.earn.sidebar.shouldHaveBalance({
-			balance: '[0-9]',
-			token: 'USDC', // 'USDBC', --> BUG: Wrong token displayed
-			timeout: expectDefaultTimeout * 3,
+		// Wait for balance to fully load to avoid random fails
+		await app.vaultPage.sidebar.shouldHaveBalance({
+			balance: '[0-9].[0-9]',
+			token: 'USDBC',
+			timeout: expectDefaultTimeout * 2,
 		});
 
-		await app.earn.sidebar.deposit('1');
-		await app.earn.sidebar.getStarted();
-		// ==================================
+		await app.vaultPage.sidebar.deposit('0.1');
 
-		// USDBC
 		await app.vaultPage.sidebar.preview();
-		await app.vaultPage.sidebar.approveStep.depositBlockShouldHave('USDBC');
-		await app.vaultPage.sidebar.approveStep.approveButtonShouldHave('USDBC');
+
+		await app.vaultPage.sidebar.previewStep.shouldHave({
+			depositAmount: { amount: '0.1', token: 'USDbC' },
+			swap: {
+				originalToken: 'USDC', // USDC token used for USDbC
+				originalTokenAmount: '0.1',
+				positionToken: 'USDC',
+				positionTokenAmount: '0.1',
+			},
+			priceImpact: { amount: '[0-1].[0-9]{2,3}', positionToken: 'USDC', percentage: '0.0[0-9]' },
+			slippage: '1.00',
+			transactionFee: '[0-2].[0-9]{2}',
+		});
 	});
 
 	test('It should deposit USDC - (until rejecting "approve" tx)', async ({ app, metamask }) => {

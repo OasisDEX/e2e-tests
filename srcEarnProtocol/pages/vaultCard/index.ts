@@ -22,8 +22,8 @@ export class VaultCard {
 	}
 
 	@step
-	async select() {
-		await this.cardLocator.click();
+	async select(args?: { delay: number }) {
+		await this.cardLocator.click({ delay: args?.delay ?? 0 });
 	}
 
 	@step
