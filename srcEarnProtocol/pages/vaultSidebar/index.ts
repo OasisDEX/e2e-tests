@@ -63,8 +63,11 @@ export class VaultSidebar {
 	}
 
 	@step
-	async depositButtonShouldBeVisible() {
-		await expect(this.sidebarLocator.getByRole('button', { name: 'Deposit' })).toBeVisible();
+	async buttonShouldBeVisible(button: 'Deposit' | 'Preview', args?: { timeout: number }) {
+		await expect(
+			this.sidebarLocator.getByRole('button', { name: button }),
+			`[${button}] button should be visible`
+		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
 	@step
@@ -73,7 +76,7 @@ export class VaultSidebar {
 	}
 
 	@step
-	async shouldBeinUsdc(usdcAmount: string) {
+	async shouldBeInUsdc(usdcAmount: string) {
 		const regExp = new RegExp(`${usdcAmount}.*USDC`);
 		await expect(this.sidebarLocator.locator('input + p')).toContainText(regExp);
 	}

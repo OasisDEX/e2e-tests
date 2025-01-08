@@ -53,7 +53,7 @@ export class PreviewStep {
 					.nth(0)
 			).toHaveAttribute('title', originalTokenRegExp, { ignoreCase: true });
 
-			const positionTokenRegExp = new RegExp(swap.originalToken);
+			const positionTokenRegExp = new RegExp(swap.positionToken);
 			await expect(
 				this.page
 					.locator('span:has-text("Swap")')
