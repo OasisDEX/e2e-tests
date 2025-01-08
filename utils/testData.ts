@@ -93,7 +93,13 @@ export const morphoEthereumBorrowPools = [
 
 // export const morphoEthereumBorrowPools_4 = ['RSWETH-ETH'];
 
-export const morphoBaseMultiplyPools = ['ETH-USDC', 'CBBTC-ETH', 'CBBTC-USDC', 'CBETH-EURC'];
+export const morphoBaseMultiplyPools = [
+	'ETH-USDC',
+	'CBBTC-ETH', // BUG https://www.notion.so/oazo/144cbc0395cb478a8b81cff326740123?v=2bb430cfe8ca41ff9f6dde3b129ac0fb&p=1758cbaf47f8804ebf45fcf579318394&pm=s
+	'CBBTC-USDC', // BUG https://www.notion.so/oazo/144cbc0395cb478a8b81cff326740123?v=2bb430cfe8ca41ff9f6dde3b129ac0fb&p=1758cbaf47f8804ebf45fcf579318394&pm=s
+	'CBETH-EURC', // BUG https://www.notion.so/oazo/144cbc0395cb478a8b81cff326740123?v=2bb430cfe8ca41ff9f6dde3b129ac0fb&p=1758cbaf47f8804ebf45fcf579318394&pm=s
+	'WSTETH-EURC',
+];
 // , 'WSTETH-USDC' --> NO LIQUIDITY
 // , 'WEETH-USDC' --> WEETH supply 100%
 // , 'CBETH-USDC' --> NO LIQUIDITY

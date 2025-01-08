@@ -1,3 +1,3 @@
 export type walletTypes = 'MetaMask' | 'WalletConnect';
 
-export type EarnTokens = 'USDC' | 'USDBC';
+export type EarnTokens = 'USDC' | 'USDBC' | 'USDbC';

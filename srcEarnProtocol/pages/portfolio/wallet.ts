@@ -20,10 +20,5 @@ export class Wallet {
 			this.page.locator('section:has-text("You might like")'),
 			'"You might like" section should be visible'
 		).toBeVisible();
-
-		await expect(
-			this.page.getByText('Crypto Utilities', { exact: true }),
-			'"Crypto Utilities" should be visible'
-		).toBeVisible();
 	}
 }

@@ -32,13 +32,8 @@ export class Overview {
 		).toBeVisible();
 
 		await expect(
-			this.page.getByText('News & Updates'),
-			'"News & Updates" should be visible'
-		).toBeVisible();
-
-		await expect(
-			this.page.getByText('Crypto Utilities', { exact: true }),
-			'"Crypto Utilities" should be visible'
+			this.page.locator('section:has-text("You might like")'),
+			'"You might like" section should be visible'
 		).toBeVisible();
 	}
 }
