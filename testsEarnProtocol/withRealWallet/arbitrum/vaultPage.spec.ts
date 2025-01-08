@@ -28,22 +28,185 @@ test.describe('With real wallet - Arbitrum', async () => {
 	});
 
 	test('It should change network', async ({ app, metamask }) => {
-		await app.vaultPage.sidebar.changeNetwork({ delay: 1000 });
+		// Wait for page to fully load to avoid random fails
+		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+			amount: '0.[0-9]{2,3}',
+			token: 'USDC',
+		});
+
+		await app.vaultPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
-		await app.vaultPage.sidebar.depositButtonShouldBeVisible();
+		await app.vaultPage.sidebar.buttonShouldBeVisible('Deposit');
 	});
 
-	// TODO - Add one or more tokens once it'sworking
-	// test.skip('It should show ??? balance in Arbitrum USDC vault', async ({ app }) => {
-	// 	await app.page.goto('/earn/arbitrum/position/earn-mcyieldface-usdc');
+	test('It should show WSTETH balance in Arbitrum USDC vault', async ({ app }) => {
+		await app.page.goto('/earn/arbitrum/position/earn-mcyieldface-usdc');
 
-	// 	await app.vaultPage.sidebar.openBalanceTokens();
-	// 	await app.vaultPage.sidebar.selectBalanceToken('USDBC');
+		await app.vaultPage.sidebar.openBalanceTokens();
+		await app.vaultPage.sidebar.selectBalanceToken('WSTETH');
 
-	// 	await app.vaultPage.sidebar.shouldHaveBalance({
-	// 		balance: '1.05',
-	// 		token: 'USDBC',
-	// 		timeout: expectDefaultTimeout * 2,
-	// 	});
-	// });
+		await app.vaultPage.sidebar.shouldHaveBalance({
+			balance: '0.0008',
+			token: 'WSTETH',
+			timeout: expectDefaultTimeout * 2,
+		});
+	});
+
+	test('It should show transaction details in "Preview" step', async ({ app, metamask }) => {
+		test.setTimeout(longTestTimeout);
+
+		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+			amount: '0.[0-9]{2,3}',
+			token: 'USDC',
+		});
+
+		// Wait for page to fully load to avoid random fails
+		await app.vaultPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+
+		// === USDC ===
+
+		// Wait for page to fully load
+		await app.vaultPage.sidebar.shouldHaveBalance({
+			balance: '[0-9].[0-9]',
+			token: 'USDC',
+			timeout: expectDefaultTimeout * 2,
+		});
+
+		await expect(async () => {
+			await app.vaultPage.sidebar.deposit('0.4');
+			// Wait for Estimated Earnings to avoid random fails
+			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+				amount: '0.[0-9]{2,3}',
+				token: 'USDC',
+			});
+			await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
+			await app.vaultPage.sidebar.preview();
+		}).toPass();
+
+		await app.vaultPage.sidebar.previewStep.shouldHave({
+			depositAmount: { amount: '0.4', token: 'USDC' },
+			transactionFee: '[0-2].[0-9]{2}',
+		});
+
+		// === WSTETH ===
+
+		await app.earn.sidebar.goBack();
+		await app.earn.sidebar.openBalanceTokens();
+		await app.earn.sidebar.selectBalanceToken('WSTETH');
+
+		// Wait for balance to fully load to avoid random fails
+		await app.vaultPage.sidebar.shouldHaveBalance({
+			balance: '[0-9].[0-9]',
+			token: 'WSTETH',
+			timeout: expectDefaultTimeout * 2,
+		});
+
+		await expect(async () => {
+			await app.vaultPage.sidebar.deposit('0.0005');
+			// Wait for Estimated Earnings to avoid random fails
+			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+				amount: '0.[0-9]{2,3}',
+				token: 'USDC',
+			});
+
+			await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
+			await app.vaultPage.sidebar.preview();
+		}).toPass();
+
+		await app.vaultPage.sidebar.previewStep.shouldHave({
+			depositAmount: { amount: '0.0005', token: 'wstETH' },
+			swap: {
+				originalToken: 'WSTETH',
+				originalTokenAmount: '0.0005',
+				positionToken: 'USDC',
+				positionTokenAmount: '[0-4].[0-9]{2,3}',
+			},
+			priceImpact: {
+				amount: '[0-9],[0-9]{3}.[0-9]{2}',
+				positionToken: 'USDC',
+				percentage: '0.[0-9]{2}',
+			},
+			slippage: '1.00',
+			transactionFee: '[0-9].[0-9]{2}',
+		});
+	});
+
+	test('It should deposit USDC - (until rejecting "approve" tx)', async ({ app, metamask }) => {
+		test.setTimeout(longTestTimeout);
+
+		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+			amount: '0.[0-9]{2,3}',
+			token: 'USDC',
+		});
+
+		// Wait for page to fully load to avoid random fails
+		await app.vaultPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+
+		// Wait for balance to be visible to avoind random fails
+		await app.vaultPage.sidebar.shouldHaveBalance({
+			balance: '[0-9]',
+			token: 'USDC',
+			timeout: expectDefaultTimeout * 3,
+		});
+
+		await expect(async () => {
+			await app.vaultPage.sidebar.deposit('0.5');
+			// Wait for Estimated Earnings to avoid random fails
+			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+				amount: '0.[0-9]{2,3}',
+				token: 'USDC',
+			});
+
+			await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
+			await app.vaultPage.sidebar.preview();
+		}).toPass();
+
+		// await app.vaultPage.sidebar.deposit('0.5');
+		// await app.vaultPage.sidebar.preview();
+		await app.vaultPage.sidebar.confirmDeposit();
+
+		await metamask.rejectTransaction();
+	});
+
+	test('It should deposit WSTETH - (until rejecting "approve" tx)', async ({ app, metamask }) => {
+		test.setTimeout(longTestTimeout);
+
+		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+			amount: '0.[0-9]{2,3}',
+			token: 'USDC',
+		});
+
+		// Wait for page to fully load to avoid random fails
+		await app.vaultPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+
+		await app.vaultPage.sidebar.openBalanceTokens();
+		await app.vaultPage.sidebar.selectBalanceToken('WSTETH');
+
+		// Wait for balance to be visible to avoind random fails
+		await app.vaultPage.sidebar.shouldHaveBalance({
+			balance: '[0-9]',
+			token: 'WSTETH',
+			timeout: expectDefaultTimeout * 3,
+		});
+
+		await expect(async () => {
+			await app.vaultPage.sidebar.deposit('0.0005');
+			await app.vaultPage.sidebar.shouldBeInUsdc('[1-3].[0-9]{2,3}');
+			// Wait for Estimated Earnings to avoid random fails
+			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+				amount: '0.[0-9]{2,3}',
+				token: 'USDC',
+			});
+
+			await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
+			await app.vaultPage.sidebar.preview();
+		}).toPass();
+
+		await app.vaultPage.sidebar.confirmDeposit();
+
+		await metamask.rejectTransaction();
+	});
 });
