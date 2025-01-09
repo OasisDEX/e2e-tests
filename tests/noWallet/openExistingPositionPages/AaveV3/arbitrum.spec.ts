@@ -7,7 +7,7 @@ test.describe('Open exisiting position pages - Aave v3 Arbitrum', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/arbitrum/aave/v3/multiply/RETH-ETH/540#overview');
+		await app.position.openPage('/arbitrum/aave/v3/multiply/RETH-ETH/540#overview');
 
 		await app.position.shouldHaveHeader('RETH/ETH yield multiple #540');
 		await app.position.overview.shouldHaveNetValue({
@@ -25,7 +25,7 @@ test.describe('Open exisiting position pages - Aave v3 Arbitrum', async () => {
 			description: '11993',
 		});
 
-		await app.page.goto('/arbitrum/aave/v3/borrow/eth-dai/1#overview');
+		await app.position.openPage('/arbitrum/aave/v3/borrow/eth-dai/1#overview');
 
 		await app.position.shouldHaveHeader('ETH/DAI Multiply #1');
 		await app.position.overview.shouldHaveLiquidationPrice({
@@ -60,7 +60,7 @@ test.describe('Open exisiting position pages - Aave v3 Arbitrum', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/arbitrum/aave/v3/multiply/DAI-WBTC/2#overview');
+		await app.position.openPage('/arbitrum/aave/v3/multiply/DAI-WBTC/2#overview');
 
 		await app.position.shouldHaveHeader('DAI/WBTC Multiply #2');
 		await app.position.overview.shouldHaveLiquidationPrice({

@@ -7,7 +7,7 @@ test.describe('Open exisiting position pages - Spark', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/spark/earn/WSTETH-ETH/1417#overview');
+		await app.position.openPage('/ethereum/spark/earn/WSTETH-ETH/1417#overview');
 
 		await app.position.shouldHaveHeader('WSTETH/ETH yield multiple #1417');
 		await app.position.overview.shouldHaveNetValue({
@@ -20,7 +20,7 @@ test.describe('Open exisiting position pages - Spark', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/spark/borrow/ETH-DAI/2397#overview');
+		await app.position.openPage('/ethereum/spark/borrow/ETH-DAI/2397#overview');
 
 		await app.position.shouldHaveHeader('ETH/DAI Borrow #2397');
 		await app.position.overview.shouldHaveLiquidationPrice({
@@ -35,7 +35,7 @@ test.describe('Open exisiting position pages - Spark', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/spark/multiply/SDAI-ETH/1448#overview');
+		await app.position.openPage('/ethereum/spark/multiply/SDAI-ETH/1448#overview');
 
 		await app.position.shouldHaveHeader('SDAI/ETH Multiply #1448');
 		await app.position.overview.shouldHaveLiquidationPrice({

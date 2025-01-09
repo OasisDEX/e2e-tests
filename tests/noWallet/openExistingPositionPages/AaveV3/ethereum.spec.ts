@@ -7,7 +7,7 @@ test.describe('Open exisiting position pages - Aave v3 Ethereum', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v3/earn/WSTETH-ETH/193#overview');
+		await app.position.openPage('/ethereum/aave/v3/earn/WSTETH-ETH/193#overview');
 
 		await app.position.shouldHaveHeader('WSTETH/ETH yield multiple #193');
 		await app.position.overview.shouldHaveNetValue({
@@ -20,7 +20,7 @@ test.describe('Open exisiting position pages - Aave v3 Ethereum', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v3/borrow/CBETH-ETH/1277#overview');
+		await app.position.openPage('/ethereum/aave/v3/borrow/CBETH-ETH/1277#overview');
 
 		await app.position.shouldHaveHeader('CBETH/ETH Borrow #1277');
 		await app.position.overview.shouldHaveLiquidationPrice({
@@ -36,7 +36,7 @@ test.describe('Open exisiting position pages - Aave v3 Ethereum', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v3/multiply/ETH-USDC/1218#overview');
+		await app.position.openPage('/ethereum/aave/v3/multiply/ETH-USDC/1218#overview');
 
 		await app.position.shouldHaveHeader('ETH/USDC Multiply #1218');
 		await app.position.overview.shouldHaveLiquidationPrice({

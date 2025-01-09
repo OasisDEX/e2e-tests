@@ -10,7 +10,7 @@ test.describe('Maker Multiply', async () => {
 			description: '11997',
 		});
 
-		await app.page.goto('/ethereum/maker/30640#overview');
+		await app.position.openPage('/ethereum/maker/30640#overview', { tab: 'Overview' });
 
 		await app.position.shouldHaveHeader('ETH-C Vault 30640');
 		await app.position.overview.shouldHaveLiquidationPrice({
