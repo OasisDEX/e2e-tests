@@ -7,7 +7,7 @@ test.describe('Open exisiting position pages - Aave v3 Optimism', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/optimism/aave/v3/multiply/USDC.E-SUSD/396#overview');
+		await app.position.openPage('/optimism/aave/v3/multiply/USDC.E-SUSD/396#overview');
 
 		await app.position.shouldHaveHeader('USDC.E/SUSD Multiply #396');
 		await app.position.overview.shouldHaveNetValue({
@@ -25,7 +25,7 @@ test.describe('Open exisiting position pages - Aave v3 Optimism', async () => {
 			description: '11994',
 		});
 
-		await app.page.goto('/optimism/aave/v3/borrow/dai-wbtc/4#overview');
+		await app.position.openPage('/optimism/aave/v3/borrow/dai-wbtc/4#overview');
 
 		await app.position.shouldHaveHeader('DAI/WBTC Borrow #4');
 		await app.position.overview.shouldHaveLiquidationPrice({
@@ -51,7 +51,7 @@ test.describe('Open exisiting position pages - Aave v3 Optimism', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/optimism/aave/v3/multiply/WBTC-USDC.E/19#overview');
+		await app.position.openPage('/optimism/aave/v3/multiply/WBTC-USDC.E/19#overview');
 
 		await app.position.shouldHaveHeader('WBTC/USDC.E Multiply #19');
 		await app.position.overview.shouldHaveLiquidationPrice({

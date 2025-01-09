@@ -8,7 +8,9 @@ test.describe('Open exisiting position pages - Maker', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/earn/dsr/0x10649c79428d718621821cf6299e91920284743f#overview');
+		await app.position.openPage('/earn/dsr/0x10649c79428d718621821cf6299e91920284743f#overview', {
+			tab: 'Overview',
+		});
 
 		await app.position.shouldHaveHeader('Dai Savings Rate');
 		await app.position.overview.shouldHaveNetValue({
@@ -23,7 +25,7 @@ test.describe('Open exisiting position pages - Maker', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/maker/30640#overview');
+		await app.position.openPage('/ethereum/maker/30640#overview', { tab: 'Overview' });
 
 		await app.position.shouldHaveHeader('ETH-C Vault 30640');
 		await app.position.overview.shouldHaveLiquidationPrice({
@@ -37,7 +39,7 @@ test.describe('Open exisiting position pages - Maker', async () => {
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		await app.page.goto('/ethereum/maker/30639#overview');
+		await app.position.openPage('/ethereum/maker/30639#overview', { tab: 'Overview' });
 
 		await app.position.shouldHaveHeader('ETH-C Vault 30639');
 		await app.position.overview.shouldHaveLiquidationPrice({
