@@ -1,7 +1,7 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 
-export type ExplorePages = 'User activity' | 'Rebalancing Activity' | 'Yield Trend';
+export type ExplorePages = 'User Activity' | 'Rebalancing Activity' | 'Yield Trend';
 
 export class Explore {
 	readonly page: Page;

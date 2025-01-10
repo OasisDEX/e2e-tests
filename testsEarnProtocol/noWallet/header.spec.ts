@@ -13,7 +13,7 @@ test.describe('Header', async () => {
 		await app.header.shouldHaveSummerfiLogo();
 
 		await app.header.explore.open();
-		await app.header.explore.select('User activity');
+		await app.header.explore.select('User Activity');
 		await app.page.mouse.move(200, 0);
 		await app.userActivity.shouldBeVisible();
 

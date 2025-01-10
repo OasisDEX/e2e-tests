@@ -12,19 +12,21 @@ export class PreviewStep {
 	@step
 	async shouldHave({
 		depositAmount,
+		withdrawAmount,
 		swap,
 		priceImpact,
 		slippage,
 		transactionFee,
 	}: {
 		depositAmount?: { amount: string; token: EarnTokens };
+		withdrawAmount?: { amount: string; token: EarnTokens };
 		swap?: {
 			originalToken: EarnTokens;
 			originalTokenAmount: string;
 			positionToken: EarnTokens;
 			positionTokenAmount: string;
 		};
-		priceImpact?: { amount: string; positionToken: EarnTokens; percentage: string };
+		priceImpact?: { amount: string; token: EarnTokens; percentage: string };
 		slippage?: string;
 		transactionFee?: string;
 	}) {
@@ -34,6 +36,16 @@ export class PreviewStep {
 			await expect(
 				this.page.locator(
 					`span:has-text("Deposit Amount") + span:has-text("${depositAmount.token}")`
+				)
+			).toContainText(regExp);
+		}
+
+		if (withdrawAmount) {
+			const regExp = new RegExp(`${withdrawAmount.amount}.*${withdrawAmount.token}`);
+
+			await expect(
+				this.page.locator(
+					`span:has-text("Withdraw Amount") + span:has-text("${withdrawAmount.token}")`
 				)
 			).toContainText(regExp);
 		}
@@ -65,7 +77,7 @@ export class PreviewStep {
 
 		if (priceImpact) {
 			const regExp = new RegExp(
-				`${priceImpact.amount}.*${priceImpact.positionToken}.*\\(${priceImpact.percentage}%\\)`
+				`${priceImpact.amount}.*${priceImpact.token}.*\\(${priceImpact.percentage}%\\)`
 			);
 
 			await expect(

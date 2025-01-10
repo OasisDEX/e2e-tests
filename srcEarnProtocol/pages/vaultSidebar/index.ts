@@ -129,8 +129,8 @@ export class VaultSidebar {
 	}
 
 	@step
-	async confirmDeposit() {
-		await this.sidebarLocator.getByRole('button', { name: 'Deposit' }).click();
+	async confirm(action: 'Deposit' | 'Withdraw') {
+		await this.sidebarLocator.getByRole('button', { name: action }).click();
 	}
 
 	@step
