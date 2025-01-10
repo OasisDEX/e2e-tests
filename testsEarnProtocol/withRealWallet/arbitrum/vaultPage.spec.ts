@@ -124,7 +124,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 			},
 			priceImpact: {
 				amount: '[0-9],[0-9]{3}.[0-9]{2}',
-				positionToken: 'USDC',
+				token: 'USDC',
 				percentage: '0.[0-9]{2}',
 			},
 			slippage: '1.00',
@@ -163,9 +163,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 			await app.vaultPage.sidebar.preview();
 		}).toPass();
 
-		// await app.vaultPage.sidebar.depositOrWithdraw('0.5');
-		// await app.vaultPage.sidebar.preview();
-		await app.vaultPage.sidebar.confirmDeposit();
+		await app.vaultPage.sidebar.confirm('Deposit');
 
 		await metamask.rejectTransaction();
 	});
@@ -208,7 +206,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 			await app.vaultPage.sidebar.preview();
 		}).toPass();
 
-		await app.vaultPage.sidebar.confirmDeposit();
+		await app.vaultPage.sidebar.confirm('Deposit');
 
 		await metamask.rejectTransaction();
 	});
