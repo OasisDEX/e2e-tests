@@ -242,7 +242,7 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		}).toPass();
 
 		await app.vaultPage.sidebar.previewStep.shouldHave({
-			depositAmount: { amount: '0.4', token: 'USDC' },
+			withdrawAmount: { amount: '0.4', token: 'USDC' },
 			transactionFee: '[0-2].[0-9]{2}',
 		});
 
@@ -255,7 +255,7 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		// Wait for balance to fully load to avoid random fails
 		await app.vaultPage.sidebar.shouldHaveBalance({
 			balance: '[0-9].[0-9]',
-			token: 'USDBC',
+			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
 
@@ -293,7 +293,7 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		// Wait for balance to fully load to avoid random fails
 		await app.vaultPage.sidebar.shouldHaveBalance({
 			balance: '[0-9].[0-9]',
-			token: 'WSTETH',
+			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
 

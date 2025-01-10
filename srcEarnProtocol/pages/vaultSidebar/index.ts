@@ -22,8 +22,10 @@ export class VaultSidebar {
 	}
 
 	@step
-	async selectTab(tab: 'Deposit' | 'Withdraw') {
-		await this.sidebarLocator.locator(`h5:has-text("${tab}")`).click();
+	async selectTab(tab: 'Deposit' | 'Withdraw', args?: { timeout: number }) {
+		await this.sidebarLocator
+			.locator(`h5:has-text("${tab}")`)
+			.click({ timeout: args?.timeout ?? expectDefaultTimeout });
 		await this.buttonShouldBeVisible('Withdraw');
 	}
 
