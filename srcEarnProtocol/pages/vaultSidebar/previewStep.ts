@@ -30,6 +30,8 @@ export class PreviewStep {
 		slippage?: string;
 		transactionFee?: string;
 	}) {
+		await expect(this.page.getByText('Changes & Fees')).toBeVisible({ timeout: 10_000 });
+
 		if (depositAmount) {
 			const regExp = new RegExp(`${depositAmount.amount}.*${depositAmount.token}`);
 
@@ -98,7 +100,7 @@ export class PreviewStep {
 
 			await expect(
 				this.page.locator('span:has-text("Transaction Fee") + span:has-text("$")')
-			).toContainText(regExp);
+			).toContainText(regExp, { timeout: 10_000 });
 		}
 	}
 }
