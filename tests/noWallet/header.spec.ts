@@ -24,11 +24,6 @@ test.describe('Header', async () => {
 		test(`It should open connect-wallet popup - Header > Products > ${productOption}`, async ({
 			app,
 		}) => {
-			test.info().annotations.push({
-				type: 'Test case',
-				description: '12338',
-			});
-
 			test.setTimeout(longTestTimeout);
 
 			await app.homepage.open();

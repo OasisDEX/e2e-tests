@@ -44,6 +44,7 @@ export class Products {
 		menuOption: string;
 	}) {
 		await this.open();
+		await expect(this.headerLocator.getByText(product, { exact: true })).toBeVisible();
 		await this.hoverOver(product);
 		await this.headerLocator.getByText(menuOption).click();
 	}
