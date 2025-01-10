@@ -8,7 +8,8 @@ test.describe('API tests - Stop-Loss - Remove - Aave V3 - Base', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/base/aave/v3/borrow/ETH-USDC/677#protection
 
-	test('Remove existing automation - Valid payload data', async ({ request }) => {
+	// TODO - Update with another position - preferably in one of the old wallets
+	test.skip('Remove existing automation - Valid payload data', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: validPayloads,
 		});

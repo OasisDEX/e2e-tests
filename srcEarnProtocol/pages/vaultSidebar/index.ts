@@ -22,7 +22,13 @@ export class VaultSidebar {
 	}
 
 	@step
-	async openBalanceTokens() {
+	async selectTab(tab: 'Deposit' | 'Withdraw') {
+		await this.sidebarLocator.locator(`h5:has-text("${tab}")`).click();
+		await this.buttonShouldBeVisible('Withdraw');
+	}
+
+	@step
+	async openTokensSelector() {
 		await expect(async () => {
 			await this.sidebarLocator.locator('[class*="_dropdownSelected_"]').click();
 			await expect(
@@ -33,7 +39,7 @@ export class VaultSidebar {
 	}
 
 	@step
-	async selectBalanceToken(token: EarnTokens) {
+	async selectToken(token: EarnTokens) {
 		await this.sidebarLocator.locator(`[class*="_dropdownOption_"]:has-text("${token}")`).click();
 	}
 
@@ -63,7 +69,10 @@ export class VaultSidebar {
 	}
 
 	@step
-	async buttonShouldBeVisible(button: 'Deposit' | 'Preview', args?: { timeout: number }) {
+	async buttonShouldBeVisible(
+		button: 'Deposit' | 'Withdraw' | 'Preview',
+		args?: { timeout: number }
+	) {
 		await expect(
 			this.sidebarLocator.getByRole('button', { name: button }),
 			`[${button}] button should be visible`
@@ -71,14 +80,26 @@ export class VaultSidebar {
 	}
 
 	@step
-	async deposit(amount: string) {
+	async depositOrWithdraw(amount: string) {
 		await this.sidebarLocator.locator('input').fill(amount);
 	}
 
 	@step
-	async shouldBeInUsdc(usdcAmount: string) {
-		const regExp = new RegExp(`${usdcAmount}.*USDC`);
-		await expect(this.sidebarLocator.locator('input + p')).toContainText(regExp);
+	async depositOrWithdrawAmountShouldBe({
+		amount,
+		tokenOrCurrency,
+	}: {
+		amount: string;
+		tokenOrCurrency: '$' | EarnTokens;
+	}) {
+		const regExp = new RegExp(
+			`${tokenOrCurrency === '$' ? '\\$' : ''}${amount}.*${
+				tokenOrCurrency === '$' ? '' : tokenOrCurrency
+			}`
+		);
+		await expect(this.sidebarLocator.locator('input + p')).toContainText(regExp, {
+			ignoreCase: true,
+		});
 	}
 
 	@step

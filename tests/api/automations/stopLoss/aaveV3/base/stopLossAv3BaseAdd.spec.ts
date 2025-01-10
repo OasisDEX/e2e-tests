@@ -292,7 +292,8 @@ test.describe('API tests - Stop-Loss - Aave V3 - Base', async () => {
 		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
-	test('Add automation - Trigger already exists', async ({ request }) => {
+	// TODO - Update with another position - preferably in one of the old wallets
+	test.skip('Add automation - Trigger already exists', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloadsAaveV3Base.stopLoss.updateCloseToCollateral, action: 'add' },
 		});

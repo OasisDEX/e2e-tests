@@ -8,11 +8,13 @@ export const logInWithWalletAddress = async ({
 	app,
 	wallet,
 	network, // This property should be removed in the future
+	shortenedWalletAddress,
 }: {
 	metamask: MetaMask;
 	app: App;
 	wallet: walletTypes;
 	network?: 'Arbitrum';
+	shortenedWalletAddress?: string;
 }) => {
 	await app.header.logIn();
 	await app.modals.logIn.withWallet();
@@ -31,6 +33,6 @@ export const logInWithWalletAddress = async ({
 	}
 
 	// App doesn't reload when loging in at the moment
-	await app.header.shouldHaveWalletAddress('0x1064...4743F');
+	await app.header.shouldHaveWalletAddress(shortenedWalletAddress ?? '0x1064...4743F');
 	await app.page.reload();
 };

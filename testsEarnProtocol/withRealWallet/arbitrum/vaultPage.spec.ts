@@ -42,8 +42,8 @@ test.describe('With real wallet - Arbitrum', async () => {
 	test('It should show WSTETH balance in Arbitrum USDC vault', async ({ app }) => {
 		await app.page.goto('/earn/arbitrum/position/earn-mcyieldface-usdc');
 
-		await app.vaultPage.sidebar.openBalanceTokens();
-		await app.vaultPage.sidebar.selectBalanceToken('WSTETH');
+		await app.vaultPage.sidebar.openTokensSelector();
+		await app.vaultPage.sidebar.selectToken('WSTETH');
 
 		await app.vaultPage.sidebar.shouldHaveBalance({
 			balance: '0.0008',
@@ -74,7 +74,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 		});
 
 		await expect(async () => {
-			await app.vaultPage.sidebar.deposit('0.4');
+			await app.vaultPage.sidebar.depositOrWithdraw('0.4');
 			// Wait for Estimated Earnings to avoid random fails
 			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
 				amount: '0.[0-9]{2,3}',
@@ -92,8 +92,8 @@ test.describe('With real wallet - Arbitrum', async () => {
 		// === WSTETH ===
 
 		await app.earn.sidebar.goBack();
-		await app.earn.sidebar.openBalanceTokens();
-		await app.earn.sidebar.selectBalanceToken('WSTETH');
+		await app.earn.sidebar.openTokensSelector();
+		await app.earn.sidebar.selectToken('WSTETH');
 
 		// Wait for balance to fully load to avoid random fails
 		await app.vaultPage.sidebar.shouldHaveBalance({
@@ -103,7 +103,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 		});
 
 		await expect(async () => {
-			await app.vaultPage.sidebar.deposit('0.0005');
+			await app.vaultPage.sidebar.depositOrWithdraw('0.0005');
 			// Wait for Estimated Earnings to avoid random fails
 			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
 				amount: '0.[0-9]{2,3}',
@@ -152,7 +152,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 		});
 
 		await expect(async () => {
-			await app.vaultPage.sidebar.deposit('0.5');
+			await app.vaultPage.sidebar.depositOrWithdraw('0.5');
 			// Wait for Estimated Earnings to avoid random fails
 			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
 				amount: '0.[0-9]{2,3}',
@@ -163,7 +163,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 			await app.vaultPage.sidebar.preview();
 		}).toPass();
 
-		// await app.vaultPage.sidebar.deposit('0.5');
+		// await app.vaultPage.sidebar.depositOrWithdraw('0.5');
 		// await app.vaultPage.sidebar.preview();
 		await app.vaultPage.sidebar.confirmDeposit();
 
@@ -182,8 +182,8 @@ test.describe('With real wallet - Arbitrum', async () => {
 		await app.vaultPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
 
-		await app.vaultPage.sidebar.openBalanceTokens();
-		await app.vaultPage.sidebar.selectBalanceToken('WSTETH');
+		await app.vaultPage.sidebar.openTokensSelector();
+		await app.vaultPage.sidebar.selectToken('WSTETH');
 
 		// Wait for balance to be visible to avoind random fails
 		await app.vaultPage.sidebar.shouldHaveBalance({
@@ -193,8 +193,11 @@ test.describe('With real wallet - Arbitrum', async () => {
 		});
 
 		await expect(async () => {
-			await app.vaultPage.sidebar.deposit('0.0005');
-			await app.vaultPage.sidebar.shouldBeInUsdc('[1-3].[0-9]{2,3}');
+			await app.vaultPage.sidebar.depositOrWithdraw('0.0005');
+			await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
+				amount: '[1-3].[0-9]{2,3}',
+				tokenOrCurrency: 'USDC',
+			});
 			// Wait for Estimated Earnings to avoid random fails
 			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
 				amount: '0.[0-9]{2,3}',
