@@ -23,7 +23,8 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Base', async ()
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/base/aave/v3/borrow/ETH-USDC/677#optimization
 
-	test('Update existing automation - Profit in collateral - Valid payload data', async ({
+	// TODO - Update with another position - preferably in one of the old wallets
+	test.skip('Update existing automation - Profit in collateral - Valid payload data', async ({
 		request,
 	}) => {
 		const response = await request.post(autoTakeProfit, {
@@ -62,7 +63,10 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Base', async ()
 		expect(respJSON).toMatchObject(debtResponse);
 	});
 
-	test('Update existing automation - executionPrice - Valid payload data', async ({ request }) => {
+	// TODO - Update with another position - preferably in one of the old wallets
+	test.skip('Update existing automation - executionPrice - Valid payload data', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
 				...validPayloads,
@@ -79,7 +83,10 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Base', async ()
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Update existing automation - executionLTV - Valid payload data', async ({ request }) => {
+	// TODO - Update with another position - preferably in one of the old wallets
+	test.skip('Update existing automation - executionLTV - Valid payload data', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
 				...validPayloads,
@@ -96,7 +103,10 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Base', async ()
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Update existing automation - withdrawStep - Valid payload data', async ({ request }) => {
+	// TODO - Update with another position - preferably in one of the old wallets
+	test.skip('Update existing automation - withdrawStep - Valid payload data', async ({
+		request,
+	}) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
 				...validPayloads,
@@ -113,7 +123,8 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Base', async ()
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Update existing automation - profit in collateral, executionPrice, executionLTV and withdrawStep - Valid payload data', async ({
+	// TODO - Update with another position - preferably in one of the old wallets
+	test.skip('Update existing automation - profit in collateral, executionPrice, executionLTV and withdrawStep - Valid payload data', async ({
 		request,
 	}) => {
 		const response = await request.post(autoTakeProfit, {

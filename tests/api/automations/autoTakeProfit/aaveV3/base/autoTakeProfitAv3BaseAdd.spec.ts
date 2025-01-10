@@ -351,7 +351,8 @@ test.describe('API tests - Auto Take Profit - Add - Aave V3 - Base', async () =>
 		expect(respJSON).toMatchObject(responses.wrongStopLossTriggerData);
 	});
 
-	test('Add automation - Trigger already exists', async ({ request }) => {
+	// TODO - Update with another position - preferably in one of the old wallets
+	test.skip('Add automation - Trigger already exists', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
 				...validPayloadsAaveV3Base.autoTakeProfit.updateProfitInCollateral,
