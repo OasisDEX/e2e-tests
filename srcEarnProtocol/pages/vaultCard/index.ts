@@ -23,6 +23,7 @@ export class VaultCard {
 
 	@step
 	async select(args?: { delay: number }) {
+		await expect(this.cardLocator).toBeVisible();
 		await this.cardLocator.click({ delay: args?.delay ?? 0 });
 	}
 

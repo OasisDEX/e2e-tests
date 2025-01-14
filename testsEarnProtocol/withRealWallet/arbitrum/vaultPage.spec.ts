@@ -284,120 +284,7 @@ test.describe('With real wallet - Arbitrum - Withdraw', async () => {
 		});
 	});
 
-	// TODO
-	test.skip('It should show withdraw transaction details in "Preview" step', async ({ app }) => {
-		test.setTimeout(longTestTimeout);
-
-		// === USDC ===
-
-		// Wait for page to fully load
-		await app.vaultPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]',
-			token: 'USDC',
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		await expect(async () => {
-			await app.vaultPage.sidebar.depositOrWithdraw('0.4');
-			// Wait for Estimated Earnings to avoid random fails
-			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
-				amount: '0.[0-9]{2,3}',
-				token: 'USDC',
-			});
-			await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
-			await app.vaultPage.sidebar.preview();
-		}).toPass();
-
-		await app.vaultPage.sidebar.previewStep.shouldHave({
-			withdrawAmount: { amount: '0.4', token: 'USDC' },
-			transactionFee: '[0-2].[0-9]{2}',
-		});
-
-		// === WBTC ===
-
-		await app.earn.sidebar.goBack();
-		await app.earn.sidebar.openTokensSelector();
-		await app.earn.sidebar.selectToken('WBTC');
-
-		// Wait for balance to fully load to avoid random fails
-		await app.vaultPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]',
-			token: 'USDC',
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		await expect(async () => {
-			await app.vaultPage.sidebar.depositOrWithdraw('0.4');
-			// Wait for Estimated Earnings to avoid random fails
-			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
-				amount: '0.[0-9]{2,3}',
-				token: 'USDC',
-			});
-
-			await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
-			await app.vaultPage.sidebar.preview();
-		}).toPass();
-
-		await app.vaultPage.sidebar.previewStep.shouldHave({
-			withdrawAmount: { amount: '0.4', token: 'USDC' },
-			swap: {
-				originalToken: 'USDC',
-				originalTokenAmount: '0.4',
-				positionToken: 'WBTC',
-				positionTokenAmount: '0.00[0-9]{2,3}',
-			},
-			priceImpact: { amount: '[0-1].[0-9]{2,3}', token: 'WBTC', percentage: '0.[0-9]{2}' },
-			slippage: '1.00',
-			transactionFee: '[0-2].[0-9]{2}',
-		});
-
-		// === WSTETH ===
-
-		await app.earn.sidebar.goBack();
-		await app.earn.sidebar.openTokensSelector();
-		await app.earn.sidebar.selectToken('WSTETH');
-
-		// Wait for balance to fully load to avoid random fails
-		await app.vaultPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]',
-			token: 'WSTETH',
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		await expect(async () => {
-			await app.vaultPage.sidebar.depositOrWithdraw('0.4');
-			// Wait for Estimated Earnings to avoid random fails
-			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
-				amount: '0.[0-9]{2,3}',
-				token: 'USDC',
-			});
-
-			await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
-			await app.vaultPage.sidebar.preview();
-		}).toPass();
-
-		await app.vaultPage.sidebar.previewStep.shouldHave({
-			withdrawAmount: { amount: '0.4', token: 'USDC' },
-			swap: {
-				originalToken: 'USDC',
-				originalTokenAmount: '0.4',
-				positionToken: 'WSTETH',
-				positionTokenAmount: '0.000[0-9]',
-			},
-			priceImpact: { amount: '[0-1].[0-9]{2,3}', token: 'wstETH', percentage: '0.[0-9]{2}' },
-			slippage: '1.00',
-			transactionFee: '[0-2].[0-9]{2}',
-		});
-	});
-
-	// TODO
-	test.skip('It should withdraw USDC - (until rejecting "approve" tx)', async ({
-		app,
-		metamask,
-	}) => {
+	test('It should withdraw USDC - (until rejecting "approve" tx)', async ({ app, metamask }) => {
 		test.setTimeout(longTestTimeout);
 
 		// Wait for balance to be visible to avoind random fails
@@ -408,32 +295,32 @@ test.describe('With real wallet - Arbitrum - Withdraw', async () => {
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await expect(async () => {
-			await app.vaultPage.sidebar.depositOrWithdraw('0.5');
-			// Wait for Estimated Earnings to avoid random fails
-			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
-				amount: '0.[0-9]{2,3}',
-				token: 'USDC',
-			});
+		await app.vaultPage.sidebar.depositOrWithdraw('0.5');
+		// Wait for Estimated Earnings to avoid random fails
+		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+			amount: '0.[0-9]{2,3}',
+			token: 'USDC',
+		});
 
-			await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
-			await app.vaultPage.sidebar.preview();
-		}).toPass();
+		await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
+		await app.vaultPage.sidebar.preview();
+
+		await app.vaultPage.sidebar.previewStep.shouldHave({
+			withdrawAmount: { amount: '0.5', token: 'USDC' },
+			transactionFee: '[0-2].[0-9]{2}',
+		});
 
 		await app.vaultPage.sidebar.confirm('Withdraw');
 
 		await metamask.rejectTransaction();
 	});
 
-	// TODO
-	test.skip('It should withdraw USDBC - (until rejecting "approve" tx)', async ({
-		app,
-		metamask,
-	}) => {
+	// FAILS - BUG - https://www.notion.so/oazo/144cbc0395cb478a8b81cff326740123?v=1528cbaf47f880fbb6ed000c666394bf&p=17b8cbaf47f8804e96e9c3b5cfb6bca3&pm=s
+	test('It should withdraw WSTETH - (until rejecting "approve" tx)', async ({ app, metamask }) => {
 		test.setTimeout(longTestTimeout);
 
 		await app.vaultPage.sidebar.openTokensSelector();
-		await app.vaultPage.sidebar.selectToken('USDBC');
+		await app.vaultPage.sidebar.selectToken('WSTETH');
 
 		// Wait for balance to be visible to avoind random fails
 		await app.vaultPage.sidebar.shouldHaveBalance({
@@ -443,21 +330,32 @@ test.describe('With real wallet - Arbitrum - Withdraw', async () => {
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await expect(async () => {
-			await app.vaultPage.sidebar.depositOrWithdraw('0.1');
-			await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
-				amount: '0.[0-9]{2,3}',
-				tokenOrCurrency: 'USDBC',
-			});
-			// Wait for Estimated Earnings to avoid random fails
-			await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
-				amount: '0.[0-9]{2,3}',
-				token: 'USDC',
-			});
+		await app.vaultPage.sidebar.depositOrWithdraw('1');
+		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
+			amount: '0.000[0-9]',
+			tokenOrCurrency: 'WSTETH',
+		});
+		// Wait for Estimated Earnings to avoid random fails
+		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
+			amount: '0.[0-9]{2,3}',
+			token: 'USDC',
+		});
 
-			await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
-			await app.vaultPage.sidebar.preview();
-		}).toPass();
+		await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
+		await app.vaultPage.sidebar.preview();
+
+		await app.vaultPage.sidebar.previewStep.shouldHave({
+			withdrawAmount: { amount: '1', token: 'USDC' },
+			swap: {
+				originalToken: 'USDC',
+				originalTokenAmount: '1',
+				positionToken: 'WSTETH',
+				positionTokenAmount: '0.000[0-9]',
+			},
+			priceImpact: { amount: '[0-1].[0-9]{2,3}', token: 'wstETH', percentage: '[0-3].[0-9]{2}' },
+			slippage: '1.00',
+			transactionFee: '[0-2].[0-9]{2}',
+		});
 
 		await app.vaultPage.sidebar.confirm('Withdraw');
 
