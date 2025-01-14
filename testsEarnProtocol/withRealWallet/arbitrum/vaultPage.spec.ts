@@ -8,7 +8,10 @@ const test = testWithSynpress(withWalletArbitrumFixtures);
 const { expect } = test;
 
 test.describe('With real wallet - Arbitrum', async () => {
-	test.beforeEach(async ({ app, metamask }) => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		// Extending tests timeout by 25 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 25_000);
+
 		await logInWithWalletAddress({
 			metamask,
 			app,
@@ -19,7 +22,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 		await app.page.goto('/earn/arbitrum/position/earn-mcyieldface-usdc');
 	});
 
-	test('It should show USDC balance in Arbitrum USDC vault', async ({ app, metamask }) => {
+	test('It should show USDC balance in Arbitrum USDC vault', async ({ app }) => {
 		await app.vaultPage.sidebar.shouldHaveBalance({
 			balance: '1.00',
 			token: 'USDC',
@@ -72,6 +75,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 		await expect(async () => {
 			await app.vaultPage.sidebar.depositOrWithdraw('0.4');
@@ -101,6 +105,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 			token: 'WSTETH',
 			timeout: expectDefaultTimeout * 2,
 		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 		await expect(async () => {
 			await app.vaultPage.sidebar.depositOrWithdraw('0.0005');
@@ -150,6 +155,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 3,
 		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 		await expect(async () => {
 			await app.vaultPage.sidebar.depositOrWithdraw('0.5');
@@ -189,6 +195,7 @@ test.describe('With real wallet - Arbitrum', async () => {
 			token: 'WSTETH',
 			timeout: expectDefaultTimeout * 3,
 		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 		await expect(async () => {
 			await app.vaultPage.sidebar.depositOrWithdraw('0.0005');
@@ -213,7 +220,10 @@ test.describe('With real wallet - Arbitrum', async () => {
 });
 
 test.describe('With real wallet - Arbitrum - Withdraw', async () => {
-	test.beforeEach(async ({ app, metamask }) => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		// Extending tests timeout by 35 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 35_000);
+
 		await metamask.importWalletFromPrivateKey(process.env.OLD_WALLET_PK ?? 'wallet address needed');
 		await logInWithWalletAddress({
 			metamask,
@@ -230,6 +240,8 @@ test.describe('With real wallet - Arbitrum - Withdraw', async () => {
 			token: 'USDC',
 			timeout: 10_000,
 		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
 		await app.vaultPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
 
@@ -260,6 +272,7 @@ test.describe('With real wallet - Arbitrum - Withdraw', async () => {
 					token: 'USDC',
 					timeout: expectDefaultTimeout * 2,
 				});
+				await app.page.waitForTimeout(expectDefaultTimeout / 3);
 			}
 
 			await app.vaultPage.sidebar.depositOrWithdraw('1');
@@ -283,6 +296,7 @@ test.describe('With real wallet - Arbitrum - Withdraw', async () => {
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 		await expect(async () => {
 			await app.vaultPage.sidebar.depositOrWithdraw('0.4');
@@ -312,6 +326,7 @@ test.describe('With real wallet - Arbitrum - Withdraw', async () => {
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 		await expect(async () => {
 			await app.vaultPage.sidebar.depositOrWithdraw('0.4');
@@ -350,6 +365,7 @@ test.describe('With real wallet - Arbitrum - Withdraw', async () => {
 			token: 'WSTETH',
 			timeout: expectDefaultTimeout * 2,
 		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 		await expect(async () => {
 			await app.vaultPage.sidebar.depositOrWithdraw('0.4');
@@ -390,6 +406,7 @@ test.describe('With real wallet - Arbitrum - Withdraw', async () => {
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 3,
 		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 		await expect(async () => {
 			await app.vaultPage.sidebar.depositOrWithdraw('0.5');
@@ -424,6 +441,7 @@ test.describe('With real wallet - Arbitrum - Withdraw', async () => {
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 3,
 		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 		await expect(async () => {
 			await app.vaultPage.sidebar.depositOrWithdraw('0.1');

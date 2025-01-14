@@ -26,7 +26,7 @@ export class Header {
 
 	@step
 	async earn() {
-		await this.headerLocator.getByRole('link', { name: 'Earn' }).click();
+		await this.headerLocator.getByRole('link', { name: 'Earn', exact: true }).click();
 	}
 
 	@step
