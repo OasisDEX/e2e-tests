@@ -2,6 +2,10 @@ import { expect, test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Landin page', async () => {
+	test.beforeEach(async ({ app }) => {
+		await app.landingPage.openPage();
+	});
+
 	test('It should show vault card', async ({ app }) => {
 		await app.landingPage.shouldShowVaultCard();
 	});
@@ -9,7 +13,6 @@ test.describe('Landin page', async () => {
 	(['Right', 'Left'] as const).forEach((direction) => {
 		test(`It should show vault card to the ${direction}`, async ({ app }) => {
 			// To avoid flakiness
-			await app.landingPage.shouldBeVisible();
 			await app.page.waitForTimeout(2_000);
 
 			// Get vault info for current active vault in carousel

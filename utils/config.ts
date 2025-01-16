@@ -2,7 +2,8 @@
 
 export const baseUrl = process.env.BASE_URL ?? 'https://staging.summer.fi';
 
-export const earnProtocolBaseUrl = process.env.BASE_URL_EARN_PROTOCOL ?? 'https://oasisapp.dev';
+export const earnProtocolBaseUrl =
+	process.env.BASE_URL_EARN_PROTOCOL ?? 'https://oasisapp.dev/earn';
 
 export const expectDefaultTimeout: number = 5_000;
 

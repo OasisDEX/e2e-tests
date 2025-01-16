@@ -21,6 +21,15 @@ export class LandingPage {
 	}
 
 	@step
+	async openPage() {
+		await this.page.goto('https://oasisapp.dev');
+		await expect(
+			this.page.getByText('Automated Exposure to DeFi'),
+			'"Automated Exposure..." should be visible'
+		).toBeVisible();
+	}
+
+	@step
 	async shouldShowVaultCard() {
 		await expect(
 			this.page.locator('[class*="_vaultCardHeaderWrapper"]').nth(0),
