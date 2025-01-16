@@ -21,14 +21,6 @@ export class LandingPage {
 	}
 
 	@step
-	async open() {
-		await expect(async () => {
-			await this.page.goto('https://earn-protocol-landing-page-staging.oasisapp.dev/');
-			await this.shouldBeVisible();
-		}).toPass();
-	}
-
-	@step
 	async shouldShowVaultCard() {
 		await expect(
 			this.page.locator('[class*="_vaultCardHeaderWrapper"]').nth(0),

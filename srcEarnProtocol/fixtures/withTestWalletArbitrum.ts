@@ -3,8 +3,6 @@ import arbitrumSetup from '../../utils/synpress/test-wallet-setup/arbitrum.setup
 import { App } from '../app';
 
 export const test = metaMaskFixtures(arbitrumSetup).extend<{
-	deployToken: () => Promise<void>;
-	deployPiggyBank: () => Promise<void>;
 	app: App;
 }>({
 	app: async ({ page }, use) => {
