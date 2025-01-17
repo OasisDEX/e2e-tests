@@ -1,7 +1,8 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
-import { Explore } from './explore';
 import { expectDefaultTimeout } from 'utils/config';
+import { Explore } from './explore';
+import { Support } from './support';
 
 export class Header {
 	readonly page: Page;
@@ -10,10 +11,13 @@ export class Header {
 
 	readonly explore: Explore;
 
+	readonly support: Support;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.headerLocator = page.locator('header');
 		this.explore = new Explore(page, this.headerLocator);
+		this.support = new Support(page, this.headerLocator);
 	}
 
 	@step
@@ -25,8 +29,23 @@ export class Header {
 	}
 
 	@step
+	async summerfi() {
+		await this.headerLocator.locator('img[alt="Summer.fi"]').nth(0).click();
+	}
+
+	@step
 	async earn() {
 		await this.headerLocator.getByRole('link', { name: 'Earn', exact: true }).click();
+	}
+
+	@step
+	async portfolio() {
+		await this.headerLocator.getByRole('link', { name: 'Portfolio', exact: true }).click();
+	}
+
+	@step
+	async sumr() {
+		await this.headerLocator.getByRole('link', { name: '$SUMR', exact: true }).click();
 	}
 
 	@step

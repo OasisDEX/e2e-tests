@@ -68,7 +68,7 @@ You can also use these other environment variables:
 
 | Variable | Default | Description |
 | --- | --- | -- |
-| BASE_URL | This is the base url used to run the tests. As per `.env.example` file. If you don't set this variable the tests will run with `https://staging.summer.fi` as base url|
+| BASE_URL | This is the base url used to run the tests. As per `.env.example` file. If you don't set this variable the tests will run with `https://prodev.oasisapp.dev` as base url|
 | FULLY_PARALLEL | false | Playwright Test runs tests in parallel. In order to achieve that, it runs several worker processes that run at the same time. By default, **test files** are run in parallel. However, tests in a single file are run in order, in the same worker process. You can configure entire test run to concurrently execute all tests in all files using this option. Note that **with wallet** tests can run **only** serial mode, so this variable will be applied only to **no wallet tests**. |
 | WORKERS | 1 | Number of workers used to run the tests. To run the tests in pralallel you need to use more than 1 workers. Note that **with wallet** tests can run **only** with 1 worker, so this variable will be applied only to **no wallet tests**. |
 | TIMEOUT | 30000 | Timeout for each test in milliseconds. Note that some timeouts have been defined in `./utils/config.ts` file, so this TIMEOUT variable might not have any effect in some cases. |
