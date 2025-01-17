@@ -11,7 +11,7 @@ on:
         description: 'Environment base URL to run the tests on.'
         type: string
         # SWAP tests running on production until SDK is upgraded on staging
-        # default: 'https://staging.summer.fi' // SWAP not working on staging
+        # default: 'https://prodev.oasisapp.dev' // SWAP not working on staging
         default: 'https://summer.fi'
         required: true
       flags_features:

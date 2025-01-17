@@ -1,6 +1,6 @@
 // import 'dotenv/config';
 
-export const baseUrl = process.env.BASE_URL ?? 'https://staging.summer.fi';
+export const baseUrl = process.env.BASE_URL ?? 'https://prodev.oasisapp.dev';
 
 export const earnProtocolBaseUrl =
 	process.env.BASE_URL_EARN_PROTOCOL ?? 'https://oasisapp.dev/earn';

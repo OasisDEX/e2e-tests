@@ -4,9 +4,10 @@ import {
 	Header,
 	LandingPage,
 	Portfolio,
-	VaultPage,
 	RebalancingActivity,
+	Sumr,
 	UserActivity,
+	VaultPage,
 	YieldTrend,
 } from './pages';
 import { Modals } from './modals';
@@ -26,6 +27,8 @@ export class App {
 
 	readonly rebalancingActivity: RebalancingActivity;
 
+	readonly sumr: Sumr;
+
 	readonly userActivity: UserActivity;
 
 	readonly vaultPage: VaultPage;
@@ -40,6 +43,7 @@ export class App {
 		this.modals = new Modals(page);
 		this.portfolio = new Portfolio(page);
 		this.rebalancingActivity = new RebalancingActivity(page);
+		this.sumr = new Sumr(page);
 		this.userActivity = new UserActivity(page);
 		this.vaultPage = new VaultPage(page);
 		this.yieldTrend = new YieldTrend(page);
