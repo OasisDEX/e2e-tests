@@ -1,6 +1,5 @@
 import { test as base } from '@playwright/test';
 import { App } from '../app';
-import { updateFlagsAndRejectCookies } from 'utils/localStorage';
 
 type MyFixtures = {
 	app: App;
@@ -11,18 +10,6 @@ export const test = base.extend<MyFixtures>({
 		const app = new App(page);
 
 		await app.page.goto('');
-		// await app.homepage.shouldBeVisible();
-
-		// const featuresFlags = process.env.FLAGS_FEATURES ? process.env.FLAGS_FEATURES.split(' ') : null;
-		// const automationMinNetValueFlags = process.env.FLAGS_AUTOMATION_MIN_NET_VALUE
-		// 	? process.env.FLAGS_AUTOMATION_MIN_NET_VALUE.split(' ')
-		// 	: null;
-
-		// await updateFlagsAndRejectCookies({
-		// 	app,
-		// 	featuresFlags,
-		// 	automationMinNetValueFlags,
-		// });
 
 		await use(app);
 

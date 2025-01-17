@@ -1,7 +1,9 @@
-import { step } from '#noWalletFixtures';
+import { expect } from '#noWalletFixtures';
+import { APIRequestContext } from '@playwright/test';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 import { App } from 'srcEarnProtocol/app';
 import { walletTypes } from './types';
+import { expectDefaultTimeout } from 'utils/config';
 
 export const logInWithWalletAddress = async ({
 	metamask,
@@ -26,13 +28,58 @@ export const logInWithWalletAddress = async ({
 		// Earn protocol app switches to Base by default
 		await metamask.approveNewNetwork();
 		await metamask.approveSwitchNetwork();
-
-		// SKIPPED - Weird issue with Arbitrumwhen switching network in main page (/)
-		// // Switch back to Arbitrum
-		// await metamask.switchNetwork('arbitrum');
 	}
 
 	// App doesn't reload when loging in at the moment
 	await app.header.shouldHaveWalletAddress(shortenedWalletAddress ?? '0x1064...4743F');
 	await app.page.reload();
+};
+
+export const logInWithEmailAddress = async ({
+	request,
+	app,
+	emailAddress,
+	shortenedWalletAddress,
+}: {
+	request: APIRequestContext;
+	app: App;
+	emailAddress: string;
+	shortenedWalletAddress?: string;
+}) => {
+	await app.header.logIn();
+
+	// Wait to avoid randomfails
+	await app.modals.logIn.shouldBeVisible();
+	await app.page.waitForTimeout(expectDefaultTimeout / 5);
+
+	await app.modals.logIn.enterEmail(emailAddress);
+	await app.modals.logIn.continue();
+
+	// Get Verification Code from email
+	let code: string = '';
+
+	await expect(async () => {
+		// Wait for 2 seconds
+		await app.page.waitForTimeout(2_000);
+
+		const response = await request.get(
+			'https://api.mailinator.com/api/v2/domains/private/inboxes?token=79bba236cd0d4ef195d5664cee6a1d31'
+		);
+
+		const responseJSON = await response.json();
+
+		const secondsAgo = responseJSON.msgs[0].seconds_ago;
+
+		expect(secondsAgo).toBeLessThan(30);
+
+		code = responseJSON.msgs[0].subject.slice(0, 6);
+	}).toPass({ timeout: 30_000 });
+
+	await app.modals.logIn.enterVerificationCode(code);
+
+	// App doesn't reload when loging in at the moment
+	await app.header.shouldHaveWalletAddress(shortenedWalletAddress ?? '0x91be...5CC30'); // walletaddress linked to tester@summer.testinator.com
+	await app.page.waitForTimeout(1_000);
+	await app.page.reload();
+	await app.page.waitForTimeout(1_000);
 };
