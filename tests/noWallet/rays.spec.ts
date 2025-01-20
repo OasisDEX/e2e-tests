@@ -2,21 +2,11 @@ import { expect, test } from '#noWalletFixtures';
 
 test.describe('No-wallet connected - Rays', async () => {
 	test('It should link to Rays blog and open in new tab @regression', async ({ app }) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.rays.openPage();
 		await app.rays.shouldLinkToRaysBlogInNewTab();
 	});
 
 	test('It should open connect-wallet popup  - Rays page header @regression', async ({ app }) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.rays.openPage();
 
 		await app.rays.header.connectWallet();
@@ -24,11 +14,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	});
 
 	test('It should open connect-wallet popup - Claim Rays block @regression', async ({ app }) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.rays.openPage();
 
 		await app.rays.connectWallet();
@@ -91,11 +76,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	});
 
 	test('It should show Rays detailed info from leaderboard result @regression', async ({ app }) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.rays.openPage();
 		const walletAddress = await app.rays.leaderboard.viewRaysDetailedInfo({ leaderboardResult: 1 });
 		await app.rays.shouldShowRaysDetailedInfo(walletAddress);
@@ -117,11 +97,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should have links to Rays blog in Leaderboard, and open in new tab  @regression', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.rays.openPage();
 		await app.rays.leaderboard.shouldLinkToRaysBlogInNewTab();
 	});
@@ -129,11 +104,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should show position Rays - Overview & Manage - Without any automations set up @regression', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467#overview');
 		await app.position.overview.shouldHaveRays('0.000[0-9]');
 		await app.position.manage.shouldHaveAutomationBoostRays({
@@ -145,11 +115,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should show position Rays - Overview & Manage - With Optimization set up', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/ethereum/aave/v3/multiply/ETH-DAI/1670#overview');
 		await app.position.overview.shouldHaveRays('0.0[1-6][0-9]{2}');
 		await app.position.manage.shouldHaveAutomationBoostRays({
@@ -161,11 +126,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should show position Rays - Overview & Manage - With Protection set up', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/ethereum/aave/v3/multiply/RETH-DAI/1276#overview');
 		await app.position.overview.shouldHaveRays('0.0[2-6][0-9]{2}');
 		await app.position.manage.shouldHaveAutomationBoostRays({
@@ -175,11 +135,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	});
 
 	test('It should show Automation Boost Rays - With an automation set up', async ({ app }) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/ethereum/aave/v3/multiply/RETH-DAI/1276#protection');
 
 		// Stop-Loss
@@ -205,11 +160,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	});
 
 	test('It should show Automation Boost Rays - Without any automations set up', async ({ app }) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/ethereum/aave/v3/multiply/ETH-USDC/1218#protection');
 
 		// Stop-Loss
@@ -243,11 +193,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should show Rays to be reduced - Remove automation - Stop-Loss @regression', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/ethereum/aave/v3/multiply/RETH-DAI/1276#protection');
 
 		await app.position.protection.removeTrigger();
@@ -257,11 +202,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should show Rays to be reduced - Remove automation - Auto-Sell @regression', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/optimism/aave/v3/borrow/DAI-WBTC/323#protection');
 
 		await app.position.protection.removeTrigger();
@@ -271,11 +211,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should show Rays to be reduced - Remove automation - Trailing Stop-Loss @regression', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/arbitrum/aave/v3/multiply/WBTC-USDC/370#protection');
 
 		await app.position.protection.removeTrigger();
@@ -285,11 +220,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should NOT show Rays to be reduced - Remove automation - 2x protection automations ON @regression', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/optimism/aave/v3/multiply/WBTC-USDC.E/19#protection');
 		await app.position.manage.shouldHaveAutomationTriggerEarnRays();
 
@@ -302,11 +232,6 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should show Rays to be reduced - Remove automation - Auto-Buy @regression', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/optimism/aave/v3/multiply/WBTC-USDC.E/19#optimization');
 		await app.position.protection.removeTrigger();
 		await app.position.manage.shouldReduceRays({ raysCount: '0.00[0-9]{2}', automation: true });
@@ -315,22 +240,12 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should show Rays to be reduced - Remove automation - Auto Take Profit @regression', async ({
 		app,
 	}) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.position.openPage('/ethereum/aave/v3/multiply/ETH-USDC/1586#optimization');
 		await app.position.protection.removeTrigger();
 		await app.position.manage.shouldReduceRays({ raysCount: '0.0[0-9]{3}', automation: true });
 	});
 
 	test('It should show Position Rays - Portfolio position card', async ({ app }) => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F', { withPositions: true });
 		await app.portfolio.positionsHub.positions.first.shouldHave({ rays: '0.0[0-9]{3}' });
 	});
