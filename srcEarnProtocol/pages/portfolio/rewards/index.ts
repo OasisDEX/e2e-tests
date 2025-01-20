@@ -1,12 +1,16 @@
-import { expect, step } from '#earnProtocolFixtures';
 import { Page } from '@playwright/test';
+import { ClaimAndDelegate } from './claimAndDelegate';
+import { expect, step } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
 export class Rewards {
 	readonly page: Page;
 
+	readonly claimAndDelegate: ClaimAndDelegate;
+
 	constructor(page: Page) {
 		this.page = page;
+		this.claimAndDelegate = new ClaimAndDelegate(page);
 	}
 
 	@step
@@ -20,5 +24,10 @@ export class Rewards {
 			this.page.getByText('$SUMR available to claim', { exact: true }),
 			'"$SUMR available to claim" should be visible'
 		).toBeVisible();
+	}
+
+	@step
+	async claim() {
+		await this.page.getByRole('button', { name: 'Claim' }).click();
 	}
 }
