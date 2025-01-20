@@ -53,4 +53,9 @@ export class Sumr {
 
 		await expect(this.page.getByRole('button', { name: 'Connect Wallet' })).toBeEnabled();
 	}
+
+	@step
+	async claim$Sumr() {
+		await this.page.getByRole('button', { name: 'Claim $SUMR' }).click();
+	}
 }

@@ -7,6 +7,8 @@ import { RebalanceActivity } from './rebalanceActivity';
 import { Rewards } from './rewards';
 import { YouMightLike } from './youMightLike';
 
+type Tabs = 'Wallet' | 'Rebalance Activity' | 'SUMR Rewards' | 'Overview';
+
 export class Portfolio {
 	readonly page: Page;
 
@@ -83,7 +85,7 @@ export class Portfolio {
 	}
 
 	@step
-	async selectTab(tab: 'Wallet' | 'Rebalance Activity' | 'SUMR Rewards' | 'Overview') {
+	async selectTab(tab: Tabs) {
 		// Wait for tabs bar to fully load
 		await expect(
 			this.page.locator('[class*="_tabBar_"] [class*="_underline_"]').nth(0),
@@ -95,5 +97,12 @@ export class Portfolio {
 			.locator('[class*="_tabHeaders_"]')
 			.getByRole('button', { name: tab, exact: true })
 			.click();
+	}
+
+	@step
+	async shouldHaveTabHighlighted(tab: Tabs) {
+		await expect(
+			this.page.locator('[class*="_tabHeaders_"]').getByRole('button', { name: tab, exact: true })
+		).toHaveClass(/active/);
 	}
 }
