@@ -1,7 +1,6 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletBaseFixtures } from '../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout } from 'utils/config';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
