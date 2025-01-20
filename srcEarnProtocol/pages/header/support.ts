@@ -15,4 +15,9 @@ export class Support {
 	async open() {
 		await this.supportLocator.hover();
 	}
+
+	@step
+	async select(option: 'Sign up' | 'Contact us' | 'Start chatting') {
+		await this.supportLocator.locator(`a:has-text("${option}")`).click();
+	}
 }

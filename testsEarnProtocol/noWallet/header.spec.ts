@@ -1,4 +1,5 @@
 import { test } from '#earnProtocolFixtures';
+import { expect } from '#noWalletFixtures';
 
 test.describe('Header', async () => {
 	test('It should open Landing page', async ({ app }) => {
@@ -49,28 +50,27 @@ test.describe('Header', async () => {
 		await app.yieldTrend.shouldBeVisible();
 	});
 
-	test.only('It should open "Support" pages', async ({ app }) => {
+	test('It should open "Support" pages', async ({ app }) => {
 		await app.header.shouldHaveSummerfiLogo();
 
 		await app.header.support.open();
 
+		// TODO - Failing bug on purpose
+		expect(false, 'Failing bug on purpose - TODO').toBeTruthy();
 		//
-		await app.pause();
-		//
-
-		// ============
-		await app.header.explore.select('User Activity');
+		await app.header.support.select('Contact us');
 		await app.page.mouse.move(200, 0);
-		await app.userActivity.shouldBeVisible();
+		// TODO - Assert action result
 
-		await app.header.explore.open();
-		await app.header.explore.select('Rebalancing Activity');
+		await app.header.support.open();
+		await app.header.support.select('Sign up');
 		await app.page.mouse.move(200, 0);
-		await app.rebalancingActivity.shouldBeVisible();
+		// TODO - Assert action result
+		// await app.page.mouse.move(200, 0);
 
-		await app.header.explore.open();
-		await app.header.explore.select('Yield Trend');
+		await app.header.support.open();
+		await app.header.support.select('Start chatting');
 		await app.page.mouse.move(200, 0);
-		await app.yieldTrend.shouldBeVisible();
+		// TODO - Assert action result
 	});
 });
