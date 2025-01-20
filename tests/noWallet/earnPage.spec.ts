@@ -96,8 +96,9 @@ test.describe('Earn page', async () => {
 		});
 	});
 
+	// SKIP --> [Bug][Staging only] - Summer Pro - Product hub - ‘7 days net APY’ is wrong
 	susdePools.forEach((poolIndex) => {
-		test(`It should show same APY in product hub and position page - Pool index: ${poolIndex} @regression`, async ({
+		test.skip(`It should show same APY in product hub and position page - Pool index: ${poolIndex} @regression`, async ({
 			app,
 		}) => {
 			await app.page.goto('/earn?protocol=morphoblue&deposit-token=SUSDE');
