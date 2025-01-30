@@ -70,9 +70,7 @@ test.describe('No-wallet connected - Rays', async () => {
 		await app.page.waitForTimeout(1_000);
 
 		await app.rays.leaderboard.search('0xbEf4befb4F230F43905313077e3824d7386E09F8');
-		await app.rays.leaderboard.shouldDisplaySearchedAddressInTopRow(
-			'0xbEf4befb4F230F43905313077e3824d7386E09F8'
-		);
+		await app.rays.leaderboard.shouldDisplaySearchedAddressInTopRow('0xbef...e09f8');
 	});
 
 	test('It should show Rays detailed info from leaderboard result @regression', async ({ app }) => {
