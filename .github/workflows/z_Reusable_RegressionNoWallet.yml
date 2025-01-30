@@ -6,7 +6,7 @@ on:
       base_url:
         description: 'Environment base URL to run the tests on.'
         type: string
-        default: 'https://prodev.oasisapp.dev'
+        default: 'https://pro.oasisapp.dev'
         required: false
       flags_features:
         description: 'Features Flags to enable / disable. For example: "flag1:true flag2:false"'
@@ -35,7 +35,7 @@ jobs:
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Verify that staging environment is ready for testing
-        if: ${{ inputs.base_url == 'https://prodev.oasisapp.dev' }}
+        if: ${{ inputs.base_url == 'https://pro.oasisapp.dev' }}
         run: xvfb-run yarn verify-staging
       - name: Run NO-WALLET tests (with parameters)
         if: inputs.base_url

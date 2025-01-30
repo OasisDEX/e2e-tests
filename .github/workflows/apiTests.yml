@@ -6,7 +6,7 @@ on:
       base_url:
         description: 'Environment base URL to run the tests on.'
         type: string
-        default: 'https://prodev.oasisapp.dev'
+        default: 'https://pro.oasisapp.dev'
         required: true
 
 jobs:
