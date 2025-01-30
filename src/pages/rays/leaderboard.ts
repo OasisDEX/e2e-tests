@@ -56,10 +56,10 @@ export class Leaderboard {
 	}
 
 	@step
-	async shouldDisplaySearchedAddressInTopRow(address: string) {
+	async shouldDisplaySearchedAddressInTopRow(shortenedAddress: string) {
 		await expect(this.leaderboardLocator.getByText("You're here")).toBeVisible();
 		const topRowText = await this.leaderboardLocator.locator('tbody > tr').first().innerText();
-		expect(topRowText).toContain(address.toLowerCase());
+		expect(topRowText).toContain(shortenedAddress.toLowerCase());
 	}
 
 	@step
