@@ -6,7 +6,6 @@ on:
       base_url:
         description: 'Environment base URL to run the tests on.'
         type: string
-        # default: 'https://prodev.oasisapp.dev' // SWAP not working on staging
         default: 'https://summer.fi'
         required: true
       flags_features:

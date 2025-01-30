@@ -6,7 +6,7 @@ on:
       base_url:
         description: 'Environment base URL to run the tests on.'
         type: string
-        default: 'https://prodev.oasisapp.dev'
+        default: 'https://pro.oasisapp.dev'
         required: false
       script:
         description: 'package.json scrip to be run'
@@ -28,7 +28,7 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Verify that staging environment is ready for testing
-        if: ${{ inputs.base_url == 'https://prodev.oasisapp.dev' }}
+        if: ${{ inputs.base_url == 'https://pro.oasisapp.dev' }}
         run: HEADLESS='true' yarn verify-staging
       - name: Run API tests
         run: yarn ${{ inputs.script }}
