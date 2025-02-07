@@ -22,11 +22,12 @@ import {
 			positionType: 'multiply',
 			targetPools: [{ colToken: 'USDC', debtToken: 'WBTC' }],
 		},
-		{
-			pool: 'WEETH-DAI',
-			positionType: 'multiply',
-			targetPools: [{ colToken: 'DAI', debtToken: 'WBTC' }],
-		},
+		// NO WEETH liquidity
+		// {
+		// 	pool: 'WEETH-DAI',
+		// 	positionType: 'multiply',
+		// 	targetPools: [{ colToken: 'DAI', debtToken: 'WBTC' }],
+		// },
 	] as Scenario[]
 ).forEach((scenario) =>
 	test.describe('Swap from Spark to Aave V3', async () => {

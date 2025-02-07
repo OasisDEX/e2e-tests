@@ -11,11 +11,12 @@ import {
 			positionType: 'borrow',
 			targetPools: [{ colToken: 'USDE', debtToken: 'DAI-1' }],
 		},
-		{
-			pool: 'WEETH-DAI',
-			positionType: 'borrow',
-			targetPools: [{ colToken: 'SUSDE', debtToken: 'USDT' }],
-		},
+		// NO WEETH liquidity
+		// {
+		// 	pool: 'WEETH-DAI',
+		// 	positionType: 'borrow',
+		// 	targetPools: [{ colToken: 'SUSDE', debtToken: 'USDT' }],
+		// },
 	] as Scenario[]
 ).forEach((scenario) =>
 	test.describe('Swap from Spark to Morpho', async () => {

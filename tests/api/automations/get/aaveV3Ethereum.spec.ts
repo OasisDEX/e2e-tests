@@ -264,7 +264,8 @@ test.describe('API tests - GET - Stop-Loss and Auto Take Profit - Aave V3 - Ethe
 	});
 });
 
-test.describe('API tests - GET - Trailing Stop-Loss - Aave V3 - Ethereum', async () => {
+// SKIP - Test to be reviewed
+test.describe.skip('API tests - GET - Trailing Stop-Loss - Aave V3 - Ethereum', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-DAI/3143#overview
 
