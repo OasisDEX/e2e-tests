@@ -15,7 +15,8 @@ const otherAutomationsDefaultParams = {
 	account: '0xc4cff680a409ebbd1a73a57f1fac92065e2262d8',
 };
 
-test.describe('API tests - GET - Trailing Stop-Loss - Aave V3 - Optimism', async () => {
+// SKIP - TSL was executed; new position needed for test
+test.describe.skip('API tests - GET - Trailing Stop-Loss - Aave V3 - Optimism', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC/386#protection
 

@@ -100,7 +100,8 @@ test.describe('API tests - GET - Auto Sell and Auto Buy - Aave V3 - Base', async
 	});
 });
 
-test.describe('API tests - GET - Trailing Stop-Loss - Aave V3 - Base', async () => {
+// SKIP - TSL was executed; new position needed for test
+test.describe.skip('API tests - GET - Trailing Stop-Loss - Aave V3 - Base', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/base/aave/v3/multiply/ETH-USDBC/815#protection
 
