@@ -26,300 +26,310 @@ const validResponse = trailingStopLossResponse({
 	hasStablecoinDebt: true,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Remove - Aave V3 - Ethereum @regression', async () => {
-	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-DAI/3143#overview
+// SKIP - Trailing Stop-Loss executed - New positions to be used for tests
+test.describe.skip(
+	'API tests - Trailing Stop-Loss - Remove - Aave V3 - Ethereum @regression',
+	async () => {
+		// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
+		// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-DAI/3143#overview
 
-	test('Remove existing automation - Valid payload data', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: validPayloads,
+		test('Remove existing automation - Valid payload data', async ({ request }) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: validPayloads,
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(validResponse);
 		});
 
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(validResponse);
-	});
-
-	test('Remove non-existing automation', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: {
-				...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
-				action: 'remove',
-			},
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.stopLossDoesNotExist);
-	});
-
-	test('Remove existing automation - Without "dpm"', async ({ request }) => {
-		const { dpm, ...payloadWithoutDpm } = validPayloads;
-
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: payloadWithoutDpm,
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongDpm);
-	});
-
-	test('Remove existing automation - Wrong data type - "dpm"', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads, dpm: 1 },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongDpm);
-	});
-
-	test('Remove existing automation - Wrong value - "dpm"', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads, dpm: '0xwrong' },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongDpm);
-	});
-
-	test('Remove existing automation - Without "position"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads;
-
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: payloadWithoutPosition,
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.missingPosition);
-	});
-
-	test('Remove existing automation - Wrong data type - "position" - string', async ({
-		request,
-	}) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads, position: 'string' },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongPosition_string);
-	});
-
-	test('Remove existing automation - Wrong data type - "position" - number', async ({
-		request,
-	}) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads, position: 1 },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongPosition_number);
-	});
-
-	test('Remove existing automation - Wrong data type - "position" - array', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads, position: [] },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongPosition_array);
-	});
-
-	test('Remove existing automation - Wrong data type - "position" - null', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads, position: null },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongPosition_null);
-	});
-
-	test('Remove existing automation - Without "collateral (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads;
-		const { collateral, ...positionWithoutCollateral } = position;
-
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...payloadWithoutPosition, position: positionWithoutCollateral },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongCollateral);
-	});
-
-	test('Remove existing automation - Wrong data type - "collateral (position)"', async ({
-		request,
-	}) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: {
-				...validPayloads,
-				position: {
-					...validPayloads.position,
-					collateral: 11,
+		test('Remove non-existing automation', async ({ request }) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: {
+					...validPayloadsAaveV3Ethereum.trailingStopLoss.closeToDebt,
+					action: 'remove',
 				},
-			},
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.stopLossDoesNotExist);
 		});
 
-		const respJSON = await response.json();
+		test('Remove existing automation - Without "dpm"', async ({ request }) => {
+			const { dpm, ...payloadWithoutDpm } = validPayloads;
 
-		expect(respJSON).toMatchObject(responses.wrongCollateral);
-	});
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: payloadWithoutDpm,
+			});
 
-	test('Remove existing automation - Wrong value - "collateral (position)"', async ({
-		request,
-	}) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: {
-				...validPayloads,
-				position: {
-					...validPayloads.position,
-					collateral: '0xwrong',
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongDpm);
+		});
+
+		test('Remove existing automation - Wrong data type - "dpm"', async ({ request }) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...validPayloads, dpm: 1 },
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongDpm);
+		});
+
+		test('Remove existing automation - Wrong value - "dpm"', async ({ request }) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...validPayloads, dpm: '0xwrong' },
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongDpm);
+		});
+
+		test('Remove existing automation - Without "position"', async ({ request }) => {
+			const { position, ...payloadWithoutPosition } = validPayloads;
+
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: payloadWithoutPosition,
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.missingPosition);
+		});
+
+		test('Remove existing automation - Wrong data type - "position" - string', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...validPayloads, position: 'string' },
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongPosition_string);
+		});
+
+		test('Remove existing automation - Wrong data type - "position" - number', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...validPayloads, position: 1 },
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongPosition_number);
+		});
+
+		test('Remove existing automation - Wrong data type - "position" - array', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...validPayloads, position: [] },
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongPosition_array);
+		});
+
+		test('Remove existing automation - Wrong data type - "position" - null', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...validPayloads, position: null },
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongPosition_null);
+		});
+
+		test('Remove existing automation - Without "collateral (position)"', async ({ request }) => {
+			const { position, ...payloadWithoutPosition } = validPayloads;
+			const { collateral, ...positionWithoutCollateral } = position;
+
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...payloadWithoutPosition, position: positionWithoutCollateral },
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongCollateral);
+		});
+
+		test('Remove existing automation - Wrong data type - "collateral (position)"', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: {
+					...validPayloads,
+					position: {
+						...validPayloads.position,
+						collateral: 11,
+					},
 				},
-			},
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongCollateral);
 		});
 
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongCollateral);
-	});
-
-	test('Remove existing automation - Without "debt (position)"', async ({ request }) => {
-		const { position, ...payloadWithoutPosition } = validPayloads;
-		const { debt, ...positionWithoutDebt } = position;
-
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...payloadWithoutPosition, position: positionWithoutDebt },
-		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongDebt);
-	});
-
-	test('Remove existing automation - Wrong data type - "debt (position)"', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: {
-				...validPayloads,
-				position: {
-					...validPayloads.position,
-					debt: 11,
+		test('Remove existing automation - Wrong value - "collateral (position)"', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: {
+					...validPayloads,
+					position: {
+						...validPayloads.position,
+						collateral: '0xwrong',
+					},
 				},
-			},
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongCollateral);
 		});
 
-		const respJSON = await response.json();
+		test('Remove existing automation - Without "debt (position)"', async ({ request }) => {
+			const { position, ...payloadWithoutPosition } = validPayloads;
+			const { debt, ...positionWithoutDebt } = position;
 
-		expect(respJSON).toMatchObject(responses.wrongDebt);
-	});
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...payloadWithoutPosition, position: positionWithoutDebt },
+			});
 
-	test('Remove existing automation - Wrong value - "debt (position)"', async ({ request }) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: {
-				...validPayloads,
-				position: {
-					...validPayloads.position,
-					debt: '0xwrong',
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongDebt);
+		});
+
+		test('Remove existing automation - Wrong data type - "debt (position)"', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: {
+					...validPayloads,
+					position: {
+						...validPayloads.position,
+						debt: 11,
+					},
 				},
-			},
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongDebt);
 		});
 
-		const respJSON = await response.json();
+		test('Remove existing automation - Wrong value - "debt (position)"', async ({ request }) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: {
+					...validPayloads,
+					position: {
+						...validPayloads.position,
+						debt: '0xwrong',
+					},
+				},
+			});
 
-		expect(respJSON).toMatchObject(responses.wrongDebt);
-	});
+			const respJSON = await response.json();
 
-	test('Remove existing automation - Without "triggerData"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: payloadWithoutTriggerData,
+			expect(respJSON).toMatchObject(responses.wrongDebt);
 		});
 
-		const respJSON = await response.json();
+		test('Remove existing automation - Without "triggerData"', async ({ request }) => {
+			const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
 
-		expect(respJSON).toMatchObject(responses.missingTriggerData);
-	});
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: payloadWithoutTriggerData,
+			});
 
-	test('Remove existing automation - Wrong data type - "triggerData" - string', async ({
-		request,
-	}) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads, triggerData: 'string' },
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.missingTriggerData);
 		});
 
-		const respJSON = await response.json();
+		test('Remove existing automation - Wrong data type - "triggerData" - string', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...validPayloads, triggerData: 'string' },
+			});
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_string);
-	});
+			const respJSON = await response.json();
 
-	test('Remove existing automation - Wrong data type - "triggerData" - number', async ({
-		request,
-	}) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads, triggerData: 1 },
+			expect(respJSON).toMatchObject(responses.wrongTriggerData_string);
 		});
 
-		const respJSON = await response.json();
+		test('Remove existing automation - Wrong data type - "triggerData" - number', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...validPayloads, triggerData: 1 },
+			});
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_number);
-	});
+			const respJSON = await response.json();
 
-	test('Remove existing automation - Wrong data type - "triggerData" - array', async ({
-		request,
-	}) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads, triggerData: [] },
+			expect(respJSON).toMatchObject(responses.wrongTriggerData_number);
 		});
 
-		const respJSON = await response.json();
+		test('Remove existing automation - Wrong data type - "triggerData" - array', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...validPayloads, triggerData: [] },
+			});
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_array);
-	});
+			const respJSON = await response.json();
 
-	test('Remove existing automation - Wrong data type - "triggerData" - null', async ({
-		request,
-	}) => {
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...validPayloads, triggerData: null },
+			expect(respJSON).toMatchObject(responses.wrongTriggerData_array);
 		});
 
-		const respJSON = await response.json();
+		test('Remove existing automation - Wrong data type - "triggerData" - null', async ({
+			request,
+		}) => {
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...validPayloads, triggerData: null },
+			});
 
-		expect(respJSON).toMatchObject(responses.wrongTriggerData_null);
-	});
+			const respJSON = await response.json();
 
-	test('Remove existing automation - Without "trailingDistance (triggerData)"', async ({
-		request,
-	}) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { trailingDistance, ...triggerDataWithoutTrailingDistance } = triggerData;
-
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutTrailingDistance },
+			expect(respJSON).toMatchObject(responses.wrongTriggerData_null);
 		});
 
-		const respJSON = await response.json();
+		test('Remove existing automation - Without "trailingDistance (triggerData)"', async ({
+			request,
+		}) => {
+			const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
+			const { trailingDistance, ...triggerDataWithoutTrailingDistance } = triggerData;
 
-		expect(respJSON).toMatchObject(responses.wrongTrailingDistance);
-	});
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutTrailingDistance },
+			});
 
-	test('Remove existing automation - Without "token (triggerData)"', async ({ request }) => {
-		const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
-		const { token, ...triggerDataWithoutToken } = triggerData;
+			const respJSON = await response.json();
 
-		const response = await request.post(trailingStopLossEndpoint, {
-			data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutToken },
+			expect(respJSON).toMatchObject(responses.wrongTrailingDistance);
 		});
 
-		const respJSON = await response.json();
+		test('Remove existing automation - Without "token (triggerData)"', async ({ request }) => {
+			const { triggerData, ...payloadWithoutTriggerData } = validPayloads;
+			const { token, ...triggerDataWithoutToken } = triggerData;
 
-		expect(respJSON).toMatchObject(responses.wrongToken);
-	});
-});
+			const response = await request.post(trailingStopLossEndpoint, {
+				data: { ...payloadWithoutTriggerData, triggerData: triggerDataWithoutToken },
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(responses.wrongToken);
+		});
+	}
+);

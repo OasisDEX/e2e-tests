@@ -179,7 +179,8 @@ test.describe('API tests - GET - Stop-Loss, Auto Buy and Auto Take Profit - Spar
 	});
 });
 
-test.describe('API tests - GET - Trailing Stop-Loss - Spark', async () => {
+// SKIP - Trailing Stop-Loss executed - NEw positions to be used for tests
+test.describe.skip('API tests - GET - Trailing Stop-Loss - Spark', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/ethereum/spark/multiply/ETH-DAI/2855#protection
 
