@@ -26,7 +26,8 @@ const validResponse = trailingStopLossResponse({
 	hasStablecoinDebt: true,
 });
 
-test.describe('API tests - Trailing Stop-Loss - Update - Aave V3 - Optimism', async () => {
+// SKIP - Trailing Stop-Loss executed - New positions to be used for tests
+test.describe.skip('API tests - Trailing Stop-Loss - Update - Aave V3 - Optimism', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/optimism/aave/v3/multiply/ETH-USDC/386#overview
 
