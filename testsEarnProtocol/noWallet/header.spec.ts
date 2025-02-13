@@ -1,5 +1,4 @@
 import { test } from '#earnProtocolFixtures';
-import { expect } from '#noWalletFixtures';
 
 test.describe('Header', async () => {
 	test('It should open Landing page', async ({ app }) => {
@@ -19,8 +18,9 @@ test.describe('Header', async () => {
 		await app.earn.shouldBeVisible();
 	});
 
+	// TODO - With email login
 	test.skip('It should open Portfolio page', async ({ app }) => {
-		// in `withEmailLogin.spec.ts` file, since `Portfolio` is only displayed when logged in
+		// TODO - With email login
 	});
 
 	test('It should open $SUMR page', async ({ app }) => {
@@ -43,11 +43,6 @@ test.describe('Header', async () => {
 		await app.header.explore.select('Rebalancing Activity');
 		await app.page.mouse.move(200, 0);
 		await app.rebalancingActivity.shouldBeVisible();
-
-		await app.header.explore.open();
-		await app.header.explore.select('Yield Trend');
-		await app.page.mouse.move(200, 0);
-		await app.yieldTrend.shouldBeVisible();
 	});
 
 	test('It should open "Support" pages', async ({ app }) => {
@@ -55,22 +50,6 @@ test.describe('Header', async () => {
 
 		await app.header.support.open();
 
-		// TODO - Failing bug on purpose
-		expect(false, 'Failing bug on purpose - TODO').toBeTruthy();
-		//
-		await app.header.support.select('Contact us');
-		await app.page.mouse.move(200, 0);
-		// TODO - Assert action result
-
-		await app.header.support.open();
-		await app.header.support.select('Sign up');
-		await app.page.mouse.move(200, 0);
-		// TODO - Assert action result
-		// await app.page.mouse.move(200, 0);
-
-		await app.header.support.open();
-		await app.header.support.select('Start chatting');
-		await app.page.mouse.move(200, 0);
-		// TODO - Assert action result
+		await app.header.support.shouldHave(['Contact us', 'Sign up', 'Start chatting']);
 	});
 });

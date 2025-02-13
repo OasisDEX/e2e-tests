@@ -10,7 +10,7 @@ on:
       base_url:
         description: 'Environment base URL to run the tests on.'
         type: string
-        default: 'https://summer.fi'
+        default: 'https://pro.summer.fi'
         required: true
       flags_features:
         description: 'Features Flags to enable / disable. For example: "flag1:true flag2:false"'
@@ -51,7 +51,7 @@ jobs:
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          BASE_URL=https://summer.fi \
+          BASE_URL=https://pro.summer.fi \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           yarn ci:with-wallet:swap:${{ inputs.protocol }}
       - uses: actions/upload-artifact@v4

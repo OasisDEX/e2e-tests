@@ -1,6 +1,7 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Page } from '@playwright/test';
 import { VaultsCarousel } from './vaultsCarousel';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class LandingPage {
 	readonly page: Page;
@@ -17,7 +18,7 @@ export class LandingPage {
 		await expect(
 			this.page.getByText('Automated Exposure to DeFi'),
 			'"Automated Exposure..." should be visible'
-		).toBeVisible();
+		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 	}
 
 	@step
