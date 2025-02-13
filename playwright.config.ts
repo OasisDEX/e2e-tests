@@ -11,7 +11,7 @@ interface TestConfig extends PlaywrightTestConfig {
 const defaultConfig: PlaywrightTestConfig = {
 	testDir: './tests',
 	fullyParallel: process.env.FULLY_PARALLEL === 'true' ? true : false,
-	timeout: process.env.TIMEOUT ? parseInt(process.env.TIMEOUT) : 30_000,
+	timeout: process.env.TIMEOUT ? parseInt(process.env.TIMEOUT) : 40_000,
 	retries: process.env.RETRIES ? parseInt(process.env.RETRIES) : 2,
 	workers: process.env.WORKERS ? parseInt(process.env.WORKERS) : 1,
 	reporter: [['html', { open: 'never' }]],

@@ -79,7 +79,7 @@ export class Portfolio {
 
 	@step
 	async openOnProduction(wallet?: string) {
-		await this.page.goto(`https://summer.fi/portfolio/${wallet ?? ''}`);
+		await this.page.goto(`https://pro.summer.fi/portfolio/${wallet ?? ''}`);
 	}
 
 	@step
