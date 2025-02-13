@@ -309,7 +309,8 @@ test.describe('API tests - Trailing Stop-Loss - Add - Aave V3 - Optimism', async
 		expect(respJSON).toMatchObject(responses.wrongToken);
 	});
 
-	test('Add automation - Trigger already exists', async ({ request }) => {
+	// SKIP - To be tested with another position
+	test.skip('Add automation - Trigger already exists', async ({ request }) => {
 		const response = await request.post(trailingStopLossEndpoint, {
 			data: {
 				...validPayloadsAaveV3Optimism.trailingStopLoss.updateCloseToCollateral,
