@@ -39,7 +39,7 @@ export class Portfolio {
 	@step
 	async shoulBeVisible(args?: { timeout: number }) {
 		await expect(
-			this.page.getByRole('heading', { name: 'Portfolio', exact: true }),
+			this.page.getByRole('heading', { name: 'Portfolio' }),
 			'"Portfolio" header shouldbe visible'
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
@@ -52,16 +52,20 @@ export class Portfolio {
 
 	@step
 	async shouldShowWalletAddress(shortenedWalletAddress: string) {
-		await expect(this.portfolioSecondHeaderLocator).toContainText(shortenedWalletAddress);
+		await expect(this.portfolioSecondHeaderLocator).toContainText(shortenedWalletAddress, {
+			ignoreCase: true,
+		});
 	}
 
 	@step
 	async shouldShowOverviewAmounts({
 		total$SUMR,
 		totalWallet,
+		timeout,
 	}: {
 		total$SUMR: string;
 		totalWallet: string;
+		timeout?: number;
 	}) {
 		if (total$SUMR) {
 			const regExp = new RegExp(total$SUMR);
@@ -70,7 +74,7 @@ export class Portfolio {
 					.locator('[class*="_dataBlockWrapper_"]')
 					.filter({ has: this.page.getByText('Total $SUMR', { exact: true }) })
 					.locator('span')
-			).toContainText(regExp);
+			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
 		}
 
 		if (totalWallet) {
@@ -80,7 +84,7 @@ export class Portfolio {
 					.locator('[class*="_dataBlockWrapper_"]')
 					.filter({ has: this.page.getByText('Total Wallet Value', { exact: true }) })
 					.locator('span')
-			).toContainText(regExp);
+			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
 		}
 	}
 

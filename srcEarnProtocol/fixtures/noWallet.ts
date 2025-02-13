@@ -9,7 +9,7 @@ export const test = base.extend<MyFixtures>({
 	app: async ({ page }, use) => {
 		const app = new App(page);
 
-		await app.page.goto('');
+		await app.earn.openPage();
 
 		await use(app);
 

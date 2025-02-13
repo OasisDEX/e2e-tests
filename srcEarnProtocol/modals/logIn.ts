@@ -11,7 +11,7 @@ export class LogIn {
 
 	@step
 	async shouldBeVisible() {
-		await expect(this.page.getByText('Sign in', { exact: true })).toBeVisible();
+		await expect(this.page.getByText('Log in', { exact: true })).toBeVisible();
 	}
 
 	@step

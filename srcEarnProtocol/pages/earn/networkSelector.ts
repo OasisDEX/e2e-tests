@@ -1,7 +1,7 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 
-type Networks = 'All Networks' | 'BASE' | 'ARBITRUM';
+type Networks = 'All Networks' | 'BASE' | 'ARBITRUM' | 'MAINNET';
 
 export class NetworkSelector {
 	readonly page: Page;

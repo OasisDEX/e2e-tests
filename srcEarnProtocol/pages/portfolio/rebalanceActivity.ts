@@ -22,7 +22,7 @@ export class RebalanceActivity {
 		).toBeVisible();
 
 		await expect(
-			this.page.getByText('Gas cost saving', { exact: true }),
+			this.page.getByText('Gas cost savings', { exact: true }),
 			'"Gas cost saving" should be visible'
 		).toBeVisible();
 

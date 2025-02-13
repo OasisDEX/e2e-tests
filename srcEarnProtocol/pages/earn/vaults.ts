@@ -27,7 +27,7 @@ export class Vaults {
 	}
 
 	@step
-	async allVaultsShouldBe(network: 'base' | 'arbitrum') {
+	async allVaultsShouldBe(network: 'base' | 'arbitrum' | 'ethereum') {
 		// Wait for 1st item to be displayed to avoid random fails
 		await expect(this.vaultLocator.nth(0)).toBeVisible();
 
