@@ -1,5 +1,7 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/OasisDEX/oasis-borrow/dev/public/static/img/logos/logo_dark.svg" width="500" height="500" />
+
+  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 </div>
 
 # Repository with E2E tests for Summer.fi DeFi web application
@@ -13,6 +15,7 @@
 7. [ Tags ](#7-tags)
 8. [ Projects ](#8-projects)
 9. [ Utils for manual testing ](#9-utils-for-manual-testing)
+10. [ License ](#9-license)
 
 ## 1. Introduction
 This repository contains a repository of tests for the e2e testing of the Summer.fi DeFi web application.
@@ -147,3 +150,13 @@ They can be foud in [ utilsManualTesting ](https://github.com/OasisDEX/e2e-tests
 2. Click on `Run workflow` drop down button.
 3. Enter the network you wish and your testing wallet address.
 4. Click on `Run workflow` green button.
+
+## 10. License
+
+Copyright (C) 2021 Oazo Apps Limited, Licensed under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance with the License. You may obtain a copy
+of the License at
+
+> [http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
