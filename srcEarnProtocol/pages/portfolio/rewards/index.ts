@@ -21,7 +21,7 @@ export class Rewards {
 		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 
 		await expect(
-			this.page.getByText('$SUMR available to claim', { exact: true }),
+			this.page.getByText('Total $SUMR available to claim', { exact: true }),
 			'"$SUMR available to claim" should be visible'
 		).toBeVisible();
 	}

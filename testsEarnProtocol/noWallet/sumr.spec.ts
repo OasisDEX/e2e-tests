@@ -1,5 +1,4 @@
 import { test } from '#earnProtocolFixtures';
-import { expect } from '#noWalletFixtures';
 
 test.describe('$SUMR', async () => {
 	test.beforeEach(async ({ app }) => {
