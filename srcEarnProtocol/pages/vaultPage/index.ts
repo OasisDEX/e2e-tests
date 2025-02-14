@@ -2,7 +2,6 @@ import { expect, Page } from '@playwright/test';
 import { VaultExposure } from './vaultExposure';
 import { VaultSidebar } from '../vaultSidebar';
 import { step } from '#noWalletFixtures';
-import { EarnTokens } from 'srcEarnProtocol/utils/types';
 
 export class VaultPage {
 	readonly page: Page;
@@ -18,62 +17,31 @@ export class VaultPage {
 	}
 
 	@step
-	async shouldHaveEarned({
-		token,
-		totalAmount,
-		earnedAmount,
-	}: {
-		token: EarnTokens;
-		totalAmount: string;
-		earnedAmount: string;
-	}) {
-		const totalRegExp = new RegExp(`${totalAmount}.*${token}`);
-		const earnedRegExp = new RegExp(`${earnedAmount}.*${token}`);
-		const earnedBlockLocator = this.page.locator(
-			'[class*="_dataBlockWrapper_"]:has-text("Earned")'
-		);
-
-		await expect(earnedBlockLocator.locator('span').first()).toContainText(totalRegExp);
-		await expect(earnedBlockLocator.locator('span').last()).toContainText(earnedRegExp);
+	async open(url: string) {
+		await expect(async () => {
+			await this.page.goto(url);
+			await expect(
+				this.page.getByText('Assets in vault'),
+				'"Assets in vault" should be visible'
+			).toBeVisible();
+		}).toPass();
 	}
 
 	@step
-	async shouldHaveNetContribution({
-		token,
-		amount,
-		numberOfDeposits,
-	}: {
-		token: EarnTokens;
-		amount: string;
-		numberOfDeposits: string;
-	}) {
-		const usdRegExp = new RegExp(`${amount}.*${token}`);
-		const depositsRegExp = new RegExp(`# of Deposits: ${numberOfDeposits}`);
+	async shouldHave30dApy(apy: string) {
+		const regExp = new RegExp(`${apy}%`);
 
-		const netContributionLocator = this.page.locator(
-			'[class*="_dataBlockWrapper_"]:has-text("Net Contribution")'
-		);
-
-		await expect(netContributionLocator.locator('span').first()).toContainText(usdRegExp);
-		await expect(netContributionLocator.locator('span').last()).toContainText(depositsRegExp);
+		await expect(
+			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("30d APY") span').first()
+		).toContainText(regExp);
 	}
 
 	@step
-	async shouldHave30dApy({
-		thirtyDayApy,
-		currentApy,
-	}: {
-		thirtyDayApy: string;
-		currentApy: string;
-	}) {
-		const thirtyDayRegExp = new RegExp(`${thirtyDayApy}%`);
-		const currentRegExp = new RegExp(`Current APY: ${currentApy}%`);
-		// # of Deposits:
-		const netContributionLocator = this.page.locator(
-			'[class*="_dataBlockWrapper_"]:has-text("30d APY")'
-		);
+	async shouldHaveCurrentApy(apy: string) {
+		const regExp = new RegExp(`${apy}%`);
 
-		await expect(netContributionLocator.locator('span').first()).toContainText(thirtyDayRegExp);
-		await expect(netContributionLocator.locator('span').last()).toContainText(currentRegExp);
+		await expect(
+			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Current APY") span').first()
+		).toContainText(regExp);
 	}
 }

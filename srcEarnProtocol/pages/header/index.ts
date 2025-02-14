@@ -60,4 +60,12 @@ export class Header {
 			'Button with shortened wallet address should be visible'
 		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 	}
+
+	@step
+	async shouldShowLogInButton(timeout?: number) {
+		await expect(
+			this.headerLocator.getByRole('button', { name: 'Log in', exact: true }),
+			'"Log in" button shouldbe visible'
+		).toBeVisible({ timeout: timeout ?? expectDefaultTimeout * 2 });
+	}
 }

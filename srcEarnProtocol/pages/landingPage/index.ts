@@ -23,11 +23,13 @@ export class LandingPage {
 
 	@step
 	async openPage() {
-		await this.page.goto('https://oasisapp.dev');
-		await expect(
-			this.page.getByText('Automated Exposure to DeFi'),
-			'"Automated Exposure..." should be visible'
-		).toBeVisible();
+		await expect(async () => {
+			await this.page.goto('https://oasisapp.dev');
+			await expect(
+				this.page.getByText('Automated Exposure to DeFi'),
+				'"Automated Exposure..." should be visible'
+			).toBeVisible();
+		}).toPass();
 	}
 
 	@step

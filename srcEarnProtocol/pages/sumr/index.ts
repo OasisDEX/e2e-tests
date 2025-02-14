@@ -17,8 +17,10 @@ export class Sumr {
 
 	@step
 	async openPage() {
-		await this.page.goto('/earn/sumr');
-		await this.shouldBeVisible();
+		await expect(async () => {
+			await this.page.goto('/earn/sumr');
+			await this.shouldBeVisible();
+		}).toPass();
 	}
 
 	@step
