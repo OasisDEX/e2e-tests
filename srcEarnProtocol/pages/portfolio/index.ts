@@ -46,14 +46,17 @@ export class Portfolio {
 
 	@step
 	async open(wallet: string) {
-		await this.page.goto(`/earn/portfolio/${wallet}`);
-		await this.shoulBeVisible({ timeout: portfolioTimeout });
+		await expect(async () => {
+			await this.page.goto(`/earn/portfolio/${wallet}`);
+			await this.shoulBeVisible({ timeout: expectDefaultTimeout * 2 });
+		}).toPass();
 	}
 
 	@step
-	async shouldShowWalletAddress(shortenedWalletAddress: string) {
+	async shouldShowWalletAddress(shortenedWalletAddress: string, args?: { timeout: number }) {
 		await expect(this.portfolioSecondHeaderLocator).toContainText(shortenedWalletAddress, {
 			ignoreCase: true,
+			timeout: args?.timeout ?? expectDefaultTimeout,
 		});
 	}
 

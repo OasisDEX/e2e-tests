@@ -4,6 +4,7 @@ import {
 	Header,
 	LandingPage,
 	Portfolio,
+	PositionPage,
 	RebalancingActivity,
 	Sumr,
 	UserActivity,
@@ -25,6 +26,8 @@ export class App {
 
 	readonly portfolio: Portfolio;
 
+	readonly positionPage: PositionPage;
+
 	readonly rebalancingActivity: RebalancingActivity;
 
 	readonly sumr: Sumr;
@@ -42,6 +45,7 @@ export class App {
 		this.landingPage = new LandingPage(page);
 		this.modals = new Modals(page);
 		this.portfolio = new Portfolio(page);
+		this.positionPage = new PositionPage(page);
 		this.rebalancingActivity = new RebalancingActivity(page);
 		this.sumr = new Sumr(page);
 		this.userActivity = new UserActivity(page);

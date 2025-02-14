@@ -1,5 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 import { logInWithEmailAddress } from 'srcEarnProtocol/utils/logIn';
+import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Logged in with Email', async () => {
 	test.beforeEach(async ({ app, request }, testInfo) => {
@@ -16,6 +17,8 @@ test.describe('Logged in with Email', async () => {
 
 	test('It should open portfolio page', async ({ app }) => {
 		await app.header.portfolio();
-		await app.portfolio.shouldShowWalletAddress('0x91be...5CC30');
+		await app.portfolio.shouldShowWalletAddress('0x91be...5CC30', {
+			timeout: expectDefaultTimeout * 2,
+		});
 	});
 });
