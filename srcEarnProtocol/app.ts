@@ -1,4 +1,6 @@
 import { Page } from '@playwright/test';
+import { Banners } from './banners';
+import { Modals } from './modals';
 import {
 	Earn,
 	Header,
@@ -11,10 +13,11 @@ import {
 	VaultPage,
 	YieldTrend,
 } from './pages';
-import { Modals } from './modals';
 
 export class App {
 	readonly page: Page;
+
+	readonly banners: Banners;
 
 	readonly earn: Earn;
 
@@ -40,6 +43,7 @@ export class App {
 
 	constructor(page: Page) {
 		this.page = page;
+		this.banners = new Banners(page);
 		this.earn = new Earn(page);
 		this.header = new Header(page);
 		this.landingPage = new LandingPage(page);
