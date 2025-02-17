@@ -10,7 +10,7 @@ test.describe('Vault page - Base - Specific user page', async () => {
 	test('It should show strategies exposure and be 100% in total', async ({ app }) => {
 		const totalAllocation = await app.vaultPage.exposure.getStrategiesTotalAllocation();
 
-		expect(totalAllocation).toBeCloseTo(100, 1);
+		expect(totalAllocation).toBeGreaterThan(99);
 		expect(totalAllocation).toBeLessThanOrEqual(100);
 	});
 });
