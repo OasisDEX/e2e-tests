@@ -5,10 +5,19 @@ import { App } from '../app';
 export const test = metaMaskFixtures(baseRealWalletSetup).extend<{
 	app: App;
 }>({
-	app: async ({ page }, use) => {
+	app: async ({ page, context }, use) => {
 		const app = new App(page);
 
 		await app.page.goto('');
+
+		await context.addCookies([
+			{
+				name: 'analyticsCookie',
+				value:
+					'%7B%22accepted%22%3Atrue%2C%22enabledCookies%22%3A%7B%22marketing%22%3Atrue%2C%22analytics%22%3Atrue%7D%2C%22version%22%3A%22version-27.08.2024%22%7D',
+				url: 'https://oasisapp.dev',
+			},
+		]);
 
 		await use(app);
 

@@ -32,7 +32,7 @@ test.describe('Portfolio', async () => {
 		await app.portfolio.rebalanceActivity.shouldBeVisible();
 
 		// Switch to 'Rewards' tab
-		await app.portfolio.selectTab('SUMR Rewards');
+		await app.portfolio.selectTab('$SUMR Rewards');
 		await app.portfolio.rewards.shouldBeVisible();
 
 		// Switch to 'Overview' tab

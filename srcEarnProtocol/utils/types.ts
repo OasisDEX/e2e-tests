@@ -1,3 +1,12 @@
 export type walletTypes = 'MetaMask' | 'WalletConnect';
 
-export type EarnTokens = 'USDC' | 'USDBC' | 'USDbC' | 'WBTC' | 'WSTETH' | 'wstETH';
+export type EarnTokens =
+	| 'DAI'
+	| 'USDBC'
+	| 'USDbC'
+	| 'USDC'
+	| 'USDT'
+	| 'USD₮0'
+	| 'WBTC'
+	| 'WSTETH'
+	| 'wstETH';
