@@ -19,6 +19,20 @@ export class Vaults {
 		return new VaultCard(this.page, this.vaultLocator.nth(nth));
 	}
 
+	byStrategy(strategy: {
+		token: 'USDC' | 'USD₮0' | 'USDT' | 'ETH';
+		network: 'arbitrum' | 'base' | 'ethereum';
+	}) {
+		return new VaultCard(
+			this.page,
+			this.vaultLocator
+				.filter({
+					has: this.page.locator(`[data-testid="vault-token"]:has-text("${strategy.token}")`),
+				})
+				.filter({ has: this.page.locator(`[title="earn_network_${strategy.network}"]`) })
+		);
+	}
+
 	@step
 	async getCount() {
 		const count: number = await this.vaultLocator.count();

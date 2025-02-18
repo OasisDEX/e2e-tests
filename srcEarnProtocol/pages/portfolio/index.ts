@@ -7,7 +7,7 @@ import { RebalanceActivity } from './rebalanceActivity';
 import { Rewards } from './rewards';
 import { YouMightLike } from './youMightLike';
 
-type Tabs = 'Wallet' | 'Rebalance Activity' | 'SUMR Rewards' | 'Overview';
+type Tabs = 'Wallet' | 'Rebalance Activity' | '$SUMR Rewards' | 'Overview';
 
 export class Portfolio {
 	readonly page: Page;

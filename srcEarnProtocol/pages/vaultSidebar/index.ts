@@ -56,9 +56,7 @@ export class VaultSidebar {
 		timeout?: number;
 	}) {
 		const regExp = new RegExp(`${balance}.*${token}`);
-		await expect(
-			this.sidebarLocator.getByText('Balance', { exact: true }).locator('..')
-		).toContainText(regExp, {
+		await expect(this.sidebarLocator.getByText('Balance: ')).toContainText(regExp, {
 			timeout: timeout ?? expectDefaultTimeout,
 		});
 	}
