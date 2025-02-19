@@ -1,6 +1,7 @@
 import { step } from '#earnProtocolFixtures';
 import { expect, Page } from '@playwright/test';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class PreviewStep {
 	readonly page: Page;
@@ -10,10 +11,18 @@ export class PreviewStep {
 	}
 
 	@step
+	async shouldBeVisible(args?: { timeout: number }) {
+		await expect(this.page.getByRole('heading', { name: 'Preview deposit' })).toBeVisible({
+			timeout: args?.timeout ?? expectDefaultTimeout,
+		});
+	}
+
+	@step
 	async shouldHave({
 		depositAmount,
 		withdrawAmount,
 		swap,
+		price,
 		priceImpact,
 		slippage,
 		transactionFee,
@@ -26,7 +35,12 @@ export class PreviewStep {
 			positionToken: EarnTokens;
 			positionTokenAmount: string;
 		};
-		priceImpact?: { amount: string; token: EarnTokens; percentage: string };
+		price?: {
+			originalToken: EarnTokens;
+			positionToken: EarnTokens;
+			amount: string;
+		};
+		priceImpact?: string;
 		slippage?: string;
 		transactionFee?: string;
 	}) {
@@ -77,13 +91,19 @@ export class PreviewStep {
 			).toHaveAttribute('title', positionTokenRegExp, { ignoreCase: true });
 		}
 
-		if (priceImpact) {
-			const regExp = new RegExp(
-				`${priceImpact.amount}.*${priceImpact.token}.*\\(${priceImpact.percentage}%\\)`
-			);
+		if (price) {
+			const regExp = new RegExp(`${price.amount}.*${price.positionToken}/${price.originalToken}`);
 
 			await expect(
-				this.page.locator('span:has-text("Price Impact") + span:has-text("%)")')
+				this.page.locator(`span:has-text("Price") + span:has-text("${price.originalToken}")`)
+			).toContainText(regExp);
+		}
+
+		if (priceImpact) {
+			const regExp = new RegExp(`${priceImpact}%`);
+
+			await expect(
+				this.page.locator('span:has-text("Price Impact") + span:has-text("%")')
 			).toContainText(regExp);
 		}
 

@@ -4,6 +4,7 @@ import { EarnTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 import { ApproveStep } from './approveStep';
 import { PreviewStep } from './previewStep';
+import { TermsAndConditions } from './termsAndConditions';
 
 export class VaultSidebar {
 	readonly page: Page;
@@ -14,11 +15,14 @@ export class VaultSidebar {
 
 	readonly sidebarLocator: Locator;
 
+	readonly termsAndConditions: TermsAndConditions;
+
 	constructor(page: Page, sidebarLocator: Locator) {
 		this.page = page;
 		this.approveStep = new ApproveStep(page);
 		this.previewStep = new PreviewStep(page);
 		this.sidebarLocator = sidebarLocator;
+		this.termsAndConditions = new TermsAndConditions(page);
 	}
 
 	@step
@@ -105,12 +109,21 @@ export class VaultSidebar {
 	}
 
 	@step
-	async shouldHaveEstimatedEarnings({ amount, token }: { amount: string; token: EarnTokens }) {
-		const regExp = new RegExp(`${amount}.*${token}`);
+	async shouldHaveEstimatedEarnings(
+		estimations: {
+			time: 'After 30 days' | '6 months' | '1 year' | '3 years';
+			amount: string;
+			token: EarnTokens;
+		}[],
+		args?: { timeout: number }
+	) {
+		for (const estimation of estimations) {
+			const regExp = new RegExp(`${estimation.amount}.*${estimation.token}`);
 
-		await expect(
-			this.sidebarLocator.locator('p:has-text("Estimated earnings after") + p')
-		).toContainText(regExp);
+			await expect(
+				this.sidebarLocator.locator(`:has-text("${estimation.time}") + div`).first()
+			).toContainText(regExp, { timeout: args?.timeout ?? expectDefaultTimeout });
+		}
 	}
 
 	@step
