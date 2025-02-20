@@ -11,9 +11,9 @@ export class PreviewStep {
 	}
 
 	@step
-	async shouldBeVisible(args?: { timeout: number }) {
-		await expect(this.page.getByRole('heading', { name: 'Preview deposit' })).toBeVisible({
-			timeout: args?.timeout ?? expectDefaultTimeout,
+	async shouldBeVisible({ flow, timeout }: { flow: 'deposit' | 'withdraw'; timeout?: number }) {
+		await expect(this.page.getByRole('heading', { name: `Preview ${flow}` })).toBeVisible({
+			timeout: timeout ?? expectDefaultTimeout,
 		});
 	}
 
@@ -122,5 +122,15 @@ export class PreviewStep {
 				this.page.locator('span:has-text("Transaction Fee") + span:has-text("$")')
 			).toContainText(regExp, { timeout: 10_000 });
 		}
+	}
+
+	@step
+	async deposit() {
+		await this.page.getByRole('button', { name: 'Deposit' }).click();
+	}
+
+	@step
+	async withdraw() {
+		await this.page.getByRole('button', { name: 'Withdraw' }).click();
 	}
 }

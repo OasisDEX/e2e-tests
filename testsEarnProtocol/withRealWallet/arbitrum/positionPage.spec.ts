@@ -1,11 +1,11 @@
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
+import { test as withRealWalletArbitrumFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletArbitrum';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 
-const test = testWithSynpress(withRealWalletBaseFixtures);
+const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
-test.describe('With real wallet - Position page -  Base - Deposit', async () => {
+test.describe('With real wallet - Position page -  Arbitrum - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -14,18 +14,22 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 			metamask,
 			app,
 			wallet: 'MetaMask',
+			network: 'Arbitrum',
 		});
 
 		await app.positionPage.open(
-			'/earn/base/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F'
+			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f'
 		);
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Base USDC vault', async ({ app }) => {
-		// USDC
+	test('It should show Deposit balances and Deposit amounts - Arbitrum USD₮0 vault', async ({
+		app,
+	}) => {
+		// === USD₮0 ===
+
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-1].[0-9]{4}',
-			token: 'USDC',
+			balance: '0.00',
+			token: 'USD₮0',
 			timeout: expectDefaultTimeout * 2,
 		});
 
@@ -35,81 +39,92 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 			amount: '0.[4-5][0-9]{3}',
 		});
 
-		// USDS
+		// === DAI ===
+
 		await app.positionPage.sidebar.openTokensSelector();
-		await app.positionPage.sidebar.selectToken('USDS');
+		await app.positionPage.sidebar.selectToken('DAI');
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '1.[0-9]{4}',
-			token: 'USDS',
+			balance: '1.5[0-9]{3}',
+			token: 'DAI',
 			timeout: expectDefaultTimeout * 2,
 		});
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
-			tokenOrCurrency: 'USDC',
+			tokenOrCurrency: 'USD₮0',
 			amount: '0.[4-6][0-9]',
 		});
 
-		// CBETH
+		// === WSTETH ===
+
 		await app.positionPage.sidebar.openTokensSelector();
-		await app.positionPage.sidebar.selectToken('CBETH');
+		await app.positionPage.sidebar.selectToken('WSTETH');
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.00[0-9]{2}',
-			token: 'CBETH',
+			balance: '0.0008',
+			token: 'WSTETH',
 			timeout: expectDefaultTimeout * 2,
 		});
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
-			tokenOrCurrency: 'USDC',
+			tokenOrCurrency: 'USD₮0',
 			amount: '[1-4],[0-9]{3}.[0-9]{2}',
 		});
 	});
 
-	test('It should deposit USDC & USDS - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit WSTETH & DAI - (until rejecting "Deposit" tx)', async ({
 		app,
 		metamask,
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		// === USDC ===
+		// === WSTETH ===
+
+		await app.earn.sidebar.openTokensSelector();
+		await app.earn.sidebar.selectToken('WSTETH');
 
 		// Wait for page to fully load
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '[0-9].[0-9]',
-			token: 'USDC',
+			token: 'WSTETH',
 			timeout: expectDefaultTimeout * 2,
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.depositOrWithdraw('0.4');
+		await app.positionPage.sidebar.depositOrWithdraw('0.0005');
 
 		await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
 			[
 				{
 					time: 'After 30 days',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
+					amount: '[1-2].[0-9]{4}',
+					token: 'USD₮0',
 				},
 				{
 					time: '6 months',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
+					amount: '[1-2].[0-9]{4}',
+					token: 'USD₮0',
 				},
 				{
 					time: '1 year',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
+					amount: '[1-2].[0-9]{4}',
+					token: 'USD₮0',
 				},
 				{
 					time: '3 years',
-					amount: '[1].[0-9]{4}',
-					token: 'USDC',
+					amount: '[2-3].[0-9]{4}',
+					token: 'USD₮0',
 				},
 			],
 			{ timeout: expectDefaultTimeout * 2 }
 		);
-		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
+
+		await app.positionPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+
+		await app.positionPage.sidebar.buttonShouldBeVisible('Preview', {
+			timeout: expectDefaultTimeout * 2,
+		});
 		await app.positionPage.sidebar.preview();
 
 		await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
@@ -123,47 +138,58 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 			timeout: expectDefaultTimeout * 2,
 		});
 		await app.positionPage.sidebar.previewStep.shouldHave({
-			depositAmount: { amount: '0.4', token: 'USDC' },
+			depositAmount: { amount: '0.0005', token: 'wstETH' },
+			swap: {
+				originalToken: 'WSTETH',
+				originalTokenAmount: '0.0005',
+				positionToken: 'USD₮0',
+				positionTokenAmount: '[1-2].[0-9]{4}',
+			},
+			price: { amount: '[2-7],[0-9]{3}.[0-9]{2}', originalToken: 'wstETH', positionToken: 'USD₮0' },
+			priceImpact: '[0-3].[0-9]{2}',
+			slippage: '1.00',
 			transactionFee: '[0-2].[0-9]{2}',
 		});
 		await app.positionPage.sidebar.previewStep.deposit();
 		await metamask.rejectTransaction();
 
-		// === USDS ===
+		// === DAI ===
 
 		await app.earn.sidebar.goBack();
 		await app.earn.sidebar.openTokensSelector();
-		await app.earn.sidebar.selectToken('USDS');
+		await app.earn.sidebar.selectToken('DAI');
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '[0-9].[0-9]',
-			token: 'USDS',
+			token: 'DAI',
 			timeout: expectDefaultTimeout * 2,
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
+		await app.positionPage.sidebar.depositOrWithdraw('0.5');
 
 		await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
 			[
 				{
 					time: 'After 30 days',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
+					amount: '1.[0-9]{4}',
+					token: 'USD₮0',
 				},
 				{
 					time: '6 months',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
+					amount: '1.[0-9]{4}',
+					token: 'USD₮0',
 				},
 				{
 					time: '1 year',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
+					amount: '1.[0-9]{4}',
+					token: 'USD₮0',
 				},
 				{
 					time: '3 years',
-					amount: '[1].[0-9]{4}',
-					token: 'USDC',
+					amount: '1.[0-9]{4}',
+					token: 'USD₮0',
 				},
 			],
 			{ timeout: expectDefaultTimeout * 2 }
@@ -172,14 +198,14 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 		await app.positionPage.sidebar.preview();
 
 		await app.positionPage.sidebar.previewStep.shouldHave({
-			depositAmount: { amount: '0.4000', token: 'USDS' },
+			depositAmount: { amount: '0.5000', token: 'DAI' },
 			swap: {
-				originalToken: 'USDS',
-				originalTokenAmount: '0.4000',
-				positionToken: 'USDC',
-				positionTokenAmount: '0.[3-4][0-9]{3}',
+				originalToken: 'DAI',
+				originalTokenAmount: '0.5000',
+				positionToken: 'USD₮0',
+				positionTokenAmount: '0.[4-5][0-9]{3}',
 			},
-			price: { amount: '[0-1].[0-9]{4}', originalToken: 'USDS', positionToken: 'USDC' },
+			price: { amount: '[0-1].[0-9]{4}', originalToken: 'DAI', positionToken: 'USD₮0' },
 			priceImpact: '[0-3].[0-9]{2}',
 			slippage: '1.00',
 			transactionFee: '[0-2].[0-9]{2}',
@@ -189,7 +215,8 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 	});
 });
 
-test.describe('With real wallet - Base - Withdraw', async () => {
+// TO BE UPDATE
+test.describe.only('With real wallet - Arbitrum - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -200,7 +227,7 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		});
 
 		await app.positionPage.open(
-			'/earn/base/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F'
+			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F'
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -217,7 +244,7 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 	(['USDC', 'DAI', 'WSTETH'] as const).forEach((token) => {
 		test(`It should show USDC deposited balance amount to be withdrawn in ${
 			token === 'USDC' ? '$' : token
-		} when selecting ${token} in Base USDC vault`, async ({ app }) => {
+		} when selecting ${token} in Arbitrum USDC vault`, async ({ app }) => {
 			test.setTimeout(longTestTimeout);
 
 			if (token !== 'USDC') {

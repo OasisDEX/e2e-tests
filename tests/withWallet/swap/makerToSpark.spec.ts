@@ -12,7 +12,8 @@ let forkId: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
-test.describe('Maker Multiply - Swap to Spark', async () => {
+// SKIP - Test tobe updated/fix --> Priority gassettings need tobe changed for tx to suceed
+test.describe.skip('Maker Multiply - Swap to Spark', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 

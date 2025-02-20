@@ -2,7 +2,9 @@ export type walletTypes = 'MetaMask' | 'WalletConnect';
 
 export type EarnTokens =
 	| 'CBETH'
+	| 'COMP'
 	| 'DAI'
+	| 'MORPHO'
 	| 'USDBC'
 	| 'USDbC'
 	| 'USDC'
