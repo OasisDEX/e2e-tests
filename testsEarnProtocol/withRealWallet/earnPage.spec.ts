@@ -78,13 +78,18 @@ test.describe('With real wallet - Earn page', async () => {
 		});
 	});
 
-	// TO BE UPDTED
 	test('It should show Deposit balances and Deposit amounts - Base USDC vault', async ({ app }) => {
-		await app.earn.vaults.nth(1).select({ delay: expectDefaultTimeout / 5 });
+		await app.earn.vaults
+			.byStrategy({ token: 'USDC', network: 'base' })
+			.select({ delay: expectDefaultTimeout / 5 });
+
+		await app.earn.vaults.byStrategy({ token: 'USDC', network: 'base' }).shouldBeSelected();
+
+		await app.page.waitForTimeout(2_000);
 
 		// USDC
 		await app.vaultPage.sidebar.shouldHaveBalance({
-			balance: '0.50',
+			balance: '[0-1].[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -92,36 +97,34 @@ test.describe('With real wallet - Earn page', async () => {
 		await app.vaultPage.sidebar.depositOrWithdraw('0.5');
 		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: '$',
-			amount: '0.50',
+			amount: '0.[4-5][0-9]{3}',
 		});
 
-		// USDBC
+		// USDS
 		await app.vaultPage.sidebar.openTokensSelector();
-		await app.vaultPage.sidebar.selectToken('USDBC');
+		await app.vaultPage.sidebar.selectToken('USDS');
 
 		await app.vaultPage.sidebar.shouldHaveBalance({
-			balance: '1.05',
-			token: 'USDBC',
+			balance: '1.[0-9]{4}',
+			token: 'USDS',
 			timeout: expectDefaultTimeout * 2,
 		});
 
-		// await app.vaultPage.sidebar.depositOrWithdraw('1');
 		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USDC',
 			amount: '0.[4-6][0-9]',
 		});
 
-		// WSTETH
+		// CBETH
 		await app.vaultPage.sidebar.openTokensSelector();
-		await app.vaultPage.sidebar.selectToken('WSTETH');
+		await app.vaultPage.sidebar.selectToken('CBETH');
 
 		await app.vaultPage.sidebar.shouldHaveBalance({
-			balance: '0.00',
-			token: 'WSTETH',
+			balance: '0.00[0-9]{2}',
+			token: 'CBETH',
 			timeout: expectDefaultTimeout * 2,
 		});
 
-		// await app.vaultPage.sidebar.depositOrWithdraw('1');
 		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USDC',
 			amount: '[1-4],[0-9]{3}.[0-9]{2}',

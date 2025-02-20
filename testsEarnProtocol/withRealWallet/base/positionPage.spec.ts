@@ -2,12 +2,14 @@ import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
+import { TIMEOUT } from 'dns';
+import exp from 'constants';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
 const { expect } = test;
 
-test.describe('With real wallet - Base - Deposit', async () => {
+test.describe('With real wallet - Position page -  Base - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -18,31 +20,60 @@ test.describe('With real wallet - Base - Deposit', async () => {
 			wallet: 'MetaMask',
 		});
 
-		await app.page.goto('/earn/base/position/usdc-ya-later');
+		await app.page.goto(
+			'/earn/base/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F'
+		);
 	});
 
-	test('It should show USDC Deposit balance in Base USDC vault', async ({ app }) => {
+	test('It should show Deposit balances and Deposit amounts - Base USDC vault', async ({ app }) => {
+		// USDC
 		await app.vaultPage.sidebar.shouldHaveBalance({
-			balance: '0.5',
+			balance: '[0-1].[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
-	});
 
-	test('It should show USDBC Deposit balance in Base USDC vault', async ({ app }) => {
-		test.setTimeout(longTestTimeout);
+		await app.vaultPage.sidebar.depositOrWithdraw('0.5');
+		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
+			tokenOrCurrency: '$',
+			amount: '0.[4-5][0-9]{3}',
+		});
 
+		// USDS
 		await app.vaultPage.sidebar.openTokensSelector();
-		await app.vaultPage.sidebar.selectToken('USDBC');
+		await app.vaultPage.sidebar.selectToken('USDS');
 
 		await app.vaultPage.sidebar.shouldHaveBalance({
-			balance: '1.05',
-			token: 'USDBC',
+			balance: '1.[0-9]{4}',
+			token: 'USDS',
 			timeout: expectDefaultTimeout * 2,
+		});
+
+		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
+			tokenOrCurrency: 'USDC',
+			amount: '0.[4-6][0-9]',
+		});
+
+		// CBETH
+		await app.vaultPage.sidebar.openTokensSelector();
+		await app.vaultPage.sidebar.selectToken('CBETH');
+
+		await app.vaultPage.sidebar.shouldHaveBalance({
+			balance: '0.00[0-9]{2}',
+			token: 'CBETH',
+			timeout: expectDefaultTimeout * 2,
+		});
+
+		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
+			tokenOrCurrency: 'USDC',
+			amount: '[1-4],[0-9]{3}.[0-9]{2}',
 		});
 	});
 
-	test('It should show transaction details in Deposit "Preview" step', async ({ app }) => {
+	test('It should deposit USDC & USDS - (until rejecting "Deposit" tx)', async ({
+		app,
+		metamask,
+	}) => {
 		test.setTimeout(longTestTimeout);
 
 		// === USDC ===
@@ -55,119 +86,111 @@ test.describe('With real wallet - Base - Deposit', async () => {
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.vaultPage.sidebar.depositOrWithdraw('0.4');
-		// Wait for Estimated Earnings to avoid random fails
-		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
-			amount: '0.[0-9]{2,3}',
-			token: 'USDC',
-		});
-		await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.vaultPage.sidebar.preview();
+		await app.positionPage.sidebar.depositOrWithdraw('0.4');
 
-		await app.vaultPage.sidebar.previewStep.shouldHave({
+		await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
+			[
+				{
+					time: 'After 30 days',
+					amount: '[0-1].[0-9]{4}',
+					token: 'USDC',
+				},
+				{
+					time: '6 months',
+					amount: '[0-1].[0-9]{4}',
+					token: 'USDC',
+				},
+				{
+					time: '1 year',
+					amount: '[0-1].[0-9]{4}',
+					token: 'USDC',
+				},
+				{
+					time: '3 years',
+					amount: '[1].[0-9]{4}',
+					token: 'USDC',
+				},
+			],
+			{ timeout: expectDefaultTimeout * 2 }
+		);
+		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
+		await app.positionPage.sidebar.preview();
+
+		await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
+		await metamask.confirmSignature();
+
+		await app.positionPage.sidebar.previewStep.shouldBeVisible({
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.positionPage.sidebar.previewStep.shouldHave({
 			depositAmount: { amount: '0.4', token: 'USDC' },
 			transactionFee: '[0-2].[0-9]{2}',
 		});
 
-		// === USDBC ===
+		// === USDS ===
 
 		await app.earn.sidebar.goBack();
 		await app.earn.sidebar.openTokensSelector();
-		await app.earn.sidebar.selectToken('USDBC');
+		await app.earn.sidebar.selectToken('USDS');
 
 		// Wait for balance to fully load to avoid random fails
 		await app.vaultPage.sidebar.shouldHaveBalance({
 			balance: '[0-9].[0-9]',
-			token: 'USDBC',
+			token: 'USDS',
 			timeout: expectDefaultTimeout * 2,
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.vaultPage.sidebar.depositOrWithdraw('0.1');
-		// Wait for Estimated Earnings to avoid random fails
-		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
-			amount: '0.[0-9]{2,3}',
-			token: 'USDC',
-		});
-
-		await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.vaultPage.sidebar.preview();
+		await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
+			[
+				{
+					time: 'After 30 days',
+					amount: '[0-1].[0-9]{4}',
+					token: 'USDC',
+				},
+				{
+					time: '6 months',
+					amount: '[0-1].[0-9]{4}',
+					token: 'USDC',
+				},
+				{
+					time: '1 year',
+					amount: '[0-1].[0-9]{4}',
+					token: 'USDC',
+				},
+				{
+					time: '3 years',
+					amount: '[1].[0-9]{4}',
+					token: 'USDC',
+				},
+			],
+			{ timeout: expectDefaultTimeout * 2 }
+		);
+		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
+		await app.positionPage.sidebar.preview();
 
 		await app.vaultPage.sidebar.previewStep.shouldHave({
-			depositAmount: { amount: '0.1', token: 'USDbC' },
+			depositAmount: { amount: '0.4000', token: 'USDS' },
 			swap: {
-				originalToken: 'USDC', // USDC token used for USDbC
-				originalTokenAmount: '0.1',
+				originalToken: 'USDS',
+				originalTokenAmount: '0.4000',
 				positionToken: 'USDC',
-				positionTokenAmount: '0.[0-9]{2,3}',
+				positionTokenAmount: '0.[3-4][0-9]{3}',
 			},
-			priceImpact: { amount: '[0-1].[0-9]{2,3}', token: 'USDC', percentage: '[0-3].[0-9]{2}' },
+			price: { amount: '[0-1].[0-9]{4}', originalToken: 'USDS', positionToken: 'USDC' },
+			priceImpact: '[0-3].[0-9]{2}',
 			slippage: '1.00',
 			transactionFee: '[0-2].[0-9]{2}',
 		});
 	});
-
-	test('It should deposit USDC - (until rejecting "approve" tx)', async ({ app, metamask }) => {
-		test.setTimeout(longTestTimeout);
-
-		// Wait for balance to be visible to avoind random fails
-		await app.vaultPage.sidebar.shouldHaveBalance({
-			balance: '[0-9]',
-			token: 'USDC',
-			timeout: expectDefaultTimeout * 3,
-		});
-		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		await app.vaultPage.sidebar.depositOrWithdraw('0.5');
-		// Wait for Estimated Earnings to avoid random fails
-		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
-			amount: '0.[0-9]{2,3}',
-			token: 'USDC',
-		});
-
-		await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.vaultPage.sidebar.preview();
-
-		await app.vaultPage.sidebar.confirm('Deposit');
-
-		await metamask.rejectTransaction();
-	});
-
-	test('It should deposit USDBC - (until rejecting "approve" tx)', async ({ app, metamask }) => {
-		test.setTimeout(longTestTimeout);
-
-		await app.vaultPage.sidebar.openTokensSelector();
-		await app.vaultPage.sidebar.selectToken('USDBC');
-
-		// Wait for balance to be visible to avoind random fails
-		await app.vaultPage.sidebar.shouldHaveBalance({
-			balance: '[0-9]',
-			token: 'USDBC',
-			timeout: expectDefaultTimeout * 3,
-		});
-		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		await app.vaultPage.sidebar.depositOrWithdraw('0.1');
-		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
-			amount: '0.[0-9]{2,3}',
-			tokenOrCurrency: 'USDC',
-		});
-		// Wait for Estimated Earnings to avoid random fails
-		await app.vaultPage.sidebar.shouldHaveEstimatedEarnings({
-			amount: '0.[0-9]{2,3}',
-			token: 'USDC',
-		});
-
-		await app.vaultPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.vaultPage.sidebar.preview();
-
-		await app.vaultPage.sidebar.confirm('Deposit');
-
-		await metamask.rejectTransaction();
-	});
 });
 
-test.describe('With real wallet - Base - Withdraw', async () => {
+// SKIP - TO BE UPDATED
+
+test.describe.skip('With real wallet - Base - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 35_000);

@@ -1,6 +1,7 @@
 import { step } from '#earnProtocolFixtures';
 import { expect, Page } from '@playwright/test';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class ApproveStep {
 	readonly page: Page;
@@ -17,7 +18,9 @@ export class ApproveStep {
 	}
 
 	@step
-	async approveButtonShouldHave(token: EarnTokens) {
-		await expect(this.page.locator('button:has-text("Approve")')).toContainText(token);
+	async approveButtonShouldHave(token: EarnTokens, args?: { timeout: number }) {
+		await expect(this.page.locator('button:has-text("Approve")')).toContainText(token, {
+			timeout: args?.timeout ?? expectDefaultTimeout,
+		});
 	}
 }
