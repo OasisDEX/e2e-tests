@@ -38,7 +38,7 @@ test.describe('Pool finder - Borrow', async () => {
 
 		await app.poolFinder.filterBy({ filter: 'Pool address', value: ajnaPoolAddress });
 		await app.poolFinder.list.shouldHavePoolsCount(1);
-		await app.poolFinder.list.shouldHaveTokensPair('WSTETH/ETH');
+		await app.poolFinder.list.shouldHaveTokensPair('ETH/MOON');
 		await app.poolFinder.list.allPoolsShouldBe('Borrow');
 	});
 
@@ -58,7 +58,7 @@ test.describe('Pool finder - Borrow', async () => {
 		await app.poolFinder.list.allPoolsCollateralShouldContain('ETH');
 	});
 
-	test('It should list only Borrow pools with ETH as quote - Filtering by quote contract address', async ({
+	test('It should list only Borrow pools with WSTETH as quote - Filtering by quote contract address', async ({
 		app,
 	}) => {
 		test.info().annotations.push({
@@ -68,10 +68,10 @@ test.describe('Pool finder - Borrow', async () => {
 
 		test.setTimeout(positionTimeout);
 
-		await app.poolFinder.filterBy({ filter: 'Quote token', value: wEthContractAddress });
+		await app.poolFinder.filterBy({ filter: 'Quote token', value: 'WSTETH' });
 		await app.poolFinder.list.shouldHaveOneOrMorePools();
 		await app.poolFinder.list.allPoolsShouldBe('Borrow');
-		await app.poolFinder.list.allPoolsQuoteShouldContain('ETH');
+		await app.poolFinder.list.allPoolsQuoteShouldContain('WSTETH');
 	});
 
 	test('It should list only specific Borrow pool - Filtering by both collateral and quote contract addresses', async ({

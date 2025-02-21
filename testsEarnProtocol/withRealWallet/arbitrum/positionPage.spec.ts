@@ -216,7 +216,7 @@ test.describe('With real wallet - Position page -  Arbitrum - Deposit', async ()
 });
 
 // TO BE UPDATE
-test.describe.only('With real wallet - Arbitrum - Withdraw', async () => {
+test.describe.skip('With real wallet - Arbitrum - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 

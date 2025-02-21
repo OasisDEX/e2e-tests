@@ -181,11 +181,13 @@ export class ProductsList {
 
 	@step
 	async shouldBePage(pageNumber: string) {
-		const actualPageNumber = await this.page.locator('#assets-table > div > span').innerText();
+		await expect(async () => {
+			const actualPageNumber = await this.page.locator('#assets-table > div > span').innerText();
 
-		expect(pageNumber, `It should be page number: ${pageNumber}`).toEqual(
-			actualPageNumber.split(' /')[0]
-		);
+			expect(pageNumber, `It should be page number: ${pageNumber}`).toEqual(
+				actualPageNumber.split(' /')[0]
+			);
+		}).toPass();
 	}
 
 	@step
