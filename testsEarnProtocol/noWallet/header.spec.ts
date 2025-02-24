@@ -6,7 +6,7 @@ test.describe('Header', async () => {
 
 		// Wait to avoid random fails
 		await app.header.shouldHaveSummerfiLogo();
-		await app.page.waitForTimeout(2_000);
+		await app.page.waitForTimeout(3_000);
 	});
 
 	test('It should open Landing page', async ({ app }) => {
