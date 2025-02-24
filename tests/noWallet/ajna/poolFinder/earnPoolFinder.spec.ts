@@ -36,7 +36,7 @@ test.describe('Pool finder - Earn', async () => {
 
 		await app.poolFinder.filterBy({ filter: 'Pool address', value: ajnaPoolAddress });
 		await app.poolFinder.list.shouldHavePoolsCount(1);
-		await app.poolFinder.list.shouldHaveTokensPair('WSTETH/ETH');
+		await app.poolFinder.list.shouldHaveTokensPair('ETH/MOON');
 		await app.poolFinder.list.allPoolsShouldBe('Earn');
 	});
 
