@@ -1,6 +1,7 @@
 import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import baseRealWalletSetup from '../../utils/synpress/real-wallet-setup/baseRealWallet.setup';
 import { App } from '../app';
+import { earnProtocolBaseUrl } from 'utils/config';
 
 export const test = metaMaskFixtures(baseRealWalletSetup).extend<{
 	app: App;
@@ -15,9 +16,11 @@ export const test = metaMaskFixtures(baseRealWalletSetup).extend<{
 				name: 'analyticsCookie',
 				value:
 					'%7B%22accepted%22%3Atrue%2C%22enabledCookies%22%3A%7B%22marketing%22%3Atrue%2C%22analytics%22%3Atrue%7D%2C%22version%22%3A%22version-27.08.2024%22%7D',
-				url: 'https://oasisapp.dev',
+				url: earnProtocolBaseUrl,
 			},
 		]);
+
+		await app.waitForAppToBeStable();
 
 		await use(app);
 

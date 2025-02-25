@@ -3,10 +3,6 @@ import { test } from '#earnProtocolFixtures';
 test.describe('Header', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
-
-		// Wait to avoid random fails
-		await app.header.shouldHaveSummerfiLogo();
-		await app.page.waitForTimeout(3_000);
 	});
 
 	test('It should open Landing page', async ({ app }) => {
@@ -16,7 +12,6 @@ test.describe('Header', async () => {
 
 	test('It should open Earn page', async ({ app }) => {
 		await app.header.earn();
-
 		await app.earn.shouldBeVisible();
 	});
 
@@ -44,7 +39,6 @@ test.describe('Header', async () => {
 
 	test('It should open "Support" pages', async ({ app }) => {
 		await app.header.support.open();
-
 		await app.header.support.shouldHave(['Contact us', 'Sign up', 'Start chatting']);
 	});
 });
