@@ -13,6 +13,8 @@ import {
 	VaultPage,
 	YieldTrend,
 } from './pages';
+import { step } from '#noWalletFixtures';
+import { expect } from '#earnProtocolFixtures';
 
 export class App {
 	readonly page: Page;
@@ -59,5 +61,20 @@ export class App {
 
 	async pause() {
 		await this.page.pause();
+	}
+
+	@step
+	async waitForAppToBeStable() {
+		await expect(async () => {
+			const loggedUserIsVisible = await this.page
+				.locator('[class*="navigation"]')
+				.locator('[class*="tooltip"]')
+				.isVisible();
+			const logInButtonIsVisible = await this.page
+				.getByRole('button', { name: 'Log in', exact: true })
+				.isVisible();
+
+			expect(loggedUserIsVisible || logInButtonIsVisible).toBeTruthy();
+		}).toPass();
 	}
 }

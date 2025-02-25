@@ -46,29 +46,33 @@ export class ClaimAndDelegate {
 	}
 
 	@step
-	async shouldHaveEarnedRewards(
+	async shouldHaveRewards(
 		networks: {
-			networkName: 'ARBITRUM' | 'BASE' | 'MAINNET';
-			sumr: string;
-			usd: string;
+			networkName: 'Arbitrum' | 'Base' | 'Ethereum';
+			claimable: string;
+			inWallet: string;
 		}[]
 	) {
 		for (const network of networks) {
-			const sumrRegExp = new RegExp(network.sumr);
-			const usdRegExp = new RegExp(`\\$.*${network.usd}`);
-			const rewardsCard = this.page
-				.locator('p:has-text("You have earned")')
-				.locator('..')
-				.filter({ has: this.page.getByText(`${network.networkName} Network`) });
+			const claimableRegExp = new RegExp(network.claimable);
+			const inWalletRegExp = new RegExp(network.inWallet);
 
-			await expect(rewardsCard.getByRole('heading')).toContainText(sumrRegExp);
-			await expect(rewardsCard.getByText('$')).toContainText(usdRegExp);
+			const rewardsCard = this.page
+				.locator('[class*="ClaimDelegateClaimStep_cardWrapper"]')
+				.filter({ has: this.page.getByText(network.networkName) });
+
+			await expect(rewardsCard.getByRole('heading')).toContainText(claimableRegExp);
+			await expect(rewardsCard.getByText('in wallet')).toContainText(inWalletRegExp);
 		}
 	}
 
 	@step
-	async claim() {
-		await this.page.locator('button:has-text("Claim")').click();
+	async claim(network: 'Arbitrum' | 'Base' | 'Ethereum') {
+		await this.page
+			.locator('[class*="ClaimDelegateClaimStep_cardWrapper"]')
+			.filter({ has: this.page.getByText(network) })
+			.locator('button:has-text("Claim")')
+			.click();
 	}
 
 	@step

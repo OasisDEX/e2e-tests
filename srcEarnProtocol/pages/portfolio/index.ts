@@ -1,16 +1,19 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
-import { expectDefaultTimeout, portfolioTimeout } from 'utils/config';
+import { expectDefaultTimeout } from 'utils/config';
 import { Overview } from './overview';
-import { Wallet } from './wallet';
 import { RebalanceActivity } from './rebalanceActivity';
 import { Rewards } from './rewards';
 import { YouMightLike } from './youMightLike';
+import { YourActivity } from './yourActivity';
+import { Wallet } from './wallet';
 
-type Tabs = 'Wallet' | 'Rebalance Activity' | '$SUMR Rewards' | 'Overview';
+type Tabs = 'Overview' | 'Wallet' | 'Your Activity' | 'Rebalance Activity' | '$SUMR Rewards';
 
 export class Portfolio {
 	readonly page: Page;
+
+	readonly portfolioSecondHeaderLocator: Locator;
 
 	readonly overview: Overview;
 
@@ -18,22 +21,23 @@ export class Portfolio {
 
 	readonly rewards: Rewards;
 
-	readonly wallet: Wallet;
-
 	readonly youMightLike: YouMightLike;
 
-	readonly portfolioSecondHeaderLocator: Locator;
+	readonly yourActivity: YourActivity;
+
+	readonly wallet: Wallet;
 
 	constructor(page: Page) {
 		this.page = page;
-		this.overview = new Overview(page);
-		this.rebalanceActivity = new RebalanceActivity(page);
-		this.rewards = new Rewards(page);
-		this.wallet = new Wallet(page);
-		this.youMightLike = new YouMightLike(page);
 		this.portfolioSecondHeaderLocator = this.page.locator(
 			'[class*="PortfolioHeader_secondRowWrapper_"]'
 		);
+		this.overview = new Overview(page);
+		this.rebalanceActivity = new RebalanceActivity(page);
+		this.rewards = new Rewards(page);
+		this.youMightLike = new YouMightLike(page);
+		this.yourActivity = new YourActivity(page);
+		this.wallet = new Wallet(page);
 	}
 
 	@step
@@ -93,13 +97,6 @@ export class Portfolio {
 
 	@step
 	async selectTab(tab: Tabs) {
-		// Wait for tabs bar to fully load
-		await expect(
-			this.page.locator('[class*="_tabBar_"] [class*="_underline_"]').nth(0),
-			'`Tab active` bar should be visible'
-		).toBeVisible({ timeout: expectDefaultTimeout * 3 });
-
-		// Select tab to switch to
 		await this.page
 			.locator('[class*="_tabHeaders_"]')
 			.getByRole('button', { name: tab, exact: true })
