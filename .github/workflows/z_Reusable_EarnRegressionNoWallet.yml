@@ -1,0 +1,46 @@
+name: Reusable Workflow - Earn - No wallet
+
+on: 
+  workflow_call:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on.'
+        type: string
+        default: 'https://staging.summer.fi'
+        required: false
+      script:
+        description: 'package.json scrip to be run'
+        type: string
+        default: 'ci:no-earn-wallet'
+        required: true
+
+jobs:
+  no-wallet-tests:
+    name: 'Earn - No wallet'
+    runs-on: ubuntu-24.04
+    container:
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Verify that staging environment is ready for testing
+        if: ${{ inputs.base_url == 'https://staging.summer.fi' }}
+        run: xvfb-run yarn verify-staging
+      - name: Run NO-WALLET tests (with parameters)
+        if: inputs.base_url
+        run: BASE_URL=${{ inputs.base_url }} xvfb-run yarn ${{ inputs.script }}
+      - name: Run NO-WALLET tests (without parameters)
+        if: ${{ ! inputs.base_url }}
+        run: xvfb-run yarn ${{ inputs.script }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-earn-protocol-no-wallet
+          path: playwright-reports/earn-protocol-no-wallet
+          retention-days: 30

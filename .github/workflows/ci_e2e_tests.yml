@@ -50,3 +50,8 @@ jobs:
   #     flags_features: ${{ inputs.flags_features}}
   #   secrets: inherit
   
+  earn-protocol-no-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
+    with:
+      base_url: 'https://staging.summer.fi'
+      script: ci:earn-no-wallet
