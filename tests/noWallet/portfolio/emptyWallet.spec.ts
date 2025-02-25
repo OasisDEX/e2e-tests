@@ -51,7 +51,7 @@ test.describe('Empty wallet - Wallet not connected', async () => {
 			description: '12750',
 		});
 
-		await app.portfolio.open('0x8Af4F3fbC5446a3fc0474859B78fA5f4554D4510#wallet');
+		await app.portfolio.open('0x5d3C01544Ea51619413dfad78fF4ac81e0294074#wallet');
 		await app.portfolio.wallet.shouldNotHaveAssets();
 	});
 
