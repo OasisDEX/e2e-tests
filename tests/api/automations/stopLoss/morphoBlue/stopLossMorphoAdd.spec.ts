@@ -4,7 +4,8 @@ import { validPayloadsMorpho, responses } from 'utils/testData_APIs';
 const stopLossEndpoint = '/api/triggers/1/morphoblue/dma-stop-loss';
 const validPayloads = validPayloadsMorpho.stopLoss.closeToDebt;
 
-test.describe('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () => {
+// SKIP - New account needed for tests
+test.describe.skip('API tests - Stop-Loss - Add - Morpho Blue - Ethereum', async () => {
 	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467
 
