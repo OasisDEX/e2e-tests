@@ -30,7 +30,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		await app.portfolio.rewards.shouldBeVisible();
 	});
 
-	test('It should claim rewards (until tx))', async ({ app, metamask }) => {
+	test('It should claim rewards (until tx)', async ({ app, metamask }) => {
 		await app.portfolio.rewards.claim();
 
 		await app.portfolio.rewards.claimAndDelegate.shouldBeVisible({
@@ -40,25 +40,25 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		await app.portfolio.rewards.claimAndDelegate.acceptAndSign();
 		await metamask.confirmSignature();
 
-		await app.portfolio.rewards.claimAndDelegate.shouldHaveEarnedRewards([
+		await app.portfolio.rewards.claimAndDelegate.shouldHaveRewards([
 			{
-				networkName: 'BASE',
-				sumr: '[0-9].[0-9]{4}',
-				usd: '[0-9].[0-9]{4}',
+				networkName: 'Base',
+				claimable: '[0-9].[0-9]{4}',
+				inWallet: '0.00',
 			},
 			{
-				networkName: 'ARBITRUM',
-				sumr: '0.00',
-				usd: '0.00',
+				networkName: 'Arbitrum',
+				claimable: '[0-9].[0-9]{4}',
+				inWallet: '[0-9].[0-9]{4}',
 			},
 			{
-				networkName: 'MAINNET',
-				sumr: '0.00',
-				usd: '0.00',
+				networkName: 'Ethereum',
+				claimable: '0.00',
+				inWallet: '0.00',
 			},
 		]);
 
-		await app.portfolio.rewards.claimAndDelegate.claim();
+		await app.portfolio.rewards.claimAndDelegate.claim('Base');
 		await metamask.rejectTransaction();
 	});
 });

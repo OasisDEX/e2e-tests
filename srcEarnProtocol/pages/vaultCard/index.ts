@@ -29,6 +29,6 @@ export class VaultCard {
 
 	@step
 	async shouldBeSelected() {
-		await expect(this.cardLocator.locator('..')).toHaveClass(/_selected_/);
+		await expect(this.cardLocator).toHaveClass(/selected/i);
 	}
 }

@@ -27,6 +27,10 @@ test.describe('Portfolio', async () => {
 		await app.portfolio.selectTab('Wallet');
 		await app.portfolio.wallet.shouldBeVisible();
 
+		// Switch to 'Your Activity' tab
+		await app.portfolio.selectTab('Your Activity');
+		await app.portfolio.yourActivity.shouldBeVisible();
+
 		// Switch to 'Rebalance Activity' tab
 		await app.portfolio.selectTab('Rebalance Activity');
 		await app.portfolio.rebalanceActivity.shouldBeVisible();

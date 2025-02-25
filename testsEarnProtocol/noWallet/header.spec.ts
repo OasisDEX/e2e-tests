@@ -25,13 +25,12 @@ test.describe('Header', async () => {
 		// TODO - With email login
 	});
 
-	test('It should open $SUMR page', async ({ app }) => {
-		await app.header.sumr();
-
-		await app.sumr.shouldBeVisible();
-	});
-
 	test('It should open "Explore" pages', async ({ app }) => {
+		await app.header.explore.open();
+		await app.header.explore.select('$SUMR token');
+		await app.page.mouse.move(200, 0);
+		await app.sumr.shouldBeVisible();
+
 		await app.header.explore.open();
 		await app.header.explore.select('User Activity');
 		await app.page.mouse.move(200, 0);
