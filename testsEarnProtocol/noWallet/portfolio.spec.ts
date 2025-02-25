@@ -22,6 +22,7 @@ test.describe('Portfolio', async () => {
 
 	test('It should switch to all Portfolio main tabs', async ({ app }) => {
 		await app.portfolio.open('0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA');
+		await app.waitForAppToBeStable();
 
 		// Switch to 'Wallet' tab
 		await app.portfolio.selectTab('Wallet');

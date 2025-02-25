@@ -3,10 +3,6 @@ import { test } from '#earnProtocolFixtures';
 test.describe(`Earn page`, async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
-
-		// Wait to avoid random fails
-		await app.header.shouldHaveSummerfiLogo();
-		await app.page.waitForTimeout(2_000);
 	});
 
 	(['BASE', 'ARBITRUM', 'MAINNET'] as const).forEach((network) => {
