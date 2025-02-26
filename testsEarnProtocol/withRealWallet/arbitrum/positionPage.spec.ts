@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletArbitrumFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletArbitrum';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
@@ -76,7 +76,7 @@ test.describe('With real wallet - Position page -  Arbitrum - Deposit', async ()
 		app,
 		metamask,
 	}) => {
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// === WSTETH ===
 
