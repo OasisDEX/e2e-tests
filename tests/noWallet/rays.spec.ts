@@ -203,7 +203,7 @@ test.describe('No-wallet connected - Rays', async () => {
 		await app.position.openPage('/optimism/aave/v3/borrow/DAI-WBTC/323#protection');
 
 		await app.position.protection.removeTrigger();
-		await app.position.manage.shouldReduceRays({ raysCount: '0.00[0-9]', automation: true });
+		await app.position.manage.shouldReduceRays({ raysCount: '0.00[0-9]{1,2}', automation: true });
 	});
 
 	test('It should show Rays to be reduced - Remove automation - Trailing Stop-Loss @regression', async ({

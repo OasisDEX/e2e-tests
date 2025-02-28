@@ -2751,7 +2751,7 @@ export const validPayloadsAaveV3Base = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '3800',
+				executionLTV: '6000',
 				maxBaseFee: '300',
 				targetLTV: '3300',
 				useMinSellPrice: false,
@@ -3042,7 +3042,7 @@ export const validPayloadsAaveV3Optimism = {
 			},
 			action: 'add',
 			triggerData: {
-				executionLTV: '4400',
+				executionLTV: '6500',
 				maxBaseFee: '300',
 				targetLTV: '3900',
 				useMinSellPrice: false,
