@@ -22,7 +22,7 @@ const validResponse = autoSellWithoutMinSellPriceResponse({
 		address: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913',
 	},
 	hasStablecoinDebt: true,
-	executionLTV: '3800',
+	executionLTV: '6000',
 	targetLTV: '3300',
 	targetLTVWithDeviation: ['3200', '3400'],
 });
