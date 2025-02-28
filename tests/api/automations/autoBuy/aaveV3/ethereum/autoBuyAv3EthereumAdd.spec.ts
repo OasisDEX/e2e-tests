@@ -46,7 +46,8 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum @regression', async () 
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Add automation - With Max Buy Price - Valid payload data', async ({ request }) => {
+	// SKIP - Another position is needed for the test
+	test.skip('Add automation - With Max Buy Price - Valid payload data', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: {
 				...validPayloads,
