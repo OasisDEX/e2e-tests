@@ -60,7 +60,7 @@ export const logInWithEmailAddress = async ({
 
 	await expect(async () => {
 		// Wait for 2 seconds
-		await app.page.waitForTimeout(2_000);
+		await app.page.waitForTimeout(5_000);
 
 		const response = await request.get(
 			'https://api.mailinator.com/api/v2/domains/private/inboxes?token=79bba236cd0d4ef195d5664cee6a1d31'
