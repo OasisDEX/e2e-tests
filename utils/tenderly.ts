@@ -64,9 +64,7 @@ export const getSimulations = async (vtId: string) => {
 
 export const verifyTxStatusSuccess = async (vtId: string) => {
 	const resp = await getSimulations(vtId);
-
 	const txStatus = await resp.data[0].status;
-
 	expect(txStatus, 'tx status should be success').toEqual('success');
 };
 
@@ -74,6 +72,12 @@ export const getTxCount = async (vtId: string) => {
 	const resp = await getSimulations(vtId);
 	const txCount: number = resp.data.length;
 	return txCount;
+};
+
+export const getLastTxHash = async (vtId: string) => {
+	const resp = await getSimulations(vtId);
+	const txHash: string = resp.data[0].tx_hash;
+	return txHash;
 };
 
 export const tokenAddresses: any = {

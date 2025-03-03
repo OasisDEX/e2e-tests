@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 import * as tx from 'utils/tx';
 import { App } from 'src/app';
 import { expectDefaultTimeout, longTestTimeout, positionTimeout } from 'utils/config';
@@ -24,6 +24,7 @@ export const openPosition = async ({
 	protocol,
 	ajnaExistingDpm,
 	doubleConfirmStep,
+	metamaskPage,
 }: {
 	metamask: MetaMask;
 	app: App;
@@ -34,6 +35,7 @@ export const openPosition = async ({
 	protocol?: 'Ajna' | 'Morpho Blue';
 	ajnaExistingDpm?: boolean;
 	doubleConfirmStep?: boolean;
+	metamaskPage?: Page;
 }) => {
 	await app.position.setup.deposit(deposit);
 
@@ -107,6 +109,7 @@ export const openPosition = async ({
 				metamask,
 				vtId,
 				metamaskAction: 'approveTokenPermission',
+				metamaskPage,
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
@@ -428,6 +431,7 @@ export const manageDebtOrCollateral = async ({
 	expectedAvailableToWithdraw,
 	expectedCollateralExposure,
 	expectedDebt,
+	metamaskPage,
 }: {
 	metamask: MetaMask;
 	app: App;
@@ -442,6 +446,7 @@ export const manageDebtOrCollateral = async ({
 	expectedAvailableToWithdraw?: { token: string; amount: string };
 	expectedCollateralExposure?: { token: string; amount: string };
 	expectedDebt?: { token: string; amount: string };
+	metamaskPage?: Page;
 }) => {
 	if (deposit) {
 		await app.position.manage.deposit(deposit);
@@ -468,6 +473,7 @@ export const manageDebtOrCollateral = async ({
 				metamask,
 				vtId,
 				metamaskAction: 'approveTokenPermission',
+				metamaskPage,
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
