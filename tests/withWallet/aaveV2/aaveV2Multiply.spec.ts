@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -18,11 +19,11 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Aave v2 Multiply position - ETH/USDC @regression', async ({
@@ -39,7 +40,7 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '2' },
 			});
 		});
@@ -47,7 +48,7 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 		await test.step('It should Adjust Risk - Up', async () => {
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				risk: 'up',
 				newSliderPosition: 0.6,
@@ -57,11 +58,12 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 
 	test('It should open and manage an Aave v2 Multiply position - WBTC/USDC @regression', async ({
 		metamask,
+		metamaskPage,
 	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'mainnet',
 			walletAddress,
 			token: 'WBTC',
@@ -77,15 +79,16 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'WBTC', amount: '0.1' },
+				metamaskPage,
 			});
 		});
 
 		await test.step('It should Adjust Risk - Down', async () => {
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				risk: 'down',
 				newSliderPosition: 0.05,
@@ -95,7 +98,7 @@ test.describe('Aave v2 Multiply - Wallet connected', async () => {
 		await test.step('It should close a position', async () => {
 			await close({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				closeTo: 'collateral',
 				collateralToken: 'WBTC',

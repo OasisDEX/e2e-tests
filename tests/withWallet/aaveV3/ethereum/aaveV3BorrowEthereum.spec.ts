@@ -12,7 +12,8 @@ import {
 } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -22,10 +23,10 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'mainnet',
 			walletAddress,
 			token: 'WSTETH',
@@ -34,11 +35,12 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Aave V3 Borrow Ethereum position - WSTETH/USDT @regression', async ({
 		metamask,
+		metamaskPage,
 	}) => {
 		test.setTimeout(gigaTestTimeout);
 
@@ -51,9 +53,10 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'WSTETH', amount: '7.5' },
 				borrow: { token: 'USDT', amount: '3000' },
+				metamaskPage,
 			});
 		});
 
@@ -64,7 +67,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				allowanceNotNeeded: true,
 				deposit: { token: 'WSTETH', amount: '1.5' },
 				borrow: { token: 'USDT', amount: '1000' },
@@ -86,7 +89,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'WSTETH', amount: '2' },
 				payBack: { token: 'USDT', amount: '2000' },
 				expectedCollateralDeposited: {
@@ -95,6 +98,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 				},
 				expectedDebt: { amount: '2,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'USDT' },
 				protocol: 'Aave V3',
+				metamaskPage,
 			});
 		});
 
@@ -108,7 +112,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				allowanceNotNeeded: true,
 				borrow: { token: 'USDT', amount: '3000' },
 				deposit: { token: 'WSTETH', amount: '3' },
@@ -132,10 +136,13 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 			await app.position.manage.select('Manage debt');
 			await app.position.manage.payBackDebt();
 
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(2_000);
+
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				payBack: { token: 'USDT', amount: '4000' },
 				withdraw: { token: 'WSTETH', amount: '1.5' },
 				expectedCollateralDeposited: {
@@ -158,7 +165,7 @@ test.describe('Aave V3 Borrow - Ethereum - Wallet connected', async () => {
 
 			await close({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				positionType: 'Borrow',
 				closeTo: 'collateral',
