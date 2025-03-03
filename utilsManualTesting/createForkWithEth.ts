@@ -9,11 +9,10 @@ const network = NETWORK as Networks;
 let walletAddress: string = WALLET_ADDRESS as string;
 
 (async () => {
-	const resp = await tenderly.createFork({ network });
-	const forkId = resp.data.root_transaction.fork_id;
+	const { vtRPC } = await tenderly.createFork({ network });
 
 	await tenderly.setTokenBalance({
-		forkId,
+		vtRPC,
 		network,
 		token: 'ETH',
 		balance: tenderly.tokenBalances['ETH'],
@@ -26,5 +25,5 @@ let walletAddress: string = WALLET_ADDRESS as string;
 	console.log('*** FUNDS ***');
 	console.log(`ETH - ${tenderly.tokenBalances['ETH']}`);
 	console.log('-------------------------------------');
-	console.log('Fork RPC: ', `https://rpc.tenderly.co/fork/${forkId}`);
+	console.log('Testnet RPC: ', vtRPC);
 })();

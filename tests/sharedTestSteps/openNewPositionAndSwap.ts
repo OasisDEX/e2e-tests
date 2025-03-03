@@ -26,7 +26,8 @@ export const openNewPositionAndSwap = async ({
 	targetPools,
 }: Scenario) => {
 	let app: App;
-	let forkId: string;
+	let vtId: string;
+	let vtRPC: string;
 	let walletAddress: string;
 
 	const originalProtocol: 'Aave V3' | 'Morpho' | 'Spark' =
@@ -49,7 +50,7 @@ export const openNewPositionAndSwap = async ({
 
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ vtId, vtRPC, walletAddress } = await setup({
 				metamask,
 				app,
 				network: 'mainnet',
@@ -58,7 +59,7 @@ export const openNewPositionAndSwap = async ({
 			if (collToken !== 'ETH') {
 				const setBalanceToken = collToken === 'USDC.E' ? 'USDC_E' : collToken;
 				await tenderly.setTokenBalance({
-					forkId,
+					vtRPC,
 					walletAddress,
 					network: 'mainnet',
 					token: setBalanceToken as SetBalanceTokens,
@@ -68,7 +69,7 @@ export const openNewPositionAndSwap = async ({
 		});
 
 		test.afterEach(async () => {
-			await tenderly.deleteFork(forkId);
+			await tenderly.deleteFork(vtId);
 		});
 
 		test(`It should OPEN a '${originalProtocol} ${positionType} ${pool}' position & SWAP it to '${targetProtocol} ${targetPoolsString}'`, async ({
@@ -85,7 +86,7 @@ export const openNewPositionAndSwap = async ({
 				await openPosition({
 					metamask,
 					app,
-					forkId,
+					vtId,
 					deposit: {
 						token: collToken,
 						amount: depositAmount[collToken === 'USDC.E' ? 'USDC_E' : collToken],
@@ -112,7 +113,7 @@ export const openNewPositionAndSwap = async ({
 			// 	await swapPosition({
 			// 		metamask,
 			// 		app,
-			// 		forkId,
+			// 		vtId,
 			// 		reason: 'Switch to higher max Loan To Value',
 			// 		originalProtocol,
 			// 		targetProtocol: 'Morpho',
@@ -131,7 +132,7 @@ export const openNewPositionAndSwap = async ({
 					await swapPosition({
 						metamask,
 						app,
-						forkId,
+						vtId,
 						reason: 'Switch to higher max Loan To Value',
 						originalProtocol,
 						targetProtocol,

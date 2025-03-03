@@ -169,13 +169,13 @@ const verifyTriggerApiRequestPayload = async ({
 export const testRegularStopLoss = async ({
 	metamask,
 	app,
-	forkId,
+	vtId,
 	verifyTriggerPayload,
 	action,
 }: {
 	metamask: MetaMask;
 	app: App;
-	forkId: string;
+	vtId: string;
 	verifyTriggerPayload?: {
 		protocol: Protocols;
 		collToken: Tokens;
@@ -218,7 +218,7 @@ export const testRegularStopLoss = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
+			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', vtId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Stop-Loss', action });
 		}).toPass();
 	});
@@ -227,12 +227,12 @@ export const testRegularStopLoss = async ({
 export const testTrailingStopLoss = async ({
 	metamask,
 	app,
-	forkId,
+	vtId,
 	verifyTriggerPayload,
 }: {
 	metamask: MetaMask;
 	app: App;
-	forkId: string;
+	vtId: string;
 	verifyTriggerPayload?: {
 		protocol: Protocols;
 		collToken: Tokens;
@@ -265,7 +265,7 @@ export const testTrailingStopLoss = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
+			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', vtId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Stop-Loss' });
 		}).toPass({ timeout: longTestTimeout });
 	});
@@ -274,7 +274,7 @@ export const testTrailingStopLoss = async ({
 export const testAutoSell = async ({
 	metamask,
 	app,
-	forkId,
+	vtId,
 	protocol,
 	strategy,
 	verifyTriggerPayload,
@@ -282,7 +282,7 @@ export const testAutoSell = async ({
 }: {
 	metamask: MetaMask;
 	app: App;
-	forkId: string;
+	vtId: string;
 	protocol?: 'Morpho Blue';
 	strategy?: 'short';
 	verifyTriggerPayload?: {
@@ -333,7 +333,7 @@ export const testAutoSell = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
+			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', vtId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto-Sell', action });
 		}).toPass({ timeout: longTestTimeout });
 	});
@@ -342,7 +342,7 @@ export const testAutoSell = async ({
 export const testAutoBuy = async ({
 	metamask,
 	app,
-	forkId,
+	vtId,
 	protocol,
 	strategy,
 	triggerLTV,
@@ -353,7 +353,7 @@ export const testAutoBuy = async ({
 }: {
 	metamask: MetaMask;
 	app: App;
-	forkId: string;
+	vtId: string;
 	protocol?: 'Morpho Blue';
 	strategy?: 'short';
 	triggerLTV?: number;
@@ -419,7 +419,7 @@ export const testAutoBuy = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
+			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', vtId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto-Buy', action });
 		}).toPass({ timeout: longTestTimeout });
 	});
@@ -428,12 +428,12 @@ export const testAutoBuy = async ({
 export const testPartialTakeProfit = async ({
 	metamask,
 	app,
-	forkId,
+	vtId,
 	verifyTriggerPayload,
 }: {
 	metamask: MetaMask;
 	app: App;
-	forkId: string;
+	vtId: string;
 	verifyTriggerPayload?: {
 		protocol: Protocols;
 		collToken: Tokens;
@@ -471,7 +471,7 @@ export const testPartialTakeProfit = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
-			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', forkId });
+			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', vtId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto Take Profit' });
 		}).toPass({ timeout: longTestTimeout });
 	});

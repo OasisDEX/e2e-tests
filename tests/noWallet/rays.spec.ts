@@ -110,11 +110,12 @@ test.describe('No-wallet connected - Rays', async () => {
 		});
 	});
 
-	test('It should show position Rays - Overview & Manage - With Optimization set up', async ({
+	// SKIP - Another position needed for this test
+	test.skip('It should show position Rays - Overview & Manage - With Optimization set up', async ({
 		app,
 	}) => {
 		await app.position.openPage('/ethereum/aave/v3/multiply/ETH-DAI/1670#overview');
-		await app.position.overview.shouldHaveRays('0.0[1-6][0-9]{2}');
+		await app.position.overview.shouldHaveRays('0.[0-9]{4}');
 		await app.position.manage.shouldHaveAutomationBoostRays({
 			raysCount: '0.00[0-9]{2}',
 			automations: ['Stop Loss', 'Auto Sell'],

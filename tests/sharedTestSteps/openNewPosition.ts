@@ -28,7 +28,8 @@ export const openNewPosition = async ({
 	positionType: 'borrow' | 'earn' | 'multiply';
 }) => {
 	let app: App;
-	let forkId: string;
+	let vtId: string;
+	let vtRPC: string;
 	let walletAddress: string;
 
 	const collToken: string =
@@ -62,7 +63,7 @@ export const openNewPosition = async ({
 
 			app = new App(page);
 
-			({ forkId, walletAddress } = await setup({
+			({ vtId, vtRPC, walletAddress } = await setup({
 				metamask,
 				app,
 				network: setupNetwork,
@@ -71,7 +72,7 @@ export const openNewPosition = async ({
 			if (collToken !== 'ETH') {
 				const setBalanceToken = collToken === 'USDC.E' ? 'USDC_E' : collToken;
 				await tenderly.setTokenBalance({
-					forkId,
+					vtRPC,
 					walletAddress,
 					network: setupNetwork,
 					token: setBalanceToken as SetBalanceTokens,
@@ -81,7 +82,7 @@ export const openNewPosition = async ({
 		});
 
 		test.afterEach(async () => {
-			await tenderly.deleteFork(forkId);
+			await tenderly.deleteFork(vtId);
 		});
 
 		test(`It should open a position - ${positionType.toUpperCase()} - ${pool}`, async ({
@@ -97,7 +98,7 @@ export const openNewPosition = async ({
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: {
 					token: collToken,
 					amount: depositAmount[collToken === 'USDC.E' ? 'USDC_E' : collToken],

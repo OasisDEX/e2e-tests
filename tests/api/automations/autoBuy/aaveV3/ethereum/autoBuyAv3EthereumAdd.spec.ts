@@ -345,7 +345,8 @@ test.describe('API tests - Auto-Buy - Aave V3 - Ethereum @regression', async () 
 		expect(respJSON).toMatchObject(responses.wrongUseMaxBuyPrice);
 	});
 
-	test('Add automation - Trigger already exists', async ({ request }) => {
+	// SKIP - ANother positionis needed for the test
+	test.skip('Add automation - Trigger already exists', async ({ request }) => {
 		const response = await request.post(autoBuyEndpoint, {
 			data: { ...validPayloadsAaveV3Ethereum.autoBuy.updateMaxBuyPrice, action: 'add' },
 		});
