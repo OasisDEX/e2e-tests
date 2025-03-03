@@ -27,7 +27,8 @@ export const setup = async ({
 	automationMinNetValueFlags?: string;
 	withoutFork?: boolean;
 }) => {
-	let forkId: string = '';
+	let vtId: string = '';
+	let vtRPC: string = '';
 
 	await app.page.goto('');
 	await app.homepage.shouldBeVisible();
@@ -67,38 +68,26 @@ export const setup = async ({
 	});
 
 	if (!withoutFork) {
-		const resp = await tenderly.createFork({ network });
-		forkId = resp.data.root_transaction.fork_id;
-		const forkRpcUrl = `https://rpc.tenderly.co/fork/${forkId}`;
-		//
-		console.log('Fork RPC url: ', forkRpcUrl);
-		//
+		({ vtId, vtRPC } = await tenderly.createFork({ network }));
 
-		// const forkParameters = {
-		// 	name: 'TestFork',
-		// 	rpcUrl: forkRpcUrl,
-		// 	chainId: 1,
-		// 	symbol: 'ETH',
-		// };
-		// await metamask.addNetwork(forkParameters);
-		// await metamask.switchNetwork('TestFork', true);
+		console.log('Testnet RPC: ', vtRPC);
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network,
 			token: 'ETH',
 			balance: '1000',
 		});
 
-		await fork.addToApp({ metamask, app, forkId, network });
+		await fork.addToApp({ metamask, app, vtRPC, network });
 
-		// Logging forkId for debugging purposes
+		// Logging Testnet Id for debugging purposes
 		//  - Info displayed in 'Attachments > stdout' section of playwright reports
-		console.log('Fork Id: ', forkId);
+		console.log('Testnet Id: ', vtId);
 	}
 
-	return { forkId, walletAddress };
+	return { vtId, vtRPC, walletAddress };
 };
 
 export const setupNewFork = async ({
@@ -118,19 +107,18 @@ export const setupNewFork = async ({
 	await app.page.goto('');
 	await app.homepage.shouldBeVisible();
 
-	const resp = await tenderly.createFork({ network });
-	const forkId = resp.data.root_transaction.fork_id;
+	const { vtRPC, vtId } = await tenderly.createFork({ network });
 
 	await expect(async () => {
 		await app.page.goto('');
 		await app.header.portfolioShouldBeVisible();
 	}).toPass();
 
-	await fork.addToApp({ metamask, app, forkId, network });
+	await fork.addToApp({ metamask, app, vtRPC, network });
 
-	await tenderly.setTokenBalance({ forkId, walletAddress, network, token: 'ETH', balance: '100' });
+	await tenderly.setTokenBalance({ vtRPC, walletAddress, network, token: 'ETH', balance: '100' });
 
-	return { forkId };
+	return { vtId, vtRPC };
 };
 
 export const createNewFork = async ({
@@ -138,10 +126,9 @@ export const createNewFork = async ({
 }: {
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 }) => {
-	const resp = await tenderly.createFork({ network });
-	const forkId = resp.data.root_transaction.fork_id;
+	const { vtId, vtRPC } = await tenderly.createFork({ network });
 
-	return forkId;
+	return { vtId, vtRPC };
 };
 
 export const createAndSetNewFork = async ({
@@ -166,11 +153,12 @@ export const createAndSetNewFork = async ({
 
 	const chainId = chainIds[network];
 
-	const forkId = await createNewFork({ network });
-	console.log('FORK ID:', forkId);
+	const { vtId, vtRPC } = await createNewFork({ network });
+	console.log('Testnet Id:', vtId);
+	console.log('Testnet RPC:', vtRPC);
 
 	await tenderly.setTokenBalance({
-		forkId,
+		vtRPC,
 		walletAddress,
 		network,
 		token: 'ETH',
@@ -179,7 +167,7 @@ export const createAndSetNewFork = async ({
 
 	if (addTokenBalance) {
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network,
 			walletAddress,
 			token: addTokenBalance.token,
@@ -187,13 +175,11 @@ export const createAndSetNewFork = async ({
 		});
 	}
 
-	//
 	console.log('chainId: ', chainId);
-	//
 
 	const newWalletNetwork = {
 		name: 'testFork',
-		rpcUrl: `https://rpc.tenderly.co/fork/${forkId}`,
+		rpcUrl: vtRPC,
 		chainId,
 		symbol: 'ETH',
 	};
@@ -202,11 +188,11 @@ export const createAndSetNewFork = async ({
 
 	await app.page.evaluate(
 		({
-			forkId,
+			vtRPC,
 			network,
 			chainId,
 		}: {
-			forkId: string;
+			vtRPC: string;
 			network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 			chainId: number;
 		}) =>
@@ -214,12 +200,12 @@ export const createAndSetNewFork = async ({
 				'ForkNetwork',
 				`{"${
 					network === 'mainnet' ? 'ethereum' : network
-				}": {"url": "https://rpc.tenderly.co/fork/${forkId}", "id": "${chainId}"}}`
+				}": {"url": "${vtRPC}", "id": "${chainId}"}}`
 			),
-		{ forkId, network, chainId }
+		{ vtRPC, network, chainId }
 	);
 
 	await app.page.reload();
 
-	return forkId;
+	return { vtId, vtRPC };
 };

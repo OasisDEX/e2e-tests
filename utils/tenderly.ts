@@ -8,13 +8,14 @@ import 'dotenv/config';
 
 const { TENDERLY_USER, TENDERLY_PROJECT, TENDERLY_ACCESS_KEY } = process.env;
 
-const TENDERLY_FORK_API = `https://api.tenderly.co/api/v1/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT}/fork`;
+const TENDERLY_FORK_API = `/account/${TENDERLY_USER}/project/${TENDERLY_PROJECT}/vnets`;
 
 const request = axios.create({
 	baseURL: 'https://api.tenderly.co/api/v1',
 	headers: {
-		'X-Access-Key': TENDERLY_ACCESS_KEY,
 		'Content-Type': 'application/json',
+		'X-Access-Key': TENDERLY_ACCESS_KEY,
+		Accept: 'application/json',
 	},
 });
 
@@ -22,35 +23,56 @@ export const createFork = async ({
 	network,
 }: {
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
-}) => {
+}): Promise<{ data: any; vtId: string; vtRPC: string }> => {
 	const network_ids = {
-		mainnet: '1',
-		optimism: '10',
-		arbitrum: '42161',
-		base: '8453',
+		mainnet: 1,
+		optimism: 10,
+		arbitrum: 42161,
+		base: 8453,
 	};
 	const network_id = network_ids[network];
 
-	return await request.post(TENDERLY_FORK_API, { network_id });
+	try {
+		const { data } = await request.post(TENDERLY_FORK_API, {
+			slug: `${TENDERLY_USER}-${Date.now()}`,
+			display_name: 'E2E testnet',
+			fork_config: { network_id, block_number: 'latest' },
+			virtual_network_config: { chain_config: { chain_id: network_id } },
+			sync_state_config: { enabled: false },
+			explorer_page_config: { enabled: false, verification_visibility: 'bytecode' },
+		});
+
+		const vtId = data.id;
+		const vtRPC = data.rpcs.find((rpc: { url: string; name: string }) =>
+			rpc.name.includes('Admin RPC')
+		).url;
+
+		return { data, vtId, vtRPC };
+	} catch (error) {
+		console.error(error);
+		return { data: 'There was an error', vtId: '', vtRPC: '' };
+	}
 };
 
-export const deleteFork = async (forkId: string) => {
-	return await request.delete(`${TENDERLY_FORK_API}/${forkId}`);
+export const deleteFork = async (vtId: string) => {
+	return await request.delete(`${TENDERLY_FORK_API}/${vtId}`);
 };
 
-export const getSimulations = async (forkId: string) => {
-	return await request.get(`${TENDERLY_FORK_API}/${forkId}/transactions?page=1&perPage=20`);
+export const getSimulations = async (vtId: string) => {
+	return await request.get(`${TENDERLY_FORK_API}/${vtId}/transactions?page=1&perPage=20`);
 };
 
-export const verifyTxReceiptStatusSuccess = async (forkId: string) => {
-	const resp = await getSimulations(forkId);
-	const autoBuyTxReceiptStatus = await resp.data.fork_transactions[0].receipt.status;
-	expect(autoBuyTxReceiptStatus, 'tx status should be success').toEqual('0x1');
+export const verifyTxStatusSuccess = async (vtId: string) => {
+	const resp = await getSimulations(vtId);
+
+	const txStatus = await resp.data[0].status;
+
+	expect(txStatus, 'tx status should be success').toEqual('success');
 };
 
-export const getTxCount = async (forkId: string) => {
-	const resp = await getSimulations(forkId);
-	const txCount: number = resp.data.fork_transactions.length;
+export const getTxCount = async (vtId: string) => {
+	const resp = await getSimulations(vtId);
+	const txCount: number = resp.data.length;
 	return txCount;
 };
 
@@ -178,22 +200,19 @@ export const tokenBalances = {
  * @param balance In token units
  */
 export const setTokenBalance = async ({
-	forkId,
+	vtRPC,
 	network,
 	token,
 	balance,
 	walletAddress,
 }: {
-	forkId: string;
+	vtRPC: string;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 	token: SetBalanceTokens;
 	balance: string;
 	walletAddress: string;
 }) => {
-	const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
-	// const provider = new JsonRpcProvider(
-	// 	`https://virtual.mainnet.rpc.tenderly.co/5637bebb-2611-4bb7-b29d-9d51b9a19a34`
-	// );
+	const provider = new JsonRpcProvider(vtRPC);
 
 	const WALLETS = [walletAddress];
 
@@ -227,13 +246,14 @@ export const setTokenBalance = async ({
 export const changeAccountOwner = async ({
 	account,
 	newOwner,
-	forkId,
+	vtRPC,
 }: {
 	account: string;
 	newOwner: string;
-	forkId: string;
+	vtRPC: string;
 }): Promise<boolean> => {
-	const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
+	// const provider = new JsonRpcProvider(`https://rpc.tenderly.co/fork/${forkId}`);
+	const provider = new JsonRpcProvider(vtRPC);
 	const accountInterface = new ethers.Interface(IAccountImplementationAbi);
 	const guardInterface = new ethers.Interface(IAccountGuardAbi);
 	const contract = new ethers.Contract(account, accountInterface, provider);

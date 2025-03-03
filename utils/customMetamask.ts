@@ -36,8 +36,8 @@ async function getNotificationPageAndWaitForLoad(context: BrowserContext, extens
 
 	// Set pop-up window viewport size to resemble the actual MetaMask pop-up window.
 	await notificationPage.setViewportSize({
-		width: 360,
-		height: 592,
+		width: 400,
+		height: 720,
 	});
 
 	return notificationPage;

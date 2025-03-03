@@ -7,14 +7,13 @@ const { NETWORK, WALLET_ADDRESS } = process.env;
 const network = NETWORK as Networks;
 
 const tokens = Object.keys(tenderly.tokenAddresses[network]) as Tokens[];
-let walletAddress: string = WALLET_ADDRESS;
+let walletAddress: string = WALLET_ADDRESS as string;
 
 (async () => {
-	const resp = await tenderly.createFork({ network });
-	const forkId = resp.data.root_transaction.fork_id;
+	const { vtRPC } = await tenderly.createFork({ network });
 
 	await tenderly.setTokenBalance({
-		forkId,
+		vtRPC,
 		network,
 		token: 'ETH',
 		balance: tenderly.tokenBalances['ETH'],
@@ -23,7 +22,7 @@ let walletAddress: string = WALLET_ADDRESS;
 
 	for (const token of tokens) {
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network,
 			token,
 			balance: tenderly.tokenBalances[token],
@@ -40,5 +39,5 @@ let walletAddress: string = WALLET_ADDRESS;
 		console.log(`${token} - ${tenderly.tokenBalances[token]}`);
 	});
 	console.log('-------------------------------------');
-	console.log('Fork RPC: ', `https://rpc.tenderly.co/fork/${forkId}`);
+	console.log('Fork RPC: ', vtRPC);
 })();

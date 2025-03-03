@@ -12,12 +12,12 @@ const networks = {
 export const addToApp = async ({
 	metamask,
 	app,
-	forkId,
+	vtRPC,
 	network,
 }: {
 	metamask: MetaMask;
 	app: App;
-	forkId: string;
+	vtRPC: string;
 	network: 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 }) => {
 	// Adding fork to app
@@ -25,7 +25,7 @@ export const addToApp = async ({
 	await app.page.getByRole('button', { name: 'Fork settings' }).click();
 	await app.page
 		.locator(`input[placeholder="http://localhost:854${networks[network].locator}"]`)
-		.fill(`https://rpc.tenderly.co/fork/${forkId}`);
+		.fill(vtRPC);
 	await app.page
 		.locator(`input[placeholder="${networks[network].placeholder}"]`)
 		.fill(networks[network].placeholder);

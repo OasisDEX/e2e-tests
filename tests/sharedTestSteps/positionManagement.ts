@@ -17,7 +17,7 @@ type SwapProtocols = 'Aave V3' | 'Maker' | 'Morpho' | 'Spark';
 export const openPosition = async ({
 	metamask,
 	app,
-	forkId,
+	vtId,
 	deposit,
 	borrow,
 	adjustRisk,
@@ -27,7 +27,7 @@ export const openPosition = async ({
 }: {
 	metamask: MetaMask;
 	app: App;
-	forkId: string;
+	vtId: string;
 	deposit: ActionData;
 	borrow?: ActionData;
 	adjustRisk?: { positionType?: 'Borrow' | 'Earn'; value: number };
@@ -83,11 +83,13 @@ export const openPosition = async ({
 		// Smart DeFi Acount creation randomly fails - Retry until it's created.
 		await expect(async () => {
 			await app.position.setup.createSmartDeFiAccount();
+
 			await tx.confirmAndVerifySuccess({
 				metamask,
-				forkId,
+				vtId,
 				metamaskAction: 'confirmSignature',
 			});
+
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
 
@@ -103,7 +105,7 @@ export const openPosition = async ({
 			await app.position.setup.approveAllowanceOrRetry();
 			await tx.confirmAndVerifySuccess({
 				metamask,
-				forkId,
+				vtId,
 				metamaskAction: 'approveTokenPermission',
 			});
 			await app.position.setup.continueShouldBeVisible();
@@ -122,7 +124,7 @@ export const openPosition = async ({
 		await app.position.setup.confirmOrRetry();
 		await tx.confirmAndVerifySuccess({
 			metamask,
-			forkId,
+			vtId,
 			metamaskAction: 'confirmSignature',
 		});
 	}).toPass({ timeout: longTestTimeout });
@@ -172,7 +174,6 @@ export const openMakerPosition = async ({
 }: {
 	metamask: MetaMask;
 	app: App;
-	forkId: string;
 	deposit: ActionData;
 	generate?: ActionData;
 	existingProxy?: boolean;
@@ -203,7 +204,7 @@ export const openMakerPosition = async ({
 		await app.position.setup.setTokenAllowance(deposit.token);
 
 		await expect(async () => {
-			// await tx.confirmAndVerifySuccess({ metamask, forkId, metamaskAction: 'confirmSignature' });
+			// await tx.confirmAndVerifySuccess({ metamask, vtId, metamaskAction: 'confirmSignature' });
 			await confirmAddToken({ metamask, app });
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
@@ -227,7 +228,7 @@ export const openMakerPosition = async ({
 
 	await expect(async () => {
 		await app.position.setup.createOrRetry();
-		// await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmSignature', forkId });
+		// await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmSignature', vtId });
 		await confirmAddToken({ metamask, app });
 		await app.position.setup.goToVaultShouldBeVisible();
 	}).toPass();
@@ -238,7 +239,7 @@ export const openMakerPosition = async ({
 
 export const adjustRisk = async ({
 	metamask,
-	forkId,
+	vtId,
 	app,
 	earnPosition,
 	shortPosition,
@@ -246,7 +247,7 @@ export const adjustRisk = async ({
 	newSliderPosition,
 }: {
 	metamask: MetaMask;
-	forkId: string;
+	vtId: string;
 	app: App;
 	earnPosition?: boolean;
 	shortPosition?: boolean;
@@ -269,7 +270,7 @@ export const adjustRisk = async ({
 		await tx.confirmAndVerifySuccess({
 			metamask,
 			metamaskAction: 'confirmTransaction',
-			forkId,
+			vtId,
 		});
 	}).toPass({ timeout: longTestTimeout });
 
@@ -310,7 +311,7 @@ export const adjustRisk = async ({
 
 export const close = async ({
 	metamask,
-	forkId,
+	vtId,
 	app,
 	positionType,
 	closeTo,
@@ -320,7 +321,7 @@ export const close = async ({
 	openManagementOptionsDropdown,
 }: {
 	metamask: MetaMask;
-	forkId: string;
+	vtId: string;
 	app: App;
 	positionType?: 'Multiply' | 'Borrow' | 'Earn (Liquidity Provision)' | 'Earn (Yield Loop)';
 	closeTo: 'collateral' | 'debt';
@@ -363,7 +364,7 @@ export const close = async ({
 		await tx.confirmAndVerifySuccess({
 			metamask,
 			metamaskAction: 'confirmTransaction',
-			forkId,
+			vtId,
 		});
 	}, 'Confirm transaction in Summer.fi and Metamask').toPass({
 		timeout: longTestTimeout,
@@ -416,7 +417,7 @@ export const close = async ({
 export const manageDebtOrCollateral = async ({
 	metamask,
 	app,
-	forkId,
+	vtId,
 	protocol,
 	allowanceNotNeeded,
 	deposit,
@@ -430,7 +431,7 @@ export const manageDebtOrCollateral = async ({
 }: {
 	metamask: MetaMask;
 	app: App;
-	forkId: string;
+	vtId: string;
 	protocol?: 'Aave V2' | 'Aave V3' | 'Spark';
 	allowanceNotNeeded?: boolean;
 	deposit?: ActionData;
@@ -465,7 +466,7 @@ export const manageDebtOrCollateral = async ({
 			await app.position.setup.approveAllowanceOrRetry();
 			await tx.confirmAndVerifySuccess({
 				metamask,
-				forkId,
+				vtId,
 				metamaskAction: 'approveTokenPermission',
 			});
 			await app.position.setup.continueShouldBeVisible();
@@ -491,7 +492,7 @@ export const manageDebtOrCollateral = async ({
 		await tx.confirmAndVerifySuccess({
 			metamask,
 			metamaskAction: 'confirmTransaction',
-			forkId,
+			vtId,
 		});
 		await app.position.setup.continueShouldBeVisible();
 	}).toPass({ timeout: longTestTimeout });
@@ -534,7 +535,7 @@ export const manageDebtOrCollateral = async ({
 export const swapPosition = async ({
 	metamask,
 	app,
-	forkId,
+	vtId,
 	originalProtocol,
 	reason,
 	targetProtocol,
@@ -546,7 +547,7 @@ export const swapPosition = async ({
 }: {
 	metamask: MetaMask;
 	app: App;
-	forkId: string;
+	vtId: string;
 	originalProtocol?: SwapProtocols;
 	originalPosition?: { type: 'Borrow' | 'Multiply'; collateralToken: string; debtToken?: string };
 	reason: Reason;
@@ -594,7 +595,7 @@ export const swapPosition = async ({
 			await app.position.setup.createSmartDeFiAccount();
 			await tx.confirmAndVerifySuccess({
 				metamask,
-				forkId,
+				vtId,
 				metamaskAction: 'confirmSignature',
 			});
 			await app.position.setup.continueShouldBeVisible();
@@ -608,7 +609,7 @@ export const swapPosition = async ({
 				await tx.confirmAndVerifySuccess({
 					metamask,
 					metamaskAction: 'confirmTransaction',
-					forkId,
+					vtId,
 				});
 				await app.position.setup.continueShouldBeVisible();
 			}).toPass();
@@ -633,7 +634,7 @@ export const swapPosition = async ({
 					await tx.confirmAndVerifySuccess({
 						metamask,
 						metamaskAction: 'confirmTransaction',
-						forkId,
+						vtId,
 					});
 					await app.position.setup.goToPositionShouldBeVisible();
 				}).toPass();

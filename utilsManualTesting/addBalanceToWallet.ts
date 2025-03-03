@@ -3,9 +3,9 @@ import * as tenderly from '../utils/tenderly';
 
 type Networks = 'mainnet' | 'optimism' | 'arbitrum' | 'base';
 
-const { NETWORK, WALLET_ADDRESS, FORK_ID, TOKENS } = process.env;
+const { NETWORK, WALLET_ADDRESS, VT_RPC, TOKENS } = process.env;
 const network = NETWORK as Networks;
-const forkId = FORK_ID ?? '';
+const vtRPC = VT_RPC ?? '';
 const tokens = (TOKENS ?? '').split(' ') as SetBalanceTokens[];
 
 let walletAddress: string = WALLET_ADDRESS ?? '';
@@ -13,7 +13,7 @@ let walletAddress: string = WALLET_ADDRESS ?? '';
 (async () => {
 	for (const token of tokens) {
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network,
 			token,
 			balance: tenderly.tokenBalances[token],
@@ -28,5 +28,5 @@ let walletAddress: string = WALLET_ADDRESS ?? '';
 		console.log(`${token} - ${tenderly.tokenBalances[token]}`);
 	});
 	console.log('-------------------------------------');
-	console.log('Fork RPC: ', `https://rpc.tenderly.co/fork/${forkId}`);
+	console.log('Testnet RPC: ', vtRPC);
 })();

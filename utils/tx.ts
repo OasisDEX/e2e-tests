@@ -2,12 +2,11 @@ import { expect } from '@playwright/test';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 import * as tenderly from './tenderly';
 import { expectDefaultTimeout } from './config';
-import { App } from 'src/app';
 
 export const confirmAndVerifySuccess = async ({
 	metamask,
 	metamaskAction,
-	forkId,
+	vtId,
 }: {
 	metamask: MetaMask;
 	metamaskAction:
@@ -15,9 +14,9 @@ export const confirmAndVerifySuccess = async ({
 		| 'confirmSignature'
 		| 'confirmTransaction'
 		| 'confirmTransactionAndWaitForMining';
-	forkId: string;
+	vtId: string;
 }) => {
-	const txCountBefore = await tenderly.getTxCount(forkId);
+	const txCountBefore = await tenderly.getTxCount(vtId);
 
 	await expect(async () => {
 		await metamask[metamaskAction]();
@@ -25,12 +24,12 @@ export const confirmAndVerifySuccess = async ({
 
 	// Wait for tx count to increase
 	await expect(async () => {
-		const txCountAfter = await tenderly.getTxCount(forkId);
+		const txCountAfter = await tenderly.getTxCount(vtId);
 		expect(txCountAfter).toBeGreaterThan(txCountBefore);
 	}, 'tx count should increase').toPass({ timeout: expectDefaultTimeout * 3 });
 
 	// Verify last tx success
-	await tenderly.verifyTxReceiptStatusSuccess(forkId);
+	await tenderly.verifyTxStatusSuccess(vtId);
 };
 
 export const rejectPermissionToSpend = async ({

@@ -8,7 +8,7 @@ import { App } from 'src/app';
 import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
@@ -17,11 +17,11 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId } = await setup({ metamask, app, network: 'mainnet' }));
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 		await app.page.close();
 	});
 
@@ -33,7 +33,7 @@ test.describe('Aave V2 Earn - Wallet connected', async () => {
 		await openPosition({
 			metamask,
 			app,
-			forkId,
+			vtId,
 			deposit: { token: 'ETH', amount: '10.09' },
 		});
 	});
