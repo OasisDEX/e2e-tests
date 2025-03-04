@@ -2,6 +2,7 @@ import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
+import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -66,7 +67,7 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 		});
 	});
 
-	test('It should deposit USDC & USDS - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit USDC & USDS - (until rejecting "Deposit" tx) -- SHARED test steps', async ({
 		app,
 		metamask,
 	}) => {
@@ -82,110 +83,47 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.depositOrWithdraw('0.4');
-
-		await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
-			[
-				{
-					time: 'After 30 days',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '6 months',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '1 year',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '3 years',
-					amount: '[1].[0-9]{4}',
-					token: 'USDC',
-				},
-			],
-			{ timeout: expectDefaultTimeout * 2 }
-		);
-		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.positionPage.sidebar.preview();
-
-		await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
-			timeout: expectDefaultTimeout * 2,
+		await deposit({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			depositedToken: 'USDC',
+			depositAmount: '0.4',
+			estimatedEarnings: {
+				thirtyDaysAmount: '[0-1].[0-9]{4}',
+				sixMonthsAmount: '[0-1].[0-9]{4}',
+				oneYearAmount: '[0-1].[0-9]{4}',
+				threeYearsAmount: '[1].[0-9]{4}',
+			},
+			previewInfo: { transactionFee: '[0-2].[0-9]{2}' },
 		});
-		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
-		await metamask.confirmSignature();
-
-		await app.positionPage.sidebar.previewStep.shouldBeVisible({
-			flow: 'deposit',
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.positionPage.sidebar.previewStep.shouldHave({
-			depositAmount: { amount: '0.4', token: 'USDC' },
-			transactionFee: '[0-2].[0-9]{2}',
-		});
-		await app.positionPage.sidebar.previewStep.deposit();
-		await metamask.rejectTransaction();
 
 		// === USDS ===
 
 		await app.earn.sidebar.goBack();
-		await app.earn.sidebar.openTokensSelector();
-		await app.earn.sidebar.selectToken('USDS');
 
-		// Wait for balance to fully load to avoid random fails
-		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]',
-			token: 'USDS',
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
-			[
-				{
-					time: 'After 30 days',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '6 months',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '1 year',
-					amount: '[0-1].[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '3 years',
-					amount: '[1].[0-9]{4}',
-					token: 'USDC',
-				},
-			],
-			{ timeout: expectDefaultTimeout * 2 }
-		);
-		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.positionPage.sidebar.preview();
-
-		await app.positionPage.sidebar.previewStep.shouldHave({
-			depositAmount: { amount: '0.4000', token: 'USDS' },
-			swap: {
-				originalToken: 'USDS',
-				originalTokenAmount: '0.4000',
-				positionToken: 'USDC',
-				positionTokenAmount: '0.[3-4][0-9]{3}',
+		await deposit({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			depositedToken: 'USDS',
+			depositAmount: '0.4',
+			estimatedEarnings: {
+				thirtyDaysAmount: '[0-1].[0-9]{4}',
+				sixMonthsAmount: '[0-1].[0-9]{4}',
+				oneYearAmount: '[0-1].[0-9]{4}',
+				threeYearsAmount: '[1].[0-9]{4}',
 			},
-			price: { amount: '[0-1].[0-9]{4}', originalToken: 'USDS', positionToken: 'USDC' },
-			priceImpact: '[0-3].[0-9]{2}',
-			slippage: '1.00',
-			transactionFee: '[0-2].[0-9]{2}',
+			previewInfo: {
+				swap: {
+					positionTokenAmount: '0.[3-4][0-9]{3}',
+				},
+				price: { amount: '[0-1].[0-9]{4}' },
+				priceImpact: '[0-3].[0-9]{2}',
+				slippage: '1.00',
+				transactionFee: '[0-2].[0-9]{2}',
+			},
 		});
-		await app.positionPage.sidebar.previewStep.deposit();
-		await metamask.rejectTransaction();
 	});
 });
 

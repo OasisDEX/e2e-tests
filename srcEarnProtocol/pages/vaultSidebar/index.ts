@@ -112,8 +112,8 @@ export class VaultSidebar {
 	async shouldHaveEstimatedEarnings(
 		estimations: {
 			time: 'After 30 days' | '6 months' | '1 year' | '3 years';
-			amount: string;
-			token: EarnTokens;
+			amount: string | undefined;
+			token: EarnTokens | undefined;
 		}[],
 		args?: { timeout: number }
 	) {
