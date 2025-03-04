@@ -92,6 +92,7 @@
 		"ci:synpress-build-cache:real-wallet": "xvfb-run yarn synpress-build-cache:real-wallet",
 		"ci:synpress-build-cache:test-wallet": "xvfb-run yarn synpress-build-cache:test-wallet",
 		"ci:earn-no-wallet": "WORKERS='2' RETRIES='2' FULLY_PARALLEL='true' yarn earn-protocol:no-wallet",
+		"ci:earn-with-real-wallet": "WORKERS='2' RETRIES='2' FULLY_PARALLEL='true' xvfb-run yarn earn-protocol:with-real-wallet",
 		"ci:no-wallet:regression": "WORKERS='2' RETRIES='2' FULLY_PARALLEL='true' yarn no-wallet:regression",
 		"ci:with-real-wallet": "WORKERS='2' RETRIES='2' xvfb-run yarn with-real-wallet",
 		"ci:with-wallet:aave:ethereum:regression": "WORKERS='2' RETRIES='2' xvfb-run yarn with-wallet:aave:ethereum:regression",
