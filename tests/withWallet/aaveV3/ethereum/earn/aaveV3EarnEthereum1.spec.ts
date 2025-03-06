@@ -9,7 +9,8 @@ import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/posi
 import { reloadUntilCorrect } from 'utils/general';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -19,11 +20,11 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Aave V3 Earn Ethereum position - WSTETH/ETH @regression', async ({
@@ -32,7 +33,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'mainnet',
 			walletAddress,
 			token: 'WSTETH',
@@ -43,19 +44,19 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await test.step('It should Open a position', async () => {
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '1' },
 			});
 		});
 
 		await test.step('It should Deposti extra collateral', async () => {
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await app.position.overview.shouldHaveExposure({
 				amount: '0.9[0-9]{3}',
@@ -71,12 +72,12 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await app.position.manage.select('Manage collateral');
 
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'WSTETH', amount: '2' },
 				expectedCollateralExposure: {
 					amount: '2.9[0-9]{3}',
@@ -92,7 +93,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await test.step('It should Withdraw collateral', async () => {
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 			await reloadUntilCorrect(app);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -100,12 +101,12 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await app.position.manage.withdrawCollateral();
 
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'WSTETH', amount: '1' },
 				expectedCollateralExposure: {
 					amount: '1.9[0-9]{3}',
@@ -126,7 +127,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'mainnet',
 			walletAddress,
 			token: 'RETH',
@@ -137,19 +138,19 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await test.step('It should Open a position', async () => {
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'RETH', amount: '2' },
 			});
 		});
 
 		await test.step('It should Borrow', async () => {
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 			await reloadUntilCorrect(app);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
@@ -157,12 +158,12 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await app.position.manage.withdrawDebt();
 
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				borrow: { token: 'ETH', amount: '1' },
 				expectedCollateralExposure: {
 					amount: '2.[0-9]{4}',
@@ -178,19 +179,19 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 		await test.step('It should Pay back', async () => {
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 			await reloadUntilCorrect(app);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 			await app.position.manage.select('Manage debt');
 
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				payBack: { token: 'ETH', amount: '1' },
 				expectedCollateralExposure: {
 					amount: '2.[0-9]{4}',
