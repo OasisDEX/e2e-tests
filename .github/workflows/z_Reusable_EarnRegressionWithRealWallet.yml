@@ -8,6 +8,13 @@ on:
         type: string
         default: 'https://staging.summer.fi'
         required: false
+    secrets:
+      TENDERLY_PROJECT:
+        required: true
+      TENDERLY_USER:
+        required: true
+      TENDERLY_ACCESS_KEY:
+        required: true
 
 jobs:
   with-real-wallet-tests:
@@ -34,10 +41,13 @@ jobs:
           BASE_URL=${{ inputs.base_url }} \
           VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
           yarn ci:synpress-build-cache:real-wallet
-      - name: Run 'With real wallet' tests
+      - name: Run 'Earn - With wallet' tests
         run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
-          yarn ci:with-real-wallet
+          yarn ci:earn-with-real-wallet
       - uses: actions/upload-artifact@v4
         if: always()
         with:
