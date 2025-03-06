@@ -10,7 +10,7 @@ jobs:
     with:
       script: ci:earn-no-wallet
 
-  with-real-wallet:
+  earn-protocol-with-real-wallet:
     uses: ./.github/workflows/z_Reusable_EarnRegressionWithRealWallet.yml
     secrets: inherit
 

@@ -22,7 +22,7 @@ export class Overview {
 		).toBeVisible();
 
 		await expect(
-			this.page.getByText('Available to Migrate'),
+			this.page.getByText('Available to Migrate').first(),
 			'"Available to Migrate" should be visible'
 		).toBeVisible();
 
