@@ -102,9 +102,13 @@ export const openPosition = async ({
 		if (buttonLabel === `Set ${deposit.token} allowance` || ajnaExistingDpm) {
 			await app.position.setup.setTokenAllowance(deposit.token);
 		}
+
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
 			await app.position.setup.approveAllowanceOrRetry();
+			// Wait to avoid random fails
+			await app.page.waitForTimeout(2_500);
+
 			await tx.confirmAndVerifySuccess({
 				metamask,
 				vtId,
@@ -113,6 +117,7 @@ export const openPosition = async ({
 			});
 			await app.position.setup.continueShouldBeVisible();
 		}).toPass({ timeout: longTestTimeout });
+
 		await app.position.setup.continue();
 	}
 
@@ -265,11 +270,18 @@ export const adjustRisk = async ({
 
 	await app.position.setup.moveSlider({ protocol: 'Ajna', value: newSliderPosition });
 
+	await app.position.setup.shouldHaveTransactionCostOrFee();
+
 	await app.position.manage.confirm();
+
+	await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {
 		await app.position.setup.confirmOrRetry();
+		// Wait to avoid random fails
+		await app.page.waitForTimeout(2_500);
+
 		await tx.confirmAndVerifySuccess({
 			metamask,
 			metamaskAction: 'confirmTransaction',
@@ -466,9 +478,11 @@ export const manageDebtOrCollateral = async ({
 		((deposit && deposit?.token !== 'ETH') || (payBack && payBack?.token !== 'ETH'))
 	) {
 		await app.position.setup.setTokenAllowance((deposit?.token as string) ?? payBack?.token);
+
 		// Setting up allowance  randomly fails - Retry until it's set.
 		await expect(async () => {
 			await app.position.setup.approveAllowanceOrRetry();
+
 			await tx.confirmAndVerifySuccess({
 				metamask,
 				vtId,

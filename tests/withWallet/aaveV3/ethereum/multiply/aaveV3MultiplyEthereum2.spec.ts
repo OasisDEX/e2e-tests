@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { close, manageDebtOrCollateral } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -18,10 +19,10 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'mainnet',
 			token: 'RETH',
@@ -31,12 +32,12 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await tenderly.changeAccountOwner({
 			account: '0x6bb713b56e73a115164b4b56ea1f5a76640c4d19',
 			newOwner: walletAddress,
-			forkId,
+			vtRPC,
 		});
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should manage an existing Aave V3 Multiply Ethereum position', async ({ metamask }) => {
@@ -56,7 +57,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'RETH', amount: '50' },
 				expectedCollateralExposure: {
 					amount: '50.[0-9]{1,2}',
@@ -75,7 +76,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'RETH', amount: '8' },
 				expectedCollateralExposure: {
 					amount: '4[1-2].[0-9]{1,2}',
@@ -100,7 +101,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				borrow: { token: 'DAI', amount: '40000' },
 				expectedDebt: { amount: '40,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
 				protocol: 'Aave V3',
@@ -122,7 +123,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				payBack: { token: 'DAI', amount: '32000' },
 				expectedDebt: { amount: '8,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
 				protocol: 'Aave V3',
@@ -140,7 +141,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			await close({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				positionType: 'Multiply',
 				closeTo: 'collateral',
 				collateralToken: 'RETH',

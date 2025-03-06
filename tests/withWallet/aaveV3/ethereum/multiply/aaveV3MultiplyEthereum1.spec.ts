@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -18,10 +19,10 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'mainnet',
 			walletAddress,
 			token: 'DAI',
@@ -30,7 +31,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Aave v3 Multiply Ethereum position - DAI/WBTC @regression', async ({
@@ -42,12 +43,12 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 		await test.step('Open a position', async () => {
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'DAI', amount: '15000.1234' },
 			});
 		});
@@ -59,7 +60,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 
 			await close({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				closeTo: 'debt',
 				collateralToken: 'DAI',
@@ -75,17 +76,17 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.changeAccountOwner({
 			account: '0x16f2c35e062c14f57475de0a466f7e08b03a9c7d',
 			newOwner: walletAddress,
-			forkId,
+			vtRPC,
 		});
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	// SKIP if DB collision still hapenning with omni
@@ -97,11 +98,11 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.page.goto('/ethereum/aave/v3/multiply/ETH-USDC/1218#overview');
 
 		// Pause to avoid flakiness
-		await app.page.waitForTimeout(1_000);
+		await app.page.waitForTimeout(4_000);
 
 		await adjustRisk({
 			metamask,
-			forkId,
+			vtId,
 			app,
 			risk: 'down',
 			newSliderPosition: 0.05,
@@ -117,11 +118,11 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await app.page.goto('/ethereum/aave/v3/multiply/ETH-USDC/1218#overview');
 
 		// Pause to avoid flakiness
-		await app.page.waitForTimeout(1_000);
+		await app.page.waitForTimeout(4_000);
 
 		await adjustRisk({
 			metamask,
-			forkId,
+			vtId,
 			app,
 			risk: 'up',
 			newSliderPosition: 0.9,

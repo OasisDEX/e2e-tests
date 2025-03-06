@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -18,10 +19,10 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'mainnet',
 			walletAddress,
 			token: 'CBETH',
@@ -30,7 +31,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Aave V3 Earn Ethereum position - CBETH-ETH @regression', async ({
@@ -47,7 +48,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'CBETH', amount: '10' },
 				adjustRisk: { positionType: 'Earn', value: 0.5 },
 			});
@@ -59,7 +60,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				earnPosition: true,
 				risk: 'down',
@@ -74,7 +75,7 @@ test.describe('Aave V3 Earn - Ethereum - Wallet connected', async () => {
 			await close({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				positionType: 'Earn (Yield Loop)',
 				closeTo: 'collateral',
 				collateralToken: 'CBETH',
