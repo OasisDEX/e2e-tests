@@ -12,7 +12,8 @@ import {
 } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 let positionId: string;
 
@@ -24,10 +25,10 @@ test.describe.skip('Spark Earn - Wallet connected', async () => {
 		test.setTimeout(veryLongTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'mainnet',
 			token: 'SDAI',
@@ -35,7 +36,7 @@ test.describe.skip('Spark Earn - Wallet connected', async () => {
 		});
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'mainnet',
 			token: 'USDT',
@@ -44,7 +45,7 @@ test.describe.skip('Spark Earn - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open a Spark Earn position - SDAI/USDT @regression', async ({ metamask }) => {
@@ -59,7 +60,7 @@ test.describe.skip('Spark Earn - Wallet connected', async () => {
 				(await openPosition({
 					metamask,
 					app,
-					forkId,
+					vtId,
 					deposit: { token: 'SDAI', amount: '10000' },
 				})) ?? 'error';
 		});
@@ -82,7 +83,7 @@ test.describe.skip('Spark Earn - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'SDAI', amount: '5000' },
 				allowanceNotNeeded: true,
 				expectedCollateralExposure: {
@@ -106,7 +107,7 @@ test.describe.skip('Spark Earn - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'SDAI', amount: '3000' },
 				expectedCollateralExposure: {
 					amount: '1[2-4],[0-9]{3}.[0-9]{2}',
@@ -129,7 +130,7 @@ test.describe.skip('Spark Earn - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				borrow: { token: 'USDT', amount: '7000' },
 				expectedDebt: {
 					amount: '[7-8],[0-9]{3}.[0-9]{2}',
@@ -151,7 +152,7 @@ test.describe.skip('Spark Earn - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				payBack: { token: 'USDT', amount: '3000' },
 				expectedDebt: {
 					amount: '[4-5],[0-9]{3}.[0-9]{2}',
@@ -170,7 +171,7 @@ test.describe.skip('Spark Earn - Wallet connected', async () => {
 			await close({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				positionType: 'Earn (Yield Loop)',
 				closeTo: 'debt',
 				collateralToken: 'SDAI',
