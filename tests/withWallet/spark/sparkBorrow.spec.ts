@@ -12,7 +12,8 @@ import {
 } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -22,10 +23,10 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'mainnet',
 			token: 'RETH',
@@ -34,7 +35,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open a Spark Borrow position - RETH/DAI @regression', async ({ metamask }) => {
@@ -43,24 +44,24 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		await app.page.goto('/ethereum/spark/borrow/reth-dai#simulate');
 
 		await test.step('Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'RETH', amount: '7.5' },
 				borrow: { token: 'DAI', amount: '5000' },
 			});
 		});
 
 		await test.step('Deposit and Borrow in a single tx', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				allowanceNotNeeded: true,
 				deposit: { token: 'RETH', amount: '1.5' },
 				borrow: { token: 'DAI', amount: '1000' },
@@ -74,14 +75,14 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		});
 
 		await test.step('Withdraw and Pay back in a single tx', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await app.position.manage.withdrawCollateral();
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'RETH', amount: '1.5' },
 				payBack: { token: 'DAI', amount: '1000' },
 				expectedCollateralDeposited: {
@@ -94,7 +95,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		});
 
 		await test.step('Borrow and Deposit in a single tx', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'RETH' });
 			await app.position.manage.select('Manage debt');
@@ -102,7 +103,7 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				allowanceNotNeeded: true,
 				borrow: { token: 'DAI', amount: '1000' },
 				deposit: { token: 'RETH', amount: '1.5' },
@@ -116,14 +117,14 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		});
 
 		await test.step('Pay back and Withdraw in a single tx', async () => {
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await app.position.manage.payBackDebt();
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				payBack: { token: 'DAI', amount: '1000' },
 				withdraw: { token: 'RETH', amount: '1.5' },
 				expectedCollateralDeposited: {
@@ -137,11 +138,11 @@ test.describe('Spark Borrow - Wallet connected', async () => {
 		});
 
 		await test.step('Close position', async () => {
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await close({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				positionType: 'Borrow',
 				openManagementOptionsDropdown: { currentLabel: 'DAI' },

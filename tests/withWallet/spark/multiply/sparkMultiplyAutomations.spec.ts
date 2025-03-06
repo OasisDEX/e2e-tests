@@ -9,7 +9,7 @@ import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 import * as automations from 'tests/sharedTestSteps/automations';
 
 let app: App;
-let forkId: string;
+let vtId: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
@@ -18,11 +18,11 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId } = await setup({ metamask, app, network: 'mainnet' }));
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should Open a position and set up all available Automations () - Spark Multiply ETH/DAI @regression', async ({
@@ -33,12 +33,12 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 		await app.page.goto('/ethereum/spark/multiply/ETH-DAI#setup');
 
 		await test.step('Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '10' },
 				adjustRisk: { positionType: 'Borrow', value: 0.5 },
 			});
@@ -50,12 +50,12 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testRegularStopLoss({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'spark',
 					collToken: 'mainnetETH',
@@ -71,12 +71,12 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testTrailingStopLoss({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'spark',
 					collToken: 'mainnetETH',
@@ -92,12 +92,12 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testAutoBuy({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'spark',
 					collToken: 'mainnetETH',
@@ -112,12 +112,12 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testAutoSell({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'spark',
 					collToken: 'mainnetETH',
@@ -132,12 +132,12 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testPartialTakeProfit({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'spark',
 					collToken: 'mainnetETH',

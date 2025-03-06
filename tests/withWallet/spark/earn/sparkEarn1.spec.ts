@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -18,10 +19,10 @@ test.describe('Spark Earn - Wallet connected', async () => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'mainnet',
 			token: 'RETH',
@@ -30,7 +31,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage a Spark Earn (Yiel Loop) position - RETH/ETH @regression', async ({
@@ -46,7 +47,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'RETH', amount: '2' },
 			});
 		});
@@ -56,7 +57,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				earnPosition: true,
 				risk: 'up',
@@ -69,7 +70,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				earnPosition: true,
 				risk: 'down',
@@ -83,7 +84,7 @@ test.describe('Spark Earn - Wallet connected', async () => {
 			await close({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				positionType: 'Earn (Yield Loop)',
 				closeTo: 'collateral',
 				collateralToken: 'RETH',
