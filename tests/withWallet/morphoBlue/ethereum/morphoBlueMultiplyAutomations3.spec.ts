@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import * as automations from 'tests/sharedTestSteps/automations';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -18,7 +19,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'mainnet',
@@ -29,30 +30,30 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		await tenderly.changeAccountOwner({
 			account: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
 			newOwner: walletAddress,
-			forkId,
+			vtRPC,
 		});
+
+		await app.position.openPage('/ethereum/morphoblue/multiply/WBTC-USDC/2545#overview');
+
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(4_000);
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
-	// SKIP 'remove', --> 'remove' randomly failingonautomated test
+	// SKIP 'remove', --> 'remove' randomly failing on automated test
 	(['update'] as const).forEach((automationAction) =>
 		test(`It should ${automationAction} an existing Auto-Sell trigger on a Morpho Blue Multiply position @regression`, async ({
 			metamask,
 		}) => {
 			test.setTimeout(extremelyLongTestTimeout);
 
-			await app.position.openPage('/ethereum/morphoblue/multiply/WBTC-USDC/2545#overview');
-
-			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
-
 			await automations.testAutoSell({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				protocol: 'Morpho Blue',
 				verifyTriggerPayload: {
 					protocol: 'morphoblue',

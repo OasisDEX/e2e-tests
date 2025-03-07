@@ -9,7 +9,8 @@ import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 import * as automations from 'tests/sharedTestSteps/automations';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -19,7 +20,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'mainnet',
@@ -28,7 +29,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		}));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'mainnet',
 			walletAddress,
 			token: 'WBTC',
@@ -37,7 +38,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open a position and set Trailing Stop-Loss / Partial Take Profit - Morpho Blue Multiply WBTC/USDC @regression', async ({
@@ -48,12 +49,12 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		await app.position.openPage('/ethereum/morphoblue/multiply/WBTC-USDC#setup');
 
 		await test.step('It should Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'WBTC', amount: '1' },
 				adjustRisk: { positionType: 'Borrow', value: 0.5 },
 			});
@@ -64,10 +65,12 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 			await app.page.reload();
 			await app.position.overview.shouldBeVisible();
 
+			await app.page.waitForTimeout(2_000);
+
 			await automations.testTrailingStopLoss({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'morphoblue',
 					collToken: 'mainnetWBTC',
@@ -82,10 +85,12 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 			await app.page.reload();
 			await app.position.overview.shouldBeVisible();
 
+			await app.page.waitForTimeout(2_000);
+
 			await automations.testPartialTakeProfit({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'morphoblue',
 					collToken: 'mainnetWBTC',

@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -18,10 +19,10 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'mainnet',
 			walletAddress,
 			token: 'USDT',
@@ -30,7 +31,7 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage a Morpho Blue Earn steakhouse-USDT position - steakhouse USDT @regression', async ({
@@ -41,23 +42,23 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 		await app.page.goto('/ethereum/erc-4626/earn/steakhouse-USDT#setup');
 
 		await test.step('It should Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'USDT', amount: '20000' },
 			});
 		});
 
 		await test.step('Deposit (same token - USDT)', async () => {
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'USDT', amount: '10000' },
 				allowanceNotNeeded: true,
 				expectedAvailableToWithdraw: {
@@ -68,14 +69,14 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 		});
 
 		await test.step('Withdraw', async () => {
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await app.position.manage.withdrawCollateral();
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'USDT', amount: '20000' },
 				allowanceNotNeeded: true,
 				expectedAvailableToWithdraw: {
@@ -86,7 +87,7 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 		});
 
 		await test.step('Deposit (different token - ETH)', async () => {
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await app.position.setup.openTokenSelector();
 			await app.position.setup.selectDepositToken('ETH');
@@ -94,7 +95,7 @@ test.describe('Morpho Blue Earn - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '8' },
 				allowanceNotNeeded: true,
 				expectedAvailableToWithdraw: {

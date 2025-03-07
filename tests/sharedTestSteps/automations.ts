@@ -218,6 +218,9 @@ export const testRegularStopLoss = async ({
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
+			// Wait to avoid random fails
+			await app.page.waitForTimeout(2_500);
+
 			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', vtId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Stop-Loss', action });
 		}).toPass();
@@ -261,10 +264,16 @@ export const testTrailingStopLoss = async ({
 
 	await app.position.setup.confirm();
 
+	// Pause needed to avoid random fails
+	await app.page.waitForTimeout(2_000);
+
 	// Automation setup randomly fails - Retry until it's set.
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
+			// Wait to avoid random fails
+			await app.page.waitForTimeout(2_500);
+
 			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', vtId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Stop-Loss' });
 		}).toPass({ timeout: longTestTimeout });
@@ -325,14 +334,20 @@ export const testAutoSell = async ({
 	}
 
 	// Pause needed to avoid random fails
-	await app.page.waitForTimeout(5000);
+	await app.page.waitForTimeout(5_000);
 
 	await app.position.setup.confirm();
+
+	// Pause needed to avoid random fails
+	await app.page.waitForTimeout(2_000);
 
 	// Automation setup randomly fails - Retry until it's set.
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
+			// Wait to avoid random fails
+			await app.page.waitForTimeout(2_500);
+
 			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', vtId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto-Sell', action });
 		}).toPass({ timeout: longTestTimeout });
@@ -411,14 +426,20 @@ export const testAutoBuy = async ({
 	}
 
 	// Pause needed to avoid random fails
-	await app.page.waitForTimeout(4000);
+	await app.page.waitForTimeout(4_000);
 
 	await app.position.setup.confirm();
+
+	// Pause needed to avoid random fails
+	await app.page.waitForTimeout(2_000);
 
 	// Automation setup randomly fails - Retry until it's set.
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
+			// Wait to avoid random fails
+			await app.page.waitForTimeout(2_500);
+
 			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', vtId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto-Buy', action });
 		}).toPass({ timeout: longTestTimeout });
@@ -467,10 +488,16 @@ export const testPartialTakeProfit = async ({
 
 	await app.position.setup.confirm();
 
+	// Pause needed to avoid random fails
+	await app.page.waitForTimeout(2_000);
+
 	// Automation setup randomly fails - Retry until it's set.
 	await test.step('Confirm automation setup', async () => {
 		await expect(async () => {
 			await app.position.setup.confirmOrRetry();
+			// Wait to avoid random fails
+			await app.page.waitForTimeout(2_500);
+
 			await tx.confirmAndVerifySuccess({ metamask, metamaskAction: 'confirmTransaction', vtId });
 			await app.position.setup.finishedShouldBeVisible({ feature: 'Auto Take Profit' });
 		}).toPass({ timeout: longTestTimeout });

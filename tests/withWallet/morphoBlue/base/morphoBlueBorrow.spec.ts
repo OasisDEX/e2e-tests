@@ -8,7 +8,7 @@ import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
 
@@ -18,11 +18,11 @@ test.describe.skip('Morpho Blue Base - Borrow - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId } = await setup({ metamask, app, network: 'base' }));
+		({ vtId } = await setup({ metamask, app, network: 'base' }));
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage a Morpho Blue Base Borrow position - ETH/USDC @regression', async ({
@@ -38,7 +38,7 @@ test.describe.skip('Morpho Blue Base - Borrow - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '5' },
 				borrow: { token: 'USDC', amount: '5000' },
 				protocol: 'Morpho Blue',
@@ -51,7 +51,7 @@ test.describe.skip('Morpho Blue Base - Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '1' },
 				borrow: { token: 'USDC', amount: '1000' },
 				allowanceNotNeeded: true,
@@ -71,7 +71,7 @@ test.describe.skip('Morpho Blue Base - Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'ETH', amount: '1' },
 				payBack: { token: 'USDC', amount: '1000' },
 				expectedCollateralDeposited: {
@@ -91,7 +91,7 @@ test.describe.skip('Morpho Blue Base - Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				allowanceNotNeeded: true,
 				borrow: { token: 'USDC', amount: '1000' },
 				deposit: { token: 'ETH', amount: '1' },
@@ -113,7 +113,7 @@ test.describe.skip('Morpho Blue Base - Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				allowanceNotNeeded: true,
 				payBack: { token: 'USDC', amount: '1000' },
 				withdraw: { token: 'ETH', amount: '1' },
