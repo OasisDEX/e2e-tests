@@ -3,12 +3,12 @@ import { test } from '#earnProtocolFixtures';
 test.describe('$SUMR', async () => {
 	test.beforeEach(async ({ app }) => {
 		await app.sumr.openPage();
+
+		// Wait for 'Log in' button to avoid random fails
+		await app.header.shouldShowLogInButton();
 	});
 
 	test('It should open log in popup', async ({ app }) => {
-		// Wait for 'Log in' button to avoid random fails
-		await app.header.shouldShowLogInButton();
-
 		await app.sumr.connectWallet();
 		await app.modals.logIn.shouldBeVisible();
 	});
