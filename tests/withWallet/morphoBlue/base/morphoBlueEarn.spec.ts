@@ -12,7 +12,8 @@ import {
 } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
@@ -22,10 +23,10 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'base' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'base' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'base',
 			walletAddress,
 			token: 'CBETH',
@@ -34,7 +35,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage a Morpho Blue Base Earn position - CBETH/ETH @regression', async ({
@@ -45,18 +46,18 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 		await app.position.openPage('/base/morphoblue/multiply/CBETH-ETH#setup');
 
 		await test.step('Open a position', async () => {
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'CBETH', amount: '10' },
 			});
 		});
 
 		await test.step('Deposit extra collateral', async () => {
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 			await app.position.manage.select('Manage collateral');
@@ -64,7 +65,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'CBETH', amount: '2' },
 				allowanceNotNeeded: true,
 				expectedCollateralExposure: {
@@ -75,7 +76,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 		});
 
 		await test.step('Withdraw collateral', async () => {
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 			await app.position.manage.select('Manage collateral');
@@ -84,7 +85,7 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'CBETH', amount: '2' },
 				allowanceNotNeeded: true,
 				expectedDebt: {
@@ -95,11 +96,11 @@ test.describe('Morpho Blue Base - Earn - Wallet connected', async () => {
 		});
 
 		await test.step('Close a postion', async () => {
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await close({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				closeTo: 'collateral',
 				collateralToken: 'CBETH',

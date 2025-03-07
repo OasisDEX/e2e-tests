@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import * as automations from 'tests/sharedTestSteps/automations';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -18,7 +19,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'mainnet',
@@ -29,12 +30,12 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		await tenderly.changeAccountOwner({
 			account: '0x2e0515d7a3ea0276f28c94c426c5d2d1d85fd4d5',
 			newOwner: walletAddress,
-			forkId,
+			vtRPC,
 		});
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should update an existing Stop-Loss trigger on a Morpho Blue Multiply position @regression', async ({
@@ -47,7 +48,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		await automations.testRegularStopLoss({
 			metamask,
 			app,
-			forkId,
+			vtId,
 			verifyTriggerPayload: {
 				protocol: 'morphoblue',
 				collToken: 'mainnetWSTETH',
@@ -70,7 +71,7 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 		await automations.testRegularStopLoss({
 			metamask,
 			app,
-			forkId,
+			vtId,
 			verifyTriggerPayload: {
 				protocol: 'morphoblue',
 				collToken: 'mainnetWSTETH',
