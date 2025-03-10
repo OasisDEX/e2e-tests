@@ -467,7 +467,7 @@ export const testPartialTakeProfit = async ({
 	await app.position.optimization.setupOptimization('Auto Take Profit');
 
 	// Long pause needed to avoid random fails
-	await app.page.waitForTimeout(10000);
+	await app.page.waitForTimeout(10_000);
 
 	if (verifyTriggerPayload) {
 		await verifyTriggerApiRequestPayload({
@@ -483,7 +483,7 @@ export const testPartialTakeProfit = async ({
 	}
 
 	// Bug 15875 - Default Stop-Loss value is too high
-	await app.position.optimization.adjustPartialTakeProfitStopLossTrigger({ value: 0.7 });
+	await app.position.optimization.adjustPartialTakeProfitStopLossTrigger({ value: 0.9 });
 	await app.position.setup.orderInformation.shouldHaveMaxGasFee('[0-9]{1,2}.[0-9]{2}');
 
 	await app.position.setup.confirm();
