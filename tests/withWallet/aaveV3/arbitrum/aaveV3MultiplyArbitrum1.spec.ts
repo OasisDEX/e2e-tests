@@ -8,7 +8,7 @@ import { App } from 'src/app';
 import { adjustRisk, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
 
 const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
 
@@ -17,11 +17,11 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId } = await setup({ metamask, app, network: 'arbitrum' }));
+		({ vtId } = await setup({ metamask, app, network: 'arbitrum' }));
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 		await app.page.close();
 	});
 
@@ -33,31 +33,35 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 		await app.page.goto('/arbitrum/aave/v3/multiply/ETH-USDC#setup');
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(2_000);
+		await app.page.waitForTimeout(4_000);
 
 		await test.step('It should Open a position', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
-				deposit: { token: 'ETH', amount: '8.12345' },
+				vtId,
+				deposit: { token: 'ETH', amount: '3.12345' },
 			});
 		});
 
 		await test.step('It should Adjust risk - Up', async () => {
+			await app.page.waitForTimeout(4_000);
+
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				risk: 'up',
-				newSliderPosition: 0.6,
+				newSliderPosition: 0.7,
 			});
 		});
 
 		await test.step('It should Adjust risk - Down', async () => {
+			await app.page.waitForTimeout(4_000);
+
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				risk: 'down',
 				newSliderPosition: 0.5,

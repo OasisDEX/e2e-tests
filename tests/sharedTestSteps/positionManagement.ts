@@ -274,7 +274,7 @@ export const adjustRisk = async ({
 
 	await app.position.manage.confirm();
 
-	await app.page.waitForTimeout(expectDefaultTimeout / 3);
+	await app.page.waitForTimeout(expectDefaultTimeout / 2);
 
 	// Position creation randomly fails - Retry until it's created.
 	await expect(async () => {

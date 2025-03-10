@@ -8,7 +8,7 @@ import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
 
 const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
 
@@ -17,11 +17,11 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId } = await setup({ metamask, app, network: 'arbitrum' }));
+		({ vtId } = await setup({ metamask, app, network: 'arbitrum' }));
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 		await app.page.close();
 	});
 
@@ -33,10 +33,12 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 		await app.page.goto('/arbitrum/aave/v3/borrow/eth-usdc#setup');
 
 		await test.step('It should Open a position', async () => {
+			await app.page.waitForTimeout(4_000);
+
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '7.5' },
 				borrow: { token: 'USDC', amount: '2000' },
 			});
@@ -44,12 +46,12 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 
 		await test.step('It should Deposit and Borrow in a single tx', async () => {
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(3_000);
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '1.5' },
 				borrow: { token: 'USDC', amount: '3000' },
 				expectedCollateralDeposited: {
@@ -65,12 +67,12 @@ test.describe('Aave V3 Borrow - Arbitrum - Wallet connected', async () => {
 			await app.position.manage.withdrawCollateral();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(3_000);
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'ETH', amount: '2' },
 				payBack: { token: 'USDC', amount: '1000' },
 				expectedCollateralDeposited: {

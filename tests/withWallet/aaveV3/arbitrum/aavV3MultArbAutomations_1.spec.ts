@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import * as automations from 'tests/sharedTestSteps/automations';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
@@ -19,7 +20,7 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 
 		app = new App(page);
 
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'arbitrum',
@@ -29,12 +30,12 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 		await tenderly.changeAccountOwner({
 			account: '0xf0464ef55705e5b5cb3b865d92be5341fe85fbb8',
 			newOwner: walletAddress,
-			forkId,
+			vtRPC,
 		});
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 		await app.page.close();
 	});
 
@@ -46,13 +47,13 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 		await app.position.openPage('/arbitrum/aave/v3/multiply/eth-dai/1#overview');
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(1_000);
+		await app.page.waitForTimeout(4_000);
 
 		await test.step('It should set Auto-Buy', async () => {
 			await automations.testAutoBuy({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'aave3',
 					collToken: 'arbitrumETH',
@@ -67,12 +68,12 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testAutoSell({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'aave3',
 					collToken: 'arbitrumETH',
@@ -87,12 +88,12 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testRegularStopLoss({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'aave3',
 					collToken: 'arbitrumETH',
