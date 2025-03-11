@@ -14,7 +14,8 @@ let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
-test.describe('Aave v2 Multiply - Wallet connected', async () => {
+// AAVE V2 deprecated by AAVE governance - Pools to de removed from summer UI
+test.describe.skip('Aave v2 Multiply - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 

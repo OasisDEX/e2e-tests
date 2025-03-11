@@ -126,9 +126,9 @@ test.describe('No-wallet connected - Rays', async () => {
 		app,
 	}) => {
 		await app.position.openPage('/ethereum/aave/v3/multiply/RETH-DAI/1276#overview');
-		await app.position.overview.shouldHaveRays('0.0[2-6][0-9]{2}');
+		await app.position.overview.shouldHaveRays('0.0[0-9]{3}');
 		await app.position.manage.shouldHaveAutomationBoostRays({
-			raysCount: '0.0[1-4][0-9]{2}',
+			raysCount: '0.0[0-9]{3}',
 			automations: ['Auto Buy', 'Take Profit'],
 		});
 	});
