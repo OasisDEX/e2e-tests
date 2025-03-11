@@ -55,11 +55,6 @@ test.describe('Default states - Wallet not connected', async () => {
 	});
 
 	test('It should list migratable positions @regression', async () => {
-		test.info().annotations.push({
-			type: 'Test case',
-			description: 'xxx',
-		});
-
 		const { migratePositionsCount } = await app.portfolio.positionsHub.getNumberOfPositions();
 		expect(migratePositionsCount).toEqual(1);
 	});
