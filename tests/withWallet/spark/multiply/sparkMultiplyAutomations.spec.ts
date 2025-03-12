@@ -144,6 +144,7 @@ test.describe('Spark Multiply - Mainnet - Wallet connected', async () => {
 					debtToken: 'mainnetDAI',
 					triggerToken: 'mainnetETH',
 				},
+				stopLossTrigger: 0.9,
 			});
 		});
 	});

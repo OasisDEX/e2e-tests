@@ -451,6 +451,7 @@ export const testPartialTakeProfit = async ({
 	app,
 	vtId,
 	verifyTriggerPayload,
+	stopLossTrigger,
 }: {
 	metamask: MetaMask;
 	app: App;
@@ -461,6 +462,7 @@ export const testPartialTakeProfit = async ({
 		debtToken: Tokens;
 		triggerToken: Tokens;
 	};
+	stopLossTrigger?: number;
 }) => {
 	await app.position.openTab('Optimization');
 
@@ -483,7 +485,9 @@ export const testPartialTakeProfit = async ({
 	}
 
 	// Bug 15875 - Default Stop-Loss value is too high
-	await app.position.optimization.adjustPartialTakeProfitStopLossTrigger({ value: 0.95 });
+	await app.position.optimization.adjustPartialTakeProfitStopLossTrigger({
+		value: stopLossTrigger ?? 0.95,
+	});
 	await app.position.setup.orderInformation.shouldHaveMaxGasFee('[0-9]{1,2}.[0-9]{2}');
 
 	await app.position.setup.confirm();
