@@ -7,8 +7,8 @@ test.describe('Portfolio', async () => {
 	});
 
 	test('It should show wallet address', async ({ app }) => {
-		await app.portfolio.open('0xA1B008dBA9F6143c6211767cbA826296f95Fe3B3');
-		await app.portfolio.shouldShowWalletAddress('0xA1B0...Fe3B3');
+		await app.portfolio.open('0x548b79cb42d4a204765e9a9e599b83d4225319a9');
+		await app.portfolio.shouldShowWalletAddress('0x548b...319a9');
 	});
 
 	test('It should show Total $SUMR and Total Wallet value', async ({ app }) => {
