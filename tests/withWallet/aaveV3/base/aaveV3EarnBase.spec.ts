@@ -8,21 +8,22 @@ import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
 
 // TODO - Failing with fork but passing with real network - To be investigated in fork
-test.describe.skip('Aave V3 Earn - Base - Wallet connected', async () => {
+test.describe.only('Aave V3 Earn - Base - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'base' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'base' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'base',
 			token: 'CBETH',
@@ -31,7 +32,7 @@ test.describe.skip('Aave V3 Earn - Base - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Aave V3 Earn (Yield Loop) Base position - CBETH/ETH @regression', async ({
@@ -42,12 +43,12 @@ test.describe.skip('Aave V3 Earn - Base - Wallet connected', async () => {
 		await app.position.openPage('/base/aave/v3/multiply/CBETH-ETH#setup');
 
 		await test.step('Open a position', async () => {
-			await app.page.waitForTimeout(3_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'CBETH', amount: '1' },
 			});
 		});
@@ -56,11 +57,11 @@ test.describe.skip('Aave V3 Earn - Base - Wallet connected', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				earnPosition: true,
 				risk: 'up',
@@ -72,11 +73,11 @@ test.describe.skip('Aave V3 Earn - Base - Wallet connected', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				earnPosition: true,
 				risk: 'down',
@@ -88,12 +89,12 @@ test.describe.skip('Aave V3 Earn - Base - Wallet connected', async () => {
 			// Pause and reload to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await close({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				positionType: 'Earn (Yield Loop)',
 				closeTo: 'debt',
 				collateralToken: 'CBETH',
