@@ -8,18 +8,19 @@ import { App } from 'src/app';
 import * as automations from 'tests/sharedTestSteps/automations';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
 
 // TODO - Failing with fork but passing with real network - To be investigated in fork
-test.describe.skip('Aave v3 Multiply - Base - Wallet connected', async () => {
+test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'base',
@@ -29,12 +30,12 @@ test.describe.skip('Aave v3 Multiply - Base - Wallet connected', async () => {
 		await tenderly.changeAccountOwner({
 			account: '0xf71da0973121d949e1cee818eb519ba364406309',
 			newOwner: walletAddress,
-			forkId,
+			vtRPC,
 		});
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should set Auto-Buy, Auto-Sell and Partial Take Profit on an Aave v3 Base Multiply position @regression', async ({
@@ -46,12 +47,12 @@ test.describe.skip('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await test.step('Set Auto-Buy', async () => {
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testAutoBuy({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'aave3',
 					collToken: 'baseETH',
@@ -62,17 +63,17 @@ test.describe.skip('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await test.step('Set Auto-Sell', async () => {
 			// Reload page to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 			await app.page.reload();
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testAutoSell({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'aave3',
 					collToken: 'baseETH',
@@ -83,17 +84,17 @@ test.describe.skip('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await test.step('Partial Take Profit', async () => {
 			// Reload page to avoid random fails
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(2_000);
 			await app.page.reload();
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testPartialTakeProfit({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'aave3',
 					collToken: 'baseETH',
@@ -113,12 +114,12 @@ test.describe.skip('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await test.step('Set Regular Stop-Loss', async () => {
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testRegularStopLoss({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'aave3',
 					collToken: 'baseETH',
@@ -130,16 +131,17 @@ test.describe.skip('Aave v3 Multiply - Base - Wallet connected', async () => {
 
 		await test.step('Set Trailing Stop-Loss', async () => {
 			// Reload page to avoid random fails
+			await app.page.waitForTimeout(2_000);
 			await app.page.reload();
 			await app.position.overview.shouldBeVisible();
 
 			// Pause to avoid random fails
-			await app.page.waitForTimeout(2_000);
+			await app.page.waitForTimeout(4_000);
 
 			await automations.testTrailingStopLoss({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				verifyTriggerPayload: {
 					protocol: 'aave3',
 					collToken: 'baseETH',

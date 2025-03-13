@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(optimismSetup));
@@ -18,10 +19,10 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'optimism',
 			token: 'DAI',
@@ -30,7 +31,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Aave V3 Borrow Optimism DAI/WBTC position @regression', async ({
@@ -41,12 +42,12 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await app.position.openPage('/optimism/aave/v3/borrow/DAI-WBTC#setup');
 
 		await test.step('Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'DAI', amount: '30000' },
 				borrow: { token: 'WBTC', amount: '0.1' },
 			});
@@ -56,11 +57,11 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await test.step('Close position', async () => {
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await close({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				positionType: 'Borrow',
 				closeTo: 'debt',

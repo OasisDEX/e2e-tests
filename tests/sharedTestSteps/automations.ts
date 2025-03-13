@@ -431,7 +431,7 @@ export const testAutoBuy = async ({
 	await app.position.setup.confirm();
 
 	// Pause needed to avoid random fails
-	await app.page.waitForTimeout(2_000);
+	await app.page.waitForTimeout(3_000);
 
 	// Automation setup randomly fails - Retry until it's set.
 	await test.step('Confirm automation setup', async () => {

@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { manageDebtOrCollateral, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(optimismSetup));
@@ -18,11 +19,11 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Aave V3 Borrow Optimism ETH/USDC position @regression', async ({
@@ -33,12 +34,12 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 		await app.position.openPage('/optimism/aave/v3/borrow/eth-usdc');
 
 		await test.step('Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '7.5' },
 				borrow: { token: 'USDC', amount: '2000' },
 			});
@@ -46,7 +47,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 
 		await test.step('Deposit and Borrow in a single tx', async () => {
 			await tenderly.setTokenBalance({
-				forkId,
+				vtRPC,
 				network: 'optimism',
 				walletAddress,
 				token: 'DAI',
@@ -56,18 +57,18 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			await tenderly.changeAccountOwner({
 				account: '0x1a7ab3359598aa32dbd04edbfa95600f43d89f14',
 				newOwner: walletAddress,
-				forkId,
+				vtRPC,
 			});
 
 			await app.page.goto('/optimism/aave/v3/borrow/dai-wbtc/4#overview');
 
 			// To avoid flakiness
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'DAI', amount: '100000' },
 				borrow: { token: 'WBTC', amount: '0.3' },
 				expectedCollateralDeposited: {
@@ -83,14 +84,14 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			// Pause and Reload page to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await app.position.manage.withdrawCollateral();
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'DAI', amount: '20000' },
 				payBack: { token: 'WBTC', amount: '0.1' },
 				expectedCollateralDeposited: {
@@ -106,7 +107,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			// Pause and Reload page to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'DAI' });
 			await app.position.manage.select('Manage debt');
@@ -114,7 +115,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				allowanceNotNeeded: true,
 				borrow: { token: 'WBTC', amount: '0.2' },
 				deposit: { token: 'DAI', amount: '10000' },
@@ -131,7 +132,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			// Pause and Reload page to avoid random fails
 			await app.page.waitForTimeout(3_000);
 			await app.page.reload();
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'DAI' });
 			await app.position.manage.select('Manage debt');
@@ -140,7 +141,7 @@ test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				payBack: { token: 'WBTC', amount: '0.3' },
 				withdraw: { token: 'DAI', amount: '10000' },
 				expectedCollateralDeposited: {
