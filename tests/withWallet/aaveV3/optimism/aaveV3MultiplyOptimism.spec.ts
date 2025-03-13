@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { adjustRisk, close, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(optimismSetup));
@@ -18,11 +19,11 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Aave v3 Multiply Optimism position - ETH/USDC @regression', async ({
@@ -33,12 +34,12 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc#setup');
 
 		await test.step('It should Open a position', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '10.12345' },
 			});
 		});
@@ -47,16 +48,16 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 			await tenderly.changeAccountOwner({
 				account: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
 				newOwner: walletAddress,
-				forkId,
+				vtRPC,
 			});
 
 			await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				risk: 'up',
 				newSliderPosition: 0.9,
@@ -64,11 +65,11 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		});
 
 		await test.step('It should Adjust risk - Down', async () => {
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(4_000);
 
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				risk: 'down',
 				newSliderPosition: 0.05,
@@ -84,17 +85,17 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		await tenderly.changeAccountOwner({
 			account: '0x2047e97451955c98bf8378f6ac2f04d95578990c',
 			newOwner: walletAddress,
-			forkId,
+			vtRPC,
 		});
 
 		await app.page.goto('/optimism/aave/v3/multiply/eth-usdc.e/2#overview');
 
-		await app.page.waitForTimeout(1_000);
+		await app.page.waitForTimeout(4_000);
 
 		await close({
 			metamask,
 			app,
-			forkId,
+			vtId,
 			positionType: 'Multiply',
 			closeTo: 'collateral',
 			collateralToken: 'ETH',
