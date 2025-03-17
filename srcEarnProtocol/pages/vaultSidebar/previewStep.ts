@@ -69,14 +69,14 @@ export class PreviewStep {
 		if (swap) {
 			const amountsRegExp = new RegExp(`${swap.originalTokenAmount}.*${swap.positionTokenAmount}`);
 			await expect(
-				this.page.locator('span:has-text("Swap")').locator('xpath=//following-sibling::div[1]')
+				this.page.locator('span:has-text("Swap")').locator('xpath=//following-sibling::*[1]')
 			).toContainText(amountsRegExp);
 
 			const originalTokenRegExp = new RegExp(swap.originalToken);
 			await expect(
 				this.page
 					.locator('span:has-text("Swap")')
-					.locator('xpath=//following-sibling::div[1]')
+					.locator('xpath=//following-sibling::*[1]')
 					.locator('svg')
 					.nth(0)
 			).toHaveAttribute('title', originalTokenRegExp, { ignoreCase: true });
@@ -85,7 +85,7 @@ export class PreviewStep {
 			await expect(
 				this.page
 					.locator('span:has-text("Swap")')
-					.locator('xpath=//following-sibling::div[1]')
+					.locator('xpath=//following-sibling::*[1]')
 					.locator('svg')
 					.nth(1)
 			).toHaveAttribute('title', positionTokenRegExp, { ignoreCase: true });
