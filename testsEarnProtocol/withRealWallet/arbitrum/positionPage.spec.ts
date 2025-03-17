@@ -147,7 +147,7 @@ test.describe('With real wallet - Position page -  Arbitrum - Deposit', async ()
 			},
 			price: { amount: '[2-7],[0-9]{3}.[0-9]{2}', originalToken: 'wstETH', positionToken: 'USD₮0' },
 			priceImpact: '[0-3].[0-9]{2}',
-			slippage: '1.00',
+			slippage: '0.10',
 			transactionFee: '[0-2].[0-9]{2}',
 		});
 		await app.positionPage.sidebar.previewStep.deposit();
@@ -207,7 +207,7 @@ test.describe('With real wallet - Position page -  Arbitrum - Deposit', async ()
 			},
 			price: { amount: '[0-1].[0-9]{4}', originalToken: 'DAI', positionToken: 'USD₮0' },
 			priceImpact: '[0-3].[0-9]{2}',
-			slippage: '1.00',
+			slippage: '0.10',
 			transactionFee: '[0-2].[0-9]{2}',
 		});
 		await app.positionPage.sidebar.previewStep.deposit();
@@ -330,7 +330,7 @@ test.describe.skip('With real wallet - Arbitrum - Withdraw', async () => {
 			// },
 			// price: '???',
 			// priceImpact: '???',
-			// slippage: '1.00',
+			// slippage: '0.10',
 			transactionFee: '[0-2].[0-9]{4}',
 		});
 
@@ -382,7 +382,7 @@ test.describe.skip('With real wallet - Arbitrum - Withdraw', async () => {
 			// },
 			// price: '???',
 			// priceImpact: '???',
-			// slippage: '1.00',
+			// slippage: '0.10',
 			transactionFee: '[0-2].[0-9]{4}',
 		});
 

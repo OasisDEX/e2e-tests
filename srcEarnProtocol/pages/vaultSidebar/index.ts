@@ -121,7 +121,7 @@ export class VaultSidebar {
 			const regExp = new RegExp(`${estimation.amount}.*${estimation.token}`);
 
 			await expect(
-				this.sidebarLocator.locator(`:has-text("${estimation.time}") + div`).first()
+				this.sidebarLocator.locator(`:has-text("${estimation.time}") + span`).first()
 			).toContainText(regExp, { timeout: args?.timeout ?? expectDefaultTimeout });
 		}
 	}

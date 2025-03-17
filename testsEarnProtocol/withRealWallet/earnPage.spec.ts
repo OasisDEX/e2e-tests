@@ -76,7 +76,7 @@ test.describe('With real wallet - Earn page', async () => {
 		// await app.vaultPage.sidebar.depositOrWithdraw('1');
 		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: '$',
-			amount: '[0-1].[0-9]{4}',
+			amount: '[0-1].[0-9]{2}',
 		});
 	});
 

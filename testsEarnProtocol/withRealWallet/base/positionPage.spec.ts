@@ -67,7 +67,7 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 		});
 	});
 
-	test('It should deposit USDC & USDS - (until rejecting "Deposit" tx) -- SHARED test steps', async ({
+	test('It should deposit USDC & USDS - (until rejecting "Deposit" tx)', async ({
 		app,
 		metamask,
 	}) => {
@@ -120,7 +120,7 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 				},
 				price: { amount: '[0-1].[0-9]{4}' },
 				priceImpact: '[0-3].[0-9]{2}',
-				slippage: '1.00',
+				slippage: '0.10',
 				transactionFee: '[0-2].[0-9]{2}',
 			},
 		});
@@ -245,7 +245,7 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 			// },
 			// price: '???',
 			// priceImpact: '???',
-			// slippage: '1.00',
+			// slippage: '0.10',
 			transactionFee: '[0-2].[0-9]{4}',
 		});
 
@@ -298,7 +298,7 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		// 	// },
 		// 	// price: '???',
 		// 	// priceImpact: '???',
-		// 	// slippage: '1.00',
+		// 	// slippage: '0.10',
 		// 	transactionFee: '[0-2].[0-9]{4}',
 		// });
 
