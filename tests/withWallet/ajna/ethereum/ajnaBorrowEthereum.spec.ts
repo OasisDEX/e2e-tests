@@ -12,7 +12,8 @@ import {
 } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -22,14 +23,14 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'mainnet',
 		}));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'mainnet',
 			walletAddress,
 			token: 'WSTETH',
@@ -39,6 +40,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 
 	test.afterEach(async () => {
 		await app.page.close();
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Ajna Ethereum Borrow position @regression', async ({
@@ -56,7 +58,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'WSTETH', amount: '2' },
 				borrow: { token: 'ETH', amount: '1' },
 			});
@@ -69,7 +71,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'WSTETH', amount: '1.5' },
 				borrow: { token: 'ETH', amount: '0.5' },
 				allowanceNotNeeded: true,
@@ -90,7 +92,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'WSTETH', amount: '1' },
 				payBack: { token: 'ETH', amount: '0.8' },
 				expectedCollateralDeposited: {
@@ -111,7 +113,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				borrow: { token: 'ETH', amount: '1' },
 				deposit: { token: 'WSTETH', amount: '2' },
 				allowanceNotNeeded: true,
@@ -135,7 +137,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				payBack: { token: 'ETH', amount: '1.1' },
 				withdraw: { token: 'WSTETH', amount: '1.5' },
 				expectedCollateralDeposited: {
@@ -153,7 +155,7 @@ test.describe('Ajna Ethereum Borrow - Wallet connected', async () => {
 			await close({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				positionType: 'Borrow',
 				closeTo: 'collateral',
 				collateralToken: 'WSTETH',

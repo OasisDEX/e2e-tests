@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
@@ -20,10 +21,10 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 
 		app = new App(page);
 
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'arbitrum' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'arbitrum' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'arbitrum',
 			token: 'WBTC',
@@ -32,7 +33,7 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open an Ajna Arbitrum Earn position @regression', async ({ metamask }) => {
@@ -47,7 +48,7 @@ test.describe('Ajna Arbitrum Earn - Wallet connected', async () => {
 		await openPosition({
 			metamask,
 			app,
-			forkId,
+			vtId,
 			deposit: { token: 'WBTC', amount: '1' },
 			adjustRisk: { value: 0.8 },
 			protocol: 'Ajna',

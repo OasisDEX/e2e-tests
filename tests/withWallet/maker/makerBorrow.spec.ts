@@ -5,10 +5,10 @@ import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { extremelyLongTestTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { App } from 'src/app';
-import { confirmAddToken } from 'tests/sharedTestSteps/makerConfirmTx';
+import { confirmAddToken, confirmTransaction } from 'tests/sharedTestSteps/makerConfirmTx';
 
 let app: App;
-let forkId: string;
+let vtId: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
@@ -78,12 +78,13 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 	});
 });
 
-test.describe('Maker Borrow - Wallet connected', async () => {
+// SKIP - TO BE IMPROVED - Creating proxy needs to change gas setiings to marketor aggressive
+test.describe.skip('Maker Borrow - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId } = await setup({
+		({ vtId } = await setup({
 			metamask,
 			app,
 			network: 'mainnet',
@@ -92,7 +93,7 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open a Maker Borrow ETH-A/DAI position @regression', async ({ metamask }) => {
@@ -100,13 +101,16 @@ test.describe('Maker Borrow - Wallet connected', async () => {
 
 		await app.page.goto('/vaults/open/ETH-A');
 
+		await app.page.waitForTimeout(2_000);
+
 		// Depositing collateral too quickly after loading page returns wrong simulation results
 		await app.position.overview.waitForComponentToBeStable({ positionType: 'Maker' });
 		await app.position.setup.deposit({ token: 'ETH', amount: '15.12345' });
 		await app.position.setup.generate({ token: 'DAI', amount: '10000' });
 		await app.position.setup.setupProxy1Of4();
 		await app.position.setup.createProxy2Of4();
-		await confirmAddToken({ metamask, app });
+		// await confirmAddToken({ metamask, app });
+		await confirmTransaction({ metamask, app });
 
 		// Wait for 5 seconds and reload page | Issue with Maker and staging/forks
 		await app.page.waitForTimeout(5_000);

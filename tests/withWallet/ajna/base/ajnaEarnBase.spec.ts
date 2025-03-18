@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
@@ -19,10 +20,10 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'base' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'base' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'base',
 			walletAddress,
 			token: 'USDC',
@@ -31,7 +32,7 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open an Ajna Base Earn position @regression', async ({ metamask, page }) => {
@@ -46,7 +47,7 @@ test.describe('Ajna Base Earn - Wallet connected', async () => {
 		await openPosition({
 			metamask,
 			app,
-			forkId,
+			vtId,
 			deposit: { token: 'USDC', amount: '5000' },
 			protocol: 'Ajna',
 		});

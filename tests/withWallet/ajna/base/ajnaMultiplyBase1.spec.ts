@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { adjustRisk, openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
@@ -19,7 +20,7 @@ test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'base',
@@ -27,7 +28,7 @@ test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
 		}));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'base',
 			token: 'USDC',
@@ -36,7 +37,7 @@ test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Ajna Base Multiply position @regression', async ({
@@ -51,7 +52,7 @@ test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'USDC', amount: '150000' },
 			});
 		});
@@ -69,7 +70,7 @@ test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '2' },
 				protocol: 'Ajna',
 				ajnaExistingDpm: true,
@@ -83,7 +84,7 @@ test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
 
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				risk: 'up',
 				newSliderPosition: 0.3,
@@ -96,7 +97,7 @@ test.describe.skip('Ajna Base Multiply - Wallet connected', async () => {
 
 			await adjustRisk({
 				metamask,
-				forkId,
+				vtId,
 				app,
 				risk: 'down',
 				newSliderPosition: 0.18,

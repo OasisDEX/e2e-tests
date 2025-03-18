@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { openPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(optimismSetup));
@@ -19,10 +20,10 @@ test.describe('Ajna Optimism Earn - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'optimism' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'optimism',
 			walletAddress,
 			token: 'DAI',
@@ -31,22 +32,22 @@ test.describe('Ajna Optimism Earn - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open an Ajna Optimism Earn position @regression', async ({ metamask, page }) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.page.goto('/optimism/ajna/earn/OP-ETH#setup');
+		await app.page.goto('/optimism/ajna/earn/USDC-ETH#setup');
 		await app.position.setup.acknowledgeAjnaInfo();
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(1_000);
+		await app.page.waitForTimeout(2_000);
 
 		await openPosition({
 			metamask,
 			app,
-			forkId,
+			vtId,
 			deposit: { token: 'ETH', amount: '10' },
 			adjustRisk: { value: 0.8 },
 			protocol: 'Ajna',
