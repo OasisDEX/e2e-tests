@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { confirmAddToken } from 'tests/sharedTestSteps/makerConfirmTx';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -18,28 +19,26 @@ test.describe('Sky Earn - SRR - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'mainnet',
 			token: 'SKY',
 			balance: '50000',
 		});
-		await test.step('Test setup', async () => {
-			await tenderly.setTokenBalance({
-				forkId,
-				walletAddress,
-				network: 'mainnet',
-				token: 'USDS',
-				balance: '500000',
-			});
+		await tenderly.setTokenBalance({
+			vtRPC,
+			walletAddress,
+			network: 'mainnet',
+			token: 'USDS',
+			balance: '500000',
 		});
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage Sky Earn SRR position', async ({ metamask }) => {

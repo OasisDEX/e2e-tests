@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { openMakerPosition } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -20,7 +21,7 @@ test.describe.skip('Maker Multiply - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'mainnet',
@@ -28,7 +29,7 @@ test.describe.skip('Maker Multiply - Wallet connected', async () => {
 		}));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'mainnet',
 			token: 'WSTETH',
@@ -37,7 +38,7 @@ test.describe.skip('Maker Multiply - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should have Price Impact lower than 1% when adjusting risk and closing position', async ({
@@ -54,7 +55,6 @@ test.describe.skip('Maker Multiply - Wallet connected', async () => {
 			await openMakerPosition({
 				metamask,
 				app,
-				forkId,
 				deposit: { token: 'WSTETH', amount: '50' },
 				adjustRisk: { value: 0.35 },
 			});
