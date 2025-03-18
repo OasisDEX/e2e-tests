@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { confirmAddToken } from 'tests/sharedTestSteps/makerConfirmTx';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
@@ -18,10 +19,10 @@ test.describe('Maker Earn - CLE - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
+		({ vtId, vtRPC, walletAddress } = await setup({ metamask, app, network: 'mainnet' }));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			network: 'mainnet',
 			walletAddress,
 			token: 'USDS',
@@ -30,7 +31,7 @@ test.describe('Maker Earn - CLE - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 		await app.page.close();
 	});
 
