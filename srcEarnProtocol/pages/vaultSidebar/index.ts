@@ -46,7 +46,10 @@ export class VaultSidebar {
 
 	@step
 	async selectToken(token: EarnTokens) {
-		await this.sidebarLocator.locator(`[class*="_dropdownOption_"]:has-text("${token}")`).click();
+		await this.sidebarLocator
+			.locator('[class*="_dropdownOption_"]')
+			.filter({ has: this.page.getByText(token, { exact: true }) })
+			.click();
 	}
 
 	@step

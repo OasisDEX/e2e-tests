@@ -4,6 +4,7 @@ export type EarnTokens =
 	| 'CBETH'
 	| 'COMP'
 	| 'DAI'
+	| 'ETH'
 	| 'MORPHO'
 	| 'USDBC'
 	| 'USDbC'
@@ -12,5 +13,6 @@ export type EarnTokens =
 	| 'USDT'
 	| 'USD₮0'
 	| 'WBTC'
+	| 'WETH'
 	| 'WSTETH'
 	| 'wstETH';
