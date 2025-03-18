@@ -292,7 +292,9 @@ export const aaveV3BaseBorrowPools = [
 	// 'ETH-USDBC', --> Already tested in /withWallet/aaveV3 test suite
 ];
 
-export const aaveV3OptimismEarnPools = ['USDC.E-SUSD', 'USDC-SUSD', 'WSTETH-ETH'];
+export const aaveV3OptimismEarnPools = ['WSTETH-ETH'];
+// 'USDC-SUSD', --> Borrow cap = 0.00 SUSD
+// 'USDC.E-SUSD', --> Borrow cap = 0.00 SUSD
 // BUG - 16013
 
 export const aaveV3OptimismMultiplyPools = [

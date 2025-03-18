@@ -1,4 +1,4 @@
-// Al Aave V2 pool have been tested as part of /withWallet/aaveV2 test suite
+// All Aave V2 pools have been tested as part of /withWallet/aaveV2 test suite
 
 // import { aaveV2EthereumMultiplyPools } from 'utils/testData';
 // import { openNewPosition, testEthereum } from 'tests/sharedTestSteps/openNewPosition';
