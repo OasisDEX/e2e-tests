@@ -77,6 +77,8 @@ export class App {
 			expect(loggedUserIsVisible || logInButtonIsVisible).toBeTruthy();
 
 			await this.page.waitForTimeout(1_000);
+
+			expect(loggedUserIsVisible || logInButtonIsVisible).toBeTruthy();
 		}).toPass();
 	}
 }
