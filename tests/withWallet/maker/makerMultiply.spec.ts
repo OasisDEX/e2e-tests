@@ -97,7 +97,7 @@ test.describe.skip('Maker Multiply - Wallet connected', async () => {
 	});
 });
 
-test.describe.only('Maker Multiply - Wallet connected', async () => {
+test.describe('Maker Multiply - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 

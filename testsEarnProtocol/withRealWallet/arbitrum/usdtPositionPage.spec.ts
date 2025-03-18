@@ -5,7 +5,7 @@ import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'util
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
-test.describe('With real wallet - Position page -  Arbitrum - Deposit', async () => {
+test.describe('With real wallet - USD₮0 Arbitrum Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -215,8 +215,7 @@ test.describe('With real wallet - Position page -  Arbitrum - Deposit', async ()
 	});
 });
 
-// TO BE UPDATE
-test.describe.skip('With real wallet - Arbitrum - Withdraw', async () => {
+test.describe('With real wallet - USDT Arbitrum - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -224,6 +223,7 @@ test.describe.skip('With real wallet - Arbitrum - Withdraw', async () => {
 			metamask,
 			app,
 			wallet: 'MetaMask',
+			network: 'Arbitrum',
 		});
 
 		await app.positionPage.open(
@@ -232,17 +232,80 @@ test.describe.skip('With real wallet - Arbitrum - Withdraw', async () => {
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]{4}',
-			token: 'USDC',
+			balance: '0.00',
+			token: 'USD₮0',
 			timeout: expectDefaultTimeout * 2,
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
+		await app.positionPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
+	test('It should show maximum USD₮0 balance amount to be withdrawn in $ - Arbitrum USD₮0 position', async ({
+		app,
+	}) => {
+		await app.positionPage.sidebar.depositOrWithdraw('0.5');
+
+		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
+			amount: '0.[4-5][0-9]{3}',
+			tokenOrCurrency: '$',
+		});
+	});
+
+	test('It should withdraw to USD₮0 - (until rejecting "Withdraw" tx)', async ({
+		app,
+		metamask,
+	}) => {
+		await app.positionPage.sidebar.depositOrWithdraw('0.5');
+		// Wait for Estimated Earnings to avoid random fails
+		await app.positionPage.sidebar.shouldHaveEstimatedEarnings([
+			{
+				time: 'After 30 days',
+				amount: '0.00[0-9]{2}',
+				token: 'USD₮0',
+			},
+			{
+				time: '6 months',
+				amount: '0.00[0-9]{2}',
+				token: 'USD₮0',
+			},
+			{
+				time: '1 year',
+				amount: '0.00[0-9]{2}',
+				token: 'USD₮0',
+			},
+			{
+				time: '3 years',
+				amount: '0.00[0-9]{2}',
+				token: 'USD₮0',
+			},
+		]);
+
+		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
+		await app.positionPage.sidebar.preview();
+
+		await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
+		await metamask.confirmSignature();
+
+		await app.positionPage.sidebar.previewStep.shouldBeVisible({ flow: 'withdraw' });
+		await app.positionPage.sidebar.previewStep.shouldHave({
+			withdrawAmount: { amount: '0.5', token: 'USD₮0' },
+			transactionFee: '[0-2].[0-9]{4}',
+		});
+
+		await app.positionPage.sidebar.previewStep.withdraw();
+		await metamask.rejectTransaction();
+	});
+
+	// SKIP - Withdrawing to other tokens temporarily disabled.
 	(['USDC', 'DAI', 'WSTETH'] as const).forEach((token) => {
-		test(`It should show USDC deposited balance amount to be withdrawn in ${
+		test.skip(`It should show USDC deposited balance amount to be withdrawn in ${
 			token === 'USDC' ? '$' : token
 		} when selecting ${token} in Arbitrum USDC vault`, async ({ app }) => {
 			test.setTimeout(longTestTimeout);
@@ -269,7 +332,8 @@ test.describe.skip('With real wallet - Arbitrum - Withdraw', async () => {
 		});
 	});
 
-	test('It should withdraw to USDC and COMP - (until rejecting "Withdraw" tx)', async ({
+	// SKIP - Withdrawing to other tokens temporarily disabled.
+	test.skip('It should withdraw to USDC and COMP - (until rejecting "Withdraw" tx)', async ({
 		app,
 		metamask,
 	}) => {

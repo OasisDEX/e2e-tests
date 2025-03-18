@@ -20,6 +20,8 @@ export const test = metaMaskFixtures(arbitrumSetup).extend<{
 			},
 		]);
 
+		await app.waitForAppToBeStable();
+
 		await use(app);
 
 		await app.page.close();
