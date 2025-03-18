@@ -12,7 +12,8 @@ import {
 } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
@@ -24,14 +25,14 @@ test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 
 		app = new App(page);
 
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'arbitrum',
 		}));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'arbitrum',
 			token: 'RETH',
@@ -40,7 +41,7 @@ test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open and manage an Ajna Arbitrum Borrow RETH-ETH position @regression', async ({
@@ -58,7 +59,7 @@ test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'RETH', amount: '0.1' },
 				borrow: { token: 'ETH', amount: '0.01' },
 				protocol: 'Ajna',
@@ -72,7 +73,7 @@ test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'RETH', amount: '0.1' },
 				borrow: { token: 'ETH', amount: '0.05' },
 				expectedCollateralDeposited: {
@@ -92,7 +93,7 @@ test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'RETH', amount: '0.1' },
 				payBack: { token: 'ETH', amount: '0.01' },
 				expectedCollateralDeposited: {
@@ -113,7 +114,7 @@ test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				borrow: { token: 'ETH', amount: '0.02' },
 				deposit: { token: 'RETH', amount: '0.2' },
 				expectedCollateralDeposited: {
@@ -136,7 +137,7 @@ test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				payBack: { token: 'ETH', amount: '0.01' },
 				withdraw: { token: 'RETH', amount: '0.1' },
 				expectedCollateralDeposited: {
@@ -154,7 +155,7 @@ test.describe.skip('Ajna Arbitrum Borrow - Wallet connected', async () => {
 			await close({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				positionType: 'Borrow',
 				closeTo: 'collateral',
 				collateralToken: 'RETH',

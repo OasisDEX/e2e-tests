@@ -12,7 +12,8 @@ import {
 } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
@@ -23,7 +24,7 @@ test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'base',
@@ -31,7 +32,7 @@ test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 		}));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'base',
 			token: 'WSTETH',
@@ -40,7 +41,7 @@ test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should open an Ajna Base Borrow position @regression', async ({ metamask }) => {
@@ -53,7 +54,7 @@ test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'ETH', amount: '10' },
 				protocol: 'Ajna',
 			});
@@ -72,7 +73,7 @@ test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'WSTETH', amount: '2' },
 				borrow: { token: 'ETH', amount: '1' },
 				ajnaExistingDpm: true,
@@ -86,7 +87,7 @@ test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: { token: 'WSTETH', amount: '2' },
 				borrow: { token: 'ETH', amount: '1' },
 				allowanceNotNeeded: true,
@@ -107,7 +108,7 @@ test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				withdraw: { token: 'WSTETH', amount: '1' },
 				payBack: { token: 'ETH', amount: '1' },
 				expectedCollateralDeposited: {
@@ -128,7 +129,7 @@ test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				borrow: { token: 'ETH', amount: '1' },
 				deposit: { token: 'WSTETH', amount: '2' },
 				allowanceNotNeeded: true,
@@ -152,7 +153,7 @@ test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 			await manageDebtOrCollateral({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				payBack: { token: 'ETH', amount: '1' },
 				withdraw: { token: 'WSTETH', amount: '3' },
 				expectedCollateralDeposited: {
@@ -170,7 +171,7 @@ test.describe.skip('Ajna Base Borrow - Wallet connected', async () => {
 			await close({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				positionType: 'Borrow',
 				closeTo: 'collateral',
 				collateralToken: 'WSTETH',

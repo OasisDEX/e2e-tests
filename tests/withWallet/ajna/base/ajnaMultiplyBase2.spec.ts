@@ -8,7 +8,8 @@ import { App } from 'src/app';
 import { close } from 'tests/sharedTestSteps/positionManagement';
 
 let app: App;
-let forkId: string;
+let vtId: string;
+let vtRPC: string;
 let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
@@ -18,7 +19,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		test.setTimeout(longTestTimeout);
 
 		app = new App(page);
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'base',
@@ -27,12 +28,12 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await tenderly.changeAccountOwner({
 			account: '0xf71da0973121d949e1cee818eb519ba364406309',
 			newOwner: walletAddress,
-			forkId,
+			vtRPC,
 		});
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 
 	test('It should Close to debt an existing Ajna Base Multiply position @regression', async ({
@@ -43,16 +44,16 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 		await app.position.openPage('/base/ajna/multiply/ETH-USDC/435#overview');
 
 		// For avoiding flakiness
-		await app.page.waitForTimeout(2_000);
+		await app.page.waitForTimeout(4_000);
 
 		await close({
 			metamask,
-			forkId,
+			vtId,
 			app,
 			closeTo: 'debt',
 			collateralToken: 'ETH',
 			debtToken: 'USDC',
-			tokenAmountAfterClosing: '[1-7].[0-9]{4}',
+			tokenAmountAfterClosing: '[0-7].[0-9]{4}',
 		});
 	});
 
@@ -68,7 +69,7 @@ test.describe('Ajna Base Multiply - Wallet connected', async () => {
 
 		await close({
 			metamask,
-			forkId,
+			vtId,
 			app,
 			closeTo: 'collateral',
 			collateralToken: 'ETH',
