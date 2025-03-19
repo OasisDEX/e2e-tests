@@ -9,7 +9,7 @@ const test = testWithSynpress(withRealWalletBaseFixtures);
 test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
-		testInfo.setTimeout(testInfo.timeout + 25_000);
+		testInfo.setTimeout(testInfo.timeout + 45_000);
 
 		await logInWithWalletAddress({
 			metamask,

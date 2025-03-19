@@ -90,6 +90,7 @@ export class VaultSidebar {
 
 	@step
 	async depositOrWithdraw(amount: string) {
+		await this.sidebarLocator.locator('input').clear();
 		await this.sidebarLocator.locator('input').fill(amount);
 	}
 
