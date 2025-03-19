@@ -15,10 +15,6 @@ test.describe('With real wallet - Earn page', async () => {
 			app,
 			wallet: 'MetaMask',
 		});
-
-		await app.earn.openPage();
-
-		await app.waitForAppToBeStable();
 	});
 
 	test('It should show Deposit balances and Deposit amounts - Arbitrum USDT vault', async ({
