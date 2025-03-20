@@ -94,38 +94,39 @@ jobs:
           path: playwright-reports/with-wallet-aave-arbitrum
           retention-days: 30
 
-  with-wallet-aave-base-tests:
-    name: 'With wallet - Aave - Base'
-    runs-on: ubuntu-24.04
-    container:
-      image: synthetixio/docker-node:18.16-ubuntu
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet
-      - name: Run With wallet Aave Base tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:aave:base
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-aave-base
-          path: playwright-reports/with-wallet-aave-base
-          retention-days: 30
+  # SKIP - Base tests failing in github run - Base Virtual Testnet 
+  # with-wallet-aave-base-tests:
+  #   name: 'With wallet - Aave - Base'
+  #   runs-on: ubuntu-24.04
+  #   container:
+  #     image: synthetixio/docker-node:18.16-ubuntu
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install playwright
+  #       run: npx playwright install && npx playwright install-deps
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet
+  #     - name: Run With wallet Aave Base tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:aave:base
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-aave-base
+  #         path: playwright-reports/with-wallet-aave-base
+  #         retention-days: 30
 
   with-wallet-aave-optimism-tests:
     name: 'With wallet - Aave - Optimism'
