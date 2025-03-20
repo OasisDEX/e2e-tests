@@ -14,8 +14,7 @@ let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
 
-// TODO - Failing with fork but passing with real network - To be investigated in fork
-test.describe.skip('Aave v3 Multiply - Base - Wallet connected', async () => {
+test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
