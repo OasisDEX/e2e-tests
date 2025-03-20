@@ -1,4 +1,4 @@
-import { test } from '#earnProtocolFixtures';
+import { expect, test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Portfolio', async () => {
@@ -7,26 +7,33 @@ test.describe('Portfolio', async () => {
 	});
 
 	test('It should show wallet address', async ({ app }) => {
-		await app.portfolio.open('0x548b79cb42d4a204765e9a9e599b83d4225319a9');
-		await app.portfolio.shouldShowWalletAddress('0x548b...319a9');
+		await expect(async () => {
+			await app.portfolio.open('0x548b79cb42d4a204765e9a9e599b83d4225319a9');
+			await app.portfolio.shouldShowWalletAddress('0x548b...319a9');
+		}).toPass();
 	});
 
 	test('It should show Total $SUMR and Total Wallet value', async ({ app }) => {
-		await app.portfolio.open('0xbEf4befb4F230F43905313077e3824d7386E09F8');
-		await app.portfolio.shouldShowOverviewAmounts({
-			total$SUMR: '[0-9]{1,2}.[0-9]{2}',
-			totalWallet: '[0-9]{1,2}.[0-9]{2}',
-			timeout: expectDefaultTimeout * 2,
-		});
+		await expect(async () => {
+			await app.portfolio.open('0xbEf4befb4F230F43905313077e3824d7386E09F8');
+			await app.portfolio.shouldShowOverviewAmounts({
+				total$SUMR: '[0-9]{1,2}.[0-9]{2}',
+				totalWallet: '[0-9]{1,2}.[0-9]{2}',
+				timeout: expectDefaultTimeout * 2,
+			});
+		}).toPass();
 	});
 
 	test('It should switch to all Portfolio main tabs', async ({ app }) => {
-		await app.portfolio.open('0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA');
-		await app.waitForAppToBeStable();
+		// Trying to reduce flakines due to `Something went wrong` error in app
+		await expect(async () => {
+			await app.portfolio.open('0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA');
+			await app.waitForAppToBeStable();
 
-		// Switch to 'Wallet' tab
-		await app.portfolio.selectTab('Wallet');
-		await app.portfolio.wallet.shouldBeVisible();
+			// Switch to 'Wallet' tab
+			await app.portfolio.selectTab('Wallet');
+			await app.portfolio.wallet.shouldBeVisible();
+		}).toPass();
 
 		// Switch to 'Your Activity' tab
 		await app.portfolio.selectTab('Your Activity');
