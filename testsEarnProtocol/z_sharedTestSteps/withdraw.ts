@@ -11,7 +11,7 @@ export const withdraw = async ({
 	app,
 	nominatedToken,
 	depositedToken,
-	depositAmount,
+	withdrawAmount,
 	estimatedEarnings,
 	previewInfo,
 }: {
@@ -19,7 +19,7 @@ export const withdraw = async ({
 	app: App;
 	nominatedToken: EarnTokens;
 	depositedToken: EarnTokens;
-	depositAmount: string;
+	withdrawAmount: string;
 	estimatedEarnings?: {
 		thirtyDaysAmount: string;
 		sixMonthsAmount: string;
@@ -51,7 +51,7 @@ export const withdraw = async ({
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 	}
 
-	await app.positionPage.sidebar.depositOrWithdraw(depositAmount);
+	await app.positionPage.sidebar.depositOrWithdraw(withdrawAmount);
 
 	await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
 		[
@@ -102,16 +102,16 @@ export const withdraw = async ({
 	}
 
 	await app.positionPage.sidebar.previewStep.shouldBeVisible({
-		flow: 'deposit',
+		flow: 'withdraw',
 		timeout: expectDefaultTimeout * 2,
 	});
 
 	await app.positionPage.sidebar.previewStep.shouldHave({
-		depositAmount: { amount: depositAmount, token: depositedToken },
+		withdrawAmount: { amount: withdrawAmount, token: depositedToken },
 		swap: previewInfo?.swap
 			? {
 					originalToken: depositedToken,
-					originalTokenAmount: depositAmount,
+					originalTokenAmount: withdrawAmount,
 					positionToken: nominatedToken,
 					positionTokenAmount: previewInfo.swap.positionTokenAmount,
 			  }
@@ -128,6 +128,6 @@ export const withdraw = async ({
 		transactionFee: previewInfo?.transactionFee,
 	});
 
-	await app.positionPage.sidebar.previewStep.deposit();
+	await app.positionPage.sidebar.previewStep.withdraw();
 	await metamask.rejectTransaction();
 };

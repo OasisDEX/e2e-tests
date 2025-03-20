@@ -17,6 +17,7 @@ test.describe('Logged in with Email', async () => {
 
 	test('It should open portfolio page', async ({ app }) => {
 		await expect(async () => {
+			await app.page.reload();
 			await app.header.portfolio();
 			await app.portfolio.shouldShowWalletAddress('0x91be...5CC30', {
 				timeout: expectDefaultTimeout * 2,

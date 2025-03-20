@@ -3,7 +3,8 @@ import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fix
 
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
-import { deposit, withdraw } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
+import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
+import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -170,7 +171,7 @@ test.describe('With real wallet - USDC Mainnet - Withdraw', async () => {
 		});
 	});
 
-	test.skip('It should withdraw to USDC - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to USDC - (until rejecting "Withdraw" tx)', async ({
 		app,
 		metamask,
 	}) => {
@@ -179,60 +180,17 @@ test.describe('With real wallet - USDC Mainnet - Withdraw', async () => {
 			app,
 			nominatedToken: 'USDC',
 			depositedToken: 'USDC',
-			depositAmount: '0.5',
+			withdrawAmount: '0.5',
 			estimatedEarnings: {
-				thirtyDaysAmount: '1.[0-9]{4}',
-				sixMonthsAmount: '1.[0-9]{4}',
-				oneYearAmount: '1.[0-9]{4}',
-				threeYearsAmount: '1.[0-9]{4}',
+				thirtyDaysAmount: '0.000[0-9]',
+				sixMonthsAmount: '0.000[0-9]',
+				oneYearAmount: '0.000[0-9]',
+				threeYearsAmount: '0.000[0-9]',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
 		});
-
-		await app.positionPage.sidebar.depositOrWithdraw('0.5');
-		// Wait for Estimated Earnings to avoid random fails
-		await app.positionPage.sidebar.shouldHaveEstimatedEarnings([
-			{
-				time: 'After 30 days',
-				amount: '0.00[0-9]{1,2}',
-				token: 'USDC',
-			},
-			{
-				time: '6 months',
-				amount: '0.00[0-9]{1,2}',
-				token: 'USDC',
-			},
-			{
-				time: '1 year',
-				amount: '0.00[0-9]{1,2}',
-				token: 'USDC',
-			},
-			{
-				time: '3 years',
-				amount: '0.00[0-9]{1,2}',
-				token: 'USDC',
-			},
-		]);
-
-		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.positionPage.sidebar.preview();
-
-		await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
-		await metamask.confirmSignature();
-
-		await app.positionPage.sidebar.previewStep.shouldBeVisible({ flow: 'withdraw' });
-		await app.positionPage.sidebar.previewStep.shouldHave({
-			withdrawAmount: { amount: '0.5', token: 'USDC' },
-			transactionFee: '[0-2].[0-9]{4}',
-		});
-
-		await app.positionPage.sidebar.previewStep.withdraw();
-		await metamask.rejectTransaction();
 	});
 
 	// // SKIP - Withdrawing to other tokens temporarily disabled.
