@@ -4,6 +4,7 @@ import { expectDefaultTimeout } from 'utils/config';
 import { Overview } from './overview';
 import { RebalanceActivity } from './rebalanceActivity';
 import { Rewards } from './rewards';
+import { Send } from './send';
 import { YouMightLike } from './youMightLike';
 import { YourActivity } from './yourActivity';
 import { Wallet } from './wallet';
@@ -21,6 +22,8 @@ export class Portfolio {
 
 	readonly rewards: Rewards;
 
+	readonly sendModal: Send;
+
 	readonly youMightLike: YouMightLike;
 
 	readonly yourActivity: YourActivity;
@@ -35,6 +38,7 @@ export class Portfolio {
 		this.overview = new Overview(page);
 		this.rebalanceActivity = new RebalanceActivity(page);
 		this.rewards = new Rewards(page);
+		this.sendModal = new Send(page);
 		this.youMightLike = new YouMightLike(page);
 		this.yourActivity = new YourActivity(page);
 		this.wallet = new Wallet(page);
@@ -108,5 +112,10 @@ export class Portfolio {
 		await expect(
 			this.page.locator('[class*="_tabHeaders_"]').getByRole('button', { name: tab, exact: true })
 		).toHaveClass(/active/);
+	}
+
+	@step
+	async send() {
+		await this.page.getByRole('button', { name: 'Send', exact: true }).click();
 	}
 }

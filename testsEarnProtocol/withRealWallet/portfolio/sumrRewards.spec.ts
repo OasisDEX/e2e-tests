@@ -3,6 +3,7 @@ import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fix
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout } from 'utils/config';
 import { expect } from '#earnProtocolFixtures';
+import { addNetwork } from 'utils/synpress/commonWalletSetup';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -17,9 +18,10 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 			wallet: 'MetaMask',
 		});
 
-		await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F?tab=rewards');
-
-		await app.waitForAppToBeStable();
+		await expect(async () => {
+			await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F?tab=rewards');
+			await app.waitForAppToBeStable();
+		}).toPass();
 	});
 
 	test('It should claim rewards and reject terms', async ({ app }) => {
@@ -65,7 +67,27 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 			},
 		]);
 
+		// Base rewards
 		await app.portfolio.rewards.claimAndDelegate.claim('Base');
 		await metamask.rejectTransaction();
+
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(2_000);
+
+		// Arbitrum rewards
+		await app.portfolio.rewards.claimAndDelegate.claim('Arbitrum');
+		await addNetwork({ metamask, network: 'arbitrum' });
+		await metamask.rejectTransaction();
+
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(2_000);
+
+		// Mainnet rewards
+		await app.portfolio.rewards.claimAndDelegate.claim('Ethereum');
+		await metamask.approveSwitchNetwork();
+		// Wait for Metamaskwindow to re-open
+		await expect(async () => {
+			await metamask.rejectTransaction();
+		}).toPass();
 	});
 });
