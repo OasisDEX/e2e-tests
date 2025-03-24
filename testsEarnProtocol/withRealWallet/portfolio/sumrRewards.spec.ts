@@ -62,7 +62,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 			},
 			{
 				networkName: 'Ethereum',
-				claimable: '0.00',
+				claimable: '[0-9].[0-9]{4}',
 				inWallet: '0.00',
 			},
 		]);

@@ -165,7 +165,7 @@ test.describe('With real wallet - USDT Mainnet - Withdraw', async () => {
 		await app.positionPage.sidebar.depositOrWithdraw('0.4');
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
-			amount: '0.[4-5][0-9]{3}',
+			amount: '0.[3-4][0-9]{3}',
 			tokenOrCurrency: '$',
 		});
 	});

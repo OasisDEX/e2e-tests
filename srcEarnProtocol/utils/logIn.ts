@@ -4,6 +4,7 @@ import { MetaMask } from '@synthetixio/synpress/playwright';
 import { App } from 'srcEarnProtocol/app';
 import { walletTypes } from './types';
 import { expectDefaultTimeout } from 'utils/config';
+import { arrayWithNthElements } from 'utils/general';
 
 export const logInWithWalletAddress = async ({
 	metamask,
@@ -58,28 +59,39 @@ export const logInWithEmailAddress = async ({
 	// Get Verification Code from email
 	let code: string = '';
 
+	const workers = process.env.WORKERS ? parseInt(process.env.WORKERS) : 1;
+
 	await expect(async () => {
 		// Wait for 2 seconds
-		await app.page.waitForTimeout(5_000);
+		await app.page.waitForTimeout(2_000);
 
 		const response = await request.get(
-			'https://api.mailinator.com/api/v2/domains/private/inboxes?token=79bba236cd0d4ef195d5664cee6a1d31'
+			`https://api.mailinator.com/api/v2/domains/private/inboxes?token=79bba236cd0d4ef195d5664cee6a1d31&limit=${workers}`
 		);
 
 		const responseJSON = await response.json();
 
-		const secondsAgo = responseJSON.msgs[0].seconds_ago;
+		const emailsToCheck = arrayWithNthElements(workers);
 
-		expect(secondsAgo).toBeLessThan(30);
+		let receiver: string;
+		let secondsAgo: string;
 
-		code = responseJSON.msgs[0].subject.slice(0, 6);
+		for (const email of emailsToCheck) {
+			receiver = responseJSON.msgs[email].to;
+			secondsAgo = responseJSON.msgs[email].seconds_ago;
+
+			if (receiver == emailAddress.split('@')[0] && parseInt(secondsAgo) < 30) {
+				code = responseJSON.msgs[email].subject.slice(0, 6);
+				break;
+			}
+		}
 	}).toPass({ timeout: 30_000 });
 
 	await app.modals.logIn.enterVerificationCode(code);
 
 	// App doesn't reload when loging in at the moment
 	await app.header.shouldHaveWalletAddress(shortenedWalletAddress ?? '0x91be...5CC30'); // walletaddress linked to tester@summer.testinator.com
-	await app.page.waitForTimeout(1_000);
+	await app.page.waitForTimeout(2_000);
 	await app.page.reload();
 	await app.page.waitForTimeout(1_000);
 };
