@@ -1,11 +1,30 @@
 import { expect, test } from '#earnProtocolFixtures';
 import { logInWithEmailAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout } from 'utils/config';
+import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 
 test.describe('Logged in with Email', async () => {
-	test.beforeEach(async ({ app, request }, testInfo) => {
-		// Extending tests timeout by 25 extra seconds due to beforeEach actions
-		testInfo.setTimeout(testInfo.timeout + 35_000);
+	test('It should open portfolio page', async ({ app, request }) => {
+		test.setTimeout(longTestTimeout);
+
+		await logInWithEmailAddress({
+			request,
+			app,
+			emailAddress: 'tester1@summer.testinator.com',
+			shortenedWalletAddress: '0xD8bB...2430C',
+		});
+
+		await expect(async () => {
+			await app.page.waitForTimeout(1_000);
+			await app.page.reload();
+			await app.header.portfolio();
+			await app.portfolio.shouldShowWalletAddress('0xD8bB...2430C', {
+				timeout: expectDefaultTimeout * 2,
+			});
+		}).toPass();
+	});
+
+	test('It should Send funds', async ({ app, request }) => {
+		test.setTimeout(longTestTimeout);
 
 		await logInWithEmailAddress({
 			request,
@@ -13,20 +32,7 @@ test.describe('Logged in with Email', async () => {
 			emailAddress: 'tester@summer.testinator.com',
 			shortenedWalletAddress: '0x91be...5CC30',
 		});
-	});
 
-	test('It should open portfolio page', async ({ app }) => {
-		await expect(async () => {
-			await app.page.waitForTimeout(1_000);
-			await app.page.reload();
-			await app.header.portfolio();
-			await app.portfolio.shouldShowWalletAddress('0x91be...5CC30', {
-				timeout: expectDefaultTimeout * 2,
-			});
-		}).toPass();
-	});
-
-	test('It should Send funds', async ({ app }) => {
 		await expect(async () => {
 			await app.portfolio.open('0x91beb00Fff1E3B1840794E04bc610d307CD5CC30');
 			await app.portfolio.shouldShowWalletAddress('0x91be...5CC30', {

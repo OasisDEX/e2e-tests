@@ -15,11 +15,6 @@ test.describe('Header', async () => {
 		await app.earn.shouldBeVisible();
 	});
 
-	// TODO - With email login
-	test.skip('It should open Portfolio page', async ({ app }) => {
-		// TODO - With email login
-	});
-
 	test('It should open "Explore" pages', async ({ app }) => {
 		await app.header.explore.open();
 		await app.header.explore.select('$SUMR token');
