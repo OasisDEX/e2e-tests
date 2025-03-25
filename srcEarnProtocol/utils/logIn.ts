@@ -91,7 +91,7 @@ export const logInWithEmailAddress = async ({
 
 	// App doesn't reload when loging in at the moment
 	await app.header.shouldHaveWalletAddress(shortenedWalletAddress ?? '0x91be...5CC30'); // walletaddress linked to tester@summer.testinator.com
-	await app.page.waitForTimeout(2_000);
+	await app.page.waitForTimeout(4_000);
 	await app.page.reload();
-	await app.page.waitForTimeout(1_000);
+	await app.page.waitForTimeout(4_000);
 };

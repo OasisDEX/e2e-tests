@@ -53,7 +53,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 			{
 				networkName: 'Base',
 				claimable: '[0-9].[0-9]{4}',
-				inWallet: '0.00',
+				inWallet: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
 			},
 			{
 				networkName: 'Arbitrum',

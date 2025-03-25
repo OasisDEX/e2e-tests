@@ -5,6 +5,7 @@ export type EarnTokens =
 	| 'COMP'
 	| 'DAI'
 	| 'ETH'
+	| 'EURC'
 	| 'MORPHO'
 	| 'USDBC'
 	| 'USDbC'

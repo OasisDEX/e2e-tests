@@ -106,8 +106,10 @@ export const deposit = async ({
 		timeout: expectDefaultTimeout * 2,
 	});
 
+	const previewDepositedToken: EarnTokens = depositedToken == 'WSTETH' ? 'wstETH' : depositedToken;
+
 	await app.positionPage.sidebar.previewStep.shouldHave({
-		depositAmount: { amount: depositAmount, token: depositedToken },
+		depositAmount: { amount: depositAmount, token: previewDepositedToken },
 		swap: previewInfo?.swap
 			? {
 					originalToken: depositedToken,
@@ -119,7 +121,7 @@ export const deposit = async ({
 		price: previewInfo?.price
 			? {
 					amount: previewInfo.price.amount,
-					originalToken: depositedToken,
+					originalToken: previewDepositedToken,
 					positionToken: nominatedToken,
 			  }
 			: undefined,
