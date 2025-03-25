@@ -4,13 +4,13 @@ import { App } from 'srcEarnProtocol/app';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 
-// Withdraw flow until rejecting final Deposit tx
+// Withdraw flow until rejecting final Withdraw tx
 //    - NOTE: Token allowance must be set manually for tested vault and token
 export const withdraw = async ({
 	metamask,
 	app,
 	nominatedToken,
-	depositedToken,
+	withdrawnToken,
 	withdrawAmount,
 	estimatedEarnings,
 	previewInfo,
@@ -18,7 +18,7 @@ export const withdraw = async ({
 	metamask: MetaMask;
 	app: App;
 	nominatedToken: EarnTokens;
-	depositedToken: EarnTokens;
+	withdrawnToken: EarnTokens;
 	withdrawAmount: string;
 	estimatedEarnings?: {
 		thirtyDaysAmount: string;
@@ -38,14 +38,14 @@ export const withdraw = async ({
 		transactionFee?: string;
 	};
 }) => {
-	if (nominatedToken != depositedToken) {
+	if (nominatedToken != withdrawnToken) {
 		await app.earn.sidebar.openTokensSelector();
-		await app.earn.sidebar.selectToken(depositedToken);
+		await app.earn.sidebar.selectToken(withdrawnToken);
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '[0-9].[0-9]',
-			token: depositedToken,
+			token: withdrawnToken,
 			timeout: expectDefaultTimeout * 2,
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
@@ -88,12 +88,12 @@ export const withdraw = async ({
 			.locator('[class*="_sidebarCta_"]')
 			.getByRole('button', { name: 'Agree and sign' })
 			.isVisible();
-		const depositIsVisible = await app.page
+		const withdrawIsVisible = await app.page
 			.locator('[class*="_sidebarCta_"]')
-			.getByRole('button', { name: 'Deposit' })
+			.getByRole('button', { name: 'Withdraw' })
 			.isVisible();
 
-		expect(agreeIsVisible || depositIsVisible).toBeTruthy();
+		expect(agreeIsVisible || withdrawIsVisible).toBeTruthy();
 	}).toPass();
 
 	if (agreeIsVisible) {
@@ -107,10 +107,10 @@ export const withdraw = async ({
 	});
 
 	await app.positionPage.sidebar.previewStep.shouldHave({
-		withdrawAmount: { amount: withdrawAmount, token: depositedToken },
+		withdrawAmount: { amount: withdrawAmount, token: withdrawnToken },
 		swap: previewInfo?.swap
 			? {
-					originalToken: depositedToken,
+					originalToken: withdrawnToken,
 					originalTokenAmount: withdrawAmount,
 					positionToken: nominatedToken,
 					positionTokenAmount: previewInfo.swap.positionTokenAmount,
@@ -119,7 +119,7 @@ export const withdraw = async ({
 		price: previewInfo?.price
 			? {
 					amount: previewInfo.price.amount,
-					originalToken: depositedToken,
+					originalToken: withdrawnToken,
 					positionToken: nominatedToken,
 			  }
 			: undefined,

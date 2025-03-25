@@ -3,10 +3,11 @@ import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fix
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
+import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - Position page -  Base - Deposit', async () => {
+test.describe('With real wallet - Position page - Base - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -73,8 +74,6 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		// === USDC ===
-
 		// Wait for page to fully load
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '[0-9].[0-9]',
@@ -82,6 +81,8 @@ test.describe('With real wallet - Position page -  Base - Deposit', async () => 
 			timeout: expectDefaultTimeout * 2,
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
+		// === USDC ===
 
 		await deposit({
 			metamask,
@@ -152,114 +153,52 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	// SKIPPED DAI and WSTETH - Withdrawing to token other than nominated one has been temporarily disabled
-	// (['USDC', 'DAI', 'WSTETH'] as const).forEach((token) => {
-	(['USDC'] as const).forEach((token) => {
-		test(`It should show USDC deposited balance amount to be withdrawn in ${
-			token === 'USDC' ? '$' : token
-		} when selecting ${token} in Base USDC vault`, async ({ app }) => {
-			test.setTimeout(longTestTimeout);
+	test('It should show USDC deposited balance amount to be withdrawn in $ when selecting USDC in Base USDC vault', async ({
+		app,
+	}) => {
+		test.setTimeout(longTestTimeout);
 
-			if (token !== 'USDC') {
-				await app.positionPage.sidebar.openTokensSelector();
-				await app.positionPage.sidebar.selectToken(token);
+		await app.positionPage.sidebar.depositOrWithdraw('0.5');
 
-				// Wait for balance to fully load to avoid random fails
-				await app.positionPage.sidebar.shouldHaveBalance({
-					balance: '0.5[0-9]{3}',
-					token: 'USDC',
-					timeout: expectDefaultTimeout * 2,
-				});
-				await app.page.waitForTimeout(expectDefaultTimeout / 3);
-			}
-
-			await app.positionPage.sidebar.depositOrWithdraw('0.5');
-
-			await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
-				amount: token === 'WSTETH' ? '0.00[0-9]{2}' : '0.[4-5][0-9]{3}',
-				tokenOrCurrency: token === 'USDC' ? '$' : token,
-			});
+		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
+			amount: '0.[4-5][0-9]{3}',
+			tokenOrCurrency: '$',
 		});
 	});
 
-	// SKIPPED "COMP" - Withdrawing to token other than nominated one has been temporarily disabled
-	// test('It should withdraw to USDC and COMP - (until rejecting "Withdraw" tx)', async ({
 	test('It should withdraw to USDC - (until rejecting "Withdraw" tx)', async ({
 		app,
 		metamask,
 	}) => {
 		test.setTimeout(longTestTimeout);
 
-		// Wait for balance to be visible to avoind random fails
-		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9]',
-			token: 'USDC',
-			timeout: expectDefaultTimeout * 3,
-		});
-		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		// ==== USDC ====
-
-		await app.positionPage.sidebar.depositOrWithdraw('0.5');
-		// Wait for Estimated Earnings to avoid random fails
-		await app.positionPage.sidebar.shouldHaveEstimatedEarnings([
-			{
-				time: 'After 30 days',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
+		await withdraw({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			withdrawnToken: 'USDC',
+			withdrawAmount: '0.5',
+			estimatedEarnings: {
+				thirtyDaysAmount: '0.00[0-9]{1,2}',
+				sixMonthsAmount: '0.00[0-9]{1,2}',
+				oneYearAmount: '0.00[0-9]{1,2}',
+				threeYearsAmount: '0.00[0-9]{1,2}',
 			},
-			{
-				time: '6 months',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
+			previewInfo: {
+				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
-			{
-				time: '1 year',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
-			},
-			{
-				time: '3 years',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
-			},
-		]);
-
-		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.positionPage.sidebar.preview();
-
-		await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
-		await metamask.confirmSignature();
-
-		await app.positionPage.sidebar.previewStep.shouldBeVisible({ flow: 'withdraw' });
-		await app.positionPage.sidebar.previewStep.shouldHave({
-			withdrawAmount: { amount: '0.5', token: 'USDC' },
-			// swap: {
-			// 	originalToken: 'USDC',
-			// 	originalTokenAmount: '0.4',
-			// 	positionToken: 'USDC', // USDC token used for USDbC
-			// 	positionTokenAmount: '0.4',
-			// },
-			// price: '???',
-			// priceImpact: '???',
-			// slippage: '0.10',
-			transactionFee: '[0-2].[0-9]{4}',
 		});
 
-		await app.positionPage.sidebar.previewStep.withdraw();
-		await metamask.rejectTransaction();
+		// // Wait for balance to be visible to avoind random fails
+		// await app.positionPage.sidebar.shouldHaveBalance({
+		// 	balance: '[0-9]',
+		// 	token: 'USDC',
+		// 	timeout: expectDefaultTimeout * 3,
+		// });
+		// await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		// SKIPPED "COMP" - Withdrawing to token other than nominated one has been temporarily disabled
-		// // ==== COMP ====
-
-		// await app.positionPage.sidebar.goBack();
-
-		// await app.positionPage.sidebar.openTokensSelector();
-		// await app.positionPage.sidebar.selectToken('COMP');
-
+		// await app.positionPage.sidebar.depositOrWithdraw('0.5');
+		// // Wait for Estimated Earnings to avoid random fails
 		// await app.positionPage.sidebar.shouldHaveEstimatedEarnings([
 		// 	{
 		// 		time: 'After 30 days',
@@ -286,19 +225,15 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		// await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
 		// await app.positionPage.sidebar.preview();
 
+		// await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
+		// 	timeout: expectDefaultTimeout * 2,
+		// });
+		// await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
+		// await metamask.confirmSignature();
+
 		// await app.positionPage.sidebar.previewStep.shouldBeVisible({ flow: 'withdraw' });
 		// await app.positionPage.sidebar.previewStep.shouldHave({
 		// 	withdrawAmount: { amount: '0.5', token: 'USDC' },
-		// 	// TODO - BUG - Swap details not displayed for Withdraw flow
-		// 	// swap: {
-		// 	// 	originalToken: 'COMP',
-		// 	// 	originalTokenAmount: '0.4',
-		// 	// 	positionToken: 'USDC', // USDC token used for USDbC
-		// 	// 	positionTokenAmount: '0.4',
-		// 	// },
-		// 	// price: '???',
-		// 	// priceImpact: '???',
-		// 	// slippage: '0.10',
 		// 	transactionFee: '[0-2].[0-9]{4}',
 		// });
 

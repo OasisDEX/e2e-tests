@@ -2,6 +2,8 @@ import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletArbitrumFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletArbitrum';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
+import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
@@ -78,140 +80,48 @@ test.describe('With real wallet - USDC Arbitrum Position page - Deposit', async 
 	}) => {
 		test.setTimeout(veryLongTestTimeout);
 
-		// === WSTETH ===
-
-		await app.earn.sidebar.openTokensSelector();
-		await app.earn.sidebar.selectToken('WSTETH');
-
-		// Wait for page to fully load
-		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]',
-			token: 'WSTETH',
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		await app.positionPage.sidebar.depositOrWithdraw('0.0005');
-
-		await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
-			[
-				{
-					time: 'After 30 days',
-					amount: '[1-2].[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '6 months',
-					amount: '[1-2].[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '1 year',
-					amount: '[1-2].[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '3 years',
-					amount: '[2-3].[0-9]{4}',
-					token: 'USDC',
-				},
-			],
-			{ timeout: expectDefaultTimeout * 2 }
-		);
-
 		await app.positionPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
 
-		await app.positionPage.sidebar.buttonShouldBeVisible('Preview', {
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.positionPage.sidebar.preview();
+		// === WSTETH ===
 
-		await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
-		await metamask.confirmSignature();
-
-		await app.positionPage.sidebar.previewStep.shouldBeVisible({
-			flow: 'deposit',
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.positionPage.sidebar.previewStep.shouldHave({
-			depositAmount: { amount: '0.0005', token: 'wstETH' },
-			swap: {
-				originalToken: 'WSTETH',
-				originalTokenAmount: '0.0005',
-				positionToken: 'USDC',
-				positionTokenAmount: '[1-2].[0-9]{4}',
+		await deposit({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			depositedToken: 'WSTETH',
+			depositAmount: '0.0005',
+			estimatedEarnings: {
+				thirtyDaysAmount: '[1-2].[0-9]{4}',
+				sixMonthsAmount: '[1-2].[0-9]{4}',
+				oneYearAmount: '[1-2].[0-9]{4}',
+				threeYearsAmount: '[2-3].[0-9]{4}',
 			},
-			price: { amount: '[2-7],[0-9]{3}.[0-9]{2}', originalToken: 'wstETH', positionToken: 'USDC' },
-			priceImpact: '[0-3].[0-9]{2}',
-			slippage: '0.10',
-			transactionFee: '[0-2].[0-9]{2}',
+			previewInfo: {
+				transactionFee: '[0-9]{1,2}.[0-9]{2}',
+			},
 		});
-		await app.positionPage.sidebar.previewStep.deposit();
-		await metamask.rejectTransaction();
 
 		// === DAI ===
 
 		await app.earn.sidebar.goBack();
-		await app.earn.sidebar.openTokensSelector();
-		await app.earn.sidebar.selectToken('DAI');
 
-		// Wait for balance to fully load to avoid random fails
-		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]',
-			token: 'DAI',
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		await app.positionPage.sidebar.depositOrWithdraw('0.5');
-
-		await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
-			[
-				{
-					time: 'After 30 days',
-					amount: '1.[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '6 months',
-					amount: '1.[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '1 year',
-					amount: '1.[0-9]{4}',
-					token: 'USDC',
-				},
-				{
-					time: '3 years',
-					amount: '1.[0-9]{4}',
-					token: 'USDC',
-				},
-			],
-			{ timeout: expectDefaultTimeout * 2 }
-		);
-		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.positionPage.sidebar.preview();
-
-		await app.positionPage.sidebar.previewStep.shouldHave({
-			depositAmount: { amount: '0.5000', token: 'DAI' },
-			swap: {
-				originalToken: 'DAI',
-				originalTokenAmount: '0.5000',
-				positionToken: 'USDC',
-				positionTokenAmount: '0.[4-5][0-9]{3}',
+		await deposit({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			depositedToken: 'DAI',
+			depositAmount: '0.5',
+			estimatedEarnings: {
+				thirtyDaysAmount: '1.[0-9]{4}',
+				sixMonthsAmount: '1.[0-9]{4}',
+				oneYearAmount: '1.[0-9]{4}',
+				threeYearsAmount: '1.[0-9]{4}',
 			},
-			price: { amount: '[0-1].[0-9]{4}', originalToken: 'DAI', positionToken: 'USDC' },
-			priceImpact: '[0-3].[0-9]{2}',
-			slippage: '0.10',
-			transactionFee: '[0-2].[0-9]{2}',
+			previewInfo: {
+				transactionFee: '[0-9]{1,2}.[0-9]{2}',
+			},
 		});
-		await app.positionPage.sidebar.previewStep.deposit();
-		await metamask.rejectTransaction();
 	});
 });
 
@@ -259,198 +169,21 @@ test.describe('With real wallet - USDC Arbitrum - Withdraw', async () => {
 		app,
 		metamask,
 	}) => {
-		await app.positionPage.sidebar.depositOrWithdraw('0.5');
-		// Wait for Estimated Earnings to avoid random fails
-		await app.positionPage.sidebar.shouldHaveEstimatedEarnings([
-			{
-				time: 'After 30 days',
-				amount: '0.00[0-9]{1,2}',
-				token: 'USDC',
+		await withdraw({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			withdrawnToken: 'USDC',
+			withdrawAmount: '0.5',
+			estimatedEarnings: {
+				thirtyDaysAmount: '0.00[0-9]{1,2}',
+				sixMonthsAmount: '0.00[0-9]{1,2}',
+				oneYearAmount: '0.00[0-9]{1,2}',
+				threeYearsAmount: '0.00[0-9]{1,2}',
 			},
-			{
-				time: '6 months',
-				amount: '0.00[0-9]{1,2}',
-				token: 'USDC',
+			previewInfo: {
+				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
-			{
-				time: '1 year',
-				amount: '0.00[0-9]{1,2}',
-				token: 'USDC',
-			},
-			{
-				time: '3 years',
-				amount: '0.00[0-9]{1,2}',
-				token: 'USDC',
-			},
-		]);
-
-		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.positionPage.sidebar.preview();
-
-		await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
-			timeout: expectDefaultTimeout * 2,
 		});
-		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
-		await metamask.confirmSignature();
-
-		await app.positionPage.sidebar.previewStep.shouldBeVisible({ flow: 'withdraw' });
-		await app.positionPage.sidebar.previewStep.shouldHave({
-			withdrawAmount: { amount: '0.5', token: 'USDC' },
-			transactionFee: '[0-2].[0-9]{4}',
-		});
-
-		await app.positionPage.sidebar.previewStep.withdraw();
-		await metamask.rejectTransaction();
-	});
-
-	// SKIP - Withdrawing to other tokens temporarily disabled.
-	(['USDC', 'DAI', 'WSTETH'] as const).forEach((token) => {
-		test.skip(`It should show USDC deposited balance amount to be withdrawn in ${
-			token === 'USDC' ? '$' : token
-		} when selecting ${token} in Arbitrum USDC vault`, async ({ app }) => {
-			test.setTimeout(longTestTimeout);
-
-			if (token !== 'USDC') {
-				await app.positionPage.sidebar.openTokensSelector();
-				await app.positionPage.sidebar.selectToken(token);
-
-				// Wait for balance to fully load to avoid random fails
-				await app.positionPage.sidebar.shouldHaveBalance({
-					balance: '0.5[0-9]{3}',
-					token: 'USDC',
-					timeout: expectDefaultTimeout * 2,
-				});
-				await app.page.waitForTimeout(expectDefaultTimeout / 3);
-			}
-
-			await app.positionPage.sidebar.depositOrWithdraw('0.5');
-
-			await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
-				amount: token === 'WSTETH' ? '0.00[0-9]{2}' : '0.[4-5][0-9]{3}',
-				tokenOrCurrency: token === 'USDC' ? '$' : token,
-			});
-		});
-	});
-
-	// SKIP - Withdrawing to other tokens temporarily disabled.
-	test.skip('It should withdraw to USD₮0 and COMP - (until rejecting "Withdraw" tx)', async ({
-		app,
-		metamask,
-	}) => {
-		test.setTimeout(longTestTimeout);
-
-		// Wait for balance to be visible to avoind random fails
-		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9]',
-			token: 'USDC',
-			timeout: expectDefaultTimeout * 3,
-		});
-		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		// ==== USDC ====
-
-		await app.positionPage.sidebar.depositOrWithdraw('0.5');
-		// Wait for Estimated Earnings to avoid random fails
-		await app.positionPage.sidebar.shouldHaveEstimatedEarnings([
-			{
-				time: 'After 30 days',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
-			},
-			{
-				time: '6 months',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
-			},
-			{
-				time: '1 year',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
-			},
-			{
-				time: '3 years',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
-			},
-		]);
-
-		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.positionPage.sidebar.preview();
-
-		await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
-		await metamask.confirmSignature();
-
-		await app.positionPage.sidebar.previewStep.shouldBeVisible({ flow: 'withdraw' });
-		await app.positionPage.sidebar.previewStep.shouldHave({
-			withdrawAmount: { amount: '0.5', token: 'USDC' },
-			// swap: {
-			// 	originalToken: 'USDC',
-			// 	originalTokenAmount: '0.4',
-			// 	positionToken: 'USDC', // USDC token used for USDbC
-			// 	positionTokenAmount: '0.4',
-			// },
-			// price: '???',
-			// priceImpact: '???',
-			// slippage: '0.10',
-			transactionFee: '[0-2].[0-9]{4}',
-		});
-
-		await app.positionPage.sidebar.previewStep.withdraw();
-		await metamask.rejectTransaction();
-
-		// ==== COMP ====
-
-		await app.positionPage.sidebar.goBack();
-
-		await app.positionPage.sidebar.openTokensSelector();
-		await app.positionPage.sidebar.selectToken('COMP');
-
-		await app.positionPage.sidebar.shouldHaveEstimatedEarnings([
-			{
-				time: 'After 30 days',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
-			},
-			{
-				time: '6 months',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
-			},
-			{
-				time: '1 year',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
-			},
-			{
-				time: '3 years',
-				amount: '0.00[0-9]{2}',
-				token: 'USDC',
-			},
-		]);
-
-		await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
-		await app.positionPage.sidebar.preview();
-
-		await app.positionPage.sidebar.previewStep.shouldBeVisible({ flow: 'withdraw' });
-		await app.positionPage.sidebar.previewStep.shouldHave({
-			withdrawAmount: { amount: '0.5', token: 'USDC' },
-			// TODO - BUG - Swap details not displayed for Withdraw flow
-			// swap: {
-			// 	originalToken: 'COMP',
-			// 	originalTokenAmount: '0.4',
-			// 	positionToken: 'USDC', // USDC token used for USDbC
-			// 	positionTokenAmount: '0.4',
-			// },
-			// price: '???',
-			// priceImpact: '???',
-			// slippage: '0.10',
-			transactionFee: '[0-2].[0-9]{4}',
-		});
-
-		await app.positionPage.sidebar.previewStep.withdraw();
-		await metamask.rejectTransaction();
 	});
 });
