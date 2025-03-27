@@ -23,6 +23,12 @@ const networkParameters = {
 		chainId: 10,
 		symbol: 'ETH',
 	},
+	sonic: {
+		name: 'Sonic',
+		rpcUrl: 'https://rpc.soniclabs.com',
+		chainId: 146,
+		symbol: 'S',
+	},
 };
 
 export const commonMetamaskSetup = async ({
@@ -45,7 +51,7 @@ export const addNetwork = async ({
 	network,
 }: {
 	metamask: MetaMask;
-	network: 'arbitrum' | 'base' | 'optimism';
+	network: 'arbitrum' | 'base' | 'optimism' | 'sonic';
 }) => {
 	await metamask.addNetwork(networkParameters[network]);
 };
