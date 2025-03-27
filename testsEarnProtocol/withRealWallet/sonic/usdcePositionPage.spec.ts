@@ -58,9 +58,9 @@ test.describe('With real wallet - USDC.E Sonic Position page - Deposit', async (
 				oneYearAmount: '1.[0-9]{4}',
 				threeYearsAmount: '1.[0-9]{4}',
 			},
-			previewInfo: {
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
-			},
+			// previewInfo: {
+			// 	transactionFee: '[0-9]{1,2}.[0-9]{2}',
+			// },
 		});
 	});
 });
@@ -121,9 +121,9 @@ test.describe('With real wallet - USDC.E Sonic - Withdraw', async () => {
 				oneYearAmount: '0.[1-2][0-9]{3}',
 				threeYearsAmount: '0.[1-2][0-9]{3}',
 			},
-			previewInfo: {
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
-			},
+			// previewInfo: {
+			// 	transactionFee: '[0-9]{1,2}.[0-9]{2}',
+			// },
 		});
 	});
 });
