@@ -10,6 +10,8 @@ export type EarnTokens =
 	| 'USDBC'
 	| 'USDbC'
 	| 'USDC'
+	| 'USDC.E'
+	| 'USDC.e'
 	| 'USDS'
 	| 'USDT'
 	| 'USD₮0'

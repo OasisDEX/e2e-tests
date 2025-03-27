@@ -188,56 +188,5 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
 		});
-
-		// // Wait for balance to be visible to avoind random fails
-		// await app.positionPage.sidebar.shouldHaveBalance({
-		// 	balance: '[0-9]',
-		// 	token: 'USDC',
-		// 	timeout: expectDefaultTimeout * 3,
-		// });
-		// await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		// await app.positionPage.sidebar.depositOrWithdraw('0.5');
-		// // Wait for Estimated Earnings to avoid random fails
-		// await app.positionPage.sidebar.shouldHaveEstimatedEarnings([
-		// 	{
-		// 		time: 'After 30 days',
-		// 		amount: '0.00[0-9]{2}',
-		// 		token: 'USDC',
-		// 	},
-		// 	{
-		// 		time: '6 months',
-		// 		amount: '0.00[0-9]{2}',
-		// 		token: 'USDC',
-		// 	},
-		// 	{
-		// 		time: '1 year',
-		// 		amount: '0.00[0-9]{2}',
-		// 		token: 'USDC',
-		// 	},
-		// 	{
-		// 		time: '3 years',
-		// 		amount: '0.00[0-9]{2}',
-		// 		token: 'USDC',
-		// 	},
-		// ]);
-
-		// await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
-		// await app.positionPage.sidebar.preview();
-
-		// await app.positionPage.sidebar.termsAndConditions.shouldBeVisible({
-		// 	timeout: expectDefaultTimeout * 2,
-		// });
-		// await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
-		// await metamask.confirmSignature();
-
-		// await app.positionPage.sidebar.previewStep.shouldBeVisible({ flow: 'withdraw' });
-		// await app.positionPage.sidebar.previewStep.shouldHave({
-		// 	withdrawAmount: { amount: '0.5', token: 'USDC' },
-		// 	transactionFee: '[0-2].[0-9]{4}',
-		// });
-
-		// await app.positionPage.sidebar.previewStep.withdraw();
-		// await metamask.rejectTransaction();
 	});
 });

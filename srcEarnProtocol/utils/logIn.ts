@@ -16,7 +16,7 @@ export const logInWithWalletAddress = async ({
 	metamask: MetaMask;
 	app: App;
 	wallet: walletTypes;
-	network?: 'Arbitrum';
+	network?: 'Arbitrum' | 'Sonic';
 	shortenedWalletAddress?: string;
 }) => {
 	await app.header.logIn();
