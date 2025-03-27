@@ -1,7 +1,7 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Page } from '@playwright/test';
 import { VaultsCarousel } from './vaultsCarousel';
-import { expectDefaultTimeout } from 'utils/config';
+import { earnProtocolBaseUrl, expectDefaultTimeout } from 'utils/config';
 
 export class LandingPage {
 	readonly page: Page;
@@ -24,7 +24,7 @@ export class LandingPage {
 	@step
 	async openPage() {
 		await expect(async () => {
-			await this.page.goto('https://oasisapp.dev');
+			await this.page.goto(earnProtocolBaseUrl.split('/earn')[0]);
 			await expect(
 				this.page.getByText('Automated Exposure to DeFi'),
 				'"Automated Exposure..." should be visible'
