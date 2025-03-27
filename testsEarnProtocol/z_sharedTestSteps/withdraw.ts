@@ -106,8 +106,11 @@ export const withdraw = async ({
 		timeout: expectDefaultTimeout * 2,
 	});
 
+	const previewWithdrawnToken: EarnTokens =
+		withdrawnToken == 'WSTETH' ? 'wstETH' : withdrawnToken == 'USDC.E' ? 'USDC.e' : withdrawnToken;
+
 	await app.positionPage.sidebar.previewStep.shouldHave({
-		withdrawAmount: { amount: withdrawAmount, token: withdrawnToken },
+		withdrawAmount: { amount: withdrawAmount, token: previewWithdrawnToken },
 		swap: previewInfo?.swap
 			? {
 					originalToken: withdrawnToken,
@@ -119,7 +122,7 @@ export const withdraw = async ({
 		price: previewInfo?.price
 			? {
 					amount: previewInfo.price.amount,
-					originalToken: withdrawnToken,
+					originalToken: previewWithdrawnToken,
 					positionToken: nominatedToken,
 			  }
 			: undefined,

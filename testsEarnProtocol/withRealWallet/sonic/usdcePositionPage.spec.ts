@@ -7,7 +7,7 @@ import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
 
-test.describe.skip('With real wallet - USDC Sonic Position page - Deposit', async () => {
+test.describe('With real wallet - USDC.E Sonic Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -65,7 +65,7 @@ test.describe.skip('With real wallet - USDC Sonic Position page - Deposit', asyn
 	});
 });
 
-test.describe.skip('With real wallet - USDC Arbitrum - Withdraw', async () => {
+test.describe('With real wallet - USDC.E Sonic - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -73,7 +73,7 @@ test.describe.skip('With real wallet - USDC Arbitrum - Withdraw', async () => {
 			metamask,
 			app,
 			wallet: 'MetaMask',
-			network: 'Arbitrum',
+			network: 'Sonic',
 		});
 
 		await app.positionPage.open(
@@ -83,7 +83,7 @@ test.describe.skip('With real wallet - USDC Arbitrum - Withdraw', async () => {
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '0.5000',
-			token: 'USDC',
+			token: 'USDC.E',
 			timeout: expectDefaultTimeout * 2,
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
@@ -94,32 +94,32 @@ test.describe.skip('With real wallet - USDC Arbitrum - Withdraw', async () => {
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	test('It should show maximum USDC balance amount to be withdrawn in $ - Arbitrum USDC position', async ({
+	test('It should show USDC.E balance amount to be withdrawn in $ - Arbitrum USDC position', async ({
 		app,
 	}) => {
-		await app.positionPage.sidebar.depositOrWithdraw('0.5');
+		await app.positionPage.sidebar.depositOrWithdraw('0.4');
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
-			amount: '0.[4-5][0-9]{3}',
+			amount: '0.[3-4][0-9]{3}',
 			tokenOrCurrency: '$',
 		});
 	});
 
-	test('It should withdraw to USDC - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to USDC.E - (until rejecting "Withdraw" tx)', async ({
 		app,
 		metamask,
 	}) => {
 		await withdraw({
 			metamask,
 			app,
-			nominatedToken: 'USDC',
-			withdrawnToken: 'USDC',
-			withdrawAmount: '0.5',
+			nominatedToken: 'USDC.E',
+			withdrawnToken: 'USDC.E',
+			withdrawAmount: '0.4',
 			estimatedEarnings: {
-				thirtyDaysAmount: '0.00[0-9]{1,2}',
-				sixMonthsAmount: '0.00[0-9]{1,2}',
-				oneYearAmount: '0.00[0-9]{1,2}',
-				threeYearsAmount: '0.00[0-9]{1,2}',
+				thirtyDaysAmount: '0.[1-2][0-9]{3}',
+				sixMonthsAmount: '0.[1-2][0-9]{3}',
+				oneYearAmount: '0.[1-2][0-9]{3}',
+				threeYearsAmount: '0.[1-2][0-9]{3}',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
