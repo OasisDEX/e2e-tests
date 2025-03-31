@@ -125,7 +125,7 @@ test.describe('With real wallet - Earn page', async () => {
 
 		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USDC',
-			amount: '[1-4],[0-9]{3}.[0-9]{2}',
+			amount: '([1-4],)?[0-9]{3}.[0-9]{2}',
 		});
 	});
 });

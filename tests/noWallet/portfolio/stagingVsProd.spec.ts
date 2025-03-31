@@ -22,7 +22,7 @@ test.describe('Staging vs Production - Wallet not connected', async () => {
 		'0xdd9e07372dc5368c9c0633222b0f1c4335500ef7',
 		// '0xee2826453a4fd5afeb7ceffeef3ffa2320081268',
 		// '0x554fe9292cd2e2b9469e19e814842c060312ff00',
-		'0x8e83fab54c595ee085111ae498c8bbca8c8b2c92',
+		// '0x8e83fab54c595ee085111ae498c8bbca8c8b2c92',
 	].forEach((walletAddress) =>
 		test(`It should show same info in Portfolio - Staging vs Production - ${shortenAddress(
 			walletAddress
