@@ -44,23 +44,21 @@ export const morphoEthereumEarnPools_1 = [
 
 export const morphoEthereumEarnPools_2 = [
 	'USDE-DAI-1',
-	'USDE-DAI-3',
 	'SUSDE-USDT',
-	'OSETH-ETH',
 	'WSTETH-ETH-1',
 	'WSTETH-ETH-2',
 	'WSTETH-ETH-3',
 	'WEETH-ETH',
-	'EZETH-ETH',
 	'SUSDE-DAI-1',
 	'SUSDE-DAI-3',
 ];
+// 'USDE-DAI-3', --> NO LIQUIDITY
+// 'EZETH-ETH', --> NO LIQUIDITY
+// 'OSETH-ETH',  --> NO LIQUIDITY
 // 'WOETH-ETH', --> NO LIQUIDITY
 // 'USDE-DAI-2', --> NO LIQUIDITY
 
 export const morphoEthereumBorrowPools = [
-	'OSETH-ETH',
-	'EZETH-ETH',
 	'SUSDE-DAI-3',
 	'SUSDE-DAI-4',
 	'SUSDE-USDT',
@@ -69,6 +67,8 @@ export const morphoEthereumBorrowPools = [
 	'SWBTC-WBTC',
 	'RSWETH-ETH',
 ];
+// 'OSETH-ETH', --> NO LIQUIDITY
+//'EZETH-ETH', --> NO LIQUIDITY
 // 'USDE-DAI-2', --> NO LIQUIDITY
 // 'RSETH-ETH', --> NO LIQUIDITY
 // 'WOETH-ETH', --> NO LIQUIDITY

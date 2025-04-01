@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletArbitrumFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletArbitrum';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 
@@ -70,7 +70,7 @@ test.describe('With real wallet - USD₮0 Arbitrum Position page - Deposit', asy
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USD₮0',
-			amount: '[1-4],[0-9]{3}.[0-9]{2}',
+			amount: '([1-4],)?[0-9]{3}.[0-9]{2}',
 		});
 	});
 

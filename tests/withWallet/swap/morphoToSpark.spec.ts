@@ -5,7 +5,7 @@ import {
 	test,
 } from 'tests/sharedTestSteps/openNewPositionAndSwap';
 import { openPosition, swapPosition } from 'tests/sharedTestSteps/positionManagement';
-import { extremelyLongTestTimeout, gigaTestTimeout, longTestTimeout } from 'utils/config';
+import { extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 
@@ -25,7 +25,8 @@ import * as tenderly from 'utils/tenderly';
 
 test.describe('Swap from Morpho to Spark', async () => {
 	let app: App;
-	let forkId: string;
+	let vtId: string;
+	let vtRPC: string;
 	let walletAddress: string;
 
 	test.beforeEach(async ({ metamask, page }) => {
@@ -33,14 +34,14 @@ test.describe('Swap from Morpho to Spark', async () => {
 
 		app = new App(page);
 
-		({ forkId, walletAddress } = await setup({
+		({ vtId, vtRPC, walletAddress } = await setup({
 			metamask,
 			app,
 			network: 'mainnet',
 		}));
 
 		await tenderly.setTokenBalance({
-			forkId,
+			vtRPC,
 			walletAddress,
 			network: 'mainnet',
 			token: 'WSTETH',
@@ -49,7 +50,7 @@ test.describe('Swap from Morpho to Spark', async () => {
 	});
 
 	test.afterEach(async () => {
-		await tenderly.deleteFork(forkId);
+		await tenderly.deleteFork(vtId);
 	});
 	test('It should OPEN a Morpho Multiply WSTETH/USDT position & then SWAP it to Spark ETH/DAI', async ({
 		metamask,
@@ -65,7 +66,7 @@ test.describe('Swap from Morpho to Spark', async () => {
 			await openPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				deposit: {
 					token: 'WSTETH',
 					amount: '3',
@@ -82,7 +83,7 @@ test.describe('Swap from Morpho to Spark', async () => {
 			await swapPosition({
 				metamask,
 				app,
-				forkId,
+				vtId,
 				reason: 'Switch to higher max Loan To Value',
 				originalProtocol: 'Morpho',
 				targetProtocol: 'Spark',
