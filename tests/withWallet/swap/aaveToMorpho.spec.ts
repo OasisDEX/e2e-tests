@@ -17,17 +17,15 @@ import {
 		{
 			pool: 'WBTC-DAI',
 			positionType: 'borrow',
-			targetPools: [
-				{ colToken: 'WSTETH', debtToken: 'ETH-2' },
-				{ colToken: 'WSTETH', debtToken: 'USDC' },
-			],
+			targetPools: [{ colToken: 'WSTETH', debtToken: 'ETH-2' }],
 		},
 		{
 			pool: 'ETH-DAI',
 			positionType: 'multiply',
 			targetPools: [
+				{ colToken: 'WSTETH', debtToken: 'USDC' },
 				// { colToken: 'EZETH', debtToken: 'ETH' }, --> Low liquidity
-				{ colToken: 'OSETH', debtToken: 'ETH' },
+				// { colToken: 'OSETH', debtToken: 'ETH' }, --> Low liquidity
 			],
 		},
 		{

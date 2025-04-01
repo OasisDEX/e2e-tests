@@ -1,6 +1,7 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
+import { Bridge } from './bridge';
 import { Overview } from './overview';
 import { RebalanceActivity } from './rebalanceActivity';
 import { Rewards } from './rewards';
@@ -15,6 +16,8 @@ export class Portfolio {
 	readonly page: Page;
 
 	readonly portfolioSecondHeaderLocator: Locator;
+
+	readonly bridge: Bridge;
 
 	readonly overview: Overview;
 
@@ -35,6 +38,7 @@ export class Portfolio {
 		this.portfolioSecondHeaderLocator = this.page.locator(
 			'[class*="PortfolioHeader_secondRowWrapper_"]'
 		);
+		this.bridge = new Bridge(page);
 		this.overview = new Overview(page);
 		this.rebalanceActivity = new RebalanceActivity(page);
 		this.rewards = new Rewards(page);
@@ -50,6 +54,11 @@ export class Portfolio {
 			this.page.getByRole('heading', { name: 'Portfolio' }),
 			'"Portfolio" header shouldbe visible'
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
+	}
+
+	@step
+	async openBridgePage() {
+		await this.page.getByRole('button', { name: 'Bridge', exact: true }).click();
 	}
 
 	@step
