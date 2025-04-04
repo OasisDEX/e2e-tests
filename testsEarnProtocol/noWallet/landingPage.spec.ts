@@ -1,7 +1,7 @@
 import { expect, test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
-test.describe.skip('Landin page', async () => {
+test.describe('Landing page', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 40_000);
 
@@ -12,14 +12,15 @@ test.describe.skip('Landin page', async () => {
 		await app.landingPage.shouldShowVaultCard();
 	});
 
-	(['Right', 'Left'] as const).forEach((direction) => {
+	(['right', 'left'] as const).forEach((direction) => {
 		test(`It should show vault card to the ${direction}`, async ({ app }) => {
 			// To avoid flakiness
 			await app.page.waitForTimeout(2_000);
 
 			// Get vault info for current active vault in carousel
-			const originalVaultCard =
-				await app.landingPage.vaultsCarousel.activeSlide.vaultCard.header.getDetails();
+			const originalVaultCard = await app.landingPage.vaultsCarousel.activeSlide.getDetails({
+				device: 'Desktop',
+			});
 
 			await app.landingPage.vaultsCarousel.arrowButtonShouldBevisible();
 
@@ -30,8 +31,9 @@ test.describe.skip('Landin page', async () => {
 				});
 
 				// Get vault info for current active vault in carousel
-				const newVaultCard =
-					await app.landingPage.vaultsCarousel.activeSlide.vaultCard.header.getDetails();
+				const newVaultCard = await app.landingPage.vaultsCarousel.activeSlide.getDetails({
+					device: 'Desktop',
+				});
 
 				expect(
 					originalVaultCard.token == newVaultCard.token &&

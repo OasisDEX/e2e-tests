@@ -7,7 +7,7 @@ import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - Position page - Base - Deposit', async () => {
+test.describe('With real wallet - Position page - Base EURC - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -128,7 +128,7 @@ test.describe('With real wallet - Position page - Base - Deposit', async () => {
 	});
 });
 
-test.describe('With real wallet - Base - Withdraw', async () => {
+test.describe('With real wallet - Position page - Base EURC - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 45_000);
 

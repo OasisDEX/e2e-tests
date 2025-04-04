@@ -35,7 +35,9 @@ export class LandingPage {
 	@step
 	async shouldShowVaultCard() {
 		await expect(
-			this.page.locator('[class*="_vaultCardHeaderWrapper"]').nth(0),
+			this.page
+				.locator('[class*="homepageCarouselWrapper"] [class*="vaultCardHomepageContentWrapper"]')
+				.first(),
 			'Vault card should be visible'
 		).toBeVisible();
 	}
