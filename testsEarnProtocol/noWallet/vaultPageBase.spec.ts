@@ -13,4 +13,21 @@ test.describe('Vault page - Base - Specific user page', async () => {
 		expect(totalAllocation).toBeGreaterThan(99);
 		expect(totalAllocation).toBeLessThanOrEqual(100);
 	});
+
+	test('It should show "How itworks" page', async ({ app }) => {
+		await app.vaultPage.howItAllWorks();
+
+		await app.vaultPage.howItWorks.shouldHaveHeader('How it all works');
+		await app.vaultPage.howItWorks.shouldLinkToLitePaper();
+		await app.vaultPage.howItWorks.shouldHaveTabActive('Rebalance mechanism');
+		await app.vaultPage.howItWorks.shouldHaveImage('how-it-works');
+
+		await app.vaultPage.howItWorks.selectTab('Governance');
+		await app.vaultPage.howItWorks.shouldHaveTabActive('Governance');
+		await app.vaultPage.howItWorks.shouldHaveImage('governance');
+
+		await app.vaultPage.howItWorks.shouldHaveHeader('Lower Risk Historical Yields');
+
+		await app.vaultPage.howItWorks.shouldHaveHeader('Security');
+	});
 });
