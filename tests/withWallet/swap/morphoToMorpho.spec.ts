@@ -9,10 +9,7 @@ import {
 		{
 			pool: 'SUSDE-DAI-1',
 			positionType: 'borrow',
-			targetPools: [
-				{ colToken: 'WBTC', debtToken: 'USDC' },
-				{ colToken: 'WSTETH', debtToken: 'ETH-1' },
-			],
+			targetPools: [{ colToken: 'WBTC', debtToken: 'USDC' }],
 		},
 		{
 			pool: 'USDE-DAI-1',
@@ -32,7 +29,8 @@ import {
 			pool: 'MKR-USDC',
 			positionType: 'multiply',
 			targetPools: [
-				{ colToken: 'SUSDE', debtToken: 'DAI-3' },
+				{ colToken: 'WSTETH', debtToken: 'ETH-1' },
+				// { colToken: 'SUSDE', debtToken: 'DAI-3' }, -- NO LIQUIDITY
 				// { colToken: 'SUSDE', debtToken: 'DAI-4' }, -- NO LIQUIDITY
 			],
 		},
