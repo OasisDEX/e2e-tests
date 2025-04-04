@@ -1,10 +1,13 @@
 import { expect, Page } from '@playwright/test';
+import { HowItWorks } from './howItWorks';
 import { VaultExposure } from './vaultExposure';
 import { VaultSidebar } from '../vaultSidebar';
 import { step } from '#noWalletFixtures';
 
 export class VaultPage {
 	readonly page: Page;
+
+	readonly howItWorks: HowItWorks;
 
 	readonly exposure: VaultExposure;
 
@@ -13,6 +16,7 @@ export class VaultPage {
 	constructor(page: Page) {
 		this.page = page;
 		this.exposure = new VaultExposure(page);
+		this.howItWorks = new HowItWorks(page);
 		this.sidebar = new VaultSidebar(page, this.page.locator('[class*="_sidebarWrapper_"]'));
 	}
 
@@ -43,5 +47,13 @@ export class VaultPage {
 		await expect(
 			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Current APY") span').first()
 		).toContainText(regExp);
+	}
+
+	@step
+	async howItAllWorks() {
+		await this.page
+			.getByRole('link')
+			.filter({ has: this.page.getByText('How it all works') })
+			.click();
 	}
 }
