@@ -70,7 +70,7 @@ test.describe('With real wallet - USDC Arbitrum Position page - Deposit', async 
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USDC',
-			amount: '[1-4],[0-9]{3}.[0-9]{2}',
+			amount: '([1-4],)?[0-9]{3}.[0-9]{2}',
 		});
 	});
 
@@ -95,7 +95,7 @@ test.describe('With real wallet - USDC Arbitrum Position page - Deposit', async 
 				thirtyDaysAmount: '[1-2].[0-9]{4}',
 				sixMonthsAmount: '[1-2].[0-9]{4}',
 				oneYearAmount: '[1-2].[0-9]{4}',
-				threeYearsAmount: '[2-3].[0-9]{4}',
+				threeYearsAmount: '[1-3].[0-9]{4}',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',

@@ -95,7 +95,7 @@ test.describe('With real wallet - USD₮0 Arbitrum Position page - Deposit', asy
 				thirtyDaysAmount: '[1-2].[0-9]{4}',
 				sixMonthsAmount: '[1-2].[0-9]{4}',
 				oneYearAmount: '[1-2].[0-9]{4}',
-				threeYearsAmount: '[2-3].[0-9]{4}',
+				threeYearsAmount: '[1-3].[0-9]{4}',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',

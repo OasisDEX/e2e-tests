@@ -189,7 +189,8 @@ test.describe('No-wallet connected - Rays', async () => {
 		await app.position.manage.shouldHaveAutomationTriggerEarnRays();
 	});
 
-	test('It should show Rays to be reduced - Remove automation - Stop-Loss @regression', async ({
+	// SKIP - Stop-Loss executed - New position needed for test
+	test.skip('It should show Rays to be reduced - Remove automation - Stop-Loss @regression', async ({
 		app,
 	}) => {
 		await app.position.openPage('/ethereum/aave/v3/multiply/RETH-DAI/1276#protection');

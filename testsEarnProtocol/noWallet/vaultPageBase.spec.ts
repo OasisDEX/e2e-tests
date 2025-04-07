@@ -14,7 +14,7 @@ test.describe('Vault page - Base - Specific user page', async () => {
 		expect(totalAllocation).toBeLessThanOrEqual(100);
 	});
 
-	test('It should show "How itworks" page', async ({ app }) => {
+	test('It should show "How it works" page', async ({ app }) => {
 		await app.vaultPage.howItAllWorks();
 
 		await app.vaultPage.howItWorks.shouldHaveHeader('How it all works');
