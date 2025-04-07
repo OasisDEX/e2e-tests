@@ -15,7 +15,8 @@ test.describe('Open exisiting position pages - Aave v3 Arbitrum', async () => {
 		});
 	});
 
-	test('It should open an existing Aave V3 Arbitrum Borrow ETH/DAI position page @regression', async ({
+	// SKIP - Position liquidated - New position needed for test
+	test.skip('It should open an existing Aave V3 Arbitrum Borrow ETH/DAI position page @regression', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);

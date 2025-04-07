@@ -14,7 +14,8 @@ test.describe('Portfolio - Automations', async () => {
 		]);
 	});
 
-	test('Portfolio - Should show current status of the position automations - Stop-Loss - Aave V3 Multiply - Ethereum @regression', async ({
+	// SKIP - Stop-Loss executed - New position needed for test
+	test.skip('Portfolio - Should show current status of the position automations - Stop-Loss - Aave V3 Multiply - Ethereum @regression', async ({
 		app,
 	}) => {
 		await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F', { withPositions: true });
