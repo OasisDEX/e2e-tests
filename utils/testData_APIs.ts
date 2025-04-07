@@ -1570,7 +1570,7 @@ export const validPayloadsAaveV3Ethereum = {
 				debt: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48',
 			},
 			triggerData: {
-				executionLTV: '6500',
+				executionLTV: '7900',
 				maxBaseFee: '300',
 				targetLTV: '3800',
 				useMinSellPrice: false,
