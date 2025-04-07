@@ -39,7 +39,10 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Ethereum @regre
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Update existing automation - Profit in debt - Valid payload data', async ({ request }) => {
+	// SKIP - Stop-Loss executed - New position needed
+	test.skip('Update existing automation - Profit in debt - Valid payload data', async ({
+		request,
+	}) => {
 		// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
 		// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1586#optimization
 

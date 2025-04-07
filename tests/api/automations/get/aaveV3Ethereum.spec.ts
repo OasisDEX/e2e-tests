@@ -185,84 +185,88 @@ test.describe('API tests - GET - Auto Buy - Aave V3 - Ethereum', async () => {
 	});
 });
 
-test.describe('API tests - GET - Stop-Loss and Auto Take Profit - Aave V3 - Ethereum', async () => {
-	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
-	// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1586#optimization
+// SKIP - Stop-Loss executed - New position needed for tests
+test.describe.skip(
+	'API tests - GET - Stop-Loss and Auto Take Profit - Aave V3 - Ethereum',
+	async () => {
+		// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
+		// Position link: https://staging.summer.fi/ethereum/aave/v3/multiply/ETH-USDC/1586#optimization
 
-	test('Get automation - Valid payload @regression', async ({ request }) => {
-		const response = await request.get(getAutomationEndpoint, {
-			params: stoplossAndTakeProfitDefaultParams,
+		test('Get automation - Valid payload @regression', async ({ request }) => {
+			const response = await request.get(getAutomationEndpoint, {
+				params: stoplossAndTakeProfitDefaultParams,
+			});
+
+			const respJSON = await response.json();
+
+			expect(respJSON).toMatchObject(aaveV3EthereumStopLossAndProfitResponse);
 		});
 
-		const respJSON = await response.json();
+		test('Get automation - Without "chainId"', async ({ request }) => {
+			const { chainId, ...paramsWithoutChainId } = stoplossAndTakeProfitDefaultParams;
 
-		expect(respJSON).toMatchObject(aaveV3EthereumStopLossAndProfitResponse);
-	});
+			const response = await request.get(getAutomationEndpoint, {
+				params: paramsWithoutChainId,
+			});
 
-	test('Get automation - Without "chainId"', async ({ request }) => {
-		const { chainId, ...paramsWithoutChainId } = stoplossAndTakeProfitDefaultParams;
+			const respJSON = await response.json();
 
-		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutChainId,
+			expect(respJSON).toMatchObject(responses.missingChainIdGetRequest);
 		});
 
-		const respJSON = await response.json();
+		test('Get automation - Wrong data type - "chainId"', async ({ request }) => {
+			const response = await request.get(getAutomationEndpoint, {
+				params: { ...stoplossAndTakeProfitDefaultParams, chainId: true },
+			});
 
-		expect(respJSON).toMatchObject(responses.missingChainIdGetRequest);
-	});
+			const respJSON = await response.json();
 
-	test('Get automation - Wrong data type - "chainId"', async ({ request }) => {
-		const response = await request.get(getAutomationEndpoint, {
-			params: { ...stoplossAndTakeProfitDefaultParams, chainId: true },
+			expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
 		});
 
-		const respJSON = await response.json();
+		test('Get automation - Wrong value - "chainId"', async ({ request }) => {
+			const response = await request.get(getAutomationEndpoint, {
+				params: { ...stoplossAndTakeProfitDefaultParams, chainId: 111111 },
+			});
 
-		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
-	});
+			const respJSON = await response.json();
 
-	test('Get automation - Wrong value - "chainId"', async ({ request }) => {
-		const response = await request.get(getAutomationEndpoint, {
-			params: { ...stoplossAndTakeProfitDefaultParams, chainId: 111111 },
+			expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
 		});
 
-		const respJSON = await response.json();
+		test('Get automation - Without "account"', async ({ request }) => {
+			const { account, ...paramsWithoutAccount } = stoplossAndTakeProfitDefaultParams;
 
-		expect(respJSON).toMatchObject(responses.wrongChainIdGetRequest);
-	});
+			const response = await request.get(getAutomationEndpoint, {
+				params: paramsWithoutAccount,
+			});
 
-	test('Get automation - Without "account"', async ({ request }) => {
-		const { account, ...paramsWithoutAccount } = stoplossAndTakeProfitDefaultParams;
+			const respJSON = await response.json();
 
-		const response = await request.get(getAutomationEndpoint, {
-			params: paramsWithoutAccount,
+			expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 		});
 
-		const respJSON = await response.json();
+		test('Get automation - Wrong data type - "account"', async ({ request }) => {
+			const response = await request.get(getAutomationEndpoint, {
+				params: { ...stoplossAndTakeProfitDefaultParams, account: true },
+			});
 
-		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
-	});
+			const respJSON = await response.json();
 
-	test('Get automation - Wrong data type - "account"', async ({ request }) => {
-		const response = await request.get(getAutomationEndpoint, {
-			params: { ...stoplossAndTakeProfitDefaultParams, account: true },
+			expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 		});
 
-		const respJSON = await response.json();
+		test('Get automation - Wrong value - "account"', async ({ request }) => {
+			const response = await request.get(getAutomationEndpoint, {
+				params: { ...stoplossAndTakeProfitDefaultParams, account: '0xwrong' },
+			});
 
-		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
-	});
+			const respJSON = await response.json();
 
-	test('Get automation - Wrong value - "account"', async ({ request }) => {
-		const response = await request.get(getAutomationEndpoint, {
-			params: { ...stoplossAndTakeProfitDefaultParams, account: '0xwrong' },
+			expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
 		});
-
-		const respJSON = await response.json();
-
-		expect(respJSON).toMatchObject(responses.wrongAccountGetRequest);
-	});
-});
+	}
+);
 
 // SKIP - Test to be reviewed
 test.describe.skip('API tests - GET - Trailing Stop-Loss - Aave V3 - Ethereum', async () => {

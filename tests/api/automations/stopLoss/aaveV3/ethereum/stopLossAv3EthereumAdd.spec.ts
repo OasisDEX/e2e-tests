@@ -280,7 +280,8 @@ test.describe('API tests - Stop-Loss - Add - Aave V3 - Ethereum @regression', as
 		expect(respJSON).toMatchObject(responses.wrongTriggerDataStopLoss);
 	});
 
-	test('Add automation - Trigger already exists', async ({ request }) => {
+	// SKIP - Stop-Loss executed - New position needed for tests
+	test.skip('Add automation - Trigger already exists', async ({ request }) => {
 		const response = await request.post(stopLossEndpoint, {
 			data: { ...validPayloadsAaveV3Ethereum.stopLoss.updateCloseToCollateral, action: 'add' },
 		});
