@@ -137,7 +137,8 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', asyn
 		expect(respJSON).toMatchObject(validResponse);
 	});
 
-	test('Update non-existing automation', async ({ request }) => {
+	// SKIP - Position liquidated - New position needed
+	test.skip('Update non-existing automation', async ({ request }) => {
 		const response = await request.post(autoTakeProfit, {
 			data: {
 				...validPayloadsAaveV3Arbitrum.autoTakeProfit.profitInDebt,

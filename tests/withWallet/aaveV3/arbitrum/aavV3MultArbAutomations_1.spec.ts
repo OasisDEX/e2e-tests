@@ -39,7 +39,8 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 		await app.page.close();
 	});
 
-	test('It should set Auto-Buy, Auto-Sell & Regular Stop-Loss on an Aave v3 Arbitrum Multiply position @regression', async ({
+	// SKIP - Position liquidated - NEw position needed
+	test.skip('It should set Auto-Buy, Auto-Sell & Regular Stop-Loss on an Aave v3 Arbitrum Multiply position @regression', async ({
 		metamask,
 	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
