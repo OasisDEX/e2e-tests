@@ -146,7 +146,8 @@ test.describe('API tests - Auto-Sell - Update - Aave V3 - Arbitrum', async () =>
 		});
 	});
 
-	test('Update non-existing automation', async ({ request }) => {
+	// SKIP - Position liquidated - New position needed
+	test.skip('Update non-existing automation', async ({ request }) => {
 		const response = await request.post(autoSellEndpoint, {
 			data: {
 				...validPayloadsAaveV3Arbitrum.autoSell.addWithoutMinSellPrice,

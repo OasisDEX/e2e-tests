@@ -9,7 +9,7 @@ test.describe('Other tests', async () => {
 		await app.waitForAppToBeStable();
 	});
 
-	test('It should accep cookies banner', async ({ app }) => {
+	test('It should accept cookies banner', async ({ app }) => {
 		await app.banners.cookies.accept();
 		await app.banners.cookies.shouldBeNotVisible();
 	});

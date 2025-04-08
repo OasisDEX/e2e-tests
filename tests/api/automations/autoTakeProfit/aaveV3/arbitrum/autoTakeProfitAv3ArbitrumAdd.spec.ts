@@ -23,7 +23,8 @@ const validResponse = autoTakeProfitResponse({
 	},
 });
 
-test.describe('API tests - Auto Take Profit - Add - Aave V3 - Arbitrum', async () => {
+// SKIP - Position liquidated - New position needed
+test.describe.skip('API tests - Auto Take Profit - Add - Aave V3 - Arbitrum', async () => {
 	// Old test wallet: 0x10649c79428d718621821Cf6299e91920284743F
 	// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/ETH-DAI/1
 
