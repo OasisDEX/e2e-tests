@@ -133,8 +133,10 @@ test.describe('No-wallet connected - Rays', async () => {
 		});
 	});
 
-	test('It should show Automation Boost Rays - With an automation set up', async ({ app }) => {
-		await app.position.openPage('/ethereum/aave/v3/multiply/RETH-DAI/1276#protection');
+	// SKIP - Position liquidated - New position needed
+	test.skip('It should show Automation Boost Rays - With an automation set up', async ({ app }) => {
+		// await app.position.openPage('/ethereum/aave/v3/multiply/RETH-DAI/1276#protection');
+		await app.position.openPage('/ethereum/morphoblue/multiply/WBTC-USDC/2637#protection');
 
 		// Stop-Loss
 		await app.position.manage.shouldHaveAutomationTriggerEarnRays();
