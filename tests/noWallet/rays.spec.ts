@@ -125,10 +125,10 @@ test.describe('No-wallet connected - Rays', async () => {
 	test('It should show position Rays - Overview & Manage - With Protection set up', async ({
 		app,
 	}) => {
-		await app.position.openPage('/ethereum/aave/v3/multiply/RETH-DAI/1276#overview');
+		await app.position.openPage('/ethereum/morphoblue/multiply/WBTC-USDC/2637#overview');
 		await app.position.overview.shouldHaveRays('0.0[0-9]{3}');
 		await app.position.manage.shouldHaveAutomationBoostRays({
-			raysCount: '0.0[0-9]{3}',
+			raysCount: '0.00[0-9]{2}',
 			automations: ['Auto Buy', 'Take Profit'],
 		});
 	});

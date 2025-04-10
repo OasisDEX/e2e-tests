@@ -65,6 +65,11 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 				claimable: '[0-9].[0-9]{4}',
 				inWallet: '[0-9].[0-9]{4}',
 			},
+			{
+				networkName: 'Sonic',
+				claimable: '[0-9].[0-9]{3}',
+				inWallet: '[0-9].[0-9]{4}',
+			},
 		]);
 
 		// Base rewards
@@ -89,5 +94,10 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		await expect(async () => {
 			await metamask.rejectTransaction();
 		}).toPass();
+
+		// Sonic rewards --> This will fail until more SUMR are accrued on Sonic
+		await app.portfolio.rewards.claimAndDelegate.claim('Sonic');
+		await addNetwork({ metamask, network: 'sonic' });
+		await metamask.rejectTransaction();
 	});
 });

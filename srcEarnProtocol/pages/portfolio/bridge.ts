@@ -3,7 +3,7 @@ import { Locator, Page } from '@playwright/test';
 import { toUtf8CodePoints } from 'ethers';
 import { expectDefaultTimeout } from 'utils/config';
 
-type BridgeNetworks = 'Arbitrum' | 'Base' | 'Mainnet';
+type BridgeNetworks = 'Arbitrum' | 'Base' | 'Mainnet' | 'Sonic';
 
 export class Bridge {
 	readonly page: Page;

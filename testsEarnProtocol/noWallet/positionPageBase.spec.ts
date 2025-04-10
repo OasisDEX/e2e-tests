@@ -28,6 +28,6 @@ test.describe('Position page - Base - Specific user page', async () => {
 			numberOfDeposits: '[0-9]{1,2}',
 		});
 
-		await app.positionPage.shouldHaveCurrentApy('[0-9]{1,2}.[0-9]{2}');
+		await app.positionPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
 	});
 });

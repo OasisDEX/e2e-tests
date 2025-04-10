@@ -48,7 +48,7 @@ export class ClaimAndDelegate {
 	@step
 	async shouldHaveRewards(
 		networks: {
-			networkName: 'Arbitrum' | 'Base' | 'Ethereum';
+			networkName: 'Arbitrum' | 'Base' | 'Ethereum' | 'Sonic';
 			claimable: string;
 			inWallet: string;
 		}[]
@@ -67,7 +67,7 @@ export class ClaimAndDelegate {
 	}
 
 	@step
-	async claim(network: 'Arbitrum' | 'Base' | 'Ethereum') {
+	async claim(network: 'Arbitrum' | 'Base' | 'Ethereum' | 'Sonic') {
 		await this.page
 			.locator('[class*="ClaimDelegateClaimStep_cardWrapper"]')
 			.filter({ has: this.page.getByText(network) })

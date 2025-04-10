@@ -64,11 +64,11 @@ export class PositionPage {
 	}
 
 	@step
-	async shouldHaveCurrentApy(apy: string) {
+	async shouldHaveLiveApy(apy: string) {
 		const regExp = new RegExp(`${apy}%`);
 
 		await expect(
-			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Current APY") span').first()
+			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Live APY") span').first()
 		).toContainText(regExp);
 	}
 }
