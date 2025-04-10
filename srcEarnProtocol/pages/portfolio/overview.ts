@@ -18,7 +18,7 @@ export class Overview {
 		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 
 		await expect(
-			this.page.getByText('SUMR Token Rewards'),
+			this.page.getByText('$SUMR Token Rewards', { exact: true }),
 			'"SUMR Token Rewards" should be visible'
 		).toBeVisible();
 
