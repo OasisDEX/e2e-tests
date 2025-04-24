@@ -1,11 +1,12 @@
 import { expect, test } from '#noWalletFixtures';
-import { expectDefaultTimeout, longTestTimeout, positionTimeout } from 'utils/config';
+import { longTestTimeout, positionTimeout } from 'utils/config';
 import { arrayWithNthElements } from 'utils/general';
 
 const susdePools = Array.from({ length: 5 }, (_, index) => 0 + index);
 
 test.describe('Earn page', async () => {
-	test('It should open Earn pool finder', async ({ app }) => {
+	// Ajna pool finder banner removed from screen
+	test.skip('It should open Earn pool finder', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11556',
@@ -27,7 +28,13 @@ test.describe('Earn page', async () => {
 
 				await app.earn.open();
 
-				// Move to page 2 inproduct hub
+				await app.borrow.productHub.filters.protocols.select({
+					protocols: ['Aave V2', 'Aave V3', 'Ajna', 'Maker', 'Morpho', 'Sky', 'Spark'],
+				});
+
+				await app.page.waitForTimeout(500);
+
+				// Move to page 2 in product hub
 				for (const pageNumber of arrayWithNthElements(page - 1)) {
 					// Move to next in product hub
 					await app.earn.productHub.list.nextPage();

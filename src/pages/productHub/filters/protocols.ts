@@ -21,7 +21,7 @@ export class Protocols {
 		protocols,
 	}: {
 		protocols: (
-			| ('Clear selecrtion' | 'Maker' | 'Aave V2' | 'Aave V3' | 'Ajna' | 'Spark')
+			| ('Clear selection' | 'Aave V2' | 'Aave V3' | 'Ajna' | 'Maker' | 'Morpho' | 'Sky' | 'Spark')
 			| ('Aave V3' | 'Maker' | 'Morpho' | 'Spark')
 		)[];
 	}) {

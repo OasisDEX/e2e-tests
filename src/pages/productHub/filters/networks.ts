@@ -20,7 +20,7 @@ export class Networks {
 			| 'Arbitrum'
 			| 'Optimism'
 			| 'Base';
-		networks: ('Clear selecrtion' | 'Ethereum' | 'Arbitrum' | 'Optimism' | ' Base')[];
+		networks: ('Clear selection' | 'Ethereum' | 'Arbitrum' | 'Optimism' | ' Base')[];
 	}) {
 		await this.productHubLocator.getByText(currentFilter).locator('..').click();
 

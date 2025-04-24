@@ -44,11 +44,17 @@ test.describe('Borrow page', async () => {
 
 				await app.borrow.open();
 
+				await app.borrow.productHub.filters.protocols.select({
+					protocols: ['Aave V2', 'Aave V3', 'Ajna', 'Maker', 'Morpho', 'Sky', 'Spark'],
+				});
+
+				await app.page.waitForTimeout(500);
+
 				// Set Min Liquidity to '0' so that all pools are listed
 				await app.borrow.productHub.filters.setMinLiquidity({ value: 0.5 });
 				await app.borrow.productHub.filters.setMinLiquidity({ value: 0 });
 
-				// Move to page 2 inproduct hub
+				// Move to page 2 in product hub
 				for (const pageNumber of arrayWithNthElements(page - 1)) {
 					// Move to next in product hub
 					await app.borrow.productHub.list.nextPage();

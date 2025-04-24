@@ -14,6 +14,12 @@ test.describe('Multiply page', async () => {
 
 				await app.multiply.open();
 
+				await app.borrow.productHub.filters.protocols.select({
+					protocols: ['Aave V2', 'Aave V3', 'Ajna', 'Maker', 'Morpho', 'Sky', 'Spark'],
+				});
+
+				await app.page.waitForTimeout(500);
+
 				// Set Min Liquidity to '0' so that all pools are listed
 				await app.multiply.productHub.filters.setMinLiquidity({ value: 0.5 });
 				await app.multiply.productHub.filters.setMinLiquidity({ value: 0 });
