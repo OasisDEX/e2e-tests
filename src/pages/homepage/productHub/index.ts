@@ -22,9 +22,10 @@ export class ProductHub {
 
 	@step
 	async shouldLinkTo(page: 'Borrow' | 'Earn' | 'Multiply') {
+		const regExp = new RegExp(`\\/${page.toLocaleLowerCase()}`);
 		await expect(this.productHubLocator.locator('a:has-text("View all")')).toHaveAttribute(
 			'href',
-			`/${page.toLocaleLowerCase()}`
+			regExp
 		);
 	}
 

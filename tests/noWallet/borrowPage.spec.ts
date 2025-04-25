@@ -3,7 +3,8 @@ import { longTestTimeout, positionTimeout } from 'utils/config';
 import { arrayWithNthElements } from 'utils/general';
 
 test.describe('Borrow page', async () => {
-	test('It should open Borrow pool finder', async ({ app }) => {
+	// Pool finder banner removed from screen
+	test.skip('It should open Borrow pool finder', async ({ app }) => {
 		test.info().annotations.push({
 			type: 'Test case',
 			description: '11557',

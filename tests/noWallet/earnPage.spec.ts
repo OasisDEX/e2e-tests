@@ -28,7 +28,8 @@ test.describe('Earn page', async () => {
 
 				await app.earn.open();
 
-				await app.borrow.productHub.filters.protocols.select({
+				await app.earn.productHub.filters.protocols.select({
+					positionType: 'Earn',
 					protocols: ['Aave V2', 'Aave V3', 'Ajna', 'Maker', 'Morpho', 'Sky', 'Spark'],
 				});
 
