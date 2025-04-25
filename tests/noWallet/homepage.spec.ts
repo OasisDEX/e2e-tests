@@ -39,7 +39,8 @@ test.describe('Homepage', async () => {
 	);
 
 	(['Borrow', 'Earn'] as const).forEach((positionType) =>
-		test(`It should link to pool finder - ${positionType}`, async ({ app }) => {
+		// Pool finder banner removed from UI
+		test.skip(`It should link to pool finder - ${positionType}`, async ({ app }) => {
 			await app.homepage.productHub.header.positionType.select(positionType);
 			await app.homepage.productHub.header.positionType.shouldBe(positionType);
 
