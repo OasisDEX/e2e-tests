@@ -16,15 +16,15 @@ import {
 			positionType: 'borrow',
 			targetPools: [{ colToken: 'WSTETH', debtToken: 'ETH-3' }],
 		},
-		{
-			pool: 'WSTETH-ETH-3',
-			positionType: 'borrow',
-			targetPools: [
-				{ colToken: 'SUSDE', debtToken: 'DAI-1' },
-				// { colToken: 'SWBTC', debtToken: 'WBTC' },  -- NO LIQUIDITY
-				// { colToken: 'USDE', debtToken: 'DAI-2' }, -- Very low liquidity
-			],
-		},
+		// {
+		// 	pool: 'WSTETH-ETH-3',
+		// 	positionType: 'borrow',
+		// 	targetPools: [
+		// 		// { colToken: 'SUSDE', debtToken: 'DAI-1' }, -- NO LIQUIDITY
+		// 		// { colToken: 'SWBTC', debtToken: 'WBTC' }, -- NO LIQUIDITY
+		// 		// { colToken: 'USDE', debtToken: 'DAI-2' }, -- Very low liquidity
+		// 	],
+		// },
 		{
 			pool: 'MKR-USDC',
 			positionType: 'multiply',
