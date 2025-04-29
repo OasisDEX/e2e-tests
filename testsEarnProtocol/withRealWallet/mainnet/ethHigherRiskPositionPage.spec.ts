@@ -7,7 +7,7 @@ import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - ETH Mainnet Position page - Deposit', async () => {
+test.describe('With real wallet - ETH Mainnet Higher Risk Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -19,7 +19,7 @@ test.describe('With real wallet - ETH Mainnet Position page - Deposit', async ()
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10/0x10649c79428d718621821cf6299e91920284743f'
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
@@ -29,7 +29,7 @@ test.describe('With real wallet - ETH Mainnet Position page - Deposit', async ()
 		});
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Mainnet USDC vault', async ({
+	test('It should show Deposit balances and Deposit amounts - Mainnet ETH Higher Risk  vault', async ({
 		app,
 	}) => {
 		// === ETH ===
@@ -72,7 +72,7 @@ test.describe('With real wallet - ETH Mainnet Position page - Deposit', async ()
 		});
 	});
 
-	test('It should deposit USDC & WETH - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit USDC & WETH (ETH Higher Risk ) - (until rejecting "Deposit" tx)', async ({
 		app,
 		metamask,
 	}) => {
@@ -129,7 +129,7 @@ test.describe('With real wallet - ETH Mainnet Position page - Deposit', async ()
 	});
 });
 
-test.describe('With real wallet - ETH Mainnet - Withdraw', async () => {
+test.describe('With real wallet - ETH Mainnet Higher Risk - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -140,7 +140,7 @@ test.describe('With real wallet - ETH Mainnet - Withdraw', async () => {
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10/0x10649c79428d718621821cf6299e91920284743f'
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -157,7 +157,7 @@ test.describe('With real wallet - ETH Mainnet - Withdraw', async () => {
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	test('It should show maximum ETH balance amount to be withdrawn in ETH - ETH Mainnet position', async ({
+	test('It should show maximum ETH balance amount to be withdrawn in ETH - ETH Mainnet Higher Risk position', async ({
 		app,
 	}) => {
 		await app.positionPage.sidebar.depositOrWithdraw('0.0001');
@@ -168,7 +168,10 @@ test.describe('With real wallet - ETH Mainnet - Withdraw', async () => {
 		});
 	});
 
-	test('It should withdraw to ETH - (until rejecting "Withdraw" tx)', async ({ app, metamask }) => {
+	test('It should withdraw to ETH (Higher Risk) - (until rejecting "Withdraw" tx)', async ({
+		app,
+		metamask,
+	}) => {
 		await withdraw({
 			metamask,
 			app,
