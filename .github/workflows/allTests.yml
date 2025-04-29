@@ -15,6 +15,12 @@ on:
         required: false
 
 jobs:
+  api-tests: 
+    uses: ./.github/workflows/z_Reusable_Apis.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      script: api-tests
+
   no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
     with:
@@ -38,6 +44,10 @@ jobs:
         run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
       - name: Run With wallet Aave Ethereum tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
@@ -53,8 +63,8 @@ jobs:
           path: playwright-reports/with-wallet-aave-ethereum
           retention-days: 30
   
-  with-wallet-aave-other-tests:
-    name: 'With wallet - Aave - Arbitrum, Optimism & Base'
+  with-wallet-aave-arbitrum-tests:
+    name: 'With wallet - Aave - Arbitrum'
     runs-on: ubuntu-24.04
     container:
       image: synthetixio/docker-node:18.16-ubuntu
@@ -69,23 +79,63 @@ jobs:
         run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Run With wallet Aave Arbitrum, Optimism and Base tests
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
+      - name: Run With wallet Aave Arbitrum tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
-          yarn nightly:with-wallet:aave:other
+          yarn nightly:with-wallet:aave:arbitrum
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-with-wallet-aave-other
-          path: playwright-reports/with-wallet-aave-other
+          name: playwright-report-with-wallet-aave-arbitrum
+          path: playwright-reports/with-wallet-aave-arbitrum
           retention-days: 30
   
-  with-wallet-ajna-and-morphoblue-tests:
-    name: 'With wallet - Ajna & Morpho Blue'
+  # SKIP - Base tests failing in github run - Base Virtual Testnet 
+  # with-wallet-aave-base-tests:
+  #   name: 'With wallet - Aave - Base'
+  #   runs-on: ubuntu-24.04
+  #   container:
+  #     image: synthetixio/docker-node:18.16-ubuntu
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install playwright
+  #       run: npx playwright install && npx playwright install-deps
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet
+  #     - name: Run With wallet Aave Base tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         BASE_URL=${{ inputs.base_url }} \
+  #         FLAGS_FEATURES=${{ inputs.flags_features}} \
+  #         yarn nightly:with-wallet:aave:base
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-aave-base
+  #         path: playwright-reports/with-wallet-aave-base
+  #         retention-days: 30
+
+  with-wallet-aave-optimism-tests:
+    name: 'With wallet - Aave - Optimism'
     runs-on: ubuntu-24.04
     container:
       image: synthetixio/docker-node:18.16-ubuntu
@@ -100,23 +150,29 @@ jobs:
         run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Run With wallet Ajna & Morpho Blue tests
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
+      - name: Run With wallet Aave Optimism tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
-          yarn nightly:with-wallet:ajna-and-morphoblue
+          yarn nightly:with-wallet:aave:optimism
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-with-wallet-ajna-and-morphoblue
-          path: playwright-reports/with-wallet-ajna-and-morphoblue
+          name: playwright-report-with-wallet-aave-optimism
+          path: playwright-reports/with-wallet-aave-optimism
           retention-days: 30
+
   
-  with-wallet-maker-and-spark-tests:
-    name: 'With wallet - Maker & Spark'
+  
+  with-wallet-morphoblue-tests:
+    name: 'With wallet - Morpho Blue'
     runs-on: ubuntu-24.04
     container:
       image: synthetixio/docker-node:18.16-ubuntu
@@ -131,6 +187,115 @@ jobs:
         run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
+      - name: Run With wallet Morpho Blue tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          BASE_URL=${{ inputs.base_url }} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
+          yarn nightly:with-wallet:morphoblue
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-with-wallet-morphoblue
+          path: playwright-reports/with-wallet-morphoblue
+          retention-days: 30
+  
+  with-wallet-ajna-tests:
+    name: 'With wallet - Ajna'
+    runs-on: ubuntu-24.04
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
+      - name: Run With wallet Ajna tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          BASE_URL=${{ inputs.base_url }} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
+          yarn nightly:with-wallet:ajna
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-with-wallet-ajna
+          path: playwright-reports/with-wallet-ajna
+          retention-days: 30
+  
+  with-wallet-maker-tests:
+    name: 'With wallet - Maker'
+    runs-on: ubuntu-24.04
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
+      - name: Run With wallet Maker tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          BASE_URL=${{ inputs.base_url }} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
+          yarn nightly:with-wallet:maker
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-with-wallet-maker-ethereum
+          path: playwright-reports/with-wallet-maker-ethereum
+          retention-days: 30
+
+  with-wallet-spark-tests:
+    name: 'With wallet - Spark'
+    runs-on: ubuntu-24.04
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
       - name: Run With wallet Maker and Spark tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
@@ -138,10 +303,189 @@ jobs:
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
           FLAGS_FEATURES=${{ inputs.flags_features}} \
-          yarn nightly:with-wallet:maker-and-spark
+          yarn nightly:with-wallet:spark
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-with-wallet-maker-and-spark
-          path: playwright-reports/with-wallet-maker-and-spark
+          name: playwright-report-with-wallet-spark-ethereum
+          path: playwright-reports/with-wallet-spark-ethereum
           retention-days: 30
+
+  with-wallet-open-positions-tests-aave-ethereum-borrow:
+    name: 'Open Positions - Aave - Ethereum - Borrow'
+    runs-on: ubuntu-24.04
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
+      - name: Run Open Positions - Aave - Ethereum - Borrow tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          BASE_URL=${{ inputs.base_url }} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
+          yarn nightly:with-wallet:open-positions:aave:ethereum:borrow
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-with-wallet-open-positions-aave-ethereum-borrow
+          path: playwright-reports/with-wallet-open-positions-aave-ethereum-borrow
+          retention-days: 30
+ 
+  with-wallet-open-positions-tests-aave-ethereum-earn-multiply:
+    name: 'Open Positions - Aave - Ethereum - Earn & Multiply'
+    runs-on: ubuntu-24.04
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
+      - name: Run Open positions - Aave - Ethereum - Earn & Multiply tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          BASE_URL=${{ inputs.base_url }} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
+          yarn nightly:with-wallet:open-positions:aave:ethereum:earn-multiply
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-with-wallet-open-positions-aave-ethereum-earn-multiply
+          path: playwright-reports/with-wallet-open-positions-aave-ethereum-earn-multiply
+          retention-days: 30
+
+  with-wallet-open-positions-tests-aave-l2s:
+    name: 'Open Positions - Aave - L2s'
+    runs-on: ubuntu-24.04
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
+      - name: Run Open Positions - Aave - L2s tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          BASE_URL=${{ inputs.base_url }} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
+          yarn nightly:with-wallet:open-positions:aave:l2s
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-with-wallet-open-positions-aave-l2s
+          path: playwright-reports/with-wallet-open-positions-aave-l2s
+          retention-days: 30
+
+  with-wallet-open-positions-tests-other:
+    name: 'Open Positions - Other'
+    runs-on: ubuntu-24.04
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
+      - name: Run With wallet Maker and Spark tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          BASE_URL=${{ inputs.base_url }} \
+          FLAGS_FEATURES=${{ inputs.flags_features}} \
+          yarn nightly:with-wallet:open-positions:other
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-with-wallet-open-positions-other
+          path: playwright-reports/with-wallet-open-positions-other
+          retention-days: 30
+
+  # SWAP tests running on productionuntil SDK is upgraded on staging
+  with-wallet-swap:
+    name: 'Swap'
+    runs-on: ubuntu-24.04
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet
+      - name: Run Swap tests
+        # SWAP tests running on production until SDK is upgraded on staging
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          BASE_URL=https://new-pro.summer.fi \
+          yarn ci:with-wallet:swap
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-with-wallet-swap
+          path: playwright-reports/with-wallet-swap
+          retention-days: 30
+  
+
+  
