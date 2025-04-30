@@ -5,11 +5,12 @@ test.describe(`Earn page`, async () => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
 	});
 
-	(['BASE', 'ARBITRUM', 'MAINNET'] as const).forEach((network) => {
-		const networkShortName: { [index: string]: 'base' | 'arbitrum' | 'ethereum' } = {
-			BASE: 'base',
+	(['ARBITRUM', 'BASE', 'MAINNET', 'SONIC'] as const).forEach((network) => {
+		const networkShortName: { [index: string]: 'arbitrum' | 'base' | 'ethereum' | 'sonic' } = {
 			ARBITRUM: 'arbitrum',
+			BASE: 'base',
 			MAINNET: 'ethereum',
+			SONIC: 'sonic',
 		};
 		test(`It should select ${network} network`, async ({ app }) => {
 			await app.earn.networkSelector.open();

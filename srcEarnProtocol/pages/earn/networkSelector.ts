@@ -1,7 +1,7 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 
-type Networks = 'All Networks' | 'BASE' | 'ARBITRUM' | 'MAINNET';
+type Networks = 'All Networks' | 'ARBITRUM' | 'BASE' | 'MAINNET' | 'SONIC';
 
 export class NetworkSelector {
 	readonly page: Page;
@@ -10,42 +10,34 @@ export class NetworkSelector {
 
 	constructor(page: Page) {
 		this.page = page;
-		this.networksLocator = page.locator(
-			'[class*="_titleWithSelectWrapper_"] [class*="_dropdown_"]'
-		);
+		this.networksLocator = page.locator('[class*="filtersGroup"] > div:has-text("All networks")');
 	}
 
 	@step
 	async open() {
-		const dropdownLocator = this.networksLocator.locator('[class*="dropdownSelected"]');
-
 		await expect(async () => {
 			// Click on drop down element
-			await dropdownLocator.click({ force: true });
+			await this.networksLocator.click({ force: true });
 
 			// Verify dropdown options are visible - Step addedto avoidflakiness
 			await expect(
-				this.networksLocator
-					.locator('div[class*="_dropdownOption_"]')
-					.filter({ hasText: 'All Networks' })
+				this.networksLocator.getByRole('button').filter({ hasText: 'All networks (' })
 			).toBeVisible();
 		}).toPass();
 	}
 
 	@step
 	async select({ option }: { option: Networks }) {
-		await this.networksLocator
-			.locator('div[class*="_dropdownOption_"]')
-			.filter({ hasText: option })
-			.click();
+		await this.networksLocator.getByRole('listitem').filter({ hasText: option }).click();
+
+		// Click on 'blank' area to  hide dropdown
+		await this.networksLocator.click({ position: { x: 0, y: 20 } });
 	}
 
 	@step
 	async shouldBe({ option }: { option: Networks }) {
 		await expect(
-			this.networksLocator
-				.locator('div[class*="dropdownSelected"]')
-				.filter({ has: this.page.locator(`span:has-text("${option}")`) })
+			this.networksLocator.locator('[class*="mainWrapper"]').filter({ hasText: option })
 		).toBeVisible();
 	}
 }
