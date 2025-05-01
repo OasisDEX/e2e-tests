@@ -7,6 +7,7 @@ on:
 jobs:
   earn-protocol-no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_EarnRegressionNoWallet.yml
+    secrets: inherit
     with:
       script: ci:earn-no-wallet
 
