@@ -52,7 +52,7 @@ jobs:
   
   earn-protocol-no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_EarnRegressionNoWallet.yml
-    secrets: inherit
     with:
       base_url: 'https://staging.summer.fi'
       script: ci:earn-no-wallet
+    secrets: inherit
