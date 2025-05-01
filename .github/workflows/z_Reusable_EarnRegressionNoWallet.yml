@@ -37,7 +37,9 @@ jobs:
         run: xvfb-run yarn verify-staging
       - name: Run NO-WALLET tests (with parameters)
         if: inputs.base_url
-        run: BASE_URL=${{ inputs.base_url }} xvfb-run yarn ${{ inputs.script }}
+        run: |
+          MAILINATOR_TOKEN=${{ secrets.MAILINATOR_TOKEN }} \
+          BASE_URL=${{ inputs.base_url }} xvfb-run yarn ${{ inputs.script }}
       - name: Run NO-WALLET tests (without parameters)
         if: ${{ ! inputs.base_url }}
         run: |
