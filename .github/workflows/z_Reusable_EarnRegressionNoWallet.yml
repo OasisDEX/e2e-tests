@@ -13,6 +13,9 @@ on:
         type: string
         default: 'ci:no-earn-wallet'
         required: true
+    secrets:
+      MAILINATOR_TOKEN:
+        required: true
 
 jobs:
   no-wallet-tests:
@@ -37,7 +40,9 @@ jobs:
         run: BASE_URL=${{ inputs.base_url }} xvfb-run yarn ${{ inputs.script }}
       - name: Run NO-WALLET tests (without parameters)
         if: ${{ ! inputs.base_url }}
-        run: xvfb-run yarn ${{ inputs.script }}
+        run: |
+          MAILINATOR_TOKEN=${{ secrets.MAILINATOR_TOKEN }} \
+          xvfb-run yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
