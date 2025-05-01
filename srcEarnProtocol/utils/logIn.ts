@@ -6,6 +6,8 @@ import { walletTypes } from './types';
 import { expectDefaultTimeout } from 'utils/config';
 import { arrayWithNthElements } from 'utils/general';
 
+const mailinatorToken = process.env.MAILINATOR_TOKEN;
+
 export const logInWithWalletAddress = async ({
 	metamask,
 	app,
@@ -66,7 +68,8 @@ export const logInWithEmailAddress = async ({
 		await app.page.waitForTimeout(2_000);
 
 		const response = await request.get(
-			`https://api.mailinator.com/api/v2/domains/private/inboxes?token=79bba236cd0d4ef195d5664cee6a1d31&limit=${workers}`
+			// `https://api.mailinator.com/api/v2/domains/private/inboxes?token=79bba236cd0d4ef195d5664cee6a1d31&limit=${workers}`
+			`https://api.mailinator.com/api/v2/domains/private/inboxes?token=${mailinatorToken}&limit=${workers}`
 		);
 
 		const responseJSON = await response.json();

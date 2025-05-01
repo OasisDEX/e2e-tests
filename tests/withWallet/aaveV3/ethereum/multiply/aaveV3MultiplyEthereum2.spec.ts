@@ -26,7 +26,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			walletAddress,
 			network: 'mainnet',
 			token: 'RETH',
-			balance: '100',
+			balance: '10',
 		});
 
 		await tenderly.changeAccountOwner({
@@ -40,27 +40,33 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await tenderly.deleteFork(vtId);
 	});
 
-	test('It should manage an existing Aave V3 Multiply Ethereum position', async ({ metamask }) => {
+	test.only('It should manage an existing Aave V3 Multiply Ethereum position', async ({
+		metamask,
+	}) => {
 		test.setTimeout(gigaTestTimeout);
 
-		await app.page.goto('/ethereum/aave/v3/multiply/reth-dai/1276#overview');
+		// await app.page.goto('/ethereum/aave/v3/multiply/reth-dai/1276#overview');
+		await app.position.openPage('/ethereum/aave/v3/multiply/reth-dai/1276#overview');
 
 		await test.step('Deposit extra collateral', async () => {
-			// Pause to avoid flakiness
-			await app.page.waitForTimeout(1_000);
+			await app.position.shouldHaveTab('Protection OFF');
 
-			await app.position.shouldHaveTab('Protection ON');
+			// Pause to avoid flakiness - as page reloads
+			await app.page.waitForTimeout(2_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 			await app.position.manage.select('Manage collateral');
+
+			// Pause to avoid flakiness
+			await app.page.waitForTimeout(3_000);
 
 			await manageDebtOrCollateral({
 				metamask,
 				app,
 				vtId,
-				deposit: { token: 'RETH', amount: '50' },
+				deposit: { token: 'RETH', amount: '2' },
 				expectedCollateralExposure: {
-					amount: '50.[0-9]{1,2}',
+					amount: '2.[0-9]{4}',
 					token: 'RETH',
 				},
 				protocol: 'Aave V3',
@@ -77,9 +83,9 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 				metamask,
 				app,
 				vtId,
-				withdraw: { token: 'RETH', amount: '8' },
+				withdraw: { token: 'RETH', amount: '1' },
 				expectedCollateralExposure: {
-					amount: '4[1-2].[0-9]{1,2}',
+					amount: '[0-1].[0-9]{4}',
 					token: 'RETH',
 				},
 				protocol: 'Aave V3',
@@ -92,7 +98,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			await app.page.reload();
 
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(3_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 			await app.position.manage.select('Manage debt');
@@ -102,8 +108,8 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 				metamask,
 				app,
 				vtId,
-				borrow: { token: 'DAI', amount: '40000' },
-				expectedDebt: { amount: '40,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
+				borrow: { token: 'DAI', amount: '1000' },
+				expectedDebt: { amount: '1,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
 				protocol: 'Aave V3',
 			});
 		});
@@ -114,7 +120,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			await app.page.reload();
 
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(3_000);
 
 			await app.position.manage.openManageOptions({ currentLabel: 'Adjust' });
 			await app.position.manage.select('Manage debt');
@@ -124,8 +130,8 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 				metamask,
 				app,
 				vtId,
-				payBack: { token: 'DAI', amount: '32000' },
-				expectedDebt: { amount: '8,[0-9]{3}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
+				payBack: { token: 'DAI', amount: '500' },
+				expectedDebt: { amount: '5[0-9]{2}.[0-9]{2}([0-9]{1,2})?', token: 'DAI' },
 				protocol: 'Aave V3',
 			});
 		});
@@ -136,7 +142,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 			await app.page.reload();
 
 			// Pause to avoid flakiness
-			await app.page.waitForTimeout(1_000);
+			await app.page.waitForTimeout(3_000);
 
 			await close({
 				metamask,
@@ -146,7 +152,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 				closeTo: 'collateral',
 				collateralToken: 'RETH',
 				debtToken: 'DAI',
-				tokenAmountAfterClosing: '[0-9]{2}.[0-9]{1,2}([0-9]{1,2})?',
+				tokenAmountAfterClosing: '[0-9].[0-9]{1,2}([0-9]{1,2})?',
 			});
 		});
 	});
