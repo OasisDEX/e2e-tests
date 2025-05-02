@@ -40,9 +40,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 		await tenderly.deleteFork(vtId);
 	});
 
-	test.only('It should manage an existing Aave V3 Multiply Ethereum position', async ({
-		metamask,
-	}) => {
+	test('It should manage an existing Aave V3 Multiply Ethereum position', async ({ metamask }) => {
 		test.setTimeout(gigaTestTimeout);
 
 		// await app.page.goto('/ethereum/aave/v3/multiply/reth-dai/1276#overview');
