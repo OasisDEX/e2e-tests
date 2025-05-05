@@ -26,7 +26,10 @@ export class VaultExposure {
 
 	@step
 	async getStrategiesTotalAllocation() {
-		const strategyAllocationLocator = this.vaultExposureLocator.locator('tr > td:nth-child(2)');
+		const strategyAllocationLocator = this.vaultExposureLocator.locator(
+			'tr > td:nth-child(1) p:has-text("allocated")'
+		);
+
 		// Wait for table to load
 		await expect(strategyAllocationLocator.first()).toBeVisible({
 			timeout: expectDefaultTimeout * 2,
@@ -36,7 +39,7 @@ export class VaultExposure {
 		if (viewMoreIsVisible) await this.viewMore({ delay: 500 });
 
 		const allocations = (await strategyAllocationLocator.allInnerTexts()).map((text) =>
-			parseFloat(text.replace('%', ''))
+			parseFloat(text.replace('% allocated', ''))
 		);
 
 		const totalAllocation = allocations.reduce((a, b) => a + b, 0);

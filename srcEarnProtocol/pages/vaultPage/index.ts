@@ -3,6 +3,7 @@ import { HowItWorks } from './howItWorks';
 import { VaultExposure } from './vaultExposure';
 import { VaultSidebar } from '../vaultSidebar';
 import { step } from '#noWalletFixtures';
+import { EarnTokens } from 'srcEarnProtocol/utils/types';
 
 export class VaultPage {
 	readonly page: Page;
@@ -33,20 +34,68 @@ export class VaultPage {
 
 	@step
 	async shouldHave30dApy(apy: string) {
-		const regExp = new RegExp(`${apy}%`);
-
+		const ApyRegExp = new RegExp(`${apy}%`);
 		await expect(
 			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("30d APY") span').first()
-		).toContainText(regExp);
+		).toContainText(ApyRegExp);
+
+		const VsMedianRegExp = new RegExp('[0-9].[0-9]{2}%');
+		await expect(
+			this.page.locator(
+				'[class*="_dataBlockWrapper_"]:has-text("30d APY") span:has-text("vs Median DeFi Yield")'
+			)
+		).toContainText(VsMedianRegExp);
 	}
 
 	@step
-	async shouldHaveCurrentApy(apy: string) {
-		const regExp = new RegExp(`${apy}%`);
-
+	async shouldHaveLiveApy(apy: string) {
+		const ApyRegExp = new RegExp(`${apy}%`);
 		await expect(
-			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Current APY") span').first()
-		).toContainText(regExp);
+			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Live APY") > span').first()
+		).toContainText(ApyRegExp);
+
+		const VsMedianRegExp = new RegExp('[0-9].[0-9]{2}%');
+		await expect(
+			this.page.locator(
+				'[class*="_dataBlockWrapper_"]:has-text("Live APY") span:has-text("vs Median DeFi Yield")'
+			)
+		).toContainText(VsMedianRegExp);
+	}
+
+	@step
+	async shouldHaveAssets({
+		token,
+		tokenAmount,
+		usdAmount,
+	}: {
+		token: EarnTokens;
+		tokenAmount: string;
+		usdAmount: string;
+	}) {
+		const tokenRegExp = new RegExp(`${tokenAmount}.*${token}`);
+		await expect(
+			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Assets in vault") span').first()
+		).toContainText(tokenRegExp);
+
+		const usdRegExp = new RegExp(`\\$${usdAmount}`);
+		await expect(
+			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Assets in vault") span').nth(1)
+		).toContainText(usdRegExp);
+	}
+
+	@step
+	async shouldHaveDepositCap({ token, tokenAmount }: { token: EarnTokens; tokenAmount: string }) {
+		const tokenRegExp = new RegExp(`${tokenAmount}.*${token} cap`);
+		await expect(
+			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Deposit Cap") span').first()
+		).toContainText(tokenRegExp);
+
+		const filledRegExp = new RegExp('[0-9]{1,2}.[0-9]{2}%');
+		await expect(
+			this.page.locator(
+				'[class*="_dataBlockWrapper_"]:has-text("Deposit Cap") span:has-text("filled")'
+			)
+		).toContainText(filledRegExp);
 	}
 
 	@step
