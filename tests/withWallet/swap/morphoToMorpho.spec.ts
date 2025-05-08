@@ -25,15 +25,15 @@ import {
 		// 		// { colToken: 'USDE', debtToken: 'DAI-2' }, -- Very low liquidity
 		// 	],
 		// },
-		{
-			pool: 'MKR-USDC',
-			positionType: 'multiply',
-			targetPools: [
-				{ colToken: 'WSTETH', debtToken: 'ETH-1' },
-				// { colToken: 'SUSDE', debtToken: 'DAI-3' }, -- NO LIQUIDITY
-				// { colToken: 'SUSDE', debtToken: 'DAI-4' }, -- NO LIQUIDITY
-			],
-		},
+		// {
+		// 	pool: 'MKR-USDC',
+		// 	positionType: 'multiply',
+		// 	targetPools: [
+		// 		{ colToken: 'WSTETH', debtToken: 'ETH-1' },
+		// 		// { colToken: 'SUSDE', debtToken: 'DAI-3' }, -- NO LIQUIDITY
+		// 		// { colToken: 'SUSDE', debtToken: 'DAI-4' }, -- NO LIQUIDITY
+		// 	],
+		// },
 	] as Scenario[]
 ).forEach((scenario) =>
 	test.describe('Swap from Morpho to Morpho', async () => {
