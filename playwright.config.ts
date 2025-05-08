@@ -51,6 +51,7 @@ const defaultConfig: PlaywrightTestConfig = {
 		{
 			name: 'earn-protocol',
 			testDir: './testsEarnProtocol',
+			testIgnore: 'prodRelease/**',
 			use: {
 				baseURL: earnProtocolBaseUrl,
 				...devices['Desktop Chrome'],
@@ -73,6 +74,16 @@ const defaultConfig: PlaywrightTestConfig = {
 			testMatch: ['withRealWallet/**'],
 			use: {
 				baseURL: earnProtocolBaseUrl,
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
+			name: 'earn-protocol-prod-release',
+			testDir: './testsEarnProtocol',
+			testMatch: ['prodRelease/**'],
+			use: {
+				baseURL: 'https://summer.fi/earn',
 				...devices['Desktop Chrome'],
 			},
 		},
