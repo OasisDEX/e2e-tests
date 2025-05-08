@@ -4,8 +4,7 @@ import { App } from 'srcEarnProtocol/app';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 
-// Deposit flow until rejecting final Deposit tx
-//    - NOTE: Token allowance must be set manually for tested vault and token
+// Deposit flow until rejecting first tx
 export const deposit = async ({
 	metamask,
 	app,
@@ -53,84 +52,98 @@ export const deposit = async ({
 
 	await app.positionPage.sidebar.depositOrWithdraw(depositAmount);
 
-	await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
-		[
-			{
-				time: 'After 30 days',
-				amount: estimatedEarnings?.thirtyDaysAmount,
-				token: nominatedToken,
-			},
-			{
-				time: '6 months',
-				amount: estimatedEarnings?.sixMonthsAmount,
-				token: nominatedToken,
-			},
-			{
-				time: '1 year',
-				amount: estimatedEarnings?.oneYearAmount,
-				token: nominatedToken,
-			},
-			{
-				time: '3 years',
-				amount: estimatedEarnings?.threeYearsAmount,
-				token: nominatedToken,
-			},
-		],
-		{ timeout: expectDefaultTimeout * 2 }
-	);
+	if (estimatedEarnings) {
+		await app.positionPage.sidebar.shouldHaveEstimatedEarnings(
+			[
+				{
+					time: 'After 30 days',
+					amount: estimatedEarnings.thirtyDaysAmount,
+					token: nominatedToken,
+				},
+				{
+					time: '6 months',
+					amount: estimatedEarnings.sixMonthsAmount,
+					token: nominatedToken,
+				},
+				{
+					time: '1 year',
+					amount: estimatedEarnings.oneYearAmount,
+					token: nominatedToken,
+				},
+				{
+					time: '3 years',
+					amount: estimatedEarnings.threeYearsAmount,
+					token: nominatedToken,
+				},
+			],
+			{ timeout: expectDefaultTimeout * 2 }
+		);
+	}
+
 	await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
 	await app.positionPage.sidebar.preview();
 
+	const sidebarButtonLocator = app.page.locator('[class*="_sidebarCta_"] button').first();
+
+	await expect(
+		sidebarButtonLocator,
+		'[Agree], [Approve] or [Deposit] buttons should not be visible'
+	).toContainText(/Agree|Approve|Deposit/);
+
+	let sidebarButtonLabel = await sidebarButtonLocator.innerText();
+
 	// Sign T&C if needed
-	let agreeIsVisible: boolean = false;
-	await expect(async () => {
-		agreeIsVisible = await app.page
-			.locator('[class*="_sidebarCta_"]')
-			.getByRole('button', { name: 'Agree and sign' })
-			.isVisible();
-		const depositIsVisible = await app.page
-			.locator('[class*="_sidebarCta_"]')
-			.getByRole('button', { name: 'Deposit' })
-			.isVisible();
-
-		expect(agreeIsVisible || depositIsVisible).toBeTruthy();
-	}).toPass();
-
-	if (agreeIsVisible) {
+	if (sidebarButtonLabel.includes('Agree and sign')) {
 		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
 		await metamask.confirmSignature();
+
+		await expect(
+			sidebarButtonLocator,
+			'[Approve] or [Deposit] buttons should not be visible'
+		).toContainText(/Approve|Deposit/);
+
+		sidebarButtonLabel = await sidebarButtonLocator.innerText();
 	}
 
-	await app.positionPage.sidebar.previewStep.shouldBeVisible({
-		flow: 'deposit',
-		timeout: expectDefaultTimeout * 2,
-	});
+	if (sidebarButtonLabel.includes('Approve')) {
+		await app.positionPage.sidebar.approve(depositedToken);
+		await metamask.rejectTransaction();
+	} else {
+		await app.positionPage.sidebar.previewStep.shouldBeVisible({
+			flow: 'deposit',
+			timeout: expectDefaultTimeout * 2,
+		});
 
-	const previewDepositedToken: EarnTokens =
-		depositedToken == 'WSTETH' ? 'wstETH' : depositedToken == 'USDC.E' ? 'USDC.e' : depositedToken;
+		const previewDepositedToken: EarnTokens =
+			depositedToken == 'WSTETH'
+				? 'wstETH'
+				: depositedToken == 'USDC.E'
+				? 'USDC.e'
+				: depositedToken;
 
-	await app.positionPage.sidebar.previewStep.shouldHave({
-		depositAmount: { amount: depositAmount, token: previewDepositedToken },
-		swap: previewInfo?.swap
-			? {
-					originalToken: depositedToken,
-					originalTokenAmount: depositAmount,
-					positionToken: nominatedToken,
-					positionTokenAmount: previewInfo.swap.positionTokenAmount,
-			  }
-			: undefined,
-		price: previewInfo?.price
-			? {
-					amount: previewInfo.price.amount,
-					originalToken: previewDepositedToken,
-					positionToken: nominatedToken,
-			  }
-			: undefined,
-		priceImpact: previewInfo?.priceImpact,
-		slippage: previewInfo?.slippage,
-		transactionFee: previewInfo?.transactionFee,
-	});
+		await app.positionPage.sidebar.previewStep.shouldHave({
+			depositAmount: { amount: depositAmount, token: previewDepositedToken },
+			swap: previewInfo?.swap
+				? {
+						originalToken: depositedToken,
+						originalTokenAmount: depositAmount,
+						positionToken: nominatedToken,
+						positionTokenAmount: previewInfo.swap.positionTokenAmount,
+				  }
+				: undefined,
+			price: previewInfo?.price
+				? {
+						amount: previewInfo.price.amount,
+						originalToken: previewDepositedToken,
+						positionToken: nominatedToken,
+				  }
+				: undefined,
+			priceImpact: previewInfo?.priceImpact,
+			slippage: previewInfo?.slippage,
+			transactionFee: previewInfo?.transactionFee,
+		});
 
-	await app.positionPage.sidebar.previewStep.deposit();
-	await metamask.rejectTransaction();
+		await app.positionPage.sidebar.previewStep.deposit();
+		await metamask.rejectTransaction();
+	}
 };

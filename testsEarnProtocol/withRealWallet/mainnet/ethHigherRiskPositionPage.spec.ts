@@ -72,7 +72,7 @@ test.describe('With real wallet - ETH Mainnet Higher Risk Position page - Deposi
 		});
 	});
 
-	test('It should deposit USDC & WETH (ETH Higher Risk ) - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit ETH, WETH & USDC (ETH Higher Risk ) - (until rejecting "Deposit" tx)', async ({
 		app,
 		metamask,
 	}) => {
@@ -80,6 +80,48 @@ test.describe('With real wallet - ETH Mainnet Higher Risk Position page - Deposi
 
 		await app.positionPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
+
+		// === ETH ===
+
+		await app.earn.sidebar.goBack();
+
+		await deposit({
+			metamask,
+			app,
+			nominatedToken: 'ETH',
+			depositedToken: 'ETH',
+			depositAmount: '0.001',
+			estimatedEarnings: {
+				thirtyDaysAmount: '0.00[0-9]{2}',
+				sixMonthsAmount: '0.00[0-9]{2}',
+				oneYearAmount: '0.00[0-9]{2}',
+				threeYearsAmount: '0.00[0-9]{2}',
+			},
+			previewInfo: {
+				transactionFee: '[0-9]{1,2}.[0-9]{2}',
+			},
+		});
+
+		// === WETH ===
+
+		await app.earn.sidebar.goBack();
+
+		await deposit({
+			metamask,
+			app,
+			nominatedToken: 'ETH',
+			depositedToken: 'WETH',
+			depositAmount: '0.001',
+			estimatedEarnings: {
+				thirtyDaysAmount: '0.00[0-9]{2}',
+				sixMonthsAmount: '0.00[0-9]{2}',
+				oneYearAmount: '0.00[0-9]{2}',
+				threeYearsAmount: '0.00[0-9]{2}',
+			},
+			previewInfo: {
+				transactionFee: '[0-9]{1,2}.[0-9]{2}',
+			},
+		});
 
 		// === USDC ===
 
@@ -102,27 +144,6 @@ test.describe('With real wallet - ETH Mainnet Higher Risk Position page - Deposi
 				price: { amount: '0.000[0-9]' },
 				priceImpact: '[0-3].[0-9]{2}',
 				slippage: '0.10',
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
-			},
-		});
-
-		// === WETH ===
-
-		await app.earn.sidebar.goBack();
-
-		await deposit({
-			metamask,
-			app,
-			nominatedToken: 'ETH',
-			depositedToken: 'WETH',
-			depositAmount: '0.001',
-			estimatedEarnings: {
-				thirtyDaysAmount: '0.00[0-9]{2}',
-				sixMonthsAmount: '0.00[0-9]{2}',
-				oneYearAmount: '0.00[0-9]{2}',
-				threeYearsAmount: '0.00[0-9]{2}',
-			},
-			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
 		});

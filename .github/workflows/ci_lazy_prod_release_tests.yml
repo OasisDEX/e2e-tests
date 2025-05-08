@@ -1,0 +1,56 @@
+name: CI Lazy Protocol Prod Release E2E tests
+
+on: 
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Run_id from respository that is triggering this workflow.'
+        type: string
+        required: true
+      repository:
+        description: 'Name of the respository that is triggering this workflow.'
+        type: string
+        required: true
+
+jobs:
+  lazy-prod-release-trigger-received:
+    runs-on: ubuntu-24.04 
+    steps:
+      - run: echo "Regression E2E tests for ${{ inputs.repository }} - Release Earn apps workflow -  RUN_ID ${{ inputs.run_id }}"
+      - name: Create artifact with trigger repository name
+        run: echo "${{ inputs.repository }}" > trigger_repository.txt
+      - name: Upload artifact with trigger repository name
+        uses: actions/upload-artifact@v4
+        with:
+          name: trigger_repository_name
+          path: trigger_repository.txt
+  
+  lazy-prod-release-tests:
+    name: 'Lazy protocol - Prod release tests'
+    runs-on: ubuntu-24.04
+    container:
+      image: synthetixio/docker-node:18.16-ubuntu
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install playwright
+        run: npx playwright install && npx playwright install-deps
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          BASE_URL=https://summer.fi/earn \
+          VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:real-wallet
+      - name: Run 'Lazy protocol - Prod release' tests
+        run: yarn ci:earn-with-real-wallet
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report-earn-protocol-with-real-wallet
+          path: playwright-reports/earn-protocol-with-real-wallet
+          retention-days: 30
