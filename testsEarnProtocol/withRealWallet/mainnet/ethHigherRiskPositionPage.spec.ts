@@ -72,7 +72,7 @@ test.describe('With real wallet - ETH Mainnet Higher Risk Position page - Deposi
 		});
 	});
 
-	test.only('It should deposit ETH, WETH & USDC (ETH Higher Risk ) - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit ETH, WETH & USDC (ETH Higher Risk ) - (until rejecting "Deposit" tx)', async ({
 		app,
 		metamask,
 	}) => {
