@@ -190,3 +190,44 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		});
 	});
 });
+
+test.describe('With real wallet - Position page - Base - Switch', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		// Extending tests timeout by 25 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 25_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+		});
+
+		await app.positionPage.open(
+			'/earn/base/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F'
+		);
+
+		// Wait for balance to fully load to avoid random fails
+		await app.positionPage.sidebar.shouldHaveBalance({
+			balance: '[0-9].[0-9]{4}',
+			token: 'USDC',
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+	});
+
+	test('It should switch position - Base USDC vault', async ({ app, metamask }) => {
+		await app.positionPage.sidebar.selectTab('Switch');
+
+		// EURC
+		await app.positionPage.sidebar.switch.selectTargetPosition({ token: 'EURC' });
+		await app.positionPage.sidebar.switch.previewSwitch();
+
+		// await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
+		// await metamask.confirmSignature();
+
+		await app.positionPage.sidebar.switch.confirmSwitch();
+		await metamask.rejectSignature();
+
+		// ETH --> TO BE DONE
+	});
+});
