@@ -4,6 +4,7 @@ import { EarnTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 import { ApproveStep } from './approveStep';
 import { PreviewStep } from './previewStep';
+import { Switch } from './switch';
 import { TermsAndConditions } from './termsAndConditions';
 
 export class VaultSidebar {
@@ -15,6 +16,8 @@ export class VaultSidebar {
 
 	readonly sidebarLocator: Locator;
 
+	readonly switch: Switch;
+
 	readonly termsAndConditions: TermsAndConditions;
 
 	constructor(page: Page, sidebarLocator: Locator) {
@@ -22,15 +25,16 @@ export class VaultSidebar {
 		this.approveStep = new ApproveStep(page);
 		this.previewStep = new PreviewStep(page);
 		this.sidebarLocator = sidebarLocator;
+		this.switch = new Switch(page);
 		this.termsAndConditions = new TermsAndConditions(page);
 	}
 
 	@step
-	async selectTab(tab: 'Deposit' | 'Withdraw', args?: { timeout: number }) {
+	async selectTab(tab: 'Deposit' | 'Withdraw' | 'Switch', args?: { timeout: number }) {
 		await this.sidebarLocator
 			.locator(`h5:has-text("${tab}")`)
 			.click({ timeout: args?.timeout ?? expectDefaultTimeout });
-		await this.buttonShouldBeVisible('Withdraw');
+		await this.buttonShouldBeVisible(tab);
 	}
 
 	@step
@@ -79,7 +83,7 @@ export class VaultSidebar {
 
 	@step
 	async buttonShouldBeVisible(
-		button: 'Deposit' | 'Withdraw' | 'Preview',
+		button: 'Deposit' | 'Withdraw' | 'Preview' | 'Switch',
 		args?: { timeout: number }
 	) {
 		await expect(
