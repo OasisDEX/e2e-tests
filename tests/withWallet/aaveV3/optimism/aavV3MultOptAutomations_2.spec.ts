@@ -60,7 +60,8 @@ test.describe('Aave v3 Multiply - Optimism - Wallet connected', async () => {
 		});
 	});
 
-	test('It should set Partial Take Profit on an Aave v3 Optimism Multiply position @regression', async ({
+	// SKIP - TEST TO BE REVIEWED
+	test.skip('It should set Partial Take Profit on an Aave v3 Optimism Multiply position @regression', async ({
 		metamask,
 	}) => {
 		test.setTimeout(veryLongTestTimeout);

@@ -277,7 +277,7 @@ test.describe('No-wallet connected - Rays', async () => {
 	});
 
 	test('It should show migratable position in /open-position page', async ({ app }) => {
-		await app.rays.openPosition.openPage('0xc2da497f91c687725da514a47731047271a04d3f');
+		await app.rays.openPosition.openPage('0x10649c79428d718621821Cf6299e91920284743F');
 
 		await app.rays.openPosition.productPicker.shouldDisplayTabs([
 			'Migrate',

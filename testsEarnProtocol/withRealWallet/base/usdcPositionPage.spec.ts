@@ -4,6 +4,7 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -219,15 +220,21 @@ test.describe('With real wallet - Position page - Base - Switch', async () => {
 		await app.positionPage.sidebar.selectTab('Switch');
 
 		// EURC
-		await app.positionPage.sidebar.switch.selectTargetPosition({ token: 'EURC' });
-		await app.positionPage.sidebar.switch.previewSwitch();
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			targetToken: 'EURC',
+		});
 
-		// await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
-		// await metamask.confirmSignature();
+		// ETH
+		await app.earn.sidebar.goBack();
 
-		await app.positionPage.sidebar.switch.confirmSwitch();
-		await metamask.rejectSignature();
-
-		// ETH --> TO BE DONE
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			targetToken: 'ETH',
+		});
 	});
 });

@@ -19,3 +19,5 @@ export type EarnTokens =
 	| 'WETH'
 	| 'WSTETH'
 	| 'wstETH';
+
+export type LazyNominatedTokens = 'ETH' | 'EURC' | 'USDC' | 'USDC.E' | 'USDT' | 'USD₮0';

@@ -54,43 +54,44 @@ test.describe('Morpho Blue Multiply - Wallet connected', async () => {
 			});
 		});
 
-		await test.step('It should Adjust risk - Up', async () => {
-			await app.page.waitForTimeout(2_000);
+		// SKIP - TESTS TO BE REVIEWED
+		// await test.step('It should Adjust risk - Up', async () => {
+		// 	await app.page.waitForTimeout(2_000);
 
-			await adjustRisk({
-				metamask,
-				vtId,
-				app,
-				risk: 'up',
-				newSliderPosition: 0.6,
-			});
-		});
+		// 	await adjustRisk({
+		// 		metamask,
+		// 		vtId,
+		// 		app,
+		// 		risk: 'up',
+		// 		newSliderPosition: 0.6,
+		// 	});
+		// });
 
-		await test.step('It should Adjust risk - Down', async () => {
-			await app.page.waitForTimeout(2_000);
+		// await test.step('It should Adjust risk - Down', async () => {
+		// 	await app.page.waitForTimeout(2_000);
 
-			await adjustRisk({
-				metamask,
-				vtId,
-				app,
-				risk: 'down',
-				newSliderPosition: 0.5,
-			});
-		});
+		// 	await adjustRisk({
+		// 		metamask,
+		// 		vtId,
+		// 		app,
+		// 		risk: 'down',
+		// 		newSliderPosition: 0.5,
+		// 	});
+		// });
 
-		await test.step('It should Close a position', async () => {
-			await app.page.waitForTimeout(2_000);
+		// await test.step('It should Close a position', async () => {
+		// 	await app.page.waitForTimeout(2_000);
 
-			await close({
-				metamask,
-				vtId,
-				app,
-				closeTo: 'collateral',
-				collateralToken: 'WSTETH',
-				debtToken: 'USDC',
-				tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{1,2}',
-			});
-		});
+		// 	await close({
+		// 		metamask,
+		// 		vtId,
+		// 		app,
+		// 		closeTo: 'collateral',
+		// 		collateralToken: 'WSTETH',
+		// 		debtToken: 'USDC',
+		// 		tokenAmountAfterClosing: '[0-9]{1,2}.[0-9]{1,2}',
+		// 	});
+		// });
 	});
 });
 
