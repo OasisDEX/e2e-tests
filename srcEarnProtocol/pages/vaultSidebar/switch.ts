@@ -1,5 +1,6 @@
 import { step } from '#noWalletFixtures';
 import { Page } from '@playwright/test';
+import { LazyNominatedTokens } from 'srcEarnProtocol/utils/types';
 
 export class Switch {
 	readonly page: Page;
@@ -10,7 +11,7 @@ export class Switch {
 
 	@step
 	async selectTargetPosition(position: {
-		token: 'ETH' | 'EURC' | 'USDC' | 'USDT';
+		token: LazyNominatedTokens;
 		risk?: 'Lower Risk' | 'Higher Risk';
 	}) {
 		const regExp = new RegExp(`${position.token}.*${position.risk ?? ''}`);

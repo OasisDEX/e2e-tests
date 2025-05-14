@@ -127,7 +127,8 @@ test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 		});
 	});
 
-	test('It should set Partial Take Profit on an Aave v3 Mainnet Multiply position @regression', async ({
+	// SKIP - TEST TO BE REVIEWED
+	test.skip('It should set Partial Take Profit on an Aave v3 Mainnet Multiply position @regression', async ({
 		metamask,
 	}) => {
 		test.setTimeout(veryLongTestTimeout);

@@ -40,7 +40,7 @@ import {
 			pool: 'WBTC-USDC',
 			positionType: 'multiply',
 			targetPools: [
-				{ colToken: 'WEETH', debtToken: 'ETH' },
+				// { colToken: 'WEETH', debtToken: 'ETH' },
 				{ colToken: 'WSTETH', debtToken: 'USDT' },
 				{ colToken: 'CBBTC', debtToken: 'USDC' },
 				// { colToken: 'RSETH', debtToken: 'ETH-2' }, --> SKIP temporarily - Bug

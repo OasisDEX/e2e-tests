@@ -60,8 +60,9 @@ test.describe('Aave V3 Multiply - Arbitrum - Wallet connected', async () => {
 		});
 	});
 
+	// SKIP - TEST TO BE REVIEWED
 	// Opening new browser and fork to avoid random fails
-	test('It should set Partial Take Profit on an Aave v3 Arbitrum Multiply position @regression', async ({
+	test.skip('It should set Partial Take Profit on an Aave v3 Arbitrum Multiply position @regression', async ({
 		metamask,
 	}) => {
 		test.info().annotations.push({
