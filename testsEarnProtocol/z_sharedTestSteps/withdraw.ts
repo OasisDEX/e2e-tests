@@ -81,56 +81,67 @@ export const withdraw = async ({
 	await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
 	await app.positionPage.sidebar.preview();
 
+	const sidebarButtonLocator = app.page.locator('[class*="_sidebarCta_"] button').first();
+
+	await expect(
+		sidebarButtonLocator,
+		'[Agree], [Approve] or [Withdraw] buttons should not be visible'
+	).toContainText(/Agree|Approve|Withdraw/);
+
+	let sidebarButtonLabel = await sidebarButtonLocator.innerText();
+
 	// Sign T&C if needed
-	let agreeIsVisible: boolean = false;
-	await expect(async () => {
-		agreeIsVisible = await app.page
-			.locator('[class*="_sidebarCta_"]')
-			.getByRole('button', { name: 'Agree and sign' })
-			.isVisible();
-		const withdrawIsVisible = await app.page
-			.locator('[class*="_sidebarCta_"]')
-			.getByRole('button', { name: 'Withdraw' })
-			.isVisible();
-
-		expect(agreeIsVisible || withdrawIsVisible).toBeTruthy();
-	}).toPass();
-
-	if (agreeIsVisible) {
+	if (sidebarButtonLabel.includes('Agree and sign')) {
 		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
 		await metamask.confirmSignature();
+
+		await expect(
+			sidebarButtonLocator,
+			'[Approve] or [Withdraw] buttons should not be visible'
+		).toContainText(/Approve|Withdraw/);
+
+		sidebarButtonLabel = await sidebarButtonLocator.innerText();
 	}
 
-	await app.positionPage.sidebar.previewStep.shouldBeVisible({
-		flow: 'withdraw',
-		timeout: expectDefaultTimeout * 2,
-	});
+	if (sidebarButtonLabel.includes('Approve')) {
+		await app.positionPage.sidebar.approve(nominatedToken === 'ETH' ? 'WETH' : nominatedToken);
+		await metamask.rejectTransaction();
+	} else {
+		await app.positionPage.sidebar.previewStep.shouldBeVisible({
+			flow: 'withdraw',
+			timeout: expectDefaultTimeout * 2,
+		});
 
-	const previewWithdrawnToken: EarnTokens =
-		withdrawnToken == 'WSTETH' ? 'wstETH' : withdrawnToken == 'USDC.E' ? 'USDC.e' : withdrawnToken;
+		const previewWithdrawnToken: EarnTokens =
+			withdrawnToken == 'WSTETH'
+				? 'wstETH'
+				: withdrawnToken == 'USDC.E'
+				? 'USDC.e'
+				: withdrawnToken;
 
-	await app.positionPage.sidebar.previewStep.shouldHave({
-		withdrawAmount: { amount: withdrawAmount, token: previewWithdrawnToken },
-		swap: previewInfo?.swap
-			? {
-					originalToken: withdrawnToken,
-					originalTokenAmount: withdrawAmount,
-					positionToken: nominatedToken,
-					positionTokenAmount: previewInfo.swap.positionTokenAmount,
-			  }
-			: undefined,
-		price: previewInfo?.price
-			? {
-					amount: previewInfo.price.amount,
-					originalToken: previewWithdrawnToken,
-					positionToken: nominatedToken,
-			  }
-			: undefined,
-		priceImpact: previewInfo?.priceImpact,
-		slippage: previewInfo?.slippage,
-		transactionFee: previewInfo?.transactionFee,
-	});
+		await app.positionPage.sidebar.previewStep.shouldHave({
+			withdrawAmount: { amount: withdrawAmount, token: previewWithdrawnToken },
+			swap: previewInfo?.swap
+				? {
+						originalToken: withdrawnToken,
+						originalTokenAmount: withdrawAmount,
+						positionToken: nominatedToken,
+						positionTokenAmount: previewInfo.swap.positionTokenAmount,
+				  }
+				: undefined,
+			price: previewInfo?.price
+				? {
+						amount: previewInfo.price.amount,
+						originalToken: previewWithdrawnToken,
+						positionToken: nominatedToken,
+				  }
+				: undefined,
+			priceImpact: previewInfo?.priceImpact,
+			slippage: previewInfo?.slippage,
+			transactionFee: previewInfo?.transactionFee,
+		});
 
-	await app.positionPage.sidebar.previewStep.withdraw();
-	await metamask.rejectTransaction();
+		await app.positionPage.sidebar.previewStep.withdraw();
+		await metamask.rejectTransaction();
+	}
 };
