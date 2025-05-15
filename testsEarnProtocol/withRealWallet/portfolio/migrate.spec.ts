@@ -23,7 +23,7 @@ test.describe('Real wallet - Portfolio - Migrate', async () => {
 		}).toPass();
 	});
 
-	test('It should show available to migrate amount', async ({ app }) => {
+	test('It should show available to migrate amount @regression', async ({ app }) => {
 		await app.portfolio.overview.shouldHaveAvailableToMigrateAmount('0.5[0-9]{2}');
 	});
 
