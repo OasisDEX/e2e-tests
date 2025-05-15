@@ -5,7 +5,7 @@ import { expectDefaultTimeout } from 'utils/config';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - $SUMRpage', async () => {
+test.describe('With real wallet - $SUMR page @regression', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);

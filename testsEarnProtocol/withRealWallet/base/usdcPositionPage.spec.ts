@@ -216,7 +216,7 @@ test.describe('With real wallet - Position page - Base - Switch', async () => {
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 	});
 
-	test('It should switch position - Base USDC vault', async ({ app, metamask }) => {
+	test('It should switch position - Base USDC vault @regression', async ({ app, metamask }) => {
 		await app.positionPage.sidebar.selectTab('Switch');
 
 		// EURC
