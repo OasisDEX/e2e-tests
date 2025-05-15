@@ -51,6 +51,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-earn-protocol-with-real-wallet
-          path: playwright-reports/earn-protocol-with-real-wallet
+          name: playwright-report-lazy-real-wallet-regression
+          path: playwright-reports/lazy-real-wallet-regression
           retention-days: 30
