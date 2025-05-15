@@ -8,6 +8,11 @@ on:
         type: string
         default: 'https://staging.summer.fi'
         required: false
+      script:
+        description: 'package.json scrip to be run'
+        type: string
+        default: 'ci:earn-with-real-wallet'
+        required: true
     secrets:
       TENDERLY_PROJECT:
         required: true
@@ -47,7 +52,7 @@ jobs:
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           BASE_URL=${{ inputs.base_url }} \
-          yarn ci:earn-with-real-wallet
+          yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

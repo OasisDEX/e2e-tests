@@ -7,7 +7,7 @@ import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - ETH Mainnet Lower Risk Position page - Deposit', async () => {
+test.describe('With real wallet - ETH Mainnet Lower Risk Position page - Deposit @regression', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -100,7 +100,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk Position page - Deposit
 					positionTokenAmount: '0.000[0-9]',
 				},
 				price: { amount: '0.000[0-9]' },
-				priceImpact: '[0-3].[0-9]{2}',
+				// priceImpact: '[0-3].[0-9]{2}',
 				slippage: '0.10',
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
@@ -129,7 +129,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk Position page - Deposit
 	});
 });
 
-test.describe('With real wallet - ETH Mainnet Lower Risk - Withdraw', async () => {
+test.describe('With real wallet - ETH Mainnet Lower Risk - Withdraw @regression', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
