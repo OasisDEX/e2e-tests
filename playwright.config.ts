@@ -79,6 +79,16 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'lazy-real-wallet',
+			testDir: './testsEarnProtocol',
+			testMatch: ['withRealWallet/**'],
+			use: {
+				baseURL: earnProtocolBaseUrl,
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
 			name: 'earn-protocol-prod-release',
 			testDir: './testsEarnProtocol',
 			testMatch: ['prodRelease/**'],

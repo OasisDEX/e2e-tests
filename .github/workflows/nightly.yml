@@ -13,6 +13,8 @@ jobs:
 
   earn-protocol-with-real-wallet:
     uses: ./.github/workflows/z_Reusable_EarnRegressionWithRealWallet.yml
+    with:
+      script: ci:earn-with-real-wallet
     secrets: inherit
 
   api-tests: 

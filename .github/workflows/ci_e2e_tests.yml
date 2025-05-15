@@ -56,3 +56,10 @@ jobs:
       base_url: 'https://staging.summer.fi'
       script: ci:earn-no-wallet
     secrets: inherit
+
+  lazy-real-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_EarnRegressionWithRealWallet.yml
+    with:
+      base_url: 'https://staging.summer.fi'
+      script: ci:lazy-real-wallet-regression
+    secrets: inherit
