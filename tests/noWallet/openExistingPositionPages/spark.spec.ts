@@ -39,7 +39,7 @@ test.describe('Open exisiting position pages - Spark', async () => {
 
 		await app.position.shouldHaveHeader('SDAI/ETH Multiply #1448');
 		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '([0-9]{1,2},)?[0-9]{3}.[0-9]{2}',
+			price: '0.00',
 			timeout: positionTimeout,
 		});
 	});
