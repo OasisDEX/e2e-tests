@@ -1,6 +1,7 @@
 import { Earn } from './earn';
 import { Header } from './header';
 import { LandingPage } from './landingPage';
+import { Migrate } from './migrate';
 import { Portfolio } from './portfolio';
 import { PositionPage } from './positionPage';
 import { RebalancingActivity } from './rebalancingActivity';
@@ -13,6 +14,7 @@ export {
 	Earn,
 	Header,
 	LandingPage,
+	Migrate,
 	Portfolio,
 	PositionPage,
 	RebalancingActivity,

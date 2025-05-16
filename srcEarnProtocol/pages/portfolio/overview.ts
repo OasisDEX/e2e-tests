@@ -105,6 +105,11 @@ export class Overview {
 	}
 
 	@step
+	async selectFirstMigratablePosition() {
+		await this.page.locator('[class*="positionCardWrapper"]').first().click();
+	}
+
+	@step
 	async migrate({ button }: { button: 'top' | 'bottom' }) {
 		await this.page
 			.locator('a:has-text("Migrate")')
