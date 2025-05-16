@@ -5,6 +5,7 @@ import {
 	Earn,
 	Header,
 	LandingPage,
+	Migrate,
 	Portfolio,
 	PositionPage,
 	RebalancingActivity,
@@ -26,6 +27,8 @@ export class App {
 	readonly header: Header;
 
 	readonly landingPage: LandingPage;
+
+	readonly migratePage: Migrate;
 
 	readonly modals: Modals;
 
@@ -49,6 +52,7 @@ export class App {
 		this.earn = new Earn(page);
 		this.header = new Header(page);
 		this.landingPage = new LandingPage(page);
+		this.migratePage = new Migrate(page);
 		this.modals = new Modals(page);
 		this.portfolio = new Portfolio(page);
 		this.positionPage = new PositionPage(page);

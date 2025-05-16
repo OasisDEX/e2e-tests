@@ -39,4 +39,20 @@ test.describe('Real wallet - Portfolio - Migrate', async () => {
 			},
 		]);
 	});
+
+	test('It should open "Migrate" page', async ({ app }) => {
+		await app.portfolio.overview.selectFirstMigratablePosition();
+		await app.portfolio.overview.migrate({ button: 'bottom' });
+
+		await app.migratePage.shouldBeVisible();
+	});
+
+	// TODO
+	test.skip('It should migrate position', async ({ app }) => {
+		await app.portfolio.overview.migrate({ button: 'top' });
+
+		// //
+		// await app.pause();
+		// //
+	});
 });
