@@ -21,3 +21,5 @@ export type EarnTokens =
 	| 'wstETH';
 
 export type LazyNominatedTokens = 'ETH' | 'EURC' | 'USDC' | 'USDC.E' | 'USDT' | 'USD₮0';
+
+export type Risks = 'Lower Risk' | 'Higher Risk';

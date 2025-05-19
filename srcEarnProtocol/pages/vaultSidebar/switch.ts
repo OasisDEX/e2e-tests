@@ -1,6 +1,6 @@
 import { step } from '#noWalletFixtures';
 import { Page } from '@playwright/test';
-import { LazyNominatedTokens } from 'srcEarnProtocol/utils/types';
+import { LazyNominatedTokens, Risks } from 'srcEarnProtocol/utils/types';
 
 export class Switch {
 	readonly page: Page;
@@ -10,10 +10,7 @@ export class Switch {
 	}
 
 	@step
-	async selectTargetPosition(position: {
-		token: LazyNominatedTokens;
-		risk?: 'Lower Risk' | 'Higher Risk';
-	}) {
+	async selectTargetPosition(position: { token: LazyNominatedTokens; risk?: Risks }) {
 		const regExp = new RegExp(`${position.token}.*${position.risk ?? ''}`);
 		await this.page.locator(`[class*="_nextVaultCard_"]`).filter({ hasText: regExp }).click();
 	}

@@ -69,7 +69,7 @@ test.describe('With real wallet - Position page - Base - Deposit', async () => {
 		});
 	});
 
-	test('It should deposit USDC & USDS - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit USDC & USDS (until rejecting "Deposit" tx) - Base USDC vault', async ({
 		app,
 		metamask,
 	}) => {
@@ -129,7 +129,7 @@ test.describe('With real wallet - Position page - Base - Deposit', async () => {
 	});
 });
 
-test.describe('With real wallet - Base - Withdraw', async () => {
+test.describe('With real wallet - Position page - Base - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -154,7 +154,7 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	test('It should show USDC deposited balance amount to be withdrawn in $ when selecting USDC in Base USDC vault', async ({
+	test('It should show USDC deposited balance amount to be withdrawn in $ when selecting USDC - Base USDC vault', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);
@@ -167,7 +167,7 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		});
 	});
 
-	test('It should withdraw to USDC - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to Base USDC - (until rejecting "Withdraw" tx)', async ({
 		app,
 		metamask,
 	}) => {
@@ -216,7 +216,7 @@ test.describe('With real wallet - Position page - Base - Switch', async () => {
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 	});
 
-	test('It should switch position - Base USDC vault @regression', async ({ app, metamask }) => {
+	test('It should switch Base USDC position @regression', async ({ app, metamask }) => {
 		await app.positionPage.sidebar.selectTab('Switch');
 
 		// EURC
