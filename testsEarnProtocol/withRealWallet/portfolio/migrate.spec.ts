@@ -1,20 +1,19 @@
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
+import { test as withRealWalletArbitrumFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletArbitrum';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout } from 'utils/config';
 import { expect } from '#earnProtocolFixtures';
-import { addNetwork } from 'utils/synpress/commonWalletSetup';
 
-const test = testWithSynpress(withRealWalletBaseFixtures);
+const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
 test.describe('Real wallet - Portfolio - Migrate', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 45_000);
+		testInfo.setTimeout(testInfo.timeout + 25_000);
 
 		await logInWithWalletAddress({
 			metamask,
 			app,
 			wallet: 'MetaMask',
+			network: 'Arbitrum',
 		});
 
 		await expect(async () => {
@@ -47,12 +46,25 @@ test.describe('Real wallet - Portfolio - Migrate', async () => {
 		await app.migratePage.shouldBeVisible();
 	});
 
-	// TODO
-	test.skip('It should migrate position', async ({ app }) => {
+	test('It should migrate position - Until first tx', async ({ app, metamask }) => {
 		await app.portfolio.overview.migrate({ button: 'top' });
+		await app.migratePage.shouldBeVisible();
 
-		// //
-		// await app.pause();
-		// //
+		await app.migratePage.selectPositionToMigrateByListOrder(1);
+
+		await app.migratePage.selectVaulToMigrateToByNetworkAndListOrder({
+			network: 'arbitrum',
+			nth: 1,
+		});
+
+		await app.migratePage.migrate();
+
+		await app.positionPage.sidebar.migrate.shouldBeVisible();
+
+		await app.positionPage.sidebar.migrate.switchNetwork();
+		await metamask.approveSwitchNetwork();
+
+		await app.positionPage.sidebar.migrate.approve();
+		await metamask.rejectTransaction();
 	});
 });
