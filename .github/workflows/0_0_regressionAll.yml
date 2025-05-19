@@ -31,14 +31,15 @@ jobs:
       flags_features: ${{ inputs.flags_features}}
     secrets: inherit
 
-  with-wallet-aave-base-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
-    with:
-      protocol: aave
-      network: base
-      base_url: ${{ inputs.base_url }}
-      flags_features: ${{ inputs.flags_features}}
-    secrets: inherit
+  # SKIP - BASE not working with forks 
+  # with-wallet-aave-base-tests:
+  #   uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml
+  #   with:
+  #     protocol: aave
+  #     network: base
+  #     base_url: ${{ inputs.base_url }}
+  #     flags_features: ${{ inputs.flags_features}}
+  #   secrets: inherit
 
   with-wallet-aave-ethereum-tests:
     uses: ./.github/workflows/z_Reusable_RegressionWithWallet.yml

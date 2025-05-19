@@ -3,6 +3,7 @@ import { Locator, Page } from '@playwright/test';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 import { ApproveStep } from './approveStep';
+import { Migrate } from './migrate';
 import { PreviewStep } from './previewStep';
 import { Switch } from './switch';
 import { TermsAndConditions } from './termsAndConditions';
@@ -11,6 +12,8 @@ export class VaultSidebar {
 	readonly page: Page;
 
 	readonly approveStep: ApproveStep;
+
+	readonly migrate: Migrate;
 
 	readonly previewStep: PreviewStep;
 
@@ -23,6 +26,7 @@ export class VaultSidebar {
 	constructor(page: Page, sidebarLocator: Locator) {
 		this.page = page;
 		this.approveStep = new ApproveStep(page);
+		this.migrate = new Migrate(page);
 		this.previewStep = new PreviewStep(page);
 		this.sidebarLocator = sidebarLocator;
 		this.switch = new Switch(page);

@@ -16,4 +16,32 @@ export class Migrate {
 			'"Why Migrate?" headershould be visible'
 		).toBeVisible();
 	}
+
+	@step
+	async selectPositionToMigrateByListOrder(nth: number) {
+		await this.page
+			.locator('#migration-positions-list [class*="cardPrimary"]')
+			.nth(nth - 1)
+			.click();
+	}
+
+	@step
+	async selectVaulToMigrateToByNetworkAndListOrder({
+		network,
+		nth,
+	}: {
+		network: 'arbitrum';
+		nth: number;
+	}) {
+		await this.page
+			.locator('[class*="MigrationLandingPageView_vaultsList"] [class*="cardPrimary"]')
+			.filter({ has: this.page.getByTestId('vault-network').locator(`svg[title*="${network}"]`) })
+			.nth(nth - 1)
+			.click();
+	}
+
+	@step
+	async migrate() {
+		await this.page.getByRole('button', { name: 'Migrate' }).click();
+	}
 }
