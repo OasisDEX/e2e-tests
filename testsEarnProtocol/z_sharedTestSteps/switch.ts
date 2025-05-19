@@ -1,7 +1,7 @@
 import { expect } from '#earnProtocolFixtures';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 import { App } from 'srcEarnProtocol/app';
-import { LazyNominatedTokens } from 'srcEarnProtocol/utils/types';
+import { LazyNominatedTokens, Risks } from 'srcEarnProtocol/utils/types';
 
 // Deposit flow until rejecting first tx
 export const switchPosition = async ({
@@ -9,13 +9,15 @@ export const switchPosition = async ({
 	app,
 	nominatedToken,
 	targetToken,
+	risk,
 }: {
 	metamask: MetaMask;
 	app: App;
 	nominatedToken: LazyNominatedTokens;
 	targetToken: LazyNominatedTokens;
+	risk?: Risks;
 }) => {
-	await app.positionPage.sidebar.switch.selectTargetPosition({ token: targetToken });
+	await app.positionPage.sidebar.switch.selectTargetPosition({ token: targetToken, risk });
 	await app.positionPage.sidebar.switch.previewSwitch();
 
 	const sidebarButtonLocator = app.page.locator('[class*="_sidebarCta_"] button').first();
@@ -41,7 +43,7 @@ export const switchPosition = async ({
 	}
 
 	if (sidebarButtonLabel.includes('Approve')) {
-		await app.positionPage.sidebar.approve(nominatedToken);
+		await app.positionPage.sidebar.approve(nominatedToken === 'ETH' ? 'WETH' : nominatedToken);
 		await metamask.rejectTransaction();
 	} else {
 		await app.positionPage.sidebar.switch.confirmSwitch();

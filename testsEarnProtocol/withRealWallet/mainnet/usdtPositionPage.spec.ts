@@ -4,10 +4,11 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - USDT Mainnet Position page - Deposit', async () => {
+test.describe('With real wallet - Mainnet USDT Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -130,9 +131,9 @@ test.describe('With real wallet - USDT Mainnet Position page - Deposit', async (
 	});
 });
 
-test.describe('With real wallet - USDT Mainnet - Withdraw', async () => {
+test.describe('With real wallet - Mainnet USDT Position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 35_000);
+		testInfo.setTimeout(testInfo.timeout + 25_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -158,7 +159,7 @@ test.describe('With real wallet - USDT Mainnet - Withdraw', async () => {
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	test('It should show maximum USDT balance amount to be withdrawn in $ - USDT Mainnet position', async ({
+	test('It should show maximum USDT balance amount to be withdrawn in $ - Mainnet USDT position', async ({
 		app,
 	}) => {
 		await app.positionPage.sidebar.depositOrWithdraw('0.4');
@@ -188,6 +189,68 @@ test.describe('With real wallet - USDT Mainnet - Withdraw', async () => {
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
+		});
+	});
+});
+
+test.describe('With real wallet - Mainnet USDT Position page - Switch', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		// Extending tests timeout by 25 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 45_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+		});
+
+		await app.positionPage.open(
+			'/earn/mainnet/position/0x17ee2d03e88b55e762c66c76ec99c3a28a54ad8d/0x10649c79428d718621821cf6299e91920284743f'
+		);
+
+		// Wait for balance to fully load to avoid random fails
+		await app.positionPage.sidebar.shouldHaveBalance({
+			balance: '0.5000',
+			token: 'USDT',
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
+		await app.positionPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+	});
+
+	test('It should switch position - Mainnet USDT vault @regression', async ({ app, metamask }) => {
+		await app.positionPage.sidebar.selectTab('Switch');
+
+		// USDC
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDT',
+			targetToken: 'USDC',
+		});
+
+		// ETH Higher Risk
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDT',
+			targetToken: 'ETH',
+			risk: 'Higher Risk',
+		});
+
+		// ETH Lower Risk
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDT',
+			targetToken: 'ETH',
+			risk: 'Lower Risk',
 		});
 	});
 });
