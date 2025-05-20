@@ -49,7 +49,7 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'earn-protocol',
+			name: 'lazy',
 			testDir: './testsEarnProtocol',
 			testIgnore: 'prodRelease/**',
 			use: {
@@ -59,19 +59,9 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'earn-protocol-no-wallet',
+			name: 'lazy-no-wallet',
 			testDir: './testsEarnProtocol',
 			testMatch: ['noWallet/**'],
-			use: {
-				baseURL: earnProtocolBaseUrl,
-				...devices['Desktop Chrome'],
-			},
-		},
-
-		{
-			name: 'earn-protocol-with-real-wallet',
-			testDir: './testsEarnProtocol',
-			testMatch: ['withRealWallet/**'],
 			use: {
 				baseURL: earnProtocolBaseUrl,
 				...devices['Desktop Chrome'],
@@ -89,21 +79,21 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'earn-protocol-prod-release',
+			name: 'lazy-with-test-wallet',
 			testDir: './testsEarnProtocol',
-			testMatch: ['prodRelease/**'],
+			testMatch: ['withTestWallet/**'],
 			use: {
-				baseURL: 'https://summer.fi/earn',
+				baseURL: earnProtocolBaseUrl,
 				...devices['Desktop Chrome'],
 			},
 		},
 
 		{
-			name: 'earn-protocol-with-test-wallet',
+			name: 'lazy-prod-release',
 			testDir: './testsEarnProtocol',
-			testMatch: ['withTestWallet/**'],
+			testMatch: ['prodRelease/**'],
 			use: {
-				baseURL: earnProtocolBaseUrl,
+				baseURL: 'https://summer.fi/earn',
 				...devices['Desktop Chrome'],
 			},
 		},

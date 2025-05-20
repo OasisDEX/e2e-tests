@@ -4,10 +4,11 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - Position page - Base EURC - Deposit', async () => {
+test.describe('With real wallet - Base EURC position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -23,7 +24,9 @@ test.describe('With real wallet - Position page - Base EURC - Deposit', async ()
 		);
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Base EURC vault', async ({ app }) => {
+	test('It should show Deposit balances and Deposit amounts - Base EURC position', async ({
+		app,
+	}) => {
 		// EURC
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '[0-1].[0-9]{4}',
@@ -68,7 +71,7 @@ test.describe('With real wallet - Position page - Base EURC - Deposit', async ()
 		});
 	});
 
-	test('It should deposit EURC & USDS - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit EURC & USDS - (until rejecting "Deposit" tx) - Base EURC position', async ({
 		app,
 		metamask,
 	}) => {
@@ -128,7 +131,7 @@ test.describe('With real wallet - Position page - Base EURC - Deposit', async ()
 	});
 });
 
-test.describe('With real wallet - Position page - Base EURC - Withdraw', async () => {
+test.describe('With real wallet - Base EURC position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 45_000);
 
@@ -153,7 +156,7 @@ test.describe('With real wallet - Position page - Base EURC - Withdraw', async (
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	test('It should show EURC deposited balance amount to be withdrawn in $ when selecting EURC in Base EURC vault', async ({
+	test('It should show EURC deposited balance amount to be withdrawn in $ when selecting EURC - Base EURC position', async ({
 		app,
 	}) => {
 		await app.positionPage.sidebar.depositOrWithdraw('0.4');
@@ -164,7 +167,7 @@ test.describe('With real wallet - Position page - Base EURC - Withdraw', async (
 		});
 	});
 
-	test('It should withdraw to EURC - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to EURC - (until rejecting "Withdraw" tx) - Base EURC position', async ({
 		app,
 		metamask,
 	}) => {
@@ -185,6 +188,52 @@ test.describe('With real wallet - Position page - Base EURC - Withdraw', async (
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
+		});
+	});
+});
+
+test.describe('With real wallet - Base EURC position page - Switch', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		testInfo.setTimeout(testInfo.timeout + 25_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+		});
+
+		await app.positionPage.open(
+			'/earn/base/position/0x64db8f51f1bf7064bb5a361a7265f602d348e0f0/0x10649c79428d718621821Cf6299e91920284743F'
+		);
+
+		// Wait for balance to fully load to avoid random fails
+		await app.positionPage.sidebar.shouldHaveBalance({
+			balance: '[0-9].[0-9]{4}',
+			token: 'EURC',
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+	});
+
+	test('It should switch Base EURC position', async ({ app, metamask }) => {
+		await app.positionPage.sidebar.selectTab('Switch');
+
+		// USDC
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'EURC',
+			targetToken: 'USDC',
+		});
+
+		// ETH
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'EURC',
+			targetToken: 'ETH',
 		});
 	});
 });

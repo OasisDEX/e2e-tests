@@ -4,10 +4,11 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
-test.describe('With real wallet - USDC Arbitrum Position page - Deposit', async () => {
+test.describe('With real wallet - Arbitrum USDC Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -24,7 +25,7 @@ test.describe('With real wallet - USDC Arbitrum Position page - Deposit', async 
 		);
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Arbitrum USDC vault', async ({
+	test('It should show Deposit balances and Deposit amounts - Arbitrum USDC position', async ({
 		app,
 	}) => {
 		// === USDC ===
@@ -74,7 +75,7 @@ test.describe('With real wallet - USDC Arbitrum Position page - Deposit', async 
 		});
 	});
 
-	test('It should deposit WSTETH & DAI - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit WSTETH & DAI - (until rejecting "Deposit" tx) - Arbitrum USDC position', async ({
 		app,
 		metamask,
 	}) => {
@@ -125,7 +126,7 @@ test.describe('With real wallet - USDC Arbitrum Position page - Deposit', async 
 	});
 });
 
-test.describe('With real wallet - USDC Arbitrum - Withdraw', async () => {
+test.describe('With real wallet - Arbitrum USDC Position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -165,7 +166,7 @@ test.describe('With real wallet - USDC Arbitrum - Withdraw', async () => {
 		});
 	});
 
-	test('It should withdraw to USDC - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to USDC - (until rejecting "Withdraw" tx) - Arbitrum USDC position', async ({
 		app,
 		metamask,
 	}) => {
@@ -184,6 +185,45 @@ test.describe('With real wallet - USDC Arbitrum - Withdraw', async () => {
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
+		});
+	});
+});
+
+test.describe('With real wallet - Arbitrum USDC Position page - Switch', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		testInfo.setTimeout(testInfo.timeout + 35_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+			network: 'Arbitrum',
+		});
+
+		await app.positionPage.open(
+			'/earn/arbitrum/position/0x4f63cfea7458221cb3a0eee2f31f7424ad34bb58/0x10649c79428d718621821cf6299e91920284743f'
+		);
+
+		// Wait for balance to fully load to avoid random fails
+		await app.positionPage.sidebar.shouldHaveBalance({
+			balance: '0.5000',
+			token: 'USDC',
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
+		await app.positionPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+	});
+
+	test('It should switch Arbitrum USDC position', async ({ app, metamask }) => {
+		await app.positionPage.sidebar.selectTab('Switch');
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			targetToken: 'USD₮0',
 		});
 	});
 });

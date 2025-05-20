@@ -8,7 +8,7 @@ import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - Position page - Base - Deposit', async () => {
+test.describe('With real wallet - Base USDC position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -24,7 +24,9 @@ test.describe('With real wallet - Position page - Base - Deposit', async () => {
 		);
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Base USDC vault', async ({ app }) => {
+	test('It should show Deposit balances and Deposit amounts - Base USDC position', async ({
+		app,
+	}) => {
 		// USDC
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '[0-1].[0-9]{4}',
@@ -69,7 +71,7 @@ test.describe('With real wallet - Position page - Base - Deposit', async () => {
 		});
 	});
 
-	test('It should deposit USDC & USDS (until rejecting "Deposit" tx) - Base USDC vault', async ({
+	test('It should deposit USDC & USDS (until rejecting "Deposit" tx) - Base USDC position', async ({
 		app,
 		metamask,
 	}) => {
@@ -129,7 +131,7 @@ test.describe('With real wallet - Position page - Base - Deposit', async () => {
 	});
 });
 
-test.describe('With real wallet - Position page - Base - Withdraw', async () => {
+test.describe('With real wallet - Base USDC position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -154,7 +156,7 @@ test.describe('With real wallet - Position page - Base - Withdraw', async () => 
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	test('It should show USDC deposited balance amount to be withdrawn in $ when selecting USDC - Base USDC vault', async ({
+	test('It should show USDC deposited balance amount to be withdrawn in $ when selecting USDC - Base USDC position', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);
@@ -167,7 +169,7 @@ test.describe('With real wallet - Position page - Base - Withdraw', async () => 
 		});
 	});
 
-	test('It should withdraw to Base USDC - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to Base USDC - (until rejecting "Withdraw" tx) - Base USDC position', async ({
 		app,
 		metamask,
 	}) => {
@@ -192,7 +194,7 @@ test.describe('With real wallet - Position page - Base - Withdraw', async () => 
 	});
 });
 
-test.describe('With real wallet - Position page - Base - Switch', async () => {
+test.describe('With real wallet - Base USDC position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);

@@ -48,6 +48,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-earn-protocol-no-wallet
-          path: playwright-reports/earn-protocol-no-wallet
+          name: playwright-report-lazy-no-wallet
+          path: playwright-reports/lazy-no-wallet
           retention-days: 30

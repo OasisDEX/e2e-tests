@@ -220,7 +220,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 		await metamask.approveSwitchNetwork();
 	});
 
-	test('It should switch position - Mainnet USDT vault @regression', async ({ app, metamask }) => {
+	test('It should switch position - Mainnet USDT vault', async ({ app, metamask }) => {
 		await app.positionPage.sidebar.selectTab('Switch');
 
 		// USDC

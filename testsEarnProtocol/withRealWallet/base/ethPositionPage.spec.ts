@@ -4,10 +4,11 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - Position page - Base - Deposit', async () => {
+test.describe('With real wallet - Base ETH Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -23,7 +24,9 @@ test.describe('With real wallet - Position page - Base - Deposit', async () => {
 		);
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Base ETH vault', async ({ app }) => {
+	test('It should show Deposit balances and Deposit amounts - Base ETH position page', async ({
+		app,
+	}) => {
 		// ETH
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '0.00[0-9]{2}',
@@ -70,7 +73,7 @@ test.describe('With real wallet - Position page - Base - Deposit', async () => {
 		});
 	});
 
-	test('It should deposit ETH & USDS - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit ETH & USDS - (until rejecting "Deposit" tx) - Base ETH position page', async ({
 		app,
 		metamask,
 	}) => {
@@ -130,7 +133,7 @@ test.describe('With real wallet - Position page - Base - Deposit', async () => {
 	});
 });
 
-test.describe('With real wallet - Base - Withdraw', async () => {
+test.describe('With real wallet - Base ETH Position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -155,7 +158,7 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	test('It should show ETH deposited balance amount to be withdrawn when selecting ETH in Base ETH vault', async ({
+	test('It should show ETH deposited balance amount to be withdrawn when selecting ETH - Base ETH position page', async ({
 		app,
 	}) => {
 		test.setTimeout(longTestTimeout);
@@ -168,7 +171,10 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 		});
 	});
 
-	test('It should withdraw to ETH - (until rejecting "Withdraw" tx)', async ({ app, metamask }) => {
+	test('It should withdraw to ETH - (until rejecting "Withdraw" tx) - Base ETH position page', async ({
+		app,
+		metamask,
+	}) => {
 		test.setTimeout(longTestTimeout);
 
 		await withdraw({
@@ -186,6 +192,52 @@ test.describe('With real wallet - Base - Withdraw', async () => {
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
+		});
+	});
+});
+
+test.describe('With real wallet - Base ETH position page - Switch', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		testInfo.setTimeout(testInfo.timeout + 25_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+		});
+
+		await app.positionPage.open(
+			'/earn/base/position/0x2bb9ad69feba5547b7cd57aafe8457d40bf834af/0x10649c79428d718621821cf6299e91920284743f'
+		);
+
+		// Wait for balance to fully load to avoid random fails
+		await app.positionPage.sidebar.shouldHaveBalance({
+			balance: '0.[0-9]{4}',
+			token: 'ETH',
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+	});
+
+	test('It should switch Base ETH position @regression', async ({ app, metamask }) => {
+		await app.positionPage.sidebar.selectTab('Switch');
+
+		// EURC
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'ETH',
+			targetToken: 'EURC',
+		});
+
+		// USDC
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'ETH',
+			targetToken: 'USDC',
 		});
 	});
 });

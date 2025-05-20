@@ -5,7 +5,7 @@ on:
     - cron:  '0 1 * * 1-5'
 
 jobs:
-  earn-protocol-no-wallet-tests:
+  lazy-no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_EarnRegressionNoWallet.yml
     with:
       script: ci:earn-no-wallet
