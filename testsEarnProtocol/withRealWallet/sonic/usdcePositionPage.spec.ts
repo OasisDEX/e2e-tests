@@ -7,7 +7,7 @@ import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
 
-test.describe('With real wallet - USDC.E Sonic Position page - Deposit', async () => {
+test.describe('With real wallet - Sonic USDC.E Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -24,7 +24,7 @@ test.describe('With real wallet - USDC.E Sonic Position page - Deposit', async (
 		);
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Sonic USDC.E vault', async ({
+	test('It should show Deposit balances and Deposit amounts - Sonic USDC.E position', async ({
 		app,
 	}) => {
 		await app.positionPage.sidebar.shouldHaveBalance({
@@ -40,7 +40,10 @@ test.describe('With real wallet - USDC.E Sonic Position page - Deposit', async (
 		});
 	});
 
-	test('It should deposit USDC.E - (until rejecting "Deposit" tx)', async ({ app, metamask }) => {
+	test('It should deposit USDC.E - (until rejecting "Deposit" tx) - Sonic USDC.E position', async ({
+		app,
+		metamask,
+	}) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.positionPage.sidebar.changeNetwork();
@@ -65,7 +68,7 @@ test.describe('With real wallet - USDC.E Sonic Position page - Deposit', async (
 	});
 });
 
-test.describe('With real wallet - USDC.E Sonic - Withdraw', async () => {
+test.describe('With real wallet - Sonic USDC.E Position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -94,7 +97,7 @@ test.describe('With real wallet - USDC.E Sonic - Withdraw', async () => {
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	test('It should show USDC.E balance amount to be withdrawn in $ - Arbitrum USDC position', async ({
+	test('It should show USDC.E balance amount to be withdrawn in $ - Sonic USDC.E position', async ({
 		app,
 	}) => {
 		await app.positionPage.sidebar.depositOrWithdraw('0.4');
@@ -105,7 +108,7 @@ test.describe('With real wallet - USDC.E Sonic - Withdraw', async () => {
 		});
 	});
 
-	test('It should withdraw to USDC.E - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to USDC.E - (until rejecting "Withdraw" tx) - Sonic USDC.E position', async ({
 		app,
 		metamask,
 	}) => {

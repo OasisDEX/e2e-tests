@@ -25,7 +25,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 		);
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Arbitrum USD₮0 vault', async ({
+	test('It should show Deposit balances and Deposit amounts - Arbitrum USD₮0 position', async ({
 		app,
 	}) => {
 		// === USD₮0 ===
@@ -75,7 +75,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 		});
 	});
 
-	test('It should deposit WSTETH & DAI - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit WSTETH & DAI - (until rejecting "Deposit" tx) - Arbitrum USD₮0 position', async ({
 		app,
 		metamask,
 	}) => {
@@ -166,7 +166,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', as
 		});
 	});
 
-	test('It should withdraw to USD₮0 - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to USD₮0 - (until rejecting "Withdraw" tx) - Arbitrum USD₮0 position', async ({
 		app,
 		metamask,
 	}) => {
@@ -216,10 +216,9 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', asyn
 		await metamask.approveSwitchNetwork();
 	});
 
-	test('It should switch Arbitrum USD₮0 position @regression', async ({ app, metamask }) => {
+	test('It should switch Arbitrum USD₮0 position', async ({ app, metamask }) => {
 		await app.positionPage.sidebar.selectTab('Switch');
 
-		// USD₮0
 		await switchPosition({
 			metamask,
 			app,
