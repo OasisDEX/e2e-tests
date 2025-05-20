@@ -30,7 +30,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Deposit', async (
 		});
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Mainnet USDT vault', async ({
+	test('It should show Deposit balances and Deposit amounts - Mainnet USDT position', async ({
 		app,
 	}) => {
 		// === USDT ===
@@ -74,7 +74,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Deposit', async (
 		});
 	});
 
-	test('It should deposit USDT & WETH - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit USDT & WETH - (until rejecting "Deposit" tx) - Mainnet USDT position', async ({
 		app,
 		metamask,
 	}) => {
@@ -170,7 +170,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Withdraw', async 
 		});
 	});
 
-	test('It should withdraw to USDT - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to USDT - (until rejecting "Withdraw" tx) - Mainnet USDT position', async ({
 		app,
 		metamask,
 	}) => {
@@ -220,7 +220,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 		await metamask.approveSwitchNetwork();
 	});
 
-	test('It should switch position - Mainnet USDT vault', async ({ app, metamask }) => {
+	test('It should switch position - Mainnet USDT position', async ({ app, metamask }) => {
 		await app.positionPage.sidebar.selectTab('Switch');
 
 		// USDC
