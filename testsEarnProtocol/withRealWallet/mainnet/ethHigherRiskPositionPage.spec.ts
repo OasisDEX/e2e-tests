@@ -30,7 +30,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposi
 		});
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Mainnet ETH Higher Risk  vault', async ({
+	test('It should show Deposit balances and Deposit amounts - Mainnet ETH Higher Risk position', async ({
 		app,
 	}) => {
 		// === ETH ===
@@ -73,7 +73,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposi
 		});
 	});
 
-	test('It should deposit ETH, WETH & USDC (ETH Higher Risk ) - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit ETH, WETH & USDC (until rejecting "Deposit" tx) - Mainnet ETH Higher Risk position', async ({
 		app,
 		metamask,
 	}) => {
@@ -190,7 +190,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Withdr
 		});
 	});
 
-	test('It should withdraw to ETH (Higher Risk) - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to ETH - (until rejecting "Withdraw" tx) - Mainnet ETH Higher Risk position', async ({
 		app,
 		metamask,
 	}) => {
@@ -240,7 +240,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch
 		await metamask.approveSwitchNetwork();
 	});
 
-	test('It should switch position - Mainnet ETH Higher Risk vault @regression', async ({
+	test('It should switch position - Mainnet ETH Higher Risk position @regression', async ({
 		app,
 		metamask,
 	}) => {

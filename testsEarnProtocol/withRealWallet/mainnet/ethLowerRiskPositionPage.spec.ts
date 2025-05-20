@@ -4,10 +4,11 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - ETH Mainnet Lower Risk Position page - Deposit @regression', async () => {
+test.describe('With real wallet - ETH Mainnet Lower Risk position page - Deposit @regression', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -29,7 +30,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk Position page - Deposit
 		});
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Mainnet ETH Lower Risk  vault', async ({
+	test('It should show Deposit balances and Deposit amounts - Mainnet ETH Lower Risk position', async ({
 		app,
 	}) => {
 		// === ETH ===
@@ -72,7 +73,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk Position page - Deposit
 		});
 	});
 
-	test('It should deposit USDC & WETH (ETH Lower Risk ) - (until rejecting "Deposit" tx)', async ({
+	test('It should deposit USDC & WETH - (until rejecting "Deposit" tx) - Mainnet ETH Lower Risk position', async ({
 		app,
 		metamask,
 	}) => {
@@ -129,7 +130,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk Position page - Deposit
 	});
 });
 
-test.describe('With real wallet - ETH Mainnet Lower Risk - Withdraw @regression', async () => {
+test.describe('With real wallet - ETH Mainnet Lower Risk position page - Withdraw @regression', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -157,7 +158,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk - Withdraw @regression'
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	test('It should show maximum ETH balance amount to be withdrawn in ETH - ETH Mainnet Lower Risk position', async ({
+	test('It should show maximum ETH balance amount to be withdrawn in ETH - Mainnet ETH Lower Risk position', async ({
 		app,
 	}) => {
 		await app.positionPage.sidebar.depositOrWithdraw('0.0001');
@@ -168,7 +169,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk - Withdraw @regression'
 		});
 	});
 
-	test('It should withdraw to ETH (Lower Risk) - (until rejecting "Withdraw" tx)', async ({
+	test('It should withdraw to ETH (Lower Risk) - (until rejecting "Withdraw" tx) - Mainnet ETH Lower Risk position', async ({
 		app,
 		metamask,
 	}) => {
@@ -187,6 +188,67 @@ test.describe('With real wallet - ETH Mainnet Lower Risk - Withdraw @regression'
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
+		});
+	});
+});
+
+test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		// Extending tests timeout by 25 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 45_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+		});
+
+		await app.positionPage.open(
+			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f'
+		);
+
+		// Wait for balance to fully load to avoid random fails
+		await app.positionPage.sidebar.shouldHaveBalance({
+			balance: '0.0[0-9]{3}',
+			token: 'ETH',
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
+		await app.positionPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+	});
+
+	test('It should switch position - Mainnet ETH Lower Risk position', async ({ app, metamask }) => {
+		await app.positionPage.sidebar.selectTab('Switch');
+
+		// USDC
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'ETH',
+			targetToken: 'USDC',
+		});
+
+		// USDT
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'ETH',
+			targetToken: 'USDT',
+		});
+
+		// ETH Higher Risk
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'ETH',
+			targetToken: 'ETH',
+			risk: 'Higher Risk',
 		});
 	});
 });
