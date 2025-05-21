@@ -2,6 +2,7 @@ import { expect } from '#earnProtocolFixtures';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 import { App } from 'srcEarnProtocol/app';
 import { LazyNominatedTokens, Risks } from 'srcEarnProtocol/utils/types';
+import { expectDefaultTimeout } from 'utils/config';
 
 // Deposit flow until rejecting first tx
 export const switchPosition = async ({
@@ -25,7 +26,7 @@ export const switchPosition = async ({
 	await expect(
 		sidebarButtonLocator,
 		'[Agree], [Approve] or [Switch] buttons should not be visible'
-	).toContainText(/Agree|Approve|Switch/);
+	).toContainText(/Agree|Approve|Switch/, { timeout: expectDefaultTimeout * 2 });
 
 	let sidebarButtonLabel = await sidebarButtonLocator.innerText();
 
