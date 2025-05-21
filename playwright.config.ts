@@ -79,7 +79,7 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'lazy-with-test-wallet',
+			name: 'lazy-test-wallet',
 			testDir: './testsEarnProtocol',
 			testMatch: ['withTestWallet/**'],
 			use: {

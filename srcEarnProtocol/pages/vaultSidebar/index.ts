@@ -162,6 +162,10 @@ export class VaultSidebar {
 
 	@step
 	async goBack() {
-		await this.page.locator('[class*="_goBackButton_"]').click();
+		const buttonLocator = this.page.locator('[class*="_goBackButton_"]');
+		await expect(buttonLocator, 'Back icon should be visible').toBeVisible({
+			timeout: expectDefaultTimeout * 2,
+		});
+		await buttonLocator.click();
 	}
 }
