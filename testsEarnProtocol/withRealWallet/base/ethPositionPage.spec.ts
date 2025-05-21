@@ -217,11 +217,42 @@ test.describe('With real wallet - Base ETH position page - Switch', async () => 
 			timeout: expectDefaultTimeout * 2,
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
+		await app.positionPage.sidebar.selectTab('Switch');
+	});
+
+	test('It show display info about original and target vaults - Switch Base ETH position', async ({
+		app,
+	}) => {
+		await app.positionPage.sidebar.switch.yourPositionShouldBe({
+			network: 'base',
+			token: 'ETH',
+			risk: 'Lower Risk',
+			balance: '0.00[0-9]',
+			liveAPY: '[0-9]{1,2}.[0-9]{2}',
+		});
+
+		await app.positionPage.sidebar.switch.targetPositionsShouldBe([
+			{
+				network: 'base',
+				token: 'USDC',
+				risk: 'Lower Risk',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'base',
+				token: 'EURC',
+				risk: 'Lower Risk',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+		]);
 	});
 
 	test('It should switch Base ETH position @regression', async ({ app, metamask }) => {
-		await app.positionPage.sidebar.selectTab('Switch');
-
 		// EURC
 		await switchPosition({
 			metamask,
