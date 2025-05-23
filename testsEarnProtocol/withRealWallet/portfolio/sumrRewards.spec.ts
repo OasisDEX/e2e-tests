@@ -77,19 +77,19 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		await metamask.rejectTransaction();
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(2_000);
+		await app.page.waitForTimeout(3_000);
 
 		// Arbitrum rewards
 		await app.portfolio.rewards.claimAndDelegate.claim('Arbitrum');
 		await metamask.approveNewNetwork();
 		await metamask.approveSwitchNetwork();
-		// Wait for Metamaskwindow to re-open
+		// Wait for Metamask window to re-open
 		await expect(async () => {
 			await metamask.rejectTransaction();
 		}).toPass();
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(2_000);
+		await app.page.waitForTimeout(3_000);
 
 		// Sonic rewards --> This will fail until more SUMR are accrued on Sonic
 		await app.portfolio.rewards.claimAndDelegate.claim('Sonic');

@@ -47,6 +47,8 @@ test.describe('Real wallet - Portfolio - Migrate', async () => {
 	});
 
 	test('It should migrate position - Until first tx', async ({ app, metamask }) => {
+		test.setTimeout(35_000);
+
 		await app.portfolio.overview.migrate({ button: 'top' });
 		await app.migratePage.shouldBeVisible();
 

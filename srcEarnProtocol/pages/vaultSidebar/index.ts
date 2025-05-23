@@ -87,7 +87,7 @@ export class VaultSidebar {
 
 	@step
 	async buttonShouldBeVisible(
-		button: 'Deposit' | 'Withdraw' | 'Preview' | 'Switch',
+		button: 'Deposit' | 'Loading' | 'Preview' | 'Preview Switch' | 'Switch' | 'Withdraw' | RegExp,
 		args?: { timeout: number }
 	) {
 		await expect(

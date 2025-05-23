@@ -50,4 +50,8 @@ export const switchPosition = async ({
 		await app.positionPage.sidebar.switch.confirmSwitch();
 		await metamask.rejectSignature();
 	}
+
+	// Leaving app in a stable state to avoid random fails in following test steps
+	await app.positionPage.sidebar.buttonShouldBeVisible('Loading');
+	await app.positionPage.sidebar.buttonShouldBeVisible(/Approve|Switch/);
 };
