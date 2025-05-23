@@ -1,4 +1,4 @@
-name: 0.0.1. Lazy - No wallet
+name: 0.0.1. Lazy - All
 
 on: 
   workflow_dispatch:
