@@ -1,0 +1,18 @@
+name: 0.0.1. Lazy - No wallet
+
+on: 
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on.'
+        type: string
+        default: 'https://staging.summer.fi/'
+        required: true
+
+jobs:
+  lazy-no-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_EarnRegressionNoWallet.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      script: ci:earn-no-wallet
+    secrets: inherit
