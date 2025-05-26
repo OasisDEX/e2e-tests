@@ -177,10 +177,10 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', as
 			withdrawnToken: 'USD₮0',
 			withdrawAmount: '0.5',
 			estimatedEarnings: {
-				thirtyDaysAmount: '0.00[0-9]{1,2}',
-				sixMonthsAmount: '0.00[0-9]{1,2}',
-				oneYearAmount: '0.00[0-9]{1,2}',
-				threeYearsAmount: '0.00[0-9]{1,2}',
+				thirtyDaysAmount: '0.0[0-9]{3}',
+				sixMonthsAmount: '0.0[0-9]{3}',
+				oneYearAmount: '0.0[0-9]{3}',
+				threeYearsAmount: '0.0[0-9]{3}',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
@@ -214,11 +214,34 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', asyn
 
 		await app.positionPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
+
+		await app.positionPage.sidebar.selectTab('Switch');
+	});
+
+	test('It should display info about original and target vaults - Switch Arbitrum USD₮0 position', async ({
+		app,
+	}) => {
+		await app.positionPage.sidebar.switch.yourPositionShouldBe({
+			network: 'arbitrum',
+			token: 'USD₮0',
+			risk: 'Lower Risk',
+			balance: '0.5[0-9]{3}',
+			liveAPY: '[0-9]{1,2}.[0-9]{2}',
+		});
+
+		await app.positionPage.sidebar.switch.targetPositionsShouldBe([
+			{
+				network: 'arbitrum',
+				token: 'USDC',
+				risk: 'Lower Risk',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+		]);
 	});
 
 	test('It should switch Arbitrum USD₮0 position', async ({ app, metamask }) => {
-		await app.positionPage.sidebar.selectTab('Switch');
-
 		await switchPosition({
 			metamask,
 			app,

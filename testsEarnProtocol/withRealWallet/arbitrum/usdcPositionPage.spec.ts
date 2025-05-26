@@ -214,11 +214,34 @@ test.describe('With real wallet - Arbitrum USDC Position page - Switch', async (
 
 		await app.positionPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
+
+		await app.positionPage.sidebar.selectTab('Switch');
+	});
+
+	test('It should display info about original and target vaults - Switch Arbitrum USDC position', async ({
+		app,
+	}) => {
+		await app.positionPage.sidebar.switch.yourPositionShouldBe({
+			network: 'arbitrum',
+			token: 'USDC',
+			risk: 'Lower Risk',
+			balance: '0.5[0-9]{3}',
+			liveAPY: '[0-9]{1,2}.[0-9]{2}',
+		});
+
+		await app.positionPage.sidebar.switch.targetPositionsShouldBe([
+			{
+				network: 'arbitrum',
+				token: 'USD₮0',
+				risk: 'Lower Risk',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+		]);
 	});
 
 	test('It should switch Arbitrum USDC position', async ({ app, metamask }) => {
-		await app.positionPage.sidebar.selectTab('Switch');
-
 		await switchPosition({
 			metamask,
 			app,
