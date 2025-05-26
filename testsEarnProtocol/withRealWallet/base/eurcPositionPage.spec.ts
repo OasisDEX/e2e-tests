@@ -217,7 +217,7 @@ test.describe('With real wallet - Base EURC position page - Switch', async () =>
 		await app.positionPage.sidebar.selectTab('Switch');
 	});
 
-	test('It show display info about original and target vaults - Switch Base EURC position', async ({
+	test('It should display info about original and target vaults - Switch Base EURC position', async ({
 		app,
 	}) => {
 		await app.positionPage.sidebar.switch.yourPositionShouldBe({

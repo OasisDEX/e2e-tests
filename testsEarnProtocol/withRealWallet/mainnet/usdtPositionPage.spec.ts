@@ -218,11 +218,50 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 
 		await app.positionPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
+
+		await app.positionPage.sidebar.selectTab('Switch');
+	});
+
+	test('It should display info about original and target vaults - Switch Mainnet USDT position', async ({
+		app,
+	}) => {
+		await app.positionPage.sidebar.switch.yourPositionShouldBe({
+			network: 'ethereum',
+			token: 'USDT',
+			risk: 'Lower Risk',
+			balance: '0.[0-9]{4}',
+			liveAPY: '[0-9]{1,2}.[0-9]{2}',
+		});
+
+		await app.positionPage.sidebar.switch.targetPositionsShouldBe([
+			{
+				network: 'ethereum',
+				token: 'USDC',
+				risk: 'Lower Risk',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
+				token: 'ETH',
+				risk: 'Lower Risk',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
+				token: 'ETH',
+				risk: 'Higher Risk',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+		]);
 	});
 
 	test('It should switch Mainnet USDT position', async ({ app, metamask }) => {
-		await app.positionPage.sidebar.selectTab('Switch');
-
 		// USDC
 		await switchPosition({
 			metamask,

@@ -242,7 +242,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch
 		await app.positionPage.sidebar.selectTab('Switch');
 	});
 
-	test('It show display info about original and target vaults - Switch Mainnet ETH Higher Risk position', async ({
+	test('It should display info about original and target vaults - Switch Mainnet ETH Higher Risk position', async ({
 		app,
 	}) => {
 		await app.positionPage.sidebar.switch.yourPositionShouldBe({
