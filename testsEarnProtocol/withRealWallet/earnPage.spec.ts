@@ -26,7 +26,7 @@ test.describe('With real wallet - Earn page', async () => {
 
 		await app.earn.vaults.byStrategy({ token: 'USD₮0', network: 'arbitrum' }).shouldBeSelected();
 
-		await app.page.waitForTimeout(2_000);
+		await app.page.waitForTimeout(3_000);
 
 		// WSTETH
 		await app.vaultPage.sidebar.openTokensSelector();
