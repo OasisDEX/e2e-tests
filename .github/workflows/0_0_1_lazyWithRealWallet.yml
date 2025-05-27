@@ -11,8 +11,8 @@ on:
 
 jobs:
   lazy-real-wallet-tests:
-    uses: ./.github/workflows/z_Reusable_EarnRegressionWithRealWallet.yml
+    uses: ./.github/workflows/z_Reusable_LazyWithRealWallet.yml
     with:
       base_url: ${{ inputs.base_url }}
-      script: ci:lazy-real-wallet-regression
+      script: ci:lazy-real-wallet
     secrets: inherit

@@ -11,8 +11,8 @@ on:
 
 jobs:
   lazy-no-wallet-tests:
-    uses: ./.github/workflows/z_Reusable_EarnRegressionNoWallet.yml
+    uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
     with:
       base_url: ${{ inputs.base_url }}
-      script: ci:earn-no-wallet
+      script: ci:lazy-no-wallet
     secrets: inherit

@@ -47,10 +47,10 @@ jobs:
           VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
           yarn ci:synpress-build-cache:real-wallet
       - name: Run 'Lazy protocol - Prod release' tests
-        run: yarn ci:earn-with-real-wallet
+        run: yarn ci:lazy-real-wallet-regression
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-lazy-real-wallet-regression
-          path: playwright-reports/lazy-real-wallet-regression
+          name: playwright-report-lazy-real-wallet
+          path: playwright-reports/lazy-real-wallet
           retention-days: 30

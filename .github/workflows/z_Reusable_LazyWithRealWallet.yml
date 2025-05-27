@@ -1,4 +1,4 @@
-name: Reusable Workflow - Earn protocol - Regression - With real wallet tests
+name: Reusable Workflow - Lazy protocol - With real wallet tests
 
 on: 
   workflow_call:
@@ -11,7 +11,7 @@ on:
       script:
         description: 'package.json scrip to be run'
         type: string
-        default: 'ci:earn-with-real-wallet'
+        default: 'ci:lazy-with-real-wallet'
         required: true
     secrets:
       TENDERLY_PROJECT:
@@ -23,7 +23,7 @@ on:
 
 jobs:
   with-real-wallet-tests:
-    name: 'Earn - Tests with real wallet'
+    name: 'Lazy - Tests with real wallet'
     runs-on: ubuntu-24.04
     container:
       image: synthetixio/docker-node:18.16-ubuntu
@@ -46,7 +46,7 @@ jobs:
           BASE_URL=${{ inputs.base_url }} \
           VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
           yarn ci:synpress-build-cache:real-wallet
-      - name: Run 'Earn - With wallet' tests
+      - name: Run 'Lazy - With real wallet' tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
@@ -56,6 +56,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-lazy-real-wallet-regression
-          path: playwright-reports/lazy-real-wallet-regression
+          name: playwright-report-lazy-real-wallet
+          path: playwright-reports/lazy-real-wallet
           retention-days: 30
