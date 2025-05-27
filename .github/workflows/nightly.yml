@@ -6,15 +6,15 @@ on:
 
 jobs:
   lazy-no-wallet-tests:
-    uses: ./.github/workflows/z_Reusable_EarnRegressionNoWallet.yml
+    uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
     with:
-      script: ci:earn-no-wallet
+      script: ci:lazy-no-wallet
     secrets: inherit
 
-  lazy-real-wallet-regression:
-    uses: ./.github/workflows/z_Reusable_EarnRegressionWithRealWallet.yml
+  lazy-real-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_LazyWithRealWallet.yml
     with:
-      script: ci:earn-with-real-wallet
+      script: ci:lazy-with-real-wallet
     secrets: inherit
 
   api-tests: 

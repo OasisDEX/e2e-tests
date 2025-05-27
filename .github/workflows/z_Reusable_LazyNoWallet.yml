@@ -1,4 +1,4 @@
-name: Reusable Workflow - Earn - No wallet
+name: Reusable Workflow - Lazy - No wallet
 
 on: 
   workflow_call:
@@ -19,7 +19,7 @@ on:
 
 jobs:
   no-wallet-tests:
-    name: 'Earn - No wallet'
+    name: 'Lazy - No wallet'
     runs-on: ubuntu-24.04
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-jammy

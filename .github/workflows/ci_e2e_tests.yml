@@ -51,14 +51,14 @@ jobs:
   #   secrets: inherit
   
   lazy-no-wallet-tests:
-    uses: ./.github/workflows/z_Reusable_EarnRegressionNoWallet.yml
+    uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
     with:
       base_url: 'https://staging.summer.fi'
-      script: ci:earn-no-wallet
+      script: ci:lazy-no-wallet
     secrets: inherit
 
   lazy-real-wallet-tests:
-    uses: ./.github/workflows/z_Reusable_EarnRegressionWithRealWallet.yml
+    uses: ./.github/workflows/z_Reusable_LazyWithRealWallet.yml
     with:
       base_url: 'https://staging.summer.fi'
       script: ci:lazy-real-wallet-regression

@@ -65,7 +65,7 @@ test.describe('Homepage', async () => {
 
 			if (positionCategory === 'Borrow') {
 				// Only Borrow positions have Borrow rate in Product hub
-				await app.homepage.productHub.list.allPoolsBorrowRateShouldBeGreaterThanZero();
+				await app.homepage.productHub.list.allPoolsBorrowRateShouldBeEqualOrGreaterThanZero();
 			}
 			if (positionCategory === 'Earn') {
 				// Only Earn positions have Management in Product hub

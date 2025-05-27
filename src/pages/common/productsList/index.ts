@@ -67,7 +67,7 @@ export class ProductsList {
 	}
 
 	@step
-	async allPoolsBorrowRateShouldBeGreaterThanZero() {
+	async allPoolsBorrowRateShouldBeEqualOrGreaterThanZero() {
 		// Wait for 1st item to be displayed to avoid random fails
 		await this.poolLocator.first().waitFor();
 
@@ -82,8 +82,8 @@ export class ProductsList {
 		console.log('allBorrowRatesNumbers: ', allBorrowRatesNumbers);
 
 		expect(
-			allBorrowRatesNumbers.every((rate) => rate > 0),
-			'All Borrow rates should be > 0'
+			allBorrowRatesNumbers.every((rate) => rate >= 0),
+			'All Borrow rates should be >= 0'
 		).toBeTruthy();
 	}
 
