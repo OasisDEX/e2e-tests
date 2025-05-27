@@ -96,7 +96,7 @@
 		"ci:lazy-no-wallet": "WORKERS='2' RETRIES='2' FULLY_PARALLEL='true' yarn lazy:no-wallet",
 		"ci:lazy-with-real-wallet": "WORKERS='2' RETRIES='2' FULLY_PARALLEL='true' xvfb-run yarn lazy:with-real-wallet",
 		"ci:lazy-real-wallet-regression": "WORKERS='2' RETRIES='2' FULLY_PARALLEL='true' xvfb-run yarn lazy:real-wallet:regression",
-		"ci:earn-prod-release": "WORKERS='2' RETRIES='2' FULLY_PARALLEL='true' xvfb-run yarn lazy:prod-release",
+		"ci:lazy-prod-release": "WORKERS='2' RETRIES='2' FULLY_PARALLEL='true' xvfb-run yarn lazy:prod-release",
 		"ci:no-wallet:regression": "WORKERS='2' RETRIES='2' FULLY_PARALLEL='true' yarn no-wallet:regression",
 		"ci:with-real-wallet": "WORKERS='2' RETRIES='2' xvfb-run yarn with-real-wallet",
 		"ci:with-wallet:aave:ethereum:regression": "WORKERS='2' RETRIES='2' xvfb-run yarn with-wallet:aave:ethereum:regression",
