@@ -46,7 +46,7 @@ jobs:
         run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache
+      - name: Build Synpress cache - ethereum
         if: ${{ inputs.network == 'ethereum' }}
         run: |
           BASE_URL=${{ inputs.base_url }} \
