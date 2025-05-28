@@ -262,12 +262,24 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 	});
 
 	test('It should switch Mainnet USDT position', async ({ app, metamask }) => {
-		// USDC
+		// USDC Lower Risk
 		await switchPosition({
 			metamask,
 			app,
 			nominatedToken: 'USDT',
 			targetToken: 'USDC',
+			risk: 'Lower Risk',
+		});
+
+		// USDC Higher Risk
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDT',
+			targetToken: 'USDC',
+			risk: 'Higher Risk',
 		});
 
 		// ETH Higher Risk
