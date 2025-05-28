@@ -287,12 +287,24 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch
 	}) => {
 		test.setTimeout(60_000);
 
-		// USDC
+		// USDC Lower risk
 		await switchPosition({
 			metamask,
 			app,
 			nominatedToken: 'ETH',
 			targetToken: 'USDC',
+			risk: 'Lower Risk',
+		});
+
+		// USDC Higher risk
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'ETH',
+			targetToken: 'USDC',
+			risk: 'Higher Risk',
 		});
 
 		// USDT
