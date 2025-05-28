@@ -8,7 +8,7 @@ import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - Mainnet USDC position page - Deposit', async () => {
+test.describe('With real wallet - Mainnet USDC Lower Risk position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
@@ -30,7 +30,7 @@ test.describe('With real wallet - Mainnet USDC position page - Deposit', async (
 		});
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Mainnet USDC position page', async ({
+	test('It should show Deposit balances and Deposit amounts - Mainnet USDC Lower Risk position page', async ({
 		app,
 	}) => {
 		// === USDC ===
@@ -74,7 +74,7 @@ test.describe('With real wallet - Mainnet USDC position page - Deposit', async (
 		});
 	});
 
-	test('It should deposit USDC & WETH - (until rejecting "Deposit" tx) - Mainnet USDC position page', async ({
+	test('It should deposit USDC & WETH - (until rejecting "Deposit" tx) - Mainnet USDC Lower Risk position page', async ({
 		app,
 		metamask,
 	}) => {
@@ -131,7 +131,7 @@ test.describe('With real wallet - Mainnet USDC position page - Deposit', async (
 	});
 });
 
-test.describe('With real wallet - Mainnet USDC position page - Withdraw', async () => {
+test.describe('With real wallet - Mainnet USDC Lower Risk position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 35_000);
 
@@ -159,7 +159,7 @@ test.describe('With real wallet - Mainnet USDC position page - Withdraw', async 
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
 
-	test('It should show maximum USDC balance amount to be withdrawn in $ - Mainnet USDC position page', async ({
+	test('It should show maximum USDC balance amount to be withdrawn in $ - Mainnet USDC Lower Risk position page', async ({
 		app,
 	}) => {
 		await app.positionPage.sidebar.depositOrWithdraw('0.5');
@@ -170,7 +170,7 @@ test.describe('With real wallet - Mainnet USDC position page - Withdraw', async 
 		});
 	});
 
-	test('It should withdraw to USDC - (until rejecting "Withdraw" tx) - Mainnet USDC position page', async ({
+	test('It should withdraw to USDC - (until rejecting "Withdraw" tx) - Mainnet USDC Lower Risk position page', async ({
 		app,
 		metamask,
 	}) => {
@@ -193,7 +193,7 @@ test.describe('With real wallet - Mainnet USDC position page - Withdraw', async 
 	});
 });
 
-test.describe('With real wallet - Mainnet USDC position page - Switch', async () => {
+test.describe('With real wallet - Mainnet USDC Lower Risk position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 45_000);
@@ -222,7 +222,7 @@ test.describe('With real wallet - Mainnet USDC position page - Switch', async ()
 		await app.positionPage.sidebar.selectTab('Switch');
 	});
 
-	test('It should display info about original and target vaults - Switch Mainnet USDC position', async ({
+	test('It should display info about original and target vaults - Switch Mainnet USDC Lower Risk position', async ({
 		app,
 	}) => {
 		await app.positionPage.sidebar.switch.yourPositionShouldBe({
@@ -234,6 +234,15 @@ test.describe('With real wallet - Mainnet USDC position page - Switch', async ()
 		});
 
 		await app.positionPage.sidebar.switch.targetPositionsShouldBe([
+			// It needs to go live and have live APY first
+			// {
+			// 	network: 'ethereum',
+			// 	token: 'USDC',
+			// 	risk: 'Higher Risk',
+			// 	thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+			// 	liveAPY: '[0-9]{1,2}.[0-9]{2}',
+			// 	apySpread: '[0-9]{1,2}.[0-9]{2}',
+			// },
 			{
 				network: 'ethereum',
 				token: 'USDT',
@@ -261,8 +270,19 @@ test.describe('With real wallet - Mainnet USDC position page - Switch', async ()
 		]);
 	});
 
-	test('It should switch Mainnet USDC position', async ({ app, metamask }) => {
+	test('It should switch Mainnet USDC Lower Risk position', async ({ app, metamask }) => {
+		// USDC Higher Risk
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			targetToken: 'USDC',
+			risk: 'Higher Risk',
+		});
+
 		// USDT
+		await app.earn.sidebar.goBack();
+
 		await switchPosition({
 			metamask,
 			app,
