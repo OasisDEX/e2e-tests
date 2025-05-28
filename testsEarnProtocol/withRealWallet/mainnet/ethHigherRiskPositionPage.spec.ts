@@ -285,7 +285,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch
 		app,
 		metamask,
 	}) => {
-		test.setTimeout(60_000);
+		test.setTimeout(veryLongTestTimeout);
 
 		// USDC Lower risk
 		await switchPosition({
