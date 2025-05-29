@@ -14,5 +14,5 @@ jobs:
     uses: ./.github/workflows/z_Reusable_LazyWithRealWallet.yml
     with:
       base_url: ${{ inputs.base_url }}
-      script: ci:lazy-real-wallet
+      script: ci:lazy-with-real-wallet
     secrets: inherit
