@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
@@ -252,6 +252,8 @@ test.describe('With real wallet - Base USDC position page - Switch', async () =>
 	});
 
 	test('It should switch Base USDC position @regression', async ({ app, metamask }) => {
+		test.setTimeout(veryLongTestTimeout);
+
 		// EURC
 		await switchPosition({
 			metamask,
