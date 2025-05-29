@@ -234,7 +234,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Switch
 		});
 
 		await app.positionPage.sidebar.switch.targetPositionsShouldBe([
-			// It needs to go live and have live APY first
+			// SKIP - It needs to go live and have live APY first
 			// {
 			// 	network: 'ethereum',
 			// 	token: 'USDC',
@@ -271,14 +271,15 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Switch
 	});
 
 	test('It should switch Mainnet USDC Lower Risk position', async ({ app, metamask }) => {
-		// USDC Higher Risk
-		await switchPosition({
-			metamask,
-			app,
-			nominatedToken: 'USDC',
-			targetToken: 'USDC',
-			risk: 'Higher Risk',
-		});
+		// SKIP - It needs APY > 0.00%
+		// // USDC Higher Risk
+		// await switchPosition({
+		// 	metamask,
+		// 	app,
+		// 	nominatedToken: 'USDC',
+		// 	targetToken: 'USDC',
+		// 	risk: 'Higher Risk',
+		// });
 
 		// USDT
 		await app.earn.sidebar.goBack();
