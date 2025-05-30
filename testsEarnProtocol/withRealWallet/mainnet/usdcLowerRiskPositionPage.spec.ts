@@ -282,7 +282,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Switch
 		// });
 
 		// USDT
-		await app.earn.sidebar.goBack();
+		// await app.earn.sidebar.goBack();
 
 		await switchPosition({
 			metamask,
