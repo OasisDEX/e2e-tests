@@ -35,7 +35,7 @@ jobs:
     name: 'With wallet - Aave - Ethereum'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -43,8 +43,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache - ethereum
@@ -68,7 +66,7 @@ jobs:
     name: 'With wallet - Aave - Arbitrum'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -76,8 +74,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache - arbitrum
@@ -102,7 +98,7 @@ jobs:
   #   name: 'With wallet - Aave - Base'
   #   runs-on: ubuntu-latest
   #   container:
-  #     image: synthetixio/docker-node:18.16-ubuntu
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
   #   steps:
   #     - uses: actions/checkout@v4
   #     - uses: actions/setup-node@v4
@@ -110,8 +106,6 @@ jobs:
   #         node-version: 18
   #     - name: Install dependencies
   #       run: yarn
-  #     - name: Install playwright
-  #       run: npx playwright install && npx playwright install-deps
   #     - name: Install xvfb
   #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
   #     - name: Build Synpress cache
@@ -135,7 +129,7 @@ jobs:
     name: 'With wallet - Aave - Optimism'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -143,8 +137,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache - optimism
@@ -168,7 +160,7 @@ jobs:
   #   name: 'With wallet - Aave - Arbitrum, Optimism & Base'
   #   runs-on: ubuntu-latest
   #   container:
-  #     image: synthetixio/docker-node:18.16-ubuntu
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
   #   steps:
   #     - uses: actions/checkout@v4
   #     - uses: actions/setup-node@v4
@@ -176,8 +168,6 @@ jobs:
   #         node-version: 18
   #     - name: Install dependencies
   #       run: yarn
-  #     - name: Install playwright
-  #       run: npx playwright install && npx playwright install-deps
   #     - name: Install xvfb
   #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
   #     - name: Build Synpress cache
@@ -201,7 +191,7 @@ jobs:
     name: 'With wallet - Morpho Blue'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -209,8 +199,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache
@@ -234,7 +222,7 @@ jobs:
     name: 'With wallet - Ajna'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -242,8 +230,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache
@@ -267,7 +253,7 @@ jobs:
     name: 'With wallet - Maker'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -275,8 +261,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache - ethereum
@@ -300,7 +284,7 @@ jobs:
     name: 'With wallet - Spark'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -308,8 +292,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache - ethereum
@@ -333,7 +315,7 @@ jobs:
     name: 'Open Positions - Aave - Ethereum - Borrow'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -341,8 +323,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache - ethereum
@@ -366,7 +346,7 @@ jobs:
     name: 'Open Positions - Aave - Ethereum - Earn & Multiply'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -374,8 +354,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache - ethereum
@@ -399,7 +377,7 @@ jobs:
     name: 'Open Positions - Aave - L2s'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -407,8 +385,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache
@@ -432,7 +408,7 @@ jobs:
     name: 'Open Positions - Other'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -440,8 +416,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache
@@ -465,7 +439,7 @@ jobs:
   #   name: 'With wallet - Rays & Swap rate'
   #   runs-on: ubuntu-latest
   #   container:
-  #     image: synthetixio/docker-node:18.16-ubuntu
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
   #   steps:
   #     - uses: actions/checkout@v4
   #     - uses: actions/setup-node@v4
@@ -473,8 +447,7 @@ jobs:
   #         node-version: 18
   #     - name: Install dependencies
   #       run: yarn
-  #     - name: Install playwright
-  #       run: npx playwright install && npx playwright install-deps
+  #     -
   #     - name: Install xvfb
   #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
   #     - name: Build Synpress cache
@@ -501,7 +474,7 @@ jobs:
     name: 'Swap'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -509,8 +482,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Build Synpress cache
@@ -535,7 +506,7 @@ jobs:
   #   name: 'With wallet - Aave - Ethereum - NEW'
   #   runs-on: ubuntu-latest
   #   container:
-  #     image: synthetixio/docker-node:18.16-ubuntu
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
   #   steps:
   #     - uses: actions/checkout@v4
   #     - uses: actions/setup-node@v4
@@ -543,8 +514,7 @@ jobs:
   #         node-version: 18
   #     - name: Install dependencies
   #       run: yarn
-  #     - name: Install playwright
-  #       run: npx playwright install && npx playwright install-deps
+  #     -
   #     - name: Install xvfb
   #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
   #     - name: Run With wallet Aave Ethereum tests - NEW
