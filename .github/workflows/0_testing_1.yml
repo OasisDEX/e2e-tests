@@ -14,7 +14,7 @@ on:
 
 jobs:
   e2e-tests-result:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Link to tests run -> https://github.com/OasisDEX/e2e-tests/actions/runs/${{ inputs.tests_run_id }}
         run: echo 'See tests results in https://github.com/OasisDEX/e2e-tests/actions/runs/${{ inputs.tests_run_id }}'

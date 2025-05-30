@@ -17,7 +17,7 @@ on:
 jobs:
   api-tests:
     name: 'API tests'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
