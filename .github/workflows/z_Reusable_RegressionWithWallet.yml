@@ -52,6 +52,24 @@ jobs:
           BASE_URL=${{ inputs.base_url }} \
           EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
           yarn ci:synpress-build-cache:test-wallet:ethereum
+      - name: Build Synpress cache - arbitrum
+        if: ${{ inputs.network == 'arbitrum' }}
+        run: |
+          BASE_URL=${{ inputs.base_url }} \
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet:arbitrum
+      - name: Build Synpress cache - base
+        if: ${{ inputs.network == 'base' }}
+        run: |
+          BASE_URL=${{ inputs.base_url }} \
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet:base
+      - name: Build Synpress cache - optimism
+        if: ${{ inputs.network == 'optimism' }}
+        run: |
+          BASE_URL=${{ inputs.base_url }} \
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet:optimism
       # - name: Build Synpress cache
       #   run: |
       #     BASE_URL=${{ inputs.base_url }} \
