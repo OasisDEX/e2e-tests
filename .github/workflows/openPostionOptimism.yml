@@ -19,7 +19,7 @@ jobs:
     name: 'Open Positions - Aave - Optimism'
     runs-on: ubuntu-latest
     container:
-      image: synthetixio/docker-node:18.16-ubuntu
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,8 +27,6 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn
-      - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Run Open Positions - Aave - Optimism tests
