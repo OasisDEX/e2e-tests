@@ -89,9 +89,19 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
-			name: 'lazy-prod-release',
+			name: 'lazy-prod-release-no-wallet',
 			testDir: './testsEarnProtocol',
-			testMatch: ['prodRelease/**'],
+			testMatch: ['prodRelease/noWallet/**'],
+			use: {
+				baseURL: 'https://summer.fi/earn',
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
+			name: 'lazy-prod-release-real-wallet',
+			testDir: './testsEarnProtocol',
+			testMatch: ['prodRelease/realWallet/**'],
 			use: {
 				baseURL: 'https://summer.fi/earn',
 				...devices['Desktop Chrome'],
