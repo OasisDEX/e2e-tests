@@ -35,7 +35,8 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Install playwright
-        run: npx playwright install && npx playwright install-deps
+        # run: npx playwright install && npx playwright install-deps
+        run: apt-get update && npx playwright install && npx playwright install-deps
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Verify that staging environment is ready for testing

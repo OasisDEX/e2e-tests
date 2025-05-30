@@ -39,7 +39,7 @@ jobs:
         if: inputs.base_url
         run: |
           MAILINATOR_TOKEN=${{ secrets.MAILINATOR_TOKEN }} \
-          BASE_URL=${{ inputs.base_url }} xvfb-run yarn ${{ inputs.script }}
+          BASE_URL=${{ inputs.base_url }} yarn ${{ inputs.script }}
       - name: Run NO-WALLET tests (without parameters)
         if: ${{ ! inputs.base_url }}
         run: |
