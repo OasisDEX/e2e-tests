@@ -33,8 +33,8 @@ jobs:
   with-wallet-tests:
     name: 'With wallet - ${{ inputs.protocol }}-${{ inputs.network }}'
     runs-on: ubuntu-24.04
-    container:
-      image: synthetixio/docker-node:18.16-ubuntu
+    # container:
+    #   image: synthetixio/docker-node:18.16-ubuntu
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
