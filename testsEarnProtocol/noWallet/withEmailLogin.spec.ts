@@ -23,7 +23,8 @@ test.describe('Logged in with Email', async () => {
 		}).toPass();
 	});
 
-	test('It should Send funds', async ({ app, request }) => {
+	// SKIP - Enable back only for prod - feature disabled in staging
+	test.skip('It should Send funds @prod', async ({ app, request }) => {
 		test.setTimeout(longTestTimeout);
 
 		await logInWithEmailAddress({
