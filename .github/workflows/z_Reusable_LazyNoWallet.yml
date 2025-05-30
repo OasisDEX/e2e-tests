@@ -11,8 +11,8 @@ on:
       script:
         description: 'package.json scrip to be run'
         type: string
-        default: 'ci:no-earn-wallet'
-        required: true
+        default: 'ci:lazy:no-wallet'
+        required: false
     secrets:
       MAILINATOR_TOKEN:
         required: true
@@ -44,7 +44,7 @@ jobs:
         if: ${{ ! inputs.base_url }}
         run: |
           MAILINATOR_TOKEN=${{ secrets.MAILINATOR_TOKEN }} \
-          xvfb-run yarn ${{ inputs.script }}
+          yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:
