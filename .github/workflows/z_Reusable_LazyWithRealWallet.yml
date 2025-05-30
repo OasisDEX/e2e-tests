@@ -24,7 +24,7 @@ on:
 jobs:
   with-real-wallet-tests:
     name: 'Lazy - Tests with real wallet'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:

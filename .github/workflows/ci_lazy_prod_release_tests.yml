@@ -14,7 +14,7 @@ on:
 
 jobs:
   lazy-prod-release-trigger-received:
-    runs-on: ubuntu-24.04 
+    runs-on: ubuntu-latest 
     steps:
       - run: echo "Regression E2E tests for ${{ inputs.repository }} - Release Earn apps workflow -  RUN_ID ${{ inputs.run_id }}"
       - name: Create artifact with trigger repository name
@@ -27,7 +27,7 @@ jobs:
   
   lazy-prod-release-tests:
     name: 'Lazy protocol - Prod release tests'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:

@@ -33,7 +33,7 @@ jobs:
 
   with-wallet-aave-ethereum-tests:
     name: 'With wallet - Aave - Ethereum'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -66,7 +66,7 @@ jobs:
   
   with-wallet-aave-arbitrum-tests:
     name: 'With wallet - Aave - Arbitrum'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -100,7 +100,7 @@ jobs:
   # SKIP - Base tests failing in github run - Base Virtual Testnet 
   # with-wallet-aave-base-tests:
   #   name: 'With wallet - Aave - Base'
-  #   runs-on: ubuntu-24.04
+  #   runs-on: ubuntu-latest
   #   container:
   #     image: synthetixio/docker-node:18.16-ubuntu
   #   steps:
@@ -133,7 +133,7 @@ jobs:
 
   with-wallet-aave-optimism-tests:
     name: 'With wallet - Aave - Optimism'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -166,7 +166,7 @@ jobs:
 
   # with-wallet-aave-other-tests:
   #   name: 'With wallet - Aave - Arbitrum, Optimism & Base'
-  #   runs-on: ubuntu-24.04
+  #   runs-on: ubuntu-latest
   #   container:
   #     image: synthetixio/docker-node:18.16-ubuntu
   #   steps:
@@ -199,7 +199,7 @@ jobs:
 
   with-wallet-morphoblue-tests:
     name: 'With wallet - Morpho Blue'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -232,7 +232,7 @@ jobs:
   
   with-wallet-ajna-tests:
     name: 'With wallet - Ajna'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -265,7 +265,7 @@ jobs:
   
   with-wallet-maker-tests:
     name: 'With wallet - Maker'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -298,7 +298,7 @@ jobs:
 
   with-wallet-spark-tests:
     name: 'With wallet - Spark'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -331,7 +331,7 @@ jobs:
 
   with-wallet-open-positions-tests-aave-ethereum-borrow:
     name: 'Open Positions - Aave - Ethereum - Borrow'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -364,7 +364,7 @@ jobs:
  
   with-wallet-open-positions-tests-aave-ethereum-earn-multiply:
     name: 'Open Positions - Aave - Ethereum - Earn & Multiply'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -397,7 +397,7 @@ jobs:
 
   with-wallet-open-positions-tests-aave-l2s:
     name: 'Open Positions - Aave - L2s'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -430,7 +430,7 @@ jobs:
 
   with-wallet-open-positions-tests-other:
     name: 'Open Positions - Other'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -463,7 +463,7 @@ jobs:
 
   # with-wallet-open-rays:
   #   name: 'With wallet - Rays & Swap rate'
-  #   runs-on: ubuntu-24.04
+  #   runs-on: ubuntu-latest
   #   container:
   #     image: synthetixio/docker-node:18.16-ubuntu
   #   steps:
@@ -499,7 +499,7 @@ jobs:
   # SWAP tests running on productionuntil SDK is upgraded on staging
   with-wallet-swap:
     name: 'Swap'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:
@@ -533,7 +533,7 @@ jobs:
 
   # with-wallet-aave-ethereum-tests-new:
   #   name: 'With wallet - Aave - Ethereum - NEW'
-  #   runs-on: ubuntu-24.04
+  #   runs-on: ubuntu-latest
   #   container:
   #     image: synthetixio/docker-node:18.16-ubuntu
   #   steps:

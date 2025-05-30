@@ -17,7 +17,7 @@ on:
 jobs:
   with-wallet-open-positions-tests-aave-arbitrum:
     name: 'Open Positions - Aave - Arbitrum'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     container:
       image: synthetixio/docker-node:18.16-ubuntu
     steps:

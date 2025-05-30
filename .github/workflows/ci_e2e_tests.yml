@@ -19,7 +19,7 @@ on:
 
 jobs:
   staging-deployed-trigger-received:
-    runs-on: ubuntu-24.04 
+    runs-on: ubuntu-latest 
     steps:
       - run: echo "Regression E2E and API tests for ${{ inputs.repository }} - RUN_ID ${{ inputs.run_id }}"
       - name: Create artifact with trigger repository name
