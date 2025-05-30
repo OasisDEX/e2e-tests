@@ -60,8 +60,8 @@ const defaultConfig: PlaywrightTestConfig = {
 
 		{
 			name: 'lazy-no-wallet',
-			testDir: './testsEarnProtocol',
-			testMatch: ['noWallet/**'],
+			testDir: './testsEarnProtocol/noWallet',
+			// testMatch: ['noWallet/**'],
 			use: {
 				baseURL: earnProtocolBaseUrl,
 				...devices['Desktop Chrome'],
@@ -70,8 +70,8 @@ const defaultConfig: PlaywrightTestConfig = {
 
 		{
 			name: 'lazy-real-wallet',
-			testDir: './testsEarnProtocol',
-			testMatch: ['withRealWallet/**'],
+			testDir: './testsEarnProtocol/withRealWallet',
+			// testMatch: ['withRealWallet/**'],
 			use: {
 				baseURL: earnProtocolBaseUrl,
 				...devices['Desktop Chrome'],
