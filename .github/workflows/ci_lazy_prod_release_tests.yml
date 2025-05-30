@@ -1,29 +1,36 @@
 name: CI Lazy Protocol Prod Release E2E tests
 
+
 on: 
-  workflow_dispatch:
-    inputs:
-      run_id:
-        description: 'Run_id from respository that is triggering this workflow.'
-        type: string
-        required: true
-      repository:
-        description: 'Name of the respository that is triggering this workflow.'
-        type: string
-        required: true
+  workflow_run:
+    branches: [main]
+    workflows: [Lazy Prod tigger]
+    types: [completed]
+
+# on: 
+#   workflow_dispatch:
+#     inputs:
+#       run_id:
+#         description: 'Run_id from respository that is triggering this workflow.'
+#         type: string
+#         required: true
+#       repository:
+#         description: 'Name of the respository that is triggering this workflow.'
+#         type: string
+#         required: true
 
 jobs:
-  lazy-prod-release-trigger-received:
-    runs-on: ubuntu-latest 
-    steps:
-      - run: echo "Regression E2E tests for ${{ inputs.repository }} - Release Earn apps workflow -  RUN_ID ${{ inputs.run_id }}"
-      - name: Create artifact with trigger repository name
-        run: echo "${{ inputs.repository }}" > trigger_repository.txt
-      - name: Upload artifact with trigger repository name
-        uses: actions/upload-artifact@v4
-        with:
-          name: trigger_repository_name
-          path: trigger_repository.txt
+  # lazy-prod-release-trigger-received:
+  #   runs-on: ubuntu-latest 
+  #   steps:
+  #     - run: echo "Regression E2E tests for ${{ inputs.repository }} - Release Earn apps workflow -  RUN_ID ${{ inputs.run_id }}"
+  #     - name: Create artifact with trigger repository name
+  #       run: echo "${{ inputs.repository }}" > trigger_repository.txt
+  #     - name: Upload artifact with trigger repository name
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: trigger_repository_name
+  #         path: trigger_repository.txt
   
   lazy-prod-release-tests:
     name: 'Lazy protocol - Prod release tests'
