@@ -17,7 +17,10 @@ import {
 		{
 			pool: 'WBTC-DAI',
 			positionType: 'borrow',
-			targetPools: [{ colToken: 'WSTETH', debtToken: 'ETH-2' }],
+			targetPools: [
+				// { colToken: 'WSTETH', debtToken: 'ETH-2' },
+				{ colToken: 'CBBTC', debtToken: 'USDC' },
+			],
 		},
 		{
 			pool: 'ETH-DAI',
@@ -42,7 +45,6 @@ import {
 			targetPools: [
 				// { colToken: 'WEETH', debtToken: 'ETH' },
 				{ colToken: 'WSTETH', debtToken: 'USDT' },
-				{ colToken: 'CBBTC', debtToken: 'USDC' },
 				// { colToken: 'RSETH', debtToken: 'ETH-2' }, --> SKIP temporarily - Bug
 			],
 		},
