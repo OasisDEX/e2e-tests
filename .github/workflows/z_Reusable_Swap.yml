@@ -43,7 +43,7 @@ jobs:
       - name: Build Synpress cache
         run: |
           EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet
+          yarn ci:synpress-build-cache:test-wallet:ethereum
       - name: Run With wallet Swap ${{ inputs.protocol }} tests
         # SWAP tests running on production until SDK is upgraded on staging
         run: |
