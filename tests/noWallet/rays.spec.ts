@@ -75,7 +75,7 @@ test.describe('No-wallet connected - Rays', async () => {
 
 	test('It should show Rays detailed info from leaderboard result @regression', async ({ app }) => {
 		await app.rays.openPage();
-		const walletAddress = await app.rays.leaderboard.viewRaysDetailedInfo({ leaderboardResult: 1 });
+		const walletAddress = await app.rays.leaderboard.viewRaysDetailedInfo({ leaderboardResult: 3 });
 		await app.rays.shouldShowRaysDetailedInfo(walletAddress);
 	});
 
