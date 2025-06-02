@@ -3,7 +3,7 @@ import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import arbitrumSetup from 'utils/synpress/test-wallet-setup/arbitrum.setup';
 import baseSetup from 'utils/synpress/test-wallet-setup/base.setup';
 import basicSetup from 'utils/synpress/test-wallet-setup/basic.setup';
-import optimismSetup from 'utils/synpress/test-wallet-setup/optimism.setup';
+import optimismSetup from 'utils/synpress/test-wallet-setup-optimism/optimism.setup';
 import { setup } from 'utils/setup';
 import * as tenderly from 'utils/tenderly';
 import { SetBalanceTokens, depositAmount } from 'utils/testData';
