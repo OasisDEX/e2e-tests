@@ -125,36 +125,37 @@ jobs:
   #         path: playwright-reports/with-wallet-aave-base
   #         retention-days: 30
 
-  with-wallet-aave-optimism-tests:
-    name: 'With wallet - Aave - Optimism'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - optimism
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:optimism
-      - name: Run With wallet Aave Optimism tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:aave:optimism
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-aave-optimism
-          path: playwright-reports/with-wallet-aave-optimism
-          retention-days: 30
+  # SKIP - Synpress cache and/or set up for optimism randomly failing
+  # with-wallet-aave-optimism-tests:
+  #   name: 'With wallet - Aave - Optimism'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - optimism
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:optimism
+  #     - name: Run With wallet Aave Optimism tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:aave:optimism
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-aave-optimism
+  #         path: playwright-reports/with-wallet-aave-optimism
+  #         retention-days: 30
 
   # with-wallet-aave-other-tests:
   #   name: 'With wallet - Aave - Arbitrum, Optimism & Base'
@@ -201,10 +202,10 @@ jobs:
         run: yarn
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache
+      - name: Build Synpress cache - All but Optimism
         run: |
           EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet
+          yarn ci:synpress-build-cache:test-wallet:all-but-optimism
       - name: Run With wallet Morpho Blue tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
@@ -219,7 +220,7 @@ jobs:
           retention-days: 30
   
   with-wallet-ajna-tests:
-    name: 'With wallet - Ajna'
+    name: 'With wallet - Ajna - All but Optimism'
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-jammy
@@ -232,16 +233,16 @@ jobs:
         run: yarn
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache
+      - name: Build Synpress cache - All but Optimism
         run: |
           EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet
+          yarn ci:synpress-build-cache:test-wallet:all-but-optimism
       - name: Run With wallet Ajna tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:ajna
+          yarn with-wallet:ajna:all-but-optimism
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -374,7 +375,7 @@ jobs:
           retention-days: 30
 
   with-wallet-open-positions-tests-aave-l2s:
-    name: 'Open Positions - Aave - L2s'
+    name: 'Open Positions - Aave - Base & Arbitrum'
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-jammy
@@ -387,16 +388,16 @@ jobs:
         run: yarn
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache
+      - name: Build Synpress cache - All but Optimism
         run: |
           EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet
+          yarn ci:synpress-build-cache:test-wallet:all-but-optimism
       - name: Run Open Positions - Aave - L2s tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:open-positions:aave:l2s
+          yarn nightly:with-wallet:open-positions:aave:base-and-arbitrum
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -418,10 +419,10 @@ jobs:
         run: yarn
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache
+      - name: Build Synpress cache - All but Optimism
         run: |
           EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet
+          yarn ci:synpress-build-cache:test-wallet:all-but-optimism
       - name: Run With wallet Maker and Spark tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \

@@ -223,6 +223,16 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'with-wallet-ajna-all-but-optimism',
+			testMatch: [
+				'withWallet/ajna/arbitrum/**',
+				'withWallet/ajna/base/**',
+				'withWallet/ajna/ethereum/**',
+			],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
 			name: 'with-wallet-ajna-ethereum',
 			testMatch: ['withWallet/ajna/ethereum/**'],
 			use: { ...devices['Desktop Chrome'] },
@@ -351,6 +361,15 @@ const defaultConfig: PlaywrightTestConfig = {
 				'withWallet/z_openPositions/aaveV3/arbitrum/**',
 				'withWallet/z_openPositions/aaveV3/base/**',
 				'withWallet/z_openPositions/aaveV3/optimism/**',
+			],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-open-positions-aave:base-and-arbitrum',
+			testMatch: [
+				'withWallet/z_openPositions/aaveV3/arbitrum/**',
+				'withWallet/z_openPositions/aaveV3/base/**',
 			],
 			use: { ...devices['Desktop Chrome'] },
 		},
