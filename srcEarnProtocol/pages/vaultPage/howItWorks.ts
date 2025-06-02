@@ -1,5 +1,6 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Page } from '@playwright/test';
+import { expectDefaultTimeout } from 'utils/config';
 
 type Tabs = 'Rebalance mechanism' | 'Governance';
 
@@ -13,11 +14,14 @@ export class HowItWorks {
 	}
 
 	@step
-	async shouldHaveHeader(header: 'How it all works' | 'Lower Risk Historical Yields' | 'Security') {
+	async shouldHaveHeader(
+		header: 'How it all works' | 'Lower Risk Historical Yields' | 'Security',
+		args?: { timeout: number }
+	) {
 		await expect(
 			this.page.getByRole('heading', { name: header }),
 			`"${header}" header should be visible`
-		).toBeVisible();
+		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
 	@step
