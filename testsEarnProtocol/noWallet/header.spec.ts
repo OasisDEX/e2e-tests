@@ -36,4 +36,9 @@ test.describe('Header', async () => {
 		await app.header.support.open();
 		await app.header.support.shouldHave(['Contact us', 'Sign up', 'Start chatting']);
 	});
+
+	test('It should open Bech Club landing page', async ({ app }) => {
+		await app.header.beachClub();
+		await app.beachClubLandingPage.shouldBeVisible();
+	});
 });

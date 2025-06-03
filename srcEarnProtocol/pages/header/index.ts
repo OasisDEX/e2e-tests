@@ -68,4 +68,9 @@ export class Header {
 			'"Log in" button shouldbe visible'
 		).toBeVisible({ timeout: timeout ?? expectDefaultTimeout * 2 });
 	}
+
+	@step
+	async beachClub() {
+		await this.page.getByRole('link', { name: 'Beach club ' }).click();
+	}
 }

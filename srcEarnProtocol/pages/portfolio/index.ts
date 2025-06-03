@@ -1,6 +1,7 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
+import { BeachClub } from './beachClub';
 import { Bridge } from './bridge';
 import { Overview } from './overview';
 import { RebalanceActivity } from './rebalanceActivity';
@@ -10,12 +11,20 @@ import { YouMightLike } from './youMightLike';
 import { YourActivity } from './yourActivity';
 import { Wallet } from './wallet';
 
-type Tabs = 'Overview' | 'Wallet' | 'Your Activity' | 'Rebalance Activity' | '$SUMR Rewards';
+type Tabs =
+	| 'Overview'
+	| 'Wallet'
+	| 'Your Activity'
+	| 'Rebalance Activity'
+	| '$SUMR Rewards'
+	| 'Beach Club';
 
 export class Portfolio {
 	readonly page: Page;
 
 	readonly portfolioSecondHeaderLocator: Locator;
+
+	readonly beachClub: BeachClub;
 
 	readonly bridge: Bridge;
 
@@ -38,6 +47,7 @@ export class Portfolio {
 		this.portfolioSecondHeaderLocator = this.page.locator(
 			'[class*="PortfolioHeader_secondRowWrapper_"]'
 		);
+		this.beachClub = new BeachClub(page);
 		this.bridge = new Bridge(page);
 		this.overview = new Overview(page);
 		this.rebalanceActivity = new RebalanceActivity(page);
@@ -110,10 +120,7 @@ export class Portfolio {
 
 	@step
 	async selectTab(tab: Tabs) {
-		await this.page
-			.locator('[class*="_tabHeaders_"]')
-			.getByRole('button', { name: tab, exact: true })
-			.click();
+		await this.page.locator('[class*="_tabHeaders_"]').getByRole('button', { name: tab }).click();
 	}
 
 	@step

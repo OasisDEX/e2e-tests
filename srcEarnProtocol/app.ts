@@ -2,6 +2,7 @@ import { Page } from '@playwright/test';
 import { Banners } from './banners';
 import { Modals } from './modals';
 import {
+	BeachClubLandingPage,
 	Earn,
 	Header,
 	LandingPage,
@@ -21,6 +22,8 @@ export class App {
 	readonly page: Page;
 
 	readonly banners: Banners;
+
+	readonly beachClubLandingPage: BeachClubLandingPage;
 
 	readonly earn: Earn;
 
@@ -49,6 +52,7 @@ export class App {
 	constructor(page: Page) {
 		this.page = page;
 		this.banners = new Banners(page);
+		this.beachClubLandingPage = new BeachClubLandingPage(page);
 		this.earn = new Earn(page);
 		this.header = new Header(page);
 		this.landingPage = new LandingPage(page);

@@ -1,3 +1,4 @@
+import { BeachClubLandingPage } from './beachClubLandingPage';
 import { Earn } from './earn';
 import { Header } from './header';
 import { LandingPage } from './landingPage';
@@ -11,6 +12,7 @@ import { VaultPage } from './vaultPage';
 import { YieldTrend } from './yieldTrend';
 
 export {
+	BeachClubLandingPage,
 	Earn,
 	Header,
 	LandingPage,
