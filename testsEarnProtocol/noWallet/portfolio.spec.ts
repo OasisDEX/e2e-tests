@@ -47,6 +47,10 @@ test.describe('Portfolio', async () => {
 		await app.portfolio.selectTab('$SUMR Rewards');
 		await app.portfolio.rewards.shouldBeVisible();
 
+		// Switch to 'Beach Club' tab
+		await app.portfolio.selectTab('Beach Club');
+		await app.portfolio.beachClub.shouldBeVisible();
+
 		// Switch to 'Overview' tab
 		await app.portfolio.selectTab('Overview');
 		await app.portfolio.overview.shouldBeVisible();
