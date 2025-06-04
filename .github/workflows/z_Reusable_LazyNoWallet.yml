@@ -13,6 +13,11 @@ on:
         type: string
         default: 'ci:lazy:no-wallet'
         required: false
+      report_name:
+        description: 'playwright report name'
+        type: string
+        default: 'lazy-no-wallet'
+        required: false
     secrets:
       MAILINATOR_TOKEN:
         required: true
@@ -48,6 +53,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-lazy-no-wallet
-          path: playwright-reports/lazy-no-wallet
+          name: ${{ report_name }}
+          path: playwright-reports/${{ report_name }}
           retention-days: 30

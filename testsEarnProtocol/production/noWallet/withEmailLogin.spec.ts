@@ -4,7 +4,7 @@ import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 
 test.describe('Logged in with Email', async () => {
 	// Feature disabled in staging - Can be tested on Prod only
-	test('It should Send funds @prod', async ({ app, request }) => {
+	test('It should Send funds @productionOnly', async ({ app, request }) => {
 		test.setTimeout(longTestTimeout);
 
 		await logInWithEmailAddress({
