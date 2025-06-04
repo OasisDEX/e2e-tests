@@ -21,4 +21,36 @@ export class Wallet {
 			'"You might like" section should be visible'
 		).toBeVisible();
 	}
+
+	@step
+	async openPage(wallet: string) {
+		await expect(async () => {
+			await this.page.goto(`/earn/portfolio/${wallet}?tab=wallet`);
+			await this.shouldBeVisible();
+		}).toPass();
+	}
+
+	@step
+	async shouldHaveTotalValue(totalValue: string) {
+		const regExp = new RegExp(`Total Assets\\$${totalValue}.*[0-9].[0-9]{2}% Past week`);
+
+		await expect(
+			this.page
+				.locator('[class*="PotfolioAssets_headerWrapper"]')
+				.locator('[class*="dataBlockWrapper"]')
+		).toContainText(regExp);
+	}
+
+	// @step
+	// async shouldDisplayTopThreeAssest(
+	// 	assets: {
+	// 		network: string;
+	// 		token: string;
+	// 		price: string;
+	// 		usdValur: string;
+	// 		tokenBalance: string;
+	// 	}[]
+	// ) {
+	// 	const numberOfAssetsListed = await this.page.locator
+	// }
 }
