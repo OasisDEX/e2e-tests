@@ -17,6 +17,13 @@ jobs:
       script: ci:lazy-with-real-wallet
     secrets: inherit
 
+  lazy-production-no-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
+    with:
+      script: nightly:lazy-production-only:no-wallet
+      report_name: lazy-production-no-wallet
+    secrets: inherit
+
   api-tests: 
     uses: ./.github/workflows/z_Reusable_Apis.yml
     with:

@@ -14,5 +14,7 @@ test.describe('Beach Club Landing page', async () => {
 });
 
 // test.describe('Beach Club - Portfolio page', async () => {
-// 	test();
+// 	test('It should not allow to generate a code', async ({app}) => {
+// 		await app.
+// 	});
 // });
