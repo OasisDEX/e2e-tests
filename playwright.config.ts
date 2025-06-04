@@ -275,6 +275,18 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'with-wallet-morpho-and-ajna-ethereum',
+			testMatch: ['withWallet/morphoBlue/ethereum/**', 'withWallet/ajna/ethereum/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
+			name: 'with-wallet-morpho-and-ajna-base',
+			testMatch: ['withWallet/morphoBlue/base/**', 'withWallet/ajna/base/**'],
+			use: { ...devices['Desktop Chrome'] },
+		},
+
+		{
 			name: 'with-wallet-maker-and-spark',
 			testMatch: ['withWallet/maker/**', 'withWallet/spark/**'],
 			use: { ...devices['Desktop Chrome'] },
