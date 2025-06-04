@@ -188,8 +188,39 @@ jobs:
   #         path: playwright-reports/with-wallet-aave-other
   #         retention-days: 30
 
-  with-wallet-morphoblue-tests:
-    name: 'With wallet - Morpho Blue'
+  # with-wallet-morphoblue-tests:
+  #   name: 'With wallet - Morpho Blue'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - All but Optimism
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:all-but-optimism
+  #     - name: Run With wallet Morpho Blue tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:morphoblue
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-morphoblue
+  #         path: playwright-reports/with-wallet-morphoblue
+  #         retention-days: 30
+  
+  with-wallet-morpho-and-ajna-ethereum:
+    name: 'With wallet - Morpho & Ajna - Ethereum'
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-jammy
@@ -202,25 +233,25 @@ jobs:
         run: yarn
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - All but Optimism
+      - name: Build Synpress cache - ethereum
         run: |
           EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:all-but-optimism
+          yarn ci:synpress-build-cache:test-wallet:ethereum
       - name: Run With wallet Morpho Blue tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:morphoblue
+          yarn nightly:with-wallet:morpho-and-ajna:ethereum
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-with-wallet-morphoblue
-          path: playwright-reports/with-wallet-morphoblue
+          name: with-wallet-morpho-and-ajna-ethereum
+          path: playwright-reports/with-wallet-morpho-and-ajna-ethereum
           retention-days: 30
   
-  with-wallet-ajna-tests:
-    name: 'With wallet - Ajna - All but Optimism'
+  with-wallet-morpho-and-ajna-base:
+    name: 'With wallet - Morpho & Ajna - Base'
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-jammy
@@ -233,22 +264,85 @@ jobs:
         run: yarn
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - All but Optimism
+      - name: Build Synpress cache - base
         run: |
           EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:all-but-optimism
+          yarn ci:synpress-build-cache:test-wallet:base
+      - name: Run With wallet Morpho Blue tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+          yarn nightly:with-wallet:morpho-and-ajna:base
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: with-wallet-morpho-and-ajna-base
+          path: playwright-reports/with-wallet-morpho-and-ajna-base
+          retention-days: 30
+  
+  with-wallet-ajna-arbitrum:
+    name: 'With wallet - Ajna - Arbitrum'
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache - Arbitrum
+        run: |
+          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:test-wallet:arbitrum
       - name: Run With wallet Ajna tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
           TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
           TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:ajna:all-but-optimism
+          yarn nightly:with-wallet:ajna:arbitrum
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-with-wallet-ajna
-          path: playwright-reports/with-wallet-ajna
+          name: with-wallet-ajna-arbitrum
+          path: playwright-reports/with-wallet-ajna-arbitrum
           retention-days: 30
+  
+
+  # with-wallet-ajna-tests:
+  #   name: 'With wallet - Ajna - All but Optimism'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - All but Optimism
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:all-but-optimism
+  #     - name: Run With wallet Ajna tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:ajna:all-but-optimism
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-ajna
+  #         path: playwright-reports/with-wallet-ajna
+  #         retention-days: 30
   
   with-wallet-maker-tests:
     name: 'With wallet - Maker'
