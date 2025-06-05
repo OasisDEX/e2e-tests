@@ -264,6 +264,14 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch
 			},
 			{
 				network: 'ethereum',
+				token: 'USDC',
+				risk: 'Higher Risk',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
 				token: 'USDT',
 				risk: 'Lower Risk',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
