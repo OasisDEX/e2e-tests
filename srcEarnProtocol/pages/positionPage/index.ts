@@ -18,7 +18,10 @@ export class PositionPage {
 	async open(url: string) {
 		await expect(async () => {
 			await this.page.goto(url);
-			await expect(this.page.getByText('Earned:'), '"Earned:" should be visible').toBeVisible({
+			await expect(
+				this.page.getByText('Earned:').first(),
+				'"Earned:" should be visible'
+			).toBeVisible({
 				timeout: expectDefaultTimeout * 2,
 			});
 		}).toPass();
