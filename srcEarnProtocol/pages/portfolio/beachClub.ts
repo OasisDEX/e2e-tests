@@ -38,7 +38,7 @@ export class BeachClub {
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 
 		await expect(
-			this.page.getByText('Beach Club Rewards'),
+			this.page.getByText('Beach Club Rewards', { exact: true }),
 			'"Beach Club Rewards" header should be visible'
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
