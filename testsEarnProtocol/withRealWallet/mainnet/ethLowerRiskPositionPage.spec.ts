@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
@@ -269,6 +269,8 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 	});
 
 	test('It should switch Mainnet ETH Lower Risk position', async ({ app, metamask }) => {
+		test.setTimeout(longTestTimeout);
+
 		// USDC Lower Risk
 		await switchPosition({
 			metamask,

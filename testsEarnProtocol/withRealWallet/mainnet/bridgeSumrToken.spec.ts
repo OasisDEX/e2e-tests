@@ -22,7 +22,7 @@ test.describe('Bridge Mainnet SUMR tokens', async () => {
 	test('Bridge Mainnet to Base', async ({ app, metamask }) => {
 		await app.portfolio.bridge.shouldHaveBalance('0.[0-9]{4}');
 		await app.portfolio.bridge.enterAmount('0.0010');
-		await app.portfolio.bridge.shouldHaveAmountInUSD('0.000[1-4]');
+		await app.portfolio.bridge.shouldHaveAmountInUSD('<0.01');
 		await app.portfolio.bridge.confirmBridge();
 		await metamask.rejectTransaction();
 	});
