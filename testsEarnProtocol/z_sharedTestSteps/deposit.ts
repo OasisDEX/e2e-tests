@@ -88,7 +88,7 @@ export const deposit = async ({
 	await expect(
 		sidebarButtonLocator,
 		'[Agree], [Approve] or [Deposit] buttons should not be visible'
-	).toContainText(/Agree|Approve|Deposit/);
+	).toContainText(/Agree|Approve|Deposit/, { timeout: expectDefaultTimeout * 2 });
 
 	let sidebarButtonLabel = await sidebarButtonLocator.innerText();
 

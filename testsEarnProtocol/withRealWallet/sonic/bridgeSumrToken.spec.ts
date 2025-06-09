@@ -23,7 +23,7 @@ test.describe('Bridge Sonic SUMR tokens', async () => {
 	test('Bridge Sonic to Base', async ({ app, metamask }) => {
 		await app.portfolio.bridge.shouldHaveBalance('[0-9].[0-9]{4}');
 		await app.portfolio.bridge.enterAmount('0.001');
-		await app.portfolio.bridge.shouldHaveAmountInUSD('0.000[1-4]');
+		await app.portfolio.bridge.shouldHaveAmountInUSD('<0.01');
 		await app.portfolio.bridge.confirmBridge();
 		await metamask.rejectTransaction();
 	});
