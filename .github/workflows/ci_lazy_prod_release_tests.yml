@@ -4,7 +4,7 @@ name: CI Lazy Protocol Prod Release E2E tests
 on: 
   workflow_run:
     branches: [main]
-    workflows: [Lazy Prod tigger]
+    workflows: [Lazy Prod trigger]
     types: [completed]
 
 jobs:
@@ -24,12 +24,12 @@ jobs:
     uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
     with:
       base_url: 'https://summer.fi/earn'
-      script: ci:lazy-prod-release:no-wallet
+      script: ci:lazy-production:no-wallet
     secrets: inherit
 
   lazy-prod-real-wallet-tests:
     uses: ./.github/workflows/z_Reusable_LazyWithRealWallet.yml
     with:
       base_url: 'https://summer.fi/earn'
-      script: ci:lazy-prod-release:real-wallet
+      script: ci:lazy-production:real-wallet
     secrets: inherit
