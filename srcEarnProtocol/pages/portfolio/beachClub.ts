@@ -54,6 +54,18 @@ export class BeachClub {
 	}
 
 	@step
+	async generateShouldBeEnabled() {
+		await expect(this.page.getByRole('button', { name: 'Generate' })).not.toHaveAttribute(
+			'disabled'
+		);
+	}
+
+	@step
+	async generateShouldBeDisabled() {
+		await expect(this.page.getByRole('button', { name: 'Generate' })).toHaveAttribute('disabled');
+	}
+
+	@step
 	async copyReferralCode() {
 		await this.page
 			.getByRole('button')
@@ -67,5 +79,47 @@ export class BeachClub {
 			.getByRole('button')
 			.filter({ has: this.page.locator('[class*="BeachClubHowItWorks_socialMediaLink"]') })
 			.click();
+	}
+
+	@step
+	async trackReferrals() {
+		await this.page.getByRole('button').filter({ hasText: 'Track referrals' }).click();
+	}
+
+	@step
+	async referralAcivityShouldBeActive() {
+		await expect(
+			this.page.locator('button[class*="BeachClubTrackReferrals_tabActive_"]'),
+			'"Referral Acivity" tab should be visible'
+		).toBeVisible();
+	}
+
+	@step
+	async shouldHaveReferralActivity(
+		entries: {
+			address: { full: string; short: string };
+			action: 'Deposit' | 'Withdraw';
+			amount: { token: 'eth' | 'usdc'; tokenAmount: string };
+			date: string;
+		}[]
+	) {
+		for (const entry of entries) {
+			const entryLocator = this.page
+				.locator('[class*="BeachClubTrackReferrals_beachClubTrackReferralsWrapper_"]')
+				.getByRole('row')
+				.filter({ hasText: entry.address.short })
+				.filter({ hasText: entry.action })
+				.filter({ has: this.page.locator(`svg[title*="${entry.amount.token}"]`) });
+
+			await expect(entryLocator.getByRole('cell').nth(2)).toContainText(entry.amount.tokenAmount);
+
+			await expect(entryLocator.getByRole('cell').nth(3)).toContainText(entry.date);
+
+			await expect(entryLocator.getByRole('cell').nth(4).getByRole('button')).toContainText('View');
+			await expect(entryLocator.getByRole('cell').nth(4).getByRole('link')).toHaveAttribute(
+				'href',
+				`/earn/portfolio/${entry.address.full}?tab=your-activity`
+			);
+		}
 	}
 }
