@@ -61,6 +61,7 @@
 		"with-wallet:morphoblue": "REPORT_FOLDER=with-wallet-morphoblue npx playwright test --project=with-wallet-morphoblue",
 		"with-wallet:morphoblue:ethereum": "REPORT_FOLDER=with-wallet-morphoblue-ethereum npx playwright test --project=with-wallet-morphoblue-ethereum",
 		"with-wallet:morpho-and-ajna:ethereum": "REPORT_FOLDER=with-wallet-morpho-and-ajna-ethereum npx playwright test --project=with-wallet-morpho-and-ajna-ethereum",
+		"with-wallet:morpho-and-ajna:base": "REPORT_FOLDER=with-wallet-morpho-and-ajna-base npx playwright test --project=with-wallet-morpho-and-ajna-base",
 		"with-wallet:maker-and-spark": "REPORT_FOLDER=with-wallet-maker-and-spark npx playwright test --project=with-wallet-maker-and-spark",
 		"with-wallet:spark:ethereum": "REPORT_FOLDER=with-wallet-spark-ethereum npx playwright test --project=with-wallet-spark-ethereum",
 		"with-wallet:maker:ethereum": "REPORT_FOLDER=with-wallet-maker-ethereum npx playwright test --project=with-wallet-maker-ethereum",

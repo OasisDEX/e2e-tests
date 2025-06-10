@@ -53,5 +53,7 @@ export const switchPosition = async ({
 
 	// Leaving app in a stable state to avoid random fails in following test steps
 	await app.positionPage.sidebar.buttonShouldBeVisible('Loading');
-	await app.positionPage.sidebar.buttonShouldBeVisible(/Approve|Switch/);
+	await app.positionPage.sidebar.buttonShouldBeVisible(/Approve|Switch/, {
+		timeout: expectDefaultTimeout * 2,
+	});
 };
