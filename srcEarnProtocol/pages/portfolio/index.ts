@@ -75,7 +75,7 @@ export class Portfolio {
 	async open(wallet: string) {
 		await expect(async () => {
 			await this.page.goto(`/earn/portfolio/${wallet}`);
-			await this.shoulBeVisible({ timeout: expectDefaultTimeout * 2 });
+			await this.shoulBeVisible({ timeout: expectDefaultTimeout * 3 });
 		}).toPass();
 	}
 

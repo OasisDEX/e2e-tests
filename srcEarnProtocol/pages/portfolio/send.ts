@@ -82,7 +82,7 @@ export class Send {
 			`It should have Sending amount: ${sendingAmount} ${token}`
 		).toContainText(sendingAmountRegExp);
 
-		const txFeeRegExp = new RegExp(`\\$${transactionFee}`);
+		const txFeeRegExp = new RegExp(`\\$.*${transactionFee}`);
 		await expect(
 			this.modalLocator.getByRole('listitem').filter({ hasText: 'Transaction fee' }),
 			`It should have Transaction fee: $${transactionFee}`

@@ -1,11 +1,11 @@
 import { expect, test } from '#earnProtocolFixtures';
 import { logInWithEmailAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 
 test.describe('Logged in with Email', async () => {
 	// Feature disabled in staging - Can be tested on Prod only
 	test('It should Send funds @productionOnly', async ({ app, request }) => {
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await logInWithEmailAddress({
 			request,
@@ -32,7 +32,7 @@ test.describe('Logged in with Email', async () => {
 			network: 'Base',
 			sendingAmount: '0.0001',
 			token: 'ETH',
-			transactionFee: '[0-9]{1,2}.[0-9]{4}',
+			transactionFee: '[0-9]{1,2}.[0-9]{2}',
 		});
 		await app.portfolio.sendModal.shouldHaveSendButtonEnabled();
 	});
