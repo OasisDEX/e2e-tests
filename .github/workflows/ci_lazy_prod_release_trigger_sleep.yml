@@ -1,4 +1,4 @@
-name: Lazy Prod tigger
+name: Lazy Prod trigger
 
 on: 
   workflow_dispatch:
