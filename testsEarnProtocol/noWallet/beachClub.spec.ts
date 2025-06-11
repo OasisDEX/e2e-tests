@@ -56,25 +56,25 @@ test.describe('Beach Club - Portfolio page', async () => {
 				address: { full: '0x33ad81cfb7d23b0b834bc34dc43028dc5001437f', short: '0x33...1437f' },
 				action: 'Deposit',
 				amount: { token: 'usdc', tokenAmount: '0.4999' },
-				date: 'yesterday',
+				date: '2 days ago',
 			},
 			{
 				address: { full: '0x1d2d4e8c46649b6419158cc163612813c9556f91', short: '0x1d...56f91' },
 				action: 'Deposit',
 				amount: { token: 'usdc', tokenAmount: '0.0499' },
-				date: 'yesterday',
+				date: '2 days ago',
 			},
 			{
 				address: { full: '0x1d2d4e8c46649b6419158cc163612813c9556f91', short: '0x1d...56f91' },
 				action: 'Deposit',
 				amount: { token: 'eth', tokenAmount: '<0.001' },
-				date: 'yesterday',
+				date: '2 days ago',
 			},
 			{
 				address: { full: '0x471b8da4e8d204e33813f4b337e2dda789038df6', short: '0x47...38df6' },
 				action: 'Deposit',
 				amount: { token: 'eth', tokenAmount: '<0.001' },
-				date: 'yesterday',
+				date: '2 days ago',
 			},
 		]);
 	});
