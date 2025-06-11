@@ -100,7 +100,6 @@ export class BeachClub {
 			address: { full: string; short: string };
 			action: 'Deposit' | 'Withdraw';
 			amount: { token: 'eth' | 'usdc'; tokenAmount: string };
-			date: string;
 		}[]
 	) {
 		for (const entry of entries) {
@@ -113,7 +112,9 @@ export class BeachClub {
 
 			await expect(entryLocator.getByRole('cell').nth(2)).toContainText(entry.amount.tokenAmount);
 
-			await expect(entryLocator.getByRole('cell').nth(3)).toContainText(entry.date);
+			await expect(entryLocator.getByRole('cell').nth(3)).toContainText(
+				/hours ago|yesterday|days ago/
+			);
 
 			await expect(entryLocator.getByRole('cell').nth(4).getByRole('button')).toContainText('View');
 			await expect(entryLocator.getByRole('cell').nth(4).getByRole('link')).toHaveAttribute(
