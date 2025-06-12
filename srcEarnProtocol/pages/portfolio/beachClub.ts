@@ -31,7 +31,8 @@ export class BeachClub {
 	async shouldHaveBeachClubInUrl(args?: { timeout: number }) {
 		await expect(async () => {
 			const url = this.page.url();
-			expect(url).toContain('/earn/portfolio?tab=beach-club');
+			expect(url).toContain('/earn/portfolio');
+			expect(url).toContain('?tab=beach-club');
 		}).toPass({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
@@ -82,16 +83,27 @@ export class BeachClub {
 	}
 
 	@step
-	async trackReferrals() {
-		await this.page.getByRole('button').filter({ hasText: 'Track referrals' }).click();
+	async referralActivity() {
+		await this.page.getByRole('button').filter({ hasText: 'Referral Activity' }).click();
 	}
 
 	@step
-	async referralAcivityShouldBeActive() {
-		await expect(
-			this.page.locator('button[class*="BeachClubTrackReferrals_tabActive_"]'),
-			'"Referral Acivity" tab should be visible'
-		).toBeVisible();
+	async yourReferrals() {
+		await this.page.getByRole('button').filter({ hasText: 'Your Referrals' }).click();
+	}
+
+	@step
+	async shouldHaveTabActive(tab: 'Referral Activity' | 'Your Referrals') {
+		await expect(async () => {
+			const activeTabWidth = await this.page
+				.getByRole('button')
+				.filter({ hasText: tab })
+				.evaluate((el) => {
+					return window.getComputedStyle(el).getPropertyValue('--active-tab-width');
+				});
+
+			expect(activeTabWidth).toEqual('100%');
+		}).toPass({ timeout: expectDefaultTimeout });
 	}
 
 	@step
@@ -104,7 +116,6 @@ export class BeachClub {
 	) {
 		for (const entry of entries) {
 			const entryLocator = this.page
-				.locator('[class*="BeachClubTrackReferrals_beachClubTrackReferralsWrapper_"]')
 				.getByRole('row')
 				.filter({ hasText: entry.address.short })
 				.filter({ hasText: entry.action })
@@ -120,6 +131,43 @@ export class BeachClub {
 			await expect(entryLocator.getByRole('cell').nth(4).getByRole('link')).toHaveAttribute(
 				'href',
 				`/earn/portfolio/${entry.address.full}?tab=your-activity`
+			);
+		}
+	}
+
+	@step
+	async shouldListReferrals(
+		entries: {
+			address: { full: string; short: string };
+			tvl: string;
+			earnedToDate: string;
+			annualisedEarnings: string;
+		}[]
+	) {
+		for (const entry of entries) {
+			const entryLocator = this.page.getByRole('row').filter({ hasText: entry.address.short });
+
+			const tvlRegExp = new RegExp(`\\$${entry.tvl}`);
+			await expect(entryLocator.getByRole('cell').nth(1), 'Should have TVL').toContainText(
+				tvlRegExp
+			);
+
+			const earnedToDateRegExp = new RegExp(`\\$${entry.earnedToDate}`);
+			await expect(
+				entryLocator.getByRole('cell').nth(2),
+				'Should have Earned to Date'
+			).toContainText(earnedToDateRegExp);
+
+			const annualisedEarningsRegExp = new RegExp(`\\$${entry.annualisedEarnings}`);
+			await expect(
+				entryLocator.getByRole('cell').nth(3),
+				'Should have Forecast Annualised Earnings'
+			).toContainText(annualisedEarningsRegExp);
+
+			await expect(entryLocator.getByRole('cell').nth(4).getByRole('button')).toContainText('View');
+			await expect(entryLocator.getByRole('cell').nth(4).getByRole('link')).toHaveAttribute(
+				'href',
+				`/earn/portfolio/${entry.address.full}`
 			);
 		}
 	}
