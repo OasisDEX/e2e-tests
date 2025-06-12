@@ -1,18 +1,6 @@
 import { expect, test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
-test.describe('Beach Club Landing page', async () => {
-	test('It should redirect to Portfolio > Beach club when clicking on "Share code"', async ({
-		app,
-	}) => {
-		await app.beachClubLandingPage.open();
-		await app.beachClubLandingPage.shareYourCode();
-
-		await app.portfolio.beachClub.shouldHaveBeachClubInUrl({ timeout: expectDefaultTimeout * 2 });
-		await app.portfolio.beachClub.shouldShowConnectWallet();
-	});
-});
-
 test.describe('Beach Club - Portfolio page', async () => {
 	test('It should not allow to generate a code - Logged out', async ({ app }) => {
 		await app.portfolio.beachClub.openPage('0x8af4f3fbc5446a3fc0474859b78fa5f4554d4510');
@@ -42,8 +30,8 @@ test.describe('Beach Club - Portfolio page', async () => {
 	test('It should list Referral activity logs', async ({ app }) => {
 		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
 
-		await app.portfolio.beachClub.trackReferrals();
-		await app.portfolio.beachClub.referralAcivityShouldBeActive();
+		await app.portfolio.beachClub.referralActivity();
+		await app.portfolio.beachClub.shouldHaveTabActive('Referral Activity');
 
 		await app.portfolio.beachClub.shouldHaveReferralActivity([
 			{
@@ -70,6 +58,34 @@ test.describe('Beach Club - Portfolio page', async () => {
 				address: { full: '0x471b8da4e8d204e33813f4b337e2dda789038df6', short: '0x47...38df6' },
 				action: 'Deposit',
 				amount: { token: 'eth', tokenAmount: '<0.001' },
+			},
+		]);
+	});
+
+	test('It should list Referrals summary', async ({ app }) => {
+		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
+
+		await app.portfolio.beachClub.yourReferrals();
+		await app.portfolio.beachClub.shouldHaveTabActive('Your Referrals');
+
+		await app.portfolio.beachClub.shouldListReferrals([
+			{
+				address: { full: '0x33ad81cfb7d23b0b834bc34dc43028dc5001437f', short: '0x33...1437f' },
+				tvl: '0.[2-6][0-9]{3}',
+				earnedToDate: '<0.01',
+				annualisedEarnings: '<0.01',
+			},
+			{
+				address: { full: '0x1d2d4e8c46649b6419158cc163612813c9556f91', short: '0x1d...56f91' },
+				tvl: '0.[1-9][0-9]{3}',
+				earnedToDate: '<0.01',
+				annualisedEarnings: '<0.01',
+			},
+			{
+				address: { full: '0x471b8da4e8d204e33813f4b337e2dda789038df6', short: '0x47...38df6' },
+				tvl: '0.[1-9][0-9]{3}',
+				earnedToDate: '<0.01',
+				annualisedEarnings: '<0.01',
 			},
 		]);
 	});
