@@ -71,6 +71,6 @@ export class Header {
 
 	@step
 	async beachClub() {
-		await this.page.getByRole('link', { name: 'Beach club ' }).click();
+		await this.page.locator('header').getByRole('link', { name: 'Beach club ' }).click();
 	}
 }
