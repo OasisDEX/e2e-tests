@@ -215,7 +215,6 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Withdr
 
 test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 45_000);
 
 		await logInWithWalletAddress({

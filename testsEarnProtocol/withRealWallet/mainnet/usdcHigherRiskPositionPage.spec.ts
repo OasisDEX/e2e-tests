@@ -195,7 +195,6 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Withd
 
 test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 45_000);
 
 		await logInWithWalletAddress({
@@ -269,6 +268,8 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 	});
 
 	test('It should switch Mainnet USDC Higher Risk position', async ({ app, metamask }) => {
+		test.setTimeout(veryLongTestTimeout);
+
 		// USDC Lower Risk
 		await switchPosition({
 			metamask,
