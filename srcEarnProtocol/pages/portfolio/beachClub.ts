@@ -171,4 +171,20 @@ export class BeachClub {
 			);
 		}
 	}
+
+	@step
+	async shouldHaveProjectedYearlyRewards(rewards: string) {
+		const regExp = new RegExp(rewards);
+		await expect(
+			this.page.getByText('Projected Yearly SUMR Rewards').locator('xpath=//preceding::h2[1]')
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveYearlyEarnedFees(earnedFees: string) {
+		const regExp = new RegExp(`up to \\$${earnedFees}`);
+		await expect(
+			this.page.getByText('Yearly Earned Fees').locator('xpath=//preceding::h2[1]')
+		).toContainText(regExp);
+	}
 }
