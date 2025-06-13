@@ -24,26 +24,49 @@ export class VaultExposure {
 		expect(this.vaultExposureLocator.getByText('View more')).toBeVisible();
 	}
 
-	@step
-	async getStrategiesTotalAllocation() {
-		const strategyAllocationLocator = this.vaultExposureLocator.locator(
-			'tr > td:nth-child(1) p:has-text("allocated")'
-		);
-
+	async showAllStrategies() {
 		// Wait for table to load
-		await expect(strategyAllocationLocator.first()).toBeVisible({
+		await expect(
+			this.vaultExposureLocator.locator('tr > td:nth-child(1) p:has-text("allocated")').first()
+		).toBeVisible({
 			timeout: expectDefaultTimeout * 2,
 		});
 
 		const viewMoreIsVisible = await this.vaultExposureLocator.getByText('View more').isVisible();
 		if (viewMoreIsVisible) await this.viewMore({ delay: 500 });
+	}
 
-		const allocations = (await strategyAllocationLocator.allInnerTexts()).map((text) =>
-			parseFloat(text.replace('% allocated', ''))
-		);
+	@step
+	async getStrategiesTotalAllocation() {
+		await this.showAllStrategies();
+
+		const allocations = (
+			await this.vaultExposureLocator
+				.locator('tr > td:nth-child(1) p:has-text("allocated")')
+				.allInnerTexts()
+		).map((text) => parseFloat(text.replace('% allocated', '')));
 
 		const totalAllocation = allocations.reduce((a, b) => a + b, 0);
 
 		return totalAllocation;
+	}
+
+	async getStrategiesNames() {
+		await this.showAllStrategies();
+
+		const strategyNames = await this.vaultExposureLocator
+			.getByRole('table')
+			.filter({ has: this.page.locator('th:has-text("Strategy")') })
+			.locator('tr td:nth-child(1) p:nth-child(1)')
+			.allInnerTexts();
+
+		return strategyNames;
+	}
+
+	@step
+	async shouldNotHaveDuplicatedStrategyNames() {
+		const names = await this.getStrategiesNames();
+
+		expect(new Set(names).size).toEqual(names.length);
 	}
 }
