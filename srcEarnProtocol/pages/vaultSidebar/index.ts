@@ -98,8 +98,9 @@ export class VaultSidebar {
 
 	@step
 	async depositOrWithdraw(amount: string) {
-		await this.sidebarLocator.locator('input').clear();
-		await this.sidebarLocator.locator('input').fill(amount);
+		const locator = this.sidebarLocator.locator('input[placeholder*="0"]');
+		await locator.clear();
+		await locator.fill(amount);
 	}
 
 	@step
@@ -115,7 +116,7 @@ export class VaultSidebar {
 				tokenOrCurrency === '$' ? '' : tokenOrCurrency
 			}`
 		);
-		await expect(this.sidebarLocator.locator('input + p')).toContainText(regExp, {
+		await expect(this.sidebarLocator.locator('input[placeholder*="0"] + p')).toContainText(regExp, {
 			ignoreCase: true,
 		});
 	}
