@@ -15,7 +15,11 @@ export class HowItWorks {
 
 	@step
 	async shouldHaveHeader(
-		header: 'How it all works' | 'Lower Risk Historical Yields' | 'Security',
+		header:
+			| 'How it all works'
+			| 'Higher Risk Historical Yields'
+			| 'Lower Risk Historical Yields'
+			| 'Security',
 		args?: { timeout: number }
 	) {
 		await expect(

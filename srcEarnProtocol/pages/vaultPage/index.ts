@@ -33,18 +33,24 @@ export class VaultPage {
 	}
 
 	@step
-	async shouldHave30dApy(apy: string) {
-		const ApyRegExp = new RegExp(`${apy}%`);
-		await expect(
-			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("30d APY") span').first()
-		).toContainText(ApyRegExp);
+	async shouldHave30dApy(apy: 'New strategy' | string) {
+		const thirtyDayApyLocator = this.page
+			.locator('[class*="_dataBlockWrapper_"]:has-text("30d APY") span')
+			.first();
 
-		const VsMedianRegExp = new RegExp('[0-9].[0-9]{2}%');
-		await expect(
-			this.page.locator(
-				'[class*="_dataBlockWrapper_"]:has-text("30d APY") span:has-text("vs Median DeFi Yield")'
-			)
-		).toContainText(VsMedianRegExp);
+		if (apy === 'New strategy') {
+			await expect(thirtyDayApyLocator).toContainText(apy);
+		} else {
+			const ApyRegExp = new RegExp(`${apy}%`);
+			await expect(thirtyDayApyLocator).toContainText(ApyRegExp);
+
+			const VsMedianRegExp = new RegExp('[0-9].[0-9]{2}%');
+			await expect(
+				this.page.locator(
+					'[class*="_dataBlockWrapper_"]:has-text("30d APY") span:has-text("vs Median DeFi Yield")'
+				)
+			).toContainText(VsMedianRegExp);
+		}
 	}
 
 	@step
