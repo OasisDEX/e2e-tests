@@ -6,7 +6,7 @@ import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('Prod release - Position page - Base - Deposit', async () => {
+test.describe('Prod release - Position page - Base ETH - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
