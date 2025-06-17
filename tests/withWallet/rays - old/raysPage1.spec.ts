@@ -9,7 +9,8 @@ let app: App;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Rays - Wallet connected', async () => {
+// SKIP - RAYs app to be removed
+test.describe.skip('Rays - Wallet connected', async () => {
 	test.afterAll(async () => {
 		await app.page.close();
 

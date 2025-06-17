@@ -13,7 +13,8 @@ let app: App;
 const test = testWithSynpress(metaMaskFixtures(arbitrumSetup));
 const { expect } = test;
 
-test.describe('Rays - Wallet connected - Position page', async () => {
+// SKIP - RAYs app to be removed
+test.describe.skip('Rays - Wallet connected - Position page', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 

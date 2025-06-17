@@ -1,6 +1,7 @@
 import { expect, test } from '#noWalletFixtures';
 
-test.describe('No-wallet connected - Rays', async () => {
+// SKIP - RAYs app to be removed
+test.describe.skip('No-wallet connected - Rays', async () => {
 	test('It should link to Rays blog and open in new tab @regression', async ({ app }) => {
 		await app.rays.openPage();
 		await app.rays.shouldLinkToRaysBlogInNewTab();
@@ -295,7 +296,3 @@ test.describe('No-wallet connected - Rays', async () => {
 		await app.rays.openPosition.productPicker.shouldDisplayTabs(['Earn', 'Borrow', 'Multiply']);
 	});
 });
-
-// TEST - TO BE DONE
-// Should NOT get points - DeFi Saver position:
-// /portfolio/0x7d6149ad9a573a6e2ca6ebf7d4897c1b766841b4#positions
