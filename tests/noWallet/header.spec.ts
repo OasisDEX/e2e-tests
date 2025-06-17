@@ -15,7 +15,8 @@ test.describe('Header', async () => {
 		await app.modals.connectWallet.shouldBeVisible();
 	});
 
-	test('It should open Rays page @regression', async ({ app }) => {
+	// SKIP - RAYs app to be removed
+	test.skip('It should open Rays page', async ({ app }) => {
 		await app.header.openRaysPage();
 		await app.rays.shouldBeVivible();
 	});

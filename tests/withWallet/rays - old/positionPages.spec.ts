@@ -12,7 +12,8 @@ let app: App;
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('Rays - Wallet connected - Position page', async () => {
+// SKIP - RAYs app to be removed
+test.describe.skip('Rays - Wallet connected - Position page', async () => {
 	test.afterAll(async () => {
 		await tenderly.deleteFork(forkId);
 
