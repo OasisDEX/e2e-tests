@@ -12,7 +12,7 @@ export class BeachClub {
 	@step
 	async openPage(wallet: string) {
 		await expect(async () => {
-			await this.page.goto(`https://staging.summer.fi/earn/portfolio/${wallet}?tab=beach-club`);
+			await this.page.goto(`/earn/portfolio/${wallet}?tab=beach-club`);
 			await expect(
 				this.page.getByText('Unlock exclusive rewards with Lazy Summer Beach Club.'),
 				'Tab header should be visible'
@@ -170,6 +170,45 @@ export class BeachClub {
 				`/earn/portfolio/${entry.address.full}`
 			);
 		}
+	}
+
+	@step
+	async shouldHaveCumulativeTvlFromReferrals(tvl: string) {
+		const regExp = new RegExp(`\\$${tvl}`);
+		await expect(
+			this.page.getByText('Cumulative TVL from referrals').locator('xpath=//preceding::h2[1]')
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveEarnedSUMR(earneAmount: string) {
+		const regExp = new RegExp(earneAmount);
+		await expect(
+			this.page
+				.locator('[class*="BeachClubTvlChallenge_textual_"]')
+				.filter({ hasText: 'Earned $SUMR' })
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveEarnedFee(earneFee: string) {
+		const regExp = new RegExp(`\\$${earneFee}`);
+		await expect(
+			this.page
+				.locator('[class*="BeachClubTvlChallenge_textual_"]')
+				.filter({ hasText: `Earned Fee's` })
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldBeInRewardsGroup(group: 'Start Referring' | '10K+' | '100K+' | '250K+' | '500K+') {
+		await expect(
+			this.page
+				.locator('[class*="beachClubTvlChallengeRewardCardWrapper"]')
+				.filter({ hasText: group })
+				.getByText('You are here!'),
+			`Should display "You are here tag" in ${group} block`
+		).toBeVisible();
 	}
 
 	@step
