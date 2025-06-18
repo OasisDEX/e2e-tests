@@ -1,5 +1,4 @@
 import { expect, test } from '#earnProtocolFixtures';
-import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Beach Club - Portfolio page', async () => {
 	test('It should not allow to generate a code - Logged out', async ({ app }) => {
@@ -7,7 +6,7 @@ test.describe('Beach Club - Portfolio page', async () => {
 		await app.portfolio.beachClub.generateShouldBeDisabled();
 	});
 
-	test('It should copy referral code and referral link', async ({ app, context }) => {
+	test('It should copy referral code', async ({ app, context }) => {
 		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
 		await app.portfolio.beachClub.copyReferralCode();
 
@@ -88,6 +87,20 @@ test.describe('Beach Club - Portfolio page', async () => {
 				annualisedEarnings: '<0.01',
 			},
 		]);
+	});
+
+	test('It sould show Referral Reward Overview', async ({ app }) => {
+		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
+
+		await app.portfolio.beachClub.shouldHaveCumulativeTvlFromReferrals('[0-9].[0-9]{4}');
+		await app.portfolio.beachClub.shouldHaveEarnedSUMR('<0.001');
+		await app.portfolio.beachClub.shouldHaveEarnedFee('<0.01');
+	});
+
+	test('It sould show Rewards group in which user currently is', async ({ app }) => {
+		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
+
+		await app.portfolio.beachClub.shouldBeInRewardsGroup('Start Referring');
 	});
 
 	test('It sould show Referral Reward Simulations', async ({ app }) => {
