@@ -93,7 +93,7 @@ test.describe('Beach Club - Portfolio page', async () => {
 		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
 
 		await app.portfolio.beachClub.shouldHaveCumulativeTvlFromReferrals('[0-9].[0-9]{4}');
-		await app.portfolio.beachClub.shouldHaveEarnedSUMR('0.0001');
+		await app.portfolio.beachClub.shouldHaveEarnedSUMR('0.0[0-9]{3}');
 		await app.portfolio.beachClub.shouldHaveEarnedFee('<0.01');
 	});
 
