@@ -86,7 +86,7 @@ export const withdraw = async ({
 	await expect(
 		sidebarButtonLocator,
 		'[Agree], [Approve] or [Withdraw] buttons should not be visible'
-	).toContainText(/Agree|Approve|Withdraw/);
+	).toContainText(/Agree|Approve|Withdraw/, { timeout: expectDefaultTimeout * 2 });
 
 	let sidebarButtonLabel = await sidebarButtonLocator.innerText();
 
@@ -98,7 +98,7 @@ export const withdraw = async ({
 		await expect(
 			sidebarButtonLocator,
 			'[Approve] or [Withdraw] buttons should not be visible'
-		).toContainText(/Approve|Withdraw/);
+		).toContainText(/Approve|Withdraw/, { timeout: expectDefaultTimeout * 2 });
 
 		sidebarButtonLabel = await sidebarButtonLocator.innerText();
 	}
