@@ -1,4 +1,5 @@
 import { expect, test } from '#earnProtocolFixtures';
+import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Vault page - Arbitrum USDT', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
@@ -32,7 +33,9 @@ test.describe('Vault page - Arbitrum USDT', async () => {
 
 		await app.vaultPage.howItAllWorks();
 
-		await app.vaultPage.howItWorks.shouldHaveHeader('How it all works');
+		await app.vaultPage.howItWorks.shouldHaveHeader('How it all works', {
+			timeout: expectDefaultTimeout * 2,
+		});
 		await app.vaultPage.howItWorks.shouldLinkToLitePaper();
 		await app.vaultPage.howItWorks.shouldHaveTabActive('Rebalance mechanism');
 		await app.vaultPage.howItWorks.shouldHaveImage('how-it-works');

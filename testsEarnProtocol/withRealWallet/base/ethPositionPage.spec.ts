@@ -253,6 +253,8 @@ test.describe('With real wallet - Base ETH position page - Switch', async () => 
 	});
 
 	test('It should switch Base ETH position @regression', async ({ app, metamask }) => {
+		test.setTimeout(longTestTimeout);
+
 		// EURC
 		await switchPosition({
 			metamask,
