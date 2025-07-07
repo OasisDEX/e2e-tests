@@ -25,9 +25,8 @@ export class RebalanceActivity {
 			this.page.getByText('Gas cost savings', { exact: true }),
 			'"Gas cost saving" should be visible'
 		).toBeVisible();
-
 		await expect(
-			this.page.locator('[class*="PortfolioRebalanceActivityList_wrapper_"]'),
+			this.page.locator('[class*="PortfolioRebalanceActivity_wrapper"] td').first(),
 			'Activity list should be visible'
 		).toBeVisible();
 	}
