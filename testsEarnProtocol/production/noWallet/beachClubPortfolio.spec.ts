@@ -32,7 +32,8 @@ test.describe('Beach Club - Portfolio page', async () => {
 		await app.portfolio.beachClub.shouldHaveEarnedFee('[0-9].[0-9]{4}');
 	});
 
-	test('It sould show Rewards group in which user currently is', async ({ app }) => {
+	// SKIP - Test will fail if real user's referrals deposit or withdraw significantly
+	test.skip('It sould show Rewards group in which user currently is', async ({ app }) => {
 		await app.portfolio.beachClub.openPage('0x90153be2ac32633fc9a7cc53cdf01d348e875555');
 
 		await app.portfolio.beachClub.shouldBeInRewardsGroup('500K+');
