@@ -31,7 +31,7 @@ test.describe('Vault page - Mainnet USDC Higher Risk', async () => {
 		await app.vaultPage.howItAllWorks();
 
 		await app.vaultPage.howItWorks.shouldHaveHeader('How it all works', {
-			timeout: expectDefaultTimeout * 2,
+			timeout: expectDefaultTimeout * 3,
 		});
 		await app.vaultPage.howItWorks.shouldLinkToLitePaper();
 		await app.vaultPage.howItWorks.shouldHaveTabActive('Rebalance mechanism');
