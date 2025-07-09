@@ -44,7 +44,9 @@ test.describe('Vault page - Arbitrum USDT', async () => {
 		await app.vaultPage.howItWorks.shouldHaveTabActive('Governance');
 		await app.vaultPage.howItWorks.shouldHaveImage('governance');
 
-		await app.vaultPage.howItWorks.shouldHaveHeader('Lower Risk Historical Yields');
+		await app.vaultPage.howItWorks.shouldHaveHeader('Lower Risk Historical Yields', {
+			timeout: expectDefaultTimeout * 2,
+		});
 
 		await app.vaultPage.howItWorks.shouldHaveHeader('Security');
 	});

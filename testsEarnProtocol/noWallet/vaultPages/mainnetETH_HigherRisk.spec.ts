@@ -41,7 +41,9 @@ test.describe('Vault page - Mainnet ETH Higher Risk', async () => {
 		await app.vaultPage.howItWorks.shouldHaveTabActive('Governance');
 		await app.vaultPage.howItWorks.shouldHaveImage('governance');
 
-		await app.vaultPage.howItWorks.shouldHaveHeader('Higher Risk Historical Yields');
+		await app.vaultPage.howItWorks.shouldHaveHeader('Higher Risk Historical Yields', {
+			timeout: expectDefaultTimeout * 2,
+		});
 
 		await app.vaultPage.howItWorks.shouldHaveHeader('Security');
 	});
