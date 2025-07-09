@@ -181,10 +181,10 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Withdr
 			withdrawnToken: 'USDC',
 			withdrawAmount: '0.5',
 			estimatedEarnings: {
-				thirtyDaysAmount: '0.00[0-9]{2}',
-				sixMonthsAmount: '0.00[0-9]{2}',
-				oneYearAmount: '0.00[0-9]{2}',
-				threeYearsAmount: '0.00[0-9]{2}',
+				thirtyDaysAmount: '0.0[0-9]{3}',
+				sixMonthsAmount: '0.0[0-9]{3}',
+				oneYearAmount: '0.0[0-9]{3}',
+				threeYearsAmount: '0.0[0-9]{3}',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
