@@ -69,4 +69,24 @@ export class VaultExposure {
 
 		expect(new Set(names).size).toEqual(names.length);
 	}
+
+	async getStrategiesApys() {
+		await this.showAllStrategies();
+
+		const strategyApys = await this.vaultExposureLocator
+			.getByRole('table')
+			.filter({ has: this.page.locator('th:has-text("Strategy")') })
+			// .locator('tr td:nth-child(2) p:nth-child(1)')
+			.locator('tr td:nth-child(2) ')
+			.allInnerTexts();
+
+		return strategyApys;
+	}
+
+	@step
+	async shouldNotHaveStrategyApysEqualToZero() {
+		const apys = await this.getStrategiesApys();
+
+		expect(apys.includes('0.00%')).not.toBeTruthy();
+	}
 }
