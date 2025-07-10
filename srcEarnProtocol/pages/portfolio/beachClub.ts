@@ -124,7 +124,7 @@ export class BeachClub {
 			await expect(entryLocator.getByRole('cell').nth(2)).toContainText(entry.amount.tokenAmount);
 
 			await expect(entryLocator.getByRole('cell').nth(3)).toContainText(
-				/hours ago|yesterday|days ago/
+				/hours ago|yesterday|days ago|last month/
 			);
 
 			await expect(entryLocator.getByRole('cell').nth(4).getByRole('button')).toContainText('View');
