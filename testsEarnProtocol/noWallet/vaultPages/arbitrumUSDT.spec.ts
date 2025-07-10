@@ -61,4 +61,8 @@ test.describe('Vault page - Arbitrum USDT', async () => {
 	test('It should not have duplicated strategy names', async ({ app }) => {
 		await app.vaultPage.exposure.shouldNotHaveDuplicatedStrategyNames();
 	});
+
+	test('It should not have 0.00% APY for any arks', async ({ app }) => {
+		await app.vaultPage.exposure.shouldNotHaveStrategyApysEqualToZero();
+	});
 });
