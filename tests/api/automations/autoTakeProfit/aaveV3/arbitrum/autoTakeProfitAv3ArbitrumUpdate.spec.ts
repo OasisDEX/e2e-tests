@@ -126,7 +126,7 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', asyn
 				triggerData: {
 					...validPayloads.triggerData,
 					executionPrice: '9500000000000',
-					executionLTV: '1100',
+					executionLTV: '800',
 					withdrawStep: '600',
 				},
 			},
