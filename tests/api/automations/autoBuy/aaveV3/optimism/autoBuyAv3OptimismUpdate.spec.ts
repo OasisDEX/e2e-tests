@@ -123,7 +123,7 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Optimism', async () => 
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					executionLTV: '1200',
+					executionLTV: '900',
 					targetLTV: '1900',
 					maxBuyPrice: '25000000000000',
 				},
@@ -136,7 +136,7 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Optimism', async () => 
 			...validResponse,
 			simulation: {
 				...validResponse.simulation,
-				executionLTV: '1200',
+				executionLTV: '900',
 				targetLTV: '1900',
 				targetLTVWithDeviation: ['1800', '2000'],
 			},
