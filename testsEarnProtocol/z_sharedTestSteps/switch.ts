@@ -44,6 +44,14 @@ export const switchPosition = async ({
 	}
 
 	if (sidebarButtonLabel.includes('Approve')) {
+		//
+		// TO BE DONE - Check preview values
+		await app.positionPage.sidebar.switch.shouldHavePreviewInfo({
+			nominatedToken,
+			targetToken,
+		});
+		//
+
 		await app.positionPage.sidebar.approve(nominatedToken === 'ETH' ? 'WETH' : nominatedToken);
 		await metamask.rejectTransaction();
 	} else {

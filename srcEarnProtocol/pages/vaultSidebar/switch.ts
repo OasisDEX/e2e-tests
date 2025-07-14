@@ -115,6 +115,46 @@ export class Switch {
 	}
 
 	@step
+	async shouldHavePreviewInfo({
+		// metamask,
+		// app,
+		nominatedToken,
+		targetToken,
+	}: // risk,
+	{
+		// metamask: MetaMask;
+		// app: App;
+		nominatedToken: LazyNominatedTokens;
+		targetToken: LazyNominatedTokens;
+		// risk?: Risks;
+	}) {
+		const fromLocator = this.page.getByText('From', { exact: true }).locator('..');
+		const toLocator = this.page.getByText('To', { exact: true }).locator('..');
+
+		const liveApyRegexp = new RegExp('Live.*APY:.*[0-9]{1,2}.[0-9]{2}%');
+
+		// Wait for Preview info to be fully loaded
+		await expect(fromLocator).toContainText('Risk');
+
+		await expect(fromLocator, `'From' box should have "${nominatedToken}"`).toContainText(
+			nominatedToken
+		);
+		await expect(fromLocator, `'From' box should have "Live APY: xx.xx%"`).toContainText(
+			liveApyRegexp
+		);
+
+		await expect(toLocator, `'To' box should have "${targetToken}"`).toContainText(targetToken);
+		await expect(toLocator, `'To' box should have "Live APY: xx.xx%"`).toContainText(liveApyRegexp);
+
+		const priceImpactRegExp = new RegExp(
+			`[0-9].[0-9]{4}.*${targetToken}\\/${nominatedToken}.*\\([0-9].[0-9]{2}%\\)`
+		);
+		await expect(this.page.getByText('Price impact', { exact: true }).locator('..')).toContainText(
+			priceImpactRegExp
+		);
+	}
+
+	@step
 	async confirmSwitch() {
 		await this.page.getByRole('button', { name: 'Switch' }).click();
 	}
