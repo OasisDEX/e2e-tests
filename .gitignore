@@ -5,3 +5,4 @@ node_modules/
 /blob-report/
 .env
 .cache-synpress
+zz_proLocalStorage.yml
