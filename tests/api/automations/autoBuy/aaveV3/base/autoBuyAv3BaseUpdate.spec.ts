@@ -55,7 +55,7 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Base', async () => {
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					executionLTV: '2000',
+					executionLTV: '2500',
 					maxBuyPrice: '800000000000',
 				},
 			},
@@ -65,7 +65,7 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Base', async () => {
 
 		expect(respJSON).toMatchObject({
 			...validResponse,
-			simulation: { ...validResponse.simulation, executionLTV: '2000' },
+			simulation: { ...validResponse.simulation, executionLTV: '2500' },
 			warnings: [],
 		});
 	});
@@ -125,7 +125,7 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Base', async () => {
 				...validPayloads,
 				triggerData: {
 					...validPayloads.triggerData,
-					executionLTV: '1501',
+					executionLTV: '2501',
 					targetLTV: '4700',
 					maxBuyPrice: '800000000000',
 				},
@@ -138,7 +138,7 @@ test.describe('API tests - Auto-Buy - Update - Aave V3 - Base', async () => {
 			...validResponse,
 			simulation: {
 				...validResponse.simulation,
-				executionLTV: '1501',
+				executionLTV: '2501',
 				targetLTV: '4700',
 				targetLTVWithDeviation: ['4600', '4800'],
 			},
