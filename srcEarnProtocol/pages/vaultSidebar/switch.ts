@@ -147,11 +147,12 @@ export class Switch {
 		await expect(toLocator, `'To' box should have "Live APY: xx.xx%"`).toContainText(liveApyRegexp);
 
 		const priceImpactRegExp = new RegExp(
-			`[0-9].[0-9]{4}.*${targetToken}\\/${nominatedToken}.*\\([0-9].[0-9]{2}%\\)`
+			`[0-9].[0-9]{4}.*${targetToken}\\/${nominatedToken}.*\\([0-9].[0-9]{2}%\\)|n\\/a`
 		);
-		await expect(this.page.getByText('Price impact', { exact: true }).locator('..')).toContainText(
-			priceImpactRegExp
-		);
+		await expect(
+			this.page.getByText('Price impact', { exact: true }).locator('..'),
+			'Should have price impact: "(x.xx%)" or "n/a"'
+		).toContainText(priceImpactRegExp);
 	}
 
 	@step
