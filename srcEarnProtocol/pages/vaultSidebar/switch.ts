@@ -146,6 +146,48 @@ export class Switch {
 		await expect(toLocator, `'To' box should have "${targetToken}"`).toContainText(targetToken);
 		await expect(toLocator, `'To' box should have "Live APY: xx.xx%"`).toContainText(liveApyRegexp);
 
+		const totalSwitchingRegExp = new RegExp(
+			`([0-9],[0-9])?[0-9]{1,2}.[0-9]{2}([0-9]{2})?.*${nominatedToken}`
+		);
+		await expect(
+			this.page.locator('[class*="totalSwitchingBox_"]'),
+			`Should have Total Switching: "x.xx ${nominatedToken}"`
+		).toContainText(totalSwitchingRegExp);
+
+		const depositAssetRegExp = new RegExp(`${nominatedToken}.*${targetToken}`);
+		await expect(
+			this.page.getByText('Deposit asset', { exact: true }).locator('..'),
+			`Should have Deposit asset: "${nominatedToken} --> ${targetToken}"`
+		).toContainText(depositAssetRegExp);
+
+		const changingLiveApyRegExp = new RegExp(
+			'[0-9]{1,2}.[0-9]{2}.*[0-9]{1,2}.[0-9]{2}.*\\(New Asset\\)'
+		);
+		await expect(
+			this.page
+				.locator('[class*="_whatsChangingBox_"]')
+				.filter({ has: this.page.getByText('Live APY', { exact: true }) }),
+			'Should have Live APY: "x.xx% --> x.xx% (New Asset)"'
+		).toContainText(changingLiveApyRegExp);
+
+		const changing30DayApyRegExp = new RegExp(
+			'[0-9]{1,2}.[0-9]{2}.*[0-9]{1,2}.[0-9]{2}.*\\(New Asset\\)'
+		);
+		await expect(
+			this.page
+				.locator('[class*="_whatsChangingBox_"]')
+				.filter({ has: this.page.getByText('30d APY', { exact: true }) }),
+			'Should have 30d APY: "x.xx% --> x.xx% (New Asset)"'
+		).toContainText(changing30DayApyRegExp);
+
+		const earningDifferenceRegExp = new RegExp('\\$[0-9]{1,2}.[0-9]{2}.*\\$[0-9]{1,2}.[0-9]{2}');
+		await expect(
+			this.page
+				.locator('[class*="_whatsChangingBox_"]')
+				.filter({ has: this.page.getByText('1yr earning difference', { exact: true }) }),
+			'Should have 1yr earning difference: "x.xx --> x.xx"'
+		).toContainText(earningDifferenceRegExp);
+
 		const priceImpactRegExp = new RegExp(
 			`([0-9],[0-9])?[0-9]{1,2}.[0-9]{2}([0-9]{2})?.*${targetToken}\\/${nominatedToken}.*\\([0-9].[0-9]{2}%\\)|n\\/a`
 		);
@@ -153,6 +195,29 @@ export class Switch {
 			this.page.getByText('Price impact', { exact: true }).locator('..'),
 			'Should have price impact: "(x.xx%)" or "n/a"'
 		).toContainText(priceImpactRegExp);
+
+		const swapRegExp = new RegExp('[0-9].[0-9]{4}.*[0-9].[0-9]{4}');
+		await expect(
+			this.page
+				.locator('[class*="_whatsChangingBox_"]')
+				.filter({ has: this.page.getByText('Swap', { exact: true }) }),
+			'Should have Swap: "x.xx --> x.xx"'
+		).toContainText(swapRegExp);
+
+		await expect(
+			this.page
+				.locator('[class*="_whatsChangingBox_"]')
+				.filter({ has: this.page.getByText('Slippage', { exact: true }) }),
+			'Should have Slippage: "0.10%"'
+		).toContainText('0.10%');
+
+		const transactionFeeRegExp = new RegExp('\\$(<)?[0-9]{1,2}.[0-9]{2}|n\\/a');
+		await expect(
+			this.page
+				.locator('[class*="_whatsChangingBox_"]')
+				.filter({ has: this.page.getByText('Transaction fee', { exact: true }) }),
+			'Should have Transaction fee: "$x.xx" or "$<0.01" or "n/a"'
+		).toContainText(transactionFeeRegExp);
 	}
 
 	@step
