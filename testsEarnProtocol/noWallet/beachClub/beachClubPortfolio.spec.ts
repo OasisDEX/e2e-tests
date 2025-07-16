@@ -61,7 +61,8 @@ test.describe('Beach Club - Portfolio page', async () => {
 		]);
 	});
 
-	test('It should list Referrals summary', async ({ app }) => {
+	// SKIP - NEW referred accounts needed - Deposit in production
+	test.skip('It should list Referrals summary', async ({ app }) => {
 		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
 
 		await app.portfolio.beachClub.yourReferrals();
@@ -89,7 +90,8 @@ test.describe('Beach Club - Portfolio page', async () => {
 		]);
 	});
 
-	test('It sould show Referral Reward Overview', async ({ app }) => {
+	// SKIP - NEW referred accounts needed - Deposit in production
+	test.skip('It sould show Referral Reward Overview', async ({ app }) => {
 		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
 
 		await app.portfolio.beachClub.shouldHaveCumulativeTvlFromReferrals('[0-9].[0-9]{2}(0-9]{2})?');
