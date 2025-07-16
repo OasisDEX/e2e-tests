@@ -27,7 +27,8 @@ const validResponse = autoSellWithoutMinSellPriceResponse({
 	targetLTVWithDeviation: ['9200', '9400'],
 });
 
-test.describe('API tests - Auto-Sell - Add - Morpho Blue - Ethereum', async () => {
+// SKIP - Current LTV too high - Look for another position, or wait to see if LTV decreases
+test.describe.skip('API tests - Auto-Sell - Add - Morpho Blue - Ethereum', async () => {
 	// Old test wallet: 0xbEf4befb4F230F43905313077e3824d7386E09F8
 	// Position link: https://staging.summer.fi/ethereum/morphoblue/multiply/WSTETH-ETH-1/1467
 
