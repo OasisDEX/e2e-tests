@@ -1,6 +1,7 @@
 import { BeachClubLandingPage } from './beachClubLandingPage';
 import { Earn } from './earn';
 import { Header } from './header';
+import { Institutions } from './institutions';
 import { LandingPage } from './landingPage';
 import { Migrate } from './migrate';
 import { Portfolio } from './portfolio';
@@ -15,6 +16,7 @@ export {
 	BeachClubLandingPage,
 	Earn,
 	Header,
+	Institutions,
 	LandingPage,
 	Migrate,
 	Portfolio,

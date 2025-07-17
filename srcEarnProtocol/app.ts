@@ -5,6 +5,7 @@ import {
 	BeachClubLandingPage,
 	Earn,
 	Header,
+	Institutions,
 	LandingPage,
 	Migrate,
 	Portfolio,
@@ -28,6 +29,8 @@ export class App {
 	readonly earn: Earn;
 
 	readonly header: Header;
+
+	readonly institutions: Institutions;
 
 	readonly landingPage: LandingPage;
 
@@ -55,6 +58,7 @@ export class App {
 		this.beachClubLandingPage = new BeachClubLandingPage(page);
 		this.earn = new Earn(page);
 		this.header = new Header(page);
+		this.institutions = new Institutions(page);
 		this.landingPage = new LandingPage(page);
 		this.migratePage = new Migrate(page);
 		this.modals = new Modals(page);
