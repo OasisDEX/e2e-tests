@@ -30,6 +30,11 @@ test.describe('Header', async () => {
 		await app.header.explore.select('Rebalancing Activity');
 		await app.page.mouse.move(200, 0);
 		await app.rebalancingActivity.shouldBeVisible();
+
+		await app.header.explore.open();
+		await app.header.explore.select('Institutions');
+		await app.page.mouse.move(200, 0);
+		await app.institutions.shouldBeVisible();
 	});
 
 	test('It should open "Support" pages', async ({ app }) => {
@@ -37,7 +42,7 @@ test.describe('Header', async () => {
 		await app.header.support.shouldHave(['Contact us', 'Sign up', 'Start chatting']);
 	});
 
-	test('It should open Bech Club landing page', async ({ app }) => {
+	test('It should open Beach Club landing page', async ({ app }) => {
 		await app.header.beachClub();
 		await app.beachClubLandingPage.shouldBeVisible();
 	});
