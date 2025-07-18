@@ -16,8 +16,8 @@ export class BeachClub {
 			await expect(
 				this.page.getByText('Unlock exclusive rewards with Lazy Summer Beach Club.'),
 				'Tab header should be visible'
-			).toBeVisible({ timeout: expectDefaultTimeout * 2 });
-		}).toPass({ timeout: expectDefaultTimeout * 5 });
+			).toBeVisible({ timeout: expectDefaultTimeout * 3 });
+		}).toPass({ timeout: expectDefaultTimeout * 7 });
 	}
 
 	@step

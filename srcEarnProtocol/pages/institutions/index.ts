@@ -36,7 +36,7 @@ export class Institutions {
 	async open(page: 'Self managed Vaults' | 'Public Access Vaults') {
 		await this.page
 			.locator(`[class*="institutionsPromoBlockWrapper_"]:has-text("${page}")`)
-			.getByRole('button', { name: 'Get started' })
+			.getByRole('button', { name: 'Learn more' })
 			.click();
 	}
 }
