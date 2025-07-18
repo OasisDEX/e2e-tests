@@ -2,6 +2,7 @@ import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletArbitrumFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletArbitrum';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expect } from '#earnProtocolFixtures';
+import { longTestTimeout } from 'utils/config';
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
@@ -47,7 +48,7 @@ test.describe('Real wallet - Portfolio - Migrate', async () => {
 	});
 
 	test('It should migrate position - Until first tx', async ({ app, metamask }) => {
-		test.setTimeout(55_000);
+		test.setTimeout(longTestTimeout);
 
 		await app.portfolio.overview.migrate({ button: 'top' });
 		await app.migratePage.shouldBeVisible();
