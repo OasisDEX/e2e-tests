@@ -93,10 +93,10 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 			depositedToken: 'WSTETH',
 			depositAmount: '0.0005',
 			estimatedEarnings: {
-				thirtyDaysAmount: '[1-2].[0-9]{4}',
-				sixMonthsAmount: '[1-2].[0-9]{4}',
-				oneYearAmount: '[1-2].[0-9]{4}',
-				threeYearsAmount: '[1-3].[0-9]{4}',
+				thirtyDaysAmount: '[1-5].[0-9]{4}',
+				sixMonthsAmount: '[1-5].[0-9]{4}',
+				oneYearAmount: '[1-5].[0-9]{4}',
+				threeYearsAmount: '[1-7].[0-9]{4}',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',

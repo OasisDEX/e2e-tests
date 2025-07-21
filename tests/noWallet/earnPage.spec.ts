@@ -18,7 +18,7 @@ test.describe('Earn page', async () => {
 	});
 
 	[1, 2, 3, 4, 5, 6, 7].forEach((page) => {
-		const numberOfPools = page != 10 ? arrayWithNthElements(20) : arrayWithNthElements(7);
+		const numberOfPools = page != 7 ? arrayWithNthElements(20) : arrayWithNthElements(18);
 
 		numberOfPools.forEach((poolIndex) => {
 			test(`It should open position page for all available Earn pools - Page ${page} - ${poolIndex}`, async ({
