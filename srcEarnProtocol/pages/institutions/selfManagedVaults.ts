@@ -11,8 +11,8 @@ export class SelfManagedVaults {
 	@step
 	async shouldBeVisible() {
 		await expect(
-			this.page.getByRole('heading', { name: 'Closed Access Vaults by Lazy Summer Protocol' }),
-			'"Closed Access Vaults by Lazy Summer Protocol" headre should be visible'
+			this.page.getByRole('heading', { name: 'self-managed Vaults' }),
+			'"self-managed Vaults" headre should be visible'
 		).toBeVisible();
 	}
 }
