@@ -19,6 +19,7 @@ export const switchPosition = async ({
 	risk?: Risks;
 }) => {
 	await app.positionPage.sidebar.switch.selectTargetPosition({ token: targetToken, risk });
+	await app.page.waitForTimeout(expectDefaultTimeout / 3);
 	await app.positionPage.sidebar.switch.previewSwitch();
 
 	const sidebarButtonLocator = app.page.locator('[class*="_sidebarCta_"] button').first();
