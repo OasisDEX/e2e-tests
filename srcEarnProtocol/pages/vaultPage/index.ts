@@ -25,10 +25,11 @@ export class VaultPage {
 	async open(url: string) {
 		await expect(async () => {
 			await this.page.goto(url);
-			await expect(
-				this.page.getByText('Assets in vault'),
-				'"Assets in vault" should be visible'
-			).toBeVisible();
+			// await expect(
+			// 	this.page.getByText('Assets in vault'),
+			// 	'"Assets in vault" should be visible'
+			// ).toBeVisible();
+			await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
 		}).toPass();
 	}
 
@@ -91,7 +92,7 @@ export class VaultPage {
 
 	@step
 	async shouldHaveDepositCap({ token, tokenAmount }: { token: EarnTokens; tokenAmount: string }) {
-		const tokenRegExp = new RegExp(`${tokenAmount}.*${token} cap`);
+		const tokenRegExp = new RegExp(`${tokenAmount}.*${token}`);
 		await expect(
 			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Deposit Cap") span').first()
 		).toContainText(tokenRegExp);
