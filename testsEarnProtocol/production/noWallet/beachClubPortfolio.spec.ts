@@ -29,7 +29,7 @@ test.describe('Beach Club - Portfolio page', async () => {
 			'([0-9]{2,3},)?[0-9]{2,3}.[0-9]{2}'
 		);
 		await app.portfolio.beachClub.shouldHaveEarnedSUMR('([0-9]{1,2},)?[0-9]{2,3}.[0-9]{2}');
-		await app.portfolio.beachClub.shouldHaveEarnedFee('[0-9].[0-9]{4}');
+		await app.portfolio.beachClub.shouldHaveEarnedFee('[0-9]{2,3}.[0-9]{4}');
 	});
 
 	// SKIP - Test will fail if real user's referrals deposit or withdraw significantly
