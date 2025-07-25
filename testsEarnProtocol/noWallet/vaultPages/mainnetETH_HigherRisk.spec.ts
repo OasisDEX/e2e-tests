@@ -17,13 +17,13 @@ test.describe('Vault page - Mainnet ETH Higher Risk', async () => {
 
 		await app.vaultPage.shouldHaveAssets({
 			token: 'ETH',
-			tokenAmount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+			tokenAmount: '[0-9]{1,2}.[0-9]{2}K',
 			usdAmount: '[0-9]{1,2}.[0-9]{2}M',
 		});
 
 		await app.vaultPage.shouldHaveDepositCap({
 			token: 'ETH',
-			tokenAmount: '[0-9]{1,2},[0-9]{3}.[0-9]{2}',
+			tokenAmount: '[0-9]{1,2}.[0-9]{2}K',
 		});
 	});
 

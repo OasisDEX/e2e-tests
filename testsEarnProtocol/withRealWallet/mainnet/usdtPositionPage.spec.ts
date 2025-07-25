@@ -54,7 +54,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Deposit', async (
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USDT',
-			amount: '([1-4],)?[0-9]{3}.[0-9]{2}',
+			amount: '[0-9]{1,2}.[0-9]{2}(K)?',
 		});
 
 		// === WETH ===
@@ -70,7 +70,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Deposit', async (
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USDT',
-			amount: '([1-4],)?[0-9]{3}.[0-9]{2}',
+			amount: '[0-9]{3}.[0-9]{2}(K)?',
 		});
 	});
 

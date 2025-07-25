@@ -54,7 +54,7 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Depos
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USDC',
-			amount: '([1-4],)?[0-9]{3}.[0-9]{2}',
+			amount: '[0-9]{1,2}.[0-9]{2}(K)?',
 		});
 
 		// === WETH ===
