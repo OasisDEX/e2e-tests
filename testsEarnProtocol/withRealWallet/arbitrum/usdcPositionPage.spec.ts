@@ -71,7 +71,7 @@ test.describe('With real wallet - Arbitrum USDC Position page - Deposit', async 
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USDC',
-			amount: '([1-4],)?[0-9]{3}.[0-9]{2}',
+			amount: '[0-9]{1,2}.[0-9]{2}(K)?',
 		});
 	});
 

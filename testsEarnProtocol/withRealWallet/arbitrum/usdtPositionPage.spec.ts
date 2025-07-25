@@ -71,7 +71,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USD₮0',
-			amount: '([1-4],)?[0-9]{3}.[0-9]{2}',
+			amount: '[0-9]{1,2}.[0-9]{2}(K)?',
 		});
 	});
 
