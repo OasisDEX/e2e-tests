@@ -41,7 +41,7 @@ test.describe('With real wallet - Earn page', async () => {
 		await app.vaultPage.sidebar.depositOrWithdraw('1');
 		await app.vaultPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'USD₮0',
-			amount: '[0-9].[0-9]{2K',
+			amount: '[0-9]{1,2}.[0-9]{2}(K)?',
 		});
 
 		// DAI
