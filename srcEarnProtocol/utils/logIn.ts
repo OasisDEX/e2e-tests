@@ -53,9 +53,11 @@ export const logInWithEmailAddress = async ({
 
 	// Wait to avoid randomfails
 	await app.modals.logIn.shouldBeVisible();
-	await app.page.waitForTimeout(expectDefaultTimeout / 5);
+	await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
 	await app.modals.logIn.enterEmail(emailAddress);
+	// Wait to avoid randomfails
+	await app.page.waitForTimeout(expectDefaultTimeout / 3);
 	await app.modals.logIn.continue();
 
 	// Get Verification Code from email
@@ -87,7 +89,9 @@ export const logInWithEmailAddress = async ({
 				break;
 			}
 		}
-	}).toPass({ timeout: 30_000 });
+
+		expect(code).not.toBe('');
+	}).toPass({ timeout: 60_000 });
 
 	await app.modals.logIn.enterVerificationCode(code);
 
