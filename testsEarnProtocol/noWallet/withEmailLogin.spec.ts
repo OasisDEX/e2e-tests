@@ -1,13 +1,13 @@
 import { test } from '#earnProtocolFixtures';
 import { logInWithEmailAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 
 test.describe('Logged in with Email', async () => {
 	test(`It should open Portfolio page and Portfolio's Beach Club tab when logged in`, async ({
 		app,
 		request,
 	}) => {
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await logInWithEmailAddress({
 			request,
