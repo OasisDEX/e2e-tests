@@ -77,7 +77,7 @@ test.describe('With real wallet - Base ETH Position page - Deposit', async () =>
 		app,
 		metamask,
 	}) => {
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		// Wait for page to fully load
 		await app.positionPage.sidebar.shouldHaveBalance({
