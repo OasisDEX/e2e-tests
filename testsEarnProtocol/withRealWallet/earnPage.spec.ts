@@ -83,13 +83,11 @@ test.describe('With real wallet - Earn page', async () => {
 
 		await app.earn.vaults.byStrategy({ token: 'USDC', network: 'base' }).shouldBeSelected();
 
-		await app.page.waitForTimeout(2_000);
-
 		// USDC
 		await app.vaultPage.sidebar.shouldHaveBalance({
 			balance: '[0-1].[0-9]{4}',
 			token: 'USDC',
-			timeout: expectDefaultTimeout * 2,
+			timeout: expectDefaultTimeout * 3,
 		});
 
 		await app.vaultPage.sidebar.depositOrWithdraw('0.5');
