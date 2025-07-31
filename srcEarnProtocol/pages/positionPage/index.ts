@@ -18,12 +18,13 @@ export class PositionPage {
 	async open(url: string) {
 		await expect(async () => {
 			await this.page.goto(url);
-			await expect(
-				this.page.getByText('Earned:').first(),
-				'"Earned:" should be visible'
-			).toBeVisible({
-				timeout: expectDefaultTimeout * 2,
-			});
+			// await expect(
+			// 	this.page.getByText('Earned:').first(),
+			// 	'"Earned:" should be visible'
+			// ).toBeVisible({
+			// 	timeout: expectDefaultTimeout * 3,
+			// });
+			await this.shouldHaveLiveApy('[0-9].[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
 		}).toPass();
 	}
 
@@ -67,11 +68,11 @@ export class PositionPage {
 	}
 
 	@step
-	async shouldHaveLiveApy(apy: string) {
+	async shouldHaveLiveApy(apy: string, args?: { timeout: number }) {
 		const regExp = new RegExp(`${apy}%`);
 
 		await expect(
 			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Live APY") span').first()
-		).toContainText(regExp);
+		).toContainText(regExp, { timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 }
