@@ -24,7 +24,7 @@ export class PositionPage {
 			// ).toBeVisible({
 			// 	timeout: expectDefaultTimeout * 3,
 			// });
-			await this.shouldHaveLiveApy('[0-9].[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
+			await this.shouldHaveLiveApy('[0-9].[0-9]{2}'); // , { timeout: expectDefaultTimeout * 3 }
 		}).toPass();
 	}
 

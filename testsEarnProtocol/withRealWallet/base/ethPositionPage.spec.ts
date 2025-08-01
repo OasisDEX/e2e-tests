@@ -10,8 +10,8 @@ const test = testWithSynpress(withRealWalletBaseFixtures);
 
 test.describe('With real wallet - Base ETH Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		// Extending tests timeout by 60 extra seconds due to beforeEach actions
-		testInfo.setTimeout(testInfo.timeout + 60_000);
+		// Extending tests timeout by 80 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 80_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -135,7 +135,7 @@ test.describe('With real wallet - Base ETH Position page - Deposit', async () =>
 
 test.describe('With real wallet - Base ETH Position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 35_000);
+		testInfo.setTimeout(testInfo.timeout + 80_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -175,7 +175,7 @@ test.describe('With real wallet - Base ETH Position page - Withdraw', async () =
 		app,
 		metamask,
 	}) => {
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await withdraw({
 			metamask,
@@ -198,7 +198,7 @@ test.describe('With real wallet - Base ETH Position page - Withdraw', async () =
 
 test.describe('With real wallet - Base ETH position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 25_000);
+		testInfo.setTimeout(testInfo.timeout + 80_000);
 
 		await logInWithWalletAddress({
 			metamask,

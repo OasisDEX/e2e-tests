@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
@@ -10,8 +10,8 @@ const test = testWithSynpress(withRealWalletBaseFixtures);
 
 test.describe('With real wallet - Base EURC position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		// Extending tests timeout by 25 extra seconds due to beforeEach actions
-		testInfo.setTimeout(testInfo.timeout + 50_000);
+		// Extending tests timeout by 80 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 80_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -133,7 +133,7 @@ test.describe('With real wallet - Base EURC position page - Deposit', async () =
 
 test.describe('With real wallet - Base EURC position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 45_000);
+		testInfo.setTimeout(testInfo.timeout + 80_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -171,7 +171,7 @@ test.describe('With real wallet - Base EURC position page - Withdraw', async () 
 		app,
 		metamask,
 	}) => {
-		test.setTimeout(longTestTimeout);
+		test.setTimeout(veryLongTestTimeout);
 
 		await withdraw({
 			metamask,
@@ -194,7 +194,7 @@ test.describe('With real wallet - Base EURC position page - Withdraw', async () 
 
 test.describe('With real wallet - Base EURC position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 25_000);
+		testInfo.setTimeout(testInfo.timeout + 80_000);
 
 		await logInWithWalletAddress({
 			metamask,

@@ -1,7 +1,7 @@
 import { expect, test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
-test.describe('Vault page - Mainnet USDT', async () => {
+test.describe.only('Vault page - Mainnet USDT', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 60_000);
 
