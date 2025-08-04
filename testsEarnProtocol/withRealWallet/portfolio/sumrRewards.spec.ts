@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletSonicFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletSonic';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout } from 'utils/config';
+import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { expect } from '#earnProtocolFixtures';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
@@ -38,6 +38,8 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 	});
 
 	test('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
+		test.setTimeout(veryLongTestTimeout);
+
 		await expect(async () => {
 			await app.portfolio.rewards.claim();
 
