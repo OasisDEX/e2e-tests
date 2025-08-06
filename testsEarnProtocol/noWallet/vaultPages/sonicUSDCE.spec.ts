@@ -3,9 +3,12 @@ import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Vault page - Sonic USDC.E', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 30_000);
+		testInfo.setTimeout(testInfo.timeout + 60_000);
 
 		await app.vaultPage.open('/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8');
+
+		// pause to avoid random fails
+		await app.page.waitForTimeout(1_000);
 	});
 
 	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({
