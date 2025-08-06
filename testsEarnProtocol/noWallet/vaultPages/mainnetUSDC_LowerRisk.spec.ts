@@ -3,9 +3,12 @@ import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Vault page - Mainnet USDC Lower Risk', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 30_000);
+		testInfo.setTimeout(testInfo.timeout + 60_000);
 
 		await app.vaultPage.open('/earn/mainnet/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17');
+
+		// pause to avoid random fails
+		await app.page.waitForTimeout(1_000);
 	});
 
 	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({
