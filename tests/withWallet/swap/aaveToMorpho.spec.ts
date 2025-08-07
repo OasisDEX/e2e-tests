@@ -10,7 +10,7 @@ import {
 			pool: 'ETH-USDC',
 			positionType: 'borrow',
 			targetPools: [
-				{ colToken: 'USDE', debtToken: 'DAI-3' },
+				// { colToken: 'USDE', debtToken: 'DAI-3' },
 				{ colToken: 'WBTC', debtToken: 'USDT' },
 			],
 		},
