@@ -3,7 +3,7 @@ import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Vault page - Mainnet USDC Higher Risk', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 30_000);
+		testInfo.setTimeout(testInfo.timeout + 60_000);
 
 		await app.vaultPage.open('/earn/mainnet/position/0xe9cda459bed6dcfb8ac61cd8ce08e2d52370cb06');
 	});

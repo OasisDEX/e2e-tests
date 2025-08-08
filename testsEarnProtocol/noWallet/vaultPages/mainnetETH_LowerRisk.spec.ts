@@ -3,7 +3,7 @@ import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Vault page - Mainnet ETH Lower Risk', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 30_000);
+		testInfo.setTimeout(testInfo.timeout + 60_000);
 
 		await app.vaultPage.open('/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506');
 	});

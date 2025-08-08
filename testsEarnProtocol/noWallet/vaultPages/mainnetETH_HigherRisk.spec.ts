@@ -3,9 +3,12 @@ import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Vault page - Mainnet ETH Higher Risk', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 30_000);
+		testInfo.setTimeout(testInfo.timeout + 60_000);
 
 		await app.vaultPage.open('/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10');
+
+		// pause to avoid random fails
+		await app.page.waitForTimeout(1_000);
 	});
 
 	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({

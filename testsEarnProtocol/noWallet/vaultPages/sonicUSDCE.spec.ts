@@ -3,7 +3,7 @@ import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Vault page - Sonic USDC.E', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 60_000);
+		testInfo.setTimeout(testInfo.timeout + 100_00);
 
 		await app.vaultPage.open('/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8');
 

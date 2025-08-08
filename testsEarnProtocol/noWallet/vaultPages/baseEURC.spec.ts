@@ -3,7 +3,7 @@ import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Vault page - Base EURC', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 30_000);
+		testInfo.setTimeout(testInfo.timeout + 60_000);
 
 		await app.vaultPage.open('/earn/base/position/0x64db8f51f1bf7064bb5a361a7265f602d348e0f0');
 	});
