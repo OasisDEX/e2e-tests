@@ -28,7 +28,7 @@ test.describe('Beach Club - Portfolio page', async () => {
 		await app.portfolio.beachClub.shouldHaveCumulativeTvlFromReferrals(
 			'([0-9]{2,3},)?[0-9]{2,3}.[0-9]{2}'
 		);
-		await app.portfolio.beachClub.shouldHaveEarnedSUMR('([0-9]{1,2},)?[0-9]{2,3}.[0-9]{2}');
+		await app.portfolio.beachClub.shouldHaveEarnedSUMR('[0-9]{1,2}.[0-9]{2}(K)?');
 		await app.portfolio.beachClub.shouldHaveEarnedFee('[0-9]{2,3}.[0-9]{4}');
 	});
 
