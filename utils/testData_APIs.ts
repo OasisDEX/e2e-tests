@@ -3221,7 +3221,7 @@ export const validPayloadsAaveV3Optimism = {
 			},
 			action: 'update',
 			triggerData: {
-				executionLTV: '800',
+				executionLTV: '600',
 				executionPrice: '860000000000',
 				stopLoss: {
 					triggerData: {

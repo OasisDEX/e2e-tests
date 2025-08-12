@@ -122,7 +122,7 @@ test.describe('API tests - Auto Take Profit - Update - Spark - Ethereum', async 
 				triggerData: {
 					...validPayloads.triggerData,
 					executionPrice: '1100000000000',
-					executionLTV: '1500',
+					executionLTV: '1000',
 					withdrawStep: '600',
 				},
 			},
