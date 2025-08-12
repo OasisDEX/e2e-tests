@@ -6,7 +6,7 @@ const test = testWithSynpress(withRealWalletSonicFixtures);
 
 test.describe('Bridge Sonic SUMR tokens', async () => {
 	test.beforeEach(async ({ metamask, app }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 25_000);
+		testInfo.setTimeout(testInfo.timeout + 100_000);
 
 		await logInWithWalletAddress({
 			metamask,
