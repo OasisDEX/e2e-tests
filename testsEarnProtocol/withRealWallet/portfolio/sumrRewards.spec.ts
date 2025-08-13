@@ -54,7 +54,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		await app.portfolio.rewards.claimAndDelegate.shouldHaveRewards([
 			{
 				networkName: 'Base',
-				claimable: '[0-9]{2,3}.[0-9]{2}',
+				claimable: '[0-9]{1,2}.[0-9]{2}',
 				inWallet: '[0-9]{1,2}.[0-9]{2}K',
 			},
 			{
@@ -64,7 +64,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 			},
 			{
 				networkName: 'Ethereum',
-				claimable: '[0-9]{2,3}.[0-9]{2}',
+				claimable: '[0-9]{1,2}.[0-9]{2}',
 				inWallet: '[0-9].[0-9]{4}',
 			},
 			{
