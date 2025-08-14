@@ -115,9 +115,9 @@ export const withdraw = async ({
 		const previewWithdrawnToken: EarnTokens =
 			withdrawnToken == 'WSTETH'
 				? 'wstETH'
-				: withdrawnToken == 'USDC.E'
-				? 'USDC.e'
-				: withdrawnToken;
+				: // : withdrawnToken == 'USDC.E'
+				  // ? 'USDC.e'
+				  withdrawnToken;
 
 		await app.positionPage.sidebar.previewStep.shouldHave({
 			withdrawAmount: { amount: withdrawAmount, token: previewWithdrawnToken },
