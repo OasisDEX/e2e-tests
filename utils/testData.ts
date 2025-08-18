@@ -141,14 +141,14 @@ export const aaveV3EthereumEarnPools = [
 	'SDAI-LUSD',
 	'SDAI-USDC',
 	'USDC-USDT',
-	'SDAI-FRAX',
 ];
 // 'USDC-GHO', 'SDAI-GHO' -- NO LIQUIDITY - GHO
 // 'RETH-ETH', --> Already tested in /withWallet/aaveV3
 // 'SDAI-USDT', --> Already tested in /withWallet/aaveV3
 // 'CBETH-ETH', --> Already tested in /withWallet/aaveV3
-// , 'WEETH-ETH' --> WEETH supply 100%
+// 'WEETH-ETH' --> WEETH supply 100%
 // 'SUSDE-USDT', 'SUSDE-USDC', 'SUSDE-DAI' --> SUSDE supply 100%
+// 'SDAI-FRAX', --> NO FRAX Liquidity
 
 export const aaveV3EthereumMultiplyPools = [
 	'ETH-USDC',
