@@ -9,8 +9,14 @@ import {
 		{
 			pool: 'ETH-DAI',
 			positionType: 'borrow',
-			targetPools: [{ colToken: 'USDE', debtToken: 'DAI-1' }],
+			targetPools: [{ colToken: 'WBTC', debtToken: 'USDC' }],
 		},
+		// NO liquidity
+		// {
+		// 	pool: 'ETH-DAI',
+		// 	positionType: 'borrow',
+		// 	targetPools: [{ colToken: 'USDE', debtToken: 'DAI-1' }],
+		// },
 		// NO WEETH liquidity
 		// {
 		// 	pool: 'WEETH-DAI',
