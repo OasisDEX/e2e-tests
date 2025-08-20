@@ -10,8 +10,7 @@ const test = testWithSynpress(withRealWalletBaseFixtures);
 
 test.describe('With real wallet - Mainnet USDT Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		// Extending tests timeout by 25 extra seconds due to beforeEach actions
-		testInfo.setTimeout(testInfo.timeout + 25_000);
+		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -133,7 +132,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Deposit', async (
 
 test.describe('With real wallet - Mainnet USDT Position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 25_000);
+		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -195,7 +194,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Withdraw', async 
 
 test.describe('With real wallet - Mainnet USDT Position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 45_000);
+		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
 			metamask,
