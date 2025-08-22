@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, extremelyLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
@@ -77,7 +77,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposi
 		app,
 		metamask,
 	}) => {
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.positionPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
