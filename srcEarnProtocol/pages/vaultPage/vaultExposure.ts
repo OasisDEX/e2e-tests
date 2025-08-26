@@ -44,7 +44,7 @@ export class VaultExposure {
 			await this.vaultExposureLocator
 				.locator('tr > td:nth-child(1) p:has-text("allocated")')
 				.allInnerTexts()
-		).map((text) => parseFloat(text.replace('% allocated', '')));
+		).map((text) => parseFloat(text.replace('New!', '').replace('% allocated', '')));
 
 		const totalAllocation = allocations.reduce((a, b) => a + b, 0);
 
