@@ -12,6 +12,7 @@ export const test = base.extend<MyFixtures>({
 
 		await app.page.goto('');
 
+		// Remove cookies banner
 		await context.addCookies([
 			{
 				name: 'analyticsCookie',
@@ -20,8 +21,15 @@ export const test = base.extend<MyFixtures>({
 				url: earnProtocolBaseUrl,
 			},
 		]);
-
 		await app.waitForAppToBeStable();
+		await app.page.reload();
+
+		// Close 'Go to Beach Club' banner
+		await app.page
+			.locator('[class*="_floatingBannerContainer"]')
+			.getByRole('button')
+			.filter({ has: app.page.locator('svg[title="close"]') })
+			.click();
 
 		await use(app);
 
