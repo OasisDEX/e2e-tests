@@ -1,0 +1,20 @@
+name: 0.0.1.1. Lazy Protocol Prod Release E2E tests
+
+
+on: 
+  workflow_dispatch
+
+jobs:
+  lazy-prod-no-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
+    with:
+      base_url: 'https://summer.fi/earn'
+      script: ci:lazy-production:no-wallet
+    secrets: inherit
+
+  lazy-prod-real-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_LazyWithRealWallet.yml
+    with:
+      base_url: 'https://summer.fi/earn'
+      script: ci:lazy-production:real-wallet
+    secrets: inherit
