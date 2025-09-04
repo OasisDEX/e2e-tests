@@ -8,13 +8,15 @@ jobs:
   lazy-prod-no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
     with:
-      base_url: 'https://summer.fi/earn'
+      # base_url: 'https://summer.fi/earn'
+      base_url: 'https://summer.fi/'
       script: ci:lazy-production:no-wallet
     secrets: inherit
 
   lazy-prod-real-wallet-tests:
     uses: ./.github/workflows/z_Reusable_LazyWithRealWallet.yml
     with:
-      base_url: 'https://summer.fi/earn'
+      # base_url: 'https://summer.fi/earn'
+      base_url: 'https://summer.fi/'
       script: ci:lazy-production:real-wallet
     secrets: inherit
