@@ -24,12 +24,15 @@ export const test = base.extend<MyFixtures>({
 		await app.waitForAppToBeStable();
 		await app.page.reload();
 
-		// Close 'Go to Beach Club' banner
-		await app.page
-			.locator('[class*="_floatingBannerContainer"]')
-			.getByRole('button')
-			.filter({ has: app.page.locator('svg[title="close"]') })
-			.click();
+		// Close 'Go to Beach Club' banner in staging
+		// - This is working locally on prod too, but not in github runs
+		if (earnProtocolBaseUrl.includes('staging')) {
+			await app.page
+				.locator('[class*="_floatingBannerContainer"]')
+				.getByRole('button')
+				.filter({ has: app.page.locator('svg[title="close"]') })
+				.click();
+		}
 
 		await use(app);
 
