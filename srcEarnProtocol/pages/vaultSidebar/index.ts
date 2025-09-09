@@ -151,9 +151,11 @@ export class VaultSidebar {
 
 	@step
 	async approve(token: EarnTokens) {
-		await this.sidebarLocator
-			.getByRole('button', { name: `Approve ${token === 'USDBC' ? 'USDbC' : token}` })
-			.click();
+		const regExp = new RegExp(`Approve .*${token === 'USDBC' ? 'USDbC' : token}`);
+		await this.sidebarLocator.getByRole('button', { name: regExp }).click();
+		// await this.sidebarLocator
+		// 	.getByRole('button', { name: `Approve ${token === 'USDBC' ? 'USDbC' : token}` })
+		// 	.click();
 	}
 
 	@step
