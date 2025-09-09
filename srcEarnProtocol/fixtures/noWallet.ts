@@ -24,6 +24,10 @@ export const test = base.extend<MyFixtures>({
 		await app.waitForAppToBeStable();
 		await app.page.reload();
 
+		//
+		console.log('=== earnProtocolBaseUrl: ', earnProtocolBaseUrl);
+		//
+
 		// Close 'Go to Beach Club' banner in staging
 		// - This is working locally on prod too, but not in github runs
 		if (earnProtocolBaseUrl.includes('staging')) {
