@@ -131,6 +131,6 @@ export class PreviewStep {
 
 	@step
 	async withdraw() {
-		await this.page.getByRole('button', { name: 'Withdraw' }).click();
+		await this.page.getByRole('button', { name: 'Withdraw', exact: true }).click();
 	}
 }
