@@ -348,7 +348,7 @@ test.describe('With real wallet - Mainnet USDC Higher Risk Position page - Unsta
 			app,
 			lvToken: 'LVUSDC',
 			lvTokenAmount: '0.5[0-9]{3}',
-			dollarAmount: '0.[5][0-9]{3}',
+			dollarAmount: '0.5[0-9]{3}',
 		});
 	});
 });
