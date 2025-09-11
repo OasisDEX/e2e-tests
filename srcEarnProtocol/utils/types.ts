@@ -20,6 +20,8 @@ export type EarnTokens =
 	| 'WSTETH'
 	| 'wstETH';
 
+export type LvTokens = 'LVEURC' | 'LVWETH' | 'LVUSDC' | 'LVUSDCe' | 'LVUSDT';
+
 export type LazyNominatedTokens = 'ETH' | 'EURC' | 'USDC' | 'USDC.E' | 'USDT' | 'USD₮0';
 
 export type Risks = 'Lower Risk' | 'Higher Risk';

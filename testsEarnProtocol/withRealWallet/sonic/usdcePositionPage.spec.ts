@@ -4,6 +4,7 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { unstakeLvTokens } from 'testsEarnProtocol/z_sharedTestSteps/unstakeLvTokens';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
 
@@ -127,6 +128,44 @@ test.describe('With real wallet - Sonic USDC.E Position page - Withdraw', async 
 			// previewInfo: {
 			// 	transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			// },
+		});
+	});
+});
+
+test.describe('With real wallet - Sonic USDC.e Position page - Unstake', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		testInfo.setTimeout(testInfo.timeout + 100_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+			network: 'Sonic',
+		});
+
+		await app.positionPage.open(
+			'/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8/0x10649c79428d718621821cf6299e91920284743f'
+		);
+
+		// Wait for balance to fully load to avoid random fails
+		await app.positionPage.sidebar.shouldHaveBalance({
+			balance: '0.5000',
+			token: 'USDC.E',
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
+		await app.positionPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+	});
+
+	test('It should Unstake LV tokens - Sonic USDC.e position', async ({ app, metamask }) => {
+		await unstakeLvTokens({
+			metamask,
+			app,
+			lvToken: 'LVUSDCe',
+			lvTokenAmount: '0.5[0-9]{3}',
+			dollarAmount: '0.5[0-9]{3}',
 		});
 	});
 });
