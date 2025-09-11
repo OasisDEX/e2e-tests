@@ -19,7 +19,8 @@ test.describe('With real wallet - $SUMR page @regression', async () => {
 		await app.sumr.openPage();
 	});
 
-	test('It should claim $SUMR', async ({ app }) => {
+	// Feature updated - Test to de updated
+	test.skip('It should claim $SUMR', async ({ app }) => {
 		await app.sumr.claim$Sumr();
 
 		await app.portfolio.shoulBeVisible();

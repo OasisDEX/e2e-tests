@@ -4,7 +4,7 @@ import { App } from 'srcEarnProtocol/app';
 import { LazyNominatedTokens, Risks } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 
-// Deposit flow until rejecting first tx
+// Switch flow until rejecting first tx
 export const switchPosition = async ({
 	metamask,
 	app,

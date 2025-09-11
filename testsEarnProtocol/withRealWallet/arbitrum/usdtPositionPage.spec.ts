@@ -5,6 +5,7 @@ import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
+import { unstakeLvTokens } from 'testsEarnProtocol/z_sharedTestSteps/unstakeLvTokens';
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
@@ -247,6 +248,44 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', asyn
 			app,
 			nominatedToken: 'USD₮0',
 			targetToken: 'USDC',
+		});
+	});
+});
+
+test.describe('With real wallet - Arbitrum USD₮0 Position page - Unstake', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		testInfo.setTimeout(testInfo.timeout + 35_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+			network: 'Arbitrum',
+		});
+
+		await app.positionPage.open(
+			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F'
+		);
+
+		// Wait for balance to fully load to avoid random fails
+		await app.positionPage.sidebar.shouldHaveBalance({
+			balance: '0.00',
+			token: 'USD₮0',
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
+		await app.positionPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+	});
+
+	test('It should Unstake LV tokens - Arbitrum USD₮0 position', async ({ app, metamask }) => {
+		await unstakeLvTokens({
+			metamask,
+			app,
+			lvToken: 'LVUSDT',
+			lvTokenAmount: '0.5[0-9]{3}',
+			dollarAmount: '0.5[0-9]{3}',
 		});
 	});
 });

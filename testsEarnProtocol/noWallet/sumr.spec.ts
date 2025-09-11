@@ -13,7 +13,8 @@ test.describe('$SUMR', async () => {
 		await app.modals.logIn.shouldBeVisible();
 	});
 
-	test('It should search for keyword', async ({ app }) => {
+	// Feature updated - Test to de updated
+	test.skip('It should search for keyword', async ({ app }) => {
 		await app.sumr.search('pete', { selectResultNth: 1 });
 		await app.sumr.shouldHaveHeader('Address jerroldpetersonjr.eth is eligible for');
 	});

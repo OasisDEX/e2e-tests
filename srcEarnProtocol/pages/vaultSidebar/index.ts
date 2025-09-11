@@ -1,6 +1,6 @@
 import { expect, step } from '#noWalletFixtures';
 import { Locator, Page } from '@playwright/test';
-import { EarnTokens } from 'srcEarnProtocol/utils/types';
+import { EarnTokens, LvTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 import { ApproveStep } from './approveStep';
 import { Migrate } from './migrate';
@@ -177,5 +177,42 @@ export class VaultSidebar {
 			timeout: expectDefaultTimeout * 2,
 		});
 		await buttonLocator.click();
+	}
+
+	@step
+	async unstake() {
+		await this.page.getByRole('button', { name: 'You have staked vault tokens' }).click();
+	}
+
+	@step
+	async shouldHaveStakedTokens({
+		lvToken,
+		lvTokenAmount,
+		dollarAmount,
+		timeout,
+	}: {
+		lvToken: LvTokens;
+		lvTokenAmount: string;
+		dollarAmount: string;
+		timeout?: number;
+	}) {
+		await expect(this.page.getByText(`You’ll get `)).toContainText(lvToken, {
+			timeout: timeout ?? expectDefaultTimeout,
+		});
+
+		const lvTokenRegExp = new RegExp(`${lvTokenAmount}.*${lvToken}`);
+		await expect(
+			this.page.getByText(`You’ll get `).locator('xpath=//following-sibling::*[1]')
+		).toContainText(lvTokenRegExp);
+
+		const dollarRegExp = new RegExp(`\\$${dollarAmount}`);
+		await expect(
+			this.page.getByText(`You’ll get `).locator('xpath=//following-sibling::*[2]')
+		).toContainText(dollarRegExp);
+	}
+
+	@step
+	async confirmUnstake() {
+		await this.page.getByRole('button', { name: 'Confirm withdrawal' }).click();
 	}
 }
