@@ -20,6 +20,7 @@ jobs:
   lazy-production-no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
     with:
+      base_url: 'https://summer.fi/earn'
       script: nightly:lazy-production-only:no-wallet
       report_name: lazy-production-no-wallet
     secrets: inherit

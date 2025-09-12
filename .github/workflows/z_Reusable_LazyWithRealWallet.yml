@@ -6,7 +6,7 @@ on:
       base_url:
         description: 'Environment base URL to run the tests on.'
         type: string
-        default: 'https://staging.summer.fi'
+        default: 'https://staging.summer.fi/earn'
         required: false
       script:
         description: 'package.json scrip to be run'
@@ -42,7 +42,7 @@ jobs:
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
       - name: Verify that staging environment is ready for testing
-        if: ${{ inputs.base_url == 'https://staging.summer.fi' }}
+        if: ${{ inputs.base_url == 'https://staging.summer.fi/earn' }}
         run: xvfb-run yarn verify-staging
       - name: Build Synpress cache
         run: |
