@@ -5,6 +5,7 @@ import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'util
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
+import { unstakeLvTokens } from 'testsEarnProtocol/z_sharedTestSteps/unstakeLvTokens';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -309,6 +310,46 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 			nominatedToken: 'ETH',
 			targetToken: 'ETH',
 			risk: 'Higher Risk',
+		});
+	});
+});
+
+test.describe('With real wallet - Mainnet ETH Lower Risk Position page - Unstake', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		testInfo.setTimeout(testInfo.timeout + 110_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+		});
+
+		await app.positionPage.open(
+			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f'
+		);
+
+		// Wait for balance to fully load to avoid random fails
+		await app.positionPage.sidebar.shouldHaveBalance({
+			balance: '0.0[0-9]{3}',
+			token: 'ETH',
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
+		await app.positionPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+	});
+
+	test('It should Unstake LV tokens - Mainnet ETH Lower Risk position', async ({
+		app,
+		metamask,
+	}) => {
+		await unstakeLvTokens({
+			metamask,
+			app,
+			lvToken: 'LVWETH',
+			lvTokenAmount: '0.000[1-2]',
+			dollarAmount: '[0-1].[0-9]{4}',
 		});
 	});
 });
