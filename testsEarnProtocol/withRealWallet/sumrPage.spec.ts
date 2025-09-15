@@ -19,9 +19,8 @@ test.describe('With real wallet - $SUMR page @regression', async () => {
 		await app.sumr.openPage();
 	});
 
-	// Feature updated - Test to de updated
-	test.skip('It should claim $SUMR', async ({ app }) => {
-		await app.sumr.claim$Sumr();
+	test('It should claim $SUMR', async ({ app }) => {
+		await app.sumr.viewYourAddress();
 
 		await app.portfolio.shoulBeVisible();
 		await app.portfolio.shouldShowWalletAddress('0x1064...4743f', {

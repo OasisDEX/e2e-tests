@@ -32,10 +32,9 @@ test.describe('Beach Club - Portfolio page', async () => {
 		await app.portfolio.beachClub.shouldHaveEarnedFee('[0-9]{1,2}.[0-9]{2}');
 	});
 
-	// SKIP - Test will fail if real user's referrals deposit or withdraw significantly
-	test.skip('It sould show Rewards group in which user currently is', async ({ app }) => {
-		await app.portfolio.beachClub.openPage('0x90153be2ac32633fc9a7cc53cdf01d348e875555');
+	test('It sould show Rewards group in which user currently is', async ({ app }) => {
+		await app.portfolio.beachClub.openPage('0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA');
 
-		await app.portfolio.beachClub.shouldBeInRewardsGroup('500K+');
+		await app.portfolio.beachClub.shouldBeInRewardsGroup('Start Referring');
 	});
 });
