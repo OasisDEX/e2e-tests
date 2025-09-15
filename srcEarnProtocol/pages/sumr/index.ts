@@ -60,4 +60,9 @@ export class Sumr {
 	async claim$Sumr() {
 		await this.page.getByRole('button', { name: 'Claim $SUMR' }).click();
 	}
+
+	@step
+	async viewYourAddress() {
+		await this.page.getByRole('button', { name: 'View your address' }).click();
+	}
 }

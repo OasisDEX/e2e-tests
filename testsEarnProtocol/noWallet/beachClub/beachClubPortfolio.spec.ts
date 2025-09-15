@@ -61,8 +61,7 @@ test.describe('Beach Club - Portfolio page', async () => {
 		]);
 	});
 
-	// SKIP - NEW referred accounts needed - Deposit in production
-	test.skip('It should list Referrals summary', async ({ app }) => {
+	test('It should list Referrals summary', async ({ app }) => {
 		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
 
 		await app.portfolio.beachClub.yourReferrals();
@@ -70,33 +69,38 @@ test.describe('Beach Club - Portfolio page', async () => {
 
 		await app.portfolio.beachClub.shouldListReferrals([
 			{
-				address: { full: '0x33ad81cfb7d23b0b834bc34dc43028dc5001437f', short: '0x33...1437f' },
-				tvl: '0.[2-6][0-9]{3}',
-				earnedToDate: '<0.01',
-				annualisedEarnings: '<0.01',
+				address: { full: '0x2be7486dadecc0ec416cd82cf6a43f5c297d0d74', short: '0x2b...d0d74' },
+				tvl: '0.00',
+				earnedToDate: '0.00',
+				annualisedEarnings: '0.00',
 			},
 			{
 				address: { full: '0x1d2d4e8c46649b6419158cc163612813c9556f91', short: '0x1d...56f91' },
 				tvl: '0.[1-9][0-9]{3}',
-				earnedToDate: '<0.01',
-				annualisedEarnings: '<0.01',
+				earnedToDate: '0.00',
+				annualisedEarnings: '0.00',
 			},
 			{
 				address: { full: '0x471b8da4e8d204e33813f4b337e2dda789038df6', short: '0x47...38df6' },
 				tvl: '0.[1-9][0-9]{3}',
-				earnedToDate: '<0.01',
-				annualisedEarnings: '<0.01',
+				earnedToDate: '0.00',
+				annualisedEarnings: '0.00',
+			},
+			{
+				address: { full: '0x33ad81cfb7d23b0b834bc34dc43028dc5001437f', short: '0x33...1437f' },
+				tvl: '0.[2-6][0-9]{3}',
+				earnedToDate: '0.00',
+				annualisedEarnings: '0.00',
 			},
 		]);
 	});
 
-	// SKIP - NEW referred accounts needed - Deposit in production
-	test.skip('It sould show Referral Reward Overview', async ({ app }) => {
+	test('It sould show Referral Reward Overview', async ({ app }) => {
 		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
 
 		await app.portfolio.beachClub.shouldHaveCumulativeTvlFromReferrals('[0-9].[0-9]{2}(0-9]{2})?');
-		await app.portfolio.beachClub.shouldHaveEarnedSUMR('0.0[0-9]{3}');
-		await app.portfolio.beachClub.shouldHaveEarnedFee('<0.01');
+		await app.portfolio.beachClub.shouldHaveEarnedSUMR('0.00');
+		await app.portfolio.beachClub.shouldHaveEarnedFee('0.00');
 	});
 
 	test('It sould show Rewards group in which user currently is', async ({ app }) => {
