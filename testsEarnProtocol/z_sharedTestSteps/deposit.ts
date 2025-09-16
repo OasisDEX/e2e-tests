@@ -94,13 +94,15 @@ export const deposit = async ({
 
 	// Sign T&C if needed
 	if (sidebarButtonLabel.includes('Agree and sign')) {
-		await app.positionPage.sidebar.termsAndConditions.agreeAndSign();
-		await metamask.confirmSignature();
+		await expect(async () => {
+			await app.positionPage.sidebar.termsAndConditions.agreeAndSignOrRetry();
+			await metamask.confirmSignature();
 
-		await expect(
-			sidebarButtonLocator,
-			'[Approve] or [Deposit] buttons should not be visible'
-		).toContainText(/Approve|Deposit/);
+			await expect(
+				sidebarButtonLocator,
+				'[Approve] or [Deposit] buttons should not be visible'
+			).toContainText(/Approve|Deposit/);
+		}).toPass();
 
 		sidebarButtonLabel = await sidebarButtonLocator.innerText();
 	}

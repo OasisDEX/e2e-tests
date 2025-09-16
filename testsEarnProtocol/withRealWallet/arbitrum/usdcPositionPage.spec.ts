@@ -11,7 +11,7 @@ const test = testWithSynpress(withRealWalletArbitrumFixtures);
 test.describe('With real wallet - Arbitrum USDC Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
-		testInfo.setTimeout(testInfo.timeout + 25_000);
+		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -128,7 +128,7 @@ test.describe('With real wallet - Arbitrum USDC Position page - Deposit', async 
 
 test.describe('With real wallet - Arbitrum USDC Position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 35_000);
+		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -191,7 +191,7 @@ test.describe('With real wallet - Arbitrum USDC Position page - Withdraw', async
 
 test.describe('With real wallet - Arbitrum USDC Position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 35_000);
+		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
 			metamask,

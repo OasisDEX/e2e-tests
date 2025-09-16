@@ -22,6 +22,15 @@ export class TermsAndConditions {
 	}
 
 	@step
+	async agreeAndSignOrRetry() {
+		const sidebarButtonLocator = this.page.locator('[class*="_sidebarCta_"] button').first();
+
+		const sidebarButtonLabel = await sidebarButtonLocator.innerText();
+
+		await this.page.getByRole('button', { name: sidebarButtonLabel }).click();
+	}
+
+	@step
 	async reject() {
 		await this.page.getByRole('button', { name: 'Reject' }).click();
 	}

@@ -7,41 +7,44 @@ type MyFixtures = {
 };
 
 export const test = base.extend<MyFixtures>({
-	app: async ({ page, context }, use) => {
-		const app = new App(page);
+	app: [
+		async ({ page, context }, use) => {
+			const app = new App(page);
 
-		await app.page.goto('');
+			await app.page.goto('');
 
-		// Remove cookies banner
-		await context.addCookies([
-			{
-				name: 'analyticsCookie',
-				value:
-					'%7B%22accepted%22%3Atrue%2C%22enabledCookies%22%3A%7B%22marketing%22%3Atrue%2C%22analytics%22%3Atrue%7D%2C%22version%22%3A%22version-27.08.2024%22%7D',
-				url: earnProtocolBaseUrl,
-			},
-		]);
-		await app.waitForAppToBeStable();
-		await app.page.reload();
+			// Remove cookies banner
+			await context.addCookies([
+				{
+					name: 'analyticsCookie',
+					value:
+						'%7B%22accepted%22%3Atrue%2C%22enabledCookies%22%3A%7B%22marketing%22%3Atrue%2C%22analytics%22%3Atrue%7D%2C%22version%22%3A%22version-27.08.2024%22%7D',
+					url: earnProtocolBaseUrl,
+				},
+			]);
+			await app.waitForAppToBeStable();
+			await app.page.reload();
 
-		//
-		console.log('=== earnProtocolBaseUrl: ', earnProtocolBaseUrl);
-		//
+			//
+			console.log('=== earnProtocolBaseUrl: ', earnProtocolBaseUrl);
+			//
 
-		// Close 'Go to Beach Club' banner in staging
-		// - This is working locally on prod too, but not in github runs
-		if (earnProtocolBaseUrl.includes('staging')) {
-			await app.page
-				.locator('[class*="_floatingBannerContainer"]')
-				.getByRole('button')
-				.filter({ has: app.page.locator('svg[title="close"]') })
-				.click();
-		}
+			// Close 'Go to Beach Club' banner in staging
+			// - This is working locally on prod too, but not in github runs
+			if (earnProtocolBaseUrl.includes('staging')) {
+				await app.page
+					.locator('[class*="_floatingBannerContainer"]')
+					.getByRole('button')
+					.filter({ has: app.page.locator('svg[title="close"]') })
+					.click();
+			}
 
-		await use(app);
+			await use(app);
 
-		await app.page.close();
-	},
+			await app.page.close();
+		},
+		{ timeout: 50000 },
+	],
 });
 
 export function step(target: Function, context: ClassMethodDecoratorContext) {
