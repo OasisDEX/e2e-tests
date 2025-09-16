@@ -29,7 +29,7 @@ jobs:
         run: yarn
       - name: Verify that staging environment is ready for testing
         if: ${{ inputs.base_url == 'https://pro.oasisapp.dev' }}
-        run: HEADLESS='true' yarn verify-staging
+        run: HEADLESS='true' yarn verify-staging-pro
       - name: Run API tests
         run: yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4

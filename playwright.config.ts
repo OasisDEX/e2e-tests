@@ -49,6 +49,24 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'verify-staging-pro',
+			testMatch: ['verifyStagingPro.spec.ts'],
+			use: {
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
+			name: 'verify-staging-lazy',
+			testDir: './testsEarnProtocol',
+			testMatch: ['verifyStagingLazy.spec.ts'],
+			use: {
+				baseURL: earnProtocolBaseUrl,
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
 			name: 'lazy',
 			testDir: './testsEarnProtocol',
 			testIgnore: 'production/**',
@@ -121,14 +139,6 @@ const defaultConfig: PlaywrightTestConfig = {
 		{
 			name: 'api-tests',
 			testMatch: ['api/**'],
-			use: {
-				...devices['Desktop Chrome'],
-			},
-		},
-
-		{
-			name: 'verify-staging',
-			testMatch: ['verifyStaging.spec.ts'],
 			use: {
 				...devices['Desktop Chrome'],
 			},
