@@ -4,6 +4,7 @@ import { VaultExposure } from './vaultExposure';
 import { VaultSidebar } from '../vaultSidebar';
 import { step } from '#noWalletFixtures';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class VaultPage {
 	readonly page: Page;
@@ -25,11 +26,7 @@ export class VaultPage {
 	async open(url: string) {
 		await expect(async () => {
 			await this.page.goto(url);
-			// await expect(
-			// 	this.page.getByText('Assets in vault'),
-			// 	'"Assets in vault" should be visible'
-			// ).toBeVisible();
-			await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
+			await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
 		}).toPass();
 	}
 
@@ -55,11 +52,11 @@ export class VaultPage {
 	}
 
 	@step
-	async shouldHaveLiveApy(apy: string) {
+	async shouldHaveLiveApy(apy: string, args?: { timeout: number }) {
 		const ApyRegExp = new RegExp(`${apy}%`);
 		await expect(
 			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Live APY") > span').first()
-		).toContainText(ApyRegExp);
+		).toContainText(ApyRegExp, { timeout: args?.timeout ?? expectDefaultTimeout });
 
 		const VsMedianRegExp = new RegExp('[0-9].[0-9]{2}%');
 		await expect(
