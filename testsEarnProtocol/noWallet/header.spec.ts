@@ -1,10 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 
 test.describe('Header', async () => {
-	test.beforeEach(async ({ app }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 30_000);
-	});
-
 	test('It should open Landing page', async ({ app }) => {
 		await app.header.summerfi();
 		await app.landingPage.shouldBeVisible();
@@ -16,6 +12,9 @@ test.describe('Header', async () => {
 	});
 
 	test('It should open "Explore" pages', async ({ app }) => {
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(1_000);
+
 		await app.header.explore.open();
 		await app.header.explore.select('$SUMR token');
 		await app.page.mouse.move(200, 0);
