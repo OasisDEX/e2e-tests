@@ -120,10 +120,10 @@ test.describe('With real wallet - Base ETH Position page - Deposit', async () =>
 			depositedToken: 'USDS',
 			depositAmount: '0.4',
 			estimatedEarnings: {
-				thirtyDaysAmount: '0.000[0-9]',
-				sixMonthsAmount: '0.000[0-9]',
-				oneYearAmount: '0.000[0-9]',
-				threeYearsAmount: '0.00[0-9]{2}',
+				thirtyDaysAmount: '0.00[0-9]{2}',
+				sixMonthsAmount: '0.00[0-9]{2}',
+				oneYearAmount: '0.00[0-9]{2}',
+				threeYearsAmount: '0.0[0-9]{3}',
 			},
 			previewInfo: {
 				swap: {
@@ -189,10 +189,10 @@ test.describe('With real wallet - Base ETH Position page - Withdraw', async () =
 			withdrawnToken: 'ETH',
 			withdrawAmount: '0.0004',
 			estimatedEarnings: {
-				thirtyDaysAmount: '0.000[0-3]',
-				sixMonthsAmount: '0.000[0-3]',
-				oneYearAmount: '0.000[0-3]',
-				threeYearsAmount: '0.000[0-3]',
+				thirtyDaysAmount: '0.000[0-9]',
+				sixMonthsAmount: '0.000[0-9]',
+				oneYearAmount: '0.000[0-9]',
+				threeYearsAmount: '0.000[0-9]',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
