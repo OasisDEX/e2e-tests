@@ -1,4 +1,5 @@
 import { test } from '#earnProtocolFixtures';
+import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('$SUMR', async () => {
 	test.beforeEach(async ({ app }) => {
@@ -13,9 +14,14 @@ test.describe('$SUMR', async () => {
 		await app.modals.logIn.shouldBeVisible();
 	});
 
-	// Feature updated - Test to de updated
-	test.skip('It should search for keyword', async ({ app }) => {
-		await app.sumr.search('pete', { selectResultNth: 1 });
-		await app.sumr.shouldHaveHeader('Address jerroldpetersonjr.eth is eligible for');
+	test('It should check address', async ({ app }) => {
+		await app.sumr.enterAddress('0x88a135D9aC7583Eb45C1c140fBF6cE474f1f7789');
+		await app.sumr.checkAddress();
+
+		await app.portfolio.shoulBeVisible();
+		await app.portfolio.shouldShowWalletAddress('0x88a1...f7789', {
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.portfolio.shouldHaveTabHighlighted('$SUMR Rewards');
 	});
 });
