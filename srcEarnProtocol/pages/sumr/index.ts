@@ -65,4 +65,21 @@ export class Sumr {
 	async viewYourAddress() {
 		await this.page.getByRole('button', { name: 'View your address' }).click();
 	}
+
+	@step
+	async enterAddress(address: string) {
+		const inputLocator = this.page.locator('input[placeholder="Search wallet address"]');
+		await expect(inputLocator).toBeVisible();
+		await this.page.waitForTimeout(1_000);
+
+		await inputLocator.fill(address);
+		await this.page.waitForTimeout(2_000);
+
+		await expect(this.page.getByRole('button', { name: 'Check address' })).toBeVisible();
+	}
+
+	@step
+	async checkAddress() {
+		await this.page.getByRole('button', { name: 'Check address' }).click();
+	}
 }
