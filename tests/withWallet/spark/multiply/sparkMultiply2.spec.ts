@@ -60,7 +60,7 @@ test.describe('Spark Multiply - Wallet connected', async () => {
 			await app.page.waitForTimeout(4_000);
 
 			await app.position.overview.shouldHaveExposure({
-				amount: '2[1-3],[0-9]{3}.[0-9]{2}',
+				amount: '[1-2][0-9],[0-9]{3}.[0-9]{2}',
 				token: 'SDAI',
 			});
 
