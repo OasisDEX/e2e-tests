@@ -26,6 +26,7 @@ export class TermsAndConditions {
 		const sidebarButtonLocator = this.page.locator('[class*="_sidebarCta_"] button').first();
 
 		const sidebarButtonLabel = await sidebarButtonLocator.innerText();
+		expect(['Agree and sign', 'Retry']).toContain(sidebarButtonLabel);
 
 		await this.page.getByRole('button', { name: sidebarButtonLabel }).click();
 	}
