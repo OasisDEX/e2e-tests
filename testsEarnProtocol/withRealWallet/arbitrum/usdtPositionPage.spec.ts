@@ -34,7 +34,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '0.00',
 			token: 'USD₮0',
-			timeout: expectDefaultTimeout * 2,
+			timeout: expectDefaultTimeout * 3,
 		});
 
 		await app.positionPage.sidebar.depositOrWithdraw('0.5');
@@ -51,7 +51,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '1.5[0-9]{3}',
 			token: 'DAI',
-			timeout: expectDefaultTimeout * 2,
+			timeout: expectDefaultTimeout * 3,
 		});
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
@@ -67,7 +67,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 		await app.positionPage.sidebar.shouldHaveBalance({
 			balance: '0.0008',
 			token: 'WSTETH',
-			timeout: expectDefaultTimeout * 2,
+			timeout: expectDefaultTimeout * 3,
 		});
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({

@@ -22,22 +22,22 @@ export const test = base.extend<MyFixtures>({
 					url: earnProtocolBaseUrl,
 				},
 			]);
-			await app.waitForAppToBeStable();
-			await app.page.reload();
+			// await app.waitForAppToBeStable();
+			// await app.page.reload();
 
-			//
-			console.log('=== earnProtocolBaseUrl: ', earnProtocolBaseUrl);
-			//
+			// //
+			// console.log('=== earnProtocolBaseUrl: ', earnProtocolBaseUrl);
+			// //
 
-			// Close 'Go to Beach Club' banner in staging
-			// - This is working locally on prod too, but not in github runs
-			if (earnProtocolBaseUrl.includes('staging')) {
-				await app.page
-					.locator('[class*="_floatingBannerContainer"]')
-					.getByRole('button')
-					.filter({ has: app.page.locator('svg[title="close"]') })
-					.click();
-			}
+			// // Close 'Go to Beach Club' banner in staging
+			// // - This is working locally on prod too, but not in github runs
+			// if (earnProtocolBaseUrl.includes('staging')) {
+			// 	await app.page
+			// 		.locator('[class*="_floatingBannerContainer"]')
+			// 		.getByRole('button')
+			// 		.filter({ has: app.page.locator('svg[title="close"]') })
+			// 		.click();
+			// }
 
 			await use(app);
 
