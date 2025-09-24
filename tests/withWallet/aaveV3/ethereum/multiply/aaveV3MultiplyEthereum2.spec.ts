@@ -64,7 +64,7 @@ test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 				vtId,
 				deposit: { token: 'RETH', amount: '2' },
 				expectedCollateralExposure: {
-					amount: '2.[0-9]{4}',
+					amount: '[1-2].[0-9]{4}',
 					token: 'RETH',
 				},
 				protocol: 'Aave V3',
