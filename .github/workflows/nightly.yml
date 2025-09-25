@@ -116,10 +116,10 @@ jobs:
         run: yarn
       - name: Install xvfb
         run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache
+      - name: Build Synpress cache - Base
         run: |
           EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet
+          yarn ci:synpress-build-cache:test-wallet:base
       - name: Run With wallet Aave Base tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
