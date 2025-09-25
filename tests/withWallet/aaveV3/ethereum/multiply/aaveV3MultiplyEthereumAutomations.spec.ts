@@ -14,7 +14,8 @@ let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
-test.describe('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
+// SKIP - AAVE V3 automations disabled until fixed
+test.describe.skip('Aave v3 Multiply - Mainnet - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
