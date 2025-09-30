@@ -28,6 +28,10 @@ test.describe('Header', async () => {
 			test.setTimeout(longTestTimeout);
 
 			await app.homepage.open();
+
+			// Pause to make sure that 'UK banner` has fully loaded
+			await app.page.waitForTimeout(5_000);
+
 			await app.header.products.select({
 				product: 'Swap & Bridge',
 				menuOption: `${productOption} on Summer.fi`,
