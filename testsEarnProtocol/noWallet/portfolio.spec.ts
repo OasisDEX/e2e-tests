@@ -24,6 +24,24 @@ test.describe('Portfolio', async () => {
 		}).toPass();
 	});
 
+	test('It should show Position info - Base ETH and Mainnet ETH HR positions', async ({ app }) => {
+		await expect(async () => {
+			await app.portfolio.open('0xdb6e9e7390e9acc34619e56efa48ade01cff6f12');
+			await app.portfolio.shouldShowPositionData({
+				network: 'base',
+				token: 'ETH',
+				risk: 'Lower Risk',
+				sumrApr: '[0-9]{1,2}.[0-9]{2}',
+				thirtyDayApy: '[0-9]{1,2}.[0-9]{2}',
+				liveApy: '[0-9]{1,2}.[0-9]{2}',
+				marketValue: '[0-9].[0-9]{2}',
+				netContributions: '[0-9].[0-9]{2}',
+				earningsToDate: '[0-9].[0-9]{2}',
+				sumrEarned: '[0-9].[0-9]{2}',
+			});
+		}).toPass();
+	});
+
 	test('It should switch to all Portfolio main tabs', async ({ app }) => {
 		// Trying to reduce flakines due to `Something went wrong` error in app
 		await expect(async () => {
