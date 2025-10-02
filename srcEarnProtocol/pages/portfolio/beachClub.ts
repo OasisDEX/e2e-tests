@@ -136,6 +136,13 @@ export class BeachClub {
 	}
 
 	@step
+	async firstReferralShouldBeVisible() {
+		await expect(
+			this.page.locator('[class*="_beachClubTrackReferralsWrapper_"] td').nth(2)
+		).toBeVisible();
+	}
+
+	@step
 	async shouldListReferrals(
 		entries: {
 			address: { full: string; short: string };
