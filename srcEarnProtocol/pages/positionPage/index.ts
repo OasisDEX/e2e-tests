@@ -62,7 +62,15 @@ export class PositionPage {
 	}
 
 	@step
-	async shouldHaveEarned({ token, amount }: { token: EarnTokens; amount: string }) {
+	async shouldHaveEarned({
+		token,
+		amount,
+		usdAmount,
+	}: {
+		token: EarnTokens;
+		amount: string;
+		usdAmount: string;
+	}) {
 		const regExp = new RegExp(`${amount}.*${token}`);
 
 		await expect(
@@ -76,6 +84,32 @@ export class PositionPage {
 			.innerText();
 		const earnedAmount = parseFloat(earnedAmountText.replace('Earned:', '').replace('USDC', ''));
 		expect(earnedAmount).toBeGreaterThan(0);
+
+		// Verify tooltip
+		await this.page
+			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") [data-tooltip-btn-id]')
+			.nth(1)
+			.hover();
+		await expect(
+			this.page.locator('[data-tooltip-id]:has-text("Earned:")'),
+			'Earned tooltip should be visible'
+		).toHaveClass(/tooltipOpen/);
+
+		const tootltipRegExp = new RegExp(`USD.*Earned:.*\\$${usdAmount}`);
+		await expect(
+			this.page.locator('[data-tooltip-id]:has-text("Earned:")'),
+			`Earned tooltip should contain ${tootltipRegExp}`
+		).toContainText(tootltipRegExp);
+
+		// Verify that tooltip it's greater than 0
+		const earnedTooltipAmountText = await this.page
+			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span')
+			.last()
+			.innerText();
+		const earnedTooltipAmount = parseFloat(
+			earnedTooltipAmountText.replace('Earned:', '').replace('USDC', '')
+		);
+		expect(earnedTooltipAmount).toBeGreaterThan(0);
 	}
 
 	@step

@@ -21,6 +21,7 @@ test.describe('Position page - Base - Specific user page', async () => {
 		await app.positionPage.shouldHaveEarned({
 			token: 'USDC',
 			amount: '[0-3].[0-9]{2}',
+			usdAmount: '[0-3].[0-9]{2}',
 		});
 
 		await app.positionPage.shouldHaveNetContribution({
