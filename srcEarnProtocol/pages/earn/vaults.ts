@@ -1,6 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { VaultCard } from '../vaultCard';
 import { step } from '#noWalletFixtures';
+import { Networks } from 'srcEarnProtocol/utils/types';
 
 export class Vaults {
 	readonly page: Page;
@@ -19,10 +20,7 @@ export class Vaults {
 		return new VaultCard(this.page, this.vaultLocator.nth(nth));
 	}
 
-	byStrategy(strategy: {
-		token: 'USDC' | 'USD₮0' | 'USDT' | 'ETH';
-		network: 'arbitrum' | 'base' | 'ethereum';
-	}) {
+	byStrategy(strategy: { token: 'USDC' | 'USD₮0' | 'USDT' | 'ETH'; network: Networks }) {
 		return new VaultCard(
 			this.page,
 			this.vaultLocator
@@ -41,7 +39,7 @@ export class Vaults {
 	}
 
 	@step
-	async allVaultsShouldBe(network: 'arbitrum' | 'base' | 'ethereum' | 'sonic') {
+	async allVaultsShouldBe(network: Networks) {
 		// Wait for 1st item to be displayed to avoid random fails
 		await expect(this.vaultLocator.nth(0)).toBeVisible();
 

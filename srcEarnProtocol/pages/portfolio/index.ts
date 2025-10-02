@@ -1,4 +1,4 @@
-import { expect, step } from '#earnProtocolFixtures';
+import { expect, step, test } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
 import { BeachClub } from './beachClub';
@@ -10,6 +10,7 @@ import { Send } from './send';
 import { YouMightLike } from './youMightLike';
 import { YourActivity } from './yourActivity';
 import { Wallet } from './wallet';
+import { LazyNominatedTokens, Networks, Risks } from 'srcEarnProtocol/utils/types';
 
 type Tabs =
 	| 'Overview'
@@ -18,6 +19,15 @@ type Tabs =
 	| 'Rebalance Activity'
 	| '$SUMR Rewards'
 	| 'Beach Club';
+
+type PositiondCardDataLabels =
+	| '$SUMR'
+	| '30d APY'
+	| 'Live APY'
+	| 'Market Value'
+	| 'Net Contributions'
+	| 'Earnings to Date'
+	| '$SUMR Earned';
 
 export class Portfolio {
 	readonly page: Page;
@@ -115,6 +125,170 @@ export class Portfolio {
 					.filter({ has: this.page.getByText('Total Wallet Value', { exact: true }) })
 					.locator('span')
 			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
+		}
+	}
+
+	@step
+	async shouldShowPositionData({
+		network,
+		token,
+		risk,
+		sumrApr,
+		thirtyDayApy,
+		liveApy,
+		marketValue,
+		netContributions,
+		earningsToDate,
+		sumrEarned,
+		timeout,
+	}: {
+		network: Networks;
+		token: LazyNominatedTokens;
+		risk: Risks;
+		sumrApr?: string;
+		thirtyDayApy?: string;
+		liveApy?: string;
+		marketValue?: string;
+		netContributions?: string;
+		earningsToDate?: string;
+		sumrEarned?: string;
+		timeout?: number;
+	}) {
+		const positionLocator = this.page
+			.locator('[class*="_positionWrapperCard_"]')
+			.filter({
+				has: this.page.locator(`[data-testid="vault-token"]:has-text("${token}")`),
+			})
+			.filter({ has: this.page.locator(`[title="earn_network_${network}"]`) })
+			.filter({ hasText: risk });
+
+		// Assertion with debugging purposes
+		await expect(positionLocator, `Testing: ${network} ${token} ${risk} position`).toBeVisible();
+
+		//
+		const parameterLocator = (
+			label:
+				| '$SUMR'
+				| '30d APY'
+				| 'Live APY'
+				| 'Market Value'
+				| 'Net Contributions'
+				| 'Earnings to Date'
+				| '$SUMR Earned'
+		) =>
+			positionLocator
+				.locator(
+					`[class*="${
+						['$SUMR', '30d APY', 'Live APY'].includes(label)
+							? '_strategyInfoTopWrapper_'
+							: '_historicalLegendItemWrapper'
+					}"]`
+				)
+				.filter({ has: this.page.getByText(label) })
+				.locator(
+					['$SUMR', '30d APY', 'Live APY'].includes(label)
+						? 'span[class*="_value_"]'
+						: '[data-testid="historical-legend-item-value"]'
+				);
+
+		const shouldBeGreaterThanZero = async ({
+			label,
+			token,
+		}: {
+			label: PositiondCardDataLabels;
+			token?: LazyNominatedTokens;
+		}) => {
+			const netValueText = await parameterLocator(label).innerText();
+
+			const regExp = new RegExp(`${token}|SUMR`);
+			const netValueNumber = parseFloat(
+				netValueText
+					.replace(regExp ?? '%', '')
+					.replace('K', '')
+					.replace('M', '')
+			);
+
+			expect(netValueNumber, `${label} net value should be greater than 0`).toBeGreaterThan(0);
+		};
+
+		const verifyPositionCardParameter = async ({
+			label,
+			expectedValue,
+			token,
+		}: {
+			label:
+				| '$SUMR'
+				| '30d APY'
+				| 'Live APY'
+				| 'Market Value'
+				| 'Net Contributions'
+				| 'Earnings to Date'
+				| '$SUMR Earned';
+			expectedValue: string;
+			token?: LazyNominatedTokens;
+		}) => {
+			await test.step(`Verify ${label}`, async () => {
+				const regExp = new RegExp(
+					`${expectedValue}${
+						['$SUMR', '30d APY', 'Live APY'].includes(label)
+							? '%'
+							: label === '$SUMR Earned'
+							? '.* SUMR'
+							: `.* ${token}`
+					}`
+				);
+
+				await expect(parameterLocator(label), `Should have ${label}: ${regExp}`).toContainText(
+					regExp,
+					{ timeout: timeout ?? expectDefaultTimeout }
+				);
+
+				await shouldBeGreaterThanZero({ label, token });
+			});
+		};
+
+		if (sumrApr) {
+			await verifyPositionCardParameter({ label: '$SUMR', expectedValue: sumrApr });
+		}
+
+		if (thirtyDayApy) {
+			await verifyPositionCardParameter({ label: '30d APY', expectedValue: thirtyDayApy });
+		}
+
+		if (liveApy) {
+			await verifyPositionCardParameter({ label: 'Live APY', expectedValue: liveApy });
+		}
+
+		if (marketValue) {
+			await verifyPositionCardParameter({
+				label: 'Market Value',
+				expectedValue: marketValue,
+				token,
+			});
+		}
+
+		if (netContributions) {
+			await verifyPositionCardParameter({
+				label: 'Net Contributions',
+				expectedValue: netContributions,
+				token,
+			});
+		}
+
+		if (earningsToDate) {
+			await verifyPositionCardParameter({
+				label: 'Earnings to Date',
+				expectedValue: earningsToDate,
+				token,
+			});
+		}
+
+		if (sumrEarned) {
+			await verifyPositionCardParameter({
+				label: '$SUMR Earned',
+				expectedValue: sumrEarned,
+				token,
+			});
 		}
 	}
 
