@@ -15,7 +15,7 @@ let walletAddress: string;
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 const { expect } = test;
 
-// SKIP - Price impact higher thanusually due to market conditions
+// SKIP - Price impact higher than usually due to market conditions
 test.describe.skip('Maker Multiply - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);

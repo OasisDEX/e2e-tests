@@ -62,10 +62,13 @@ test.describe('Beach Club - Portfolio page', async () => {
 	});
 
 	test('It should list Referrals summary', async ({ app }) => {
-		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
+		await expect(async () => {
+			await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
 
-		await app.portfolio.beachClub.yourReferrals();
-		await app.portfolio.beachClub.shouldHaveTabActive('Your Referrals');
+			await app.portfolio.beachClub.yourReferrals();
+			await app.portfolio.beachClub.shouldHaveTabActive('Your Referrals');
+			await app.portfolio.beachClub.firstReferralShouldBeVisible();
+		}).toPass();
 
 		await app.portfolio.beachClub.shouldListReferrals([
 			{
@@ -110,9 +113,11 @@ test.describe('Beach Club - Portfolio page', async () => {
 	});
 
 	test('It sould show Referral Reward Simulations', async ({ app }) => {
-		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
+		await expect(async () => {
+			await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
 
-		await app.portfolio.beachClub.shouldHaveProjectedYearlyRewards('<0.01');
-		await app.portfolio.beachClub.shouldHaveYearlyEarnedFees('<0.01');
+			await app.portfolio.beachClub.shouldHaveProjectedYearlyRewards('<0.01');
+			await app.portfolio.beachClub.shouldHaveYearlyEarnedFees('<0.01');
+		}).toPass();
 	});
 });
