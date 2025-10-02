@@ -9,17 +9,18 @@ test.describe('Position page - Base - Specific user page', async () => {
 		);
 	});
 
-	test('It should show Market value, Earned, Net Contribution and Current APY info', async ({
+	test('It should show Market value, Earned, Net Contribution, # of Deposits APYs and Instant liquidity info', async ({
 		app,
 	}) => {
 		await app.positionPage.shouldHaveMarketValue({
 			token: 'USDC',
-			amount: '[0-9].[0-9]{3,4}',
+			amount: '0.[5-8][0-9]{3}',
+			usdAmount: '0.[5-8][0-9]{3}',
 		});
 
 		await app.positionPage.shouldHaveEarned({
 			token: 'USDC',
-			amount: '[0-9].[0-9]{2}',
+			amount: '[0-3].[0-9]{2}',
 		});
 
 		await app.positionPage.shouldHaveNetContribution({
@@ -27,6 +28,8 @@ test.describe('Position page - Base - Specific user page', async () => {
 			amount: '[0-9].[0-9]{3,4}',
 			numberOfDeposits: '[0-9]{1,2}',
 		});
+
+		await app.positionPage.shouldHaveNumberOfDeposits();
 
 		await app.positionPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
 	});

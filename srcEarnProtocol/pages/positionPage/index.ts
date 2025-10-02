@@ -20,22 +20,45 @@ export class PositionPage {
 			await this.page.goto(url);
 
 			// Reload position data to avoid random fails
-			await expect(this.page.locator('svg[title="refresh"]')).toBeVisible({
-				timeout: expectDefaultTimeout * 2,
-			});
+			await expect(this.page.locator('svg[title="refresh"]')).toBeVisible();
 			await this.page.locator('svg[title="refresh"]').click();
 
-			await this.shouldHaveLiveApy('[0-9].[0-9]{2}', { timeout: expectDefaultTimeout * 4 });
+			await this.shouldHaveLiveApy('[0-9].[0-9]{2}');
 		}).toPass();
 	}
 
 	@step
-	async shouldHaveMarketValue({ token, amount }: { token: EarnTokens; amount: string }) {
+	async shouldHaveMarketValue({
+		token,
+		amount,
+		usdAmount,
+	}: {
+		token: EarnTokens;
+		amount: string;
+		usdAmount: string;
+	}) {
 		const regExp = new RegExp(`${amount}.*${token}`);
 
 		await expect(
-			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span').first()
+			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span').first(),
+			`Market Value should contain ${regExp}`
 		).toContainText(regExp);
+
+		// Verify tooltip
+		await this.page
+			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") [data-tooltip-btn-id]')
+			.first()
+			.hover();
+		await expect(
+			this.page.locator('[data-tooltip-id]:has-text("Market")'),
+			'Market Value tooltip should be visible'
+		).toHaveClass(/tooltipOpen/);
+
+		const tootltipRegExp = new RegExp(`USD.*Market.*Value:.*\\$${usdAmount}`);
+		await expect(
+			this.page.locator('[data-tooltip-id]:has-text("Market")'),
+			`Market Value tooltip should contain ${tootltipRegExp}`
+		).toContainText(tootltipRegExp);
 	}
 
 	@step
@@ -45,6 +68,14 @@ export class PositionPage {
 		await expect(
 			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span').last()
 		).toContainText(regExp);
+
+		// Verify that it's greater than 0
+		const earnedAmountText = await this.page
+			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span')
+			.last()
+			.innerText();
+		const earnedAmount = parseFloat(earnedAmountText.replace('Earned:', '').replace('USDC', ''));
+		expect(earnedAmount).toBeGreaterThan(0);
 	}
 
 	@step
@@ -68,6 +99,15 @@ export class PositionPage {
 		await expect(netContributionLocator.locator('span').last()).toContainText(depositsRegExp);
 	}
 
+	@step
+	async shouldHaveNumberOfDeposits() {
+		const countText = await this.page.getByText('# of Deposits:').innerText();
+		const netCount = parseFloat(countText.replace('# of Deposits: ', ''));
+
+		expect(netCount, `# of Deposits should be greater than 0`).toBeGreaterThan(0);
+	}
+
+	@step
 	@step
 	async shouldHaveLiveApy(apy: string, args?: { timeout: number }) {
 		const regExp = new RegExp(`${apy}%`);
