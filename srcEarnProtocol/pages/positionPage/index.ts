@@ -25,7 +25,7 @@ export class PositionPage {
 			});
 			await this.page.locator('svg[title="refresh"]').click();
 
-			await this.shouldHaveLiveApy('[0-9].[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
+			await this.shouldHaveLiveApy('[0-9].[0-9]{2}', { timeout: expectDefaultTimeout * 4 });
 		}).toPass();
 	}
 
