@@ -22,6 +22,6 @@ test.describe('$SUMR', async () => {
 		await app.portfolio.shouldShowWalletAddress('0x88a1...f7789', {
 			timeout: expectDefaultTimeout * 2,
 		});
-		await app.portfolio.shouldHaveTabHighlighted('$SUMR Rewards');
+		await app.portfolio.shouldHaveTabHighlighted('SUMR Rewards');
 	});
 });
