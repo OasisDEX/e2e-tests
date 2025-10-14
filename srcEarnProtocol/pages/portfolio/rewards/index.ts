@@ -28,6 +28,6 @@ export class Rewards {
 
 	@step
 	async claim() {
-		await this.page.getByRole('button', { name: 'Claim' }).click();
+		await this.page.getByRole('button', { name: 'Claim $SUMR' }).click();
 	}
 }

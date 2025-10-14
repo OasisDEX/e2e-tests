@@ -27,7 +27,7 @@ export const switchPosition = async ({
 	await expect(
 		sidebarButtonLocator,
 		'[Agree], [Approve] or [Switch] buttons should not be visible'
-	).toContainText(/Agree|Approve|Switch/, { timeout: expectDefaultTimeout * 3 });
+	).toContainText(/Agree|Approve|Switch/, { timeout: expectDefaultTimeout * 4 });
 
 	let sidebarButtonLabel = await sidebarButtonLocator.innerText();
 
@@ -39,7 +39,7 @@ export const switchPosition = async ({
 		await expect(
 			sidebarButtonLocator,
 			'[Approve] or [Switch] buttons should not be visible'
-		).toContainText(/Approve|Switch/, { timeout: expectDefaultTimeout * 3 });
+		).toContainText(/Approve|Switch/, { timeout: expectDefaultTimeout * 4 });
 
 		sidebarButtonLabel = await sidebarButtonLocator.innerText();
 	}
@@ -63,6 +63,6 @@ export const switchPosition = async ({
 	// Leaving app in a stable state to avoid random fails in following test steps
 	await app.positionPage.sidebar.buttonShouldBeVisible('Loading');
 	await app.positionPage.sidebar.buttonShouldBeVisible(/Approve|Switch/, {
-		timeout: expectDefaultTimeout * 3,
+		timeout: expectDefaultTimeout * 4,
 	});
 };

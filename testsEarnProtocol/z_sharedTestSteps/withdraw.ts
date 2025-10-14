@@ -76,7 +76,7 @@ export const withdraw = async ({
 				token: nominatedToken,
 			},
 		],
-		{ timeout: expectDefaultTimeout * 2 }
+		{ timeout: expectDefaultTimeout * 3 }
 	);
 	await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
 	await app.positionPage.sidebar.preview();

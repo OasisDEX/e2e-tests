@@ -26,6 +26,6 @@ test.describe('With real wallet - $SUMR page @regression', async () => {
 		await app.portfolio.shouldShowWalletAddress('0x1064...4743f', {
 			timeout: expectDefaultTimeout * 2,
 		});
-		await app.portfolio.shouldHaveTabHighlighted('$SUMR Rewards');
+		await app.portfolio.shouldHaveTabHighlighted('SUMR Rewards');
 	});
 });

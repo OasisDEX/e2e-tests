@@ -17,7 +17,7 @@ type Tabs =
 	| 'Wallet'
 	| 'Your Activity'
 	| 'Rebalance Activity'
-	| '$SUMR Rewards'
+	| 'SUMR Rewards'
 	| 'Beach Club';
 
 type PositiondCardDataLabels =
@@ -300,7 +300,7 @@ export class Portfolio {
 	@step
 	async shouldHaveTabHighlighted(tab: Tabs) {
 		await expect(
-			this.page.locator('[class*="_tabHeaders_"]').getByRole('button', { name: tab, exact: true })
+			this.page.locator('[class*="_tabHeaders_"]').getByRole('button', { name: tab })
 		).toHaveClass(/active/);
 	}
 

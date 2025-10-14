@@ -77,7 +77,7 @@ export class PositionPage {
 			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span').last()
 		).toContainText(regExp);
 
-		// Verify that it's greater than 0
+		// Verify that is greater than 0
 		const earnedAmountText = await this.page
 			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span')
 			.last()
@@ -101,7 +101,7 @@ export class PositionPage {
 			`Earned tooltip should contain ${tootltipRegExp}`
 		).toContainText(tootltipRegExp);
 
-		// Verify that tooltip it's greater than 0
+		// Verify that tooltip is greater than 0
 		const earnedTooltipAmountText = await this.page
 			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span')
 			.last()
