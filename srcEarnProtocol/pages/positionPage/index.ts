@@ -28,6 +28,9 @@ export class PositionPage {
 	}
 
 	@step
+	async shouldHaveSumr({ apy, earnedToDate }: { apy: string; earnedToDate: string }) {}
+
+	@step
 	async shouldHaveMarketValue({
 		token,
 		amount,
