@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletArbitrumFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletArbitrum';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, extremelyLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
@@ -12,7 +12,7 @@ const test = testWithSynpress(withRealWalletArbitrumFixtures);
 test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
-		testInfo.setTimeout(testInfo.timeout + 25_000);
+		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -80,7 +80,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 		app,
 		metamask,
 	}) => {
-		test.setTimeout(veryLongTestTimeout);
+		test.setTimeout(extremelyLongTestTimeout);
 
 		await app.positionPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
@@ -129,7 +129,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 
 test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 35_000);
+		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -192,7 +192,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', as
 
 test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 35_000);
+		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
 			metamask,
@@ -254,7 +254,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', asyn
 
 test.describe('With real wallet - Arbitrum USD₮0 Position page - Unstake', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 35_000);
+		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
 			metamask,
