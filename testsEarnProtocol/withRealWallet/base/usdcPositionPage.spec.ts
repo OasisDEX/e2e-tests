@@ -251,7 +251,7 @@ test.describe('With real wallet - Base USDC position page - Switch', async () =>
 		]);
 	});
 
-	test('It should switch Base USDC position @regression', async ({ app, metamask }) => {
+	test('It should switch Base USDC position', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		// EURC
