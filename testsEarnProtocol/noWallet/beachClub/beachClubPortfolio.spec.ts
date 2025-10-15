@@ -1,6 +1,6 @@
 import { expect, test } from '#earnProtocolFixtures';
 
-test.describe('Beach Club - Portfolio page', async () => {
+test.describe('Beach Club - Portfolio page @regression', async () => {
 	test('It should not allow to generate a code - Logged out', async ({ app }) => {
 		await app.portfolio.beachClub.openPage('0x8af4f3fbc5446a3fc0474859b78fa5f4554d4510');
 		await app.portfolio.beachClub.generateShouldBeDisabled();

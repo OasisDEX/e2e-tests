@@ -1,6 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 
-test.describe('Header', async () => {
+test.describe('Header @regression', async () => {
 	test('It should open Landing page', async ({ app }) => {
 		await app.header.summerfi();
 		await app.landingPage.shouldBeVisible();

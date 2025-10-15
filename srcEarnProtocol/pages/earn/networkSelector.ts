@@ -1,5 +1,6 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
+import { expectDefaultTimeout } from 'utils/config';
 
 type Networks = 'All Networks' | 'ARBITRUM' | 'BASE' | 'MAINNET' | 'SONIC';
 
@@ -19,11 +20,11 @@ export class NetworkSelector {
 			// Click on drop down element
 			await this.networksLocator.click({ force: true });
 
-			// Verify dropdown options are visible - Step addedto avoidflakiness
+			// Verify dropdown options are visible - Step added to avoid flakiness
 			await expect(
 				this.networksLocator.getByRole('button').filter({ hasText: 'All networks (' })
 			).toBeVisible();
-		}).toPass();
+		}).toPass({ timeout: expectDefaultTimeout * 2 });
 	}
 
 	@step

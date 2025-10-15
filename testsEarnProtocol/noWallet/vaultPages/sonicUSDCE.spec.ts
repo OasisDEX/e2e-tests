@@ -11,7 +11,7 @@ test.describe('Vault page - Sonic USDC.E', async () => {
 		await app.page.waitForTimeout(2_000);
 	});
 
-	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({
+	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @regression', async ({
 		app,
 	}) => {
 		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');

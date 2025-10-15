@@ -1,4 +1,4 @@
-import { expect, test } from '#earnProtocolFixtures';
+import { test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Beach Club Landing page', async () => {

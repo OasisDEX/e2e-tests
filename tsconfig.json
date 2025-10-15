@@ -3,6 +3,7 @@
         "baseUrl": ".",
         "paths": {
             "#earnProtocolFixtures": ["./srcEarnProtocol/fixtures/noWallet.ts"],
+            "#institutionsFixtures": ["./srcInstitutions/fixtures/noWallet.ts"],
             "#noWalletFixtures": ["./src/fixtures/noWallet.ts"],
             "#termsAndConditions": ["./utils/termsAndConditions.ts"],
             "#tx": ["./utils/tx.ts"],

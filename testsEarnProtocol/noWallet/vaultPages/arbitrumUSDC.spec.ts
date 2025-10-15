@@ -7,7 +7,7 @@ test.describe('Vault page - Arbitrum USDC', async () => {
 		await app.vaultPage.open('/earn/arbitrum/position/0x4f63cfea7458221cb3a0eee2f31f7424ad34bb58');
 	});
 
-	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({
+	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @regression', async ({
 		app,
 	}) => {
 		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');

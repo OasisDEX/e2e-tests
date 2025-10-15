@@ -1,6 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 
-test.describe(`Earn page`, async () => {
+test.describe('Earn page @regression', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
 	});
