@@ -1,6 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 
-test.describe('Position page - Base - Specific user page', async () => {
+test.describe('Position page - Base - Specific user page @regression', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 

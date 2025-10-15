@@ -54,7 +54,7 @@ jobs:
     uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
     with:
       base_url: 'https://staging.summer.fi/earn'
-      script: ci:lazy-no-wallet
+      script: ci:lazy-no-wallet-regression
     secrets: inherit
 
   lazy-real-wallet-tests:

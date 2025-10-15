@@ -1,6 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 
-test.describe('Institution pages', async () => {
+test.describe('Institution pages @regression', async () => {
 	test.beforeEach(async ({ app }) => {
 		await app.institutions.openPage();
 	});

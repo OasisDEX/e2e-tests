@@ -8,7 +8,7 @@ test.describe('Vault page - Base ETH', async () => {
 		await app.vaultPage.open('/earn/base/position/0x2bb9ad69feba5547b7cd57aafe8457d40bf834af');
 	});
 
-	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({
+	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @regression', async ({
 		app,
 	}) => {
 		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');

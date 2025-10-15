@@ -8,7 +8,7 @@ test.describe('Vault page - Mainnet ETH Lower Risk', async () => {
 		await app.vaultPage.open('/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506');
 	});
 
-	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({
+	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @regression', async ({
 		app,
 	}) => {
 		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');

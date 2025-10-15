@@ -1,5 +1,5 @@
 import { devices, type PlaywrightTestConfig, type ReporterDescription } from '@playwright/test';
-import { baseUrl, earnProtocolBaseUrl } from 'utils/config';
+import { baseUrl, earnProtocolBaseUrl, institutionsBaseUrl } from 'utils/config';
 import 'dotenv/config';
 
 // Config to hold extra property
@@ -62,6 +62,15 @@ const defaultConfig: PlaywrightTestConfig = {
 			testMatch: ['verifyStagingLazy.spec.ts'],
 			use: {
 				baseURL: earnProtocolBaseUrl,
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
+			name: 'institutions',
+			testDir: './testsInstitutions',
+			use: {
+				baseURL: institutionsBaseUrl,
 				...devices['Desktop Chrome'],
 			},
 		},
