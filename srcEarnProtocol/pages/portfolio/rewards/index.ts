@@ -27,7 +27,12 @@ export class Rewards {
 	}
 
 	@step
-	async claim() {
-		await this.page.getByRole('button', { name: 'Claim $SUMR' }).click();
+	async claim(args?: { env: 'production' }) {
+		await this.page
+			.getByRole('button', {
+				name: args?.env ? 'Claim' : 'Claim $SUMR',
+				exact: true,
+			})
+			.click();
 	}
 }
