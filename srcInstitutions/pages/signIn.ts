@@ -9,6 +9,12 @@ export class SignIn {
 	}
 
 	@step
+	async shouldBeVisible() {
+		await expect(this.page.getByText('Welcome')).toBeVisible();
+		await expect(this.page.getByText('Sign In')).toBeVisible();
+	}
+
+	@step
 	async shouldHaveSignInButtonDisabled() {
 		await expect(this.page.getByRole('button', { name: 'Sign In', exact: true })).toHaveAttribute(
 			'disabled'

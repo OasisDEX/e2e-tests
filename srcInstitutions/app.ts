@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 import { AdminOverview } from './pages/adminOverview';
 import { ClientOverview } from './pages/clientOverview';
-import { Header } from 'src/pages';
+import { Header } from './pages/header';
 import { SignIn } from './pages/signIn';
 
 export class App {

@@ -67,8 +67,27 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'verify-staging-institutions',
+			testDir: './testsInstitutions',
+			testMatch: ['verifyStagingInstitutions.spec.ts'],
+			use: {
+				baseURL: institutionsBaseUrl,
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
 			name: 'institutions',
 			testDir: './testsInstitutions',
+			use: {
+				baseURL: institutionsBaseUrl,
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
+			name: 'institutions-no-wallet',
+			testDir: './testsInstitutions/noWallet',
 			use: {
 				baseURL: institutionsBaseUrl,
 				...devices['Desktop Chrome'],

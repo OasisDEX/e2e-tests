@@ -1,0 +1,58 @@
+name: Reusable Workflow - Institutions - No wallet
+
+on: 
+  workflow_call:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on.'
+        type: string
+        default: 'https://institutions.staging.summer.fi'
+        required: false
+      script:
+        description: 'package.json scrip to be run'
+        type: string
+        default: 'ci:institutions-no-wallet'
+        required: false
+      report_name:
+        description: 'playwright report name'
+        type: string
+        default: 'institutions-no-wallet'
+        required: false
+    secrets:
+      MAILINATOR_TOKEN:
+        required: true
+
+jobs:
+  institutions:
+    name: 'Institutions - No wallet'
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Verify that staging environment is ready for testing
+        if: ${{ inputs.base_url == 'https://institutions.staging.summer.fi' }}
+        run: xvfb-run yarn verify-staging-lazy
+      - name: Run tests (with parameters)
+        if: inputs.base_url
+        run: |
+          MAILINATOR_TOKEN=${{ secrets.MAILINATOR_TOKEN }} \
+          BASE_URL=${{ inputs.base_url }} yarn ${{ inputs.script }}
+      - name: Run tests (without parameters)
+        if: ${{ ! inputs.base_url }}
+        run: |
+          MAILINATOR_TOKEN=${{ secrets.MAILINATOR_TOKEN }} \
+          yarn ${{ inputs.script }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ${{ inputs.report_name }}
+          path: playwright-reports/${{ inputs.report_name }}
+          retention-days: 30
