@@ -21,19 +21,31 @@ export class Header {
 		shortenedWalletAddress?: string;
 	}) {
 		if (logOut) {
-			await expect(this.page.getByRole('button', { name: 'Log out' })).toBeVisible();
+			await expect(
+				this.page.getByRole('button', { name: 'Log out' }),
+				'Log out button should be visible'
+			).toBeVisible();
 		}
 
 		if (emailAddress) {
-			await expect(this.page.getByText(emailAddress)).toBeVisible();
+			await expect(
+				this.page.getByText(emailAddress),
+				`User's email address should be visible`
+			).toBeVisible();
 		}
 
 		if (connectWallet) {
-			await expect(this.page.getByRole('button', { name: 'Connect wallet' })).toBeVisible();
+			await expect(
+				this.page.getByRole('button', { name: 'Connect wallet' }),
+				'Connect wallet button should be visible'
+			).toBeVisible();
 		}
 
 		if (shortenedWalletAddress) {
-			await expect(this.page.getByText(shortenedWalletAddress)).toBeVisible();
+			await expect(
+				this.page.getByText(shortenedWalletAddress),
+				`User's shortened wallet address should be visible`
+			).toBeVisible();
 		}
 	}
 }

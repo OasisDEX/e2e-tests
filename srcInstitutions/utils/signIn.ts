@@ -9,4 +9,10 @@ export const signIn = async ({ app, userRights }: { app: App; userRights: 'admin
 	await app.signIn.enterEmail(userRights === 'admin' ? adminUsername : clientUsername);
 	await app.signIn.enterPassword(userRights === 'admin' ? adminPassword : clientPassword);
 	await app.signIn.signIn();
+
+	if (userRights === 'admin') {
+		await app.adminOverview.shouldBeVisible();
+	} else {
+		await app.clientOverview.shouldBeVisible();
+	}
 };
