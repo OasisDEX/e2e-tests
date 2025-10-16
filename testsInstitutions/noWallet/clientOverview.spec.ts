@@ -1,4 +1,4 @@
-import { test } from '#institutionsFixtures';
+import { test } from '#institutionsNoWalletFixtures';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('Overview page - Client', async () => {

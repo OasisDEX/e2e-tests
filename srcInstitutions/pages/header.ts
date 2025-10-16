@@ -1,4 +1,4 @@
-import { expect, step } from '#institutionsFixtures';
+import { expect, step } from '#institutionsNoWalletFixtures';
 import { Page } from '@playwright/test';
 
 export class Header {
@@ -17,7 +17,7 @@ export class Header {
 	}: {
 		logOut?: boolean;
 		emailAddress?: string;
-		connectWallet: boolean;
+		connectWallet?: boolean;
 		shortenedWalletAddress?: string;
 	}) {
 		if (logOut) {
@@ -43,9 +43,19 @@ export class Header {
 
 		if (shortenedWalletAddress) {
 			await expect(
-				this.page.getByText(shortenedWalletAddress),
+				this.page.getByRole('button', { name: shortenedWalletAddress }),
 				`User's shortened wallet address should be visible`
 			).toBeVisible();
 		}
+	}
+
+	@step
+	async connectWallet() {
+		await this.page.getByRole('button', { name: 'Connect wallet' }).click();
+	}
+
+	@step
+	async shouldNothaveConnectWalletButton() {
+		await expect(this.page.getByRole('button', { name: 'Connect wallet' })).not.toBeVisible();
 	}
 }

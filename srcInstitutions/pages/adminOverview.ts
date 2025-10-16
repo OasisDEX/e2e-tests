@@ -1,4 +1,4 @@
-import { expect, step } from '#institutionsFixtures';
+import { expect, step } from '#institutionsNoWalletFixtures';
 import { Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
 

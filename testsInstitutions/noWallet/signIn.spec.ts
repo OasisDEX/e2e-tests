@@ -1,4 +1,4 @@
-import { test } from '#institutionsFixtures';
+import { test } from '#institutionsNoWalletFixtures';
 import {
 	adminPassword,
 	adminUsername,
