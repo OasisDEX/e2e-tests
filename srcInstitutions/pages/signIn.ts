@@ -52,4 +52,48 @@ export class SignIn {
 	async shouldDisplayAuthenticationError() {
 		await expect(this.page.getByText('Authentication failed')).toBeVisible();
 	}
+
+	@step
+	async shouldAskFor2fa() {
+		await expect(
+			this.page.getByText('Two-factor authentication'),
+			'2FA header should be visible'
+		).toBeVisible();
+		await expect(
+			this.page.getByText('Enter the 6-digit code from your authenticator app'),
+			'Enter code message should be visible'
+		).toBeVisible();
+		await expect(
+			this.page.locator('input#mfaCode'),
+			'2FA code input field should be visible'
+		).toBeVisible();
+		await expect(
+			this.page.getByRole('button', { name: 'Verify' }),
+			'Verify button should be visible'
+		).toBeVisible();
+	}
+
+	@step
+	async enter2faCode(code: string) {
+		await this.page.locator('input#mfaCode').fill(code);
+	}
+
+	@step
+	async verify2faCode() {
+		await this.page.getByRole('button', { name: 'Verify' }).click();
+	}
+
+	@step
+	async shouldDisplayInvalid2faCodeError() {
+		await expect(
+			this.page.locator('[class*="LoginPage_error_"]:has-text("Enter a valid 6 digit code")')
+		).toBeVisible();
+	}
+
+	@step
+	async shouldDisplayWrong2faCodeError() {
+		await expect(
+			this.page.locator('[class*="LoginPage_error_"]:has-text("MFA response failed")')
+		).toBeVisible();
+	}
 }

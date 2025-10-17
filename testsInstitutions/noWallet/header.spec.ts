@@ -15,6 +15,16 @@ test.describe('Header - Client - No wallet', async () => {
 			connectWallet: true,
 		});
 	});
+
+	test('It should allow to set up MFA', async ({ app }) => {
+		await app.header.openSettings();
+
+		await app.modals.mfa.shouldBeVisible();
+		await app.modals.mfa.shouldBeDisabled();
+		await app.modals.mfa.setUpMfa();
+
+		await app.modals.mfa.shouldHaveQrCodeAndSecret();
+	});
 });
 
 test.describe('Header - Admin - No wallet', async () => {
@@ -30,5 +40,15 @@ test.describe('Header - Admin - No wallet', async () => {
 			emailAddress: adminUsername,
 			connectWallet: true,
 		});
+	});
+
+	test('It should allow to set up MFA', async ({ app }) => {
+		await app.header.openSettings();
+
+		await app.modals.mfa.shouldBeVisible();
+		await app.modals.mfa.shouldBeDisabled();
+		await app.modals.mfa.setUpMfa();
+
+		await app.modals.mfa.shouldHaveQrCodeAndSecret();
 	});
 });
