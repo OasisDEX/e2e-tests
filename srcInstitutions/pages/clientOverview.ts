@@ -15,4 +15,21 @@ export class ClientOverview {
 			timeout: expectDefaultTimeout * 3,
 		});
 	}
+
+	@step
+	async shouldHaveRoles({
+		user,
+		wallet,
+	}: {
+		user?: 'Viewer';
+		wallet?: 'No role' | 'No wallet connected';
+	}) {
+		if (user) {
+			await expect(this.page.locator(':has-text("User role:") + p')).toHaveText(user);
+		}
+
+		if (wallet) {
+			await expect(this.page.locator(':has-text("Wallet role:") + p')).toHaveText(wallet);
+		}
+	}
 }

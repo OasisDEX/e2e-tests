@@ -1,12 +1,13 @@
 import { test } from '#institutionsNoWalletFixtures';
 import {
+	adminMfaPassword,
+	adminMfaUsername,
 	adminPassword,
 	adminUsername,
 	clientMfaPassword,
 	clientMfaUsername,
 	clientPassword,
 	clientUsername,
-	signIn,
 } from 'srcInstitutions/utils/signIn';
 
 test.describe('Sign in', async () => {
@@ -18,12 +19,68 @@ test.describe('Sign in', async () => {
 		await app.adminOverview.shouldBeVisible();
 	});
 
+	test('It should askfor 2FA code - Admin', async ({ app }) => {
+		await app.signIn.enterEmail(adminMfaUsername);
+		await app.signIn.enterPassword(adminMfaPassword);
+		await app.signIn.signIn();
+
+		await app.signIn.shouldAskFor2fa();
+	});
+
+	test('It should show error when entering wrong 2FA code - Admin', async ({ app }) => {
+		await app.signIn.enterEmail(adminMfaUsername);
+		await app.signIn.enterPassword(adminMfaPassword);
+		await app.signIn.signIn();
+
+		await app.signIn.enter2faCode('000000');
+		await app.signIn.verify2faCode();
+		await app.signIn.shouldDisplayWrong2faCodeError();
+	});
+
+	test('It should show error when entering invalid 2FA code - Admin', async ({ app }) => {
+		await app.signIn.enterEmail(adminMfaUsername);
+		await app.signIn.enterPassword(adminMfaPassword);
+		await app.signIn.signIn();
+
+		await app.signIn.enter2faCode('000');
+		await app.signIn.verify2faCode();
+		await app.signIn.shouldDisplayInvalid2faCodeError();
+	});
+
 	test('It should sign in with valid credentials - Client', async ({ app }) => {
 		await app.signIn.enterEmail(clientUsername);
 		await app.signIn.enterPassword(clientPassword);
 		await app.signIn.signIn();
 
 		await app.clientOverview.shouldBeVisible();
+	});
+
+	test('It should askfor 2FA code - Client', async ({ app }) => {
+		await app.signIn.enterEmail(clientMfaUsername);
+		await app.signIn.enterPassword(clientMfaPassword);
+		await app.signIn.signIn();
+
+		await app.signIn.shouldAskFor2fa();
+	});
+
+	test('It should show error when entering wrong 2FA code - Client', async ({ app }) => {
+		await app.signIn.enterEmail(clientMfaUsername);
+		await app.signIn.enterPassword(clientMfaPassword);
+		await app.signIn.signIn();
+
+		await app.signIn.enter2faCode('000000');
+		await app.signIn.verify2faCode();
+		await app.signIn.shouldDisplayWrong2faCodeError();
+	});
+
+	test('It should show error when entering invalid 2FA code - Client', async ({ app }) => {
+		await app.signIn.enterEmail(clientMfaUsername);
+		await app.signIn.enterPassword(clientMfaPassword);
+		await app.signIn.signIn();
+
+		await app.signIn.enter2faCode('000');
+		await app.signIn.verify2faCode();
+		await app.signIn.shouldDisplayInvalid2faCodeError();
 	});
 
 	test('It should not sign in and display error with invalid credentials', async ({ app }) => {
@@ -47,33 +104,5 @@ test.describe('Sign in', async () => {
 
 		await app.signIn.clearInputField('email');
 		await app.signIn.shouldHaveSignInButtonDisabled();
-	});
-
-	test('It should askfor 2FA code', async ({ app }) => {
-		await app.signIn.enterEmail(clientMfaUsername);
-		await app.signIn.enterPassword(clientMfaPassword);
-		await app.signIn.signIn();
-
-		await app.signIn.shouldAskFor2fa();
-	});
-
-	test('It should show error when entering wrong 2FA code', async ({ app }) => {
-		await app.signIn.enterEmail(clientMfaUsername);
-		await app.signIn.enterPassword(clientMfaPassword);
-		await app.signIn.signIn();
-
-		await app.signIn.enter2faCode('000000');
-		await app.signIn.verify2faCode();
-		await app.signIn.shouldDisplayWrong2faCodeError();
-	});
-
-	test('It should show error when entering invalid 2FA code', async ({ app }) => {
-		await app.signIn.enterEmail(clientMfaUsername);
-		await app.signIn.enterPassword(clientMfaPassword);
-		await app.signIn.signIn();
-
-		await app.signIn.enter2faCode('000');
-		await app.signIn.verify2faCode();
-		await app.signIn.shouldDisplayInvalid2faCodeError();
 	});
 });
