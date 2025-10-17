@@ -58,4 +58,9 @@ export class Header {
 	async shouldNothaveConnectWalletButton() {
 		await expect(this.page.getByRole('button', { name: 'Connect wallet' })).not.toBeVisible();
 	}
+
+	@step
+	async openSettings() {
+		await this.page.locator('[class*="navigationActionsWrapper"] button').nth(2).click();
+	}
 }

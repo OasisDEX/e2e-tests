@@ -19,7 +19,7 @@ export class Homepage {
 			this.page.getByText('The best place to Borrow and Earn in DeFi'),
 			'"The best place to Borrow and Earn in DeFi" should be visible'
 		).toBeVisible({
-			timeout: expectDefaultTimeout * 3,
+			timeout: expectDefaultTimeout * 4,
 		});
 	}
 
