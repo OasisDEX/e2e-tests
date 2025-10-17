@@ -43,12 +43,18 @@ jobs:
       - name: Run tests (with parameters)
         if: inputs.base_url
         run: |
-          MAILINATOR_TOKEN=${{ secrets.MAILINATOR_TOKEN }} \
+          INSTITUTIONS_ADMIN_USERNAME=${{ secrets.INSTITUTIONS_ADMIN_USERNAME }} \
+          INSTITUTIONS_ADMIN_PASSWORD=${{ secrets.INSTITUTIONS_ADMIN_PASSWORD }} \
+          INSTITUTIONS_CLIENT_USERNAME=${{ secrets.INSTITUTIONS_CLIENT_USERNAME }} \
+          INSTITUTIONS_CLIENT_PASSWORD=${{ secrets.INSTITUTIONS_CLIENT_PASSWORD }} \
           BASE_URL=${{ inputs.base_url }} yarn ${{ inputs.script }}
       - name: Run tests (without parameters)
         if: ${{ ! inputs.base_url }}
         run: |
-          MAILINATOR_TOKEN=${{ secrets.MAILINATOR_TOKEN }} \
+          INSTITUTIONS_ADMIN_USERNAME=${{ secrets.INSTITUTIONS_ADMIN_USERNAME }} \
+          INSTITUTIONS_ADMIN_PASSWORD=${{ secrets.INSTITUTIONS_ADMIN_PASSWORD }} \
+          INSTITUTIONS_CLIENT_USERNAME=${{ secrets.INSTITUTIONS_CLIENT_USERNAME }} \
+          INSTITUTIONS_CLIENT_PASSWORD=${{ secrets.INSTITUTIONS_CLIENT_PASSWORD }} \
           yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4
         if: always()
