@@ -47,6 +47,8 @@ jobs:
           INSTITUTIONS_ADMIN_PASSWORD=${{ secrets.INSTITUTIONS_ADMIN_PASSWORD }} \
           INSTITUTIONS_CLIENT_USERNAME=${{ secrets.INSTITUTIONS_CLIENT_USERNAME }} \
           INSTITUTIONS_CLIENT_PASSWORD=${{ secrets.INSTITUTIONS_CLIENT_PASSWORD }} \
+          INSTITUTIONS_CLIENT_MFA_USERNAME=${{ secrets.INSTITUTIONS_CLIENT_MFA_USERNAME }} \
+          INSTITUTIONS_CLIENT_MFA_PASSWORD=${{ secrets.INSTITUTIONS_CLIENT_MFA_PASSWORD }} \
           BASE_URL=${{ inputs.base_url }} yarn ${{ inputs.script }}
       - name: Run tests (without parameters)
         if: ${{ ! inputs.base_url }}
@@ -55,6 +57,8 @@ jobs:
           INSTITUTIONS_ADMIN_PASSWORD=${{ secrets.INSTITUTIONS_ADMIN_PASSWORD }} \
           INSTITUTIONS_CLIENT_USERNAME=${{ secrets.INSTITUTIONS_CLIENT_USERNAME }} \
           INSTITUTIONS_CLIENT_PASSWORD=${{ secrets.INSTITUTIONS_CLIENT_PASSWORD }} \
+          INSTITUTIONS_CLIENT_MFA_USERNAME=${{ secrets.INSTITUTIONS_CLIENT_MFA_USERNAME }} \
+          INSTITUTIONS_CLIENT_MFA_PASSWORD=${{ secrets.INSTITUTIONS_CLIENT_MFA_PASSWORD }} \
           yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4
         if: always()
