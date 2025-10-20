@@ -104,7 +104,15 @@ export const withdraw = async ({
 	}
 
 	if (sidebarButtonLabel.includes('Approve')) {
-		await app.positionPage.sidebar.approve(nominatedToken === 'ETH' ? 'WETH' : nominatedToken);
+		await app.positionPage.sidebar.approve(
+			nominatedToken === 'ETH'
+				? 'WETH'
+				: nominatedToken === 'USD₮0'
+				? 'LVUSDT'
+				: nominatedToken === 'USDC'
+				? 'LVUSDC'
+				: nominatedToken
+		);
 		await metamask.rejectTransaction();
 	} else {
 		await app.positionPage.sidebar.previewStep.shouldBeVisible({
