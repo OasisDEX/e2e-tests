@@ -178,10 +178,10 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', as
 			withdrawnToken: 'USD₮0',
 			withdrawAmount: '0.5',
 			estimatedEarnings: {
-				thirtyDaysAmount: '0.0[0-9]{3}',
-				sixMonthsAmount: '0.0[0-9]{3}',
-				oneYearAmount: '0.0[0-9]{3}',
-				threeYearsAmount: '0.0[0-9]{3}',
+				thirtyDaysAmount: '0.5[0-9]{3}',
+				sixMonthsAmount: '0.5[0-9]{3}',
+				oneYearAmount: '0.5[0-9]{3}',
+				threeYearsAmount: '0.[6-7][0-9]{3}',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
@@ -226,7 +226,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', asyn
 			network: 'arbitrum',
 			token: 'USD₮0',
 			risk: 'Lower Risk',
-			balance: '0.5[0-9]{3}',
+			balance: '1.[0-9]{4}',
 			liveAPY: '[0-9]{1,2}.[0-9]{2}',
 		});
 

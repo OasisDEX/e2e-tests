@@ -1,7 +1,7 @@
 import { test } from '#institutionsNoWalletFixtures';
 import { adminUsername, clientUsername, signIn } from 'srcInstitutions/utils/signIn';
 
-test.describe('Header - Client - No wallet', async () => {
+test.describe('Header - Client', async () => {
 	test.beforeEach(async ({ app }) => {
 		await signIn({ app, userRights: 'client' });
 	});
@@ -27,7 +27,7 @@ test.describe('Header - Client - No wallet', async () => {
 	});
 });
 
-test.describe('Header - Admin - No wallet', async () => {
+test.describe('Header - Admin', async () => {
 	test.beforeEach(async ({ app }) => {
 		await signIn({ app, userRights: 'admin' });
 	});

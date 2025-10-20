@@ -6,6 +6,8 @@ export type EarnTokens =
 	| 'DAI'
 	| 'ETH'
 	| 'EURC'
+	| 'LVUSDC'
+	| 'LVUSDT'
 	| 'MORPHO'
 	| 'USDBC'
 	| 'USDbC'
