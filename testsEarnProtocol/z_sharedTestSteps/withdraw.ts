@@ -1,7 +1,7 @@
 import { expect } from '#earnProtocolFixtures';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 import { App } from 'srcEarnProtocol/app';
-import { EarnTokens } from 'srcEarnProtocol/utils/types';
+import { EarnTokens, Networks } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 
 // Withdraw flow until rejecting final Withdraw tx
@@ -10,6 +10,7 @@ export const withdraw = async ({
 	metamask,
 	app,
 	nominatedToken,
+	network,
 	withdrawnToken,
 	withdrawAmount,
 	estimatedEarnings,
@@ -18,6 +19,7 @@ export const withdraw = async ({
 	metamask: MetaMask;
 	app: App;
 	nominatedToken: EarnTokens;
+	network?: Networks;
 	withdrawnToken: EarnTokens;
 	withdrawAmount: string;
 	estimatedEarnings?: {
@@ -107,11 +109,11 @@ export const withdraw = async ({
 		await app.positionPage.sidebar.approve(
 			nominatedToken === 'ETH'
 				? 'WETH'
+				: network !== 'arbitrum'
+				? nominatedToken
 				: nominatedToken === 'USD₮0'
 				? 'LVUSDT'
-				: nominatedToken === 'USDC'
-				? 'LVUSDC'
-				: nominatedToken
+				: 'LVUSDC'
 		);
 		await metamask.rejectTransaction();
 	} else {
