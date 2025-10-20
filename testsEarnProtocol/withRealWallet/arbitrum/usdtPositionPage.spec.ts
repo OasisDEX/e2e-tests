@@ -175,6 +175,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', as
 			metamask,
 			app,
 			nominatedToken: 'USD₮0',
+			network: 'arbitrum',
 			withdrawnToken: 'USD₮0',
 			withdrawAmount: '0.5',
 			estimatedEarnings: {
@@ -247,6 +248,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', asyn
 			metamask,
 			app,
 			nominatedToken: 'USD₮0',
+			network: 'arbitrum',
 			targetToken: 'USDC',
 		});
 	});

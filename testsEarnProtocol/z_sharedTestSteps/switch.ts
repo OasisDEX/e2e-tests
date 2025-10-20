@@ -1,7 +1,7 @@
 import { expect } from '#earnProtocolFixtures';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 import { App } from 'srcEarnProtocol/app';
-import { LazyNominatedTokens, Risks } from 'srcEarnProtocol/utils/types';
+import { LazyNominatedTokens, Networks, Risks } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 
 // Switch flow until rejecting first tx
@@ -9,12 +9,14 @@ export const switchPosition = async ({
 	metamask,
 	app,
 	nominatedToken,
+	network,
 	targetToken,
 	risk,
 }: {
 	metamask: MetaMask;
 	app: App;
 	nominatedToken: LazyNominatedTokens;
+	network?: Networks;
 	targetToken: LazyNominatedTokens;
 	risk?: Risks;
 }) => {
@@ -56,11 +58,11 @@ export const switchPosition = async ({
 		await app.positionPage.sidebar.approve(
 			nominatedToken === 'ETH'
 				? 'WETH'
+				: network !== 'arbitrum'
+				? nominatedToken
 				: nominatedToken === 'USD₮0'
 				? 'LVUSDT'
-				: nominatedToken === 'USDC'
-				? 'LVUSDC'
-				: nominatedToken
+				: 'LVUSDC'
 		);
 		await metamask.rejectTransaction();
 	} else {
