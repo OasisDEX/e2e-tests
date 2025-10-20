@@ -21,6 +21,6 @@ export const signIn = async ({ app, userRights }: { app: App; userRights: 'admin
 	if (userRights === 'admin') {
 		await app.adminOverview.shouldBeVisible();
 	} else {
-		await app.clientOverview.shouldBeVisible();
+		await app.clientDashboard.shouldBeVisible();
 	}
 };

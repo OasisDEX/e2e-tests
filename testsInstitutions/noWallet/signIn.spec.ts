@@ -52,7 +52,7 @@ test.describe('Sign in', async () => {
 		await app.signIn.enterPassword(clientPassword);
 		await app.signIn.signIn();
 
-		await app.clientOverview.shouldBeVisible();
+		await app.clientDashboard.shouldBeVisible();
 	});
 
 	test('It should askfor 2FA code - Client', async ({ app }) => {
