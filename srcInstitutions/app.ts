@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
 import { AdminOverview } from './pages/adminOverview';
-import { ClientOverview } from './pages/clientOverview';
+import { ClientDashboard } from './pages/clientDashboard';
 import { Header } from './pages/header';
 import { Modals } from './modals';
 import { SignIn } from './pages/signIn';
@@ -10,7 +10,7 @@ export class App {
 
 	readonly adminOverview: AdminOverview;
 
-	readonly clientOverview: ClientOverview;
+	readonly clientDashboard: ClientDashboard;
 
 	readonly header: Header;
 
@@ -21,7 +21,7 @@ export class App {
 	constructor(page: Page) {
 		this.page = page;
 		this.adminOverview = new AdminOverview(page);
-		this.clientOverview = new ClientOverview(page);
+		this.clientDashboard = new ClientDashboard(page);
 		this.header = new Header(page);
 		this.modals = new Modals(page);
 		this.signIn = new SignIn(page);
