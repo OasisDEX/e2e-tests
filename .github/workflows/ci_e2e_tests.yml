@@ -1,4 +1,4 @@
-name: CI E2E and API tests
+name: CI E2E tests
 
 on: 
   workflow_dispatch:
