@@ -1,0 +1,52 @@
+name: CI E2E and API PRO tests
+
+on: 
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: 'Run_id from respository that is triggering this workflow.'
+        type: string
+        required: true
+      repository:
+        description: 'Name of the respository that is triggering this workflow.'
+        type: string
+        required: true
+      flags_features:
+        description: 'Features Flags to enable / disable. For example: "flag1:true flag2:false"'
+        type: string
+        default: ''
+        required: false
+
+jobs:
+  staging-deployed-trigger-received:
+    runs-on: ubuntu-latest 
+    steps:
+      - run: echo "Regression E2E and API tests for ${{ inputs.repository }} - RUN_ID ${{ inputs.run_id }}"
+      - name: Create artifact with trigger repository name
+        run: echo "${{ inputs.repository }}" > trigger_repository.txt
+      - name: Upload artifact with trigger repository name
+        uses: actions/upload-artifact@v4
+        with:
+          name: trigger_repository_name
+          path: trigger_repository.txt
+
+  no-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
+    with:
+      base_url: 'https://pro.oasisapp.dev'
+      script: ci:no-wallet:regression
+
+  api-tests:
+    uses: ./.github/workflows/z_Reusable_Apis.yml
+    with:
+      base_url: 'https://pro.oasisapp.dev'
+      script: api-tests:regression
+
+  # SKIPPED - Staging environment still very unreliable for tests with wallet
+  # with-real-wallet:
+  #   uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
+  #   with:
+  #     base_url: 'https://pro.oasisapp.dev'
+  #     flags_features: ${{ inputs.flags_features}}
+  #   secrets: inherit
+  
