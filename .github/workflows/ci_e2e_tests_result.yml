@@ -3,7 +3,7 @@ name: Sending CI E2E tests result to trigger repository
 on: 
   workflow_run:
     branches: [main]
-    workflows: [CI E2E and API tests]
+    workflows: [CI E2E tests]
     types: [completed]
 
 jobs:
