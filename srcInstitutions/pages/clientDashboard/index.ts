@@ -1,21 +1,33 @@
 import { expect, step } from '#institutionsNoWalletFixtures';
 import { Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
-import { Overview } from './overview.ts';
-import { Vaults } from './vaults/index.js';
+import { FeesAndRevenue } from './feesAndRevenue';
+import { Overview } from './overview';
+import { Reports } from './reports';
+import { Risk } from './risk';
+import { Vaults } from './vaults';
 
 type Tabs = 'Overview' | 'Vaults' | 'Risk' | 'Fees & Revenue' | 'Reports' | 'News';
 
 export class ClientDashboard {
 	readonly page: Page;
 
+	readonly feesAndRevenue: FeesAndRevenue;
+
 	readonly overview: Overview;
+
+	readonly reports: Reports;
+
+	readonly risk: Risk;
 
 	readonly vaults: Vaults;
 
 	constructor(page: Page) {
 		this.page = page;
+		this.feesAndRevenue = new FeesAndRevenue(page);
 		this.overview = new Overview(page);
+		this.reports = new Reports(page);
+		this.risk = new Risk(page);
 		this.vaults = new Vaults(page);
 	}
 
@@ -105,6 +117,6 @@ export class ClientDashboard {
 
 	@step
 	async selectTab(tab: Tabs) {
-		await this.page.getByRole('button', { name: tab, exact: true }).click();
+		await this.page.getByRole('button', { name: tab, exact: true }).first().click();
 	}
 }
