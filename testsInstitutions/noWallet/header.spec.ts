@@ -1,9 +1,9 @@
 import { test } from '#institutionsNoWalletFixtures';
-import { adminUsername, clientUsername, signIn } from 'srcInstitutions/utils/signIn';
+import { adminUsername, clientViewerUsername, signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('Header - Client', async () => {
 	test.beforeEach(async ({ app }) => {
-		await signIn({ app, userRights: 'client' });
+		await signIn({ app, userRights: 'client', role: 'Viewer' });
 	});
 
 	test(`It should display 'Log out' button, user's email address and 'Connect wallet' button in header`, async ({
@@ -11,7 +11,7 @@ test.describe('Header - Client', async () => {
 	}) => {
 		await app.header.shouldHave({
 			logOut: true,
-			emailAddress: clientUsername,
+			emailAddress: clientViewerUsername,
 			connectWallet: true,
 		});
 	});

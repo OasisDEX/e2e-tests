@@ -9,7 +9,8 @@ test.describe('Maker Earn - GUNI', async () => {
 
 		await app.position.overview.shouldBeVisible();
 		await app.position.overview.shouldHaveNetValue({
-			value: '\\$([0-9]{1,2})?([0-9],)?([0-9]{1,2})?[0-9].[0-9]{2}',
+			// value: '\\$([0-9]{1,2})?([0-9],)?([0-9]{1,2})?[0-9].[0-9]{2}',
+			value: '\\$([0-9]{1,3},)?[0-9]{1,3}.[0-9]{2}',
 		});
 		await app.position.overview.shouldHaveTotalCollateral({
 			amount: '[0-9].[0-9]{2}',

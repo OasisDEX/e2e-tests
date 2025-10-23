@@ -3,7 +3,7 @@ import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('Overview page - Client', async () => {
 	test.beforeEach(async ({ app }) => {
-		await signIn({ app, userRights: 'client' });
+		await signIn({ app, userRights: 'client', role: 'Viewer' });
 	});
 
 	test('I should display User role', async ({ app }) => {

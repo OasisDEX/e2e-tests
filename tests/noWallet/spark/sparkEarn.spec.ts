@@ -17,7 +17,8 @@ test.describe('Spark Earn', async () => {
 
 		await app.position.shouldHaveHeader('WSTETH/ETH yield multiple #1417');
 		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '[0-9].[0-9]{2}([0-9]{1,2})?',
+			// price: '[0-9].[0-9]{2}([0-9]{1,2})?',
+			price: '[0-9].[0-9]{2,4}',
 			token: 'WSTETH/ETH',
 		});
 		await app.position.overview.shouldHaveLiquidationPriceGreaterThanZero('WSTETH/ETH');

@@ -3,7 +3,7 @@ import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('Client dashboard - Overview - Navigation', async () => {
 	test.beforeEach(async ({ app }) => {
-		await signIn({ app, userRights: 'client' });
+		await signIn({ app, userRights: 'client', role: 'Viewer' });
 	});
 
 	test('It should switch to all available panels', async ({ app }) => {
