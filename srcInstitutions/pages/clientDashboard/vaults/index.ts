@@ -8,6 +8,7 @@ import { Overview } from './overview';
 import { RiskParameters } from './riskParameters';
 import { RoleAdmin } from './roleAdmin';
 import { VaultExposure } from './vaultExposure';
+import { EarnTokens } from 'srcEarnProtocol/utils/types';
 
 type Panels =
 	| 'Overview'
@@ -56,7 +57,7 @@ export class Vaults {
 	@step
 	async shouldBeVisible() {
 		await expect(
-			this.panelLocator.locator('[class*="VaultsDropdownWrapper"]'),
+			this.panelLocator.locator('[class*="VaultsDropdownWrapper_contentWrapper_"]').first(),
 			'Vaults dropdown should be visible'
 		).toBeVisible();
 
@@ -76,5 +77,56 @@ export class Vaults {
 	@step
 	async selectPanel(panel: Panels) {
 		await this.panelLocator.getByRole('button', { name: panel }).click();
+	}
+
+	@step
+	async shouldHaveVaultHeader({
+		name,
+		asset,
+		nav,
+		aum,
+		fee,
+		inception,
+	}: {
+		name?: string;
+		asset?: EarnTokens;
+		nav?: string;
+		aum?: string;
+		fee?: string;
+		inception?: string;
+	}) {
+		const fieldLocator = (fieldName: 'Name' | 'Asset' | 'NAV' | 'AUM' | 'Fee' | 'Inception') =>
+			this.page
+				.locator('[class*="DashboardVaultHeader_dataBlockWrapper_"]')
+				.filter({ hasText: fieldName });
+
+		if (name) {
+			await expect(fieldLocator('Name'), `Should have Name: ${name}`).toContainText(name);
+		}
+
+		if (asset) {
+			await expect(fieldLocator('Asset'), `Should have Asset: ${asset}`).toContainText(asset);
+		}
+
+		if (nav) {
+			const regExp = new RegExp(nav);
+			await expect(fieldLocator('NAV'), `Should have NAV: ${nav}`).toContainText(regExp);
+		}
+
+		if (aum) {
+			const regExp = new RegExp(aum);
+			await expect(fieldLocator('AUM'), `Should have AUM: ${aum}`).toContainText(regExp);
+		}
+
+		if (fee) {
+			const regExp = new RegExp(`${fee}%`);
+			await expect(fieldLocator('Fee'), `Should have Fee: ${fee}%`).toContainText(regExp);
+		}
+
+		if (inception) {
+			await expect(fieldLocator('Inception'), `Should have Inception: ${inception}`).toContainText(
+				inception
+			);
+		}
 	}
 }

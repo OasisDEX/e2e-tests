@@ -3,7 +3,7 @@ import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('Client dashboard - Vaults - Navigation', async () => {
 	test.beforeEach(async ({ app }) => {
-		await signIn({ app, userRights: 'client' });
+		await signIn({ app, userRights: 'client', role: 'Viewer' });
 		await app.clientDashboard.selectTab('Vaults');
 	});
 

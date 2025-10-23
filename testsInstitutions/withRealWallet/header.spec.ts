@@ -5,7 +5,7 @@ test.describe('Header - Client -  With wallet', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
 
-		await signIn({ app, userRights: 'client' });
+		await signIn({ app, userRights: 'client', role: 'Viewer' });
 	});
 
 	test('It should connect wallet', async ({ app, metamask }) => {

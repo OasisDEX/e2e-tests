@@ -6,8 +6,8 @@ import {
 	adminUsername,
 	clientMfaPassword,
 	clientMfaUsername,
-	clientPassword,
-	clientUsername,
+	clientViewerPassword,
+	clientViewerUsername,
 } from 'srcInstitutions/utils/signIn';
 
 test.describe('Sign in', async () => {
@@ -48,8 +48,8 @@ test.describe('Sign in', async () => {
 	});
 
 	test('It should sign in with valid credentials - Client', async ({ app }) => {
-		await app.signIn.enterEmail(clientUsername);
-		await app.signIn.enterPassword(clientPassword);
+		await app.signIn.enterEmail(clientViewerUsername);
+		await app.signIn.enterPassword(clientViewerPassword);
 		await app.signIn.signIn();
 
 		await app.clientDashboard.shouldBeVisible();
