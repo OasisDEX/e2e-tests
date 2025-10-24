@@ -68,6 +68,11 @@ export class Vaults {
 	}
 
 	@step
+	async openVaultsDropdown() {
+		await this.page.locator('[class*="VaultsDropdownWrapper_dropdownWrapper_"]').click();
+	}
+
+	@step
 	async shouldHavePanelActive(panel: Panels) {
 		await expect(
 			this.panelLocator.getByRole('button', { name: panel }).locator('div').first()

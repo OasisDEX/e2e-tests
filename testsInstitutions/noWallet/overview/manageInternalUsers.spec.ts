@@ -34,4 +34,9 @@ test.describe('Client dashboard - Overview - Manage internal users - Admin role'
 			},
 		]);
 	});
+
+	// TO DO
+	test.skip('It should edit a user', async ({ app }) => {
+		// TO DO
+	});
 });
