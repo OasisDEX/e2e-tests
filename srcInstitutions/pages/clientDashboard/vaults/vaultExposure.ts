@@ -15,4 +15,17 @@ export class VaultExposure {
 			'"Vault exposure" header should be visible'
 		).toBeVisible();
 	}
+
+	@step
+	async shouldHaveAssetAllocationBar() {
+		await expect(
+			this.page.getByText('Asset allocation'),
+			'"Asset allocation" label should be visible'
+		).toBeVisible();
+
+		await expect(
+			this.page.locator('[class*="_allocationBarItem_"]').first(),
+			'Asset allocation bar should be visible'
+		).toBeVisible();
+	}
 }

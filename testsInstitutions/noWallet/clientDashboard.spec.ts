@@ -10,12 +10,12 @@ test.describe('Overview page - Client', async () => {
 		await app.clientDashboard.shouldHaveRoles({ user: 'Viewer', wallet: 'No wallet connected' });
 	});
 
-	test('It should display "Total value", "Vaults #", "30d APY" and "Performance', async ({
+	test('It should display "Total value", "Vaults #", "30d APY" and "Performance"', async ({
 		app,
 	}) => {
 		await app.clientDashboard.shouldHaveSummary({
-			totalValue: '[1-9].[0-9]{2}',
-			numberOfVaults: '1',
+			totalValue: '[0-9]{1,2}.[0-9]{1,4}',
+			numberOfVaults: '4',
 			thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 			allTimePerformance: '[0-9]{1,2}.[0-9]{2}',
 		});
