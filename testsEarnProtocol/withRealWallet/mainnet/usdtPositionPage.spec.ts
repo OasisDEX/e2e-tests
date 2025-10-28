@@ -113,10 +113,10 @@ test.describe('With real wallet - Mainnet USDT Position page - Deposit', async (
 			depositedToken: 'WETH',
 			depositAmount: '0.001',
 			estimatedEarnings: {
-				thirtyDaysAmount: '[1-7].[0-9]{4}',
-				sixMonthsAmount: '[1-7].[0-9]{4}',
-				oneYearAmount: '[1-7].[0-9]{4}',
-				threeYearsAmount: '[1-7].[0-9]{4}',
+				thirtyDaysAmount: '[2-7].[0-9]{4}',
+				sixMonthsAmount: '[2-7].[0-9]{4}',
+				oneYearAmount: '[2-7].[0-9]{4}',
+				threeYearsAmount: '[5-9].[0-9]{4}',
 			},
 			previewInfo: {
 				swap: {
