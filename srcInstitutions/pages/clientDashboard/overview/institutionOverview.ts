@@ -12,7 +12,8 @@ export class InstitutionOverview {
 	}
 
 	vaultLocator(name: string): Locator {
-		return this.page.locator(`[class*="_yourVaultsWrapper_"] tbody tr:has-text("${name}")`);
+		return this.page.locator(`[class*="_yourVaultsWrapper_"] tbody tr:has-text("${name}")`).first();
+		// .first() added because duplicate names are allowed at the moment
 	}
 
 	@step
