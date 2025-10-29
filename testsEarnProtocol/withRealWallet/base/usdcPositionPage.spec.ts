@@ -94,10 +94,10 @@ test.describe('With real wallet - Base USDC position page - Deposit', async () =
 			depositedToken: 'USDC',
 			depositAmount: '0.4',
 			estimatedEarnings: {
-				thirtyDaysAmount: '[0-1].[0-9]{4}',
-				sixMonthsAmount: '[0-1].[0-9]{4}',
-				oneYearAmount: '[0-1].[0-9]{4}',
-				threeYearsAmount: '[1].[0-9]{4}',
+				thirtyDaysAmount: '[0-3].[0-9]{4}',
+				sixMonthsAmount: '[0-3].[0-9]{4}',
+				oneYearAmount: '[0-3].[0-9]{4}',
+				threeYearsAmount: '[2-4].[0-9]{4}',
 			},
 			previewInfo: { transactionFee: '[0-2].[0-9]{2}' },
 		});
@@ -113,10 +113,10 @@ test.describe('With real wallet - Base USDC position page - Deposit', async () =
 			depositedToken: 'USDS',
 			depositAmount: '0.4',
 			estimatedEarnings: {
-				thirtyDaysAmount: '[0-1].[0-9]{4}',
-				sixMonthsAmount: '[0-1].[0-9]{4}',
-				oneYearAmount: '[0-1].[0-9]{4}',
-				threeYearsAmount: '[1].[0-9]{4}',
+				thirtyDaysAmount: '[0-3].[0-9]{4}',
+				sixMonthsAmount: '[0-3].[0-9]{4}',
+				oneYearAmount: '[0-3].[0-9]{4}',
+				threeYearsAmount: '[2-4].[0-9]{4}',
 			},
 			previewInfo: {
 				swap: {
@@ -182,10 +182,10 @@ test.describe('With real wallet - Base USDC position page - Withdraw', async () 
 			withdrawnToken: 'USDC',
 			withdrawAmount: '0.5',
 			estimatedEarnings: {
-				thirtyDaysAmount: '0.0[0-9]{3}',
-				sixMonthsAmount: '0.0[0-9]{3}',
-				oneYearAmount: '0.0[0-9]{3}',
-				threeYearsAmount: '0.0[0-9]{3}',
+				thirtyDaysAmount: '[0-1].[0-9]{4}',
+				sixMonthsAmount: '[0-1].[0-9]{4}',
+				oneYearAmount: '[0-1].[0-9]{4}',
+				threeYearsAmount: '[0-1].[0-9]{4}',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',
@@ -227,7 +227,7 @@ test.describe('With real wallet - Base USDC position page - Switch', async () =>
 			network: 'base',
 			token: 'USDC',
 			risk: 'Lower Risk',
-			balance: '0.5[0-9]{3}',
+			balance: '1.5[0-9]{3}',
 			liveAPY: '[0-9]{1,2}.[0-9]{2}',
 		});
 

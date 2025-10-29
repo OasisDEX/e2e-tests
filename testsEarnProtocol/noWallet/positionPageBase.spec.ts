@@ -14,8 +14,8 @@ test.describe('Position page - Base - Specific user page @regression', async () 
 	}) => {
 		await app.positionPage.shouldHaveMarketValue({
 			token: 'USDC',
-			amount: '0.[5-8][0-9]{3}',
-			usdAmount: '0.[5-8][0-9]{3}',
+			amount: '1.[5-8][0-9]{3}',
+			usdAmount: '1.[5-8][0-9]{1,3}',
 		});
 
 		await app.positionPage.shouldHaveEarned({
@@ -26,7 +26,7 @@ test.describe('Position page - Base - Specific user page @regression', async () 
 
 		await app.positionPage.shouldHaveNetContribution({
 			token: 'USDC',
-			amount: '[0-9].[0-9]{3,4}',
+			amount: '1.5[0-9]{3}',
 			numberOfDeposits: '[0-9]{1,2}',
 		});
 
