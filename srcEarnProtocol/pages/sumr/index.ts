@@ -10,9 +10,7 @@ export class Sumr {
 
 	@step
 	async shouldBeVisible() {
-		await expect(
-			this.page.getByText('The token that powers DeFi’s best yield optimizer', { exact: true })
-		).toBeVisible();
+		await expect(this.page.getByText('SUMR: DeFi’s productive asset')).toBeVisible();
 	}
 
 	@step

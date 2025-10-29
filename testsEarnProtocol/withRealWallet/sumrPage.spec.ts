@@ -19,7 +19,8 @@ test.describe('With real wallet - $SUMR page @regression', async () => {
 		await app.sumr.openPage();
 	});
 
-	test('It should claim $SUMR', async ({ app }) => {
+	// SUMR page being reconstructed - NEw tests to be created
+	test.skip('It should claim $SUMR', async ({ app }) => {
 		await app.sumr.viewYourAddress();
 
 		await app.portfolio.shoulBeVisible();
