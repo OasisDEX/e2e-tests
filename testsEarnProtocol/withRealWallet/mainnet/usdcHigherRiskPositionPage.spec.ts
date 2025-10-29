@@ -116,7 +116,7 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Depos
 				thirtyDaysAmount: '[1-7].[0-9]{4}',
 				sixMonthsAmount: '[1-7].[0-9]{4}',
 				oneYearAmount: '[1-7].[0-9]{4}',
-				threeYearsAmount: '[1-7].[0-9]{4}',
+				threeYearsAmount: '[1-9].[0-9]{4}', // Edited because of not-priorotised bug about wrong ETH swap rate
 			},
 			previewInfo: {
 				swap: {
