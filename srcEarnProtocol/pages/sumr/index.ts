@@ -80,4 +80,35 @@ export class Sumr {
 	async checkAddress() {
 		await this.page.getByRole('button', { name: 'Check address' }).click();
 	}
+
+	@step
+	async buySUMR() {
+		await this.page.getByRole('button', { name: 'Buy SUMR' }).click();
+	}
+
+	@step
+	async stakeSUMR(section: 'Intro' | 'What you need to know') {
+		await this.page
+			.getByRole('button', { name: 'Stake SUMR' })
+			.nth(section === 'Intro' ? 0 : 1)
+			.click();
+	}
+
+	@step
+	async shouldHaveYieldSource() {
+		const regExpSource1 = new RegExp('Yield source 1.*Up to 7.2%.*SUMR USDC');
+		expect(this.page.locator('[class*="_yieldSourceColumn_"]').nth(0)).toContainText(regExpSource1);
+
+		const regExpSource2 = new RegExp('Yield source 2.*Up to 3.5%.*SUMR APY');
+		expect(this.page.locator('[class*="_yieldSourceColumn_"]').nth(1)).toContainText(regExpSource2);
+	}
+
+	@step
+	async selectWhatYouNeedToKnowTab(tab: 'Facts' | 'Timeline' | 'FAQ') {
+		const sectionLocator = this.page
+			.getByText('What you need to know')
+			.locator('xpath=//following-sibling::*[1]');
+
+		await sectionLocator.getByRole('button', { name: tab }).click();
+	}
 }
