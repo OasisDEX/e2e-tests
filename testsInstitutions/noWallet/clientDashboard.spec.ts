@@ -6,7 +6,7 @@ test.describe('Overview page - Client', async () => {
 		await signIn({ app, userRights: 'client', role: 'Viewer' });
 	});
 
-	test('I should display User role', async ({ app }) => {
+	test('It should display User role', async ({ app }) => {
 		await app.clientDashboard.shouldHaveRoles({ user: 'Viewer', wallet: 'No wallet connected' });
 	});
 

@@ -97,10 +97,14 @@ export class Sumr {
 	@step
 	async shouldHaveYieldSource() {
 		const regExpSource1 = new RegExp('Yield source 1.*Up to 7.2%.*SUMR USDC');
-		expect(this.page.locator('[class*="_yieldSourceColumn_"]').nth(0)).toContainText(regExpSource1);
+		await expect(this.page.locator('[class*="_yieldSourceColumn_"]').nth(0)).toContainText(
+			regExpSource1
+		);
 
 		const regExpSource2 = new RegExp('Yield source 2.*Up to 3.5%.*SUMR APY');
-		expect(this.page.locator('[class*="_yieldSourceColumn_"]').nth(1)).toContainText(regExpSource2);
+		await expect(this.page.locator('[class*="_yieldSourceColumn_"]').nth(1)).toContainText(
+			regExpSource2
+		);
 	}
 
 	@step

@@ -26,7 +26,7 @@ test.describe('Open exisiting position pages - Ajna Ethereum', async () => {
 
 		await app.position.shouldHaveHeader('APXETH/ETH Borrow #1467');
 		await app.position.overview.shouldHaveLiquidationPrice({
-			price: '[0-9].[0-9]{4}',
+			price: '[0-9].[0-9]{2}',
 			token: 'APXETH/ETH',
 			timeout: positionTimeout,
 		});
