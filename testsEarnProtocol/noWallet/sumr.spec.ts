@@ -35,7 +35,7 @@ test.describe('$SUMR', async () => {
 	});
 
 	['Intro', 'What you need to know'].forEach((section) =>
-		test(`I should Stake SUMR - Button in "${section}"`, async ({ app }) => {
+		test(`It should Stake SUMR - Button in "${section}"`, async ({ app }) => {
 			await app.sumr.stakeSUMR('Intro');
 
 			// TO DO (functionality not implemented yet)
