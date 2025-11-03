@@ -47,10 +47,6 @@ test.describe('Aave V3 Borrow - Base - Wallet connected', async () => {
 			});
 		});
 
-		//
-		await app.pause();
-		//
-
 		// Skip again if DB collision also happening with omni
 		await test.step('It should Deposit and Borrow in a single tx', async () => {
 			// Delay to reduce flakiness
