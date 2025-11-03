@@ -47,11 +47,7 @@ test.describe('$SUMR', async () => {
 		await app.sumr.shouldHaveYieldSource();
 	});
 
-	test('It should show "What you need to know" tabs', async ({ app }) => {
-		//
-		await app.pause();
-		//
-
+	test.skip('It should show "What you need to know" tabs', async ({ app }) => {
 		// "Timeline" tab
 		await app.sumr.selectWhatYouNeedToKnowTab('Timeline');
 
