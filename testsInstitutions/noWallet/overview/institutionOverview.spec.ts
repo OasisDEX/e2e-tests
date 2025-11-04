@@ -16,12 +16,12 @@ test.describe('Client dashboard - Overview - Institution overview', async () => 
 		await app.clientDashboard.overview.institutionOverview.viewVault('Summer USDC Base Vault');
 
 		await app.clientDashboard.vaults.shouldHaveVaultHeader({
-			// name: 'Summer USDC Base Vault', --> BUG
+			name: 'USDC Base ACME',
 			asset: 'USDC',
 			nav: '[0-9].[0-9]{1,4}',
 			aum: '[0-9].[0-9]{1,4}',
 			fee: '[0-9].[0-9]{1,2}',
-			inception: 'July 24, 2025',
+			inception: 'October 23, 2025',
 		});
 	});
 });

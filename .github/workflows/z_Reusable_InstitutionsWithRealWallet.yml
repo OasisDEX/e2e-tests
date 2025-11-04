@@ -1,4 +1,4 @@
-name: Reusable Workflow - Institutions - No wallet
+name: Reusable Workflow - Institutions - With real wallet
 
 on: 
   workflow_call:
@@ -11,20 +11,24 @@ on:
       script:
         description: 'package.json scrip to be run'
         type: string
-        default: 'ci:institutions-no-wallet'
+        default: 'ci:institutions-with-real-wallet'
         required: false
       report_name:
         description: 'playwright report name'
         type: string
-        default: 'institutions-no-wallet'
+        default: 'institutions-real-wallet'
         required: false
     secrets:
-      MAILINATOR_TOKEN:
+      TENDERLY_PROJECT:
+        required: true
+      TENDERLY_USER:
+        required: true
+      TENDERLY_ACCESS_KEY:
         required: true
 
 jobs:
-  institutions-no-wallet:
-    name: 'Institutions - No wallet'
+  institutions-with-real-wallet:
+    name: 'Institutions - Tests with real wallet'
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-jammy
@@ -40,9 +44,16 @@ jobs:
       - name: Verify that staging environment is ready for testing
         if: ${{ inputs.base_url == 'https://institutions.staging.summer.fi' }}
         run: xvfb-run yarn verify-staging-institutions
-      - name: Run tests (with parameters)
-        if: inputs.base_url
+      - name: Build Synpress cache
         run: |
+          BASE_URL=${{ inputs.base_url }} \
+          VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:real-wallet
+      - name: Run 'Institutions - With real wallet' tests
+        run: |
+          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           INSTITUTIONS_ADMIN_USERNAME=${{ secrets.INSTITUTIONS_ADMIN_USERNAME }} \
           INSTITUTIONS_ADMIN_PASSWORD=${{ secrets.INSTITUTIONS_ADMIN_PASSWORD }} \
           INSTITUTIONS_ADMIN_MFA_USERNAME=${{ secrets.INSTITUTIONS_ADMIN_MFA_USERNAME }} \
@@ -53,18 +64,7 @@ jobs:
           INSTITUTIONS_CLIENT_MFA_PASSWORD=${{ secrets.INSTITUTIONS_CLIENT_MFA_PASSWORD }} \
           INSTITUTIONS_CLIENT_ROLEADMIN_USERNAME=${{ secrets.INSTITUTIONS_CLIENT_ROLEADMIN_USERNAME }} \
           INSTITUTIONS_CLIENT_ROLEADMIN_PASSWORD=${{ secrets.INSTITUTIONS_CLIENT_ROLEADMIN_PASSWORD }} \
-          BASE_URL=${{ inputs.base_url }} yarn ${{ inputs.script }}
-      - name: Run tests (without parameters)
-        if: ${{ ! inputs.base_url }}
-        run: |
-          INSTITUTIONS_ADMIN_USERNAME=${{ secrets.INSTITUTIONS_ADMIN_USERNAME }} \
-          INSTITUTIONS_ADMIN_PASSWORD=${{ secrets.INSTITUTIONS_ADMIN_PASSWORD }} \
-          INSTITUTIONS_CLIENT_USERNAME=${{ secrets.INSTITUTIONS_CLIENT_USERNAME }} \
-          INSTITUTIONS_CLIENT_PASSWORD=${{ secrets.INSTITUTIONS_CLIENT_PASSWORD }} \
-          INSTITUTIONS_CLIENT_MFA_USERNAME=${{ secrets.INSTITUTIONS_CLIENT_MFA_USERNAME }} \
-          INSTITUTIONS_CLIENT_MFA_PASSWORD=${{ secrets.INSTITUTIONS_CLIENT_MFA_PASSWORD }} \
-          INSTITUTIONS_ADMIN_MFA_USERNAME=${{ secrets.INSTITUTIONS_ADMIN_MFA_USERNAME }} \
-          INSTITUTIONS_ADMIN_MFA_PASSWORD=${{ secrets.INSTITUTIONS_ADMIN_MFA_PASSWORD }} \
+          BASE_URL=${{ inputs.base_url }} \
           yarn ${{ inputs.script }}
       - uses: actions/upload-artifact@v4
         if: always()
