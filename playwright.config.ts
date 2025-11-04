@@ -95,6 +95,15 @@ const defaultConfig: PlaywrightTestConfig = {
 		},
 
 		{
+			name: 'institutions-real-wallet',
+			testDir: './testsInstitutions/withRealWallet',
+			use: {
+				baseURL: institutionsBaseUrl,
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
 			name: 'lazy',
 			testDir: './testsEarnProtocol',
 			testIgnore: 'production/**',

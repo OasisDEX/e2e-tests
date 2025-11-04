@@ -5,10 +5,16 @@ on:
     - cron:  '0 1 * * 1-5'
 
 jobs:
-  institutions-tests:
+  institutions-no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_InstitutionsNoWallet.yml
     with:
       script: ci:institutions-no-wallet
+    secrets: inherit
+
+  institutions-real-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_InstitutionsWithRealWallet.yml
+    with:
+      script: ci:institutions-with-real-wallet
     secrets: inherit
 
   lazy-no-wallet-tests:

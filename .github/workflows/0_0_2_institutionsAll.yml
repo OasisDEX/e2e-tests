@@ -1,0 +1,25 @@
+name: 0.0.2. Lazy - Institutions - All
+
+on: 
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on.'
+        type: string
+        default: 'https://institutions.staging.summer.fi'
+        required: true
+
+jobs:
+  institutions-tests:
+    uses: ./.github/workflows/z_Reusable_InstitutionsNoWallet.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      script: ci:institutions-no-wallet
+    secrets: inherit
+
+  institutions-real-wallet-tests:
+    uses: ./.github/workflows/z_Reusable_InstitutionsWithRealWallet.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      script: ci:institutions-with-real-wallet
+    secrets: inherit
