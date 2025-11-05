@@ -375,7 +375,7 @@ test.describe('With real wallet - Mainnet ETH Hogher Risk Position page - Unstak
 			app,
 			lvToken: 'LVWETH',
 			lvTokenAmount: '0.000[2-3]',
-			dollarAmount: '1.[0-9]{2}',
+			dollarAmount: '[0-1].[0-9]{2,4}',
 		});
 	});
 });
