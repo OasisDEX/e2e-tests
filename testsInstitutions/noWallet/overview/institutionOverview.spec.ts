@@ -1,5 +1,6 @@
 import { test } from '#institutionsNoWalletFixtures';
 import { signIn } from 'srcInstitutions/utils/signIn';
+import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Client dashboard - Overview - Institution overview', async () => {
 	test.beforeEach(async ({ app }) => {
@@ -14,6 +15,7 @@ test.describe('Client dashboard - Overview - Institution overview', async () => 
 
 	test('It should view a vault', async ({ app }) => {
 		await app.clientDashboard.overview.institutionOverview.viewVault('Summer USDC Base Vault');
+		await app.clientDashboard.vaults.shouldBeVisible({ timeout: expectDefaultTimeout * 2 });
 
 		await app.clientDashboard.vaults.shouldHaveVaultHeader({
 			name: 'USDC Base ACME',

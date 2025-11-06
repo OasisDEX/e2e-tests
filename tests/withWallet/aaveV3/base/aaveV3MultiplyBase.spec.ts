@@ -14,7 +14,6 @@ let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(baseSetup));
 
-// SKIP - Failing and getting stuck in Nightly run
 test.describe('Aave v3 Multiply - Base - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(extremelyLongTestTimeout);
