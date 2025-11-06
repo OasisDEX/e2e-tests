@@ -9,6 +9,7 @@ import { RiskParameters } from './riskParameters';
 import { RoleAdmin } from './roleAdmin';
 import { VaultExposure } from './vaultExposure';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
+import { expectDefaultTimeout } from 'utils/config';
 
 type Panels =
 	| 'Overview'
@@ -55,11 +56,11 @@ export class Vaults {
 	}
 
 	@step
-	async shouldBeVisible() {
+	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(
 			this.panelLocator.locator('[class*="VaultsDropdownWrapper_contentWrapper_"]').first(),
 			'Vaults dropdown should be visible'
-		).toBeVisible();
+		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 
 		await expect(
 			this.panelLocator.getByRole('button', { name: 'Vault exposure' }),
