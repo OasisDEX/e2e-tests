@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 import { ClaimAndDelegate } from './claimAndDelegate';
 import { expect, step } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
@@ -8,9 +8,14 @@ export class Rewards {
 
 	readonly claimAndDelegate: ClaimAndDelegate;
 
+	readonly priceLocator: Locator;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.claimAndDelegate = new ClaimAndDelegate(page);
+		this.priceLocator = page
+			.locator('[class*="PortfolioRewardsCardsV2_"]')
+			.filter({ has: page.getByText('$SUMR Price', { exact: true }) });
 	}
 
 	@step
@@ -34,5 +39,29 @@ export class Rewards {
 				exact: true,
 			})
 			.click();
+	}
+
+	@step
+	async shoulHaveSumrPrice({
+		price,
+		marketCap,
+		valuation,
+		holders,
+		sevenDaysTrend,
+		thirtyDaysTrend,
+		ninetyDaysTrend,
+	}: {
+		price?: string;
+		marketCap?: string;
+		valuation?: string;
+		holders?: string;
+		sevenDaysTrend?: string;
+		thirtyDaysTrend?: string;
+		ninetyDaysTrend?: string;
+	}) {
+		if (price) {
+			const regExp = new RegExp(`\\$${price}.*SUMR/USD`);
+			await expect(this.priceLocator.getByText('SUMR/USD')).toContainText(regExp);
+		}
 	}
 }
