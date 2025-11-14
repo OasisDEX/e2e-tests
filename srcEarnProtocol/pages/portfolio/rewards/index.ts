@@ -63,5 +63,62 @@ export class Rewards {
 			const regExp = new RegExp(`\\$${price}.*SUMR/USD`);
 			await expect(this.priceLocator.getByText('SUMR/USD')).toContainText(regExp);
 		}
+
+		if (marketCap) {
+			const regExp = new RegExp(`\\$${marketCap}`);
+			await expect(
+				this.priceLocator
+					.locator('[class*="_sumrPriceDataBlock_"]')
+					.filter({ hasText: 'Market Cap' })
+			).toContainText(regExp);
+		}
+
+		if (valuation) {
+			const regExp = new RegExp(`\\$${valuation}`);
+			await expect(
+				this.priceLocator
+					.locator('[class*="_sumrPriceDataBlock_"]')
+					.filter({ hasText: 'Fully Diluted Valuation' })
+			).toContainText(regExp);
+		}
+
+		if (holders) {
+			const regExp = new RegExp(holders);
+			await expect(
+				this.priceLocator
+					.locator('[class*="_sumrPriceDataBlock_"]')
+					.filter({ hasText: 'SUMR Holders' })
+			).toContainText(regExp);
+		}
+
+		if (sevenDaysTrend) {
+			const regExp = new RegExp(`${sevenDaysTrend}%`);
+			await expect(
+				this.priceLocator.locator('[class*="_sumrPriceDataBlock_"]').filter({ hasText: '7d Trend' })
+			).toContainText(regExp);
+		}
+
+		if (thirtyDaysTrend) {
+			const regExp = new RegExp(`${thirtyDaysTrend}%`);
+			await expect(
+				this.priceLocator
+					.locator('[class*="_sumrPriceDataBlock_"]')
+					.filter({ hasText: '30d Trend' })
+			).toContainText(regExp);
+		}
+
+		if (ninetyDaysTrend) {
+			const regExp = new RegExp(`${ninetyDaysTrend}%`);
+			await expect(
+				this.priceLocator
+					.locator('[class*="_sumrPriceDataBlock_"]')
+					.filter({ hasText: '90d Trend' })
+			).toContainText(regExp);
+		}
+	}
+
+	@step
+	async buySumr() {
+		await this.priceLocator.getByRole('link', { name: 'Buy SUMR' }).click();
 	}
 }
