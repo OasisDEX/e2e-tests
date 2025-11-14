@@ -48,7 +48,7 @@ jobs:
         run: |
           BASE_URL=${{ inputs.base_url }} \
           VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:real-wallet
+          yarn ci:synpress-build-cache:real-wallet:all-but-optimism
       - name: Run 'Institutions - With real wallet' tests
         run: |
           TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
