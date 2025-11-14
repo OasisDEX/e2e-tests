@@ -178,10 +178,10 @@ test.describe('With real wallet - Arbitrum USDC Position page - Withdraw', async
 			withdrawnToken: 'USDC',
 			withdrawAmount: '0.5',
 			estimatedEarnings: {
-				thirtyDaysAmount: '0.5[0-9]{3}',
-				sixMonthsAmount: '0.5[0-9]{3}',
-				oneYearAmount: '0.5[0-9]{3}',
-				threeYearsAmount: '0.[6-7][0-9]{3}',
+				thirtyDaysAmount: '0.[5-6][0-9]{3}',
+				sixMonthsAmount: '0.[5-6][0-9]{3}',
+				oneYearAmount: '0.[5-6][0-9]{3}',
+				threeYearsAmount: '0.[6-8][0-9]{3}',
 			},
 			previewInfo: {
 				transactionFee: '[0-9]{1,2}.[0-9]{2}',

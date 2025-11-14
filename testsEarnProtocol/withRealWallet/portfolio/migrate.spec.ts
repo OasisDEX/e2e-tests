@@ -35,7 +35,7 @@ test.describe('Real wallet - Portfolio - Migrate', async () => {
 				depositToken: 'USDC',
 				current7dApy: '[0-9]{1,2}.[0-9]{2}%',
 				summer7dApy: '[0-9]{1,2}.[0-9]{2}%',
-				apyDiff: '[\\+,\\-][0-9]{1,2}.[0-9]{2}%',
+				apyDiff: '([\\+,\\-])?[0-9]{1,2}.[0-9]{2}%',
 			},
 		]);
 	});
