@@ -1,6 +1,7 @@
 import { expect, test } from '#earnProtocolFixtures';
 
-test.describe('Vault page - Arbitrum USDC', async () => {
+// SKIP Arbitrum USDC vault until sUSDx issue is totally fixed and vault is fully back
+test.describe.skip('Vault page - Arbitrum USDC', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
 
@@ -38,8 +39,7 @@ test.describe('Vault page - Arbitrum USDC', async () => {
 		await app.vaultPage.exposure.shouldNotHaveDuplicatedStrategyNames();
 	});
 
-	// SKIP -- sUSDS SILO ark set toAPY = 0.00% (temporarily ???)
-	test.skip('It should not have 0.00% APY for any arks', async ({ app }) => {
+	test('It should not have 0.00% APY for any arks', async ({ app }) => {
 		await app.vaultPage.exposure.shouldNotHaveStrategyApysEqualToZero();
 	});
 });
