@@ -8,7 +8,8 @@ import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
-test.describe('With real wallet - Arbitrum USDC Position page - Deposit', async () => {
+// SKIP Arbitrum USDC vault until sUSDx issue is totally fixed and vault is fully back
+test.describe.skip('With real wallet - Arbitrum USDC Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 110_000);
@@ -126,7 +127,8 @@ test.describe('With real wallet - Arbitrum USDC Position page - Deposit', async 
 	});
 });
 
-test.describe('With real wallet - Arbitrum USDC Position page - Withdraw', async () => {
+// SKIP Arbitrum USDC vault until sUSDx issue is totally fixed and vault is fully back
+test.describe.skip('With real wallet - Arbitrum USDC Position page - Withdraw', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
@@ -190,7 +192,8 @@ test.describe('With real wallet - Arbitrum USDC Position page - Withdraw', async
 	});
 });
 
-test.describe('With real wallet - Arbitrum USDC Position page - Switch', async () => {
+// SKIP Arbitrum USDC vault until sUSDx issue is totally fixed and vault is fully back
+test.describe.skip('With real wallet - Arbitrum USDC Position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 

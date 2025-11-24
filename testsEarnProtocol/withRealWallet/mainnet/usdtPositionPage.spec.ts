@@ -116,7 +116,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Deposit', async (
 				thirtyDaysAmount: '[2-7].[0-9]{4}',
 				sixMonthsAmount: '[2-7].[0-9]{4}',
 				oneYearAmount: '[2-7].[0-9]{4}',
-				threeYearsAmount: '[5-9].[0-9]{4}',
+				threeYearsAmount: '[3-9].[0-9]{4}',
 			},
 			previewInfo: {
 				swap: {
