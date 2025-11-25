@@ -18,10 +18,11 @@ export class InstitutionOverview {
 
 	@step
 	async shouldBeVisible() {
-		await expect(
-			this.panelLocator.locator('[class*="AumChart"] svg').first(),
-			'AUM chart should be visible'
-		).toBeVisible();
+		// SKIP -- Section removed from UI
+		// await expect(
+		// 	this.panelLocator.locator('[class*="AumChart"] svg').first(),
+		// 	'AUM chart should be visible'
+		// ).toBeVisible();
 
 		await expect(
 			this.panelLocator.getByText('Your Vaults', { exact: true }),
@@ -35,6 +36,7 @@ export class InstitutionOverview {
 			name: string;
 			value?: string;
 			thirtyDayAPY?: string;
+			nav?: string;
 		}[]
 	) {
 		for (const vault of vaults) {
@@ -51,6 +53,14 @@ export class InstitutionOverview {
 				await expect(
 					this.vaultLocator(vault.name).getByRole('cell').nth(2),
 					`Should have ${vault.thirtyDayAPY}${vault.thirtyDayAPY === '-' ? '' : '%'} 30d APY`
+				).toContainText(regExp);
+			}
+
+			if (vault.nav) {
+				const regExp = new RegExp(vault.nav);
+				await expect(
+					this.vaultLocator(vault.name).getByRole('cell').nth(3),
+					`Should have ${vault.nav} NAV`
 				).toContainText(regExp);
 			}
 		}

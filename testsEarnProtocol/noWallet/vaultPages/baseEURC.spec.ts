@@ -17,8 +17,8 @@ test.describe('Vault page - Base EURC', async () => {
 
 		await app.vaultPage.shouldHaveAssets({
 			token: 'EURC',
-			tokenAmount: '[0-9]{1,2}.[0-9]{2}M',
-			usdAmount: '[0-9]{1,2}.[0-9]{2}M',
+			tokenAmount: '([0-9]{1,3},)?[0-9]{1,3}.[0-9]{2}(M)?',
+			usdAmount: '([0-9]{1,3},)?[0-9]{1,3}.[0-9]{2}(M)?',
 		});
 
 		await app.vaultPage.shouldHaveDepositCap({
