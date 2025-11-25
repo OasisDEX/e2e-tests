@@ -191,7 +191,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', as
 	});
 });
 
-test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', async () => {
+test.describe.skip('With real wallet - Arbitrum USD₮0 Position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 

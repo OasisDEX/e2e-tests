@@ -14,11 +14,11 @@ import { expectDefaultTimeout } from 'utils/config';
 type Panels =
 	| 'Overview'
 	| 'Vault exposure'
-	| 'Asset relocation'
 	| 'Risk Parameters'
-	| 'Role admin'
-	| 'Client admin'
 	| 'Fee & revenue admin'
+	| 'Asset reallocation'
+	| 'Role admin'
+	| 'User admin'
 	| 'Activity';
 
 export class Vaults {
@@ -64,7 +64,7 @@ export class Vaults {
 
 		await expect(
 			this.panelLocator.getByRole('button', { name: 'Vault exposure' }),
-			'"Vault exposure" panel should be visible'
+			'"Vault exposure" menu option should be visible'
 		).toBeVisible();
 	}
 
@@ -89,6 +89,7 @@ export class Vaults {
 	async shouldHaveVaultHeader({
 		name,
 		asset,
+		liveApy,
 		nav,
 		aum,
 		fee,
@@ -96,12 +97,15 @@ export class Vaults {
 	}: {
 		name?: string;
 		asset?: EarnTokens;
+		liveApy?: string;
 		nav?: string;
 		aum?: string;
 		fee?: string;
 		inception?: string;
 	}) {
-		const fieldLocator = (fieldName: 'Name' | 'Asset' | 'NAV' | 'AUM' | 'Fee' | 'Inception') =>
+		const fieldLocator = (
+			fieldName: 'Name' | 'Asset' | 'Live APY' | 'NAV' | 'AUM' | 'Fee' | 'Inception'
+		) =>
 			this.page
 				.locator('[class*="DashboardVaultHeader_dataBlockWrapper_"]')
 				.filter({ hasText: fieldName });
@@ -112,6 +116,13 @@ export class Vaults {
 
 		if (asset) {
 			await expect(fieldLocator('Asset'), `Should have Asset: ${asset}`).toContainText(asset);
+		}
+
+		if (liveApy) {
+			const regExp = new RegExp(`${liveApy}%`);
+			await expect(fieldLocator('Live APY'), `Should have Live APY: ${liveApy}`).toContainText(
+				regExp
+			);
 		}
 
 		if (nav) {
@@ -126,7 +137,10 @@ export class Vaults {
 
 		if (fee) {
 			const regExp = new RegExp(`${fee}%`);
-			await expect(fieldLocator('Fee'), `Should have Fee: ${fee}%`).toContainText(regExp);
+			await expect(
+				fieldLocator('Fee'),
+				`Should have Fee: ${fee}${fee === 'n/a' ? '' : '%'}`
+			).toContainText(fee === 'n/a' ? fee : regExp);
 		}
 
 		if (inception) {

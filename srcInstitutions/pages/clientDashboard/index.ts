@@ -92,7 +92,7 @@ export class ClientDashboard {
 			const regExp = new RegExp(`${thirtyDayAPY}%`);
 
 			await expect(
-				itemLocator('30d ave APY'),
+				itemLocator('30d avg APY'),
 				`30d average APY should be ${thirtyDayAPY}%`
 			).toContainText(regExp);
 		}
@@ -103,7 +103,7 @@ export class ClientDashboard {
 			await expect(
 				itemLocator('All time performance'),
 				`All time performance should be +${allTimePerformance}%`
-			).toContainText(regExp);
+			).toContainText(allTimePerformance === 'n/a' ? allTimePerformance : regExp);
 		}
 	}
 
