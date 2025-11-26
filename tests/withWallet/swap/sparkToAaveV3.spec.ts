@@ -6,11 +6,12 @@ import {
 
 (
 	[
-		{
-			pool: 'SDAI-ETH',
-			positionType: 'borrow',
-			targetPools: [{ colToken: 'WBTC', debtToken: 'ETH' }],
-		},
+		// NO SDAI liquidity
+		// {
+		// 	pool: 'SDAI-ETH',
+		// 	positionType: 'borrow',
+		// 	targetPools: [{ colToken: 'WBTC', debtToken: 'ETH' }],
+		// },
 		// BUG for swapping to WSTETH/CBETH - https://www.notion.so/oazo/144cbc0395cb478a8b81cff326740123?v=2bb430cfe8ca41ff9f6dde3b129ac0fb&p=1528cbaf47f880e39584dd5c7e56d54f&pm=s
 		// {
 		// 	pool: 'WSTETH-DAI',
