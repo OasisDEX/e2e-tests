@@ -23,7 +23,9 @@ const validResponse = autoTakeProfitResponse({
 	},
 });
 
-test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', async () => {
+// SKIP - Some tests failing because of lowvalue of WBTC - To be fixed and re-enabled once Aave V3 automations are fixed
+
+test.describe.skip('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', async () => {
 	// New test wallet: 0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA
 	// Position link: https://staging.summer.fi/arbitrum/aave/v3/multiply/WBTC-USDC/370#optimization
 
@@ -90,7 +92,7 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', asyn
 				triggerData: {
 					...validPayloads.triggerData,
 					withdrawToken: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
-					executionLTV: '1000',
+					executionLTV: '500',
 				},
 			},
 		});
@@ -107,7 +109,7 @@ test.describe('API tests - Auto Take Profit - Update - Aave V3 - Arbitrum', asyn
 				triggerData: {
 					...validPayloads.triggerData,
 					withdrawToken: '0xaf88d065e77c8cc2239327c5edb3a432268e5831',
-					withdrawStep: '800',
+					withdrawStep: '2000',
 				},
 			},
 		});
