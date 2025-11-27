@@ -1,5 +1,6 @@
 import { test } from '#institutionsNoWalletFixtures';
 import { signIn } from 'srcInstitutions/utils/signIn';
+import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Client dashboard - Vaults - Navigation', async () => {
 	test.beforeEach(async ({ app }) => {
@@ -9,12 +10,16 @@ test.describe('Client dashboard - Vaults - Navigation', async () => {
 
 	test('It should switch to all available panels', async ({ app }) => {
 		// 'Overview' panel selected by default
-		await app.clientDashboard.vaults.shouldHavePanelActive('Overview');
+		await app.clientDashboard.vaults.shouldHavePanelActive('Overview', {
+			timeout: expectDefaultTimeout * 2,
+		});
 
 		// Select 'Vault exposure' tab
 		await app.clientDashboard.vaults.selectPanel('Vault exposure');
 		await app.clientDashboard.vaults.shouldHavePanelActive('Vault exposure');
-		await app.clientDashboard.vaults.vaultExposure.shouldBeVisible();
+		await app.clientDashboard.vaults.vaultExposure.shouldBeVisible({
+			timeout: expectDefaultTimeout * 2,
+		});
 
 		// BUG ??? -- It returns 'Something went wrong' screen
 

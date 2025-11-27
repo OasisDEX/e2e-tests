@@ -1,5 +1,6 @@
 import { expect, step } from '#institutionsNoWalletFixtures';
 import { Page } from '@playwright/test';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class VaultExposure {
 	readonly page: Page;
@@ -9,11 +10,11 @@ export class VaultExposure {
 	}
 
 	@step
-	async shouldBeVisible() {
+	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(
 			this.page.getByRole('heading', { name: 'Vault exposure' }),
 			'"Vault exposure" header should be visible'
-		).toBeVisible();
+		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
 	@step
