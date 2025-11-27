@@ -74,10 +74,10 @@ export class Vaults {
 	}
 
 	@step
-	async shouldHavePanelActive(panel: Panels) {
+	async shouldHavePanelActive(panel: Panels, args?: { timeout: number }) {
 		await expect(
 			this.panelLocator.getByRole('button', { name: panel }).locator('div').first()
-		).toHaveClass(/_activeButtonText_/);
+		).toHaveClass(/_activeButtonText_/, { timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
 	@step
