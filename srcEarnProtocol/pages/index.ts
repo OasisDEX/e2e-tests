@@ -7,7 +7,9 @@ import { Migrate } from './migrate';
 import { Portfolio } from './portfolio';
 import { PositionPage } from './positionPage';
 import { RebalancingActivity } from './rebalancingActivity';
+import { Staking } from './staking';
 import { Sumr } from './sumr';
+import { Team } from './team';
 import { UserActivity } from './userActivity';
 import { VaultPage } from './vaultPage';
 import { YieldTrend } from './yieldTrend';
@@ -22,7 +24,9 @@ export {
 	Portfolio,
 	PositionPage,
 	RebalancingActivity,
+	Staking,
 	Sumr,
+	Team,
 	UserActivity,
 	VaultPage,
 	YieldTrend,

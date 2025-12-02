@@ -6,7 +6,8 @@ import { expect } from '#earnProtocolFixtures';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
 
-test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
+// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
+test.describe.skip('Real wallet - Portfolio - SUMR rewards', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 45_000);

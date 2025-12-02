@@ -23,7 +23,7 @@ test.describe('With real wallet - $SUMR page @regression', async () => {
 	test.skip('It should claim $SUMR', async ({ app }) => {
 		await app.sumr.viewYourAddress();
 
-		await app.portfolio.shoulBeVisible();
+		await app.portfolio.shouldBeVisible();
 		await app.portfolio.shouldShowWalletAddress('0x1064...4743f', {
 			timeout: expectDefaultTimeout * 2,
 		});

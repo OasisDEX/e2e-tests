@@ -4,7 +4,8 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('Bridge Mainnet SUMR tokens', async () => {
+// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
+test.describe.skip('Bridge Mainnet SUMR tokens', async () => {
 	test.beforeEach(async ({ metamask, app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 25_000);
 

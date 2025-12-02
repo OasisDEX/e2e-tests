@@ -127,7 +127,7 @@ test.describe('With real wallet - Earn page', async () => {
 		});
 	});
 
-	test('It should SUMR available to stake', async ({ app }) => {
+	test('It should show SUMR available to stake', async ({ app }) => {
 		await app.earn.sumrBlockShouldHave({
 			sumrRewardApy: '[0-9]{1,2}.[0-9]{2}',
 			availableToStake: { sumrAmount: '[1-3].[0-9]{2,4}(K)?', usdAmount: '[0-9]{1,3}.[0-9]{2,4}' },
@@ -135,11 +135,9 @@ test.describe('With real wallet - Earn page', async () => {
 		});
 	});
 
-	test('It should redirect to "Portfolio > Rewards tab"', async ({ app }) => {
+	test('It should redirect to "Staking" page', async ({ app }) => {
 		await app.earn.openSumrRewardsTab();
 
-		await app.portfolio.shoulBeVisible();
-		await app.portfolio.shouldHaveTabHighlighted('SUMR Rewards');
-		await app.portfolio.rewards.shouldBeVisible();
+		await app.staking.shouldBeVisible();
 	});
 });

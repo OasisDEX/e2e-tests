@@ -75,7 +75,8 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposi
 		});
 	});
 
-	test('It should deposit ETH, WETH & USDC (until rejecting "Deposit" tx) - Mainnet ETH Higher Risk position', async ({
+	// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
+	test.skip('It should deposit ETH, WETH & USDC (until rejecting "Deposit" tx) - Mainnet ETH Higher Risk position', async ({
 		app,
 		metamask,
 	}) => {

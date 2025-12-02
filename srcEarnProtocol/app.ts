@@ -11,7 +11,9 @@ import {
 	Portfolio,
 	PositionPage,
 	RebalancingActivity,
+	Staking,
 	Sumr,
+	Team,
 	UserActivity,
 	VaultPage,
 	YieldTrend,
@@ -44,7 +46,11 @@ export class App {
 
 	readonly rebalancingActivity: RebalancingActivity;
 
+	readonly staking: Staking;
+
 	readonly sumr: Sumr;
+
+	readonly team: Team;
 
 	readonly userActivity: UserActivity;
 
@@ -65,7 +71,9 @@ export class App {
 		this.portfolio = new Portfolio(page);
 		this.positionPage = new PositionPage(page);
 		this.rebalancingActivity = new RebalancingActivity(page);
+		this.staking = new Staking(page);
 		this.sumr = new Sumr(page);
+		this.team = new Team(page);
 		this.userActivity = new UserActivity(page);
 		this.vaultPage = new VaultPage(page);
 		this.yieldTrend = new YieldTrend(page);

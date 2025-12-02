@@ -69,7 +69,7 @@ export class Portfolio {
 	}
 
 	@step
-	async shoulBeVisible(args?: { timeout: number }) {
+	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(
 			this.page.getByRole('heading', { name: 'Portfolio' }),
 			'"Portfolio" header shouldbe visible'
@@ -85,7 +85,7 @@ export class Portfolio {
 	async open(wallet: string) {
 		await expect(async () => {
 			await this.page.goto(`/earn/portfolio/${wallet}`);
-			await this.shoulBeVisible({ timeout: expectDefaultTimeout * 3 });
+			await this.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 		}).toPass();
 	}
 

@@ -2,11 +2,11 @@ import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 
 export type ExplorePages =
-	| '$SUMR token'
 	| 'User Activity'
 	| 'Rebalancing Activity'
 	| 'Yield Trend'
-	| 'Institutions';
+	| 'Institutions'
+	| 'Team';
 
 export class Explore {
 	readonly page: Page;
