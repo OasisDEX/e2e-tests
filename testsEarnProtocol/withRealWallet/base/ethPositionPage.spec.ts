@@ -78,7 +78,8 @@ test.describe('With real wallet - Base ETH Position page - Deposit', async () =>
 		});
 	});
 
-	test('It should deposit ETH & USDS - (until rejecting "Deposit" tx) - Base ETH position page', async ({
+	// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
+	test.skip('It should deposit ETH & USDS - (until rejecting "Deposit" tx) - Base ETH position page', async ({
 		app,
 		metamask,
 	}) => {

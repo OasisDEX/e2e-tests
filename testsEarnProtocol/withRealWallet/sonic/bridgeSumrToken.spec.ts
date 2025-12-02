@@ -4,7 +4,8 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
 
-test.describe('Bridge Sonic SUMR tokens', async () => {
+// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
+test.describe.skip('Bridge Sonic SUMR tokens', async () => {
 	test.beforeEach(async ({ metamask, app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 100_000);
 

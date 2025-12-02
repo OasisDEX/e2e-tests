@@ -16,11 +16,6 @@ test.describe('Header @regression', async () => {
 		await app.page.waitForTimeout(1_000);
 
 		await app.header.explore.open();
-		await app.header.explore.select('$SUMR token');
-		await app.page.mouse.move(200, 0);
-		await app.sumr.shouldBeVisible();
-
-		await app.header.explore.open();
 		await app.header.explore.select('User Activity');
 		await app.page.mouse.move(200, 0);
 		await app.userActivity.shouldBeVisible();
@@ -32,8 +27,13 @@ test.describe('Header @regression', async () => {
 
 		await app.header.explore.open();
 		await app.header.explore.select('Institutions');
-		await app.page.mouse.move(200, 0);
+		// await app.page.mouse.move(200, 0);
 		await app.institutions.shouldBeVisible();
+
+		await app.header.explore.open();
+		await app.header.explore.select('Team');
+		await app.page.mouse.move(200, 0);
+		await app.team.shouldBeVisible();
 	});
 
 	test('It should open "Support" pages', async ({ app }) => {

@@ -170,7 +170,8 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Withdr
 		});
 	});
 
-	test('It should withdraw to USDC - (until rejecting "Withdraw" tx) - Mainnet USDC Lower Risk position page', async ({
+	// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
+	test.skip('It should withdraw to USDC - (until rejecting "Withdraw" tx) - Mainnet USDC Lower Risk position page', async ({
 		app,
 		metamask,
 	}) => {
