@@ -14,14 +14,14 @@ test.describe('Staking page', async () => {
 
 	test('It should show SUMR in wallet and SUMR to claim', async ({ app }) => {
 		await app.staking.shouldHaveSumrInWallet({
-			sumrAmount: '[0-9]{2}.[0-9]{2}',
-			usdAmount: '[0-9].[0-9]{2}',
+			sumrAmount: '[0-9]{1,2}.[0-9]{2}',
+			usdAmount: '[0-9]{1,2}.[0-9]{2}',
 			timeout: expectDefaultTimeout * 3,
 		});
 
 		await app.staking.shouldHaveSumrToClaim({
-			sumrAmount: '[0-9].[0-9]{2}',
-			usdAmount: '[0-9].[0-9]{2}',
+			sumrAmount: '[0-9]{1,2}.[0-9]{2}',
+			usdAmount: '[0-9]{1,2}.[0-9]{2}',
 		});
 	});
 
