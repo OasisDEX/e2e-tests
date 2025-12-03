@@ -24,7 +24,10 @@ test.describe('Portfolio @regression', async () => {
 		}).toPass();
 	});
 
-	test('It should show Position info - Base ETH and Mainnet ETH HR positions', async ({ app }) => {
+	// SKIP --> Enable once SUMR token deployed to staging again - Currently with BUMMER
+	test.skip('It should show Position info - Base ETH and Mainnet ETH HR positions', async ({
+		app,
+	}) => {
 		await expect(async () => {
 			await app.portfolio.open('0xdb6e9e7390e9acc34619e56efa48ade01cff6f12');
 			await app.portfolio.shouldShowPositionData({
