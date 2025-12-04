@@ -16,7 +16,7 @@ export class Staking {
 	@step
 	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(
-			this.page.getByText('Stake your SUMR and earn real USD yield'),
+			this.page.getByText('Stake your SUMR and earn real USDC yield'),
 			'"Stake your SUMR and ..." header should be visible'
 		).toBeVisible({
 			timeout: args?.timeout ?? expectDefaultTimeout,
@@ -120,7 +120,7 @@ export class Staking {
 		usdPerYear: string;
 		timeout?: number;
 	}) {
-		const yieldOneLocator = this.page
+		const yieldTwoLocator = this.page
 			.locator('[class*="_cardDataBlock_"]')
 			.filter({ has: this.page.locator('[class*="_yieldSourceLabel_"]') })
 			.last();
@@ -128,7 +128,45 @@ export class Staking {
 		const regExp = new RegExp(
 			`SUMR Staking APY.*up to.*${percentage}%.*Up to ${sumrPerYear} \\$SUMR\\/Year \\(\\$${usdPerYear}\\)`
 		);
-		await expect(yieldOneLocator).toContainText(regExp, {
+		await expect(yieldTwoLocator).toContainText(regExp, {
+			timeout: timeout ?? expectDefaultTimeout,
+		});
+	}
+
+	@step
+	async shouldHaveAnnualizedRevenue({
+		usdAmount,
+		sumrTvl,
+		timeout,
+	}: {
+		usdAmount: string;
+		sumrTvl: string;
+		timeout?: number;
+	}) {
+		const elementLocator = this.page
+			.locator('[class*="_cardDataBlock_"]')
+			.filter({ has: this.page.getByText('Lazy Summer Annualized Revenue') });
+
+		const regExp = new RegExp(`\\$${usdAmount}.*${sumrTvl}.*Lazy Summer TVL`);
+		await expect(elementLocator).toContainText(regExp, {
+			timeout: timeout ?? expectDefaultTimeout,
+		});
+	}
+
+	@step
+	async shouldHaveSharePaidToStakers({
+		usdAmount,
+		timeout,
+	}: {
+		usdAmount: string;
+		timeout?: number;
+	}) {
+		const elementLocator = this.page
+			.locator('[class*="_cardDataBlock_"]')
+			.filter({ has: this.page.getByText('Revenue share paid to Stakers') });
+
+		const regExp = new RegExp(`20%.*\\$${usdAmount}.*a year`);
+		await expect(elementLocator).toContainText(regExp, {
 			timeout: timeout ?? expectDefaultTimeout,
 		});
 	}

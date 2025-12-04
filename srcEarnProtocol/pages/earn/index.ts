@@ -85,7 +85,7 @@ export class Earn {
 		}
 
 		if (usdcYield?.maxUsdPerYear) {
-			const regExp = new RegExp(`\\$.*${usdcYield.maxUsdPerYear}.*/ year`);
+			const regExp = new RegExp(`\\$.*${usdcYield.maxUsdPerYear}.*/ Year`);
 			await expect(
 				this.sumrBlockLocator.getByText('USDC Yield').locator('xpath=//following-sibling::*[2]')
 			).toContainText(regExp);

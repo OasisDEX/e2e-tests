@@ -39,4 +39,17 @@ test.describe('Staking page', async () => {
 			usdPerYear: '0.00',
 		});
 	});
+
+	test('It should show Annualized Revenue andShare paid to Stakers', async ({ app }) => {
+		await app.staking.shouldHaveAnnualizedRevenue({
+			usdAmount: '[0-9]{1,2}.[0-9]{2}M',
+			sumrTvl: '[0-9]{2,3}M',
+			timeout: expectDefaultTimeout * 3,
+		});
+
+		await app.staking.shouldHaveSharePaidToStakers({
+			usdAmount: '[0-9].[0-9]{2}M',
+			timeout: expectDefaultTimeout * 3,
+		});
+	});
 });
