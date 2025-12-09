@@ -13,6 +13,7 @@ test.describe('Client dashboard - Vaults - Navigation', async () => {
 		await app.clientDashboard.vaults.shouldHavePanelActive('Overview', {
 			timeout: expectDefaultTimeout * 2,
 		});
+		await app.clientDashboard.vaults.overview.shouldBeVisible();
 
 		// Select 'Vault exposure' tab
 		await app.clientDashboard.vaults.selectPanel('Vault exposure');
