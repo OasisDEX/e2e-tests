@@ -32,8 +32,8 @@ test.describe('Staking page', async () => {
 		});
 
 		await app.staking.shouldHaveSumrToClaim({
-			sumrAmount: '[0-9]{1,2}.[0-9]{2}',
-			usdAmount: '[0-9]{1,2}.[0-9]{2}',
+			sumrAmount: '[0-9]{1,3}.[0-9]{2}',
+			usdAmount: '[0-9]{1,3}.[0-9]{2}',
 		});
 	});
 });

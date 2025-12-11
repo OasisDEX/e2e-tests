@@ -20,7 +20,6 @@ test.describe('Staking > Manage page', async () => {
 
 	test('It should stake SUMR - No lockup - Until tx approval', async ({ app, metamask }) => {
 		await app.staking.manage.sumrAmountToStake('10');
-		await app.staking.manage.acceptPenaltyWarning();
 		await app.staking.manage.approveSumr();
 
 		await metamask.rejectTransaction();
