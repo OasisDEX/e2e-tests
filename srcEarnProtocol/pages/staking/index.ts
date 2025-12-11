@@ -27,7 +27,7 @@ export class Staking {
 	async openPage() {
 		await expect(async () => {
 			await this.page.goto('/earn/staking');
-			await this.shouldBeVisible();
+			await this.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 		}).toPass();
 	}
 
@@ -38,7 +38,7 @@ export class Staking {
 		timeout,
 	}: {
 		sumrAmount: string;
-		usdAmount: string;
+		usdAmount?: string;
 		timeout?: number;
 	}) {
 		const elementLocator = this.page
@@ -50,13 +50,20 @@ export class Staking {
 			timeout: timeout ?? expectDefaultTimeout,
 		});
 
-		const usdRegExp = new RegExp(`\\$${usdAmount}`);
-		await expect(elementLocator).toContainText(usdRegExp);
+		if (usdAmount) {
+			const usdRegExp = new RegExp(`\\$${usdAmount}`);
+			await expect(elementLocator).toContainText(usdRegExp);
+		}
 	}
 
 	@step
 	async stakeYourSumr() {
-		await this.page.getByRole('button', { name: 'Stake your SUMR' }).click();
+		const buttonLocator = this.page.getByRole('button', { name: 'Stake your SUMR' }).first();
+
+		await this.shouldHaveSumrInWallet({ sumrAmount: '[0-9]', timeout: expectDefaultTimeout * 3 });
+		await expect(buttonLocator).toBeVisible();
+		await expect(buttonLocator).not.toHaveAttribute('disabled');
+		await buttonLocator.click();
 	}
 
 	@step

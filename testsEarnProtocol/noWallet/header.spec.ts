@@ -30,6 +30,9 @@ test.describe('Header @regression', async () => {
 		// await app.page.mouse.move(200, 0);
 		await app.institutions.shouldBeVisible();
 
+		// Page sometimes reloads top navigatio after 1 second
+		await app.header.shouldHaveGameIcon();
+
 		await app.header.explore.open();
 		await app.header.explore.select('Team');
 		await app.page.mouse.move(200, 0);

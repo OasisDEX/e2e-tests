@@ -2,6 +2,7 @@ import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
 import { Explore } from './explore';
+import { Sumr } from './sumr';
 import { Support } from './support';
 
 export class Header {
@@ -11,12 +12,15 @@ export class Header {
 
 	readonly explore: Explore;
 
+	readonly sumr: Sumr;
+
 	readonly support: Support;
 
 	constructor(page: Page) {
 		this.page = page;
 		this.headerLocator = page.locator('header');
 		this.explore = new Explore(page, this.headerLocator);
+		this.sumr = new Sumr(page, this.headerLocator);
 		this.support = new Support(page, this.headerLocator);
 	}
 
@@ -44,11 +48,6 @@ export class Header {
 	}
 
 	@step
-	async sumr() {
-		await this.headerLocator.getByRole('link', { name: '$SUMR', exact: true }).click();
-	}
-
-	@step
 	async logIn() {
 		await this.headerLocator.getByRole('button', { name: 'Log in', exact: true }).click();
 	}
@@ -72,5 +71,12 @@ export class Header {
 	@step
 	async beachClub() {
 		await this.page.locator('header').getByRole('link', { name: 'Beach club ' }).click();
+	}
+
+	@step
+	async shouldHaveGameIcon(args?: { timeout: number }) {
+		await expect(this.headerLocator.locator('svg[title="gamepad"]').first()).toBeVisible({
+			timeout: args?.timeout ?? expectDefaultTimeout,
+		});
 	}
 }

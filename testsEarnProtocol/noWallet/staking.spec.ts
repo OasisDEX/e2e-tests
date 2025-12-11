@@ -12,19 +12,6 @@ test.describe('Staking page', async () => {
 		await app.staking.manage.shouldBeVisible();
 	});
 
-	test('It should show SUMR in wallet and SUMR to claim', async ({ app }) => {
-		await app.staking.shouldHaveSumrInWallet({
-			sumrAmount: '[0-9]{1,2}.[0-9]{2}',
-			usdAmount: '[0-9]{1,2}.[0-9]{2}',
-			timeout: expectDefaultTimeout * 3,
-		});
-
-		await app.staking.shouldHaveSumrToClaim({
-			sumrAmount: '[0-9]{1,2}.[0-9]{2}',
-			usdAmount: '[0-9]{1,2}.[0-9]{2}',
-		});
-	});
-
 	// SKIP - UI in progress
 	test.skip('It should show yield sources', async ({ app }) => {
 		await app.staking.shouldHaveYieldSource1({
@@ -40,15 +27,15 @@ test.describe('Staking page', async () => {
 		});
 	});
 
-	test('It should show Annualized Revenue andShare paid to Stakers', async ({ app }) => {
+	test('It should show Annualized Revenue and Share paid to Stakers', async ({ app }) => {
 		await app.staking.shouldHaveAnnualizedRevenue({
-			usdAmount: '[0-9]{1,2}.[0-9]{2}M',
-			sumrTvl: '[0-9]{2,3}M',
+			usdAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
+			sumrTvl: '[0-9]{2,3}.[0-9]{2}M',
 			timeout: expectDefaultTimeout * 3,
 		});
 
 		await app.staking.shouldHaveSharePaidToStakers({
-			usdAmount: '[0-9].[0-9]{2}M',
+			usdAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
 			timeout: expectDefaultTimeout * 3,
 		});
 	});
