@@ -32,10 +32,10 @@ export class Rewards {
 	}
 
 	@step
-	async claim(args?: { env: 'production' }) {
+	async claim() {
 		await this.page
 			.getByRole('button', {
-				name: args?.env ? 'Claim' : 'Claim $SUMR',
+				name: 'Claim $SUMR',
 				exact: true,
 			})
 			.click();

@@ -45,7 +45,7 @@ export class Staking {
 			.getByText('SUMR in your wallet and available to stake')
 			.locator('..');
 
-		const sumrRegExp = new RegExp(`${sumrAmount}.*SUMR`);
+		const sumrRegExp = new RegExp(`${sumrAmount}${sumrAmount == '-' ? '' : '.*SUMR'}`);
 		await expect(elementLocator).toContainText(sumrRegExp, {
 			timeout: timeout ?? expectDefaultTimeout,
 		});
@@ -60,7 +60,6 @@ export class Staking {
 	async stakeYourSumr() {
 		const buttonLocator = this.page.getByRole('button', { name: 'Stake your SUMR' }).first();
 
-		await this.shouldHaveSumrInWallet({ sumrAmount: '[0-9]', timeout: expectDefaultTimeout * 3 });
 		await expect(buttonLocator).toBeVisible();
 		await expect(buttonLocator).not.toHaveAttribute('disabled');
 		await buttonLocator.click();

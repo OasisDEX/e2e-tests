@@ -26,7 +26,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 
 	test('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
 		await expect(async () => {
-			await app.portfolio.rewards.claim({ env: 'production' });
+			await app.portfolio.rewards.claim();
 
 			await app.portfolio.rewards.claimAndDelegate.shouldBeVisible({
 				timeout: expectDefaultTimeout * 2,
@@ -64,7 +64,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		await metamask.rejectTransaction();
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(3_000);
+		await app.page.waitForTimeout(expectDefaultTimeout);
 
 		// Arbitrum rewards
 		await app.portfolio.rewards.claimAndDelegate.claim('Arbitrum');
@@ -76,7 +76,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		}).toPass();
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(3_000);
+		await app.page.waitForTimeout(expectDefaultTimeout);
 
 		// Sonic rewards --> This will fail until more SUMR are accrued on Sonic
 		await app.portfolio.rewards.claimAndDelegate.claim('Sonic');
@@ -87,7 +87,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		}).toPass();
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(3_000);
+		await app.page.waitForTimeout(expectDefaultTimeout);
 
 		// Mainnet rewards
 		await app.portfolio.rewards.claimAndDelegate.claim('Ethereum');

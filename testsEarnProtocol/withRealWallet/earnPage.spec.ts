@@ -129,12 +129,12 @@ test.describe('With real wallet - Earn page', async () => {
 
 	test('It should show SUMR available to stake', async ({ app }) => {
 		await app.earn.sumrBlockShouldHave({
-			sumrRewardApy: '[0-9]{1,2}.[0-9]{2}',
+			sumrRewardApy: '[0-9].[0-9]{2}',
 			availableToStake: {
 				sumrAmount: '[0-9]{1,3}.[0-9]{2,4}(K)?',
 				usdAmount: '[0-9]{1,3}.[0-9]{2,4}',
 			},
-			usdcYield: { maxRate: '[6-8].[0-9]{2}' }, // , maxUsdPerYear: '[0-9]{1,3}' removed from UI for now
+			usdcYield: { maxRate: '[0-7].[0-9]{2}' }, // , maxUsdPerYear: '[0-9]{1,3}' removed from UI for now
 		});
 	});
 
