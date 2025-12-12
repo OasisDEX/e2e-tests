@@ -1,5 +1,6 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Page } from '@playwright/test';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class Manage {
 	readonly page: Page;
@@ -24,6 +25,14 @@ export class Manage {
 		}).toPass();
 	}
 
+	@step
+	async shouldHaveBalance({ balance, timeout }: { balance: string; timeout?: number }) {
+		const regExp = new RegExp(`${balance}.*SUMR`);
+		await expect(this.page.getByText('Balance', { exact: true }).locator('..')).toContainText(
+			regExp,
+			{ timeout: timeout ?? expectDefaultTimeout }
+		);
+	}
 	@step
 	async sumrAmountToStake(amount: string) {
 		await this.page.locator('[class*="_inputWrapper_"] input').fill(amount);

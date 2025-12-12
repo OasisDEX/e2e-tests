@@ -19,6 +19,12 @@ test.describe('Staking page', async () => {
 	});
 
 	test('It should redirect to /staking/manage page', async ({ app }) => {
+		// Wait for component to fully load toavoid random fails
+		await app.staking.shouldHaveSumrInWallet({
+			sumrAmount: '[0-9]',
+			timeout: expectDefaultTimeout * 3,
+		});
+
 		await app.staking.stakeYourSumr();
 
 		await app.staking.manage.shouldBeVisible();

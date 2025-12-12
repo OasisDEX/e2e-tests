@@ -13,8 +13,8 @@ export class ClaimAndDelegate {
 	@step
 	async shouldBeVisible(args?: { timeout?: number }) {
 		await expect(
-			this.page.getByText('Claim & Delegate'),
-			'"Claim & Delegate" header should be visible'
+			this.page.getByText('Claim').first(),
+			'"Claim" header in Claim page should be visible'
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
