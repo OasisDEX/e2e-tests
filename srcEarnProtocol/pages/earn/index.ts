@@ -47,15 +47,18 @@ export class Earn {
 		sumrRewardApy,
 		availableToStake,
 		usdcYield,
+		timeout,
 	}: {
 		sumrRewardApy?: string;
 		availableToStake?: { sumrAmount?: string; usdAmount?: string };
 		usdcYield?: { maxRate?: string; maxUsdPerYear?: string };
+		timeout?: number;
 	}) {
 		if (sumrRewardApy) {
 			const regExp = new RegExp(`${sumrRewardApy}%`);
 			await expect(this.sumrBlockLocator.getByText('SUMR Reward APY up to').first()).toContainText(
-				regExp
+				regExp,
+				{ timeout: timeout ?? expectDefaultTimeout }
 			);
 		}
 
@@ -65,7 +68,7 @@ export class Earn {
 				this.sumrBlockLocator
 					.getByText('Available to stake')
 					.locator('xpath=//following-sibling::*[1]')
-			).toContainText(regExp);
+			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
 		}
 
 		if (availableToStake?.usdAmount) {
@@ -74,21 +77,21 @@ export class Earn {
 				this.sumrBlockLocator
 					.getByText('Available to stake')
 					.locator('xpath=//following-sibling::*[2]')
-			).toContainText(regExp);
+			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
 		}
 
 		if (usdcYield?.maxRate) {
 			const regExp = new RegExp(`Up to.*${usdcYield.maxRate}%`);
 			await expect(
 				this.sumrBlockLocator.getByText('USDC Yield').locator('xpath=//following-sibling::*[1]')
-			).toContainText(regExp);
+			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
 		}
 
 		if (usdcYield?.maxUsdPerYear) {
 			const regExp = new RegExp(`\\$.*${usdcYield.maxUsdPerYear}.*/ Year`);
 			await expect(
 				this.sumrBlockLocator.getByText('USDC Yield').locator('xpath=//following-sibling::*[2]')
-			).toContainText(regExp);
+			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
 		}
 	}
 

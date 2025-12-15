@@ -6,7 +6,7 @@ test.describe('Staking page', async () => {
 		await app.staking.openPage();
 	});
 
-	test('It should redirect to /staking/manage page', async ({ app }) => {
+	test('It should redirect to /staking/manage page @regression', async ({ app }) => {
 		// Wait for component to fully load toavoid random fails
 		await app.staking.shouldHaveSumrInWallet({
 			sumrAmount: '-',
@@ -33,7 +33,9 @@ test.describe('Staking page', async () => {
 		});
 	});
 
-	test('It should show Annualized Revenue and Share paid to Stakers', async ({ app }) => {
+	test('It should show Annualized Revenue and Share paid to Stakers @regression', async ({
+		app,
+	}) => {
 		await app.staking.shouldHaveAnnualizedRevenue({
 			usdAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
 			sumrTvl: '[0-9]{2,3}.[0-9]{2}M',
