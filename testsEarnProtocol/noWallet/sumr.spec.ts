@@ -27,7 +27,7 @@ test.describe('$SUMR', async () => {
 		await app.portfolio.shouldHaveTabHighlighted('SUMR Rewards');
 	});
 
-	// SKIP -- Section now removed
+	// SKIP -- Section now disabled
 	test.skip('It should Buy SUMR', async ({ app }) => {
 		await app.sumr.buySUMR();
 
@@ -35,16 +35,15 @@ test.describe('$SUMR', async () => {
 		// - Assert 'Buy SUMR' functionality
 	});
 
-	['Intro', 'What you need to know'].forEach((section) =>
-		test(`It should Stake SUMR - Button in "${section}"`, async ({ app }) => {
-			await app.sumr.stakeSUMR('Intro');
+	(['Intro', 'What you need to know'] as const).forEach((section) =>
+		test(`It should Stake SUMR - Button in "${section}" @regression`, async ({ app }) => {
+			await app.sumr.stakeSUMR(section);
 
-			// TO DO (functionality not implemented yet)
-			// - Assert 'Stake SUMR' functionality
+			await app.staking.manage.shouldBeVisible();
 		})
 	);
 
-	test('It should show yield source', async ({ app }) => {
+	test('It should show yield source @regression', async ({ app }) => {
 		await app.sumr.shouldHaveYieldSource();
 	});
 

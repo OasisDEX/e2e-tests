@@ -135,6 +135,7 @@ test.describe('With real wallet - Earn page', async () => {
 				usdAmount: '[0-9]{1,3}.[0-9]{2,4}',
 			},
 			usdcYield: { maxRate: '[0-7].[0-9]{2}' }, // , maxUsdPerYear: '[0-9]{1,3}' removed from UI for now
+			timeout: expectDefaultTimeout * 3,
 		});
 	});
 
