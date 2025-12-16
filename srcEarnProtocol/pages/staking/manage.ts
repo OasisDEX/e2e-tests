@@ -49,11 +49,11 @@ export class Manage {
 	}
 
 	/**
-	 * @param days should be between '0' and '1080' both included | 0: far left | 1080: far right
+	 * @param days should be between '0' and '1080' both included | 0: far left | 1095: far right
 	 */
 	@step
 	async selectLockupDays(days: number) {
-		const value = days / 1080;
+		const value = days / 1095;
 
 		await expect(async () => {
 			const initialSliderValue = await this.page

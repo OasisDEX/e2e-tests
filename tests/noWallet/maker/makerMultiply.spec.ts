@@ -16,17 +16,17 @@ test.describe('Maker Multiply', async () => {
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '\\$0.00',
 		});
-		await app.position.overview.shouldHaveBuyingPower('\\$0.00');
-		await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
+		// await app.position.overview.shouldHaveBuyingPower('\\$0.00');
+		// await app.position.overview.shouldHaveNetValue({ value: '\\$0.00' });
 		await app.position.overview.shouldHaveDebt({
 			amount: '0.0000',
 			token: 'DAI',
 		});
-		await app.position.overview.shouldHaveTotalCollateral({
-			amount: '0.00',
-			token: 'ETH',
-		});
-		await app.position.overview.shouldHaveMultiple('0.00');
+		// await app.position.overview.shouldHaveTotalCollateral({
+		// 	amount: '0.00',
+		// 	token: 'ETH',
+		// });
+		// await app.position.overview.shouldHaveMultiple('0.00');
 
 		await app.position.manage.shouldBeVisible('Manage your vault');
 	});

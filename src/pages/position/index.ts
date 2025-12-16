@@ -84,7 +84,7 @@ export class Position {
 	}
 
 	@step
-	async shouldHaveHeader(text: string) {
+	async shouldHaveHeader(text: string | RegExp) {
 		await expect(this.page.locator('h1 > div').nth(0)).toContainText(text, {
 			timeout: positionTimeout,
 		});

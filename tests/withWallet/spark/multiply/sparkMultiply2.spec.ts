@@ -18,7 +18,8 @@ let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
-test.describe('Spark Multiply - Wallet connected', async () => {
+// No liquidity in SDAI/ETH pool
+test.describe.skip('Spark Multiply - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 

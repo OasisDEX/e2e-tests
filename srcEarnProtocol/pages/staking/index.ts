@@ -31,6 +31,44 @@ export class Staking {
 		}).toPass();
 	}
 
+	// For 'wallet NOT connected' status
+	@step
+	async shouldHaveTotalSumrStaked({
+		sumrAmount,
+		timeout,
+	}: {
+		sumrAmount: string;
+		timeout?: number;
+	}) {
+		const sumrRegExp = new RegExp(`${sumrAmount}.*SUMR`);
+		await expect(
+			this.page.getByText(/Total SUMR staked(.*)Connect wallet/).locator('..')
+		).toContainText(sumrRegExp, {
+			timeout: timeout ?? expectDefaultTimeout,
+		});
+	}
+
+	// For 'wallet NOT connected' status
+	@step
+	async shouldHaveAvgSumrLockPeriod({ days, timeout }: { days: string; timeout?: number }) {
+		const sumrRegExp = new RegExp(`${days}.*days`);
+		await expect(
+			this.page.getByText(/Avg SUMR lock period(.*)Connect wallet/).locator('..')
+		).toContainText(sumrRegExp, {
+			timeout: timeout ?? expectDefaultTimeout,
+		});
+	}
+
+	@step
+	async connectWallet(element: 'Total SUMR staked' | 'Avg SUMR lock period') {
+		await this.page
+			.getByText(element)
+			.locator('..')
+			.getByRole('button', { name: 'Connect wallet', exact: true })
+			.click();
+	}
+
+	// For 'wallet connected'status
 	@step
 	async shouldHaveSumrInWallet({
 		sumrAmount,
@@ -45,7 +83,7 @@ export class Staking {
 			.getByText('SUMR in your wallet and available to stake')
 			.locator('..');
 
-		const sumrRegExp = new RegExp(`${sumrAmount}${sumrAmount == '-' ? '' : '.*SUMR'}`);
+		const sumrRegExp = new RegExp(`${sumrAmount}.*SUMR`);
 		await expect(elementLocator).toContainText(sumrRegExp, {
 			timeout: timeout ?? expectDefaultTimeout,
 		});

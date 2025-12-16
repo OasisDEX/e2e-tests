@@ -22,7 +22,7 @@ test.describe('Open exisiting position pages - Morpho Ethereum', async () => {
 
 		await app.position.openPage('/ethereum/morphoblue/borrow/WSTETH-ETH-1/1478#overview');
 
-		await app.position.shouldHaveHeader('WSTETH/ETH 94.50% Borrow #1478');
+		await app.position.shouldHaveHeader(/WSTETH\/ETH 94.50% (?:Borrow|Multiply)(.*)#1478/);
 		await app.position.overview.shouldHaveLiquidationPrice({
 			price: '0.00',
 			timeout: positionTimeout,
