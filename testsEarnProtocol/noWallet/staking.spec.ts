@@ -6,16 +6,26 @@ test.describe('Staking page', async () => {
 		await app.staking.openPage();
 	});
 
-	test('It should redirect to /staking/manage page @regression', async ({ app }) => {
-		// Wait for component to fully load toavoid random fails
-		await app.staking.shouldHaveSumrInWallet({
-			sumrAmount: '-',
+	test('It should open log in popup - Total SUMR staked', async ({ app }) => {
+		// Wait for component to fully load to avoid random fails
+		await app.staking.shouldHaveTotalSumrStaked({
+			sumrAmount: '[0-9]{2,3}.[0-9]{2}M',
 			timeout: expectDefaultTimeout * 3,
 		});
 
-		await app.staking.stakeYourSumr();
+		await app.staking.connectWallet('Total SUMR staked');
+		await app.modals.logIn.shouldBeVisible();
+	});
 
-		await app.staking.manage.shouldBeVisible();
+	test('It should open log in popup - Avg SUMR lock period', async ({ app }) => {
+		// Wait for component to fully load to avoid random fails
+		await app.staking.shouldHaveAvgSumrLockPeriod({
+			days: '[0-9]{2,4}',
+			timeout: expectDefaultTimeout * 3,
+		});
+
+		await app.staking.connectWallet('Avg SUMR lock period');
+		await app.modals.logIn.shouldBeVisible();
 	});
 
 	// SKIP - UI in progress
