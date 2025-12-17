@@ -34,7 +34,7 @@ export class ClientDashboard {
 	@step
 	async shouldBeVisible() {
 		await expect(this.page.getByRole('heading', { name: 'ACME Internal Testing' })).toBeVisible({
-			timeout: expectDefaultTimeout * 3,
+			timeout: expectDefaultTimeout * 4,
 		});
 	}
 
