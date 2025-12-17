@@ -33,10 +33,8 @@ test.describe('Staking > Manage page', async () => {
 		await metamask.rejectTransaction();
 	});
 
-	test('It should stake SUMR - <3m lockup slot - Until tx approval @regression', async ({
-		app,
-		metamask,
-	}) => {
+	// It randomly fails since '<3m' slot becomes full
+	test('It should stake SUMR - <3m lockup slot - Until tx approval', async ({ app, metamask }) => {
 		// Wait for staking module to fully load
 		await app.staking.manage.shouldHaveBalance({
 			balance: '[0-9]',
@@ -59,9 +57,16 @@ test.describe('Staking > Manage page', async () => {
 		});
 
 		await app.staking.manage.sumrAmountToStake('0.1');
+		await app.staking.manage.shouldUpdateYieldBoostMultiplier({ oldValue: '-' });
+
+		const ybmAfterAmountToStake = await app.staking.manage.getYieldBoostMultiplier();
+
 		await app.staking.manage.selectLockupDays(1095);
+		await app.staking.manage.shouldUpdateYieldBoostMultiplier({ oldValue: ybmAfterAmountToStake });
 
 		await app.staking.manage.acceptPenaltyWarning();
+		await app.staking.manage.shouldHaveApproveSumrButtonEnabled();
+
 		await app.staking.manage.approveSumr();
 		await metamask.rejectTransaction();
 	});
