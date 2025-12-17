@@ -38,18 +38,8 @@ export class Manage {
 		await this.page.locator('[class*="_inputWrapper_"] input').fill(amount);
 	}
 
-	@step
-	async acceptPenaltyWarning() {
-		await this.page.locator('[class*="_checkboxSectionWrapper_"]').click();
-	}
-
-	@step
-	async approveSumr() {
-		await this.page.getByRole('button', { name: 'Approve SUMR' }).click();
-	}
-
 	/**
-	 * @param days should be between '0' and '1080' both included | 0: far left | 1095: far right
+	 * @param days should be between '0' and '1095' both included | 0: far left | 1095: far right
 	 */
 	@step
 	async selectLockupDays(days: number) {
@@ -75,5 +65,45 @@ export class Manage {
 
 			expect(newSliderValue !== initialSliderValue).toBe(true);
 		}).toPass();
+	}
+
+	@step
+	async shouldUpdateYieldBoostMultiplier({ oldValue }: { oldValue: string }) {
+		await expect(async () => {
+			const ybmText = await this.page
+				.getByText('Yield boost multiplier', { exact: true })
+				.locator('..')
+				.innerText();
+
+			expect(ybmText).not.toEqual('Yield boost multiplier');
+			expect(ybmText).not.toContain(oldValue);
+		}).toPass();
+	}
+
+	@step
+	async getYieldBoostMultiplier() {
+		const ybmText = await this.page
+			.getByText('Yield boost multiplier', { exact: true })
+			.locator('..')
+			.innerText();
+
+		return ybmText;
+	}
+
+	@step
+	async acceptPenaltyWarning() {
+		await this.page.locator('[class*="_checkboxSectionWrapper_"]').click();
+	}
+
+	@step
+	async shouldHaveApproveSumrButtonEnabled() {
+		await expect(this.page.getByRole('button', { name: 'Approve SUMR' })).not.toHaveAttribute(
+			'disabled'
+		);
+	}
+
+	@step
+	async approveSumr() {
+		await this.page.getByRole('button', { name: 'Approve SUMR' }).click();
 	}
 }
