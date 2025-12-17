@@ -2,15 +2,31 @@ import { expect, step } from '#earnProtocolFixtures';
 import { Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
 import { Manage } from './manage';
+import { RemoveStake } from './removeStake';
+
+interface StakingPositionSingle {
+	type: 'single';
+	index: string;
+}
+interface StakingPositionDual {
+	type: 'dual';
+	sumrStaked?: string;
+	lockPeriod?: string;
+}
+
+type StakingPosition = StakingPositionSingle | StakingPositionDual;
 
 export class Staking {
 	readonly page: Page;
 
 	readonly manage: Manage;
 
+	readonly removeStake: RemoveStake;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.manage = new Manage(page);
+		this.removeStake = new RemoveStake(page);
 	}
 
 	@step
@@ -213,5 +229,23 @@ export class Staking {
 		await expect(elementLocator).toContainText(regExp, {
 			timeout: timeout ?? expectDefaultTimeout,
 		});
+	}
+
+	@step
+	async removeStakingPosition(position: StakingPosition) {
+		if (position.type === 'single') {
+			await this.page
+				.getByRole('row')
+				.filter({ has: this.page.locator(`td:has-text("#${position.index}")`) })
+				.getByRole('button', { name: 'Remove stake' })
+				.click();
+		} else {
+			await this.page
+				.getByRole('row')
+				.filter({ has: this.page.locator(`td:has-text("${position.sumrStaked}")`) })
+				.filter({ has: this.page.locator(`td:has-text("${position.lockPeriod}")`) })
+				.getByRole('button', { name: 'Remove stake' })
+				.click();
+		}
 	}
 }
