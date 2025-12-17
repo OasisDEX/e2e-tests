@@ -19,7 +19,7 @@ test.describe('Staking > Manage page', async () => {
 	});
 
 	// It randomly fails since 'no lockup' slot becomes full
-	test('It should stake SUMR - No lockup - Until tx approval', async ({ app, metamask }) => {
+	test.skip('It should stake SUMR - No lockup - Until tx approval', async ({ app, metamask }) => {
 		// Wait for staking module to fully load
 		await app.staking.manage.shouldHaveBalance({
 			balance: '[0-9]',
@@ -34,7 +34,10 @@ test.describe('Staking > Manage page', async () => {
 	});
 
 	// It randomly fails since '<3m' slot becomes full
-	test('It should stake SUMR - <3m lockup slot - Until tx approval', async ({ app, metamask }) => {
+	test.skip('It should stake SUMR - <3m lockup slot - Until tx approval', async ({
+		app,
+		metamask,
+	}) => {
 		// Wait for staking module to fully load
 		await app.staking.manage.shouldHaveBalance({
 			balance: '[0-9]',
