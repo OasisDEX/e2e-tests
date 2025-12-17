@@ -42,4 +42,19 @@ test.describe('Staking page', async () => {
 			usdAmount: '[0-9]{1,3}.[0-9]{2}',
 		});
 	});
+
+	test('It should unstake position - Until cancelling tx @regression', async ({
+		app,
+		metamask,
+	}) => {
+		await app.staking.removeStakingPosition({
+			type: 'dual',
+			sumrStaked: '2.0000',
+			lockPeriod: '82 days',
+		});
+
+		await app.staking.removeStake.approve();
+
+		await metamask.rejectTokenPermission();
+	});
 });
