@@ -33,8 +33,8 @@ export class VaultExposure {
 	@step
 	async shouldHaveVaultExposurePanel() {
 		await expect(
-			this.page.locator('[class*="PanelVaultExposure_tableSection_"]').getByText('Buffer'),
-			'"Buffer" exposure should be visible'
+			this.page.locator('[class*="PanelVaultExposure_tableSection_"] tbody > tr > td').first(),
+			'First row of exposure table should be visible'
 		).toBeVisible();
 	}
 

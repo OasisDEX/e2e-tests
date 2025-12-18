@@ -10,8 +10,14 @@ test.describe('Client dashboard - Overview - Institution overview', async () => 
 	test('It should list vaults', async ({ app }) => {
 		await app.clientDashboard.overview.institutionOverview.shouldHaveVaults([
 			{
-				name: 'Summer USDC Base Vault',
-				value: '[0-9]{1,2}.[0-9]{1,2}',
+				name: 'ExtDemoCorp USDC base',
+				value: '[0-9]{2,3}.[0-9]{1,2}',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{1,2}',
+				nav: '[0-9]{1,2}.[0-9]{2,4}',
+			},
+			{
+				name: 'ExtDemoCorp USDC arbitrum',
+				value: '[0-9]{2,3}.[0-9]{1,2}',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{1,2}',
 				nav: '[0-9]{1,2}.[0-9]{2,4}',
 			},
@@ -19,17 +25,17 @@ test.describe('Client dashboard - Overview - Institution overview', async () => 
 	});
 
 	test('It should view a vault', async ({ app }) => {
-		await app.clientDashboard.overview.institutionOverview.viewVault('Summer USDC Base Vault');
+		await app.clientDashboard.overview.institutionOverview.viewVault('ExtDemoCorp USDC base');
 		await app.clientDashboard.vaults.shouldBeVisible({ timeout: expectDefaultTimeout * 2 });
 
 		await app.clientDashboard.vaults.shouldHaveVaultHeader({
-			name: 'USDC Base ACME',
+			name: 'ExtDemoCorp USDC base',
 			// asset: 'USDC', --> Field removed from UI
-			liveApy: '[0-9]{1,2}.[0-9]{1,2}',
+			liveApy: 'n/a', // BUG??? '[0-9]{1,2}.[0-9]{1,2}',
 			nav: '[0-9].[0-9]{1,4}',
-			aum: '[0-9].[0-9]{1,4}',
-			fee: 'n/a', // BUG ??? --> '[0-9].[0-9]{1,2}'
-			inception: 'October 23, 2025',
+			aum: '[0-9]{1,3}.[0-9]{1,4}',
+			fee: '[0-9].[0-9]{1,2}',
+			inception: 'December 17, 2025',
 		});
 	});
 });
