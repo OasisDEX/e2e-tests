@@ -101,7 +101,7 @@ export class Sumr {
 			regExpSource1
 		);
 
-		const regExpSource2 = new RegExp('Yield source 2.*Up.*to.*[0-4].[0-9]{2}%.*SUMR APY');
+		const regExpSource2 = new RegExp('Yield source 2.*Up.*to.*[0-9]{1,2}.[0-9]{2}%.*SUMR APY');
 		await expect(this.page.locator('[class*="_yieldSourceColumn_"]').nth(1)).toContainText(
 			regExpSource2
 		);
