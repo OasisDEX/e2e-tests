@@ -119,7 +119,7 @@ export class Vaults {
 		}
 
 		if (liveApy) {
-			const regExp = new RegExp(`${liveApy}%`);
+			const regExp = new RegExp(`${liveApy}${liveApy === 'n/a' ? '' : '%'}`);
 			await expect(fieldLocator('Live APY'), `Should have Live APY: ${liveApy}`).toContainText(
 				regExp
 			);

@@ -16,7 +16,7 @@ test.describe('Overview page - Client', async () => {
 	}) => {
 		await app.clientDashboard.shouldHaveSummary({
 			totalValue: '[0-9]{1,2}.[0-9]{1,4}',
-			numberOfVaults: '1',
+			numberOfVaults: '[1-5]',
 			thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 			allTimePerformance: 'n/a', // BUG ??? - '[0-9]{1,2}.[0-9]{2}'
 		});

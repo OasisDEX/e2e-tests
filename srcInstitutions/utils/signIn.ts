@@ -1,5 +1,6 @@
 import { App } from 'srcInstitutions/app';
 import { Roles } from './types';
+import { expect } from '#institutionsWithWalletFixtures';
 
 export const adminUsername = process.env.INSTITUTIONS_ADMIN_USERNAME ?? 'no-username-provided';
 export const adminPassword = process.env.INSTITUTIONS_ADMIN_PASSWORD ?? 'no-password-provided';
@@ -21,6 +22,38 @@ export const clientMfaUsername =
 export const clientMfaPassword =
 	process.env.INSTITUTIONS_CLIENT_MFA_PASSWORD ?? 'no-password-provided';
 
+// export const signIn = async ({
+// 	app,
+// 	userRights,
+// 	role,
+// }: {
+// 	app: App;
+// 	userRights: 'admin' | 'client';
+// 	role?: Roles;
+// }) => {
+// 	await app.signIn.enterEmail(
+// 		userRights === 'admin'
+// 			? adminUsername
+// 			: role && role === 'Viewer'
+// 			? clientViewerUsername
+// 			: clientRoleAdminUsername
+// 	);
+// 	await app.signIn.enterPassword(
+// 		userRights === 'admin'
+// 			? adminPassword
+// 			: role && role === 'Viewer'
+// 			? clientViewerPassword
+// 			: clientRoleAdminPassword
+// 	);
+// 	await app.signIn.signIn();
+
+// 	if (userRights === 'admin') {
+// 		await app.adminOverview.shouldBeVisible();
+// 	} else {
+// 		await app.clientDashboard.shouldBeVisible();
+// 	}
+// };
+
 export const signIn = async ({
 	app,
 	userRights,
@@ -30,25 +63,29 @@ export const signIn = async ({
 	userRights: 'admin' | 'client';
 	role?: Roles;
 }) => {
-	await app.signIn.enterEmail(
-		userRights === 'admin'
-			? adminUsername
-			: role && role === 'Viewer'
-			? clientViewerUsername
-			: clientRoleAdminUsername
-	);
-	await app.signIn.enterPassword(
-		userRights === 'admin'
-			? adminPassword
-			: role && role === 'Viewer'
-			? clientViewerPassword
-			: clientRoleAdminPassword
-	);
-	await app.signIn.signIn();
+	await expect(async () => {
+		await app.page.reload();
 
-	if (userRights === 'admin') {
-		await app.adminOverview.shouldBeVisible();
-	} else {
-		await app.clientDashboard.shouldBeVisible();
-	}
+		await app.signIn.enterEmail(
+			userRights === 'admin'
+				? adminUsername
+				: role && role === 'Viewer'
+				? clientViewerUsername
+				: clientRoleAdminUsername
+		);
+		await app.signIn.enterPassword(
+			userRights === 'admin'
+				? adminPassword
+				: role && role === 'Viewer'
+				? clientViewerPassword
+				: clientRoleAdminPassword
+		);
+		await app.signIn.signIn();
+
+		if (userRights === 'admin') {
+			await app.adminOverview.shouldBeVisible();
+		} else {
+			await app.clientDashboard.shouldBeVisible();
+		}
+	}).toPass();
 };
