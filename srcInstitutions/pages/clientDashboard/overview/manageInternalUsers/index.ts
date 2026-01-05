@@ -1,12 +1,16 @@
 import { expect, step } from '#institutionsNoWalletFixtures';
 import { Locator, Page } from '@playwright/test';
 import { Roles } from 'srcInstitutions/utils/types';
+import { Edit } from './edit';
 
 export class ManageInternalUsers {
 	readonly page: Page;
 
+	readonly edit: Edit;
+
 	constructor(page: Page) {
 		this.page = page;
+		this.edit = new Edit(page);
 	}
 
 	userLocator(userName: string): Locator {
@@ -56,5 +60,14 @@ export class ManageInternalUsers {
 				);
 			}
 		}
+	}
+
+	@step
+	async editUser(userName: string) {
+		await this.page
+			.locator('[class*="PanelManageInternalUsers_"] tr')
+			.filter({ hasText: userName })
+			.getByRole('link', { name: 'Edit' })
+			.click();
 	}
 }

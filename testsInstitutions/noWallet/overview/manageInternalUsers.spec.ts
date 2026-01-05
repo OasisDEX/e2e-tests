@@ -41,8 +41,30 @@ test.describe('Client dashboard - Overview - Manage internal users - Admin role'
 		]);
 	});
 
-	// TO DO
-	test.skip('It should edit a user', async ({ app }) => {
-		// TO DO
+	test('It should edit a user', async ({ app }) => {
+		await app.clientDashboard.overview.manageInternalUsers.editUser('Juan Test User');
+
+		await app.clientDashboard.overview.manageInternalUsers.edit.shouldBeVisible();
+
+		const randomNumberString = Math.floor(Math.random() * 9999).toString();
+		await app.clientDashboard.overview.manageInternalUsers.edit.enterNewUsername(
+			`Juan Test User ${randomNumberString}`
+		);
+
+		await app.page.waitForTimeout(1_000);
+		await app.clientDashboard.overview.manageInternalUsers.edit.update();
+
+		await app.page.waitForTimeout(1_000);
+		await app.clientDashboard.overview.manageInternalUsers.edit.goBack();
+
+		await app.clientDashboard.overview.manageInternalUsers.shouldBeVisible();
+		await app.clientDashboard.overview.manageInternalUsers.shouldHaveUsers([
+			{
+				name: randomNumberString,
+				email: 'summerfi.test.2@gmail.com',
+				role: 'Viewer',
+				createdAt: '2025-10-17',
+			},
+		]);
 	});
 });
