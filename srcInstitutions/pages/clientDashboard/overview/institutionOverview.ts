@@ -31,6 +31,19 @@ export class InstitutionOverview {
 	}
 
 	@step
+	async shouldHaveValueLockedChart() {
+		await expect(
+			this.panelLocator.getByText('Total Value Locked'),
+			'Should display "Total Value Locked" chart title'
+		).toBeVisible();
+
+		await expect(
+			this.panelLocator.locator('[class*="_tvlChart_"]'),
+			'Should display TVL chart'
+		).toBeVisible();
+	}
+
+	@step
 	async shouldHaveVaults(
 		vaults: {
 			name: string;
