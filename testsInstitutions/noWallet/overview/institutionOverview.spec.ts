@@ -11,13 +11,13 @@ test.describe('Client dashboard - Overview - Institution overview', async () => 
 		await app.clientDashboard.overview.institutionOverview.shouldHaveVaults([
 			{
 				name: 'ExtDemoCorp USDC base',
-				value: '[0-9]{2,3}.[0-9]{1,2}',
+				value: '[0-9]{1,3}.[0-9]{2}',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{1,2}',
 				nav: '[0-9]{1,2}.[0-9]{2,4}',
 			},
 			{
 				name: 'ExtDemoCorp USDC arbitrum',
-				value: '[0-9]{2,3}.[0-9]{1,2}',
+				value: '[0-9]{1,3}.[0-9]{1,2}',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{1,2}',
 				nav: '[0-9]{1,2}.[0-9]{2,4}',
 			},
@@ -31,10 +31,10 @@ test.describe('Client dashboard - Overview - Institution overview', async () => 
 		await app.clientDashboard.vaults.shouldHaveVaultHeader({
 			name: 'ExtDemoCorp USDC base',
 			// asset: 'USDC', --> Field removed from UI
-			liveApy: 'n/a', // BUG??? '[0-9]{1,2}.[0-9]{1,2}',
+			liveApy: '[0-9]{1,2}.[0-9]{2}',
 			nav: '[0-9].[0-9]{1,4}',
 			aum: '[0-9]{1,3}.[0-9]{1,4}',
-			fee: '[0-9].[0-9]{1,2}',
+			fee: '[0-9].[0-9]{2}',
 			inception: 'December 17, 2025',
 		});
 	});
