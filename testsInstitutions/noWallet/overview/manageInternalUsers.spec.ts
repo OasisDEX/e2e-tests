@@ -27,10 +27,16 @@ test.describe('Client dashboard - Overview - Manage internal users - Admin role'
 				createdAt: '2025-10-17',
 			},
 			{
-				name: 'Juan Test User 2',
-				email: 'summerfi.test.4@gmail.com',
+				name: 'Chris',
+				email: 'chris+demo@summer.fi',
 				role: 'RoleAdmin',
-				createdAt: '2025-10-22',
+				createdAt: '2025-12-18',
+			},
+			{
+				name: 'Marcin Testing',
+				email: 'testing@plamka.net',
+				role: 'SuperAdmin',
+				createdAt: '2025-08-08',
 			},
 		]);
 	});
