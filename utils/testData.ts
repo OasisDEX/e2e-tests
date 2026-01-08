@@ -170,13 +170,13 @@ export const aaveV3EthereumMultiplyPools = [
 	'LINK-DAI',
 	'LINK-USDC',
 	'LINK-USDT',
-	'DAI-ETH',
 	'SDAI-WBTC',
 	'SDAI-ETH',
 	'USDC-WSTETH',
 	'USDC-WBTC',
 	'USDT-ETH',
 ];
+// 'DAI-ETH', --> No longer allowed by Aave
 // 'LDO-USDT' --> skipped as tenderly_setErc20Balance is not working with LDO
 // 'WBTC-GHO', -- NO LIQUIDITY - GHO
 // 'ETH-GHO', -- NO LIQUIDITY - GHO
@@ -213,8 +213,6 @@ export const aaveV3EthereumBorrowPools = [
 	'LINK-USDC',
 	'LINK-USDT',
 	'LINK-ETH',
-	'DAI-ETH',
-	'DAI-WBTC',
 	'SDAI-WBTC',
 	'SDAI-ETH',
 	'SDAI-USDT',
@@ -224,6 +222,8 @@ export const aaveV3EthereumBorrowPools = [
 	'USDC-USDT',
 	'USDT-ETH',
 ];
+// 'DAI-ETH', --> No longer allowed by Aave
+// 'DAI-WBTC', --> No longer allowed by Aave
 // 'LDO-USDT' skipped as tenderly_setErc20Balance is not working with LDO
 // 'ETH-GHO', -- NO LIQUIDITY - GHO
 // 'WBTC-GHO', -- NO LIQUIDITY - GHO
@@ -248,11 +248,11 @@ export const aaveV3ArbitrumMultiplyPools = [
 	'RETH-DAI',
 	'RETH-USDC',
 	'WSTETH-USDC',
-	'DAI-ETH',
-	'DAI-WBTC',
 	'USDC-ETH',
 	'USDC-WBTC',
 ];
+// 'DAI-ETH', --> No longer allowed by Aave
+// 'DAI-WBTC', --> No longer allowed by Aave
 // 'WEETH-USDC',  --> WEETH supply 100%
 // 'ETH-USDC', 'WSTETH-DAI' -- Already tested in /withWallet/aaveV3 test suite
 
@@ -260,8 +260,6 @@ export const aaveV3ArbitrumBorrowPools = [
 	'ETH-DAI',
 	'RETH-DAI',
 	'RETH-USDC',
-	'DAI-ETH',
-	'DAI-WBTC',
 	'USDC-ETH',
 	'USDC-WBTC',
 	'WSTETH-DAI',
@@ -269,6 +267,8 @@ export const aaveV3ArbitrumBorrowPools = [
 	'WBTC-DAI',
 	'WBTC-USDC',
 ];
+// 'DAI-ETH', --> No longer allowed by Aave
+// 'DAI-WBTC', --> No longer allowed by Aave
 // 'ETH-USDC', -- Already tested in /withWallet/aaveV3 test suite
 // 'WEETH-USDC',  --> WEETH supply 100%
 
@@ -303,14 +303,14 @@ export const aaveV3OptimismMultiplyPools = [
 	'WBTC-DAI',
 	'WBTC-USDC',
 	'WBTC-USDC.E',
-	'DAI-ETH',
-	'DAI-WBTC',
 	'USDC-ETH',
 	'USDC-WBTC',
 	'USDC.E-ETH',
 	'USDC.E-WBTC',
 	'WSTETH-USDC',
 ];
+// 'DAI-ETH', --> No longer allowed by Aave
+// 'DAI-WBTC', --> No longer allowed by Aave
 // 'ETH-USDC', --> Already tested in /withWallet/aaveV3 test suite
 
 export const aaveV3OptimismBorrowPools = [
@@ -322,12 +322,12 @@ export const aaveV3OptimismBorrowPools = [
 	'WBTC-DAI',
 	'WBTC-USDC',
 	'WBTC-USDC.E',
-	'DAI-ETH',
 	'USDC-ETH',
 	'USDC-WBTC',
 	'USDC.E-ETH',
 	'USDC.E-WBTC',
 ];
+// 'DAI-ETH', --> No longer allowed by Aave
 // 'ETH-USDC', --> Already tested in /withWallet/aaveV3 test suite
 // 'DAI-WBTC', --> Already tested in /withWallet/aaveV3 test suite
 
