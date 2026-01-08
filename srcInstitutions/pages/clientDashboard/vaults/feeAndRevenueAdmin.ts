@@ -15,4 +15,18 @@ export class FeeAndRevenueAdmin {
 			'"Fee & revenue admin" header should be visible'
 		).toBeVisible();
 	}
+
+	@step
+	async shouldHaveFeeRevenue({ vaultAumFee }: { vaultAumFee: string }) {
+		const regExp = new RegExp(`${vaultAumFee}%`);
+		await expect(
+			this.page.getByRole('row').filter({ hasText: 'Vault AUM Fee' }),
+			`Should have Vault AUM Fee: ${regExp}%`
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveNoThirdPArtyCosts() {
+		await expect(this.page.getByText('No third party costs')).toBeVisible();
+	}
 }

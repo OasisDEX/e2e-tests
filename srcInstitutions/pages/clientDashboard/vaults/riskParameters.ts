@@ -70,4 +70,12 @@ export class RiskParameters {
 			).toContainText(regExp);
 		}
 	}
+
+	@step
+	async shouldHaveNoTransactionsInQueue() {
+		await expect(
+			this.page.getByText('No transactions in the queue.'),
+			'Should displaye "No transactions" message'
+		).toBeVisible();
+	}
 }
