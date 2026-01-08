@@ -14,7 +14,8 @@ let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(optimismSetup));
 
-test.describe('Aave V3 Borrow - Optimism - Wallet connected', async () => {
+// SKIP - DAI/WBTC pool no longer allowed by Aave
+test.describe.skip('Aave V3 Borrow - Optimism - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 

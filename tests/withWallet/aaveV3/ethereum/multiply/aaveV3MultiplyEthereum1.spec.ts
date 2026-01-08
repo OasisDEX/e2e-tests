@@ -14,7 +14,8 @@ let walletAddress: string;
 
 const test = testWithSynpress(metaMaskFixtures(basicSetup));
 
-test.describe('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
+// SKIP - DAI/WBTC pool no longer allowed by Aave
+test.describe.skip('Aave v3 Multiply - Ethereum - Wallet connected', async () => {
 	test.beforeEach(async ({ metamask, page }) => {
 		test.setTimeout(longTestTimeout);
 
