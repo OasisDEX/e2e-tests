@@ -27,16 +27,18 @@ export class VaultPage {
 		await expect(async () => {
 			await this.page.goto(url);
 
-			if (!url.includes('sonic')) {
-				// Reload position data to avoid random fails
-				await expect(this.page.locator('svg[title="refresh"]')).toBeVisible({
-					timeout: expectDefaultTimeout * 2,
-				});
-				await this.page.waitForTimeout(1_000);
-				await this.page.locator('svg[title="refresh"]').click();
+			// if (!url.includes('sonic')) {
+			// 	// Reload position data to avoid random fails
+			// 	await expect(this.page.locator('svg[title="refresh"]')).toBeVisible({
+			// 		timeout: expectDefaultTimeout * 2,
+			// 	});
+			// 	await this.page.waitForTimeout(1_000);
+			// 	await this.page.locator('svg[title="refresh"]').click();
 
-				await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
-			}
+			// 	await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
+			// }
+
+			await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
 		}).toPass();
 	}
 
