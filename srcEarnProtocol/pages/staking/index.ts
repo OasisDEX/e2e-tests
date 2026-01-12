@@ -4,18 +4,6 @@ import { expectDefaultTimeout } from 'utils/config';
 import { Manage } from './manage';
 import { RemoveStake } from './removeStake';
 
-interface StakingPositionSingle {
-	type: 'single';
-	index: string;
-}
-interface StakingPositionDual {
-	type: 'dual';
-	sumrStaked?: string;
-	lockPeriod?: string;
-}
-
-type StakingPosition = StakingPositionSingle | StakingPositionDual;
-
 export class Staking {
 	readonly page: Page;
 
@@ -232,20 +220,18 @@ export class Staking {
 	}
 
 	@step
-	async removeStakingPosition(position: StakingPosition) {
-		if (position.type === 'single') {
-			await this.page
-				.getByRole('row')
-				.filter({ has: this.page.locator(`td:has-text("#${position.index}")`) })
-				.getByRole('button', { name: 'Remove stake' })
-				.click();
-		} else {
-			await this.page
-				.getByRole('row')
-				.filter({ has: this.page.locator(`td:has-text("${position.sumrStaked}")`) })
-				.filter({ has: this.page.locator(`td:has-text("${position.lockPeriod}")`) })
-				.getByRole('button', { name: 'Remove stake' })
-				.click();
-		}
+	async removeStakingPosition({
+		sumrStaked,
+		lockPeriod,
+	}: {
+		sumrStaked: string;
+		lockPeriod: string;
+	}) {
+		await this.page
+			.getByRole('row')
+			.filter({ has: this.page.locator(`td:has-text("${sumrStaked}")`) })
+			.filter({ has: this.page.locator(`td:has-text("${lockPeriod}")`) })
+			.getByRole('button', { name: 'Remove stake' })
+			.click();
 	}
 }
