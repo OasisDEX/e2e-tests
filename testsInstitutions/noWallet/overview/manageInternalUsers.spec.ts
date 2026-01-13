@@ -52,10 +52,7 @@ test.describe('Client dashboard - Overview - Manage internal users - Admin role'
 		);
 
 		await app.page.waitForTimeout(1_000);
-		await app.clientDashboard.overview.manageInternalUsers.edit.update();
-
-		await app.page.waitForTimeout(1_000);
-		await app.clientDashboard.overview.manageInternalUsers.edit.goBack();
+		await app.clientDashboard.overview.manageInternalUsers.edit.confirmEdit();
 
 		await app.clientDashboard.overview.manageInternalUsers.shouldBeVisible();
 		await app.clientDashboard.overview.manageInternalUsers.shouldHaveUsers([
