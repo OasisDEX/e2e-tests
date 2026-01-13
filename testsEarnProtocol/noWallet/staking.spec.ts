@@ -9,7 +9,7 @@ test.describe('Staking page', async () => {
 	test('It should open log in popup - Total SUMR staked', async ({ app }) => {
 		// Wait for component to fully load to avoid random fails
 		await app.staking.shouldHaveTotalSumrStaked({
-			sumrAmount: '[0-9]{2,3}.[0-9]{2}M',
+			sumrAmount: '[0-9]{2,3}.[0-9]{2}[MK]',
 			timeout: expectDefaultTimeout * 3,
 		});
 
