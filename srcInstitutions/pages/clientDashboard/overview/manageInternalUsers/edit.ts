@@ -22,12 +22,7 @@ export class Edit {
 	}
 
 	@step
-	async update() {
-		await this.page.getByRole('button', { name: 'Update User' }).click();
-	}
-
-	@step
-	async goBack() {
-		await this.page.getByRole('button', { name: 'Go back' }).click();
+	async confirmEdit() {
+		await this.page.getByRole('button', { name: 'Edit User' }).click();
 	}
 }
