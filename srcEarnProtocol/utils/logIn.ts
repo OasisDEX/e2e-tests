@@ -18,7 +18,7 @@ export const logInWithWalletAddress = async ({
 	metamask: MetaMask;
 	app: App;
 	wallet: walletTypes;
-	network?: 'Arbitrum' | 'Sonic';
+	network?: 'Arbitrum' | 'Hyperliquid' | 'Sonic';
 	shortenedWalletAddress?: string;
 }) => {
 	await app.header.logIn();
