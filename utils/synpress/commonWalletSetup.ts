@@ -29,6 +29,12 @@ const networkParameters = {
 		chainId: 146,
 		symbol: 'S',
 	},
+	hyperliquid: {
+		name: 'HyperEVM',
+		rpcUrl: 'https://rpc.hyperliquid.xyz/evm',
+		chainId: 999,
+		symbol: 'HYPE',
+	},
 };
 
 export const commonMetamaskSetup = async ({
@@ -51,7 +57,7 @@ export const addNetwork = async ({
 	network,
 }: {
 	metamask: MetaMask;
-	network: 'arbitrum' | 'base' | 'optimism' | 'sonic';
+	network: 'arbitrum' | 'base' | 'hyperliquid' | 'optimism' | 'sonic';
 }) => {
 	await metamask.addNetwork(networkParameters[network]);
 };

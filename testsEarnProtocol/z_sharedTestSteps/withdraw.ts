@@ -109,7 +109,7 @@ export const withdraw = async ({
 		await app.positionPage.sidebar.approve(
 			nominatedToken === 'ETH'
 				? 'WETH'
-				: network !== 'arbitrum'
+				: network !== 'arbitrum' && network !== 'hyperliquid'
 				? nominatedToken
 				: nominatedToken === 'USD₮0'
 				? 'LVUSDT'

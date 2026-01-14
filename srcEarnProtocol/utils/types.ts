@@ -28,4 +28,4 @@ export type LazyNominatedTokens = 'ETH' | 'EURC' | 'USDC' | 'USDC.E' | 'USDT' | 
 
 export type Risks = 'Lower Risk' | 'Higher Risk';
 
-export type Networks = 'arbitrum' | 'base' | 'ethereum' | 'sonic';
+export type Networks = 'arbitrum' | 'base' | 'ethereum' | 'hyperliquid' | 'sonic';
