@@ -20,7 +20,7 @@ test.describe('With real wallet - Hyperliquid USDC Position page - Deposit', asy
 		});
 
 		await app.positionPage.open(
-			'/earn/hyperliquid/position/0x015e60a0b239214fdeab9ad21318b12c0d97c15d/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/hyperliquid/position/0x252e5aa42c1804b85b2ce6712cd418a0561232ba/0x10649c79428d718621821cf6299e91920284743f'
 		);
 	});
 
@@ -80,7 +80,7 @@ test.describe('With real wallet - Hyperliquid USDC Position page - Withdraw', as
 		});
 
 		await app.positionPage.open(
-			'/earn/hyperliquid/position/0x015e60a0b239214fdeab9ad21318b12c0d97c15d/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/hyperliquid/position/0x252e5aa42c1804b85b2ce6712cd418a0561232ba/0x10649c79428d718621821cf6299e91920284743f'
 		);
 
 		// Wait for balance to fully load to avoid random fails

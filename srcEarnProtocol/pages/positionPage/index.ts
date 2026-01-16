@@ -16,23 +16,18 @@ export class PositionPage {
 
 	@step
 	async open(url: string) {
-		// TO BE UPDATED once Hyperliquid vaults have Live APY
-		if (url.includes('hyperliquid')) {
+		await expect(async () => {
 			await this.page.goto(url);
-		} else {
-			await expect(async () => {
-				await this.page.goto(url);
 
-				// Reload position data to avoid random fails
-				await expect(this.page.locator('svg[title="refresh"]')).toBeVisible({
-					timeout: expectDefaultTimeout * 2,
-				});
-				await this.page.waitForTimeout(1_000);
-				await this.page.locator('svg[title="refresh"]').click();
+			// Reload position data to avoid random fails
+			await expect(this.page.locator('svg[title="refresh"]')).toBeVisible({
+				timeout: expectDefaultTimeout * 2,
+			});
+			await this.page.waitForTimeout(1_000);
+			await this.page.locator('svg[title="refresh"]').click();
 
-				await this.shouldHaveLiveApy('[0-9].[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
-			}).toPass();
-		}
+			await this.shouldHaveLiveApy('[0-9].[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
+		}).toPass();
 	}
 
 	@step
