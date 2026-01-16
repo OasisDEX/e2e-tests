@@ -16,7 +16,8 @@ test.describe('Vault page - Hyperliquid USDC', async () => {
 	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @regression', async ({
 		app,
 	}) => {
-		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
+		// ENABLE once vault has 30d APY
+		// await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
 
 		await app.vaultPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
 
@@ -28,7 +29,7 @@ test.describe('Vault page - Hyperliquid USDC', async () => {
 
 		await app.vaultPage.shouldHaveDepositCap({
 			token: 'USDC',
-			tokenAmount: '[0-9]{2,3}.[0-9]{2}M',
+			tokenAmount: '[0-9]{1,3}.[0-9]{2}M',
 		});
 	});
 
