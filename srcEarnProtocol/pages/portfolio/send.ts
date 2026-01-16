@@ -26,7 +26,7 @@ export class Send {
 
 	@step
 	async to(address: string) {
-		const addressLocator = this.modalLocator.locator('input[placeholder="Recievers address"]');
+		const addressLocator = this.modalLocator.locator(`input[placeholder="Receiver's address"]`);
 		await addressLocator.clear();
 		await addressLocator.fill(address);
 	}

@@ -48,8 +48,8 @@ test.describe('Staking page', async () => {
 		metamask,
 	}) => {
 		await app.staking.removeStakingPosition({
-			sumrStaked: '20.00',
-			lockPeriod: '18 days',
+			sumrStaked: '2.0000',
+			lockPeriod: '82 days',
 		});
 
 		await app.staking.removeStake.approve();

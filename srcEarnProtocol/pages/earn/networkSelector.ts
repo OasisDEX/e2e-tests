@@ -2,7 +2,7 @@ import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
 
-type Networks = 'All Networks' | 'ARBITRUM' | 'BASE' | 'MAINNET' | 'SONIC';
+type Networks = 'All Networks' | 'ARBITRUM' | 'BASE' | 'HYPERLIQUID' | 'MAINNET' | 'SONIC';
 
 export class NetworkSelector {
 	readonly page: Page;
