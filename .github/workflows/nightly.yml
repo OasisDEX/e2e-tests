@@ -1,8 +1,11 @@
 name: Nightly Run
 
+# CRON trigger disabld - Pro users sold to DeFi Saver
 on: 
-  schedule:
-    - cron:  '0 1 * * 1-5'
+  workflow_dispatch
+# on: 
+#   schedule:
+#     - cron:  '0 1 * * 1-5'
 
 jobs:
   institutions-no-wallet-tests:
