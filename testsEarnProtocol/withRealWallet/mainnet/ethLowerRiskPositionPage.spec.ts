@@ -21,7 +21,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk position page - Deposit
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
@@ -143,7 +143,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk position page - Withdra
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -206,7 +206,7 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -327,7 +327,7 @@ test.describe('With real wallet - Mainnet ETH Lower Risk Position page - Unstake
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails

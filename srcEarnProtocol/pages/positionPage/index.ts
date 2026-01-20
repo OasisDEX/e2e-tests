@@ -47,7 +47,7 @@ export class PositionPage {
 
 		await expect(
 			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span').first(),
-			`Market Value should contain ${regExp}`
+			`Market Value should contain ${regExp}`,
 		).toContainText(regExp);
 
 		// Verify tooltip
@@ -57,13 +57,13 @@ export class PositionPage {
 			.hover();
 		await expect(
 			this.page.locator('[data-tooltip-id]:has-text("Market")'),
-			'Market Value tooltip should be visible'
+			'Market Value tooltip should be visible',
 		).toHaveClass(/tooltipOpen/);
 
 		const tootltipRegExp = new RegExp(`USD.*Market.*Value:.*\\$${usdAmount}`);
 		await expect(
 			this.page.locator('[data-tooltip-id]:has-text("Market")'),
-			`Market Value tooltip should contain ${tootltipRegExp}`
+			`Market Value tooltip should contain ${tootltipRegExp}`,
 		).toContainText(tootltipRegExp);
 	}
 
@@ -80,7 +80,7 @@ export class PositionPage {
 		const regExp = new RegExp(`${amount}.*${token}`);
 
 		await expect(
-			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span').last()
+			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span').last(),
 		).toContainText(regExp);
 
 		// Verify that is greater than 0
@@ -98,13 +98,13 @@ export class PositionPage {
 			.hover();
 		await expect(
 			this.page.locator('[data-tooltip-id]:has-text("Earned:")'),
-			'Earned tooltip should be visible'
+			'Earned tooltip should be visible',
 		).toHaveClass(/tooltipOpen/);
 
 		const tootltipRegExp = new RegExp(`USD.*Earned:.*\\$${usdAmount}`);
 		await expect(
 			this.page.locator('[data-tooltip-id]:has-text("Earned:")'),
-			`Earned tooltip should contain ${tootltipRegExp}`
+			`Earned tooltip should contain ${tootltipRegExp}`,
 		).toContainText(tootltipRegExp);
 
 		// Verify that tooltip is greater than 0
@@ -113,7 +113,7 @@ export class PositionPage {
 			.last()
 			.innerText();
 		const earnedTooltipAmount = parseFloat(
-			earnedTooltipAmountText.replace('Earned:', '').replace('USDC', '')
+			earnedTooltipAmountText.replace('Earned:', '').replace('USDC', ''),
 		);
 		expect(earnedTooltipAmount).toBeGreaterThan(0);
 	}
@@ -132,7 +132,7 @@ export class PositionPage {
 		const depositsRegExp = new RegExp(`# of Deposits: ${numberOfDeposits}`);
 
 		const netContributionLocator = this.page.locator(
-			'[class*="_dataBlockWrapper_"]:has-text("Net Contribution")'
+			'[class*="_dataBlockWrapper_"]:has-text("Net Contribution")',
 		);
 
 		await expect(netContributionLocator.locator('span').first()).toContainText(usdRegExp);
@@ -153,7 +153,7 @@ export class PositionPage {
 		const regExp = new RegExp(`${apy}%`);
 
 		await expect(
-			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Live APY") span').first()
+			this.page.locator('[class*="_dataBlockWrapper_"] span:has-text("Live APY")').first(),
 		).toContainText(regExp, { timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 }
