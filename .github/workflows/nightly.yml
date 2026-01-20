@@ -1,11 +1,8 @@
 name: Nightly Run
 
-# CRON trigger disabld - Pro users sold to DeFi Saver
 on: 
-  workflow_dispatch
-# on: 
-#   schedule:
-#     - cron:  '0 1 * * 1-5'
+  schedule:
+    - cron:  '0 1 * * 1-5'
 
 jobs:
   institutions-no-wallet-tests:
@@ -40,115 +37,113 @@ jobs:
       report_name: lazy-production-no-wallet
     secrets: inherit
 
-  api-tests: 
-    uses: ./.github/workflows/z_Reusable_Apis.yml
-    with:
-      script: api-tests
+  # api-tests: 
+  #   uses: ./.github/workflows/z_Reusable_Apis.yml
+  #   with:
+  #     script: api-tests
 
-  no-wallet-tests:
-    uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
-    with:
-      script: nightly:no-wallet
+  # no-wallet-tests:
+  #   uses: ./.github/workflows/z_Reusable_RegressionNoWallet.yml
+  #   with:
+  #     script: nightly:no-wallet
 
   # with-real-wallet:
   #   uses: ./.github/workflows/z_Reusable_RegressionWithRealWallet.yml
   #   secrets: inherit
 
-  with-wallet-aave-ethereum-tests:
-    name: 'With wallet - Aave - Ethereum'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - ethereum
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:ethereum
-      - name: Run With wallet Aave Ethereum tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:aave:ethereum
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-aave-ethereum
-          path: playwright-reports/with-wallet-aave-ethereum
-          retention-days: 30
+  # with-wallet-aave-ethereum-tests:
+  #   name: 'With wallet - Aave - Ethereum'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - ethereum
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:ethereum
+  #     - name: Run With wallet Aave Ethereum tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:aave:ethereum
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-aave-ethereum
+  #         path: playwright-reports/with-wallet-aave-ethereum
+  #         retention-days: 30
   
-  with-wallet-aave-arbitrum-tests:
-    name: 'With wallet - Aave - Arbitrum'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - arbitrum
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:arbitrum
-      - name: Run With wallet Aave Arbitrum tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:aave:arbitrum
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-aave-arbitrum
-          path: playwright-reports/with-wallet-aave-arbitrum
-          retention-days: 30
+  # with-wallet-aave-arbitrum-tests:
+  #   name: 'With wallet - Aave - Arbitrum'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - arbitrum
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:arbitrum
+  #     - name: Run With wallet Aave Arbitrum tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:aave:arbitrum
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-aave-arbitrum
+  #         path: playwright-reports/with-wallet-aave-arbitrum
+  #         retention-days: 30
 
-  # SKIP - Base tests failing in github run
-  with-wallet-aave-base-tests:
-    name: 'With wallet - Aave - Base'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - Base
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:base
-      - name: Run With wallet Aave Base tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:aave:base
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-aave-base
-          path: playwright-reports/with-wallet-aave-base
-          retention-days: 30
+  # with-wallet-aave-base-tests:
+  #   name: 'With wallet - Aave - Base'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - Base
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:base
+  #     - name: Run With wallet Aave Base tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:aave:base
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-aave-base
+  #         path: playwright-reports/with-wallet-aave-base
+  #         retention-days: 30
 
-  # SKIP - Synpress cache and/or set up for optimism randomly failing
   # with-wallet-aave-optimism-tests:
   #   name: 'With wallet - Aave - Optimism'
   #   runs-on: ubuntu-latest
@@ -242,100 +237,99 @@ jobs:
   #         path: playwright-reports/with-wallet-morphoblue
   #         retention-days: 30
   
-  with-wallet-morpho-and-ajna-ethereum:
-    name: 'With wallet - Morpho & Ajna - Ethereum'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - ethereum
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:ethereum
-      - name: Run With wallet Morpho Blue tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:morpho-and-ajna:ethereum
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: with-wallet-morpho-and-ajna-ethereum
-          path: playwright-reports/with-wallet-morpho-and-ajna-ethereum
-          retention-days: 30
+  # with-wallet-morpho-and-ajna-ethereum:
+  #   name: 'With wallet - Morpho & Ajna - Ethereum'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - ethereum
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:ethereum
+  #     - name: Run With wallet Morpho Blue tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:morpho-and-ajna:ethereum
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: with-wallet-morpho-and-ajna-ethereum
+  #         path: playwright-reports/with-wallet-morpho-and-ajna-ethereum
+  #         retention-days: 30
   
-  with-wallet-morpho-and-ajna-base:
-    name: 'With wallet - Morpho & Ajna - Base'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - base
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:base
-      - name: Run With wallet Morpho Blue tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:morpho-and-ajna:base
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: with-wallet-morpho-and-ajna-base
-          path: playwright-reports/with-wallet-morpho-and-ajna-base
-          retention-days: 30
+  # with-wallet-morpho-and-ajna-base:
+  #   name: 'With wallet - Morpho & Ajna - Base'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - base
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:base
+  #     - name: Run With wallet Morpho Blue tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:morpho-and-ajna:base
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: with-wallet-morpho-and-ajna-base
+  #         path: playwright-reports/with-wallet-morpho-and-ajna-base
+  #         retention-days: 30
   
-  with-wallet-ajna-arbitrum:
-    name: 'With wallet - Ajna - Arbitrum'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - Arbitrum
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:arbitrum
-      - name: Run With wallet Ajna tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:ajna:arbitrum
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: with-wallet-ajna-arbitrum
-          path: playwright-reports/with-wallet-ajna-arbitrum
-          retention-days: 30
+  # with-wallet-ajna-arbitrum:
+  #   name: 'With wallet - Ajna - Arbitrum'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - Arbitrum
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:arbitrum
+  #     - name: Run With wallet Ajna tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:ajna:arbitrum
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: with-wallet-ajna-arbitrum
+  #         path: playwright-reports/with-wallet-ajna-arbitrum
+  #         retention-days: 30
   
-
   # with-wallet-ajna-tests:
   #   name: 'With wallet - Ajna - All but Optimism'
   #   runs-on: ubuntu-latest
@@ -367,191 +361,191 @@ jobs:
   #         path: playwright-reports/with-wallet-ajna
   #         retention-days: 30
   
-  with-wallet-maker-tests:
-    name: 'With wallet - Maker'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - ethereum
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:ethereum
-      - name: Run With wallet Maker tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:maker
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-maker-ethereum
-          path: playwright-reports/with-wallet-maker-ethereum
-          retention-days: 30
+  # with-wallet-maker-tests:
+  #   name: 'With wallet - Maker'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - ethereum
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:ethereum
+  #     - name: Run With wallet Maker tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:maker
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-maker-ethereum
+  #         path: playwright-reports/with-wallet-maker-ethereum
+  #         retention-days: 30
 
-  with-wallet-spark-tests:
-    name: 'With wallet - Spark'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - ethereum
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:ethereum
-      - name: Run With wallet Maker and Spark tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:spark
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-spark-ethereum
-          path: playwright-reports/with-wallet-spark-ethereum
-          retention-days: 30
+  # with-wallet-spark-tests:
+  #   name: 'With wallet - Spark'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - ethereum
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:ethereum
+  #     - name: Run With wallet Maker and Spark tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:spark
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-spark-ethereum
+  #         path: playwright-reports/with-wallet-spark-ethereum
+  #         retention-days: 30
 
-  with-wallet-open-positions-tests-aave-ethereum-borrow:
-    name: 'Open Positions - Aave - Ethereum - Borrow'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - ethereum
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:ethereum
-      - name: Run Open Positions - Aave - Ethereum - Borrow tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:open-positions:aave:ethereum:borrow
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-open-positions-aave-ethereum-borrow
-          path: playwright-reports/with-wallet-open-positions-aave-ethereum-borrow
-          retention-days: 30
+  # with-wallet-open-positions-tests-aave-ethereum-borrow:
+  #   name: 'Open Positions - Aave - Ethereum - Borrow'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - ethereum
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:ethereum
+  #     - name: Run Open Positions - Aave - Ethereum - Borrow tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:open-positions:aave:ethereum:borrow
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-open-positions-aave-ethereum-borrow
+  #         path: playwright-reports/with-wallet-open-positions-aave-ethereum-borrow
+  #         retention-days: 30
  
-  with-wallet-open-positions-tests-aave-ethereum-earn-multiply:
-    name: 'Open Positions - Aave - Ethereum - Earn & Multiply'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - ethereum
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:ethereum
-      - name: Run Open positions - Aave - Ethereum - Earn & Multiply tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:open-positions:aave:ethereum:earn-multiply
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-open-positions-aave-ethereum-earn-multiply
-          path: playwright-reports/with-wallet-open-positions-aave-ethereum-earn-multiply
-          retention-days: 30
+  # with-wallet-open-positions-tests-aave-ethereum-earn-multiply:
+  #   name: 'Open Positions - Aave - Ethereum - Earn & Multiply'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - ethereum
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:ethereum
+  #     - name: Run Open positions - Aave - Ethereum - Earn & Multiply tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:open-positions:aave:ethereum:earn-multiply
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-open-positions-aave-ethereum-earn-multiply
+  #         path: playwright-reports/with-wallet-open-positions-aave-ethereum-earn-multiply
+  #         retention-days: 30
 
-  with-wallet-open-positions-tests-aave-l2s:
-    name: 'Open Positions - Aave - Base & Arbitrum'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - All but Optimism
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:all-but-optimism
-      - name: Run Open Positions - Aave - L2s tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:open-positions:aave:base-and-arbitrum
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-open-positions-aave-l2s
-          path: playwright-reports/with-wallet-open-positions-aave-l2s
-          retention-days: 30
+  # with-wallet-open-positions-tests-aave-l2s:
+  #   name: 'Open Positions - Aave - Base & Arbitrum'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - All but Optimism
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:all-but-optimism
+  #     - name: Run Open Positions - Aave - L2s tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:open-positions:aave:base-and-arbitrum
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-open-positions-aave-l2s
+  #         path: playwright-reports/with-wallet-open-positions-aave-l2s
+  #         retention-days: 30
 
-  with-wallet-open-positions-tests-other:
-    name: 'Open Positions - Other'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache - All but Optimism
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:all-but-optimism
-      - name: Run With wallet Maker and Spark tests
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn nightly:with-wallet:open-positions:other
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-open-positions-other
-          path: playwright-reports/with-wallet-open-positions-other
-          retention-days: 30
+  # with-wallet-open-positions-tests-other:
+  #   name: 'Open Positions - Other'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache - All but Optimism
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:all-but-optimism
+  #     - name: Run With wallet Maker and Spark tests
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn nightly:with-wallet:open-positions:other
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-open-positions-other
+  #         path: playwright-reports/with-wallet-open-positions-other
+  #         retention-days: 30
 
   # with-wallet-open-rays:
   #   name: 'With wallet - Rays & Swap rate'
@@ -588,37 +582,37 @@ jobs:
   #         retention-days: 30
 
   # SWAP tests running on productionuntil SDK is upgraded on staging
-  with-wallet-swap:
-    name: 'Swap'
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.49.0-jammy
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - name: Install dependencies
-        run: yarn
-      - name: Install xvfb
-        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-      - name: Build Synpress cache
-        run: |
-          EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:test-wallet:ethereum
-      - name: Run Swap tests
-        # SWAP tests running on production until SDK is upgraded on staging
-        run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
-          yarn ci:with-wallet:swap
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: playwright-report-with-wallet-swap
-          path: playwright-reports/with-wallet-swap
-          retention-days: 30
+  # with-wallet-swap:
+  #   name: 'Swap'
+  #   runs-on: ubuntu-latest
+  #   container:
+  #     image: mcr.microsoft.com/playwright:v1.49.0-jammy
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 18
+  #     - name: Install dependencies
+  #       run: yarn
+  #     - name: Install xvfb
+  #       run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+  #     - name: Build Synpress cache
+  #       run: |
+  #         EMPTY_TEST_WALLET_PK=${{ secrets.EMPTY_TEST_WALLET_PK }} \
+  #         yarn ci:synpress-build-cache:test-wallet:ethereum
+  #     - name: Run Swap tests
+  #       # SWAP tests running on production until SDK is upgraded on staging
+  #       run: |
+  #         TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
+  #         TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
+  #         TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
+  #         yarn ci:with-wallet:swap
+  #     - uses: actions/upload-artifact@v4
+  #       if: always()
+  #       with:
+  #         name: playwright-report-with-wallet-swap
+  #         path: playwright-reports/with-wallet-swap
+  #         retention-days: 30
 
   # with-wallet-aave-ethereum-tests-new:
   #   name: 'With wallet - Aave - Ethereum - NEW'
