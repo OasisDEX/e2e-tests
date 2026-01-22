@@ -32,12 +32,6 @@ test.describe('Client dashboard - Overview - Manage internal users - Admin role'
 				role: 'RoleAdmin',
 				createdAt: '2025-12-18',
 			},
-			{
-				name: 'Marcin Testing',
-				email: 'testing@plamka.net',
-				role: 'SuperAdmin',
-				createdAt: '2025-08-08',
-			},
 		]);
 	});
 
@@ -48,7 +42,7 @@ test.describe('Client dashboard - Overview - Manage internal users - Admin role'
 
 		const randomNumberString = Math.floor(Math.random() * 9999).toString();
 		await app.clientDashboard.overview.manageInternalUsers.edit.enterNewUsername(
-			`Juan Test User ${randomNumberString}`
+			`Juan Test User ${randomNumberString}`,
 		);
 
 		await app.page.waitForTimeout(1_000);
