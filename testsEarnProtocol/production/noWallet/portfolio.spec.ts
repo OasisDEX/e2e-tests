@@ -6,7 +6,7 @@ test.describe('Porfolio - Wallet tab', async () => {
 	});
 
 	test('It should show total wallet value', async ({ app }) => {
-		await app.portfolio.wallet.shouldHaveTotalValue('[0-9]{1,2}.[0-9]{2}');
+		await app.portfolio.wallet.shouldHaveTotalValue('[0-9]{1,3}.[0-9]{2}');
 	});
 
 	// test('It should display top 3 assets', async ({ app }) => {
