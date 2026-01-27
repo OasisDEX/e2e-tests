@@ -59,12 +59,12 @@ export class Vaults {
 	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(
 			this.panelLocator.locator('[class*="VaultsDropdownWrapper_contentWrapper_"]').first(),
-			'Vaults dropdown should be visible'
+			'Vaults dropdown should be visible',
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 
 		await expect(
 			this.panelLocator.getByRole('button', { name: 'Vault exposure' }),
-			'"Vault exposure" menu option should be visible'
+			'"Vault exposure" menu option should be visible',
 		).toBeVisible();
 	}
 
@@ -76,7 +76,7 @@ export class Vaults {
 	@step
 	async shouldHavePanelActive(panel: Panels, args?: { timeout: number }) {
 		await expect(
-			this.panelLocator.getByRole('button', { name: panel }).locator('div').first()
+			this.panelLocator.getByRole('button', { name: panel }).locator('div').first(),
 		).toHaveClass(/_activeButtonText_/, { timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
@@ -104,7 +104,7 @@ export class Vaults {
 		inception?: string;
 	}) {
 		const fieldLocator = (
-			fieldName: 'Name' | 'Asset' | 'Live APY' | 'NAV' | 'AUM' | 'Fee' | 'Inception'
+			fieldName: 'Name' | 'Asset' | 'Live APY' | 'NAV' | 'AUM' | 'Fee' | 'Inception',
 		) =>
 			this.page
 				.locator('[class*="DashboardVaultHeader_dataBlockWrapper_"]')
@@ -121,7 +121,7 @@ export class Vaults {
 		if (liveApy) {
 			const regExp = new RegExp(`${liveApy}${liveApy === 'n/a' ? '' : '%'}`);
 			await expect(fieldLocator('Live APY'), `Should have Live APY: ${liveApy}`).toContainText(
-				regExp
+				regExp,
 			);
 		}
 
@@ -139,13 +139,13 @@ export class Vaults {
 			const regExp = new RegExp(`${fee}%`);
 			await expect(
 				fieldLocator('Fee'),
-				`Should have Fee: ${fee}${fee === 'n/a' ? '' : '%'}`
+				`Should have Fee: ${fee}${fee === 'n/a' ? '' : '%'}`,
 			).toContainText(fee === 'n/a' ? fee : regExp);
 		}
 
 		if (inception) {
 			await expect(fieldLocator('Inception'), `Should have Inception: ${inception}`).toContainText(
-				inception
+				inception,
 			);
 		}
 	}
