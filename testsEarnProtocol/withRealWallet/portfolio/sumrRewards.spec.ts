@@ -6,8 +6,7 @@ import { expect } from '#earnProtocolFixtures';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
 
-// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
-test.describe.skip('Real wallet - Portfolio - SUMR rewards', async () => {
+test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 45_000);
@@ -112,5 +111,35 @@ test.describe.skip('Real wallet - Portfolio - SUMR rewards', async () => {
 		await expect(async () => {
 			await metamask.rejectTransaction();
 		}).toPass();
+	});
+});
+
+// TO BE DONE in February once there are USDC rewards to be claimed
+test.describe.skip('Real wallet - Portfolio - Staking USDC rewards', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		// Extending tests timeout by 25 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 45_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+			network: 'Sonic',
+		});
+
+		await expect(async () => {
+			await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F?tab=rewards');
+			await app.waitForAppToBeStable();
+		}).toPass();
+	});
+
+	test('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
+		test.setTimeout(veryLongTestTimeout);
+
+		//
+		await app.pause();
+		//
+
+		//TO BE DONE
 	});
 });
