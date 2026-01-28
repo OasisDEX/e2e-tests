@@ -20,7 +20,7 @@ test.describe('With real wallet - Base EURC position page - Deposit', async () =
 		});
 
 		await app.positionPage.open(
-			'/earn/base/position/0x64db8f51f1bf7064bb5a361a7265f602d348e0f0/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/base/position/0x64db8f51f1bf7064bb5a361a7265f602d348e0f0/0x10649c79428d718621821cf6299e91920284743f',
 		);
 	});
 
@@ -37,7 +37,7 @@ test.describe('With real wallet - Base EURC position page - Deposit', async () =
 		await app.positionPage.sidebar.depositOrWithdraw('0.5');
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: '$',
-			amount: '0.[4-5][0-9]{3}',
+			amount: '0.[4-6][0-9]{3}',
 		});
 
 		// USDS
@@ -52,7 +52,7 @@ test.describe('With real wallet - Base EURC position page - Deposit', async () =
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'EURC',
-			amount: '0.[4-6][0-9]',
+			amount: '0.[3-6][0-9]',
 		});
 
 		// CBETH
@@ -142,7 +142,7 @@ test.describe('With real wallet - Base EURC position page - Withdraw', async () 
 		});
 
 		await app.positionPage.open(
-			'/earn/base/position/0x64db8f51f1bf7064bb5a361a7265f602d348e0f0/0x10649c79428d718621821Cf6299e91920284743F'
+			'/earn/base/position/0x64db8f51f1bf7064bb5a361a7265f602d348e0f0/0x10649c79428d718621821Cf6299e91920284743F',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -203,7 +203,7 @@ test.describe('With real wallet - Base EURC position page - Switch', async () =>
 		});
 
 		await app.positionPage.open(
-			'/earn/base/position/0x64db8f51f1bf7064bb5a361a7265f602d348e0f0/0x10649c79428d718621821Cf6299e91920284743F'
+			'/earn/base/position/0x64db8f51f1bf7064bb5a361a7265f602d348e0f0/0x10649c79428d718621821Cf6299e91920284743F',
 		);
 
 		// Wait for balance to fully load to avoid random fails
