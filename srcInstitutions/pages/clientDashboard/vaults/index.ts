@@ -1,5 +1,7 @@
 import { expect, step } from '#institutionsNoWalletFixtures';
 import { Locator, Page } from '@playwright/test';
+import { EarnTokens } from 'srcEarnProtocol/utils/types';
+import { expectDefaultTimeout } from 'utils/config';
 import { Activity } from './activity';
 import { AssetRelocation } from './assetRelocation';
 import { ClientAdmin } from './clientAdmin';
@@ -7,9 +9,8 @@ import { FeeAndRevenueAdmin } from './feeAndRevenueAdmin';
 import { Overview } from './overview';
 import { RiskParameters } from './riskParameters';
 import { RoleAdmin } from './roleAdmin';
+import { UserAdmin } from './userAdmin';
 import { VaultExposure } from './vaultExposure';
-import { EarnTokens } from 'srcEarnProtocol/utils/types';
-import { expectDefaultTimeout } from 'utils/config';
 
 type Panels =
 	| 'Overview'
@@ -40,6 +41,8 @@ export class Vaults {
 
 	readonly roleAdmin: RoleAdmin;
 
+	readonly userAdmin: UserAdmin;
+
 	readonly vaultExposure: VaultExposure;
 
 	constructor(page: Page) {
@@ -52,6 +55,7 @@ export class Vaults {
 		this.overview = new Overview(page);
 		this.riskParameters = new RiskParameters(page);
 		this.roleAdmin = new RoleAdmin(page);
+		this.userAdmin = new UserAdmin(page);
 		this.vaultExposure = new VaultExposure(page);
 	}
 
