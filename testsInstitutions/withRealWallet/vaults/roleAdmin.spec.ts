@@ -1,10 +1,7 @@
 import { test } from '#institutionsWithWalletFixtures';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
-// // Run these tests sequencially to avoid random fails
-// test.describe.configure({ mode: 'serial' });
-
-test.describe('With wallet - Vaults tab', async () => {
+test.describe('With wallet - Vaults - Role Admin', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
 
@@ -22,19 +19,12 @@ test.describe('With wallet - Vaults tab', async () => {
 		await app.header.shouldNothaveConnectWalletButton();
 
 		await app.clientDashboard.selectTab('Vaults');
-	});
 
-	test('It should have no transactions in the queue - Risk Parameters tab', async ({ app }) => {
-		await app.clientDashboard.vaults.selectPanel('Risk Parameters');
-		await app.clientDashboard.vaults.riskParameters.shouldBeVisible();
-
-		await app.clientDashboard.vaults.riskParameters.shouldHaveNoTransactionsInQueue();
+		await app.clientDashboard.vaults.selectPanel('Role admin');
+		await app.clientDashboard.vaults.roleAdmin.shouldBeVisible();
 	});
 
 	test(`It should fail to Revoke address' role -- With non governor wallet`, async ({ app }) => {
-		await app.clientDashboard.vaults.selectPanel('Role admin');
-		await app.clientDashboard.vaults.roleAdmin.shouldBeVisible();
-
 		await app.clientDashboard.vaults.roleAdmin.removeRole(
 			'0x10649c79428d718621821Cf6299e91920284743F',
 		);
@@ -51,9 +41,6 @@ test.describe('With wallet - Vaults tab', async () => {
 	test('It should fail to Add a role to an address -- With non governor wallet', async ({
 		app,
 	}) => {
-		await app.clientDashboard.vaults.selectPanel('Role admin');
-		await app.clientDashboard.vaults.roleAdmin.shouldBeVisible();
-
 		await app.clientDashboard.vaults.roleAdmin.addNewRole.fillAddress(
 			'0x88a135D9aC7583Eb45C1c140fBF6cE474f1f7789',
 		);
@@ -71,9 +58,6 @@ test.describe('With wallet - Vaults tab', async () => {
 	});
 
 	test('It should remove tx from queue', async ({ app }) => {
-		await app.clientDashboard.vaults.selectPanel('Role admin');
-		await app.clientDashboard.vaults.roleAdmin.shouldBeVisible();
-
 		await app.clientDashboard.vaults.roleAdmin.removeRole(
 			'0x10649c79428d718621821Cf6299e91920284743F',
 		);
