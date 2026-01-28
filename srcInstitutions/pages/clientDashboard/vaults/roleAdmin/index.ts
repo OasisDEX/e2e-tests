@@ -59,7 +59,7 @@ export class RoleAdmin {
 
 	@step
 	async executeLatestTx() {
-		await this.page.getByRole('button', { name: 'Execute' }).click();
+		await this.page.getByRole('button', { name: 'Execute' }).last().click();
 	}
 
 	@step
@@ -67,6 +67,34 @@ export class RoleAdmin {
 		await expect(
 			this.page.getByRole('button', { name: 'Transaction Error' }),
 			'Button should have "Transaction Error" label',
+		).toBeVisible();
+	}
+
+	@step
+	async removeTxFromQueue({
+		action,
+		role,
+		address,
+	}: {
+		action: AddressAdminActions;
+		role: AddressRoles;
+		address: string;
+	}) {
+		const regExp = new RegExp(`${action}.*${role}.*role.*(from|to).*${address}`);
+
+		await this.page
+			.locator('[class*="_transactionItem_"]')
+			.filter({ hasText: regExp })
+			.getByRole('button')
+			.last()
+			.click();
+	}
+
+	@step
+	async shouldHaveNoTransactionsInQueue() {
+		await expect(
+			this.page.getByText('No transactions in the queue.').last(),
+			'Should displaye "No transactions" message',
 		).toBeVisible();
 	}
 }

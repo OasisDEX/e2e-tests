@@ -1,6 +1,9 @@
 import { test } from '#institutionsWithWalletFixtures';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
+// // Run these tests sequencially to avoid random fails
+// test.describe.configure({ mode: 'serial' });
+
 test.describe('With wallet - Vaults tab', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
@@ -65,5 +68,27 @@ test.describe('With wallet - Vaults tab', async () => {
 
 		await app.clientDashboard.vaults.roleAdmin.executeLatestTx();
 		await app.clientDashboard.vaults.roleAdmin.shouldHaveTxError();
+	});
+
+	test('It should remove tx from queue', async ({ app }) => {
+		await app.clientDashboard.vaults.selectPanel('Role admin');
+		await app.clientDashboard.vaults.roleAdmin.shouldBeVisible();
+
+		await app.clientDashboard.vaults.roleAdmin.removeRole(
+			'0x10649c79428d718621821Cf6299e91920284743F',
+		);
+		await app.clientDashboard.vaults.roleAdmin.shouldHaveTxInQueue({
+			action: 'Revoke',
+			role: 'Keeper',
+			address: '0x10649c79428d718621821Cf6299e91920284743F',
+		});
+
+		await app.clientDashboard.vaults.roleAdmin.removeTxFromQueue({
+			action: 'Revoke',
+			role: 'Keeper',
+			address: '0x10649c79428d718621821Cf6299e91920284743F',
+		});
+
+		await app.clientDashboard.vaults.roleAdmin.shouldHaveNoTransactionsInQueue();
 	});
 });
