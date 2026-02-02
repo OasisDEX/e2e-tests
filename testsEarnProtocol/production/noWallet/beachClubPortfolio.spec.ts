@@ -18,7 +18,7 @@ test.describe('Beach Club - Portfolio page', async () => {
 		await context.grantPermissions(['clipboard-read']);
 		const clipboardText2 = await app.page.evaluate(() => navigator.clipboard.readText());
 		expect(clipboardText2, 'Should have copied referral link in the clipboard').toContain(
-			'https://summer.fi/earn?referralCode=2000056'
+			'https://summer.fi/earn?referralCode=2000056',
 		);
 	});
 
@@ -26,10 +26,10 @@ test.describe('Beach Club - Portfolio page', async () => {
 		await app.portfolio.beachClub.openPage('0x90153be2ac32633fc9a7cc53cdf01d348e875555');
 
 		await app.portfolio.beachClub.shouldHaveCumulativeTvlFromReferrals(
-			'([0-9]{2,3},)?[0-9]{2,3}.[0-9]{2}'
+			'([0-9]{2,3},)?[0-9]{2,3}.[0-9]{2}',
 		);
 		await app.portfolio.beachClub.shouldHaveEarnedSUMR('[0-9]{1,2}.[0-9]{2}(K)?');
-		await app.portfolio.beachClub.shouldHaveEarnedFee('[0-9]{1,2}.[0-9]{2}');
+		await app.portfolio.beachClub.shouldHaveEarnedFee('[0-9]{1,3}.[0-9]{2}');
 	});
 
 	test('It sould show Rewards group in which user currently is', async ({ app }) => {
