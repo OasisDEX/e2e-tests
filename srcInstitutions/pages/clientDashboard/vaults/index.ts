@@ -78,6 +78,11 @@ export class Vaults {
 	}
 
 	@step
+	async selectVault(name: string) {
+		await this.page.locator('[class*="_dropdownOption_"]').filter({ hasText: name }).click();
+	}
+
+	@step
 	async shouldHavePanelActive(panel: Panels, args?: { timeout: number }) {
 		await expect(
 			this.panelLocator.getByRole('button', { name: panel }).locator('div').first(),
