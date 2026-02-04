@@ -25,7 +25,7 @@ test.describe('With real wallet - Base ETH Position page - Deposit', async () =>
 		});
 
 		await app.positionPage.open(
-			'/earn/base/position/0x2bb9ad69feba5547b7cd57aafe8457d40bf834af/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/base/position/0x2bb9ad69feba5547b7cd57aafe8457d40bf834af/0x10649c79428d718621821cf6299e91920284743f',
 		);
 	});
 
@@ -78,8 +78,7 @@ test.describe('With real wallet - Base ETH Position page - Deposit', async () =>
 		});
 	});
 
-	// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
-	test.skip('It should deposit ETH & USDS - (until rejecting "Deposit" tx) - Base ETH position page', async ({
+	test('It should deposit ETH & USDS - (until rejecting "Deposit" tx) - Base ETH position page', async ({
 		app,
 		metamask,
 	}) => {
@@ -150,7 +149,7 @@ test.describe('With real wallet - Base ETH Position page - Withdraw', async () =
 		});
 
 		await app.positionPage.open(
-			'/earn/base/position/0x2bb9ad69feba5547b7cd57aafe8457d40bf834af/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/base/position/0x2bb9ad69feba5547b7cd57aafe8457d40bf834af/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -214,7 +213,7 @@ test.describe('With real wallet - Base ETH position page - Switch', async () => 
 		});
 
 		await app.positionPage.open(
-			'/earn/base/position/0x2bb9ad69feba5547b7cd57aafe8457d40bf834af/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/base/position/0x2bb9ad69feba5547b7cd57aafe8457d40bf834af/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails

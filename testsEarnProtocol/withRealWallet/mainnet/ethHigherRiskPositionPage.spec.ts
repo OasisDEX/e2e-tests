@@ -21,7 +21,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposi
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
@@ -75,8 +75,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposi
 		});
 	});
 
-	// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
-	test.skip('It should deposit ETH, WETH & USDC (until rejecting "Deposit" tx) - Mainnet ETH Higher Risk position', async ({
+	test('It should deposit ETH, WETH & USDC (until rejecting "Deposit" tx) - Mainnet ETH Higher Risk position', async ({
 		app,
 		metamask,
 	}) => {
@@ -165,7 +164,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Withdr
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -228,7 +227,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -352,7 +351,7 @@ test.describe('With real wallet - Mainnet ETH Hogher Risk Position page - Unstak
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x2e6abcbcced9af05bc3b8a4908e0c98c29a88e10/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
