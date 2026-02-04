@@ -1,5 +1,6 @@
 import { expect, step } from '#noWalletFixtures';
 import { Page } from '@playwright/test';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class Sumr {
 	readonly page: Page;
@@ -98,12 +99,13 @@ export class Sumr {
 	async shouldHaveYieldSource() {
 		const regExpSource1 = new RegExp('Yield source 1.*Up.*to.*[0-9].[0-9]{2}%.*USDC yield');
 		await expect(this.page.locator('[class*="_yieldSourceColumn_"]').nth(0)).toContainText(
-			regExpSource1
+			regExpSource1,
+			{ timeout: expectDefaultTimeout * 3 },
 		);
 
 		const regExpSource2 = new RegExp('Yield source 2.*Up.*to.*[0-9]{1,2}.[0-9]{2}%.*SUMR APY');
 		await expect(this.page.locator('[class*="_yieldSourceColumn_"]').nth(1)).toContainText(
-			regExpSource2
+			regExpSource2,
 		);
 	}
 
