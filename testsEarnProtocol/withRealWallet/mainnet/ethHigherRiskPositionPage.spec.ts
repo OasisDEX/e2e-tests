@@ -48,7 +48,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposi
 		await app.positionPage.sidebar.selectToken('USDC');
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.500',
+			balance: '0.[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});

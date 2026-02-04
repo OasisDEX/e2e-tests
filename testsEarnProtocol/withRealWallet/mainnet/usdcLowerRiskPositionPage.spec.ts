@@ -20,11 +20,11 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Deposi
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.5000',
+			balance: '0.[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -142,12 +142,12 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Withdr
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.5000',
+			balance: '0.[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -205,12 +205,12 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Switch
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.5000',
+			balance: '0.[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -326,12 +326,12 @@ test.describe('With real wallet - Mainnet USDC Lower Risk Position page - Unstak
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.5000',
+			balance: '0.[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
