@@ -1,5 +1,5 @@
 import { expect, step } from '#institutionsNoWalletFixtures';
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 import { AddNewRole } from './addNewRole';
 import { AddressAdminActions, AddressRoles } from 'srcInstitutions/utils/types';
 
@@ -8,9 +8,12 @@ export class RoleAdmin {
 
 	readonly addNewRole: AddNewRole;
 
+	readonly roleRowLocator: Locator;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.addNewRole = new AddNewRole(page);
+		this.roleRowLocator = this.page.locator('[class*="PanelRoleAdmin_table_"] tr');
 	}
 
 	@step
@@ -32,12 +35,16 @@ export class RoleAdmin {
 	}
 
 	@step
+	async shouldHaveRole({ role, address }: { role: AddressRoles; address: string }) {
+		await expect(
+			this.roleRowLocator.filter({ hasText: role }).filter({ hasText: address }),
+			`${role}-${address} is listed`,
+		).toBeVisible();
+	}
+
+	@step
 	async removeRole(address: string) {
-		await this.page
-			.locator('[class*="PanelRoleAdmin_table_"] tr')
-			.filter({ hasText: address })
-			.getByRole('button')
-			.click();
+		await this.roleRowLocator.filter({ hasText: address }).getByRole('button').click();
 	}
 
 	@step
