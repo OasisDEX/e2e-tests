@@ -21,10 +21,12 @@ test.describe('With real wallet - Earn page', async () => {
 		app,
 	}) => {
 		await app.earn.vaults
-			.byStrategy({ token: 'USD₮0', network: 'arbitrum' })
+			.byStrategy({ token: 'USD₮0', network: 'arbitrum', risk: 'Lower Risk' })
 			.select({ delay: expectDefaultTimeout / 5 });
 
-		await app.earn.vaults.byStrategy({ token: 'USD₮0', network: 'arbitrum' }).shouldBeSelected();
+		await app.earn.vaults
+			.byStrategy({ token: 'USD₮0', network: 'arbitrum', risk: 'Lower Risk' })
+			.shouldBeSelected();
 
 		await app.page.waitForTimeout(3_000);
 
@@ -78,10 +80,12 @@ test.describe('With real wallet - Earn page', async () => {
 
 	test('It should show Deposit balances and Deposit amounts - Base USDC vault', async ({ app }) => {
 		await app.earn.vaults
-			.byStrategy({ token: 'USDC', network: 'base' })
+			.byStrategy({ token: 'USDC', network: 'base', risk: 'Lower Risk' })
 			.select({ delay: expectDefaultTimeout / 5 });
 
-		await app.earn.vaults.byStrategy({ token: 'USDC', network: 'base' }).shouldBeSelected();
+		await app.earn.vaults
+			.byStrategy({ token: 'USDC', network: 'base', risk: 'Lower Risk' })
+			.shouldBeSelected();
 
 		// USDC
 		await app.vaultPage.sidebar.shouldHaveBalance({
@@ -143,5 +147,74 @@ test.describe('With real wallet - Earn page', async () => {
 		await app.earn.openSumrRewardsTab();
 
 		await app.staking.shouldBeVisible();
+	});
+});
+
+test.describe('With real wallet - Earn page', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		// Extending tests timeout by 25 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 25_000);
+
+		// Add wallet with only a few tokens
+		const walletPK = process.env.OLD_WALLET_PK ?? '';
+		await metamask.importWalletFromPrivateKey(walletPK);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+		});
+	});
+
+	test('It shoule toggle "In wallet" feature', async ({ app, metamask }) => {
+		// 'In wallet' toggle OFF
+
+		// Vaults for which user does not have tokens --> Displayed
+		await app.earn.shouldHaveVaults([
+			{ network: 'base', token: 'ETH', risk: 'Lower Risk' },
+			{ network: 'base', token: 'EURC', risk: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USDC', risk: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USD₮0', risk: 'Lower Risk' },
+			{ network: 'sonic', token: 'USDC.E', risk: 'Lower Risk' },
+		]);
+
+		// =====
+
+		// 'In wallet' toggle ON
+		await app.earn.toggleInWalletVaults();
+
+		// Vaults for which user does not have tokens --> Hidden
+		await app.earn.shouldNotHaveVaults([
+			{ network: 'base', token: 'ETH', risk: 'Lower Risk' },
+			{ network: 'base', token: 'EURC', risk: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USDC', risk: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USD₮0', risk: 'Lower Risk' },
+			{ network: 'sonic', token: 'USDC.E', risk: 'Lower Risk' },
+		]);
+		// Vaults for which user has tokens --> Displayed
+		await app.earn.shouldHaveVaults([
+			{ network: 'arbitrum', token: 'USDC', risk: 'Lower Risk' },
+			{ network: 'arbitrum', token: 'USD₮0', risk: 'Lower Risk' },
+			{ network: 'base', token: 'USDC', risk: 'Lower Risk' },
+			{ network: 'ethereum', token: 'ETH', risk: 'Lower Risk' },
+			{ network: 'ethereum', token: 'ETH', risk: 'Higher Risk' },
+			{ network: 'ethereum', token: 'USDC', risk: 'Lower Risk' },
+			{ network: 'ethereum', token: 'USDC', risk: 'Higher Risk' },
+			{ network: 'ethereum', token: 'USDT', risk: 'Lower Risk' },
+		]);
+
+		// =====
+
+		// 'In wallet' toggle back to OFF
+		await app.earn.toggleInWalletVaults();
+
+		// Vaults for which user does not have tokens --> Displayed
+		await app.earn.shouldHaveVaults([
+			{ network: 'base', token: 'ETH', risk: 'Lower Risk' },
+			{ network: 'base', token: 'EURC', risk: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USDC', risk: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USD₮0', risk: 'Lower Risk' },
+			{ network: 'sonic', token: 'USDC.E', risk: 'Lower Risk' },
+		]);
 	});
 });

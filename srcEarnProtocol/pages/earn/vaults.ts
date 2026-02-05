@@ -1,7 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { VaultCard } from '../vaultCard';
 import { step } from '#noWalletFixtures';
-import { Networks } from 'srcEarnProtocol/utils/types';
+import { LazyNominatedTokens, Networks, Risks } from 'srcEarnProtocol/utils/types';
 
 export class Vaults {
 	readonly page: Page;
@@ -20,7 +20,7 @@ export class Vaults {
 		return new VaultCard(this.page, this.vaultLocator.nth(nth));
 	}
 
-	byStrategy(strategy: { token: 'USDC' | 'USD₮0' | 'USDT' | 'ETH'; network: Networks }) {
+	byStrategy(strategy: { token: LazyNominatedTokens; network: Networks; risk: Risks }) {
 		return new VaultCard(
 			this.page,
 			this.vaultLocator
@@ -28,6 +28,7 @@ export class Vaults {
 					has: this.page.locator(`[data-testid="vault-token"]:has-text("${strategy.token}")`),
 				})
 				.filter({ has: this.page.locator(`[title="earn_network_${strategy.network}"]`) })
+				.filter({ hasText: strategy.risk }),
 		);
 	}
 
