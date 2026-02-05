@@ -1,4 +1,4 @@
-import { step } from '#institutionsWithWalletFixtures';
+import { expect, step } from '#institutionsWithWalletFixtures';
 import { Page } from '@playwright/test';
 import { AddressRoles } from 'srcInstitutions/utils/types';
 
@@ -11,6 +11,8 @@ export class AddNewRole {
 
 	@step
 	async fillAddress(address: string) {
+		await expect(this.page.locator('[class*="_addRoleForm_"] input')).toBeVisible();
+
 		await this.page.locator('[class*="_addRoleForm_"] input').fill(address);
 	}
 

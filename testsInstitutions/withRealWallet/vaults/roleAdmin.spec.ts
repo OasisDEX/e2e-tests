@@ -41,15 +41,20 @@ test.describe('With wallet - Vaults - Role Admin', async () => {
 	test('It should fail to Add a role to an address -- With non governor wallet', async ({
 		app,
 	}) => {
+		// To avoid random fails
+		await app.clientDashboard.vaults.roleAdmin.shouldHaveRole({
+			role: 'Keeper',
+			address: '0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA',
+		});
+
 		await app.clientDashboard.vaults.roleAdmin.addNewRole.fillAddress(
 			'0x88a135D9aC7583Eb45C1c140fBF6cE474f1f7789',
 		);
-		await app.clientDashboard.vaults.roleAdmin.addNewRole.selectRole('Commander');
+		await app.clientDashboard.vaults.roleAdmin.addNewRole.selectRole('Keeper');
 		await app.clientDashboard.vaults.roleAdmin.addNewRole.addRole();
-
 		await app.clientDashboard.vaults.roleAdmin.shouldHaveTxInQueue({
 			action: 'Grant',
-			role: 'Commander',
+			role: 'Keeper',
 			address: '0x88a135D9aC7583Eb45C1c140fBF6cE474f1f7789',
 		});
 
