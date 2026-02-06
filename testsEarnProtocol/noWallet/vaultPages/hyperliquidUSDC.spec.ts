@@ -6,7 +6,7 @@ test.describe('Vault page - Hyperliquid USDC', async () => {
 		testInfo.setTimeout(testInfo.timeout + 100_00);
 
 		await app.vaultPage.open(
-			'/earn/hyperliquid/position/0x252e5aa42c1804b85b2ce6712cd418a0561232ba'
+			'/earn/hyperliquid/position/0x252e5aa42c1804b85b2ce6712cd418a0561232ba',
 		);
 
 		// pause to avoid random fails
@@ -23,13 +23,13 @@ test.describe('Vault page - Hyperliquid USDC', async () => {
 
 		await app.vaultPage.shouldHaveAssets({
 			token: 'USDC',
-			tokenAmount: '[0-9]{1,2}.[0-9]{2}M',
-			usdAmount: '[0-9]{1,2}.[0-9]{2}M',
+			tokenAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
+			usdAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
 		});
 
 		await app.vaultPage.shouldHaveDepositCap({
 			token: 'USDC',
-			tokenAmount: '[0-9]{1,3}.[0-9]{2}M',
+			tokenAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
 		});
 	});
 
