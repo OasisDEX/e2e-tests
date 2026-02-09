@@ -18,13 +18,6 @@ on:
         type: string
         default: 'institutions-real-wallet'
         required: false
-    secrets:
-      TENDERLY_PROJECT:
-        required: true
-      TENDERLY_USER:
-        required: true
-      TENDERLY_ACCESS_KEY:
-        required: true
 
 jobs:
   institutions-with-real-wallet:
@@ -51,9 +44,6 @@ jobs:
           yarn ci:synpress-build-cache:real-wallet:all-but-optimism
       - name: Run 'Institutions - With real wallet' tests
         run: |
-          TENDERLY_PROJECT=${{ secrets.TENDERLY_PROJECT }} \
-          TENDERLY_USER=${{ secrets.TENDERLY_USER }} \
-          TENDERLY_ACCESS_KEY=${{ secrets.TENDERLY_ACCESS_KEY }} \
           INSTITUTIONS_ADMIN_USERNAME=${{ secrets.INSTITUTIONS_ADMIN_USERNAME }} \
           INSTITUTIONS_ADMIN_PASSWORD=${{ secrets.INSTITUTIONS_ADMIN_PASSWORD }} \
           INSTITUTIONS_ADMIN_MFA_USERNAME=${{ secrets.INSTITUTIONS_ADMIN_MFA_USERNAME }} \
