@@ -48,4 +48,11 @@ test.describe('With wallet - Vaults - User Admin', async () => {
 			'0xe9c245293dac615c11a5bf26fcec91c3617645e4',
 		]);
 	});
+
+	test('It should list Whitelisted AQ users', async ({ app }) => {
+		await app.clientDashboard.vaults.userAdmin.shouldHaveWhitelistedAdmiralsQuarterUsers([
+			'0x10649c79428d718621821cf6299e91920284743f',
+			'0xddc68f9de415ba2fe2fd84bc62be2d2cff1098da',
+		]);
+	});
 });

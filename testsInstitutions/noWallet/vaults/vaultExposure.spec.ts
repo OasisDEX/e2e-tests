@@ -45,13 +45,42 @@ import { expectDefaultTimeout } from 'utils/config';
 		});
 
 		test(`It should have arks available on chain- ${vault}`, async ({ app }) => {
-			await app.clientDashboard.vaults.vaultExposure.shouldHaveArksOnChain([
-				{
-					name: 'Morpho USDC Gauntlet Core',
-					apy: '[0-9]{1,2}.[0-9]{1,2}',
-					protocolTvl: '[0-9]{1,3}.[0-9]{1,2}[BM]',
-				},
-			]);
+			if (vault === 'USDC Base') {
+				// USDC Base arks
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveArksOnChain([
+					{
+						name: 'Morpho USDC Gauntlet Prime',
+						apy: '[0-9]{1,2}.[0-9]{1,2}',
+						protocolTvl: '[0-9]{1,3}.[0-9]{1,2}[BM]',
+						description:
+							'A high-efficiency USDC strategy, leveraging tested methodologies to maximize yield while minimizing inefficiencies',
+					},
+
+					{
+						name: 'Aave V3 USDC',
+						apy: '[0-9]{1,2}.[0-9]{1,2}',
+						protocolTvl: '[0-9]{1,3}.[0-9]{1,2}[BM]',
+						description:
+							'A proven USDC strategy, engineered for consistent performance and structured to reduce exposure to inefficiencies',
+					},
+				]);
+			} else {
+				// USDC Arbitrum arks
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveArksOnChain([
+					{
+						name: 'Morpho USDC Gauntlet Core',
+						apy: '[0-9]{1,2}.[0-9]{1,2}',
+						protocolTvl: '[0-9]{1,3}.[0-9]{1,2}[BM]',
+						description: 'No description available',
+					},
+					{
+						name: 'FluidFToken USDC',
+						apy: '[0-9]{1,2}.[0-9]{1,2}',
+						protocolTvl: '[0-9]{1,3}.[0-9]{1,2}[BM]',
+						description: 'No description available',
+					},
+				]);
+			}
 		});
 	}),
 );
