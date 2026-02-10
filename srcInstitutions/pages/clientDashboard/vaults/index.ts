@@ -3,6 +3,7 @@ import { Locator, Page } from '@playwright/test';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 import { Activity } from './activity';
+import { AssetManagement } from './assetManagement';
 import { AssetRelocation } from './assetRelocation';
 import { ClientAdmin } from './clientAdmin';
 import { FeeAndRevenueAdmin } from './feeAndRevenueAdmin';
@@ -18,6 +19,7 @@ type Panels =
 	| 'Risk Parameters'
 	| 'Fee & revenue admin'
 	| 'Asset reallocation'
+	| 'Asset management'
 	| 'Role admin'
 	| 'User admin'
 	| 'Activity';
@@ -28,6 +30,8 @@ export class Vaults {
 	readonly panelLocator: Locator;
 
 	readonly activity: Activity;
+
+	readonly assetManagement: AssetManagement;
 
 	readonly assetRelocation: AssetRelocation;
 
@@ -49,6 +53,7 @@ export class Vaults {
 		this.page = page;
 		this.panelLocator = page.locator('[class*="dashboardContentLayout"]');
 		this.activity = new Activity(page);
+		this.assetManagement = new AssetManagement(page);
 		this.assetRelocation = new AssetRelocation(page);
 		this.clientAdmin = new ClientAdmin(page);
 		this.feeAndRevenueAdmin = new FeeAndRevenueAdmin(page);

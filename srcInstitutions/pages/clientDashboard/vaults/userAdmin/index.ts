@@ -80,4 +80,19 @@ export class UserAdmin {
 			).toBeVisible();
 		}
 	}
+
+	@step
+	async shouldHaveWhitelistedAdmiralsQuarterUsers(users: string[]) {
+		for (const user of users) {
+			await expect(
+				this.page
+					.getByRole('heading', { name: 'Whitelisted AQ users' })
+					.locator('..')
+					.locator('xpath=//following-sibling::div[1]')
+					.getByRole('row')
+					.filter({ hasText: user }),
+				`Should list ${user} address`,
+			).toBeVisible();
+		}
+	}
 }
