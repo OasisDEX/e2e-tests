@@ -1,0 +1,25 @@
+name: HyperEVM - Synpress cache test
+
+on: 
+  workflow_dispatch
+    
+jobs:
+  hyperevm-test-synpress-cache:
+    name: 'HyperEVM - Synpress cache test'
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.49.0-jammy
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: yarn
+      - name: Install xvfb
+        run: apt-get update -y && apt-get -y install xvfb && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+      - name: Build Synpress cache
+        run: |
+          BASE_URL=${{ inputs.base_url }} \
+          VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
+          yarn ci:synpress-build-cache:hyper
