@@ -19,6 +19,7 @@
 		"typescript": "^5.6.3"
 	},
 	"scripts": {
+		"synpress-build-cache:hyper": "yarn synpress ./utils/synpress/hyper-setup",
 		"synpress-build-cache:real-wallet": "yarn synpress ./utils/synpress/real-wallet-setup",
 		"synpress-build-cache:real-wallet:all-but-optimism": "yarn synpress ./utils/synpress/real-wallet-setup-no-optimism",
 		"synpress-build-cache:test-wallet": "yarn synpress ./utils/synpress/test-wallet-setup",
@@ -112,6 +113,7 @@
 		"//-2a": "---------------------------------------------------------------",
 		"//-2b": "---------------------- CI REGRESSION TESTS -----------------------",
 		"//-2c": "---------------------------------------------------------------",
+		"ci:synpress-build-cache:hyper": "xvfb-run yarn synpress-build-cache:hype",
 		"ci:synpress-build-cache:real-wallet": "xvfb-run yarn synpress-build-cache:real-wallet",
 		"ci:synpress-build-cache:real-wallet:all-but-optimism": "xvfb-run yarn synpress-build-cache:real-wallet:all-but-optimism",
 		"ci:synpress-build-cache:test-wallet": "xvfb-run yarn synpress-build-cache:test-wallet",
