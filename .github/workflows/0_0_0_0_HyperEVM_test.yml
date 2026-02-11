@@ -1,4 +1,4 @@
-name: HyperEVM - Synpress cache test
+name: 0.0.0.0 HyperEVM - Synpress cache test
 
 on: 
   workflow_dispatch
