@@ -1,6 +1,6 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
-import optimismRealWalletSetup from 'utils/synpress/real-wallet-setup/optimismRealWallet.setup';
+import optimismRealWalletSetup from 'utils/synpress/real-wallet-setup-optimism/optimismRealWallet.setup';
 import { setup } from 'utils/setup';
 import { longTestTimeout, veryLongTestTimeout } from 'utils/config';
 import * as tx from 'utils/tx';
@@ -56,6 +56,6 @@ test.describe('Aave v3 - Optimism - Wallet connected', async () => {
 				await app.position.setup.confirmOrRetry();
 				await tx.rejectPermissionToSpend({ metamask });
 			}).toPass();
-		})
+		}),
 	);
 });
