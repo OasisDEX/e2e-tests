@@ -1,11 +1,11 @@
-name: 0.0.0.0 Synpress cache test - HyperEVM
+name: 0.0.0.0 Synpress cache test - All networks
 
 on: 
   workflow_dispatch
     
 jobs:
   hyperevm-test-synpress-cache:
-    name: 'Synpress cache test - HyperEVM'
+    name: 'Synpress cache test - All networks'
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-jammy
@@ -22,4 +22,4 @@ jobs:
         run: |
           BASE_URL=${{ inputs.base_url }} \
           VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:hyper
+          yarn ci:synpress-build-cache:real-wallet
