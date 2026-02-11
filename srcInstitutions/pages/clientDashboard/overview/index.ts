@@ -27,14 +27,14 @@ export class Overview {
 	async shouldBeVisible() {
 		await expect(
 			this.page.getByRole('button', { name: 'Institution overview' }),
-			'Institutions overview panel should be visible'
+			'Institutions overview panel should be visible',
 		).toBeVisible();
 	}
 
 	@step
 	async shouldHavePanelActive(panel: Panels) {
 		await expect(this.page.getByRole('button', { name: panel }).locator('div').first()).toHaveClass(
-			/_activeButtonText_/
+			/_activeButtonText_/,
 		);
 	}
 

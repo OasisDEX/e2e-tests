@@ -1,9 +1,8 @@
 import { expect, step } from '#institutionsNoWalletFixtures';
 import { Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
-import { FeesAndRevenue } from './feesAndRevenue';
+import { Feedback } from './feedback';
 import { Overview } from './overview';
-import { Reports } from './reports';
 import { Risk } from './risk';
 import { Vaults } from './vaults';
 
@@ -12,11 +11,9 @@ type Tabs = 'Overview' | 'Vaults' | 'Risk' | 'Fees & Revenue' | 'Reports' | 'New
 export class ClientDashboard {
 	readonly page: Page;
 
-	readonly feesAndRevenue: FeesAndRevenue;
+	readonly feedback: Feedback;
 
 	readonly overview: Overview;
-
-	readonly reports: Reports;
 
 	readonly risk: Risk;
 
@@ -24,9 +21,8 @@ export class ClientDashboard {
 
 	constructor(page: Page) {
 		this.page = page;
-		this.feesAndRevenue = new FeesAndRevenue(page);
+		this.feedback = new Feedback(page);
 		this.overview = new Overview(page);
-		this.reports = new Reports(page);
 		this.risk = new Risk(page);
 		this.vaults = new Vaults(page);
 	}
@@ -75,7 +71,7 @@ export class ClientDashboard {
 
 			await expect(
 				itemLocator('Total Value'),
-				`Total Value should be $${totalValue}`
+				`Total Value should be $${totalValue}`,
 			).toContainText(regExp);
 		}
 
@@ -84,7 +80,7 @@ export class ClientDashboard {
 
 			await expect(
 				itemLocator('Number of vaults'),
-				`Number of vaults should be ${numberOfVaults}`
+				`Number of vaults should be ${numberOfVaults}`,
 			).toContainText(regExp);
 		}
 
@@ -93,7 +89,7 @@ export class ClientDashboard {
 
 			await expect(
 				itemLocator('30d avg APY'),
-				`30d average APY should be ${thirtyDayAPY}%`
+				`30d average APY should be ${thirtyDayAPY}%`,
 			).toContainText(regExp);
 		}
 
@@ -102,7 +98,7 @@ export class ClientDashboard {
 
 			await expect(
 				itemLocator('All time performance'),
-				`All time performance should be +${allTimePerformance}%`
+				`All time performance should be +${allTimePerformance}%`,
 			).toContainText(allTimePerformance === 'n/a' ? allTimePerformance : regExp);
 		}
 	}
@@ -111,7 +107,7 @@ export class ClientDashboard {
 	async shoulHaveTabActive(tab: Tabs) {
 		await expect(
 			this.page.getByRole('button', { name: tab, exact: true }),
-			`${tab} tab should be underlined`
+			`${tab} tab should be underlined`,
 		).toHaveAttribute('style', /tab-opacity: 1/);
 	}
 
