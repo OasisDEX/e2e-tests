@@ -73,6 +73,16 @@ export class AssetManagement {
 	}
 
 	@step
+	async enterWithdrawAmount(amount: string) {
+		await this.page.locator('input[placeholder="Amount to withdraw"]').fill(amount);
+	}
+
+	@step
+	async addWithdrawTransaction() {
+		await this.page.getByRole('button', { name: 'Add withdraw transaction' }).click();
+	}
+
+	@step
 	async shouldHaveTransactionsInQueue(
 		transactions: {
 			action: 'Approve' | 'Deposit' | 'Withdraw';
@@ -100,7 +110,7 @@ export class AssetManagement {
 	}: {
 		action: 'Approve' | 'Deposit' | 'Withdraw';
 		amount: string;
-		token: 'USDC';
+		token: 'USDC' | 'extDemoUSDC';
 	}) {
 		const regExp = new RegExp(`${action}.*${amount}.*${token}`);
 		await this.page
@@ -118,7 +128,7 @@ export class AssetManagement {
 	}: {
 		action: 'Approve' | 'Deposit' | 'Withdraw';
 		amount: string;
-		token: 'USDC';
+		token: 'USDC' | 'extDemoUSDC';
 	}) {
 		const regExp = new RegExp(`${action}.*${amount}.*${token}`);
 
