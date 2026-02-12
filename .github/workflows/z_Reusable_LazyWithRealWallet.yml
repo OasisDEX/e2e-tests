@@ -41,7 +41,7 @@ jobs:
         run: |
           BASE_URL=${{ inputs.base_url }} \
           VERY_OLD_TEST_WALLET_PK=${{ secrets.VERY_OLD_TEST_WALLET_PK }} \
-          yarn ci:synpress-build-cache:real-wallet:all-but-optimism
+          yarn ci:synpress-build-cache:real-wallet
       - name: Run 'Lazy - With real wallet' tests
         run: |
           OLD_WALLET_PK=${{ secrets.OLD_WALLET_PK }} \

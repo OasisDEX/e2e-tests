@@ -26,9 +26,5 @@ test.describe('Overview - Feedback', async () => {
 				subject: 'It says that i need to connect',
 			},
 		]);
-
-		//
-		await app.pause();
-		//
 	});
 });
