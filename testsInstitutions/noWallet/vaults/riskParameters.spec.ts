@@ -9,7 +9,7 @@ test.describe('Vaults - Risk Parameters', async () => {
 		await app.clientDashboard.vaults.riskParameters.shouldBeVisible();
 	});
 
-	test('It should Vault and Market risk parameters', async ({ app }) => {
+	test('It should show Vault and Market risk parameters', async ({ app }) => {
 		await app.clientDashboard.vaults.riskParameters.shouldHaveVaultRiskParameters({
 			vaultCap: '([0-9]{1,3},)?[0-9]{1,3}.[0-9]{2}.*USDC',
 			buffer: '[0-9]{1,3}.[0-9]{2}.*USDC',

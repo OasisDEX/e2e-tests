@@ -77,4 +77,49 @@ test.describe('With wallet - Vaults - Asset Management', async () => {
 			token: 'USDC',
 		});
 	});
+
+	test('It should withdraw - until rejecting tx', async ({ app, metamask }) => {
+		// Wait for component to fully load
+		await app.clientDashboard.vaults.assetManagement.shouldHave({
+			withdrawalBalance: '[0-9]{1,3}.[0-9]{2,4}',
+		});
+
+		await app.clientDashboard.vaults.assetManagement.enterWithdrawAmount('0.2');
+		await app.clientDashboard.vaults.assetManagement.addWithdrawTransaction();
+
+		await app.clientDashboard.vaults.assetManagement.shouldHaveTransactionsInQueue([
+			{ action: 'Approve', amount: '0.2000', token: 'USDC' },
+			{
+				action: 'Withdraw',
+				amount: '0.2000',
+				token: 'USDC',
+				fromAddress: '0x10649c79428d718621821Cf6299e91920284743F',
+			},
+		]);
+
+		await app.clientDashboard.vaults.assetManagement.executeTx({
+			action: 'Approve',
+			amount: '0.2000',
+			token: 'extDemoUSDC',
+		});
+		await metamask.rejectTransaction();
+		// Error displayed after rejecting tx
+		await app.clientDashboard.vaults.assetManagement.shouldHaveTxError({
+			action: 'Approve',
+			amount: '0.2000',
+			token: 'extDemoUSDC',
+		});
+
+		await app.clientDashboard.vaults.assetManagement.executeTx({
+			action: 'Withdraw',
+			amount: '0.2000',
+			token: 'USDC',
+		});
+		// Error displayed since APPROVE tx was rejected and it's needed for WITHDRAW tx
+		await app.clientDashboard.vaults.assetManagement.shouldHaveTxError({
+			action: 'Withdraw',
+			amount: '0.2000',
+			token: 'USDC',
+		});
+	});
 });
