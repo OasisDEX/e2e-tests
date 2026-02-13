@@ -44,7 +44,7 @@ import { expectDefaultTimeout } from 'utils/config';
 			await app.clientDashboard.vaults.vaultExposure.shouldNotHaveStrategyApysEqualToZero();
 		});
 
-		test(`It should have arks available on chain- ${vault}`, async ({ app }) => {
+		test(`It should have arks available on chain - ${vault}`, async ({ app }) => {
 			if (vault === 'USDC Base') {
 				// USDC Base arks
 				await app.clientDashboard.vaults.vaultExposure.shouldHaveArksOnChain([
