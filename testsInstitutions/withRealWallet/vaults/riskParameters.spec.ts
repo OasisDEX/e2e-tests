@@ -24,7 +24,9 @@ test.describe('With wallet - Vaults - Risk Parameters', async () => {
 		await app.clientDashboard.vaults.riskParameters.shouldBeVisible();
 	});
 
-	test('It should allow to edit Vault Cap', async ({ app, metamask }) => {
+	test('It should allow to edit Vault Cap - Until tx error (wallet with no role)', async ({
+		app,
+	}) => {
 		// Pause to avoid random fails
 		await app.page.waitForTimeout(1_000);
 
@@ -43,9 +45,35 @@ test.describe('With wallet - Vaults - Risk Parameters', async () => {
 		await app.page.waitForTimeout(1_000);
 
 		await app.clientDashboard.vaults.riskParameters.executeTransaction();
+		await app.clientDashboard.vaults.riskParameters.shouldHaveTxError({
+			riskParameter: 'Vault Cap',
+			newValue: '5555',
+		});
+	});
 
-		// TO BE DONE - UI returning error in automated test - But MetaMask popup is correctly triggered when testing manually
-		// await metamask.rejectTransaction();
+	test('It should allow to edit Buffer - Until tx error (wallet with no role)', async ({ app }) => {
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(1_000);
+
+		await app.clientDashboard.vaults.riskParameters.editBuffer();
+
+		await app.clientDashboard.vaults.riskParameters.shouldHaveEditBufferModal();
+		await app.clientDashboard.vaults.riskParameters.enterNewBufferValue('77');
+		await app.clientDashboard.vaults.riskParameters.addTransaction();
+
+		await app.clientDashboard.vaults.riskParameters.shouldhaveTransactionInQueue({
+			riskParameter: 'Buffer',
+			newValue: '77',
+		});
+
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(1_000);
+
+		await app.clientDashboard.vaults.riskParameters.executeTransaction();
+		await app.clientDashboard.vaults.riskParameters.shouldHaveTxError({
+			riskParameter: 'Buffer',
+			newValue: '77',
+		});
 	});
 
 	test('It should have no transactions in the queue - Risk Parameters tab', async ({ app }) => {

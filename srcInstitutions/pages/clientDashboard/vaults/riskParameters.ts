@@ -102,6 +102,28 @@ export class RiskParameters {
 	}
 
 	@step
+	async editBuffer() {
+		await this.page.getByRole('row').filter({ hasText: 'Buffer' }).getByText('USDC').click();
+	}
+
+	@step
+	async shouldHaveEditBufferModal() {
+		await expect(
+			this.page.getByRole('heading', { name: 'Edit Minimum Buffer Balance' }),
+			'Edit Minimum Buffer Balance modal should be visible',
+		).toBeVisible();
+	}
+
+	@step
+	async enterNewBufferValue(newCap: string) {
+		await this.page
+			.getByRole('heading', { name: 'Edit Minimum Buffer Balance' })
+			.locator('..')
+			.locator('input')
+			.fill(newCap);
+	}
+
+	@step
 	async addTransaction() {
 		await this.page.getByRole('button', { name: 'Add transaction' }).click();
 	}
@@ -111,11 +133,10 @@ export class RiskParameters {
 		riskParameter,
 		newValue,
 	}: {
-		riskParameter: 'Vault Cap' | 'Buffer' | 'minimum buffer balance';
+		riskParameter: 'Vault Cap' | 'Buffer';
 		newValue: string;
 	}) {
 		const regExp = new RegExp(
-			// `[Increase|Decrease].*${riskParameter}.*from.*[0-9].*to.*${newValue}`,
 			`[Increase|Decrease].*${riskParameter === 'Vault Cap' ? 'vault.*cap' : 'minimum.*buffer.*balance'}.*from.*[0-9].*to.*${newValue}`,
 		);
 		await expect(
@@ -127,5 +148,26 @@ export class RiskParameters {
 	@step
 	async executeTransaction() {
 		await this.page.getByRole('button', { name: 'Execute' }).click();
+	}
+
+	@step
+	async shouldHaveTxError({
+		riskParameter,
+		newValue,
+	}: {
+		riskParameter: 'Vault Cap' | 'Buffer' | 'minimum buffer balance';
+		newValue: string;
+	}) {
+		const regExp = new RegExp(
+			`[Increase|Decrease].*${riskParameter === 'Vault Cap' ? 'vault.*cap' : 'minimum.*buffer.*balance'}.*from.*[0-9].*to.*${newValue}`,
+		);
+
+		await expect(
+			this.page
+				.locator('[class*="_transactionItem_"]')
+				.filter({ hasText: regExp })
+				.getByRole('button', { name: 'Transaction Error' }),
+			'Button should have "Transaction Error" label',
+		).toBeVisible();
 	}
 }
