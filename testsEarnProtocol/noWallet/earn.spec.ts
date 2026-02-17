@@ -21,7 +21,23 @@ test.describe('Earn page @regression', async () => {
 			await app.earn.networkSelector.select({ option: network });
 
 			await app.earn.networkSelector.shouldBe({ option: network });
-			await app.earn.vaults.allVaultsShouldBe(networkShortName[network]);
+			await app.earn.vaults.allVaultsShouldBe({
+				filter: 'networks',
+				network: networkShortName[network],
+			});
 		});
 	});
+
+	(['All stables', 'ETH', 'EURC', 'USDC', 'USDC.E', 'USDT', 'All assets'] as const).forEach(
+		(asset) => {
+			test(`It should select "${asset}"`, async ({ app }) => {
+				await app.earn.assetsSelector.open();
+
+				await app.earn.assetsSelector.select({ option: asset });
+
+				await app.earn.assetsSelector.shouldBe({ option: asset });
+				await app.earn.vaults.allVaultsShouldBe({ filter: 'assets', asset });
+			});
+		},
+	);
 });
