@@ -29,3 +29,16 @@ export type LazyNominatedTokens = 'ETH' | 'EURC' | 'USDC' | 'USDC.E' | 'USDT' | 
 export type Risks = 'Lower Risk' | 'Higher Risk';
 
 export type Networks = 'arbitrum' | 'base' | 'ethereum' | 'hyperliquid' | 'sonic';
+
+export type AssetsSelectorOptions =
+	| 'All assets'
+	| 'All stables'
+	| 'ETH'
+	| 'EURC'
+	| 'USDC'
+	| 'USDC.E'
+	| 'USDT';
+
+export type EarnFilters =
+	| { filter: 'assets'; asset: AssetsSelectorOptions }
+	| { filter: 'networks'; network: Networks };

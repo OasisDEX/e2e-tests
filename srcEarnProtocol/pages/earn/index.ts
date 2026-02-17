@@ -1,6 +1,7 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
+import { AssetsSelector } from './assetSelector';
 import { NetworkSelector } from './networkSelector';
 import { Vaults } from './vaults';
 import { VaultSidebar } from '../vaultSidebar';
@@ -8,6 +9,8 @@ import { LazyNominatedTokens, Networks, Risks } from 'srcEarnProtocol/utils/type
 
 export class Earn {
 	readonly page: Page;
+
+	readonly assetsSelector: AssetsSelector;
 
 	readonly networkSelector: NetworkSelector;
 
@@ -19,6 +22,7 @@ export class Earn {
 
 	constructor(page: Page) {
 		this.page = page;
+		this.assetsSelector = new AssetsSelector(page);
 		this.networkSelector = new NetworkSelector(page);
 		this.sidebar = new VaultSidebar(page, this.page.locator('[class*="_sidebarWrapper_"]'));
 		this.sumrBlockLocator = page
