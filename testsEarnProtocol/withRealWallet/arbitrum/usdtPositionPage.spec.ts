@@ -22,7 +22,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 		});
 
 		await app.positionPage.open(
-			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821cf6299e91920284743f',
 		);
 	});
 
@@ -139,7 +139,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', as
 		});
 
 		await app.positionPage.open(
-			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F'
+			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -191,7 +191,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', as
 	});
 });
 
-test.describe.skip('With real wallet - Arbitrum USD₮0 Position page - Switch', async () => {
+test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
@@ -203,7 +203,7 @@ test.describe.skip('With real wallet - Arbitrum USD₮0 Position page - Switch',
 		});
 
 		await app.positionPage.open(
-			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F'
+			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -266,7 +266,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Unstake', asy
 		});
 
 		await app.positionPage.open(
-			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F'
+			'/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F',
 		);
 
 		// Wait for balance to fully load to avoid random fails

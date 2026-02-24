@@ -20,7 +20,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Deposit', async (
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x17ee2d03e88b55e762c66c76ec99c3a28a54ad8d/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x17ee2d03e88b55e762c66c76ec99c3a28a54ad8d/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
@@ -142,7 +142,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Withdraw', async 
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x17ee2d03e88b55e762c66c76ec99c3a28a54ad8d/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x17ee2d03e88b55e762c66c76ec99c3a28a54ad8d/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -205,7 +205,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x17ee2d03e88b55e762c66c76ec99c3a28a54ad8d/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x17ee2d03e88b55e762c66c76ec99c3a28a54ad8d/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -278,7 +278,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 			app,
 			nominatedToken: 'USDT',
 			targetToken: 'USDC',
-			risk: 'Lower Risk',
+			riskLevel: 'Lower Risk',
 		});
 
 		// USDC Higher Risk
@@ -289,7 +289,8 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 			app,
 			nominatedToken: 'USDT',
 			targetToken: 'USDC',
-			risk: 'Higher Risk',
+			riskLevel: 'Higher Risk',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
 		});
 
 		// ETH Higher Risk
@@ -300,7 +301,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 			app,
 			nominatedToken: 'USDT',
 			targetToken: 'ETH',
-			risk: 'Higher Risk',
+			riskLevel: 'Higher Risk',
 		});
 
 		// ETH Lower Risk
@@ -311,7 +312,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 			app,
 			nominatedToken: 'USDT',
 			targetToken: 'ETH',
-			risk: 'Lower Risk',
+			riskLevel: 'Lower Risk',
 		});
 	});
 });
@@ -327,7 +328,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Unstake', async (
 		});
 
 		await app.positionPage.open(
-			'/earn/mainnet/position/0x17ee2d03e88b55e762c66c76ec99c3a28a54ad8d/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/mainnet/position/0x17ee2d03e88b55e762c66c76ec99c3a28a54ad8d/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails

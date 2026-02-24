@@ -70,11 +70,11 @@ test.describe('With real wallet - Base ETH Position page - Deposit', async () =>
 			timeout: expectDefaultTimeout * 2,
 		});
 
-		await app.positionPage.sidebar.depositOrWithdraw('1');
+		await app.positionPage.sidebar.depositOrWithdraw('100');
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'WETH',
-			amount: '0.000[0-9]',
+			amount: '0.0[0-9]{3}',
 		});
 	});
 

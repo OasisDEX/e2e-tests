@@ -277,7 +277,7 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 			app,
 			nominatedToken: 'USDC',
 			targetToken: 'USDC',
-			risk: 'Lower Risk',
+			riskLevel: 'Lower Risk',
 		});
 
 		// USDT
@@ -298,7 +298,7 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 			app,
 			nominatedToken: 'USDC',
 			targetToken: 'ETH',
-			risk: 'Higher Risk',
+			riskLevel: 'Higher Risk',
 		});
 
 		// ETH Higher Risk
@@ -309,7 +309,7 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 			app,
 			nominatedToken: 'USDC',
 			targetToken: 'ETH',
-			risk: 'Higher Risk',
+			riskLevel: 'Higher Risk',
 		});
 	});
 });

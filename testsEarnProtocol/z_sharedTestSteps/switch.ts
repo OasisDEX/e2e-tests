@@ -1,7 +1,12 @@
 import { expect } from '#earnProtocolFixtures';
 import { MetaMask } from '@synthetixio/synpress/playwright';
 import { App } from 'srcEarnProtocol/app';
-import { LazyNominatedTokens, Networks, Risks } from 'srcEarnProtocol/utils/types';
+import {
+	LazyNominatedTokens,
+	Networks,
+	RiskLevels,
+	RiskManagementTypes,
+} from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 
 // Switch flow until rejecting first tx
@@ -11,16 +16,22 @@ export const switchPosition = async ({
 	nominatedToken,
 	network,
 	targetToken,
-	risk,
+	riskLevel,
+	riskManagementType,
 }: {
 	metamask: MetaMask;
 	app: App;
 	nominatedToken: LazyNominatedTokens;
 	network?: Networks;
 	targetToken: LazyNominatedTokens;
-	risk?: Risks;
+	riskLevel?: RiskLevels;
+	riskManagementType?: RiskManagementTypes;
 }) => {
-	await app.positionPage.sidebar.switch.selectTargetPosition({ token: targetToken, risk });
+	await app.positionPage.sidebar.switch.selectTargetPosition({
+		token: targetToken,
+		riskLevel,
+		riskManagementType,
+	});
 	await app.page.waitForTimeout(expectDefaultTimeout / 3);
 	await app.positionPage.sidebar.switch.previewSwitch();
 
@@ -28,7 +39,7 @@ export const switchPosition = async ({
 
 	await expect(
 		sidebarButtonLocator,
-		'[Agree], [Approve] or [Switch] buttons should not be visible'
+		'[Agree], [Approve] or [Switch] buttons should not be visible',
 	).toContainText(/Agree|Approve|Switch/, { timeout: expectDefaultTimeout * 4 });
 
 	let sidebarButtonLabel = await sidebarButtonLocator.innerText();
@@ -40,7 +51,7 @@ export const switchPosition = async ({
 
 		await expect(
 			sidebarButtonLocator,
-			'[Approve] or [Switch] buttons should not be visible'
+			'[Approve] or [Switch] buttons should not be visible',
 		).toContainText(/Approve|Switch/, { timeout: expectDefaultTimeout * 4 });
 
 		sidebarButtonLabel = await sidebarButtonLocator.innerText();
@@ -59,10 +70,10 @@ export const switchPosition = async ({
 			nominatedToken === 'ETH'
 				? 'WETH'
 				: network !== 'arbitrum'
-				? nominatedToken
-				: nominatedToken === 'USD₮0'
-				? 'LVUSDT'
-				: 'LVUSDC'
+					? nominatedToken
+					: nominatedToken === 'USD₮0'
+						? 'LVUSDT'
+						: 'LVUSDC',
 		);
 		await metamask.rejectTransaction();
 	} else {

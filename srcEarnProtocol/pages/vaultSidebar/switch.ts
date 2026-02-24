@@ -1,7 +1,12 @@
 import { expect } from '#earnProtocolFixtures';
 import { step } from '#noWalletFixtures';
 import { Page } from '@playwright/test';
-import { EarnTokens, LazyNominatedTokens, Risks } from 'srcEarnProtocol/utils/types';
+import {
+	EarnTokens,
+	LazyNominatedTokens,
+	RiskLevels,
+	RiskManagementTypes,
+} from 'srcEarnProtocol/utils/types';
 
 export class Switch {
 	readonly page: Page;
@@ -20,7 +25,7 @@ export class Switch {
 	}: {
 		network?: 'arbitrum' | 'base' | 'ethereum';
 		token?: EarnTokens;
-		risk?: Risks;
+		risk?: RiskLevels;
 		balance?: string;
 		liveAPY?: string;
 	}) {
@@ -29,7 +34,7 @@ export class Switch {
 		if (network) {
 			await expect(positionLocator.getByTestId('vault-network').locator('svg')).toHaveAttribute(
 				'title',
-				`earn_network_${network}`
+				`earn_network_${network}`,
 			);
 		}
 
@@ -57,11 +62,11 @@ export class Switch {
 		targetPositions: {
 			network?: 'arbitrum' | 'base' | 'ethereum';
 			token?: EarnTokens;
-			risk?: Risks;
+			risk?: RiskLevels;
 			thirtyDayAPY?: string;
 			liveAPY?: string;
 			apySpread?: string;
-		}[]
+		}[],
 	) {
 		for (const targetPosition of targetPositions) {
 			const regExp = new RegExp(`${targetPosition.token}.*${targetPosition.risk ?? ''}`);
@@ -72,7 +77,7 @@ export class Switch {
 			if (targetPosition.network) {
 				await expect(positionLocator.getByTestId('vault-network').locator('svg')).toHaveAttribute(
 					'title',
-					`earn_network_${targetPosition.network}`
+					`earn_network_${targetPosition.network}`,
 				);
 			}
 
@@ -82,7 +87,7 @@ export class Switch {
 
 			if (targetPosition.risk) {
 				await expect(positionLocator.locator('[class*="_titleRow_"]')).toContainText(
-					targetPosition.risk
+					targetPosition.risk,
 				);
 			}
 
@@ -104,8 +109,14 @@ export class Switch {
 	}
 
 	@step
-	async selectTargetPosition(position: { token: LazyNominatedTokens; risk?: Risks }) {
-		const regExp = new RegExp(`${position.token}.*${position.risk ?? ''}`);
+	async selectTargetPosition(position: {
+		token: LazyNominatedTokens;
+		riskLevel?: RiskLevels;
+		riskManagementType?: RiskManagementTypes;
+	}) {
+		const regExp = new RegExp(
+			`${position.token}.*${position?.riskManagementType ? (position.riskManagementType === 'Risk-Managed by BlockAnalitica' ? 'Risk-Managed.*by.*BA' : 'DAO.*Risk-Managed') : ''}.*${position.riskLevel ?? ''}`,
+		);
 		await this.page.locator(`[class*="_nextVaultCard_"]`).filter({ hasText: regExp }).click();
 	}
 
@@ -137,47 +148,47 @@ export class Switch {
 		await expect(fromLocator).toContainText('Risk');
 
 		await expect(fromLocator, `'From' box should have "${nominatedToken}"`).toContainText(
-			nominatedToken
+			nominatedToken,
 		);
 		await expect(fromLocator, `'From' box should have "Live APY: xx.xx%"`).toContainText(
-			liveApyRegexp
+			liveApyRegexp,
 		);
 
 		await expect(toLocator, `'To' box should have "${targetToken}"`).toContainText(targetToken);
 		await expect(toLocator, `'To' box should have "Live APY: xx.xx%"`).toContainText(liveApyRegexp);
 
 		const totalSwitchingRegExp = new RegExp(
-			`([0-9],[0-9])?[0-9]{1,2}.[0-9]{2}([0-9]{2})?.*${nominatedToken}`
+			`([0-9],[0-9])?[0-9]{1,2}.[0-9]{2}([0-9]{2})?.*${nominatedToken}`,
 		);
 		await expect(
 			this.page.locator('[class*="totalSwitchingBox_"]'),
-			`Should have Total Switching: "x.xx ${nominatedToken}"`
+			`Should have Total Switching: "x.xx ${nominatedToken}"`,
 		).toContainText(totalSwitchingRegExp);
 
 		const depositAssetRegExp = new RegExp(`${nominatedToken}.*${targetToken}`);
 		await expect(
 			this.page.getByText('Deposit asset', { exact: true }).locator('..'),
-			`Should have Deposit asset: "${nominatedToken} --> ${targetToken}"`
+			`Should have Deposit asset: "${nominatedToken} --> ${targetToken}"`,
 		).toContainText(depositAssetRegExp);
 
 		const changingLiveApyRegExp = new RegExp(
-			'[0-9]{1,2}.[0-9]{2}.*[0-9]{1,2}.[0-9]{2}.*\\(New Asset\\)'
+			'[0-9]{1,2}.[0-9]{2}.*[0-9]{1,2}.[0-9]{2}.*\\(New Asset\\)',
 		);
 		await expect(
 			this.page
 				.locator('[class*="_whatsChangingBox_"]')
 				.filter({ has: this.page.getByText('Live APY', { exact: true }) }),
-			'Should have Live APY: "x.xx% --> x.xx% (New Asset)"'
+			'Should have Live APY: "x.xx% --> x.xx% (New Asset)"',
 		).toContainText(changingLiveApyRegExp);
 
 		const changing30DayApyRegExp = new RegExp(
-			'[0-9]{1,2}.[0-9]{2}.*[0-9]{1,2}.[0-9]{2}.*\\(New Asset\\)'
+			'[0-9]{1,2}.[0-9]{2}.*[0-9]{1,2}.[0-9]{2}.*\\(New Asset\\)',
 		);
 		await expect(
 			this.page
 				.locator('[class*="_whatsChangingBox_"]')
 				.filter({ has: this.page.getByText('30d APY', { exact: true }) }),
-			'Should have 30d APY: "x.xx% --> x.xx% (New Asset)"'
+			'Should have 30d APY: "x.xx% --> x.xx% (New Asset)"',
 		).toContainText(changing30DayApyRegExp);
 
 		const earningDifferenceRegExp = new RegExp('\\$[0-9]{1,2}.[0-9]{2}.*\\$[0-9]{1,2}.[0-9]{2}');
@@ -185,15 +196,15 @@ export class Switch {
 			this.page
 				.locator('[class*="_whatsChangingBox_"]')
 				.filter({ has: this.page.getByText('1yr earning difference', { exact: true }) }),
-			'Should have 1yr earning difference: "x.xx --> x.xx"'
+			'Should have 1yr earning difference: "x.xx --> x.xx"',
 		).toContainText(earningDifferenceRegExp);
 
 		const priceImpactRegExp = new RegExp(
-			`([0-9],[0-9])?[0-9]{1,2}.[0-9]{2}([0-9]{2})?.*${targetToken}\\/${nominatedToken}.*\\([0-9].[0-9]{2}%\\)|n\\/a`
+			`([0-9],[0-9])?[0-9]{1,2}.[0-9]{2}([0-9]{2})?.*${targetToken}\\/${nominatedToken}.*\\([0-9].[0-9]{2}%\\)|n\\/a`,
 		);
 		await expect(
 			this.page.getByText('Price impact', { exact: true }).locator('..'),
-			'Should have price impact: "(x.xx%)" or "n/a"'
+			'Should have price impact: "(x.xx%)" or "n/a"',
 		).toContainText(priceImpactRegExp);
 
 		const swapRegExp = new RegExp('[0-9].[0-9]{4}.*[0-9].[0-9]{4}');
@@ -201,14 +212,14 @@ export class Switch {
 			this.page
 				.locator('[class*="_whatsChangingBox_"]')
 				.filter({ has: this.page.getByText('Swap', { exact: true }) }),
-			'Should have Swap: "x.xx --> x.xx"'
+			'Should have Swap: "x.xx --> x.xx"',
 		).toContainText(swapRegExp);
 
 		await expect(
 			this.page
 				.locator('[class*="_whatsChangingBox_"]')
 				.filter({ has: this.page.getByText('Slippage', { exact: true }) }),
-			'Should have Slippage: "0.10%"'
+			'Should have Slippage: "0.10%"',
 		).toContainText('0.10%');
 
 		const transactionFeeRegExp = new RegExp('\\$(<)?[0-9]{1,2}.[0-9]{2}|n\\/a');
@@ -216,7 +227,7 @@ export class Switch {
 			this.page
 				.locator('[class*="_whatsChangingBox_"]')
 				.filter({ has: this.page.getByText('Transaction fee', { exact: true }) }),
-			'Should have Transaction fee: "$x.xx" or "$<0.01" or "n/a"'
+			'Should have Transaction fee: "$x.xx" or "$<0.01" or "n/a"',
 		).toContainText(transactionFeeRegExp);
 	}
 
