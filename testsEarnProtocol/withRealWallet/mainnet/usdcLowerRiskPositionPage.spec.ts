@@ -278,7 +278,8 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Switch
 			app,
 			nominatedToken: 'USDC',
 			targetToken: 'USDC',
-			risk: 'Higher Risk',
+			riskLevel: 'Higher Risk',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
 		});
 
 		// USDT
@@ -299,7 +300,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Switch
 			app,
 			nominatedToken: 'USDC',
 			targetToken: 'ETH',
-			risk: 'Lower Risk',
+			riskLevel: 'Lower Risk',
 		});
 
 		// ETH Higher Risk
@@ -310,7 +311,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Switch
 			app,
 			nominatedToken: 'USDC',
 			targetToken: 'ETH',
-			risk: 'Higher Risk',
+			riskLevel: 'Higher Risk',
 		});
 	});
 });

@@ -40,6 +40,11 @@ export class Earn {
 	}
 
 	@step
+	async filterByRiskManagementType(type: 'Risk-Managed By BlockAnalitica' | 'DAO Risk-Managed') {
+		await this.page.getByRole('button', { name: type, exact: true }).click();
+	}
+
+	@step
 	async toggleInWalletVaults() {
 		const toggleLocator = this.page
 			.getByText('In wallet', { exact: true })

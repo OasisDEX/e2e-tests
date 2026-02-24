@@ -5,6 +5,18 @@ test.describe('Earn page @regression', async () => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
 	});
 
+	test('It should filter by Risk Management type', async ({ app }) => {
+		await app.earn.filterByRiskManagementType('DAO Risk-Managed');
+
+		// TO BE DONE
+		// Assert vaults listed
+
+		await app.earn.filterByRiskManagementType('Risk-Managed By BlockAnalitica');
+
+		// TO BE DONE
+		// Assert vaults listed
+	});
+
 	(['ARBITRUM', 'BASE', 'MAINNET', 'SONIC', 'HYPERLIQUID'] as const).forEach((network) => {
 		const networkShortName: {
 			[index: string]: 'arbitrum' | 'base' | 'ethereum' | 'sonic' | 'hyperliquid';
@@ -30,7 +42,7 @@ test.describe('Earn page @regression', async () => {
 
 	(['All stables', 'ETH', 'EURC', 'USDC', 'USDC.E', 'USDT', 'All assets'] as const).forEach(
 		(asset) => {
-			test(`It should select "${asset}"`, async ({ app }) => {
+			test(`It should filter by assets -  "${asset}"`, async ({ app }) => {
 				await app.earn.assetsSelector.open();
 
 				await app.earn.assetsSelector.select({ option: asset });
