@@ -41,7 +41,8 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 			app,
 			nominatedToken: 'ETH',
 			targetToken: 'USDC',
-			risk: 'Lower Risk',
+			riskLevel: 'Lower Risk',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
 		});
 	});
 });

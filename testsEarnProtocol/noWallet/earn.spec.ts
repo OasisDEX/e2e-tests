@@ -6,7 +6,7 @@ test.describe('Earn page @regression', async () => {
 	});
 
 	test('It should filter by Risk Management type', async ({ app }) => {
-		await app.earn.filterByRiskManagementType('DAO Risk-Managed');
+		await app.earn.filterByRiskManagementType('DAO Risk-Managed New!');
 
 		// TO BE DONE
 		// Assert vaults listed
