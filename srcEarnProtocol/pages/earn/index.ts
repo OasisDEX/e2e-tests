@@ -5,7 +5,7 @@ import { AssetsSelector } from './assetSelector';
 import { NetworkSelector } from './networkSelector';
 import { Vaults } from './vaults';
 import { VaultSidebar } from '../vaultSidebar';
-import { LazyNominatedTokens, Networks, Risks } from 'srcEarnProtocol/utils/types';
+import { LazyNominatedTokens, Networks, RiskLevels } from 'srcEarnProtocol/utils/types';
 
 export class Earn {
 	readonly page: Page;
@@ -40,7 +40,9 @@ export class Earn {
 	}
 
 	@step
-	async filterByRiskManagementType(type: 'Risk-Managed By BlockAnalitica' | 'DAO Risk-Managed') {
+	async filterByRiskManagementType(
+		type: 'Risk-Managed By BlockAnalitica' | 'DAO Risk-Managed New!',
+	) {
 		await this.page.getByRole('button', { name: type, exact: true }).click();
 	}
 
@@ -63,7 +65,9 @@ export class Earn {
 	}
 
 	@step
-	async shouldHaveVaults(vaults: { token: LazyNominatedTokens; network: Networks; risk: Risks }[]) {
+	async shouldHaveVaults(
+		vaults: { token: LazyNominatedTokens; network: Networks; risk: RiskLevels }[],
+	) {
 		for (const vault of vaults) {
 			await this.vaults
 				.byStrategy({ token: vault.token, network: vault.network, risk: vault.risk })
@@ -73,7 +77,7 @@ export class Earn {
 
 	@step
 	async shouldNotHaveVaults(
-		vaults: { token: LazyNominatedTokens; network: Networks; risk: Risks }[],
+		vaults: { token: LazyNominatedTokens; network: Networks; risk: RiskLevels }[],
 	) {
 		for (const vault of vaults) {
 			await this.vaults
