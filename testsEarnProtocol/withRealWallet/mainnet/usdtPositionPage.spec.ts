@@ -228,7 +228,8 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 		await app.positionPage.sidebar.switch.yourPositionShouldBe({
 			network: 'ethereum',
 			token: 'USDT',
-			risk: 'Lower Risk',
+			riskLevel: 'Lower Risk',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
 			balance: '0.[0-9]{4}',
 			liveAPY: '[0-9]{1,2}.[0-9]{2}',
 		});
@@ -236,8 +237,9 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 		await app.positionPage.sidebar.switch.targetPositionsShouldBe([
 			{
 				network: 'ethereum',
-				token: 'USDC',
-				risk: 'Lower Risk',
+				token: 'ETH',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'DAO Risk-Managed',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
@@ -245,7 +247,26 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 			{
 				network: 'ethereum',
 				token: 'USDC',
-				risk: 'Higher Risk',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'DAO Risk-Managed',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
+				token: 'USDC',
+				riskLevel: 'Lower Risk',
+				riskManagementType: 'Risk-Managed by BlockAnalitica',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
+				token: 'USDC',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'Risk-Managed by BlockAnalitica',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
@@ -253,7 +274,8 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 			{
 				network: 'ethereum',
 				token: 'ETH',
-				risk: 'Lower Risk',
+				riskLevel: 'Lower Risk',
+				riskManagementType: 'Risk-Managed by BlockAnalitica',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
@@ -261,7 +283,8 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 			{
 				network: 'ethereum',
 				token: 'ETH',
-				risk: 'Higher Risk',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'Risk-Managed by BlockAnalitica',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
@@ -302,6 +325,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 			nominatedToken: 'USDT',
 			targetToken: 'ETH',
 			riskLevel: 'Higher Risk',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
 		});
 
 		// ETH Lower Risk
@@ -313,6 +337,30 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 			nominatedToken: 'USDT',
 			targetToken: 'ETH',
 			riskLevel: 'Lower Risk',
+		});
+
+		// USDC Higher Risk - DAO
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDT',
+			targetToken: 'USDC',
+			riskLevel: 'Higher Risk',
+			riskManagementType: 'DAO Risk-Managed',
+		});
+
+		// ETH Higher Risk -DAO
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDT',
+			targetToken: 'ETH',
+			riskLevel: 'Higher Risk',
+			riskManagementType: 'DAO Risk-Managed',
 		});
 	});
 });

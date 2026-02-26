@@ -228,7 +228,8 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 		await app.positionPage.sidebar.switch.yourPositionShouldBe({
 			network: 'ethereum',
 			token: 'USDC',
-			risk: 'Higher Risk',
+			riskLevel: 'Higher Risk',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
 			balance: '0.[0-9]{4}',
 			liveAPY: '[0-9]{1,2}.[0-9]{2}',
 		});
@@ -237,7 +238,25 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 			{
 				network: 'ethereum',
 				token: 'USDC',
-				risk: 'Lower Risk',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'DAO Risk-Managed',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
+				token: 'ETH',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'DAO Risk-Managed',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
+				token: 'USDC',
+				riskLevel: 'Lower Risk',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
@@ -252,7 +271,8 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 			{
 				network: 'ethereum',
 				token: 'ETH',
-				risk: 'Higher Risk',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'Risk-Managed by BlockAnalitica',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
@@ -260,7 +280,7 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 			{
 				network: 'ethereum',
 				token: 'ETH',
-				risk: 'Higher Risk',
+				riskLevel: 'Lower Risk',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
@@ -299,9 +319,33 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 			nominatedToken: 'USDC',
 			targetToken: 'ETH',
 			riskLevel: 'Higher Risk',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
 		});
 
-		// ETH Higher Risk
+		// ETH Lower Risk
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			targetToken: 'ETH',
+			riskLevel: 'Lower Risk',
+		});
+
+		// USDC Higher Risk - DAO
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'USDC',
+			targetToken: 'USDC',
+			riskLevel: 'Higher Risk',
+			riskManagementType: 'DAO Risk-Managed',
+		});
+
+		// ETH Higher Risk - DAO
 		await app.earn.sidebar.goBack();
 
 		await switchPosition({
@@ -310,6 +354,7 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 			nominatedToken: 'USDC',
 			targetToken: 'ETH',
 			riskLevel: 'Higher Risk',
+			riskManagementType: 'DAO Risk-Managed',
 		});
 	});
 });
