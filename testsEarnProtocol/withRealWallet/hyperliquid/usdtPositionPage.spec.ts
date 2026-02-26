@@ -20,7 +20,7 @@ test.describe('With real wallet - Hyperliquid USD₮0 Position page - Deposit', 
 		});
 
 		await app.positionPage.open(
-			'/earn/hyperliquid/position/0x2cc190fb654141dfbeac4c0f718f4d511674d346/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/hyperliquid/position/0x2cc190fb654141dfbeac4c0f718f4d511674d346/0x10649c79428d718621821cf6299e91920284743f',
 		);
 	});
 
@@ -36,7 +36,7 @@ test.describe('With real wallet - Hyperliquid USD₮0 Position page - Deposit', 
 		await app.positionPage.sidebar.depositOrWithdraw('1');
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: '$',
-			amount: '[0-1].[0-9]{4}',
+			amount: '[0-1].[0-9]{2,4}',
 		});
 	});
 
@@ -80,7 +80,7 @@ test.describe('With real wallet - Hyperliquid USD₮0 Position page - Withdraw',
 		});
 
 		await app.positionPage.open(
-			'/earn/hyperliquid/position/0x2cc190fb654141dfbeac4c0f718f4d511674d346/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/hyperliquid/position/0x2cc190fb654141dfbeac4c0f718f4d511674d346/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails

@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
@@ -229,7 +229,8 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 		await app.positionPage.sidebar.switch.yourPositionShouldBe({
 			network: 'ethereum',
 			token: 'ETH',
-			risk: 'Lower Risk',
+			riskLevel: 'Lower Risk',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
 			balance: '0.000[0-9]',
 			liveAPY: '[0-9]{1,2}.[0-9]{2}',
 		});
@@ -238,23 +239,8 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 			{
 				network: 'ethereum',
 				token: 'USDC',
-				risk: 'Lower Risk',
-				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
-				liveAPY: '[0-9]{1,2}.[0-9]{2}',
-				apySpread: '[0-9]{1,2}.[0-9]{2}',
-			},
-			{
-				network: 'ethereum',
-				token: 'USDC',
-				risk: 'Higher Risk',
-				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
-				liveAPY: '[0-9]{1,2}.[0-9]{2}',
-				apySpread: '[0-9]{1,2}.[0-9]{2}',
-			},
-			{
-				network: 'ethereum',
-				token: 'USDT',
-				risk: 'Lower Risk',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'DAO Risk-Managed',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
@@ -262,7 +248,42 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 			{
 				network: 'ethereum',
 				token: 'ETH',
-				risk: 'Higher Risk',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'DAO Risk-Managed',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
+				token: 'USDC',
+				riskLevel: 'Lower Risk',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
+				token: 'USDC',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'Risk-Managed by BlockAnalitica',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
+				token: 'USDT',
+				riskLevel: 'Lower Risk',
+				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+				liveAPY: '[0-9]{1,2}.[0-9]{2}',
+				apySpread: '[0-9]{1,2}.[0-9]{2}',
+			},
+			{
+				network: 'ethereum',
+				token: 'ETH',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'Risk-Managed by BlockAnalitica',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
@@ -313,6 +334,31 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 			nominatedToken: 'ETH',
 			targetToken: 'ETH',
 			riskLevel: 'Higher Risk',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
+		});
+
+		// USDC Higher Risk - DAO
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'ETH',
+			targetToken: 'USDC',
+			riskLevel: 'Higher Risk',
+			riskManagementType: 'DAO Risk-Managed',
+		});
+
+		// ETH Higher Risk - DAO
+		await app.earn.sidebar.goBack();
+
+		await switchPosition({
+			metamask,
+			app,
+			nominatedToken: 'ETH',
+			targetToken: 'ETH',
+			riskLevel: 'Higher Risk',
+			riskManagementType: 'DAO Risk-Managed',
 		});
 	});
 });

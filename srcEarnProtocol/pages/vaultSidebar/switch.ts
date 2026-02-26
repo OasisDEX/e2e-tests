@@ -19,13 +19,15 @@ export class Switch {
 	async yourPositionShouldBe({
 		network,
 		token,
-		risk,
+		riskLevel,
+		riskManagementType,
 		balance,
 		liveAPY,
 	}: {
 		network?: 'arbitrum' | 'base' | 'ethereum';
 		token?: EarnTokens;
-		risk?: RiskLevels;
+		riskLevel?: RiskLevels;
+		riskManagementType?: RiskManagementTypes;
 		balance?: string;
 		liveAPY?: string;
 	}) {
@@ -42,8 +44,18 @@ export class Switch {
 			await expect(positionLocator.getByTestId('vault-token')).toHaveText(token);
 		}
 
-		if (risk) {
-			await expect(positionLocator.locator('[class*="_titleRow_"]')).toContainText(risk);
+		if (riskLevel) {
+			await expect(positionLocator.locator('[class*="_titleRow_"]')).toContainText(riskLevel);
+		}
+
+		if (riskManagementType) {
+			const riskTypeRegExp = new RegExp(
+				riskManagementType === 'DAO Risk-Managed' ? 'DAO.*Risk-Managed' : 'Risk-Managed.*by.*B.*A',
+			);
+			await expect(
+				positionLocator.getByText(riskTypeRegExp),
+				`'${riskManagementType}' should be displayed`,
+			).toBeVisible();
 		}
 
 		if (balance) {
@@ -61,15 +73,18 @@ export class Switch {
 	async targetPositionsShouldBe(
 		targetPositions: {
 			network?: 'arbitrum' | 'base' | 'ethereum';
-			token?: EarnTokens;
-			risk?: RiskLevels;
+			token: EarnTokens;
+			riskLevel?: RiskLevels;
+			riskManagementType?: RiskManagementTypes;
 			thirtyDayAPY?: string;
 			liveAPY?: string;
 			apySpread?: string;
 		}[],
 	) {
 		for (const targetPosition of targetPositions) {
-			const regExp = new RegExp(`${targetPosition.token}.*${targetPosition.risk ?? ''}`);
+			const regExp = new RegExp(
+				`${targetPosition.token}.*${targetPosition.riskLevel ?? ''}.*${!targetPosition.riskManagementType ? '' : targetPosition.riskManagementType === 'DAO Risk-Managed' ? 'DAO.*Risk-Managed' : 'Risk-Managed.*by.*B.*A'}`,
+			);
 			const positionLocator = this.page
 				.locator('[class*="_cardWrapper_"]:has-text("Live APY")')
 				.filter({ hasText: regExp });
@@ -78,16 +93,6 @@ export class Switch {
 				await expect(positionLocator.getByTestId('vault-network').locator('svg')).toHaveAttribute(
 					'title',
 					`earn_network_${targetPosition.network}`,
-				);
-			}
-
-			if (targetPosition.token) {
-				await expect(positionLocator.getByTestId('vault-token')).toHaveText(targetPosition.token);
-			}
-
-			if (targetPosition.risk) {
-				await expect(positionLocator.locator('[class*="_titleRow_"]')).toContainText(
-					targetPosition.risk,
 				);
 			}
 
@@ -115,7 +120,7 @@ export class Switch {
 		riskManagementType?: RiskManagementTypes;
 	}) {
 		const regExp = new RegExp(
-			`${position.token}.*${position?.riskManagementType ? (position.riskManagementType === 'Risk-Managed by BlockAnalitica' ? 'Risk-Managed.*by.*BA' : 'DAO.*Risk-Managed') : ''}.*${position.riskLevel ?? ''}`,
+			`${position.token}.*${position.riskLevel ?? ''}.*${position?.riskManagementType ? (position.riskManagementType === 'Risk-Managed by BlockAnalitica' ? 'Risk-Managed.*by.*B.*A' : 'DAO.*Risk-Managed') : ''}`,
 		);
 		await this.page.locator(`[class*="_nextVaultCard_"]`).filter({ hasText: regExp }).click();
 	}
