@@ -1,12 +1,12 @@
 import { expect, test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
-test.describe('Vault page - Hyperliquid USDC', async () => {
+test.describe('Vault page - Hyperliquid USD₮0', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 100_00);
 
 		await app.vaultPage.open(
-			'/earn/hyperliquid/position/0x252e5aa42c1804b85b2ce6712cd418a0561232ba',
+			'/earn/hyperliquid/position/0x2cc190fb654141dfbeac4c0f718f4d511674d346',
 		);
 
 		// pause to avoid random fails
@@ -21,13 +21,13 @@ test.describe('Vault page - Hyperliquid USDC', async () => {
 		await app.vaultPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
 
 		await app.vaultPage.shouldHaveAssets({
-			token: 'USDC',
+			token: 'USD₮0',
 			tokenAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
 			usdAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
 		});
 
 		await app.vaultPage.shouldHaveDepositCap({
-			token: 'USDC',
+			token: 'USD₮0',
 			tokenAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
 		});
 	});

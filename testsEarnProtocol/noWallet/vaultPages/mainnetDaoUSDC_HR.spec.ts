@@ -1,22 +1,18 @@
 import { expect, test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
-test.describe('Vault page - Hyperliquid USDC', async () => {
+test.describe('Vault page - DAO Mainnet USDC Higher Risk', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 100_00);
+		testInfo.setTimeout(testInfo.timeout + 60_000);
 
-		await app.vaultPage.open(
-			'/earn/hyperliquid/position/0x252e5aa42c1804b85b2ce6712cd418a0561232ba',
-		);
-
-		// pause to avoid random fails
-		await app.page.waitForTimeout(2_000);
+		await app.vaultPage.open('/earn/mainnet/position/0xd77f9a9f2b0c160db3e9dc2cce370c1a740c76fc');
 	});
 
-	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @regression', async ({
+	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({
 		app,
 	}) => {
-		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
+		// 'News strategy' for now
+		// await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
 
 		await app.vaultPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
 
@@ -28,7 +24,7 @@ test.describe('Vault page - Hyperliquid USDC', async () => {
 
 		await app.vaultPage.shouldHaveDepositCap({
 			token: 'USDC',
-			tokenAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
+			tokenAmount: '[0-9]{2,3}.[0-9]{2}M',
 		});
 	});
 
@@ -36,18 +32,17 @@ test.describe('Vault page - Hyperliquid USDC', async () => {
 		await app.vaultPage.howItAllWorks();
 
 		await app.vaultPage.howItWorks.shouldHaveHeader('How it all works', {
-			timeout: expectDefaultTimeout * 2,
+			timeout: expectDefaultTimeout * 3,
 		});
 		await app.vaultPage.howItWorks.shouldLinkToLitePaper();
 		await app.vaultPage.howItWorks.shouldHaveTabActive('Rebalance mechanism');
 		await app.vaultPage.howItWorks.shouldHaveImage('how-it-works');
 
-		await app.page.waitForTimeout(2_000);
 		await app.vaultPage.howItWorks.selectTab('Governance');
 		await app.vaultPage.howItWorks.shouldHaveTabActive('Governance');
 		await app.vaultPage.howItWorks.shouldHaveImage('governance');
 
-		await app.vaultPage.howItWorks.shouldHaveHeader('Lower Risk Historical Yields', {
+		await app.vaultPage.howItWorks.shouldHaveHeader('Higher Risk Historical Yields', {
 			timeout: expectDefaultTimeout * 2,
 		});
 
