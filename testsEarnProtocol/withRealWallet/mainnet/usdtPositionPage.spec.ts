@@ -170,8 +170,7 @@ test.describe('With real wallet - Mainnet USDT Position page - Withdraw', async 
 		});
 	});
 
-	// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
-	test.skip('It should withdraw to USDT - (until rejecting "Withdraw" tx) - Mainnet USDT position', async ({
+	test('It should withdraw to USDT - (until rejecting "Withdraw" tx) - Mainnet USDT position', async ({
 		app,
 		metamask,
 	}) => {
