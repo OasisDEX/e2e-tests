@@ -166,7 +166,7 @@ test.describe('With real wallet - Earn page', async () => {
 		});
 	});
 
-	test('It shoule toggle "In wallet" feature', async ({ app, metamask }) => {
+	test('It should toggle "In wallet" feature', async ({ app, metamask }) => {
 		// 'In wallet' toggle OFF
 
 		// Vaults for which user does not have tokens --> Displayed
