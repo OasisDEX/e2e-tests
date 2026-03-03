@@ -43,4 +43,5 @@ export type AssetsSelectorOptions =
 
 export type EarnFilters =
 	| { filter: 'assets'; asset: AssetsSelectorOptions }
-	| { filter: 'networks'; network: Networks };
+	| { filter: 'networks'; network: Networks }
+	| { filter: 'riskManagementTypes'; riskManagementType: RiskManagementTypes };
