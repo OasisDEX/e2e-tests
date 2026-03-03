@@ -5,16 +5,18 @@ test.describe('Earn page @regression', async () => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
 	});
 
-	test('It should filter by Risk Management type', async ({ app }) => {
+	test.only('It should filter by Risk Management type', async ({ app }) => {
 		await app.earn.filterByRiskManagementType('DAO Risk-Managed New!');
-
-		// TO BE DONE
-		// Assert vaults listed
+		await app.earn.vaults.allVaultsShouldBe({
+			filter: 'riskManagementTypes',
+			riskManagementType: 'DAO Risk-Managed',
+		});
 
 		await app.earn.filterByRiskManagementType('Risk-Managed By BlockAnalitica');
-
-		// TO BE DONE
-		// Assert vaults listed
+		await app.earn.vaults.allVaultsShouldBe({
+			filter: 'riskManagementTypes',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
+		});
 	});
 
 	(['ARBITRUM', 'BASE', 'MAINNET', 'SONIC', 'HYPERLIQUID'] as const).forEach((network) => {

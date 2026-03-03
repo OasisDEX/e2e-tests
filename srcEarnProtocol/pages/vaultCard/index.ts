@@ -38,4 +38,13 @@ export class VaultCard {
 	async shouldBeSelected() {
 		await expect(this.cardLocator).toHaveClass(/selected/i);
 	}
+
+	@step
+	async getRiskManagementType(): Promise<string> {
+		const riskManagementType = await this.cardLocator
+			.getByText('Risk Management', { exact: true })
+			.locator('..')
+			.innerText();
+		return riskManagementType;
+	}
 }

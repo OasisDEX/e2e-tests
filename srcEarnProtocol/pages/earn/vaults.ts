@@ -1,7 +1,12 @@
 import { expect, Locator, Page } from '@playwright/test';
 import { VaultCard } from '../vaultCard';
 import { step } from '#noWalletFixtures';
-import { EarnFilters, LazyNominatedTokens, Networks, Risks } from 'srcEarnProtocol/utils/types';
+import {
+	EarnFilters,
+	LazyNominatedTokens,
+	Networks,
+	RiskLevels,
+} from 'srcEarnProtocol/utils/types';
 import {
 	allAssets,
 	allStables,
@@ -26,7 +31,7 @@ export class Vaults {
 		return new VaultCard(this.page, this.vaultLocator.nth(nth));
 	}
 
-	byStrategy(strategy: { token: LazyNominatedTokens; network: Networks; risk: Risks }) {
+	byStrategy(strategy: { token: LazyNominatedTokens; network: Networks; risk: RiskLevels }) {
 		return new VaultCard(
 			this.page,
 			this.vaultLocator
@@ -79,6 +84,14 @@ export class Vaults {
 				} else {
 					expect(vaultToken).toBe(arg.asset);
 				}
+			}
+
+			if (arg.filter === 'riskManagementTypes') {
+				const vaultRiskManagementType = await this.nth(i).getRiskManagementType();
+
+				expect(vaultRiskManagementType).toContain(
+					arg.riskManagementType === 'DAO Risk-Managed' ? 'DAO Risk-Managed' : 'Block Analitica',
+				);
 			}
 		}
 

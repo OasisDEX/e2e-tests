@@ -21,14 +21,14 @@ test.describe('Client dashboard - Overview - Manage internal users - Admin role'
 	test(`It should display users' list`, async ({ app }) => {
 		await app.clientDashboard.overview.manageInternalUsers.shouldHaveUsers([
 			{
-				name: 'Juan Test User',
-				email: 'summerfi.test.2@gmail.com',
+				name: 'An**ei',
+				email: 'an*********@su****.fi',
 				role: 'Viewer',
-				createdAt: '2025-10-17',
+				createdAt: '2026-01-30',
 			},
 			{
-				name: 'Chris',
-				email: 'chris+demo@summer.fi',
+				name: 'Ch*is',
+				email: 'ch********@su****.fi',
 				role: 'RoleAdmin',
 				createdAt: '2025-12-18',
 			},
