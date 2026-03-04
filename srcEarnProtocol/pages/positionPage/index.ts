@@ -153,7 +153,7 @@ export class PositionPage {
 		const regExp = new RegExp(`${apy}%`);
 
 		await expect(
-			this.page.locator('[class*="_dataBlockWrapper_"] span:has-text("Live APY")').first(),
+			this.page.locator('[class*="_dataBlockWrapper_"] span:has-text("Live Native APY")').first(),
 		).toContainText(regExp, { timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 }

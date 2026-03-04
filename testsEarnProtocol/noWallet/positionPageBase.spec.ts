@@ -5,7 +5,7 @@ test.describe('Position page - Base - Specific user page @regression', async () 
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await app.positionPage.open(
-			'/earn/base/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F'
+			'/earn/base/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17/0x10649c79428d718621821Cf6299e91920284743F',
 		);
 	});
 
