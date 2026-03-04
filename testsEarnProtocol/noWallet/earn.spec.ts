@@ -5,7 +5,7 @@ test.describe('Earn page @regression', async () => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
 	});
 
-	test.only('It should filter by Risk Management type', async ({ app }) => {
+	test('It should filter by Risk Management type', async ({ app }) => {
 		await app.earn.filterByRiskManagementType('DAO Risk-Managed New!');
 		await app.earn.vaults.allVaultsShouldBe({
 			filter: 'riskManagementTypes',
