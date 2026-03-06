@@ -12,6 +12,37 @@ test.describe('Landing page @regression', async () => {
 		await app.landingPage.shouldShowVaultCard();
 	});
 
+	test('It should have tooltip with APY details and match card Net APY', async ({ app }) => {
+		// Get Net APY in vault card
+		const cardNetApy: string = await app.landingPage.getSelectedCardNetApy();
+
+		await app.landingPage.openSelectedCardApyTooltip();
+		await app.landingPage.shouldHaveSelectedCardApyTooltipOpened();
+
+		await app.landingPage.shouldHaveSelectedCardTooltipDetails({
+			liveNativeApy: '[0-9]{1,2}.[0-9]{2}',
+			sumrRewards: '[0-9]{1,2}.[0-9]{2}',
+			managementFee: '1.00',
+			netApy: '[0-9]{1,2}.[0-9]{2}',
+		});
+
+		// Get Net APY in vault card tooltip
+		const tooltipDetails = await app.landingPage.getSelectedCardTooltipDetails();
+		// Verify that card and tooltip Net APY match
+		expect(
+			cardNetApy,
+			`Card Net APY(${cardNetApy}) should equal Card Tooltip Net APY (${tooltipDetails.netApy})`,
+		).toEqual(tooltipDetails.netApy);
+
+		// Verify that tooltip Net APY equals tooltip Native Live APY + SUMR rewards - Management Fee
+		expect(
+			parseFloat(tooltipDetails.liveNativeApy) +
+				parseFloat(tooltipDetails.sumrRewards) -
+				parseFloat(tooltipDetails.managementFee),
+			`Native APY (${tooltipDetails.liveNativeApy}) + SUMR (${tooltipDetails.sumrRewards}) - Fee (${tooltipDetails.managementFee}) should be very close to Net APY (${tooltipDetails.netApy})`,
+		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);
+	});
+
 	(['right', 'left'] as const).forEach((direction) => {
 		test(`It should show vault card to the ${direction}`, async ({ app }) => {
 			// To avoid flakiness
@@ -39,7 +70,7 @@ test.describe('Landing page @regression', async () => {
 					originalVaultCard.token == newVaultCard.token &&
 						originalVaultCard.network == newVaultCard.network &&
 						originalVaultCard.risk == newVaultCard.risk,
-					'Vault details should not be equal'
+					'Vault details should not be equal',
 				).not.toBeTruthy();
 			}).toPass();
 		});
