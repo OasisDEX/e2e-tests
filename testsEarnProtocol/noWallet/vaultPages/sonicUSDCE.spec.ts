@@ -11,6 +11,38 @@ test.describe('Vault page - Sonic USDC.E', async () => {
 		await app.page.waitForTimeout(2_000);
 	});
 
+	test('It should have tooltip with APY details and match Net APY tag', async ({ app }) => {
+		// Get Net APY in tag
+		await app.vaultPage.shouldHaveNetApyTag();
+		const tagNetApy: string = await app.vaultPage.getTagNetApy();
+
+		await app.vaultPage.openNetApyTooltip();
+		await app.tooltips.netApy.shouldBeVisible();
+
+		await app.tooltips.netApy.shouldHave({
+			liveNativeApy: '[0-9]{1,2}.[0-9]{2}',
+			sumrRewards: '[0-9]{1,2}.[0-9]{2}',
+			managementFee: '1.00',
+			netApy: '[0-9]{1,2}.[0-9]{2}',
+		});
+
+		// Get Net APY in tag tooltip
+		const tooltipDetails = await app.tooltips.netApy.getDetails();
+		// Verify that tag and tooltip Net APY match
+		expect(
+			tagNetApy,
+			`Card Net APY(${tagNetApy}) should equal Card Tooltip Net APY (${tooltipDetails.netApy})`,
+		).toEqual(tooltipDetails.netApy);
+
+		// Verify that tooltip Net APY equals tooltip Native Live APY + SUMR rewards - Management Fee
+		expect(
+			parseFloat(tooltipDetails.liveNativeApy) +
+				parseFloat(tooltipDetails.sumrRewards) -
+				parseFloat(tooltipDetails.managementFee),
+			`Native APY (${tooltipDetails.liveNativeApy}) + SUMR (${tooltipDetails.sumrRewards}) - Fee (${tooltipDetails.managementFee}) should be very close to Net APY (${tooltipDetails.netApy})`,
+		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);
+	});
+
 	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @regression', async ({
 		app,
 	}) => {

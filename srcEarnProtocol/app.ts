@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test';
 import { Banners } from './banners';
 import { Modals } from './modals';
+import { Tooltips } from './tooltips';
 import {
 	BeachClubLandingPage,
 	Earn,
@@ -52,6 +53,8 @@ export class App {
 
 	readonly team: Team;
 
+	readonly tooltips: Tooltips;
+
 	readonly userActivity: UserActivity;
 
 	readonly vaultPage: VaultPage;
@@ -74,6 +77,7 @@ export class App {
 		this.staking = new Staking(page);
 		this.sumr = new Sumr(page);
 		this.team = new Team(page);
+		this.tooltips = new Tooltips(page);
 		this.userActivity = new UserActivity(page);
 		this.vaultPage = new VaultPage(page);
 		this.yieldTrend = new YieldTrend(page);
