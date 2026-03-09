@@ -8,7 +8,9 @@ test.describe('Vault page - Mainnet USDC Higher Risk', async () => {
 		await app.vaultPage.open('/earn/mainnet/position/0xe9cda459bed6dcfb8ac61cd8ce08e2d52370cb06');
 	});
 
-	test('It should have tooltip with APY details and match Net APY tag', async ({ app }) => {
+	test('It should have tooltip with APY details and match Net APY tag @regression', async ({
+		app,
+	}) => {
 		// Get Net APY in tag
 		await app.vaultPage.shouldHaveNetApyTag();
 		const tagNetApy: string = await app.vaultPage.getTagNetApy();
