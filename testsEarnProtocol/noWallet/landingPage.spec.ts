@@ -17,9 +17,9 @@ test.describe('Landing page @regression', async () => {
 		const cardNetApy: string = await app.landingPage.getSelectedCardNetApy();
 
 		await app.landingPage.openSelectedCardApyTooltip();
-		await app.landingPage.shouldHaveSelectedCardApyTooltipOpened();
+		await app.tooltips.netApy.shouldBeVisible();
 
-		await app.landingPage.shouldHaveSelectedCardTooltipDetails({
+		await app.tooltips.netApy.shouldHave({
 			liveNativeApy: '[0-9]{1,2}.[0-9]{2}',
 			sumrRewards: '[0-9]{1,2}.[0-9]{2}',
 			managementFee: '1.00',
@@ -27,7 +27,7 @@ test.describe('Landing page @regression', async () => {
 		});
 
 		// Get Net APY in vault card tooltip
-		const tooltipDetails = await app.landingPage.getSelectedCardTooltipDetails();
+		const tooltipDetails = await app.tooltips.netApy.getDetails();
 		// Verify that card and tooltip Net APY match
 		expect(
 			cardNetApy,

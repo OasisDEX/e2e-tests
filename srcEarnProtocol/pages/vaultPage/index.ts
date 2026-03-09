@@ -1,4 +1,4 @@
-import { expect, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { HowItWorks } from './howItWorks';
 import { VaultExposure } from './vaultExposure';
 import { VaultSidebar } from '../vaultSidebar';
@@ -9,6 +9,10 @@ import { expectDefaultTimeout } from 'utils/config';
 export class VaultPage {
 	readonly page: Page;
 
+	readonly apyTagLocator: Locator;
+
+	readonly apyTooltipLocator: Locator;
+
 	readonly howItWorks: HowItWorks;
 
 	readonly exposure: VaultExposure;
@@ -17,6 +21,8 @@ export class VaultPage {
 
 	constructor(page: Page) {
 		this.page = page;
+		this.apyTagLocator = this.page.locator('[class*="_vaultBonusWrapper_"]');
+		this.apyTooltipLocator = this.page.locator('[class*="_tooltipOpen_"]');
 		this.exposure = new VaultExposure(page);
 		this.howItWorks = new HowItWorks(page);
 		this.sidebar = new VaultSidebar(page, this.page.locator('[class*="_sidebarWrapper_"]'));
@@ -40,6 +46,24 @@ export class VaultPage {
 
 			await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
 		}).toPass();
+	}
+
+	@step
+	async shouldHaveNetApyTag() {
+		const regExp = new RegExp('[0-9]{1,2}.[0-9]{2}%.*APY');
+		await expect(this.apyTagLocator, `Should have APY tag: ${regExp}`).toContainText(regExp);
+	}
+
+	@step
+	async getTagNetApy(): Promise<string> {
+		const apy = await this.apyTagLocator.getByText('APY').innerText();
+
+		return apy.substring(0, apy.indexOf('%'));
+	}
+
+	@step
+	async openNetApyTooltip() {
+		await this.apyTagLocator.locator('[data-tooltip-btn-id]').hover();
 	}
 
 	@step
