@@ -5,8 +5,59 @@ import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { unstakeLvTokens } from 'testsEarnProtocol/z_sharedTestSteps/unstakeLvTokens';
+import { expect } from '#earnProtocolFixtures';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
+
+test.describe('With real wallet - Sonic USDC.E Position page - APY tag', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		// Extending tests timeout by 25 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 100_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+			network: 'Sonic',
+		});
+
+		await app.positionPage.open(
+			'/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8/0x10649c79428d718621821cf6299e91920284743f',
+		);
+	});
+
+	test('It should have tooltip with APY details and match Net APY tag', async ({ app }) => {
+		// Get Net APY in tag
+		await app.vaultPage.shouldHaveNetApyTag();
+		const tagNetApy: string = await app.vaultPage.getTagNetApy();
+
+		await app.vaultPage.openNetApyTooltip();
+		await app.tooltips.netApy.shouldBeVisible();
+
+		await app.tooltips.netApy.shouldHave({
+			liveNativeApy: '[0-9]{1,2}.[0-9]{2}',
+			sumrRewards: '[0-9]{1,2}.[0-9]{2}',
+			managementFee: '1.00',
+			netApy: '[0-9]{1,2}.[0-9]{2}',
+		});
+
+		// Get Net APY in tag tooltip
+		const tooltipDetails = await app.tooltips.netApy.getDetails();
+		// Verify that tag and tooltip Net APY match
+		expect(
+			tagNetApy,
+			`Card Net APY(${tagNetApy}) should equal Card Tooltip Net APY (${tooltipDetails.netApy})`,
+		).toEqual(tooltipDetails.netApy);
+
+		// Verify that tooltip Net APY equals tooltip Native Live APY + SUMR rewards - Management Fee
+		expect(
+			parseFloat(tooltipDetails.liveNativeApy) +
+				parseFloat(tooltipDetails.sumrRewards) -
+				parseFloat(tooltipDetails.managementFee),
+			`Native APY (${tooltipDetails.liveNativeApy}) + SUMR (${tooltipDetails.sumrRewards}) - Fee (${tooltipDetails.managementFee}) should be very close to Net APY (${tooltipDetails.netApy})`,
+		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);
+	});
+});
 
 test.describe('With real wallet - Sonic USDC.E Position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
@@ -21,7 +72,7 @@ test.describe('With real wallet - Sonic USDC.E Position page - Deposit', async (
 		});
 
 		await app.positionPage.open(
-			'/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8/0x10649c79428d718621821cf6299e91920284743f',
 		);
 	});
 
@@ -81,7 +132,7 @@ test.describe('With real wallet - Sonic USDC.E Position page - Withdraw', async 
 		});
 
 		await app.positionPage.open(
-			'/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -145,7 +196,7 @@ test.describe('With real wallet - Sonic USDC.e Position page - Unstake', async (
 		});
 
 		await app.positionPage.open(
-			'/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
