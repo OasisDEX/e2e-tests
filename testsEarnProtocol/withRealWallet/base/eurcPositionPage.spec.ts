@@ -5,8 +5,58 @@ import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
+import { expect } from '#earnProtocolFixtures';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
+
+test.describe('With real wallet - Base EURC position page - APY tag', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		// Extending tests timeout by 80 extra seconds due to beforeEach actions
+		testInfo.setTimeout(testInfo.timeout + 110_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+		});
+
+		await app.positionPage.open(
+			'/earn/base/position/0x64db8f51f1bf7064bb5a361a7265f602d348e0f0/0x10649c79428d718621821cf6299e91920284743f',
+		);
+	});
+
+	test('It should have tooltip with APY details and match Net APY tag', async ({ app }) => {
+		// Get Net APY in tag
+		await app.vaultPage.shouldHaveNetApyTag();
+		const tagNetApy: string = await app.vaultPage.getTagNetApy();
+
+		await app.vaultPage.openNetApyTooltip();
+		await app.tooltips.netApy.shouldBeVisible();
+
+		await app.tooltips.netApy.shouldHave({
+			liveNativeApy: '[0-9]{1,2}.[0-9]{2}',
+			sumrRewards: '[0-9]{1,2}.[0-9]{2}',
+			managementFee: '1.00',
+			netApy: '[0-9]{1,2}.[0-9]{2}',
+		});
+
+		// Get Net APY in tag tooltip
+		const tooltipDetails = await app.tooltips.netApy.getDetails();
+		// Verify that tag and tooltip Net APY match
+		expect(
+			tagNetApy,
+			`Card Net APY(${tagNetApy}) should equal Card Tooltip Net APY (${tooltipDetails.netApy})`,
+		).toEqual(tooltipDetails.netApy);
+
+		// Verify that tooltip Net APY equals tooltip Native Live APY + SUMR rewards - Management Fee
+		expect(
+			parseFloat(tooltipDetails.liveNativeApy) +
+				parseFloat(tooltipDetails.sumrRewards) -
+				parseFloat(tooltipDetails.managementFee),
+			`Native APY (${tooltipDetails.liveNativeApy}) + SUMR (${tooltipDetails.sumrRewards}) - Fee (${tooltipDetails.managementFee}) should be very close to Net APY (${tooltipDetails.netApy})`,
+		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);
+	});
+});
 
 test.describe('With real wallet - Base EURC position page - Deposit', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
@@ -223,7 +273,7 @@ test.describe('With real wallet - Base EURC position page - Switch', async () =>
 		await app.positionPage.sidebar.switch.yourPositionShouldBe({
 			network: 'base',
 			token: 'EURC',
-			risk: 'Lower Risk',
+			riskLevel: 'Lower Risk',
 			balance: '0.5[0-9]{3}',
 			liveAPY: '[0-9]{1,2}.[0-9]{2}',
 		});
@@ -232,7 +282,7 @@ test.describe('With real wallet - Base EURC position page - Switch', async () =>
 			{
 				network: 'base',
 				token: 'USDC',
-				risk: 'Lower Risk',
+				riskLevel: 'Lower Risk',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
@@ -240,7 +290,7 @@ test.describe('With real wallet - Base EURC position page - Switch', async () =>
 			{
 				network: 'base',
 				token: 'ETH',
-				risk: 'Lower Risk',
+				riskLevel: 'Lower Risk',
 				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
 				liveAPY: '[0-9]{1,2}.[0-9]{2}',
 				apySpread: '[0-9]{1,2}.[0-9]{2}',
