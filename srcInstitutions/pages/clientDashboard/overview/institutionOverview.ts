@@ -1,32 +1,33 @@
 import { expect, step } from '#institutionsNoWalletFixtures';
 import { Locator, Page } from '@playwright/test';
 
+type TimePeriods = '7d' | '30d' | '90d' | '6m' | '1y' | '3y';
+
 export class InstitutionOverview {
 	readonly page: Page;
 
 	readonly panelLocator: Locator;
 
+	readonly stackedSliderLocator: Locator;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.panelLocator = page.locator('[class*="PanelInstitutionOverview"]');
+		this.stackedSliderLocator = page
+			.getByText('Stacked', { exact: true })
+			.locator('..')
+			.locator('[class*="_slider_"]');
 	}
 
 	vaultLocator(name: string): Locator {
-		return this.page.locator(`[class*="_yourVaultsWrapper_"] tbody tr:has-text("${name}")`).first();
-		// .first() added because duplicate names are allowed at the moment
+		return this.page.locator(`[class*="_yourVaultsWrapper_"] tbody tr:has-text("${name}")`);
 	}
 
 	@step
 	async shouldBeVisible() {
-		// SKIP -- Section removed from UI
-		// await expect(
-		// 	this.panelLocator.locator('[class*="AumChart"] svg').first(),
-		// 	'AUM chart should be visible'
-		// ).toBeVisible();
-
 		await expect(
 			this.panelLocator.getByText('Your Vaults', { exact: true }),
-			'"Your Vaults" section should be visible'
+			'"Your Vaults" section should be visible',
 		).toBeVisible();
 	}
 
@@ -34,13 +35,74 @@ export class InstitutionOverview {
 	async shouldHaveValueLockedChart() {
 		await expect(
 			this.panelLocator.getByText('Total Value Locked'),
-			'Should display "Total Value Locked" chart title'
+			'Should display "Total Value Locked" chart title',
 		).toBeVisible();
 
 		await expect(
 			this.panelLocator.locator('[class*="_tvlChart_"]'),
-			'Should display TVL chart'
+			'Should display TVL chart',
 		).toBeVisible();
+	}
+
+	@step
+	async switchStacked() {
+		await this.stackedSliderLocator.click();
+	}
+
+	@step
+	async shouldHaveStackedFeature(status: 'On' | 'Off') {
+		const backgroundColor = await this.stackedSliderLocator.evaluate((el) => {
+			return window.getComputedStyle(el).getPropertyValue('background-color');
+		});
+
+		const actualStatus = backgroundColor === 'rgb(255, 73, 164)' ? 'On' : 'Off';
+
+		expect(actualStatus, `Stacked feature should be ${status}`).toEqual(status);
+	}
+
+	@step
+	async selectTimePeriod(timePeriod: TimePeriods) {
+		await this.page.getByRole('button', { name: timePeriod, exact: true }).click();
+	}
+
+	@step
+	async shouldHaveStackedChartMaxY(maxY: string) {
+		await expect(
+			this.page.locator('[class*="recharts-yAxis-tick-labels"] tspan').last(),
+			`Top Y axis legend should read ${maxY}`,
+		).toContainText(maxY);
+	}
+
+	@step
+	async shouldHaveTimePeriodInX(timePeriod: TimePeriods) {
+		const diffInDays = {
+			'7d': { days: 7, margin: 1 },
+			'30d': { days: 30, margin: 2 },
+			'90d': { days: 90, margin: 5 },
+			'6m': { days: 180, margin: 15 },
+			'1y': { days: 365, margin: 32 },
+			'3y': { days: 1095, margin: 60 },
+		};
+
+		const firstChartLegend = await this.page
+			.locator('[class*="recharts-xAxis-tick-labels"] tspan')
+			.first()
+			.textContent();
+
+		const lastChartLegend = await this.page
+			.locator('[class*="recharts-xAxis-tick-labels"] tspan')
+			.last()
+			.textContent();
+
+		const actualDiffInDays =
+			(Date.parse(lastChartLegend ?? 'NoDateReceived') -
+				Date.parse(firstChartLegend ?? 'NoDateReceived')) /
+			86400000;
+
+		expect(actualDiffInDays).toBeGreaterThanOrEqual(
+			diffInDays[timePeriod].days - diffInDays[timePeriod].margin,
+		);
+		expect(actualDiffInDays).toBeLessThanOrEqual(diffInDays[timePeriod].days);
 	}
 
 	@step
@@ -50,14 +112,14 @@ export class InstitutionOverview {
 			value?: string;
 			thirtyDayAPY?: string;
 			nav?: string;
-		}[]
+		}[],
 	) {
 		for (const vault of vaults) {
 			if (vault.value) {
 				const regExp = new RegExp(`\\$${vault.value}`);
 				await expect(
 					this.vaultLocator(vault.name).getByRole('cell').nth(1),
-					`Should have $${vault.value} value`
+					`Should have $${vault.value} value`,
 				).toContainText(regExp);
 			}
 
@@ -65,7 +127,7 @@ export class InstitutionOverview {
 				const regExp = new RegExp(`${vault.thirtyDayAPY}${vault.thirtyDayAPY === '-' ? '' : '%'}`);
 				await expect(
 					this.vaultLocator(vault.name).getByRole('cell').nth(2),
-					`Should have ${vault.thirtyDayAPY}${vault.thirtyDayAPY === '-' ? '' : '%'} 30d APY`
+					`Should have ${vault.thirtyDayAPY}${vault.thirtyDayAPY === '-' ? '' : '%'} 30d APY`,
 				).toContainText(regExp);
 			}
 
@@ -73,7 +135,7 @@ export class InstitutionOverview {
 				const regExp = new RegExp(vault.nav);
 				await expect(
 					this.vaultLocator(vault.name).getByRole('cell').nth(3),
-					`Should have ${vault.nav} NAV`
+					`Should have ${vault.nav} NAV`,
 				).toContainText(regExp);
 			}
 		}
