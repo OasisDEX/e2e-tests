@@ -51,6 +51,51 @@ test.describe('Client dashboard - Vaults - Overview', async () => {
 		await app.clientDashboard.vaults.overview.shouldHaveAumChart();
 	});
 
+	test('It should switch On/Off "Show ark APYs" in charts', async ({ app }) => {
+		// "Show ark APYs" feature should be Off by default
+		await app.clientDashboard.vaults.overview.shouldHaveShowArkApysFeature('Off');
+		await app.clientDashboard.vaults.overview.shouldHaveYieldsLegends(['ExtDemoCorp USDC base']);
+		await app.clientDashboard.vaults.overview.shouldNotHaveYieldsLegends([
+			'FluidFToken USDC',
+			'Morpho USDC Moonwell Flagship',
+			'Compound V3 USDC',
+			'Aave V3 USDC',
+			'Morpho USDC Gauntlet Prime',
+			'Morpho USDC Steakhouse',
+			'SkyUsds USDC',
+		]);
+
+		// Switch On "Show ark APYs"
+		await app.clientDashboard.vaults.overview.switchShowArkApys();
+		await app.page.waitForTimeout(1_000);
+		await app.clientDashboard.vaults.overview.shouldHaveShowArkApysFeature('On');
+		await app.clientDashboard.vaults.overview.shouldHaveYieldsLegends([
+			'ExtDemoCorp USDC base',
+			'FluidFToken USDC',
+			'Morpho USDC Moonwell Flagship',
+			'Compound V3 USDC',
+			'Aave V3 USDC',
+			'Morpho USDC Gauntlet Prime',
+			'Morpho USDC Steakhouse',
+			'SkyUsds USDC',
+		]);
+
+		// Switch Off "Show ark APYs"
+		await app.clientDashboard.vaults.overview.switchShowArkApys();
+		await app.page.waitForTimeout(1_000);
+		await app.clientDashboard.vaults.overview.shouldHaveShowArkApysFeature('Off');
+		await app.clientDashboard.vaults.overview.shouldHaveYieldsLegends(['ExtDemoCorp USDC base']);
+		await app.clientDashboard.vaults.overview.shouldNotHaveYieldsLegends([
+			'FluidFToken USDC',
+			'Morpho USDC Moonwell Flagship',
+			'Compound V3 USDC',
+			'Aave V3 USDC',
+			'Morpho USDC Gauntlet Prime',
+			'Morpho USDC Steakhouse',
+			'SkyUsds USDC',
+		]);
+	});
+
 	test(`It should show Vaults' contract addresses`, async ({ app }) => {
 		// Assert Base vault
 		await app.clientDashboard.vaults.overview.shouldHaveContractAddresses({

@@ -1,11 +1,35 @@
 import { expect, step } from '#institutionsNoWalletFixtures';
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
+
+type BaseUsdcArks =
+	| 'ExtDemoCorp USDC base'
+	| 'FluidFToken USDC'
+	| 'Morpho USDC Moonwell Flagship'
+	| 'Compound V3 USDC'
+	| 'Aave V3 USDC'
+	| 'Morpho USDC Gauntlet Prime'
+	| 'Morpho USDC Steakhouse'
+	| 'SkyUsds USDC';
+
+type ArbitrumUsdcArks =
+	| 'ExtDemoCorp USDC arbitrum'
+	| 'FluidFToken USDC'
+	| 'Morpho USDC Gauntlet Prime'
+	| 'Aave V3 USDC'
+	| 'Morpho USDC Gauntlet Core'
+	| 'Compound V3 USDC';
 
 export class Overview {
 	readonly page: Page;
 
+	readonly showArkApysSliderLocator: Locator;
+
 	constructor(page: Page) {
 		this.page = page;
+		this.showArkApysSliderLocator = this.page
+			.getByText('Show ark APYs', { exact: true })
+			.locator('..')
+			.locator('[class*="_slider_"]');
 	}
 
 	@step
@@ -25,7 +49,7 @@ export class Overview {
 	async shouldHavePerformanceChart() {
 		await expect(
 			this.page.locator('[class*="_navPriceChart_"]'),
-			'Should dispay AUM chart',
+			'Should dispay Performance chart',
 		).toBeVisible();
 	}
 
@@ -33,7 +57,7 @@ export class Overview {
 	async shouldHaveApyChart() {
 		await expect(
 			this.page.locator('[class*="_arkHistoricalYieldChart_"]'),
-			'Should dispay AUM chart',
+			'Should dispay APY chart',
 		).toBeVisible();
 	}
 
@@ -43,6 +67,42 @@ export class Overview {
 			this.page.locator('[class*="_aumChart_"]'),
 			'Should dispay AUM chart',
 		).toBeVisible();
+	}
+
+	@step
+	async switchShowArkApys() {
+		await this.showArkApysSliderLocator.click();
+	}
+
+	@step
+	async shouldHaveShowArkApysFeature(status: 'On' | 'Off') {
+		const backgroundColor = await this.showArkApysSliderLocator.evaluate((el) => {
+			return window.getComputedStyle(el).getPropertyValue('background-color');
+		});
+
+		const actualStatus = backgroundColor === 'rgb(255, 73, 164)' ? 'On' : 'Off';
+
+		expect(actualStatus, `Stacked feature should be ${status}`).toEqual(status);
+	}
+
+	@step
+	async shouldHaveYieldsLegends(arks: BaseUsdcArks[] | ArbitrumUsdcArks[]) {
+		for (const ark of arks) {
+			await expect(
+				this.page.locator('[class*="YieldsLegend_legendItem_"]').filter({ hasText: ark }),
+				`"${ark}" legend should be visible`,
+			).toBeVisible();
+		}
+	}
+
+	@step
+	async shouldNotHaveYieldsLegends(arks: BaseUsdcArks[] | ArbitrumUsdcArks[]) {
+		for (const ark of arks) {
+			await expect(
+				this.page.locator('[class*="YieldsLegend_legendItem_"]').filter({ hasText: ark }),
+				`"${ark}" legend should NOT be visible`,
+			).not.toBeVisible();
+		}
 	}
 
 	@step
