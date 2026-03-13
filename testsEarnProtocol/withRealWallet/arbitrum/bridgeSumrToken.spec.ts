@@ -4,8 +4,7 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
-// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
-test.describe.skip('Bridge Arbitrum SUMR tokens', async () => {
+test.describe('Bridge Arbitrum SUMR tokens @arbitrum', async () => {
 	test.beforeEach(async ({ metamask, app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 25_000);
 
