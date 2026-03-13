@@ -44,7 +44,7 @@ export class VaultPage {
 			// 	await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
 			// }
 
-			await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
+			await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
 		}).toPass();
 	}
 

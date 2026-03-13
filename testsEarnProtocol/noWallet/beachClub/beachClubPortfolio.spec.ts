@@ -22,7 +22,7 @@ test.describe('Beach Club - Portfolio page @regression', async () => {
 		await context.grantPermissions(['clipboard-read']);
 		const clipboardText2 = await app.page.evaluate(() => navigator.clipboard.readText());
 		expect(clipboardText2, 'Should have copied referral link in the clipboard').toContain(
-			'/earn?referralCode=beach-test'
+			'/earn?referralCode=beach-test',
 		);
 	});
 
@@ -98,26 +98,21 @@ test.describe('Beach Club - Portfolio page @regression', async () => {
 		]);
 	});
 
-	test('It sould show Referral Reward Overview', async ({ app }) => {
+	test('It sould show Referral Rewards Overview, user`s Rewards group and Rewards simulation', async ({
+		app,
+	}) => {
 		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
 
+		// Rewards Overview
 		await app.portfolio.beachClub.shouldHaveCumulativeTvlFromReferrals('[0-9].[0-9]{2}(0-9]{2})?');
 		await app.portfolio.beachClub.shouldHaveEarnedSUMR('0.00');
 		await app.portfolio.beachClub.shouldHaveEarnedFee('0.00');
-	});
 
-	test('It sould show Rewards group in which user currently is', async ({ app }) => {
-		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
-
+		// User's Rewards group
 		await app.portfolio.beachClub.shouldBeInRewardsGroup('Start Referring');
-	});
 
-	test('It sould show Referral Reward Simulations', async ({ app }) => {
-		await expect(async () => {
-			await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
-
-			await app.portfolio.beachClub.shouldHaveProjectedYearlyRewards('<0.01');
-			await app.portfolio.beachClub.shouldHaveYearlyEarnedFees('<0.01');
-		}).toPass();
+		// Rewards Simulations
+		await app.portfolio.beachClub.shouldHaveProjectedYearlyRewards('<0.01');
+		await app.portfolio.beachClub.shouldHaveYearlyEarnedFees('<0.01');
 	});
 });
