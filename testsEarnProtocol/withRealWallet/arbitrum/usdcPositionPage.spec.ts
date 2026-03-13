@@ -9,7 +9,7 @@ import { expect } from '#earnProtocolFixtures';
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
-test.describe('With real wallet - Arbitrum USDC Position page - APY tag', async () => {
+test.describe('With real wallet - Arbitrum USDC Position page - APY tag @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 110_000);
@@ -59,7 +59,7 @@ test.describe('With real wallet - Arbitrum USDC Position page - APY tag', async 
 	});
 });
 
-test.describe('With real wallet - Arbitrum USDC Position page - Deposit', async () => {
+test.describe('With real wallet - Arbitrum USDC Position page - Deposit @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 110_000);
@@ -177,7 +177,7 @@ test.describe('With real wallet - Arbitrum USDC Position page - Deposit', async 
 	});
 });
 
-test.describe('With real wallet - Arbitrum USDC Position page - Withdraw', async () => {
+test.describe('With real wallet - Arbitrum USDC Position page - Withdraw @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
@@ -241,7 +241,7 @@ test.describe('With real wallet - Arbitrum USDC Position page - Withdraw', async
 	});
 });
 
-test.describe('With real wallet - Arbitrum USDC Position page - Switch', async () => {
+test.describe('With real wallet - Arbitrum USDC Position page - Switch @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 

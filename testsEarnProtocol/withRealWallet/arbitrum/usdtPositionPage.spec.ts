@@ -10,7 +10,7 @@ import { expect } from '#earnProtocolFixtures';
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
-test.describe('With real wallet - Arbitrum USD₮0 Position page - APY tag', async () => {
+test.describe('With real wallet - Arbitrum USD₮0 Position page - APY tag @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 110_000);
@@ -60,7 +60,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - APY tag', asy
 	});
 });
 
-test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', async () => {
+test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 110_000);
@@ -178,7 +178,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit', asy
 	});
 });
 
-test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', async () => {
+test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
@@ -242,7 +242,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw', as
 	});
 });
 
-test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', async () => {
+test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
@@ -305,7 +305,7 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch', asyn
 	});
 });
 
-test.describe('With real wallet - Arbitrum USD₮0 Position page - Unstake', async () => {
+test.describe('With real wallet - Arbitrum USD₮0 Position page - Unstake @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
