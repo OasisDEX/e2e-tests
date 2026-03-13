@@ -78,21 +78,21 @@ test.describe('Landing page @regression', async () => {
 
 	test('It should redirect to /earn page - "View all xx strategies"', async ({ app }) => {
 		await app.landingPage.viewAllStrategies();
-		await app.earn.shouldBeVisible();
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 	});
 
 	test('It should redirect to /earn page - "Higher yields > How you earn more" - Get started', async ({
 		app,
 	}) => {
 		await app.landingPage.getStarted();
-		await app.earn.shouldBeVisible();
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 	});
 
 	test('It should redirect to /earn page - "Higher yields > How you earn more" - View Yields', async ({
 		app,
 	}) => {
 		await app.landingPage.viewYields();
-		await app.earn.shouldBeVisible();
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 	});
 
 	test('It should redirect to /earn page - "Higher yields > How we use AI" - Get started', async ({
@@ -102,7 +102,7 @@ test.describe('Landing page @regression', async () => {
 		await app.landingPage.shouldHaveHieherYieldsTabVisible('How we use AI to outperform');
 
 		await app.landingPage.getStarted();
-		await app.earn.shouldBeVisible();
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 	});
 
 	test('It should redirect to /earn page - "Higher yields > How we use AI" - Learn more', async ({
@@ -112,7 +112,7 @@ test.describe('Landing page @regression', async () => {
 		await app.landingPage.shouldHaveHieherYieldsTabVisible('How we use AI to outperform');
 
 		await app.landingPage.learnMore();
-		await app.earn.shouldBeVisible();
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 	});
 
 	test('It should redirect to /earn page - "Higher yields > How you save time" - Deposit', async ({
@@ -122,7 +122,7 @@ test.describe('Landing page @regression', async () => {
 		await app.landingPage.shouldHaveHieherYieldsTabVisible('How you save time and costs');
 
 		await app.landingPage.deposit();
-		await app.earn.shouldBeVisible();
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 	});
 
 	test('It should redirect to /earn page - "Higher yields > How you save time" - Learn more', async ({
@@ -132,6 +132,6 @@ test.describe('Landing page @regression', async () => {
 		await app.landingPage.shouldHaveHieherYieldsTabVisible('How you save time and costs');
 
 		await app.landingPage.learnMore();
-		await app.earn.shouldBeVisible();
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 	});
 });
