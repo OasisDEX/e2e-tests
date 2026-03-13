@@ -1,0 +1,18 @@
+name: 0.0.1.2. Lazy - With real wallet Arbitrum
+
+on: 
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Environment base URL to run the tests on.'
+        type: string
+        default: 'https://staging.summer.fi/earn'
+        required: true
+
+jobs:
+  lazy-real-wallet-arbitrum-tests:
+    uses: ./.github/workflows/z_Reusable_LazyWithRealWallet.yml
+    with:
+      base_url: ${{ inputs.base_url }}
+      script: ci:lazy-with-real-wallet:arbitrum
+    secrets: inherit
