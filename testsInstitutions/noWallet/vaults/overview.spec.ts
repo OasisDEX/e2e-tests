@@ -51,7 +51,7 @@ test.describe('Client dashboard - Vaults - Overview', async () => {
 		await app.clientDashboard.vaults.overview.shouldHaveAumChart();
 	});
 
-	test('It should switch On/Off "Show ark APYs" in charts', async ({ app }) => {
+	test('It should switch On/Off "Show ark APYs" in charts - Base vault', async ({ app }) => {
 		// "Show ark APYs" feature should be Off by default
 		await app.clientDashboard.vaults.overview.shouldHaveShowArkApysFeature('Off');
 		await app.clientDashboard.vaults.overview.shouldHaveYieldsLegends(['ExtDemoCorp USDC base']);
@@ -64,6 +64,12 @@ test.describe('Client dashboard - Vaults - Overview', async () => {
 			'Morpho USDC Steakhouse',
 			'SkyUsds USDC',
 		]);
+
+		await app.clientDashboard.vaults.overview.openChartTooltip({ chart: 'APY' });
+		await app.clientDashboard.vaults.overview.shouldHaveApyChartTooltip({
+			vault: 'base',
+			withArks: false,
+		});
 
 		// Switch On "Show ark APYs"
 		await app.clientDashboard.vaults.overview.switchShowArkApys();
@@ -79,6 +85,11 @@ test.describe('Client dashboard - Vaults - Overview', async () => {
 			'Morpho USDC Steakhouse',
 			'SkyUsds USDC',
 		]);
+		await app.clientDashboard.vaults.overview.openChartTooltip({ chart: 'APY' });
+		await app.clientDashboard.vaults.overview.shouldHaveApyChartTooltip({
+			vault: 'base',
+			withArks: true,
+		});
 
 		// Switch Off "Show ark APYs"
 		await app.clientDashboard.vaults.overview.switchShowArkApys();
@@ -94,6 +105,106 @@ test.describe('Client dashboard - Vaults - Overview', async () => {
 			'Morpho USDC Steakhouse',
 			'SkyUsds USDC',
 		]);
+		await app.clientDashboard.vaults.overview.openChartTooltip({ chart: 'APY' });
+		await app.clientDashboard.vaults.overview.shouldHaveApyChartTooltip({
+			vault: 'base',
+			withArks: false,
+		});
+	});
+
+	test('It should switch On/Off "Show ark APYs" in charts - Arbitrum vault', async ({ app }) => {
+		// Switch to Arbitrum vault
+		await app.clientDashboard.vaults.openVaultsDropdown();
+		await app.clientDashboard.vaults.selectVault('ExtDemoCorp USDC arbitrum');
+
+		// "Show ark APYs" feature should be Off by default
+		await app.clientDashboard.vaults.overview.shouldHaveShowArkApysFeature('Off');
+		await app.clientDashboard.vaults.overview.shouldHaveYieldsLegends([
+			'ExtDemoCorp USDC arbitrum',
+		]);
+		await app.clientDashboard.vaults.overview.shouldNotHaveYieldsLegends([
+			'FluidFToken USDC',
+			'Morpho USDC Gauntlet Prime',
+			'Aave V3 USDC',
+			'Morpho USDC Gauntlet Core',
+			'Compound V3 USDC',
+		]);
+
+		await app.clientDashboard.vaults.overview.openChartTooltip({ chart: 'APY' });
+		await app.clientDashboard.vaults.overview.shouldHaveApyChartTooltip({
+			vault: 'arbitrum',
+			withArks: false,
+		});
+
+		// Switch On "Show ark APYs"
+		await app.clientDashboard.vaults.overview.switchShowArkApys();
+		await app.page.waitForTimeout(1_000);
+		await app.clientDashboard.vaults.overview.shouldHaveShowArkApysFeature('On');
+		await app.clientDashboard.vaults.overview.shouldHaveYieldsLegends([
+			'ExtDemoCorp USDC arbitrum',
+			'FluidFToken USDC',
+			'Morpho USDC Gauntlet Prime',
+			'Aave V3 USDC',
+			'Morpho USDC Gauntlet Core',
+			'Compound V3 USDC',
+		]);
+		await app.clientDashboard.vaults.overview.openChartTooltip({ chart: 'APY' });
+		await app.clientDashboard.vaults.overview.shouldHaveApyChartTooltip({
+			vault: 'arbitrum',
+			withArks: true,
+		});
+
+		// Switch Off "Show ark APYs"
+		await app.clientDashboard.vaults.overview.switchShowArkApys();
+		await app.page.waitForTimeout(1_000);
+		await app.clientDashboard.vaults.overview.shouldHaveShowArkApysFeature('Off');
+		await app.clientDashboard.vaults.overview.shouldHaveYieldsLegends([
+			'ExtDemoCorp USDC arbitrum',
+		]);
+		await app.clientDashboard.vaults.overview.shouldNotHaveYieldsLegends([
+			'FluidFToken USDC',
+			'Morpho USDC Gauntlet Prime',
+			'Aave V3 USDC',
+			'Morpho USDC Gauntlet Core',
+			'Compound V3 USDC',
+		]);
+		await app.clientDashboard.vaults.overview.openChartTooltip({ chart: 'APY' });
+		await app.clientDashboard.vaults.overview.shouldHaveApyChartTooltip({
+			vault: 'arbitrum',
+			withArks: false,
+		});
+	});
+
+	test('It should display tooltip in Performance and AUM charts', async ({ app }) => {
+		// ====================
+		// ==== Base vault ====
+
+		// Performance chart
+		await app.clientDashboard.vaults.overview.shouldHavePerformanceChart();
+		await app.clientDashboard.vaults.overview.openChartTooltip({ chart: 'Performance' });
+		await app.clientDashboard.vaults.overview.shouldHavePerformanceChartTooltip();
+
+		// AUM chart
+		await app.clientDashboard.vaults.overview.shouldHaveAumChart();
+		await app.clientDashboard.vaults.overview.openChartTooltip({ chart: 'AUM' });
+		await app.clientDashboard.vaults.overview.shouldHaveAumChartTooltip();
+
+		// ======================
+		// === Arbitrum vault ===
+
+		// Switch to Arbitrum vault
+		await app.clientDashboard.vaults.openVaultsDropdown();
+		await app.clientDashboard.vaults.selectVault('ExtDemoCorp USDC arbitrum');
+
+		// Performance chart
+		await app.clientDashboard.vaults.overview.shouldHavePerformanceChart();
+		await app.clientDashboard.vaults.overview.openChartTooltip({ chart: 'Performance' });
+		await app.clientDashboard.vaults.overview.shouldHavePerformanceChartTooltip();
+
+		// AUM chart
+		await app.clientDashboard.vaults.overview.shouldHaveAumChart();
+		await app.clientDashboard.vaults.overview.openChartTooltip({ chart: 'AUM' });
+		await app.clientDashboard.vaults.overview.shouldHaveAumChartTooltip();
 	});
 
 	test(`It should show Vaults' contract addresses`, async ({ app }) => {

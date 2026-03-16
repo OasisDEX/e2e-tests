@@ -106,6 +106,95 @@ export class Overview {
 	}
 
 	@step
+	async openChartTooltip({ chart }: { chart: 'Performance' | 'APY' | 'AUM' }) {
+		await this.page
+			.locator(
+				`${chart === 'Performance' ? '[class*="_navPriceChart_"]' : chart === 'APY' ? '[class*="_arkHistoricalYieldChart_"]' : '[class*="_aumChart_"]'} [class="recharts-wrapper"] [class*="recharts-layer"]`,
+			)
+			.first()
+			.hover({ position: { x: 15, y: 3 }, force: true });
+	}
+
+	@step
+	async shouldHavePerformanceChartTooltip() {
+		const date = '[1-31].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]';
+		const netAsset = 'Net Asset Value.*:.*[0-1].[0-9]{4}';
+
+		const regExp = new RegExp(`${date}.*${netAsset}`);
+		await expect(
+			this.page.locator('[class*="_navPriceChart_"] [class="recharts-default-tooltip"]'),
+		).toContainText(regExp);
+	}
+
+	@step
+	async shouldHaveApyChartTooltip({
+		vault,
+		withArks,
+	}: {
+		vault: 'arbitrum' | 'base';
+		withArks: boolean;
+	}) {
+		const tooltipInfo_arbitrumVault = {
+			date: '[1-31].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]',
+			arbitrumVault: 'ExtDemoCorp USDC arbitrum.*:.*0',
+			aaveV3: 'Aave V3 USDC.*:.*[0-9]{1,2}.[0-9]{2}',
+			compoundV3: 'Compound V3 USDC.*:.*[0-9]{1,2}.[0-9]{2}',
+			fluidFToken: 'FluidFToken USDC.*:.*[0-9]{1,2}.[0-9]{2}',
+			morphoGauntletCore: 'Morpho USDC Gauntlet Core.*:.*[0-9]{1,2}.[0-9]{2}',
+			morphoGauntletPrime: 'Morpho USDC Gauntlet Prime.*:.*[0-9]{1,2}.[0-9]{2}',
+		};
+
+		const tooltipInfo_baseVault = {
+			date: '[1-31].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]',
+			baseVault: 'ExtDemoCorp USDC base.*:.*0',
+			fluidFToken: 'FluidFToken USDC.*:.*[0-9]{1,2}.[0-9]{2}',
+			morphoMoonwellFlagship: 'Morpho USDC Moonwell Flagship.*:.*[0-9]{1,2}.[0-9]{2}',
+			compoundV3: 'Compound V3 USDC.*:.*[0-9]{1,2}.[0-9]{2}',
+			aaveV3: 'Aave V3 USDC.*:.*[0-9]{1,2}.[0-9]{2}',
+			morphoGauntletPrime: 'Morpho USDC Gauntlet Prime.*:.*[0-9]{1,2}.[0-9]{2}',
+			morphoSteakhouse: 'Morpho USDC Steakhouse.*:.*[0-9]{1,2}.[0-9]{2}',
+			skyUsds: 'SkyUsds USDC.*:.*[0-9]{1,2}.[0-9]{2}',
+		};
+
+		if (!withArks) {
+			const noArksRegExp = new RegExp(
+				vault === 'arbitrum'
+					? `${tooltipInfo_arbitrumVault.date}.*${tooltipInfo_arbitrumVault.arbitrumVault}`
+					: `${tooltipInfo_baseVault.date}.*${tooltipInfo_baseVault.baseVault}`,
+			);
+
+			await expect(
+				this.page.locator(
+					'[class*="_arkHistoricalYieldChart_"] [class="recharts-default-tooltip"]',
+				),
+			).toContainText(noArksRegExp);
+		} else {
+			for (const [key, value] of Object.entries(
+				vault === 'arbitrum' ? tooltipInfo_arbitrumVault : tooltipInfo_baseVault,
+			)) {
+				const regExp = new RegExp(value);
+				await expect(
+					this.page.locator(
+						'[class*="_arkHistoricalYieldChart_"] [class="recharts-default-tooltip"]',
+					),
+					`Should display '${key}' info: ${value}`,
+				).toContainText(regExp);
+			}
+		}
+	}
+
+	@step
+	async shouldHaveAumChartTooltip() {
+		const date = '[1-31].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]';
+		const netAsset = 'Assets Under Management.*:.*[0-9]{3,4}.[0-9]{2}';
+
+		const regExp = new RegExp(`${date}.*${netAsset}`);
+		await expect(
+			this.page.locator('[class*="_aumChart_"] [class="recharts-default-tooltip"]'),
+		).toContainText(regExp);
+	}
+
+	@step
 	async shouldHaveContractAddresses({
 		fleet,
 		admiralsQuarters,
