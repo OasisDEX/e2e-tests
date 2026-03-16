@@ -30,6 +30,12 @@ test.describe('Client dashboard - Overview - Institution overview', async () => 
 		await app.clientDashboard.overview.institutionOverview.shouldHaveStackedFeature('On');
 	});
 
+	test('It should have tooltip with date and TVL per vault', async ({ app }) => {
+		await app.clientDashboard.overview.institutionOverview.shouldHaveValueLockedChart();
+		await app.clientDashboard.overview.institutionOverview.openChartTooltip();
+		await app.clientDashboard.overview.institutionOverview.shouldHaveChartTooltipWithDateAndArksTvl();
+	});
+
 	test('It should show data for different time periods', async ({ app }) => {
 		await app.clientDashboard.overview.institutionOverview.shouldHaveValueLockedChart();
 

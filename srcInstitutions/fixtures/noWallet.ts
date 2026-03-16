@@ -1,5 +1,6 @@
 import { test as base } from '@playwright/test';
 import { App } from '../app';
+import { institutionsBaseUrl } from 'utils/config';
 
 type MyFixtures = {
 	app: App;
@@ -7,10 +8,20 @@ type MyFixtures = {
 
 export const test = base.extend<MyFixtures>({
 	app: [
-		async ({ page }, use) => {
+		async ({ page, context }, use) => {
 			const app = new App(page);
 
 			await app.page.goto('');
+
+			// Remove cookies banner
+			await context.addCookies([
+				{
+					name: 'analyticsCookie',
+					value:
+						'%7B%22accepted%22%3Atrue%2C%22enabledCookies%22%3A%7B%22marketing%22%3Atrue%2C%22analytics%22%3Atrue%7D%2C%22version%22%3A%22version-27.08.2024%22%7D',
+					url: institutionsBaseUrl,
+				},
+			]);
 
 			await use(app);
 

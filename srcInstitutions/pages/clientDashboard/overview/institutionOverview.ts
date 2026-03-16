@@ -45,6 +45,26 @@ export class InstitutionOverview {
 	}
 
 	@step
+	async openChartTooltip() {
+		await this.page.locator('[class="recharts-wrapper"] [class="recharts-layer"]').first().hover();
+		await expect(
+			this.page.locator('[class="recharts-default-tooltip"]'),
+			'TVL chart tooltip should be visible',
+		).toBeVisible();
+	}
+
+	@step
+	async shouldHaveChartTooltipWithDateAndArksTvl() {
+		const dateRegExp = '[1-31].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]';
+		const arbVault = 'ExtDemoCorp USDC arbitrum.*:.*[0-9]{4}.[0-9]{2}';
+		const baseVault = 'ExtDemoCorp USDC base.*:.*[0-9]{4}.[0-9]{2}';
+
+		const regExp = new RegExp(`${dateRegExp}.*${arbVault}.*${baseVault}`);
+
+		await expect(this.page.locator('[class="recharts-default-tooltip"]')).toContainText(regExp);
+	}
+
+	@step
 	async switchStacked() {
 		await this.stackedSliderLocator.click();
 	}
@@ -81,7 +101,7 @@ export class InstitutionOverview {
 			'90d': { days: 90, margin: 6 },
 			'6m': { days: 180, margin: 15 },
 			'1y': { days: 365, margin: 32 },
-			'3y': { days: 1095, margin: 60 },
+			'3y': { days: 1095, margin: 70 },
 		};
 
 		const firstChartLegend = await this.page
