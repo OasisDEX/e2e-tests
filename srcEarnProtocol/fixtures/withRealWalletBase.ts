@@ -31,9 +31,24 @@ export const test = metaMaskFixtures(baseRealWalletSetup).extend<{
 	],
 });
 
+// export function step(target: Function, context: ClassMethodDecoratorContext) {
+// 	return function replacementMethod(this: any, ...args: any) {
+// 		const name = this.constructor.name + '.' + (context.name as string);
+// 		return test.step(name, async () => {
+// 			return await target.call(this, ...args);
+// 		});
+// 	};
+// }
+
 export function step(target: Function, context: ClassMethodDecoratorContext) {
 	return function replacementMethod(this: any, ...args: any) {
-		const name = this.constructor.name + '.' + (context.name as string);
+		// Map arguments to strings and join them
+		const stringifiedArgs = args
+			.map((arg: any) => (typeof arg === 'object' ? JSON.stringify(arg) : String(arg)))
+			.join(', ');
+
+		const name = `${this.constructor.name}.${context.name as string}(${stringifiedArgs})`;
+
 		return test.step(name, async () => {
 			return await target.call(this, ...args);
 		});
