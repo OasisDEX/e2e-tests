@@ -29,6 +29,8 @@ import { expectDefaultTimeout } from 'utils/config';
 		});
 
 		test(`It should show strategies exposure and be 100% in total - ${vault}`, async ({ app }) => {
+			await app.clientDashboard.vaults.vaultExposure.viewMoreStrategies();
+
 			const totalAllocationBase =
 				await app.clientDashboard.vaults.vaultExposure.getStrategiesTotalAllocation();
 
@@ -37,11 +39,38 @@ import { expectDefaultTimeout } from 'utils/config';
 		});
 
 		test(`It should not have duplicated strategy names - ${vault}`, async ({ app }) => {
+			await app.clientDashboard.vaults.vaultExposure.viewMoreStrategies();
+
 			await app.clientDashboard.vaults.vaultExposure.shouldNotHaveDuplicatedStrategyNames();
 		});
 
 		test(`It should not have 0.00% APY for any arks - ${vault}`, async ({ app }) => {
+			await app.clientDashboard.vaults.vaultExposure.viewMoreStrategies();
+
 			await app.clientDashboard.vaults.vaultExposure.shouldNotHaveStrategyApysEqualToZero();
+		});
+
+		test(`It should switch to All | Allocated | Unallocated strategy tabs - ${vault}`, async ({
+			app,
+		}) => {
+			// 'All' tab selected by default
+			await app.clientDashboard.vaults.vaultExposure.viewMoreStrategies();
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesWithAndWithoutAllocation();
+
+			// Switch to 'Allocated' tab
+			await app.clientDashboard.vaults.vaultExposure.selectStrategiesAllocationTab('Allocated');
+
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveAllStrategiesWithAllocation();
+
+			// Switch to 'Unallocated' tab
+			await app.clientDashboard.vaults.vaultExposure.selectStrategiesAllocationTab('Unallocated');
+
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveAllStrategiesWithoutAllocation();
+
+			// Switch to 'All' tab
+			await app.clientDashboard.vaults.vaultExposure.selectStrategiesAllocationTab('All');
+
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesWithAndWithoutAllocation();
 		});
 
 		test(`It should have arks available on chain - ${vault}`, async ({ app }) => {
