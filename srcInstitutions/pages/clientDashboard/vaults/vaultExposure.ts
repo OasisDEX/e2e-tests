@@ -39,6 +39,56 @@ export class VaultExposure {
 	}
 
 	@step
+	async viewMoreStrategies() {
+		await this.page.getByRole('button', { name: 'View more' }).click();
+	}
+
+	@step
+	async selectStrategiesAllocationTab(tab: 'All' | 'Allocated' | 'Unallocated') {
+		const tabLocator = this.page.getByRole('button', { name: tab, exact: true });
+		await tabLocator.click();
+
+		await expect(tabLocator).toHaveClass(/active/);
+	}
+
+	@step
+	async getStrategiesAllocations(): Promise<number[]> {
+		const allocations = (
+			await this.page
+				.locator(
+					'[class*="PanelVaultExposure_tableSection_"] tr > td:nth-child(1) p:has-text("allocated")',
+				)
+				.allInnerTexts()
+		).map((text) => parseFloat(text.replace('New!', '').replace('% allocated', '')));
+
+		return allocations;
+	}
+
+	@step
+	async shouldHaveStrategiesWithAndWithoutAllocation() {
+		const allocations = await this.getStrategiesAllocations();
+
+		// One or more strategies should HAVE some allocation
+		expect(allocations.some((value) => value > 0)).toBeTruthy();
+		// One or more strategies should NOT have any allocation
+		expect(allocations.some((value) => value == 0)).toBeTruthy();
+	}
+
+	@step
+	async shouldHaveAllStrategiesWithAllocation() {
+		const allocations = await this.getStrategiesAllocations();
+
+		expect(allocations.every((value) => value > 0)).toBeTruthy();
+	}
+
+	@step
+	async shouldHaveAllStrategiesWithoutAllocation() {
+		const allocations = await this.getStrategiesAllocations();
+
+		expect(allocations.every((value) => value == 0)).toBeTruthy();
+	}
+
+	@step
 	async getStrategiesTotalAllocation() {
 		const allocations = (
 			await this.page
