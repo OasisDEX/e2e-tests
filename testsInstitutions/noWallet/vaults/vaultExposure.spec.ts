@@ -28,6 +28,46 @@ import { expectDefaultTimeout } from 'utils/config';
 			await app.clientDashboard.vaults.vaultExposure.shouldHaveAssetAllocationBar();
 		});
 
+		test(`It should show tooltip in Asset Allocation bar - ${vault}`, async ({ app }) => {
+			await app.clientDashboard.vaults.vaultExposure.openTooltipInAssetAllocationBar(1);
+			if (vault === 'USDC Base') {
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveTooltip(
+					'Morpho USDC Gauntlet Prime.*[0-9]{2}.[0-9]{2}%',
+				);
+			} else {
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveTooltip(
+					'Morpho USDC Gauntlet Core.*[0-9]{2}.[0-9]{2}%',
+				);
+			}
+
+			await app.clientDashboard.vaults.vaultExposure.openTooltipInAssetAllocationBar(2);
+			if (vault === 'USDC Base') {
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveTooltip(
+					'Morpho USDC Moonwell Flagship.*[0-9]{2}.[0-9]{2}%',
+				);
+			} else {
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveTooltip(
+					'Morpho USDC Gauntlet Prime.*[0-9]{2}.[0-9]{2}%',
+				);
+			}
+
+			await app.clientDashboard.vaults.vaultExposure.openTooltipInAssetAllocationBar(3);
+			if (vault === 'USDC Base') {
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveTooltip('Buffer.*[0-9].[0-9]{2}%');
+			} else {
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveTooltip(
+					'Other Protocols:.*Buffer.*[0-9].[0-9]{2}%',
+				);
+			}
+
+			if (vault === 'USDC Base') {
+				await app.clientDashboard.vaults.vaultExposure.openTooltipInAssetAllocationBar(4);
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveTooltip(
+					'Other Protocols:.*FluidFToken USDC.*[0-9].[0-9]{2}%',
+				);
+			}
+		});
+
 		test(`It should show strategies exposure and be 100% in total - ${vault}`, async ({ app }) => {
 			await app.clientDashboard.vaults.vaultExposure.viewMoreStrategies();
 
@@ -71,6 +111,46 @@ import { expectDefaultTimeout } from 'utils/config';
 			await app.clientDashboard.vaults.vaultExposure.selectStrategiesAllocationTab('All');
 
 			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesWithAndWithoutAllocation();
+		});
+
+		test(`It should show tooltips in Vault Exposure panel - ${vault}`, async ({ app }) => {
+			// Live APY tooltip
+			await app.clientDashboard.vaults.vaultExposure.openLiveApyTooltipInVaultExposurePanel();
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveTooltip(
+				'Lazy.*Summer.*Live.*APY:.*[0-9]{1,2}.[0-9]{2}%',
+			);
+
+			if (vault === 'USDC Base') {
+				// Allocation Cap tooltip - Morpho Gauntlet Prime
+				await app.clientDashboard.vaults.vaultExposure.openAllocationCapTooltipInVaultExposurePanel(
+					{ strategy: 'Morpho USDC Gauntlet Prime' },
+				);
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveTooltip(
+					'Allocation cap.*[0-9]{3}.[0-9]{2}.*USDC' +
+						'.*' +
+						'Absolute allocation cap.*[0-9]{3}.[0-9]{2}.*USDC' +
+						'.*' +
+						'TVL allocation cap %.*[0-9]{2}.[0-9]{2}%.*\\([0-9]{3}.[0-9]{2}\\)' +
+						'.*' +
+						'Cap utilisation.*[0-9]{2,3}%.*\\([0-9]{3}.[0-9]{2}.*\\/.*[0-9]{3}.[0-9]{2}\\)',
+				);
+			}
+
+			if (vault === 'USDC arbitrum') {
+				// Allocation Cap tooltip - Morpho Gauntlet Core
+				await app.clientDashboard.vaults.vaultExposure.openAllocationCapTooltipInVaultExposurePanel(
+					{ strategy: 'Morpho USDC Gauntlet Core' },
+				);
+				await app.clientDashboard.vaults.vaultExposure.shouldHaveTooltip(
+					'Allocation cap.*[0-9]{3}.[0-9]{2}.*USDC' +
+						'.*' +
+						'Absolute allocation cap.*[0-9]{3}.[0-9]{2}.*USDC' +
+						'.*' +
+						'TVL allocation cap %.*[0-9]{2}.[0-9]{2}%.*\\([0-9]{3}.[0-9]{2}\\)' +
+						'.*' +
+						'Cap utilisation.*[0-9]{2,3}%.*\\([0-9]{3}.[0-9]{2}.*\\/.*[0-9]{3}.[0-9]{2}\\)',
+				);
+			}
 		});
 
 		test(`It should have arks available on chain - ${vault}`, async ({ app }) => {
