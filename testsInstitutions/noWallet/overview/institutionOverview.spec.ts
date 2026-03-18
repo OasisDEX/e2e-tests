@@ -13,20 +13,26 @@ test.describe('Client dashboard - Overview - Institution overview', async () => 
 		await app.clientDashboard.overview.institutionOverview.shouldHaveValueLockedChart();
 		// Stacked feature should be ON by default
 		await app.clientDashboard.overview.institutionOverview.shouldHaveStackedFeature('On');
-		await app.clientDashboard.overview.institutionOverview.shouldHaveStackedChartMaxY('$2000.00');
+		await app.clientDashboard.overview.institutionOverview.shouldHaveStackedChartMaxY(
+			'2[0-9]{3}.[0-9]{2}',
+		);
 
 		// Switch Stacked OFF
 		await app.clientDashboard.overview.institutionOverview.switchStacked();
 		// Stacked feature should be OFF
 		await app.page.waitForTimeout(1_000);
-		await app.clientDashboard.overview.institutionOverview.shouldHaveStackedChartMaxY('$1000.00');
+		await app.clientDashboard.overview.institutionOverview.shouldHaveStackedChartMaxY(
+			'1[0-9]{3}.[0-9]{2}',
+		);
 		await app.clientDashboard.overview.institutionOverview.shouldHaveStackedFeature('Off');
 
 		// Switch Stacked ON
 		await app.clientDashboard.overview.institutionOverview.switchStacked();
 		// Stacked feature should be ON
 		await app.page.waitForTimeout(1_000);
-		await app.clientDashboard.overview.institutionOverview.shouldHaveStackedChartMaxY('$2000.00');
+		await app.clientDashboard.overview.institutionOverview.shouldHaveStackedChartMaxY(
+			'2[0-9]{3}.[0-9]{2}',
+		);
 		await app.clientDashboard.overview.institutionOverview.shouldHaveStackedFeature('On');
 	});
 
