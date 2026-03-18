@@ -87,10 +87,11 @@ export class InstitutionOverview {
 
 	@step
 	async shouldHaveStackedChartMaxY(maxY: string) {
+		const regExp = new RegExp(`\\$${maxY}`);
 		await expect(
 			this.page.locator('[class*="recharts-yAxis-tick-labels"] tspan').last(),
 			`Top Y axis legend should read ${maxY}`,
-		).toContainText(maxY);
+		).toContainText(regExp);
 	}
 
 	@step
