@@ -1,5 +1,6 @@
 import { expect, step } from '#institutionsNoWalletFixtures';
 import { Page } from '@playwright/test';
+import { ArbitrumUsdcArks, BaseUsdcArks } from 'srcInstitutions/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 
 export class VaultExposure {
@@ -30,12 +31,49 @@ export class VaultExposure {
 		).toBeVisible();
 	}
 
+	/**
+	 * @param allocation from '1' (highest allocation) to '4' (lowest allocation)
+	 */
+	@step
+	async openTooltipInAssetAllocationBar(allocation: 1 | 2 | 3 | 4) {
+		await this.page
+			.locator('[class*="_allocationBar_"] [data-tooltip-btn-id]')
+			.nth(allocation - 1)
+			.hover();
+	}
+
+	@step
+	async shouldHaveTooltip(tooltip: string) {
+		const regExp = new RegExp(tooltip);
+		await expect(this.page.locator('[data-tooltip-id][class*="_tooltipOpen_"]')).toContainText(
+			regExp,
+		);
+	}
+
 	@step
 	async shouldHaveVaultExposurePanel(args?: { timeout: number }) {
 		await expect(
 			this.page.locator('[class*="PanelVaultExposure_tableSection_"] tbody > tr > td').first(),
 			'First row of exposure table should be visible',
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
+	}
+
+	@step
+	async openLiveApyTooltipInVaultExposurePanel() {
+		await this.page.getByText('Live APY').locator('..').locator('[data-tooltip-btn-id]').hover();
+	}
+
+	@step
+	async openAllocationCapTooltipInVaultExposurePanel({
+		strategy,
+	}: {
+		strategy: BaseUsdcArks | ArbitrumUsdcArks;
+	}) {
+		await this.page
+			.getByRole('row')
+			.filter({ hasText: strategy })
+			.locator('[data-tooltip-btn-id]')
+			.hover();
 	}
 
 	@step

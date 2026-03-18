@@ -1,23 +1,6 @@
 import { expect, step } from '#institutionsNoWalletFixtures';
 import { Locator, Page } from '@playwright/test';
-
-type BaseUsdcArks =
-	| 'ExtDemoCorp USDC base'
-	| 'FluidFToken USDC'
-	| 'Morpho USDC Moonwell Flagship'
-	| 'Compound V3 USDC'
-	| 'Aave V3 USDC'
-	| 'Morpho USDC Gauntlet Prime'
-	| 'Morpho USDC Steakhouse'
-	| 'SkyUsds USDC';
-
-type ArbitrumUsdcArks =
-	| 'ExtDemoCorp USDC arbitrum'
-	| 'FluidFToken USDC'
-	| 'Morpho USDC Gauntlet Prime'
-	| 'Aave V3 USDC'
-	| 'Morpho USDC Gauntlet Core'
-	| 'Compound V3 USDC';
+import { ArbitrumUsdcArks, BaseUsdcArks } from 'srcInstitutions/utils/types';
 
 export class Overview {
 	readonly page: Page;
