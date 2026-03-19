@@ -87,7 +87,7 @@ import { expectDefaultTimeout } from 'utils/config';
 		test(`It should not have 0.00% APY for any arks - ${vault}`, async ({ app }) => {
 			await app.clientDashboard.vaults.vaultExposure.viewMoreStrategies();
 
-			await app.clientDashboard.vaults.vaultExposure.shouldNotHaveStrategyApysEqualToZero();
+			await app.clientDashboard.vaults.vaultExposure.shouldNotHaveStrategyLiveApysEqualToZero();
 		});
 
 		test(`It should switch to All | Allocated | Unallocated strategy tabs - ${vault}`, async ({
@@ -151,6 +151,68 @@ import { expectDefaultTimeout } from 'utils/config';
 						'Cap utilisation.*[0-9]{2,3}%.*\\([0-9]{3}.[0-9]{2}.*\\/.*[0-9]{3}.[0-9]{2}\\)',
 				);
 			}
+		});
+
+		test(`It should sort strategies in Vault Exposure panel - ${vault}`, async ({ app }) => {
+			// By Live APY
+			await app.clientDashboard.vaults.vaultExposure.sortTableBy('Live APY');
+			await app.clientDashboard.vaults.vaultExposure.viewMoreStrategies();
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesSortedBy({
+				column: 'Live APY',
+				sorting: 'Highest first',
+			});
+
+			await app.clientDashboard.vaults.vaultExposure.sortTableBy('Live APY');
+			await app.page.waitForTimeout(500);
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesSortedBy({
+				column: 'Live APY',
+				sorting: 'Lowest first',
+			});
+
+			// By 30d AVG. APY
+			await app.clientDashboard.vaults.vaultExposure.sortTableBy('30d AVG. APY');
+			await app.page.waitForTimeout(500);
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesSortedBy({
+				column: '30d AVG. APY',
+				sorting: 'Highest first',
+			});
+
+			await app.clientDashboard.vaults.vaultExposure.sortTableBy('30d AVG. APY');
+			await app.page.waitForTimeout(500);
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesSortedBy({
+				column: '30d AVG. APY',
+				sorting: 'Lowest first',
+			});
+
+			// By Allocated
+			await app.clientDashboard.vaults.vaultExposure.sortTableBy('Allocated');
+			await app.page.waitForTimeout(500);
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesSortedBy({
+				column: 'Allocated',
+				sorting: 'Highest first',
+			});
+
+			await app.clientDashboard.vaults.vaultExposure.sortTableBy('Allocated');
+			await app.page.waitForTimeout(500);
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesSortedBy({
+				column: 'Allocated',
+				sorting: 'Lowest first',
+			});
+
+			// By Allocation Cap
+			await app.clientDashboard.vaults.vaultExposure.sortTableBy('Allocation Cap');
+			await app.page.waitForTimeout(500);
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesSortedBy({
+				column: 'Allocation Cap',
+				sorting: 'Highest first',
+			});
+
+			await app.clientDashboard.vaults.vaultExposure.sortTableBy('Allocation Cap');
+			await app.page.waitForTimeout(500);
+			await app.clientDashboard.vaults.vaultExposure.shouldHaveStrategiesSortedBy({
+				column: 'Allocation Cap',
+				sorting: 'Lowest first',
+			});
 		});
 
 		test(`It should have arks available on chain - ${vault}`, async ({ app }) => {

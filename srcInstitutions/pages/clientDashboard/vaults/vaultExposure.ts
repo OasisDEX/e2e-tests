@@ -3,6 +3,10 @@ import { Page } from '@playwright/test';
 import { ArbitrumUsdcArks, BaseUsdcArks } from 'srcInstitutions/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 
+type VaultExposureColumns = 'Live APY' | '30d AVG. APY' | 'Allocated' | 'Allocation Cap';
+
+type VaultExposureSorting = 'Highest first' | 'Lowest first';
+
 export class VaultExposure {
 	readonly page: Page;
 
@@ -159,20 +163,63 @@ export class VaultExposure {
 		expect(new Set(names).size).toEqual(names.length);
 	}
 
-	async getStrategiesApys() {
-		const strategyApys = await this.page
-			.locator('[class*="PanelVaultExposure_tableSection_"]')
-			.getByRole('table')
-			.filter({ has: this.page.locator('th:has-text("Strategy")') })
-			.locator('tr td:nth-child(2) ')
-			.allInnerTexts();
+	@step
+	async sortTableBy(column: VaultExposureColumns) {
+		await this.page
+			.locator('[class*="PanelVaultExposure_tableSection_"] th')
+			.filter({ hasText: column })
+			.click();
+	}
 
-		return strategyApys;
+	async getStrategiesValues({ column }: { column: VaultExposureColumns }): Promise<string[]> {
+		const columnIndex = {
+			'Live APY': '2',
+			'30d AVG. APY': '3',
+			Allocated: '4',
+			'Allocation Cap': '5',
+		};
+
+		const values: string[] = (
+			await this.page
+				.locator(
+					`[class*="PanelVaultExposure_tableSection_"] tr > td:nth-child(${columnIndex[column]})`,
+				)
+				.allInnerTexts()
+		).map((text) => text.replace('%', '').replace('-', '0'));
+
+		return values;
 	}
 
 	@step
-	async shouldNotHaveStrategyApysEqualToZero() {
-		const apys = await this.getStrategiesApys();
+	async shouldHaveStrategiesSortedBy({
+		column,
+		sorting,
+	}: {
+		column: VaultExposureColumns;
+		sorting: VaultExposureSorting;
+	}) {
+		const values: number[] = (await this.getStrategiesValues({ column })).map((text) =>
+			parseFloat(column === 'Allocated' ? text : text.replace('%', '').replace('-', '0')),
+		);
+
+		const sorted = () => {
+			for (let i = 0; i < values.length; i++) {
+				if (sorting === 'Highest first') {
+					if (values[i] < values[i + 1]) return false;
+				}
+				if (sorting === 'Lowest first') {
+					if (values[i] > values[i + 1]) return false;
+				}
+			}
+			return true;
+		};
+
+		expect(sorted).toBeTruthy;
+	}
+
+	@step
+	async shouldNotHaveStrategyLiveApysEqualToZero() {
+		const apys = await this.getStrategiesValues({ column: 'Live APY' });
 
 		expect(apys.includes('0.00%')).not.toBeTruthy();
 	}
