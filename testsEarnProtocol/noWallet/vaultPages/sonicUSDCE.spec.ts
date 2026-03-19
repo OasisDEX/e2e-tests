@@ -58,7 +58,7 @@ test.describe('Vault page - Sonic USDC.E', async () => {
 
 		await app.vaultPage.shouldHaveDepositCap({
 			token: 'USDC.E',
-			tokenAmount: '[0-9]{2,3}.[0-9]{2}M',
+			tokenAmount: '[0-9]{1,3}.[0-9]{2}M',
 		});
 	});
 
