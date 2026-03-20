@@ -110,15 +110,12 @@ export class VaultExposure {
 			.filter({
 				has: this.page.locator('td').nth(1).filter({ hasText: '0.00%' }),
 			})
-			.locator('td')
-			.nth(0)
-			.locator('p')
-			.nth(0)
-			.allInnerTexts();
+			.all();
 
-		newStrategieswithZeroApy.forEach((strategy) =>
-			console.log('== newStrategiewithZeroApy: ', strategy),
-		);
+		for (const strategy of newStrategieswithZeroApy) {
+			const strategyName = await strategy.locator('td').nth(0).locator('p').nth(0).innerText();
+			console.log('== newStrategiewithZeroApy: ', strategyName);
+		}
 
 		//==========
 
