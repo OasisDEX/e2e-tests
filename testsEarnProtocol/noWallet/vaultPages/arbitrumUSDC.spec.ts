@@ -70,6 +70,8 @@ test.describe('Vault page - Arbitrum USDC', async () => {
 	});
 
 	test('It should not have 0.00% APY for any arks', async ({ app }) => {
+		await app.vaultPage.exposure.viewMore();
+
 		await app.vaultPage.exposure.shouldNotHaveStrategyApysEqualToZero();
 	});
 });
