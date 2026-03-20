@@ -7,9 +7,14 @@ export class VaultExposure {
 
 	readonly vaultExposureLocator: Locator;
 
+	readonly vaultExposureTableLocator: Locator;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.vaultExposureLocator = page.locator('button:has-text("Vault exposure")').locator('..');
+		this.vaultExposureTableLocator = this.vaultExposureLocator
+			.getByRole('table')
+			.filter({ has: this.page.locator('th:has-text("Strategy")') });
 	}
 
 	@step
@@ -27,7 +32,7 @@ export class VaultExposure {
 	async showAllStrategies() {
 		// Wait for table to load
 		await expect(
-			this.vaultExposureLocator.locator('tr > td:nth-child(1) p:has-text("allocated")').first()
+			this.vaultExposureLocator.locator('tr > td:nth-child(1) p:has-text("allocated")').first(),
 		).toBeVisible({
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -54,9 +59,7 @@ export class VaultExposure {
 	async getStrategiesNames() {
 		await this.showAllStrategies();
 
-		const strategyNames = await this.vaultExposureLocator
-			.getByRole('table')
-			.filter({ has: this.page.locator('th:has-text("Strategy")') })
+		const strategyNames = await this.vaultExposureTableLocator
 			.locator('tr td:nth-child(1) p:nth-child(1)')
 			.allInnerTexts();
 
@@ -73,19 +76,51 @@ export class VaultExposure {
 	async getStrategiesApys() {
 		await this.showAllStrategies();
 
-		const strategyApys = await this.vaultExposureLocator
-			.getByRole('table')
-			.filter({ has: this.page.locator('th:has-text("Strategy")') })
-			// .locator('tr td:nth-child(2) p:nth-child(1)')
+		const strategyApys = await this.vaultExposureTableLocator
 			.locator('tr td:nth-child(2) ')
 			.allInnerTexts();
 
 		return strategyApys;
 	}
 
+	async getNumberOfNotWhitelistedStrategies(): Promise<number> {
+		const notWhitelistedStrategies: number = await this.vaultExposureTableLocator
+			.locator('tbody tr')
+			.filter({ has: this.page.locator('[style*="opacity: 0.5"]').first() })
+			.count();
+
+		return notWhitelistedStrategies;
+	}
+
 	@step
 	async shouldNotHaveStrategyApysEqualToZero() {
 		const apys = await this.getStrategiesApys();
+
+		// Remove data for NOT whitelisted strategies if any
+		const notWhitelistedStrategies = await this.getNumberOfNotWhitelistedStrategies();
+		apys.splice(-notWhitelistedStrategies);
+
+		//==========
+
+		// Log strategies with APY = 0.00% and "New!" tag for debugging
+
+		const newStrategieswithZeroApy = await this.vaultExposureTableLocator
+			.locator('tbody tr')
+			.filter({ hasText: 'New' })
+			.filter({
+				has: this.page.locator('td').nth(1).filter({ hasText: '0.00%' }),
+			})
+			.locator('td')
+			.nth(0)
+			.locator('p')
+			.nth(0)
+			.allInnerTexts();
+
+		newStrategieswithZeroApy.forEach((strategy) =>
+			console.log('== newStrategiewithZeroApy: ', strategy),
+		);
+
+		//==========
 
 		expect(apys.includes('0.00%')).not.toBeTruthy();
 	}

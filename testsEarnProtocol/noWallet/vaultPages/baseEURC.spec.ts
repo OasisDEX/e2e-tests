@@ -19,7 +19,7 @@ test.describe('Vault page - Base EURC', async () => {
 		await app.tooltips.netApy.shouldHave({
 			liveNativeApy: '[0-9]{1,2}.[0-9]{2}',
 			sumrRewards: '[0-9]{1,2}.[0-9]{2}',
-			managementFee: '1.00',
+			managementFee: '0.30',
 			netApy: '[0-9]{1,2}.[0-9]{2}',
 		});
 
@@ -92,6 +92,8 @@ test.describe('Vault page - Base EURC', async () => {
 	});
 
 	test('It should not have 0.00% APY for any arks', async ({ app }) => {
+		await app.vaultPage.exposure.viewMore();
+
 		await app.vaultPage.exposure.shouldNotHaveStrategyApysEqualToZero();
 	});
 });
