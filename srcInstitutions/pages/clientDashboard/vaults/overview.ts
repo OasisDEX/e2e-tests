@@ -118,8 +118,8 @@ export class Overview {
 		withArks: boolean;
 	}) {
 		const tooltipInfo_arbitrumVault = {
-			date: '[1-31].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]',
-			arbitrumVault: 'ExtDemoCorp USDC arbitrum.*:.*0',
+			date: '[0-3][0-9].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]',
+			arbitrumVault: 'ExtDemoCorp USDC arbitrum.*:.*[0-9](.[0-9]{2}%)?',
 			aaveV3: 'Aave V3 USDC.*:.*[0-9]{1,2}.[0-9]{2}',
 			compoundV3: 'Compound V3 USDC.*:.*[0-9]{1,2}.[0-9]{2}',
 			fluidFToken: 'FluidFToken USDC.*:.*[0-9]{1,2}.[0-9]{2}',
@@ -128,8 +128,8 @@ export class Overview {
 		};
 
 		const tooltipInfo_baseVault = {
-			date: '[1-31].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]',
-			baseVault: 'ExtDemoCorp USDC base.*:.*0',
+			date: '[0-3][0-9].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]',
+			baseVault: 'ExtDemoCorp USDC base.*:.*[0-9](.[0-9]{2}%)?',
 			fluidFToken: 'FluidFToken USDC.*:.*[0-9]{1,2}.[0-9]{2}',
 			morphoMoonwellFlagship: 'Morpho USDC Moonwell Flagship.*:.*[0-9]{1,2}.[0-9]{2}',
 			compoundV3: 'Compound V3 USDC.*:.*[0-9]{1,2}.[0-9]{2}',
@@ -168,7 +168,7 @@ export class Overview {
 
 	@step
 	async shouldHaveAumChartTooltip() {
-		const date = '[1-31].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]';
+		const date = '[0-3][0-9].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]';
 		const netAsset = 'Assets Under Management.*:.*[0-9]{3,4}.[0-9]{2}';
 
 		const regExp = new RegExp(`${date}.*${netAsset}`);

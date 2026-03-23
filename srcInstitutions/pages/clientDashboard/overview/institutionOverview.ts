@@ -55,7 +55,7 @@ export class InstitutionOverview {
 
 	@step
 	async shouldHaveChartTooltipWithDateAndArksTvl() {
-		const dateRegExp = '[1-31].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]';
+		const dateRegExp = '[0-3][0-9].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]';
 		const arbVault = 'ExtDemoCorp USDC arbitrum.*:.*[0-9]{4}.[0-9]{2}';
 		const baseVault = 'ExtDemoCorp USDC base.*:.*[0-9]{4}.[0-9]{2}';
 

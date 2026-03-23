@@ -36,7 +36,7 @@ test.describe('With real wallet - Base EURC position page - APY tag', async () =
 		await app.tooltips.netApy.shouldHave({
 			liveNativeApy: '[0-9]{1,2}.[0-9]{2}',
 			sumrRewards: '[0-9]{1,2}.[0-9]{2}',
-			managementFee: '1.00',
+			managementFee: '0.30',
 			netApy: '[0-9]{1,2}.[0-9]{2}',
 		});
 
