@@ -18,6 +18,13 @@ export class VaultExposure {
 	}
 
 	@step
+	async thereIsViewMoreButton(): Promise<boolean> {
+		const buttonVisible = await this.vaultExposureLocator.getByText('View more').count();
+
+		return buttonVisible >= 1;
+	}
+
+	@step
 	async viewMore(options?: { delay: number }) {
 		await this.vaultExposureLocator.getByText('View more').click({ delay: options?.delay });
 		expect(this.vaultExposureLocator.getByText('View less')).toBeVisible();

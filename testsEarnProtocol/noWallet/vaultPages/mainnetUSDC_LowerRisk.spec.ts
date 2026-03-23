@@ -97,7 +97,9 @@ test.describe('Vault page - Mainnet USDC Lower Risk', async () => {
 	});
 
 	test('It should not have 0.00% APY for any arks', async ({ app }) => {
-		await app.vaultPage.exposure.viewMore();
+		if (await app.vaultPage.exposure.thereIsViewMoreButton()) {
+			await app.vaultPage.exposure.viewMore();
+		}
 
 		await app.vaultPage.exposure.shouldNotHaveStrategyApysEqualToZero();
 	});
