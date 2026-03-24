@@ -1,4 +1,4 @@
-name: 0.0.1.2. Lazy - With real wallet - Balance
+name: 0.0.1.2. Lazy - Balance - With real wallet
 
 on: 
   workflow_dispatch
