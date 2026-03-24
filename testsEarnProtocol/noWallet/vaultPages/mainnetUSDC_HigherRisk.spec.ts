@@ -42,7 +42,7 @@ test.describe('Vault page - Mainnet USDC Higher Risk', async () => {
 		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);
 	});
 
-	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({
+	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @balance', async ({
 		app,
 	}) => {
 		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');

@@ -10,7 +10,7 @@ import { expect } from '#earnProtocolFixtures';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-test.describe('With real wallet - Mainnet ETH Higher Risk position page - APY tag', async () => {
+test.describe('With real wallet - Mainnet ETH Higher Risk position page - APY tag @balance', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 110_000);
@@ -65,7 +65,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - APY ta
 	});
 });
 
-test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposit', async () => {
+test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposit @balance', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 110_000);
@@ -209,7 +209,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposi
 	});
 });
 
-test.describe('With real wallet - Mainnet ETH Higher Risk position page - Withdraw', async () => {
+test.describe('With real wallet - Mainnet ETH Higher Risk position page - Withdraw @balance', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 

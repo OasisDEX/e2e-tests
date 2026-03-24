@@ -106,7 +106,7 @@ const defaultConfig: PlaywrightTestConfig = {
 		{
 			name: 'lazy',
 			testDir: './testsEarnProtocol',
-			testIgnore: 'production/**',
+			testIgnore: ['production/**', 'productionBalance/**'],
 			use: {
 				baseURL: earnProtocolBaseUrl,
 				...devices['Desktop Chrome'],
@@ -169,6 +169,36 @@ const defaultConfig: PlaywrightTestConfig = {
 			testMatch: ['production/realWallet/**'],
 			use: {
 				baseURL: 'https://summer.fi/earn',
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
+			name: 'lazy-production-balance',
+			testDir: './testsEarnProtocol',
+			testIgnore: ['production/**', 'productionBalance/**'],
+			use: {
+				baseURL: 'https://balance.summer.fi/earn',
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
+			name: 'lazy-production-no-wallet-balance',
+			testDir: './testsEarnProtocol',
+			testMatch: ['noWallet/**'],
+			use: {
+				baseURL: 'https://balance.summer.fi/earn',
+				...devices['Desktop Chrome'],
+			},
+		},
+
+		{
+			name: 'lazy-production-real-wallet-balance',
+			testDir: './testsEarnProtocol',
+			testMatch: ['withRealWallet/**'],
+			use: {
+				baseURL: 'https://balance.summer.fi/earn',
 				...devices['Desktop Chrome'],
 			},
 		},

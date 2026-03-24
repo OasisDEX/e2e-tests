@@ -37,6 +37,22 @@ jobs:
       report_name: lazy-production-no-wallet
     secrets: inherit
 
+  lazy-production-no-wallet-balance-tests:
+    uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
+    with:
+      base_url: 'https://balance.summer.fi/earn'
+      script: ci:lazy-production:no-wallet:balance
+      report_name: lazy-no-wallet-balance
+    secrets: inherit
+
+  lazy-production-real-wallet-balance-tests:
+    uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
+    with:
+      base_url: 'https://balance.summer.fi/earn'
+      script: ci:lazy-production:real-wallet:balance
+      report_name: lazy-real-wallet-balance
+    secrets: inherit
+
   # api-tests: 
   #   uses: ./.github/workflows/z_Reusable_Apis.yml
   #   with:

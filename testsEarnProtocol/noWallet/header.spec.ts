@@ -6,7 +6,7 @@ test.describe('Header @regression', async () => {
 		await app.landingPage.shouldBeVisible();
 	});
 
-	test('It should open Earn page', async ({ app }) => {
+	test('It should open Earn page @balance', async ({ app }) => {
 		await app.header.earn();
 		await app.earn.shouldBeVisible();
 	});

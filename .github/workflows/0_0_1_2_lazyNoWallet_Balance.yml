@@ -1,0 +1,13 @@
+name: 0.0.1.2. Lazy - No wallet - Balance
+
+on: 
+  workflow_dispatch
+
+jobs:
+  lazy-production-no-wallet-balance-tests:
+    uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
+    with:
+      base_url: 'https://balance.summer.fi/earn'
+      script: ci:lazy-production:no-wallet:balance
+      report_name: lazy-no-wallet-balance
+    secrets: inherit
