@@ -14,6 +14,8 @@ export class NetApy {
 
 	readonly tooltipLocator: Locator;
 
+	readonly wstethRewardsLocator: Locator;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.tooltipLocator = this.page.locator('[class*="_tooltipOpen_"]');
@@ -27,6 +29,9 @@ export class NetApy {
 		this.sumrRewardsLocator = this.tooltipLocator
 			.getByText('$SUMR Token Rewards:')
 			.locator('xpath=//following-sibling::p');
+		this.wstethRewardsLocator = this.tooltipLocator
+			.getByText('WSTETH Token Rewards:')
+			.locator('xpath=//following-sibling::p');
 	}
 
 	@step
@@ -38,11 +43,13 @@ export class NetApy {
 	async shouldHave({
 		liveNativeApy,
 		sumrRewards,
+		wstethRewards,
 		managementFee,
 		netApy,
 	}: {
 		liveNativeApy?: string;
 		sumrRewards?: string;
+		wstethRewards?: string;
 		managementFee?: string;
 		netApy?: string;
 	}) {
@@ -54,6 +61,11 @@ export class NetApy {
 		if (sumrRewards) {
 			const regExp = new RegExp(`${sumrRewards}%`);
 			await expect(this.sumrRewardsLocator).toContainText(regExp);
+		}
+
+		if (wstethRewards) {
+			const regExp = new RegExp(`${wstethRewards}%`);
+			await expect(this.wstethRewardsLocator).toContainText(regExp);
 		}
 
 		if (managementFee) {
@@ -68,10 +80,11 @@ export class NetApy {
 	}
 
 	@step
-	async getDetails() {
+	async getDetails(args?: { withWstethRewards: boolean }) {
 		const details = {
 			liveNativeApy: '',
 			sumrRewards: '',
+			wstethRewards: '',
 			managementFee: '',
 			netApy: '',
 		};
@@ -84,6 +97,11 @@ export class NetApy {
 
 		const sumrRewards: string = await this.sumrRewardsLocator.innerText();
 		details.sumrRewards = sumrRewards.replace('%', '');
+
+		if (args?.withWstethRewards) {
+			const wstethRewards: string = await this.wstethRewardsLocator.innerText();
+			details.wstethRewards = wstethRewards.replace('%', '');
+		}
 
 		const managementFee: string = await this.feeLocator.innerText();
 		details.managementFee = managementFee.substring(
