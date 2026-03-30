@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
 import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, extremelyLongTestTimeout } from 'utils/config';
+import { expectDefaultTimeout, extremelyLongTestTimeout, longTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
@@ -444,5 +444,47 @@ test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - Sw
 			riskLevel: 'Higher Risk',
 			riskManagementType: 'DAO Risk-Managed',
 		});
+	});
+});
+
+test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - Claim WSTETH Rewards', async () => {
+	test.beforeEach(async ({ app, metamask }, testInfo) => {
+		testInfo.setTimeout(testInfo.timeout + 110_000);
+
+		await logInWithWalletAddress({
+			metamask,
+			app,
+			wallet: 'MetaMask',
+		});
+
+		await app.positionPage.open(
+			'/earn/mainnet/position/0x0c1fbccc019320032d9acd193447560c8c632114/0x10649c79428d718621821cf6299e91920284743f',
+		);
+
+		// Wait for balance to fully load to avoid random fails
+		await app.positionPage.sidebar.shouldHaveBalance({
+			balance: '0.0[0-9]{3}',
+			token: 'ETH',
+			timeout: expectDefaultTimeout * 2,
+		});
+		await app.page.waitForTimeout(expectDefaultTimeout / 3);
+
+		await app.positionPage.sidebar.changeNetwork();
+		await metamask.approveSwitchNetwork();
+	});
+
+	test('It should claim WSTETH Rewards - Until rejecting 1st tx @regression', async ({
+		app,
+		metamask,
+	}) => {
+		test.setTimeout(longTestTimeout);
+
+		await app.positionPage.shouldHaveWstethRewards({
+			wstethAmount: '<0.001',
+			usdAmount: '0.[0-9]{2}',
+		});
+
+		await app.earn.sidebar.claimWsteth();
+		await metamask.rejectTransaction();
 	});
 });
