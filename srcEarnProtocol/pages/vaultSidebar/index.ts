@@ -23,6 +23,8 @@ export class VaultSidebar {
 
 	readonly termsAndConditions: TermsAndConditions;
 
+	readonly wstethRewardsLocator: Locator;
+
 	constructor(page: Page, sidebarLocator: Locator) {
 		this.page = page;
 		this.approveStep = new ApproveStep(page);
@@ -31,6 +33,7 @@ export class VaultSidebar {
 		this.sidebarLocator = sidebarLocator;
 		this.switch = new Switch(page);
 		this.termsAndConditions = new TermsAndConditions(page);
+		this.wstethRewardsLocator = this.page.getByText('WSTETH Rewards', { exact: true });
 	}
 
 	@step
@@ -47,7 +50,7 @@ export class VaultSidebar {
 			await this.sidebarLocator.locator('[class*="_dropdownSelected_"]').click();
 			await expect(
 				this.sidebarLocator.locator('[class*="_dropdownOptions_"]'),
-				'Tokens drop-downshould be visible'
+				'Tokens drop-downshould be visible',
 			).toBeVisible();
 		}).toPass();
 	}
@@ -88,11 +91,11 @@ export class VaultSidebar {
 	@step
 	async buttonShouldBeVisible(
 		button: 'Deposit' | 'Loading' | 'Preview' | 'Preview Switch' | 'Switch' | 'Withdraw' | RegExp,
-		args?: { timeout: number }
+		args?: { timeout: number },
 	) {
 		await expect(
 			this.sidebarLocator.getByRole('button', { name: button }),
-			`[${button}] button should be visible`
+			`[${button}] button should be visible`,
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
@@ -114,7 +117,7 @@ export class VaultSidebar {
 		const regExp = new RegExp(
 			`${tokenOrCurrency === '$' ? '\\$' : ''}${amount}.*${
 				tokenOrCurrency === '$' ? '' : tokenOrCurrency
-			}`
+			}`,
 		);
 		await expect(this.sidebarLocator.locator('input[placeholder*="0"] + p')).toContainText(regExp, {
 			ignoreCase: true,
@@ -128,13 +131,13 @@ export class VaultSidebar {
 			amount: string | undefined;
 			token: EarnTokens | undefined;
 		}[],
-		args?: { timeout: number }
+		args?: { timeout: number },
 	) {
 		for (const estimation of estimations) {
 			const regExp = new RegExp(`${estimation.amount}.*${estimation.token}`);
 
 			await expect(
-				this.sidebarLocator.locator(`:has-text("${estimation.time}") + span`).first()
+				this.sidebarLocator.locator(`:has-text("${estimation.time}") + span`).first(),
 			).toContainText(regExp, { timeout: args?.timeout ?? expectDefaultTimeout });
 		}
 	}
@@ -156,11 +159,11 @@ export class VaultSidebar {
 				token === 'USDBC'
 					? 'USDbC'
 					: token === 'CBETH'
-					? 'cbETH'
-					: token === 'WSTETH'
-					? 'wstETH'
-					: token
-			}`
+						? 'cbETH'
+						: token === 'WSTETH'
+							? 'wstETH'
+							: token
+			}`,
 		);
 		await this.sidebarLocator.getByRole('button', { name: regExp }).click();
 	}
@@ -202,17 +205,49 @@ export class VaultSidebar {
 
 		const lvTokenRegExp = new RegExp(`${lvTokenAmount}.*${lvToken}`);
 		await expect(
-			this.page.getByText(`You’ll get `).locator('xpath=//following-sibling::*[1]')
+			this.page.getByText(`You’ll get `).locator('xpath=//following-sibling::*[1]'),
 		).toContainText(lvTokenRegExp);
 
 		const dollarRegExp = new RegExp(`\\$${dollarAmount}`);
 		await expect(
-			this.page.getByText(`You’ll get `).locator('xpath=//following-sibling::*[2]')
+			this.page.getByText(`You’ll get `).locator('xpath=//following-sibling::*[2]'),
 		).toContainText(dollarRegExp);
 	}
 
 	@step
 	async confirmUnstake() {
 		await this.page.getByRole('button', { name: 'Confirm withdrawal' }).click();
+	}
+
+	@step
+	async claimWsteth() {
+		await this.page.getByRole('button', { name: 'Claim WSTETH' }).click();
+	}
+
+	@step
+	async shouldHaveWstethRewards(args?: { wstethAmount?: string; usdAmount?: string }) {
+		await expect(this.wstethRewardsLocator).toBeVisible();
+
+		if (args?.wstethAmount) {
+			const regExp = new RegExp(`${args.wstethAmount}.*WSTETH`);
+			await expect(
+				this.wstethRewardsLocator.locator('xpath=//following-sibling::*[1]'),
+			).toContainText(regExp);
+		}
+
+		if (args?.usdAmount) {
+			const regExp = new RegExp(`\\$${args.usdAmount}`);
+			await expect(
+				this.wstethRewardsLocator.locator('xpath=//following-sibling::*[1]'),
+			).toContainText(regExp);
+		}
+	}
+
+	@step
+	async shouldNotHaveWstethRewards() {
+		await expect(
+			this.wstethRewardsLocator,
+			'"WSTETH Rewards" block should not be visible',
+		).not.toBeVisible();
 	}
 }

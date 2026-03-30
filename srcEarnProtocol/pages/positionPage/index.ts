@@ -1,4 +1,4 @@
-import { expect, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { VaultSidebar } from '../vaultSidebar';
 import { step } from '#noWalletFixtures';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
@@ -9,9 +9,12 @@ export class PositionPage {
 
 	readonly sidebar: VaultSidebar;
 
+	readonly wstethRewardsLocator: Locator;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.sidebar = new VaultSidebar(page, this.page.locator('[class*="_sidebarWrapper_"]'));
+		this.wstethRewardsLocator = this.page.getByText('WSTETH Rewards', { exact: true });
 	}
 
 	@step
@@ -88,7 +91,9 @@ export class PositionPage {
 			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span')
 			.last()
 			.innerText();
-		const earnedAmount = parseFloat(earnedAmountText.replace('Earned:', '').replace('USDC', ''));
+		const earnedAmount = parseFloat(
+			earnedAmountText.replace('Earned:', '').replace('<', '').replace(token, ''),
+		);
 		expect(earnedAmount).toBeGreaterThan(0);
 
 		// Verify tooltip
@@ -109,11 +114,11 @@ export class PositionPage {
 
 		// Verify that tooltip is greater than 0
 		const earnedTooltipAmountText = await this.page
-			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span')
-			.last()
+			.locator('[data-tooltip-id]:has-text("Earned:")')
 			.innerText();
+
 		const earnedTooltipAmount = parseFloat(
-			earnedTooltipAmountText.replace('Earned:', '').replace('USDC', ''),
+			earnedTooltipAmountText.replace('USD Earned: $', '').replace('<', '').replace(token, ''),
 		);
 		expect(earnedTooltipAmount).toBeGreaterThan(0);
 	}
@@ -148,12 +153,38 @@ export class PositionPage {
 	}
 
 	@step
-	@step
 	async shouldHaveLiveApy(apy: string, args?: { timeout: number }) {
 		const regExp = new RegExp(`${apy}%`);
 
 		await expect(
 			this.page.locator('[class*="_dataBlockWrapper_"] span:has-text("Live Native APY")').first(),
 		).toContainText(regExp, { timeout: args?.timeout ?? expectDefaultTimeout });
+	}
+
+	@step
+	async shouldHaveWstethRewards(args?: { wstethAmount?: string; usdAmount?: string }) {
+		await expect(this.wstethRewardsLocator).toBeVisible();
+
+		if (args?.wstethAmount) {
+			const regExp = new RegExp(`${args.wstethAmount}.*WSTETH`);
+			await expect(
+				this.wstethRewardsLocator.locator('xpath=//following-sibling::*[1]'),
+			).toContainText(regExp);
+		}
+
+		if (args?.usdAmount) {
+			const regExp = new RegExp(`\\$${args.usdAmount}`);
+			await expect(
+				this.wstethRewardsLocator.locator('xpath=//following-sibling::*[1]'),
+			).toContainText(regExp);
+		}
+	}
+
+	@step
+	async shouldNotHaveWstethRewards() {
+		await expect(
+			this.wstethRewardsLocator,
+			'"WSTETH Rewards" block should not be visible',
+		).not.toBeVisible();
 	}
 }
