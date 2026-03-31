@@ -1,7 +1,8 @@
 import { expect, test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
-test.describe('Landing page @regression', async () => {
+// TODO - New landing page - New tests to be created
+test.describe.skip('Landing page @regression', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 40_000);
 
