@@ -1,6 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 
-test.describe('Position page - Base - Specific user page @regression', async () => {
+test.describe('Position page - Base USDC @regression', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
@@ -33,5 +33,9 @@ test.describe('Position page - Base - Specific user page @regression', async () 
 		await app.positionPage.shouldHaveNumberOfDeposits();
 
 		await app.positionPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
+	});
+
+	test('It should not have WSTETH Rewards', async ({ app }) => {
+		await app.positionPage.shouldNotHaveWstethRewards();
 	});
 });
