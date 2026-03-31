@@ -297,6 +297,9 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch
 		await app.positionPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
 
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(500);
+
 		await app.positionPage.sidebar.selectTab('Switch');
 	});
 
