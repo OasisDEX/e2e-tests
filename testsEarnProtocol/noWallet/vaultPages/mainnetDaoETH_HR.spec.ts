@@ -50,8 +50,7 @@ test.describe('Vault page - DAO Mainnet ETH Higher Risk', async () => {
 	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @regression', async ({
 		app,
 	}) => {
-		// 'News strategy' for now
-		// await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
+		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
 
 		await app.vaultPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
 
