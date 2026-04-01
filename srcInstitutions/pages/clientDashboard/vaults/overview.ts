@@ -100,7 +100,7 @@ export class Overview {
 
 	@step
 	async shouldHavePerformanceChartTooltip() {
-		const date = '[1-31].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]';
+		const date = '[0-3][0-9].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]';
 		const netAsset = 'Net Asset Value.*:.*[0-1].[0-9]{4}';
 
 		const regExp = new RegExp(`${date}.*${netAsset}`);
