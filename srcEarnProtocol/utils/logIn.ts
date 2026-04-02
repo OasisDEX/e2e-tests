@@ -22,7 +22,7 @@ export const logInWithWalletAddress = async ({
 	shortenedWalletAddress?: string;
 }) => {
 	await app.header.logIn();
-	await app.modals.logIn.withWallet();
+	// await app.modals.logIn.withWallet(); --> Step not needed with privy
 	await app.modals.logIn.selectWallet(wallet);
 	await metamask.connectToDapp();
 
@@ -75,7 +75,7 @@ export const logInWithEmailAddress = async ({
 		await app.page.waitForTimeout(2_000);
 
 		const response = await request.get(
-			`https://api.mailinator.com/api/v2/domains/private/inboxes?token=${mailinatorToken}&limit=${workers}`
+			`https://api.mailinator.com/api/v2/domains/private/inboxes?token=${mailinatorToken}&limit=${workers}`,
 		);
 
 		const responseJSON = await response.json();
