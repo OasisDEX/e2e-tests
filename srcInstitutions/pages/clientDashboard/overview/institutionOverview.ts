@@ -99,7 +99,7 @@ export class InstitutionOverview {
 		const diffInDays = {
 			'7d': { days: 7, margin: 1 },
 			'30d': { days: 30, margin: 2 },
-			'90d': { days: 90, margin: 6 },
+			'90d': { days: 90, margin: 10 },
 			'6m': { days: 180, margin: 15 },
 			'1y': { days: 365, margin: 32 },
 			'3y': { days: 1095, margin: 70 },

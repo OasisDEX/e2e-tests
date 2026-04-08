@@ -11,7 +11,8 @@ test.describe('With wallet - Vaults - Asset Management', async () => {
 
 		await app.header.connectWallet();
 
-		await app.modals.signIn.continueWithWallet();
+		// PRIVY -- Step removed with Privy
+		// await app.modals.signIn.continueWithWallet();
 		await app.modals.signIn.metamask();
 		await metamask.connectToDapp();
 
@@ -70,12 +71,23 @@ test.describe('With wallet - Vaults - Asset Management', async () => {
 			amount: '0.2000',
 			token: 'USDC',
 		});
-		// Error displayed since APPROVE tx was rejected and it's needed for DEPOSIT tx
+		// ============
+		// PRIVY --> Behaviour changed with Privy
+		await metamask.rejectTransaction();
+		// Error displayed after rejecting tx
 		await app.clientDashboard.vaults.assetManagement.shouldHaveTxError({
 			action: 'Deposit',
 			amount: '0.2000',
 			token: 'USDC',
 		});
+		// ============
+
+		// // Error displayed since APPROVE tx was rejected and it's needed for DEPOSIT tx
+		// await app.clientDashboard.vaults.assetManagement.shouldHaveTxError({
+		// 	action: 'Deposit',
+		// 	amount: '0.2000',
+		// 	token: 'USDC',
+		// });
 	});
 
 	test('It should withdraw - until rejecting tx', async ({ app, metamask }) => {
@@ -115,11 +127,22 @@ test.describe('With wallet - Vaults - Asset Management', async () => {
 			amount: '0.2000',
 			token: 'USDC',
 		});
-		// Error displayed since APPROVE tx was rejected and it's needed for WITHDRAW tx
+		// ============
+		// PRIVY --> Behaviour changed with Privy
+		await metamask.rejectTransaction();
+		// Error displayed after rejecting tx
 		await app.clientDashboard.vaults.assetManagement.shouldHaveTxError({
 			action: 'Withdraw',
 			amount: '0.2000',
 			token: 'USDC',
 		});
+		// ============
+
+		// // Error displayed since APPROVE tx was rejected and it's needed for WITHDRAW tx
+		// await app.clientDashboard.vaults.assetManagement.shouldHaveTxError({
+		// 	action: 'Withdraw',
+		// 	amount: '0.2000',
+		// 	token: 'USDC',
+		// });
 	});
 });

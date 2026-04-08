@@ -39,7 +39,7 @@ export const switchPosition = async ({
 
 	await expect(
 		sidebarButtonLocator,
-		'[Agree], [Approve] or [Switch] buttons should not be visible',
+		'[Agree], [Approve] or [Switch] buttons should be visible',
 	).toContainText(/Agree|Approve|Switch/, { timeout: expectDefaultTimeout * 4 });
 
 	let sidebarButtonLabel = await sidebarButtonLocator.innerText();

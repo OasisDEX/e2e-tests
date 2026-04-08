@@ -37,7 +37,8 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		await app.portfolio.rewards.shouldBeVisible();
 	});
 
-	test('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
+	// SKIP - Privy - Bug with privy - Wallet popup not triggered with 1st click when in different network
+	test.skip('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await expect(async () => {
@@ -74,9 +75,30 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 			},
 		]);
 
+		// Sonic rewards --> This will fail until more SUMR are accrued on Sonic
+		await app.portfolio.rewards.claimAndDelegate.claim('Sonic');
+		await metamask.rejectTransaction();
+
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(3_000);
+
 		// Base rewards
 		await app.portfolio.rewards.claimAndDelegate.claim('Base');
-		await metamask.rejectTransaction();
+		//
+		await app.pause();
+		//
+		await metamask.approveNewNetwork();
+		//
+		await app.pause();
+		//
+		await metamask.approveSwitchNetwork();
+		//
+		await app.pause();
+		//
+		// Wait for Metamaskwindow to re-open
+		await expect(async () => {
+			await metamask.rejectTransaction();
+		}).toPass();
 
 		// Pause to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -92,14 +114,6 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 
 		// Pause to avoid random fails
 		await app.page.waitForTimeout(3_000);
-
-		// Sonic rewards --> This will fail until more SUMR are accrued on Sonic
-		await app.portfolio.rewards.claimAndDelegate.claim('Sonic');
-		await metamask.approveSwitchNetwork();
-		// Wait for Metamaskwindow to re-open
-		await expect(async () => {
-			await metamask.rejectTransaction();
-		}).toPass();
 
 		// Pause to avoid random fails
 		await app.page.waitForTimeout(3_000);

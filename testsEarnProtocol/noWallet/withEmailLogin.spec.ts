@@ -2,7 +2,8 @@ import { test } from '#earnProtocolFixtures';
 import { logInWithEmailAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 
-test.describe('Logged in with Email', async () => {
+// SKIP - Privy - No 'logging with email' anymore
+test.describe.skip('Logged in with Email', async () => {
 	test(`It should open Portfolio page and Portfolio's Beach Club tab when logged in`, async ({
 		app,
 		request,

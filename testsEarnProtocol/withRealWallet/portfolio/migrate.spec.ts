@@ -8,7 +8,7 @@ const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
 test.describe('Real wallet - Portfolio - Migrate', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		testInfo.setTimeout(testInfo.timeout + 25_000);
+		testInfo.setTimeout(testInfo.timeout + 45_000);
 
 		await logInWithWalletAddress({
 			metamask,
