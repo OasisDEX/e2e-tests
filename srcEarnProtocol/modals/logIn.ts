@@ -11,7 +11,13 @@ export class LogIn {
 
 	@step
 	async shouldBeVisible() {
-		await expect(this.page.getByText('Sign in', { exact: true })).toBeVisible();
+		// PRIVY - Remove IF once Privy is released
+		const url = this.page.url();
+		if (!url.includes('staging')) {
+			await expect(this.page.getByText('Sign in', { exact: true })).toBeVisible();
+		} else {
+			await expect(this.page.getByText('Select your wallet', { exact: true })).toBeVisible();
+		}
 	}
 
 	@step
