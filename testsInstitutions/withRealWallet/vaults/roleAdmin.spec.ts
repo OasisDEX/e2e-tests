@@ -1,4 +1,5 @@
 import { test } from '#institutionsWithWalletFixtures';
+import { connectWallet } from 'srcInstitutions/utils/connectWallet';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('With wallet - Vaults - Role Admin', async () => {
@@ -9,14 +10,7 @@ test.describe('With wallet - Vaults - Role Admin', async () => {
 
 		await app.header.shouldHave({ connectWallet: true });
 
-		await app.header.connectWallet();
-
-		await app.modals.signIn.continueWithWallet();
-		await app.modals.signIn.metamask();
-		await metamask.connectToDapp();
-
-		await app.header.shouldHave({ shortenedWalletAddress: '0x1064...4743F' });
-		await app.header.shouldNothaveConnectWalletButton();
+		await connectWallet({ app, metamask });
 
 		await app.clientDashboard.selectTab('Vaults');
 
@@ -24,7 +18,10 @@ test.describe('With wallet - Vaults - Role Admin', async () => {
 		await app.clientDashboard.vaults.roleAdmin.shouldBeVisible();
 	});
 
-	test(`It should fail to Revoke address' role -- With non governor wallet`, async ({ app }) => {
+	test(`It should fail to Revoke address' role -- With non governor wallet`, async ({
+		app,
+		metamask,
+	}) => {
 		await app.clientDashboard.vaults.roleAdmin.removeRole(
 			'0x10649c79428d718621821Cf6299e91920284743F',
 		);
@@ -35,11 +32,13 @@ test.describe('With wallet - Vaults - Role Admin', async () => {
 		});
 
 		await app.clientDashboard.vaults.roleAdmin.executeLatestTx();
+		await metamask.rejectTransaction(); // PRIVY --> Behaviour changed with Privy
 		await app.clientDashboard.vaults.roleAdmin.shouldHaveTxError();
 	});
 
 	test('It should fail to Add a role to an address -- With non governor wallet', async ({
 		app,
+		metamask,
 	}) => {
 		// To avoid random fails
 		await app.clientDashboard.vaults.roleAdmin.shouldHaveRole({
@@ -59,6 +58,7 @@ test.describe('With wallet - Vaults - Role Admin', async () => {
 		});
 
 		await app.clientDashboard.vaults.roleAdmin.executeLatestTx();
+		await metamask.rejectTransaction(); // PRIVY --> Behaviour changed with Privy
 		await app.clientDashboard.vaults.roleAdmin.shouldHaveTxError();
 	});
 

@@ -1,4 +1,5 @@
 import { test } from '#institutionsWithWalletFixtures';
+import { connectWallet } from 'srcInstitutions/utils/connectWallet';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('With wallet - Vaults - User Admin', async () => {
@@ -9,14 +10,7 @@ test.describe('With wallet - Vaults - User Admin', async () => {
 
 		await app.header.shouldHave({ connectWallet: true });
 
-		await app.header.connectWallet();
-
-		await app.modals.signIn.continueWithWallet();
-		await app.modals.signIn.metamask();
-		await metamask.connectToDapp();
-
-		await app.header.shouldHave({ shortenedWalletAddress: '0x1064...4743F' });
-		await app.header.shouldNothaveConnectWalletButton();
+		await connectWallet({ app, metamask });
 
 		await app.clientDashboard.selectTab('Vaults');
 

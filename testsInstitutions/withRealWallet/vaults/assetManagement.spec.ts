@@ -1,4 +1,5 @@
 import { test } from '#institutionsWithWalletFixtures';
+import { connectWallet } from 'srcInstitutions/utils/connectWallet';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('With wallet - Vaults - Asset Management', async () => {
@@ -9,15 +10,7 @@ test.describe('With wallet - Vaults - Asset Management', async () => {
 
 		await app.header.shouldHave({ connectWallet: true });
 
-		await app.header.connectWallet();
-
-		// PRIVY -- Step removed with Privy
-		// await app.modals.signIn.continueWithWallet();
-		await app.modals.signIn.metamask();
-		await metamask.connectToDapp();
-
-		await app.header.shouldHave({ shortenedWalletAddress: '0x1064...4743F' });
-		await app.header.shouldNothaveConnectWalletButton();
+		await connectWallet({ app, metamask });
 
 		await app.clientDashboard.selectTab('Vaults');
 
@@ -73,6 +66,7 @@ test.describe('With wallet - Vaults - Asset Management', async () => {
 		});
 		// ============
 		// PRIVY --> Behaviour changed with Privy
+		await app.page.waitForTimeout(500); // To avoid random fails
 		await metamask.rejectTransaction();
 		// Error displayed after rejecting tx
 		await app.clientDashboard.vaults.assetManagement.shouldHaveTxError({
@@ -81,13 +75,6 @@ test.describe('With wallet - Vaults - Asset Management', async () => {
 			token: 'USDC',
 		});
 		// ============
-
-		// // Error displayed since APPROVE tx was rejected and it's needed for DEPOSIT tx
-		// await app.clientDashboard.vaults.assetManagement.shouldHaveTxError({
-		// 	action: 'Deposit',
-		// 	amount: '0.2000',
-		// 	token: 'USDC',
-		// });
 	});
 
 	test('It should withdraw - until rejecting tx', async ({ app, metamask }) => {
@@ -129,6 +116,7 @@ test.describe('With wallet - Vaults - Asset Management', async () => {
 		});
 		// ============
 		// PRIVY --> Behaviour changed with Privy
+		await app.page.waitForTimeout(500); // To avoid random fails
 		await metamask.rejectTransaction();
 		// Error displayed after rejecting tx
 		await app.clientDashboard.vaults.assetManagement.shouldHaveTxError({
@@ -137,12 +125,5 @@ test.describe('With wallet - Vaults - Asset Management', async () => {
 			token: 'USDC',
 		});
 		// ============
-
-		// // Error displayed since APPROVE tx was rejected and it's needed for WITHDRAW tx
-		// await app.clientDashboard.vaults.assetManagement.shouldHaveTxError({
-		// 	action: 'Withdraw',
-		// 	amount: '0.2000',
-		// 	token: 'USDC',
-		// });
 	});
 });
