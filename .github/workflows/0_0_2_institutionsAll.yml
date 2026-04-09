@@ -10,7 +10,7 @@ on:
         required: true
 
 jobs:
-  institutions-tests:
+  institutions-no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_InstitutionsNoWallet.yml
     with:
       base_url: ${{ inputs.base_url }}

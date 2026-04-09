@@ -1,4 +1,5 @@
 import { test } from '#institutionsWithWalletFixtures';
+import { connectWallet } from 'srcInstitutions/utils/connectWallet';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('With wallet - Vaults - Risk Parameters', async () => {
@@ -9,14 +10,7 @@ test.describe('With wallet - Vaults - Risk Parameters', async () => {
 
 		await app.header.shouldHave({ connectWallet: true });
 
-		await app.header.connectWallet();
-
-		await app.modals.signIn.continueWithWallet();
-		await app.modals.signIn.metamask();
-		await metamask.connectToDapp();
-
-		await app.header.shouldHave({ shortenedWalletAddress: '0x1064...4743F' });
-		await app.header.shouldNothaveConnectWalletButton();
+		await connectWallet({ app, metamask });
 
 		await app.clientDashboard.selectTab('Vaults');
 
@@ -26,6 +20,7 @@ test.describe('With wallet - Vaults - Risk Parameters', async () => {
 
 	test('It should allow to edit Vault Cap - Until tx error (wallet with no role)', async ({
 		app,
+		metamask,
 	}) => {
 		// Pause to avoid random fails
 		await app.page.waitForTimeout(1_000);
@@ -45,13 +40,17 @@ test.describe('With wallet - Vaults - Risk Parameters', async () => {
 		await app.page.waitForTimeout(1_000);
 
 		await app.clientDashboard.vaults.riskParameters.executeTransaction();
+		await metamask.rejectTransaction();
 		await app.clientDashboard.vaults.riskParameters.shouldHaveTxError({
 			riskParameter: 'Vault Cap',
 			newValue: '5555',
 		});
 	});
 
-	test('It should allow to edit Buffer - Until tx error (wallet with no role)', async ({ app }) => {
+	test('It should allow to edit Buffer - Until tx error (wallet with no role)', async ({
+		app,
+		metamask,
+	}) => {
 		// Pause to avoid random fails
 		await app.page.waitForTimeout(1_000);
 
@@ -70,6 +69,7 @@ test.describe('With wallet - Vaults - Risk Parameters', async () => {
 		await app.page.waitForTimeout(1_000);
 
 		await app.clientDashboard.vaults.riskParameters.executeTransaction();
+		await metamask.rejectTransaction();
 		await app.clientDashboard.vaults.riskParameters.shouldHaveTxError({
 			riskParameter: 'Buffer',
 			newValue: '77',

@@ -64,8 +64,9 @@ test.describe('Real wallet - Portfolio - Migrate', async () => {
 
 		await app.positionPage.sidebar.migrate.shouldBeVisible({ timeout: expectDefaultTimeout * 2 });
 
-		await app.positionPage.sidebar.migrate.switchNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.migrate.switchNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await app.positionPage.sidebar.migrate.approve();
 		await metamask.rejectTransaction();

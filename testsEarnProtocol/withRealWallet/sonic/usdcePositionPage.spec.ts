@@ -98,8 +98,9 @@ test.describe('With real wallet - Sonic USDC.E Position page - Deposit', async (
 	}) => {
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await deposit({
 			metamask,
@@ -143,8 +144,9 @@ test.describe('With real wallet - Sonic USDC.E Position page - Withdraw', async 
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
@@ -207,8 +209,9 @@ test.describe('With real wallet - Sonic USDC.e Position page - Unstake', async (
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 	});
 
 	test('It should Unstake LV tokens - Sonic USDC.e position', async ({ app, metamask }) => {
