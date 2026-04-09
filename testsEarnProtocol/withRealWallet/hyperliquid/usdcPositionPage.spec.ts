@@ -8,7 +8,7 @@ import { expect } from '#earnProtocolFixtures';
 
 const test = testWithSynpress(withRealWalletHyperliquidFixtures);
 
-test.describe('With real wallet - Hyperliquid USDC Position page - APT tag', async () => {
+test.describe('With real wallet - Hyperliquid USDC Position page - APY tag', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 100_000);
@@ -97,8 +97,9 @@ test.describe('With real wallet - Hyperliquid USDC Position page - Deposit', asy
 	}) => {
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await deposit({
 			metamask,
@@ -142,8 +143,9 @@ test.describe('With real wallet - Hyperliquid USDC Position page - Withdraw', as
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});

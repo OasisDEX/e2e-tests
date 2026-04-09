@@ -97,8 +97,9 @@ test.describe('With real wallet - Hyperliquid USD₮0 Position page - Deposit', 
 	}) => {
 		test.setTimeout(veryLongTestTimeout);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await deposit({
 			metamask,
@@ -142,8 +143,9 @@ test.describe('With real wallet - Hyperliquid USD₮0 Position page - Withdraw',
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});

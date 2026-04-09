@@ -133,8 +133,9 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit @arbi
 	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		// === WSTETH ===
 
@@ -201,8 +202,9 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Withdraw @arb
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
@@ -265,8 +267,9 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Switch @arbit
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await app.positionPage.sidebar.selectTab('Switch');
 	});
@@ -328,8 +331,9 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Unstake @arbi
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 	});
 
 	test('It should Unstake LV tokens - Arbitrum USD₮0 position', async ({ app, metamask }) => {

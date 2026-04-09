@@ -132,8 +132,9 @@ test.describe('With real wallet - Arbitrum USDC Position page - Deposit @arbitru
 	}) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		// === WSTETH ===
 
@@ -200,8 +201,9 @@ test.describe('With real wallet - Arbitrum USDC Position page - Withdraw @arbitr
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});
@@ -264,8 +266,9 @@ test.describe('With real wallet - Arbitrum USDC Position page - Switch @arbitrum
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
 
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
+		// PRIVY
+		// await app.positionPage.sidebar.changeNetwork();
+		// await metamask.approveSwitchNetwork();
 
 		await app.positionPage.sidebar.selectTab('Switch');
 	});
