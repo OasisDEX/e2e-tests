@@ -485,6 +485,7 @@ test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - Cl
 		});
 
 		await app.earn.sidebar.claimWsteth();
+		await app.page.waitForTimeout(500); // To avoid random fails
 		await metamask.rejectTransaction();
 	});
 });
