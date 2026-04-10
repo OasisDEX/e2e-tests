@@ -376,10 +376,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch
 		]);
 	});
 
-	test('It should switch Mainnet ETH Higher Risk position @regression', async ({
-		app,
-		metamask,
-	}) => {
+	test('It should switch Mainnet ETH Higher Risk position', async ({ app, metamask }) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		// USDC Lower risk
