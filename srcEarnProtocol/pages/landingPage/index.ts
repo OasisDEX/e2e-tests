@@ -21,8 +21,8 @@ export class LandingPage {
 	@step
 	async shouldBeVisible() {
 		await expect(
-			this.page.getByText('Automated Exposure to DeFi'),
-			'"Automated Exposure..." should be visible',
+			this.page.getByText(/Earn more.*, do less/),
+			'"Earn more, do less" header should be visible',
 		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 	}
 

@@ -373,10 +373,7 @@ test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - Sw
 		]);
 	});
 
-	test('It should switch DAO Mainnet ETH Higher Risk position @regression', async ({
-		app,
-		metamask,
-	}) => {
+	test('It should switch DAO Mainnet ETH Higher Risk position', async ({ app, metamask }) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		// USDC Lower risk
