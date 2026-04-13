@@ -17,7 +17,7 @@ test.describe('Bridge Arbitrum SUMR tokens @arbitrum', async () => {
 
 		await app.portfolio.bridge.open('0x10649c79428d718621821cf6299e91920284743f');
 		await app.portfolio.bridge.selectNetwork({ fromOrTo: 'From', network: 'Arbitrum' });
-		await metamask.approveSwitchNetwork();
+		// await metamask.approveSwitchNetwork(); --> Notneeded with Privy
 	});
 
 	test('Bridge Arbitrum to Base', async ({ app, metamask }) => {

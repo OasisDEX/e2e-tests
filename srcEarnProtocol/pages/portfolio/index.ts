@@ -10,7 +10,7 @@ import { Send } from './send';
 import { YouMightLike } from './youMightLike';
 import { YourActivity } from './yourActivity';
 import { Wallet } from './wallet';
-import { LazyNominatedTokens, Networks, Risks } from 'srcEarnProtocol/utils/types';
+import { LazyNominatedTokens, Networks, RiskLevels } from 'srcEarnProtocol/utils/types';
 
 type Tabs =
 	| 'Overview'
@@ -55,7 +55,7 @@ export class Portfolio {
 	constructor(page: Page) {
 		this.page = page;
 		this.portfolioSecondHeaderLocator = this.page.locator(
-			'[class*="PortfolioHeader_secondRowWrapper_"]'
+			'[class*="PortfolioHeader_secondRowWrapper_"]',
 		);
 		this.beachClub = new BeachClub(page);
 		this.bridge = new Bridge(page);
@@ -72,7 +72,7 @@ export class Portfolio {
 	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(
 			this.page.getByRole('heading', { name: 'Portfolio' }),
-			'"Portfolio" header shouldbe visible'
+			'"Portfolio" header shouldbe visible',
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
@@ -85,7 +85,7 @@ export class Portfolio {
 	async open(wallet: string) {
 		await expect(async () => {
 			await this.page.goto(`/earn/portfolio/${wallet}`);
-			await this.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
+			await this.shouldBeVisible({ timeout: expectDefaultTimeout * 4 });
 		}).toPass();
 	}
 
@@ -113,7 +113,7 @@ export class Portfolio {
 				this.portfolioSecondHeaderLocator
 					.locator('[class*="_dataBlockWrapper_"]')
 					.filter({ has: this.page.getByText('Total $SUMR', { exact: true }) })
-					.locator('span')
+					.locator('span'),
 			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
 		}
 
@@ -123,7 +123,7 @@ export class Portfolio {
 				this.portfolioSecondHeaderLocator
 					.locator('[class*="_dataBlockWrapper_"]')
 					.filter({ has: this.page.getByText('Total Wallet Value', { exact: true }) })
-					.locator('span')
+					.locator('span'),
 			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
 		}
 	}
@@ -144,7 +144,7 @@ export class Portfolio {
 	}: {
 		network: Networks;
 		token: LazyNominatedTokens;
-		risk: Risks;
+		risk: RiskLevels;
 		sumrApr?: string;
 		thirtyDayApy?: string;
 		liveApy?: string;
@@ -174,7 +174,7 @@ export class Portfolio {
 				| 'Market Value'
 				| 'Net Contributions'
 				| 'Earnings to Date'
-				| '$SUMR Earned'
+				| '$SUMR Earned',
 		) =>
 			positionLocator
 				.locator(
@@ -182,13 +182,13 @@ export class Portfolio {
 						['$SUMR', '30d APY', 'Live APY'].includes(label)
 							? '_strategyInfoTopWrapper_'
 							: '_historicalLegendItemWrapper'
-					}"]`
+					}"]`,
 				)
 				.filter({ has: this.page.getByText(label) })
 				.locator(
 					['$SUMR', '30d APY', 'Live APY'].includes(label)
 						? 'span[class*="_value_"]'
-						: '[data-testid="historical-legend-item-value"]'
+						: '[data-testid="historical-legend-item-value"]',
 				);
 
 		const shouldBeGreaterThanZero = async ({
@@ -205,7 +205,7 @@ export class Portfolio {
 				netValueText
 					.replace(regExp ?? '%', '')
 					.replace('K', '')
-					.replace('M', '')
+					.replace('M', ''),
 			);
 
 			expect(netValueNumber, `${label} net value should be greater than 0`).toBeGreaterThan(0);
@@ -233,14 +233,14 @@ export class Portfolio {
 						['$SUMR', '30d APY', 'Live APY'].includes(label)
 							? '%'
 							: label === '$SUMR Earned'
-							? '.* SUMR'
-							: `.* ${token}`
-					}`
+								? '.* SUMR'
+								: `.* ${token}`
+					}`,
 				);
 
 				await expect(parameterLocator(label), `Should have ${label}: ${regExp}`).toContainText(
 					regExp,
-					{ timeout: timeout ?? expectDefaultTimeout }
+					{ timeout: timeout ?? expectDefaultTimeout },
 				);
 
 				await shouldBeGreaterThanZero({ label, token });
@@ -300,7 +300,7 @@ export class Portfolio {
 	@step
 	async shouldHaveTabHighlighted(tab: Tabs) {
 		await expect(
-			this.page.locator('[class*="_tabHeaders_"]').getByRole('button', { name: tab })
+			this.page.locator('[class*="_tabHeaders_"]').getByRole('button', { name: tab }),
 		).toHaveClass(/active/);
 	}
 

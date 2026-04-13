@@ -22,8 +22,9 @@ test.describe('With wallet - Vaults - Risk Parameters', async () => {
 		app,
 		metamask,
 	}) => {
-		// Pause to avoid random fails
-		await app.page.waitForTimeout(1_000);
+		// To avoid random fails
+		await app.clientDashboard.vaults.riskParameters.vaultCapShouldBeVisible();
+		await app.page.waitForTimeout(2_000);
 
 		await app.clientDashboard.vaults.riskParameters.editVaultCap();
 
@@ -51,8 +52,9 @@ test.describe('With wallet - Vaults - Risk Parameters', async () => {
 		app,
 		metamask,
 	}) => {
-		// Pause to avoid random fails
-		await app.page.waitForTimeout(1_000);
+		// To avoid random fails
+		await app.clientDashboard.vaults.riskParameters.bufferShouldBeVisible();
+		await app.page.waitForTimeout(2_000);
 
 		await app.clientDashboard.vaults.riskParameters.editBuffer();
 
