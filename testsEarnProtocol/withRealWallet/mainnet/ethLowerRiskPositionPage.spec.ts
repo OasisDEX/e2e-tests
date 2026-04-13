@@ -147,7 +147,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk position page - Deposit
 			app,
 			nominatedToken: 'ETH',
 			depositedToken: 'USDC',
-			depositAmount: '0.5',
+			depositAmount: '0.6',
 			estimatedEarnings: {
 				thirtyDaysAmount: '0.00[0-9]{2}',
 				sixMonthsAmount: '0.00[0-9]{2}',
