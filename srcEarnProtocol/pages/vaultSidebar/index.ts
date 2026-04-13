@@ -169,6 +169,13 @@ export class VaultSidebar {
 	}
 
 	@step
+	async confirmAndSign() {
+		await this.sidebarLocator
+			.getByRole('button', { name: 'Confirm and Sign', exact: true })
+			.click();
+	}
+
+	@step
 	async confirm(action: 'Deposit' | 'Withdraw') {
 		await this.sidebarLocator.getByRole('button', { name: action }).click();
 	}

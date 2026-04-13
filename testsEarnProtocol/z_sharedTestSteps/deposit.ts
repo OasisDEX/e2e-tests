@@ -76,39 +76,42 @@ export const deposit = async ({
 					token: nominatedToken,
 				},
 			],
-			{ timeout: expectDefaultTimeout * 2 }
+			{ timeout: expectDefaultTimeout * 2 },
 		);
 	}
 
 	await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
 	await app.positionPage.sidebar.preview();
 
-	const sidebarButtonLocator = app.page.locator('[class*="_sidebarCta_"] button').first();
+	const sidebarButtonLocator = app.page.locator('[class*="_sidebarWrapper_"] button');
 
 	await expect(
-		sidebarButtonLocator,
-		'[Agree], [Approve] or [Deposit] buttons should not be visible'
-	).toContainText(/Agree|Approve|Deposit/, { timeout: expectDefaultTimeout * 2 });
+		sidebarButtonLocator.first(),
+		'[Agree], [Approve], [Deposit] or [Confirm] buttons should be visible',
+	).toContainText(/Agree|Approve|Deposit|Confirm/, { timeout: expectDefaultTimeout * 2 });
 
-	let sidebarButtonLabel = await sidebarButtonLocator.innerText();
+	let sidebarButtonLabel = await sidebarButtonLocator.first().innerText();
 
 	// Sign T&C if needed
 	if (sidebarButtonLabel.includes('Agree and sign')) {
-		await expect(async () => {
-			await app.positionPage.sidebar.termsAndConditions.agreeAndSignOrRetry();
-			await metamask.confirmSignature();
+		//await expect(async () => {
+		await app.positionPage.sidebar.termsAndConditions.agreeAndSignOrRetry();
+		await metamask.confirmSignature();
 
-			await expect(
-				sidebarButtonLocator,
-				'[Approve] or [Deposit] buttons should not be visible'
-			).toContainText(/Approve|Deposit/, { timeout: expectDefaultTimeout * 2 });
-		}).toPass();
+		await expect(
+			sidebarButtonLocator.nth(1),
+			'[Approve] or [Deposit] buttons should be visible',
+		).toContainText(/Approve|Deposit/, { timeout: expectDefaultTimeout * 2 });
+		//}).toPass();
 
-		sidebarButtonLabel = await sidebarButtonLocator.innerText();
+		sidebarButtonLabel = await sidebarButtonLocator.nth(1).innerText();
 	}
 
 	if (sidebarButtonLabel.includes('Approve')) {
 		await app.positionPage.sidebar.approve(depositedToken);
+		await metamask.rejectTransaction();
+	} else if (sidebarButtonLabel.includes('Confirm and Sign')) {
+		await app.positionPage.sidebar.confirmAndSign();
 		await metamask.rejectTransaction();
 	} else {
 		await app.positionPage.sidebar.previewStep.shouldBeVisible({
@@ -120,8 +123,8 @@ export const deposit = async ({
 			depositedToken == 'WSTETH'
 				? 'wstETH'
 				: depositedToken == 'USDC.E'
-				? 'USDC.e'
-				: depositedToken;
+					? 'USDC.e'
+					: depositedToken;
 
 		await app.positionPage.sidebar.previewStep.shouldHave({
 			depositAmount: { amount: depositAmount, token: previewDepositedToken },
@@ -131,14 +134,14 @@ export const deposit = async ({
 						originalTokenAmount: depositAmount,
 						positionToken: nominatedToken,
 						positionTokenAmount: previewInfo.swap.positionTokenAmount,
-				  }
+					}
 				: undefined,
 			price: previewInfo?.price
 				? {
 						amount: previewInfo.price.amount,
 						originalToken: previewDepositedToken,
 						positionToken: nominatedToken,
-				  }
+					}
 				: undefined,
 			priceImpact: previewInfo?.priceImpact,
 			slippage: previewInfo?.slippage,
