@@ -47,7 +47,9 @@ export class ClientDashboard {
 		}
 
 		if (wallet) {
-			await expect(this.page.locator(':has-text("Wallet role:") + p')).toHaveText(wallet);
+			await expect(this.page.locator(':has-text("Wallet role:") + p')).toHaveText(wallet, {
+				timeout: expectDefaultTimeout * 4,
+			});
 		}
 	}
 

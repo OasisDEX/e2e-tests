@@ -75,7 +75,15 @@ export class RiskParameters {
 	async shouldHaveNoTransactionsInQueue() {
 		await expect(
 			this.page.getByText('No transactions in the queue.'),
-			'Should displaye "No transactions" message',
+			'Should display "No transactions" message',
+		).toBeVisible();
+	}
+
+	@step
+	async vaultCapShouldBeVisible() {
+		await expect(
+			this.page.getByText('Vault Cap', { exact: true }),
+			'Should display "Vault Cap" log',
 		).toBeVisible();
 	}
 
@@ -99,6 +107,14 @@ export class RiskParameters {
 			.locator('..')
 			.locator('input')
 			.fill(newCap);
+	}
+
+	@step
+	async bufferShouldBeVisible() {
+		await expect(
+			this.page.getByText('Buffer', { exact: true }),
+			'Should display "Buffer" log',
+		).toBeVisible();
 	}
 
 	@step
