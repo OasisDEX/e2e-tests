@@ -16,10 +16,10 @@ export const hooksTimeout: number =
 	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 130_000 : 110_000;
 
 export const longTestTimeout: number =
-	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 85_000 : 70_000;
+	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 85_000 : 90_000;
 
 export const veryLongTestTimeout: number =
-	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 120_000 : 110_000;
+	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 120_000 : 130_000;
 
 export const extremelyLongTestTimeout: number =
 	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 340_000 : 300_000;

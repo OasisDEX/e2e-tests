@@ -83,14 +83,15 @@ export const deposit = async ({
 	await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
 	await app.positionPage.sidebar.preview();
 
-	const sidebarButtonLocator = app.page.locator('[class*="_sidebarWrapper_"] button');
+	// const sidebarButtonLocator = app.page.locator('[class*="_sidebarWrapper_"] button');
+	const sidebarButtonLocator = app.page.locator('button[class*="_primaryLarge_"]');
 
 	await expect(
-		sidebarButtonLocator.first(),
+		sidebarButtonLocator,
 		'[Agree], [Approve], [Deposit] or [Confirm] buttons should be visible',
 	).toContainText(/Agree|Approve|Deposit|Confirm/, { timeout: expectDefaultTimeout * 2 });
 
-	let sidebarButtonLabel = await sidebarButtonLocator.first().innerText();
+	let sidebarButtonLabel = await sidebarButtonLocator.innerText();
 
 	// Sign T&C if needed
 	if (sidebarButtonLabel.includes('Agree and sign')) {
@@ -99,12 +100,12 @@ export const deposit = async ({
 		await metamask.confirmSignature();
 
 		await expect(
-			sidebarButtonLocator.nth(1),
+			sidebarButtonLocator,
 			'[Approve] or [Deposit] buttons should be visible',
 		).toContainText(/Approve|Deposit/, { timeout: expectDefaultTimeout * 2 });
 		//}).toPass();
 
-		sidebarButtonLabel = await sidebarButtonLocator.nth(1).innerText();
+		sidebarButtonLabel = await sidebarButtonLocator.innerText();
 	}
 
 	if (sidebarButtonLabel.includes('Approve')) {
