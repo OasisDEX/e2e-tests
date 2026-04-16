@@ -43,17 +43,16 @@ export const logInWithWalletAddress = async ({
 			await metamask.approveNewNetwork();
 			await metamask.approveSwitchNetwork();
 		}
+
+		// Connect wallet popup started not hiding on the 8th January 2026
+		await app.page.waitForTimeout(2_000);
+		// App doesn't reload when loging in at the moment
+		await app.page.reload();
+		await app.header.shouldHaveWalletAddress(shortenedWalletAddress ?? '0x1064...4743F');
 	}
 	// ===================
 
-	// Connect wallet popup started nothiding on the 8th January 2026
 	await app.page.waitForTimeout(2_000);
-	await app.page.reload();
-
-	// // App doesn't reload when loging in at the moment
-	// await app.header.shouldHaveWalletAddress(shortenedWalletAddress ?? '0x1064...4743F');
-
-	// await app.page.reload();
 };
 
 export const logInWithEmailAddress = async ({
