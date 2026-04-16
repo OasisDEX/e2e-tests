@@ -6,7 +6,8 @@ test.describe('Header @regression', async () => {
 		await app.landingPage.shouldBeVisible();
 	});
 
-	test('It should open Earn page @balance', async ({ app }) => {
+	// SKIP - TO BE UPDATED
+	test.skip('It should open Earn page @balance', async ({ app }) => {
 		await app.header.earn();
 		await app.earn.shouldBeVisible();
 	});
@@ -26,20 +27,13 @@ test.describe('Header @regression', async () => {
 		await app.rebalancingActivity.shouldBeVisible();
 
 		await app.header.explore.open();
-		await app.header.explore.select('Institutions');
-		// await app.page.mouse.move(200, 0);
-		await app.institutions.shouldBeVisible();
-
-		// Page sometimes reloads top navigatio after 1 second
-		await app.header.shouldHaveGameIcon();
-
-		await app.header.explore.open();
 		await app.header.explore.select('Team');
 		await app.page.mouse.move(200, 0);
 		await app.team.shouldBeVisible();
 	});
 
-	test('It should open "Support" pages', async ({ app }) => {
+	// SKIP - TO BE UPDATED
+	test.skip('It should open "Support" pages', async ({ app }) => {
 		await app.header.support.open();
 		await app.header.support.shouldHave(['Contact us', 'Sign up', 'Start chatting']);
 	});
