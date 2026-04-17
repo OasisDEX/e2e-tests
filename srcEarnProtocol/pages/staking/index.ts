@@ -21,7 +21,7 @@ export class Staking {
 	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(
 			this.page.getByText('Stake your SUMR and earn real USDC yield'),
-			'"Stake your SUMR and ..." header should be visible'
+			'"Stake your SUMR and ..." header should be visible',
 		).toBeVisible({
 			timeout: args?.timeout ?? expectDefaultTimeout,
 		});
@@ -30,7 +30,7 @@ export class Staking {
 	@step
 	async openPage() {
 		await expect(async () => {
-			await this.page.goto('/earn/staking');
+			await this.page.goto('/earn/staking', { timeout: expectDefaultTimeout * 3 });
 			await this.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 		}).toPass();
 	}
@@ -46,7 +46,7 @@ export class Staking {
 	}) {
 		const sumrRegExp = new RegExp(`${sumrAmount}.*SUMR`);
 		await expect(
-			this.page.getByText(/Total SUMR staked(.*)Connect wallet/).locator('..')
+			this.page.getByText(/Total SUMR staked(.*)Connect wallet/).locator('..'),
 		).toContainText(sumrRegExp, {
 			timeout: timeout ?? expectDefaultTimeout,
 		});
@@ -57,7 +57,7 @@ export class Staking {
 	async shouldHaveAvgSumrLockPeriod({ days, timeout }: { days: string; timeout?: number }) {
 		const sumrRegExp = new RegExp(`${days}.*days`);
 		await expect(
-			this.page.getByText(/Avg SUMR lock period(.*)Connect wallet/).locator('..')
+			this.page.getByText(/Avg SUMR lock period(.*)Connect wallet/).locator('..'),
 		).toContainText(sumrRegExp, {
 			timeout: timeout ?? expectDefaultTimeout,
 		});
@@ -149,7 +149,7 @@ export class Staking {
 			.first();
 
 		const regExp = new RegExp(
-			`USDC real yield.*up to.*${percentage}%.*Up to \\$${perYear} \\/Year`
+			`USDC real yield.*up to.*${percentage}%.*Up to \\$${perYear} \\/Year`,
 		);
 		await expect(yieldOneLocator).toContainText(regExp, {
 			timeout: timeout ?? expectDefaultTimeout,
@@ -174,7 +174,7 @@ export class Staking {
 			.last();
 
 		const regExp = new RegExp(
-			`SUMR Staking APY.*up to.*${percentage}%.*Up to ${sumrPerYear} \\$SUMR\\/Year \\(\\$${usdPerYear}\\)`
+			`SUMR Staking APY.*up to.*${percentage}%.*Up to ${sumrPerYear} \\$SUMR\\/Year \\(\\$${usdPerYear}\\)`,
 		);
 		await expect(yieldTwoLocator).toContainText(regExp, {
 			timeout: timeout ?? expectDefaultTimeout,

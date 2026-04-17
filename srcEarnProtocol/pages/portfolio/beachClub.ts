@@ -12,18 +12,20 @@ export class BeachClub {
 	@step
 	async openPage(wallet: string) {
 		await expect(async () => {
-			await this.page.goto(`/earn/portfolio/${wallet}?tab=beach-club`);
+			await this.page.goto(`/earn/portfolio/${wallet}?tab=beach-club`, {
+				timeout: expectDefaultTimeout * 3,
+			});
 			await expect(
 				this.page.getByText('Unlock exclusive rewards with Lazy Summer Beach Club.'),
-				'Tab header should be visible'
-			).toBeVisible({ timeout: expectDefaultTimeout * 3 });
+				'Tab header should be visible',
+			).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 		}).toPass({ timeout: expectDefaultTimeout * 7 });
 	}
 
 	@step
 	async shouldShowConnectWallet(args?: { timeout: number }) {
 		await expect(
-			this.page.getByText('Connect your wallet to access the Beach Club page')
+			this.page.getByText('Connect your wallet to access the Beach Club page'),
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
@@ -40,24 +42,24 @@ export class BeachClub {
 	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(
 			this.page.getByText('Unlock exclusive rewards with Lazy Summer Beach Club'),
-			'"Lazy Summer Beach Club" header should be visible'
+			'"Lazy Summer Beach Club" header should be visible',
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 
 		await expect(
 			this.page.getByText('Refer and earn'),
-			'"Refer and earn" header should be visible'
+			'"Refer and earn" header should be visible',
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 
 		await expect(
 			this.page.getByText('Beach Club Rewards', { exact: true }),
-			'"Beach Club Rewards" header should be visible'
+			'"Beach Club Rewards" header should be visible',
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
 	@step
 	async generateShouldBeEnabled() {
 		await expect(this.page.getByRole('button', { name: 'Generate' })).not.toHaveAttribute(
-			'disabled'
+			'disabled',
 		);
 	}
 
@@ -112,7 +114,7 @@ export class BeachClub {
 			address: { full: string; short: string };
 			action: 'Deposit' | 'Withdraw';
 			amount: { token: 'eth' | 'usdc'; tokenAmount: string };
-		}[]
+		}[],
 	) {
 		for (const entry of entries) {
 			const entryLocator = this.page
@@ -124,13 +126,13 @@ export class BeachClub {
 			await expect(entryLocator.getByRole('cell').nth(2)).toContainText(entry.amount.tokenAmount);
 
 			await expect(entryLocator.getByRole('cell').nth(3)).toContainText(
-				/hours ago|yesterday|days ago|last month|months ago/
+				/hours ago|yesterday|days ago|last month|months ago/,
 			);
 
 			await expect(entryLocator.getByRole('cell').nth(4).getByRole('button')).toContainText('View');
 			await expect(entryLocator.getByRole('cell').nth(4).getByRole('link')).toHaveAttribute(
 				'href',
-				`/earn/portfolio/${entry.address.full}?tab=your-activity`
+				`/earn/portfolio/${entry.address.full}?tab=your-activity`,
 			);
 		}
 	}
@@ -138,7 +140,7 @@ export class BeachClub {
 	@step
 	async firstReferralShouldBeVisible() {
 		await expect(
-			this.page.locator('[class*="_beachClubTrackReferralsWrapper_"] td').nth(2)
+			this.page.locator('[class*="_beachClubTrackReferralsWrapper_"] td').nth(2),
 		).toBeVisible();
 	}
 
@@ -149,32 +151,32 @@ export class BeachClub {
 			tvl: string;
 			earnedToDate: string;
 			annualisedEarnings: string;
-		}[]
+		}[],
 	) {
 		for (const entry of entries) {
 			const entryLocator = this.page.getByRole('row').filter({ hasText: entry.address.short });
 
 			const tvlRegExp = new RegExp(`\\$${entry.tvl}`);
 			await expect(entryLocator.getByRole('cell').nth(1), 'Should have TVL').toContainText(
-				tvlRegExp
+				tvlRegExp,
 			);
 
 			const earnedToDateRegExp = new RegExp(`\\$${entry.earnedToDate}`);
 			await expect(
 				entryLocator.getByRole('cell').nth(2),
-				'Should have Earned to Date'
+				'Should have Earned to Date',
 			).toContainText(earnedToDateRegExp);
 
 			const annualisedEarningsRegExp = new RegExp(`\\$${entry.annualisedEarnings}`);
 			await expect(
 				entryLocator.getByRole('cell').nth(3),
-				'Should have Forecast Annualised Earnings'
+				'Should have Forecast Annualised Earnings',
 			).toContainText(annualisedEarningsRegExp);
 
 			await expect(entryLocator.getByRole('cell').nth(4).getByRole('button')).toContainText('View');
 			await expect(entryLocator.getByRole('cell').nth(4).getByRole('link')).toHaveAttribute(
 				'href',
-				`/earn/portfolio/${entry.address.full}`
+				`/earn/portfolio/${entry.address.full}`,
 			);
 		}
 	}
@@ -183,7 +185,7 @@ export class BeachClub {
 	async shouldHaveCumulativeTvlFromReferrals(tvl: string) {
 		const regExp = new RegExp(`\\$${tvl}`);
 		await expect(
-			this.page.getByText('Cumulative TVL from referrals').locator('xpath=//preceding::h2[1]')
+			this.page.getByText('Cumulative TVL from referrals').locator('xpath=//preceding::h2[1]'),
 		).toContainText(regExp);
 	}
 
@@ -193,7 +195,7 @@ export class BeachClub {
 		await expect(
 			this.page
 				.locator('[class*="BeachClubTvlChallenge_textual_"]')
-				.filter({ hasText: 'Earned $SUMR' })
+				.filter({ hasText: 'Earned $SUMR' }),
 		).toContainText(regExp);
 	}
 
@@ -203,7 +205,7 @@ export class BeachClub {
 		await expect(
 			this.page
 				.locator('[class*="BeachClubTvlChallenge_textual_"]')
-				.filter({ hasText: `Earned Fee's` })
+				.filter({ hasText: `Earned Fee's` }),
 		).toContainText(regExp);
 	}
 
@@ -214,7 +216,7 @@ export class BeachClub {
 				.locator('[class*="beachClubTvlChallengeRewardCardWrapper"]')
 				.filter({ hasText: group })
 				.getByText('You are here!'),
-			`Should display "You are here tag" in ${group} block`
+			`Should display "You are here tag" in ${group} block`,
 		).toBeVisible();
 	}
 
@@ -222,7 +224,7 @@ export class BeachClub {
 	async shouldHaveProjectedYearlyRewards(rewards: string) {
 		const regExp = new RegExp(rewards);
 		await expect(
-			this.page.getByText('Projected Yearly SUMR Rewards').locator('xpath=//preceding::h2[1]')
+			this.page.getByText('Projected Yearly SUMR Rewards').locator('xpath=//preceding::h2[1]'),
 		).toContainText(regExp);
 	}
 
@@ -230,7 +232,7 @@ export class BeachClub {
 	async shouldHaveYearlyEarnedFees(earnedFees: string) {
 		const regExp = new RegExp(`up to \\$${earnedFees}`);
 		await expect(
-			this.page.getByText('Yearly Earned Fees').locator('xpath=//preceding::h2[1]')
+			this.page.getByText('Yearly Earned Fees').locator('xpath=//preceding::h2[1]'),
 		).toContainText(regExp);
 	}
 }

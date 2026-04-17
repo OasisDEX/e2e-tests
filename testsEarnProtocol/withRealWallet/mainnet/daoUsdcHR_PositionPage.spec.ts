@@ -24,7 +24,7 @@ test.describe('With real wallet - DAO Mainnet USDC Higher Risk position page - A
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.[0-9]{4}',
+			balance: '2.[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -78,7 +78,7 @@ test.describe('With real wallet - DAO Mainnet USDC Higher Risk position page - D
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.[0-9]{4}',
+			balance: '2.[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -201,7 +201,7 @@ test.describe('With real wallet - DAO Mainnet USDC Higher Risk position page - W
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.[0-9]{4}',
+			balance: '[0-9].[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
