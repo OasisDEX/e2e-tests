@@ -8,6 +8,7 @@ import {
 	Header,
 	Institutions,
 	LandingPage,
+	Leadership,
 	Migrate,
 	Portfolio,
 	PositionPage,
@@ -36,6 +37,8 @@ export class App {
 	readonly institutions: Institutions;
 
 	readonly landingPage: LandingPage;
+
+	readonly leadership: Leadership;
 
 	readonly migratePage: Migrate;
 
@@ -69,6 +72,7 @@ export class App {
 		this.header = new Header(page);
 		this.institutions = new Institutions(page);
 		this.landingPage = new LandingPage(page);
+		this.leadership = new Leadership(page);
 		this.migratePage = new Migrate(page);
 		this.modals = new Modals(page);
 		this.portfolio = new Portfolio(page);
