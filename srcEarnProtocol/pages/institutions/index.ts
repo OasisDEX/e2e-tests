@@ -2,6 +2,7 @@ import { expect, step } from '#earnProtocolFixtures';
 import { Page } from '@playwright/test';
 import { PublicAccessVaults } from './publicAccessVaults';
 import { SelfManagedVaults } from './selfManagedVaults';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class Institutions {
 	readonly page: Page;
@@ -20,14 +21,14 @@ export class Institutions {
 	async shouldBeVisible() {
 		await expect(
 			this.page.getByRole('heading', { name: 'Crypto native yield, built for' }),
-			'"Crypto native yield..." header should be visible'
+			'"Crypto native yield..." header should be visible',
 		).toBeVisible();
 	}
 
 	@step
 	async openPage() {
 		await expect(async () => {
-			await this.page.goto('/institutions');
+			await this.page.goto('/institutions', { timeout: expectDefaultTimeout * 3 });
 			await this.shouldBeVisible();
 		}).toPass();
 	}

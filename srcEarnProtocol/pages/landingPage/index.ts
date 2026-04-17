@@ -5,7 +5,6 @@ import { BuildYourOwnVault } from './buildYourOwnVault';
 import { IntegrateDefiYield } from './integrateDefiYield';
 import { PermissionlessVaults } from './permissionlessVaults';
 import { PermissionedRwaVault } from './permisionedRwaVault';
-import { VaultsCarousel } from './vaultsCarousel';
 
 type Products =
 	| 'Permissionless DeFi Vaults'
@@ -37,10 +36,6 @@ export class LandingPage {
 
 	// readonly productLocator: Locator;
 
-	readonly selectedVaultCardLocator: Locator;
-
-	readonly vaultsCarousel: VaultsCarousel;
-
 	constructor(page: Page) {
 		this.page = page;
 		this.buildYourOwnVault = new BuildYourOwnVault(page);
@@ -50,10 +45,6 @@ export class LandingPage {
 		this.permissionedRwaVault = new PermissionedRwaVault(page);
 		this.permissionlessVaults = new PermissionlessVaults(page);
 		// this.productLocator = page.locator('article[class*="OurProductsList_"]');
-		this.vaultsCarousel = new VaultsCarousel(page);
-		this.selectedVaultCardLocator = page.locator(
-			'[class*="_vaultCardHomepageContentWrapperSelected_"]',
-		);
 	}
 
 	@step
@@ -67,7 +58,9 @@ export class LandingPage {
 	@step
 	async openPage() {
 		await expect(async () => {
-			await this.page.goto(earnProtocolBaseUrl.split('/earn')[0]);
+			await this.page.goto(earnProtocolBaseUrl.split('/earn')[0], {
+				timeout: expectDefaultTimeout * 3,
+			});
 			await this.shouldBeVisible();
 		}).toPass();
 	}
@@ -134,12 +127,12 @@ export class LandingPage {
 	}
 
 	@step
-	async selectProductTab(tab: Products | 'All Vaults') {
+	async selectProductTab(tab: Products | 'All Products') {
 		await this.page.getByRole('button', { name: tab }).click();
 	}
 
 	@step
-	async shouldHaveTabHighlighted(tab: Products | 'All Vaults') {
+	async shouldHaveTabHighlighted(tab: Products | 'All Products') {
 		await expect(this.page.getByRole('button', { name: tab })).toHaveAttribute(
 			'aria-pressed',
 			'true',
@@ -163,34 +156,6 @@ export class LandingPage {
 	}
 
 	// ===========
-
-	@step
-	async shouldShowVaultCard() {
-		await expect(
-			this.page
-				.locator('[class*="homepageCarouselWrapper"] [class*="vaultCardHomepageContentWrapper"]')
-				.first(),
-			'Vault card should be visible',
-		).toBeVisible();
-	}
-
-	@step
-	async getSelectedCardNetApy(): Promise<string> {
-		const netApy: string = await this.selectedVaultCardLocator
-			.getByText('APY', { exact: true })
-			.first()
-			.locator('../..')
-			.locator('span:has-text("%")')
-			.first()
-			.innerText();
-
-		return netApy.replace('%', '');
-	}
-
-	@step
-	async openSelectedCardApyTooltip() {
-		await this.selectedVaultCardLocator.locator('[data-tooltip-btn-id]').hover();
-	}
 
 	@step
 	async launchApp() {

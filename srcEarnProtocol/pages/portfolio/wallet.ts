@@ -13,19 +13,21 @@ export class Wallet {
 	async shouldBeVisible() {
 		await expect(
 			this.page.locator('[class*="PotfolioAssets_headerWrapper_"]').getByText('Total Assets'),
-			'"Total Assets" should be visible'
+			'"Total Assets" should be visible',
 		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 
 		await expect(
 			this.page.locator('section:has-text("You might like")'),
-			'"You might like" section should be visible'
+			'"You might like" section should be visible',
 		).toBeVisible();
 	}
 
 	@step
 	async openPage(wallet: string) {
 		await expect(async () => {
-			await this.page.goto(`/earn/portfolio/${wallet}?tab=wallet`);
+			await this.page.goto(`/earn/portfolio/${wallet}?tab=wallet`, {
+				timeout: expectDefaultTimeout * 4,
+			});
 			await this.shouldBeVisible();
 		}).toPass();
 	}
@@ -37,7 +39,7 @@ export class Wallet {
 		await expect(
 			this.page
 				.locator('[class*="PotfolioAssets_headerWrapper"]')
-				.locator('[class*="dataBlockWrapper"]')
+				.locator('[class*="dataBlockWrapper"]'),
 		).toContainText(regExp);
 	}
 

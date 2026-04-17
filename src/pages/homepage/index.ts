@@ -17,7 +17,7 @@ export class Homepage {
 	async shouldBeVisible() {
 		await expect(
 			this.page.getByText('The best place to Borrow and Earn in DeFi'),
-			'"The best place to Borrow and Earn in DeFi" should be visible'
+			'"The best place to Borrow and Earn in DeFi" should be visible',
 		).toBeVisible({
 			timeout: expectDefaultTimeout * 4,
 		});

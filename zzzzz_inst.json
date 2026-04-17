@@ -1,0 +1,40 @@
+{
+	"protocol": { "totalValueLockedUSD": 38987938.006454155, "totalVaults": 19 },
+	"chains": [
+		{
+			"chainId": 1,
+			"publicVaults": { "totalValueLockedUSD": 33461617.327582177, "totalVaults": 7 },
+			"institutionalVaults": { "totalValueLockedUSD": 0, "totalVaults": 0 },
+			"totalValueLockedUSD": 33461617.327582177,
+			"totalVaults": 7
+		},
+		{
+			"chainId": 146,
+			"publicVaults": { "totalValueLockedUSD": 175850.39685019373, "totalVaults": 1 },
+			"institutionalVaults": { "totalValueLockedUSD": 0, "totalVaults": 0 },
+			"totalValueLockedUSD": 175850.39685019373,
+			"totalVaults": 1
+		},
+		{
+			"chainId": 999,
+			"publicVaults": { "totalValueLockedUSD": 212398.71521031193, "totalVaults": 2 },
+			"institutionalVaults": { "totalValueLockedUSD": 0, "totalVaults": 0 },
+			"totalValueLockedUSD": 212398.71521031193,
+			"totalVaults": 2
+		},
+		{
+			"chainId": 8453,
+			"publicVaults": { "totalValueLockedUSD": 4446160.16718206, "totalVaults": 3 },
+			"institutionalVaults": { "totalValueLockedUSD": 1043.1891526777451, "totalVaults": 1 },
+			"totalValueLockedUSD": 4447203.3563347375,
+			"totalVaults": 4
+		},
+		{
+			"chainId": 42161,
+			"publicVaults": { "totalValueLockedUSD": 187674.759365785, "totalVaults": 3 },
+			"institutionalVaults": { "totalValueLockedUSD": 503193.45111094543, "totalVaults": 2 },
+			"totalValueLockedUSD": 690868.2104767305,
+			"totalVaults": 5
+		}
+	]
+}

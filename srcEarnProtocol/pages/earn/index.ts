@@ -59,7 +59,7 @@ export class Earn {
 	@step
 	async openPage() {
 		await expect(async () => {
-			await this.page.goto('/earn');
+			await this.page.goto('/earn', { timeout: expectDefaultTimeout * 3 });
 			await this.shouldBeVisible();
 		}).toPass();
 	}

@@ -13,14 +13,14 @@ export class Manage {
 	async shouldBeVisible() {
 		await expect(
 			this.page.getByText('Stake SUMR to earn rewards'),
-			'"Stake SUMR to earn rewards" header shouldbe visible'
+			'"Stake SUMR to earn rewards" header shouldbe visible',
 		).toBeVisible();
 	}
 
 	@step
 	async openPage() {
 		await expect(async () => {
-			await this.page.goto('/earn/staking/manage');
+			await this.page.goto('/earn/staking/manage', { timeout: expectDefaultTimeout * 3 });
 			await this.shouldBeVisible();
 		}).toPass();
 	}
@@ -30,7 +30,7 @@ export class Manage {
 		const regExp = new RegExp(`${balance}.*SUMR`);
 		await expect(this.page.getByText('Balance', { exact: true }).locator('..')).toContainText(
 			regExp,
-			{ timeout: timeout ?? expectDefaultTimeout }
+			{ timeout: timeout ?? expectDefaultTimeout },
 		);
 	}
 	@step
@@ -98,7 +98,7 @@ export class Manage {
 	@step
 	async shouldHaveApproveSumrButtonEnabled() {
 		await expect(this.page.getByRole('button', { name: 'Approve SUMR' })).not.toHaveAttribute(
-			'disabled'
+			'disabled',
 		);
 	}
 

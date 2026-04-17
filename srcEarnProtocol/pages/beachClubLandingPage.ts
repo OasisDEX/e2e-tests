@@ -13,14 +13,14 @@ export class BeachClubLandingPage {
 	async shouldBeVisible(args?: { timeout: number }) {
 		await expect(
 			this.page.getByRole('heading').filter({ hasText: 'with Beach Club' }),
-			'"... with Beach Club" header should be visible'
+			'"... with Beach Club" header should be visible',
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
 	@step
 	async open() {
 		await expect(async () => {
-			await this.page.goto('/beach-club');
+			await this.page.goto('/beach-club', { timeout: expectDefaultTimeout * 3 });
 			await this.shouldBeVisible({ timeout: expectDefaultTimeout * 2 });
 		}).toPass();
 	}

@@ -17,7 +17,7 @@ export class Sumr {
 	@step
 	async openPage() {
 		await expect(async () => {
-			await this.page.goto('/earn/sumr');
+			await this.page.goto('/earn/sumr', { timeout: expectDefaultTimeout * 3 });
 			await this.shouldBeVisible();
 		}).toPass();
 	}

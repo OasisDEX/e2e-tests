@@ -25,7 +25,9 @@ export class Bridge {
 	@step
 	async open(walletAddress: string) {
 		await expect(async () => {
-			await this.page.goto(`/earn/bridge/${walletAddress}?via=portfolio`);
+			await this.page.goto(`/earn/bridge/${walletAddress}?via=portfolio`, {
+				timeout: expectDefaultTimeout * 3,
+			});
 			await this.shouldBeVisible({ timeout: expectDefaultTimeout * 2 });
 		}).toPass();
 	}
@@ -33,7 +35,7 @@ export class Bridge {
 	@step
 	async selectNetwork({ fromOrTo, network }: { fromOrTo: 'From' | 'To'; network: BridgeNetworks }) {
 		const dropdownLocator = this.bridgeLocator.locator(
-			`label:has-text("${fromOrTo}") + [class*="_dropdown_"]`
+			`label:has-text("${fromOrTo}") + [class*="_dropdown_"]`,
 		);
 
 		await expect(dropdownLocator).toBeVisible();

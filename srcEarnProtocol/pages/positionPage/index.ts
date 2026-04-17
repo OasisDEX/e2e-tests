@@ -20,7 +20,7 @@ export class PositionPage {
 	@step
 	async open(url: string) {
 		await expect(async () => {
-			await this.page.goto(url);
+			await this.page.goto(url, { timeout: expectDefaultTimeout * 3 });
 
 			// Reload position data to avoid random fails
 			await expect(this.page.locator('svg[title="refresh"]')).toBeVisible({

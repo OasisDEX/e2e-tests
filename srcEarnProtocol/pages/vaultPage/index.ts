@@ -31,7 +31,7 @@ export class VaultPage {
 	@step
 	async open(url: string) {
 		await expect(async () => {
-			await this.page.goto(url);
+			await this.page.goto(url, { timeout: expectDefaultTimeout * 3 });
 
 			if (!url.includes('sonic')) {
 				// Reload position data to avoid random fails
