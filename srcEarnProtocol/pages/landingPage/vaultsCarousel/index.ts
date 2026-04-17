@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
-import { ActiveSlide } from './activeSlide';
 import { expect, step } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
+import { ActiveSlide } from './activeSlide';
 
 export class VaultsCarousel {
 	readonly page: Page;

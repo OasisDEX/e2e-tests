@@ -3,6 +3,7 @@ import { Earn } from './earn';
 import { Header } from './header';
 import { Institutions } from './institutions';
 import { LandingPage } from './landingPage';
+import { Leadership } from './leadership';
 import { Migrate } from './migrate';
 import { Portfolio } from './portfolio';
 import { PositionPage } from './positionPage';
@@ -20,6 +21,7 @@ export {
 	Header,
 	Institutions,
 	LandingPage,
+	Leadership,
 	Migrate,
 	Portfolio,
 	PositionPage,
