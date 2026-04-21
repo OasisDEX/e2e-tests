@@ -11,10 +11,8 @@ export class BuildYourOwnVault {
 	@step
 	async shouldBeVisible() {
 		await expect(
-			this.page.getByText(
-				'Self managed vaults by Summer.fi Institutional enable institutions to build their own custom vault',
-			),
-			'"Self managed vaults by..." subheader shouldbe visible',
+			this.page.getByText('Summer.fi enables institutions to build their own custom vaults'),
+			'"Summer.fi enables..." subheader shouldbe visible',
 		).toBeVisible();
 	}
 }
