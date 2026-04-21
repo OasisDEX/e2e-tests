@@ -132,7 +132,8 @@ test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - De
 		});
 	});
 
-	test('It should deposit ETH, WETH & USDC (until rejecting "Deposit" tx) - DAO Mainnet ETH Higher Risk position', async ({
+	// SKIP - Deposti CAP set to 0 temporarily
+	test.skip('It should deposit ETH, WETH & USDC (until rejecting "Deposit" tx) - DAO Mainnet ETH Higher Risk position', async ({
 		app,
 		metamask,
 	}) => {

@@ -49,7 +49,8 @@ test.describe('Vault page - DAO Mainnet USDC Higher Risk', async () => {
 		// BUG on staging - Tested on prod with Nightly run
 		// await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
 
-		await app.vaultPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
+		// SKIP - All funds moved to BUFFER temporarily --> NO Live APY
+		// await app.vaultPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
 
 		await app.vaultPage.shouldHaveAssets({
 			token: 'USDC',

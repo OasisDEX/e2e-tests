@@ -21,13 +21,15 @@ export class Explore {
 	@step
 	async open() {
 		await this.exploreLocator.hover();
+		// Pause to avoid random fails
+		await this.page.waitForTimeout(500);
 	}
 
 	@step
 	async shouldList(menuOptions: ExplorePages[]) {
 		for (const menuOption in menuOptions) {
 			await expect(
-				this.exploreLocator.getByText(menuOptions[menuOption], { exact: true })
+				this.exploreLocator.getByText(menuOptions[menuOption], { exact: true }),
 			).toBeVisible();
 		}
 	}

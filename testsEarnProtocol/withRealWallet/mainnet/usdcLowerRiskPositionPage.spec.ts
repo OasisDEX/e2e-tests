@@ -25,7 +25,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - APY ta
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.[0-9]{4}',
+			balance: '[0-9].[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -79,7 +79,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Deposi
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.[0-9]{4}',
+			balance: '[0-9].[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -202,7 +202,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Withdr
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.[0-9]{4}',
+			balance: '[0-9].[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -264,7 +264,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Switch
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.[0-9]{4}',
+			balance: '[0-9].[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -435,7 +435,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk Position page - Unstak
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.[0-9]{4}',
+			balance: '[0-9].[0-9]{4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});

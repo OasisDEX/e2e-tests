@@ -1,4 +1,5 @@
 import { test } from '#earnProtocolFixtures';
+import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Header @regression', async () => {
 	test('It should open Landing page', async ({ app }) => {
@@ -14,7 +15,7 @@ test.describe('Header @regression', async () => {
 
 	test('It should open "Explore" pages', async ({ app }) => {
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(1_000);
+		await app.page.waitForTimeout(expectDefaultTimeout / 5);
 
 		await app.header.explore.open();
 		await app.header.explore.select('User Activity');

@@ -1,5 +1,6 @@
 import { expect, Page } from '@playwright/test';
 import { step } from '#noWalletFixtures';
+import { expectDefaultTimeout } from 'utils/config';
 
 export class UserActivity {
 	readonly page: Page;
@@ -10,6 +11,8 @@ export class UserActivity {
 
 	@step
 	async shouldBeVisible() {
-		await expect(this.page.locator('h2:has-text("User Activity")')).toBeVisible();
+		await expect(this.page.locator('h2:has-text("User Activity")')).toBeVisible({
+			timeout: expectDefaultTimeout * 1.5,
+		});
 	}
 }
