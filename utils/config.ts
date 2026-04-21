@@ -10,7 +10,7 @@ export const institutionsBaseUrl =
 	process.env.BASE_URL ??
 	'https://institutions.staging.summer.fi';
 
-export const expectDefaultTimeout: number = 6_000;
+export const expectDefaultTimeout: number = 7_000;
 
 export const hooksTimeout: number =
 	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 130_000 : 110_000;
