@@ -60,10 +60,11 @@ test.describe('Vault page - DAO Mainnet ETH Higher Risk', async () => {
 			usdAmount: '[0-9]{1,3}.[0-9]{2}([MK])?',
 		});
 
-		await app.vaultPage.shouldHaveDepositCap({
-			token: 'ETH',
-			tokenAmount: '[0-9]{1,3}.[0-9]{2}K',
-		});
+		// SKIP - CAP set to 0 temporarily
+		// await app.vaultPage.shouldHaveDepositCap({
+		// 	token: 'ETH',
+		// 	tokenAmount: '[0-9]{1,3}.[0-9]{2}K',
+		// });
 	});
 
 	test('It should show "How it works" page', async ({ app }) => {

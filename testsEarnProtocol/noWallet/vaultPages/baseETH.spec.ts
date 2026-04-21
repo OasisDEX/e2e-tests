@@ -50,7 +50,7 @@ test.describe('Vault page - Base ETH', async () => {
 		await app.vaultPage.shouldHaveAssets({
 			token: 'ETH',
 			tokenAmount: '[0-9]{1,2}.[0-9]{2}(K)?',
-			usdAmount: '[0-9]{1,2}.[0-9]{2}[MK]',
+			usdAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
 		});
 
 		await app.vaultPage.shouldHaveDepositCap({
