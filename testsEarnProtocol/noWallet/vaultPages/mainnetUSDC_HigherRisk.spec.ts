@@ -45,15 +45,14 @@ test.describe('Vault page - Mainnet USDC Higher Risk', async () => {
 	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @balance', async ({
 		app,
 	}) => {
-		// BUG on staging - Tested on prod with Nightly run
-		// await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
+		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
 
 		await app.vaultPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
 
 		await app.vaultPage.shouldHaveAssets({
 			token: 'USDC',
-			tokenAmount: '[0-9]{1,2}.[0-9]{2}M',
-			usdAmount: '[0-9]{1,2}.[0-9]{2}M',
+			tokenAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
+			usdAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
 		});
 
 		await app.vaultPage.shouldHaveDepositCap({

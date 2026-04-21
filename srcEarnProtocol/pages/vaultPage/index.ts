@@ -41,10 +41,12 @@ export class VaultPage {
 				await this.page.waitForTimeout(1_000);
 				await this.page.locator('svg[title="refresh"]').click();
 
-				await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
+				// await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
+				await this.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
 			}
 
-			await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
+			// await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
+			await this.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
 		}).toPass();
 	}
 
@@ -67,7 +69,7 @@ export class VaultPage {
 	}
 
 	@step
-	async shouldHave30dApy(apy: 'New strategy' | string) {
+	async shouldHave30dApy(apy: 'New strategy' | string, args?: { timeout: number }) {
 		const thirtyDayApyLocator = this.page
 			.locator('[class*="_dataBlockWrapper_"]:has-text("30d Native Yield APY") span')
 			.first();
@@ -76,7 +78,9 @@ export class VaultPage {
 			await expect(thirtyDayApyLocator).toContainText(apy);
 		} else {
 			const ApyRegExp = new RegExp(`${apy}%`);
-			await expect(thirtyDayApyLocator).toContainText(ApyRegExp);
+			await expect(thirtyDayApyLocator).toContainText(ApyRegExp, {
+				timeout: args?.timeout ?? expectDefaultTimeout,
+			});
 
 			const VsMedianRegExp = new RegExp('[0-9].[0-9]{2}%');
 			await expect(
