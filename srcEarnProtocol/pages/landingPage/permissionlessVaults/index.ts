@@ -61,4 +61,44 @@ export class PermissionlessVaults {
 	async openFirstCardApyTooltip() {
 		await this.firstVaultCardLocator.locator('[data-tooltip-btn-id]').hover();
 	}
+
+	@step
+	async view(card: 'Actively risk-managed' | 'DAO risk-managed') {
+		await this.page
+			.locator('[class*="_riskManagedCard_"]')
+			.filter({ hasText: card })
+			.getByRole('link', { name: 'View' })
+			.click();
+	}
+
+	@step
+	async signUp() {
+		await this.page.getByRole('link', { name: 'Sign Up' }).click();
+	}
+
+	@step
+	async shouldLinkToMigratePage() {
+		await expect(this.page.getByRole('link', { name: 'Migrate' })).toHaveAttribute(
+			'href',
+			'/earn/migrate/user',
+		);
+		await expect(this.page.getByRole('link', { name: 'Migrate' })).not.toHaveAttribute('target');
+	}
+
+	@step
+	async migrate() {
+		await this.page.getByRole('link', { name: 'Migrate' }).click();
+	}
+
+	@step
+	async shouldOpenCalendarInNewTab() {
+		await expect(this.page.getByRole('link', { name: 'Set up a call' })).toHaveAttribute(
+			'href',
+			'https://cal.com/jordan-jackson-d278ib/summer.fi-support-call',
+		);
+		await expect(this.page.getByRole('link', { name: 'Set up a call' })).toHaveAttribute(
+			'target',
+			'_blank',
+		);
+	}
 }

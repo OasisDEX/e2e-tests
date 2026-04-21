@@ -41,7 +41,7 @@ test.describe('Permissionless DeFi Vaults', async () => {
 		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);
 	});
 
-	// SKIP - I"ve not found preper element property to be asserted when moving card in carousel
+	// SKIP - I"ve not found proper element property to be asserted when moving card in carousel
 	(['right', 'left'] as const).forEach((direction) => {
 		test.skip(`It should show vault card to the ${direction}`, async ({ app }) => {
 			// To avoid flakiness
@@ -75,5 +75,47 @@ test.describe('Permissionless DeFi Vaults', async () => {
 				).not.toBeTruthy();
 			}).toPass();
 		});
+	});
+
+	test('It should redirect to /earn page - "Actively risk-managed"', async ({ app }) => {
+		await app.landingPage.permissionlessVaults.view('Actively risk-managed');
+
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
+		await app.earn.vaults.allVaultsShouldBe({
+			filter: 'riskManagementTypes',
+			riskManagementType: 'Risk-Managed by BlockAnalitica',
+		});
+	});
+
+	test('It should redirect to /earn page - "DAO risk-managed"', async ({ app }) => {
+		await app.landingPage.permissionlessVaults.view('DAO risk-managed');
+
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
+		await app.earn.vaults.allVaultsShouldBe({
+			filter: 'riskManagementTypes',
+			riskManagementType: 'DAO Risk-Managed',
+		});
+	});
+
+	test('It should redirect to /earn page - "Start earning in minutes"', async ({ app }) => {
+		await app.landingPage.permissionlessVaults.signUp();
+
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
+	});
+
+	test('It should link to "Migrate" page and redirect to /earn page - "Migrate your existing DeFi positions"', async ({
+		app,
+	}) => {
+		await app.landingPage.permissionlessVaults.shouldLinkToMigratePage();
+
+		await app.landingPage.permissionlessVaults.migrate();
+		// It should redirect to /earn page for 'logged out' status
+		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 4 });
+	});
+
+	test('It should open to calendar in new tab - "Get a personalised onboarding experience"', async ({
+		app,
+	}) => {
+		await app.landingPage.permissionlessVaults.shouldOpenCalendarInNewTab();
 	});
 });

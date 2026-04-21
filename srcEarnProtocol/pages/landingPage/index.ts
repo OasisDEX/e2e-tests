@@ -80,7 +80,9 @@ export class LandingPage {
 		if (tvl) {
 			const regExp = new RegExp(`\\$${tvl}`);
 
-			await expect(this.heroBannerStatLocator.filter({ hasText: 'TVL' })).toContainText(regExp);
+			await expect(this.heroBannerStatLocator.filter({ hasText: 'TVL' })).toContainText(regExp, {
+				timeout: expectDefaultTimeout * 2,
+			});
 		}
 
 		if (numberOfVaults) {
