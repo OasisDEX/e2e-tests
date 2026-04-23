@@ -189,7 +189,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposi
 			app,
 			nominatedToken: 'ETH',
 			depositedToken: 'USDC',
-			depositAmount: '0.5',
+			depositAmount: '8',
 			estimatedEarnings: {
 				thirtyDaysAmount: '0.00[0-9]{2}',
 				sixMonthsAmount: '0.00[0-9]{2}',
@@ -197,13 +197,12 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Deposi
 				threeYearsAmount: '0.00[0-9]{2}',
 			},
 			previewInfo: {
-				swap: {
-					positionTokenAmount: '0.000[0-9]',
+				withSwap: {
+					positionTokenAmount: '0.0[0-9]{3}',
+					limitPrice: '0.000[0-9]{1,3}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
 				},
-				price: { amount: '0.000[0-9]' },
-				// priceImpact: '[0-3].[0-9]{2}',
-				slippage: '0.10',
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
 		});
 	});

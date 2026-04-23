@@ -104,14 +104,14 @@ test.describe('With real wallet - ETH Mainnet Lower Risk position page - Deposit
 		await app.positionPage.sidebar.selectToken('USDC');
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '2.[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			tokenOrCurrency: 'WETH',
-			amount: '0.000[0-9]',
+			amount: '0.00[0-9]{2}',
 		});
 
 		// === WETH ===
@@ -147,7 +147,7 @@ test.describe('With real wallet - ETH Mainnet Lower Risk position page - Deposit
 			app,
 			nominatedToken: 'ETH',
 			depositedToken: 'USDC',
-			depositAmount: '2',
+			depositAmount: '8',
 			estimatedEarnings: {
 				thirtyDaysAmount: '0.00[0-9]{2}',
 				sixMonthsAmount: '0.00[0-9]{2}',
@@ -155,13 +155,12 @@ test.describe('With real wallet - ETH Mainnet Lower Risk position page - Deposit
 				threeYearsAmount: '0.00[0-9]{2}',
 			},
 			previewInfo: {
-				swap: {
-					positionTokenAmount: '0.000[0-9]',
+				withSwap: {
+					positionTokenAmount: '0.0[0-9]{3}',
+					limitPrice: '0.000[0-9]{1,3}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
 				},
-				// price: { amount: '0.000[0-9]' },
-				// priceImpact: '[0-3].[0-9]{2}',
-				slippage: '0.1',
-				// transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
 		});
 

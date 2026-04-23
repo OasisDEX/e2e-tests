@@ -26,14 +26,12 @@ export const deposit = async ({
 		threeYearsAmount: string;
 	};
 	previewInfo?: {
-		swap?: {
+		withSwap?: {
 			positionTokenAmount: string;
+			limitPrice: string;
+			slippage: string;
+			quoteValidUntil: string;
 		};
-		price?: {
-			amount: string;
-		};
-		priceImpact?: string;
-		slippage?: string;
 		transactionFee?: string;
 	};
 }) => {
@@ -111,9 +109,6 @@ export const deposit = async ({
 	if (sidebarButtonLabel.includes('Approve')) {
 		await app.positionPage.sidebar.approve(depositedToken);
 		await metamask.rejectTransaction();
-	} else if (sidebarButtonLabel.includes('Confirm and Sign')) {
-		await app.positionPage.sidebar.confirmAndSign();
-		await metamask.rejectTransaction();
 	} else {
 		await app.positionPage.sidebar.previewStep.shouldBeVisible({
 			flow: 'deposit',
@@ -127,29 +122,37 @@ export const deposit = async ({
 					? 'USDC.e'
 					: depositedToken;
 
-		await app.positionPage.sidebar.previewStep.shouldHave({
-			depositAmount: { amount: depositAmount, token: previewDepositedToken },
-			swap: previewInfo?.swap
-				? {
+		if (previewInfo?.withSwap) {
+			await app.positionPage.sidebar.previewStep.shouldHave({
+				withSwap: {
+					swap: {
 						originalToken: depositedToken,
 						originalTokenAmount: depositAmount,
 						positionToken: nominatedToken,
-						positionTokenAmount: previewInfo.swap.positionTokenAmount,
-					}
-				: undefined,
-			price: previewInfo?.price
-				? {
-						amount: previewInfo.price.amount,
-						originalToken: previewDepositedToken,
+						positionTokenAmount: previewInfo.withSwap.positionTokenAmount,
+					},
+					limitPrice: {
+						price: previewInfo.withSwap.limitPrice,
+						originalToken: depositedToken,
 						positionToken: nominatedToken,
-					}
-				: undefined,
-			priceImpact: previewInfo?.priceImpact,
-			slippage: previewInfo?.slippage,
-			transactionFee: previewInfo?.transactionFee,
-		});
+					},
+					slippage: previewInfo.withSwap.slippage,
+					quoteValidUntil: previewInfo.withSwap.quoteValidUntil,
+				},
+			});
+		} else {
+			await app.positionPage.sidebar.previewStep.shouldHave({
+				depositAmount: { amount: depositAmount, token: previewDepositedToken },
+				transactionFee: previewInfo?.transactionFee,
+			});
+		}
 
-		await app.positionPage.sidebar.previewStep.deposit();
-		await metamask.rejectTransaction();
+		if (sidebarButtonLabel.includes('Confirm and Sign')) {
+			await app.positionPage.sidebar.confirmAndSign();
+			await metamask.rejectTransaction();
+		} else {
+			await app.positionPage.sidebar.previewStep.deposit();
+			await metamask.rejectTransaction();
+		}
 	}
 };

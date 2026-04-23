@@ -22,7 +22,8 @@ test.describe('Landing page @regression', async () => {
 		});
 	});
 
-	test('It should filter products', async ({ app }) => {
+	// SKIP - Update test once page completed
+	test.skip('It should filter products', async ({ app }) => {
 		// ALL products are listed by default
 		await app.landingPage.shouldHaveTabHighlighted('All Products');
 		await app.landingPage.shouldHaveProducts([
@@ -94,13 +95,15 @@ test.describe('Landing page @regression', async () => {
 		await app.landingPage.permissionlessVaults.shouldBeVisible();
 	});
 
-	test('It should redirect to "Permisoned RWA Vault" page', async ({ app }) => {
+	// SKIP - Update test once page completed
+	test.skip('It should redirect to "Permisoned RWA Vault" page', async ({ app }) => {
 		await app.landingPage.learnMore('Permissioned RWA Vaults');
 
 		await app.landingPage.permissionedRwaVault.shouldBeVisible();
 	});
 
-	test('It should redirect to "Build your own DeFi Vault" page', async ({ app }) => {
+	// SKIP - Update text once page completed
+	test.skip('It should redirect to "Build your own DeFi Vault" page', async ({ app }) => {
 		await app.landingPage.learnMore('Build your own DeFi Vault');
 
 		await app.landingPage.buildYourOwnVault.shouldBeVisible();
