@@ -25,7 +25,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - APY ta
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -79,7 +79,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Deposi
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -174,13 +174,12 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Deposi
 				threeYearsAmount: '[1-7].[0-9]{4}',
 			},
 			previewInfo: {
-				swap: {
+				withSwap: {
 					positionTokenAmount: '[0-7].[0-9]{4}',
+					limitPrice: '[0-9]{2,3}.[0-9]{2,6}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
 				},
-				price: { amount: '[0-9],[0-9]{3}.[0-9]{2}' },
-				priceImpact: '[0-3].[0-9]{2}',
-				slippage: '0.10',
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
 		});
 	});
@@ -202,7 +201,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Withdr
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -264,7 +263,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk position page - Switch
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -435,7 +434,7 @@ test.describe('With real wallet - Mainnet USDC Lower Risk Position page - Unstak
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});

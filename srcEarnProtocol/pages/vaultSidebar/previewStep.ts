@@ -21,106 +21,113 @@ export class PreviewStep {
 	async shouldHave({
 		depositAmount,
 		withdrawAmount,
-		swap,
-		price,
-		priceImpact,
-		slippage,
+		withSwap,
 		transactionFee,
 	}: {
 		depositAmount?: { amount: string; token: EarnTokens };
 		withdrawAmount?: { amount: string; token: EarnTokens };
-		swap?: {
-			originalToken: EarnTokens;
-			originalTokenAmount: string;
-			positionToken: EarnTokens;
-			positionTokenAmount: string;
+		withSwap?: {
+			swap: {
+				originalToken: EarnTokens;
+				originalTokenAmount: string;
+				positionToken: EarnTokens;
+				positionTokenAmount: string;
+			};
+			limitPrice: {
+				price: string;
+				originalToken: EarnTokens;
+				positionToken: EarnTokens;
+			};
+			slippage?: string;
+			quoteValidUntil: string;
 		};
-		price?: {
-			originalToken: EarnTokens;
-			positionToken: EarnTokens;
-			amount: string;
-		};
-		priceImpact?: string;
-		slippage?: string;
 		transactionFee?: string;
 	}) {
-		await expect(this.page.getByText('Changes & Fees')).toBeVisible({ timeout: 10_000 });
+		if (withSwap) {
+			// Wait for summary info to be displayed
+			await expect(this.page.getByText('Swap Quote')).toBeVisible({ timeout: 10_000 });
 
-		if (depositAmount) {
-			const regExp = new RegExp(`${depositAmount.amount}.*${depositAmount.token}`);
-
+			// Swap
+			const amountsRegExp = new RegExp(
+				`${withSwap.swap.originalTokenAmount}.*${withSwap.swap.positionTokenAmount}`,
+			);
 			await expect(
-				this.page.locator(
-					`span:has-text("Deposit Amount") + span:has-text("${depositAmount.token}")`
-				)
-			).toContainText(regExp);
-		}
-
-		if (withdrawAmount) {
-			const regExp = new RegExp(`${withdrawAmount.amount}.*${withdrawAmount.token}`);
-
-			await expect(
-				this.page.locator(
-					`span:has-text("Withdraw Amount") + span:has-text("${withdrawAmount.token}")`
-				)
-			).toContainText(regExp);
-		}
-
-		if (swap) {
-			const amountsRegExp = new RegExp(`${swap.originalTokenAmount}.*${swap.positionTokenAmount}`);
-			await expect(
-				this.page.locator('span:has-text("Swap")').locator('xpath=//following-sibling::*[1]')
+				this.page.locator('li span:has-text("Swap")').locator('xpath=//following-sibling::*[1]'),
 			).toContainText(amountsRegExp);
 
-			const originalTokenRegExp = new RegExp(swap.originalToken);
+			const originalTokenRegExp = new RegExp(withSwap.swap.originalToken);
 			await expect(
 				this.page
 					.locator('span:has-text("Swap")')
 					.locator('xpath=//following-sibling::*[1]')
 					.locator('svg')
-					.nth(0)
+					.nth(0),
 			).toHaveAttribute('title', originalTokenRegExp, { ignoreCase: true });
 
-			const positionTokenRegExp = new RegExp(swap.positionToken);
+			const positionTokenRegExp = new RegExp(withSwap.swap.positionToken);
 			await expect(
 				this.page
 					.locator('span:has-text("Swap")')
 					.locator('xpath=//following-sibling::*[1]')
 					.locator('svg')
-					.nth(1)
+					.nth(1),
 			).toHaveAttribute('title', positionTokenRegExp, { ignoreCase: true });
-		}
 
-		if (price) {
-			const regExp = new RegExp(`${price.amount}.*${price.positionToken}/${price.originalToken}`);
+			// Limit price
+			const limitPriceRegExp = new RegExp(
+				`${withSwap.limitPrice.price}.*${withSwap.limitPrice.positionToken}\\/${withSwap.limitPrice.originalToken}`,
+			);
+			await expect(
+				this.page
+					.locator('li span:has-text("Limit price")')
+					.locator('xpath=//following-sibling::*[1]'),
+			).toContainText(limitPriceRegExp);
+
+			// Slippage
+			const slippageRegExp = new RegExp(`${withSwap.slippage}%`);
 
 			await expect(
-				this.page.locator(`span:has-text("Price") + span:has-text("${price.originalToken}")`)
-			).toContainText(regExp);
-		}
+				this.page.locator('span:has-text("Slippage") + span:has-text("%")'),
+			).toContainText(slippageRegExp);
 
-		if (priceImpact) {
-			const regExp = new RegExp(`${priceImpact}%`);
-
-			await expect(
-				this.page.locator('span:has-text("Price Impact") + span:has-text("%")')
-			).toContainText(regExp);
-		}
-
-		if (slippage) {
-			const regExp = new RegExp(slippage);
+			// Quote Valid Until
+			const quoteValidUntilRegExp = new RegExp(withSwap.quoteValidUntil);
 
 			await expect(
-				this.page.locator('span:has-text("Slippage") + span:has-text("%")')
-			).toContainText(regExp);
-		}
+				this.page
+					.locator('span:has-text("Quote valid until")')
+					.locator('xpath=//following-sibling::*[1]'),
+			).toContainText(quoteValidUntilRegExp);
+		} else {
+			await expect(this.page.getByText('Changes & Fees')).toBeVisible({ timeout: 10_000 });
 
-		if (transactionFee) {
-			const regExp = new RegExp(`\\$.*${transactionFee}`);
+			if (depositAmount) {
+				const regExp = new RegExp(`${depositAmount.amount}.*${depositAmount.token}`);
 
-			await expect(
-				this.page.locator('span:has-text("Transaction Fee") + span:has-text("$")')
-			).toContainText(regExp, { timeout: 10_000 });
+				await expect(
+					this.page.locator(
+						`span:has-text("Deposit Amount") + span:has-text("${depositAmount.token}")`,
+					),
+				).toContainText(regExp);
+			}
+
+			if (withdrawAmount) {
+				const regExp = new RegExp(`${withdrawAmount.amount}.*${withdrawAmount.token}`);
+
+				await expect(
+					this.page.locator(
+						`span:has-text("Withdraw Amount") + span:has-text("${withdrawAmount.token}")`,
+					),
+				).toContainText(regExp);
+			}
+
+			if (transactionFee) {
+				const regExp = new RegExp(`\\$.*${transactionFee}`);
+
+				await expect(
+					this.page.locator('span:has-text("Transaction Fee") + span:has-text("$")'),
+				).toContainText(regExp, { timeout: 10_000 });
+			}
 		}
 	}
 
