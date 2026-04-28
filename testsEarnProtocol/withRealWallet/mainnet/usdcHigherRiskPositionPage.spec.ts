@@ -240,9 +240,10 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Withd
 				oneYearAmount: '0.1[0-9]{3}',
 				threeYearsAmount: '0.1[0-9]{3}',
 			},
-			previewInfo: {
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
-			},
+			// SKIP - No transaction fee with CowSwap for very small amounts
+			// previewInfo: {
+			// 	transactionFee: '[0-9]{1,2}.[0-9]{2}',
+			// },
 		});
 	});
 });

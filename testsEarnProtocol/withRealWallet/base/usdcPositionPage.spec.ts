@@ -169,13 +169,12 @@ test.describe('With real wallet - Base USDC position page - Deposit', async () =
 				threeYearsAmount: '[2-4].[0-9]{4}',
 			},
 			previewInfo: {
-				swap: {
-					positionTokenAmount: '0.[3-4][0-9]{3}',
+				withSwap: {
+					positionTokenAmount: '0.[3-5][0-9]{3}',
+					limitPrice: '[0-1].[0-9]{2,6}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
 				},
-				price: { amount: '[0-1].[0-9]{4}' },
-				priceImpact: '[0-3].[0-9]{2}',
-				slippage: '0.10',
-				transactionFee: '[0-2].[0-9]{2}',
 			},
 		});
 	});

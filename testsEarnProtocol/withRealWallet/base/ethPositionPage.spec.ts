@@ -176,13 +176,12 @@ test.describe('With real wallet - Base ETH Position page - Deposit', async () =>
 				threeYearsAmount: '0.0[0-9]{3}',
 			},
 			previewInfo: {
-				swap: {
-					positionTokenAmount: '0.000[0-9]',
+				withSwap: {
+					positionTokenAmount: '0.0[0-9]{3}',
+					limitPrice: '0.000[0-9]{1,3}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
 				},
-				price: { amount: '0.000[0-9]' },
-				// priceImpact: '[0-3].[0-9]{2}',
-				slippage: '0.10',
-				transactionFee: '[0-2].[0-9]{2}',
 			},
 		});
 	});

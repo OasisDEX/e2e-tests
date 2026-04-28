@@ -174,13 +174,12 @@ test.describe('With real wallet - Mainnet USDT Position page - Deposit', async (
 				threeYearsAmount: '[3-9].[0-9]{4}',
 			},
 			previewInfo: {
-				swap: {
+				withSwap: {
 					positionTokenAmount: '[0-7].[0-9]{4}',
+					limitPrice: '[0-9]{2,4}.[0-9]{2,6}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
 				},
-				price: { amount: '[0-9],[0-9]{3}.[0-9]{2}' },
-				priceImpact: '[0-3].[0-9]{2}',
-				slippage: '0.10',
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
 		});
 	});
@@ -242,7 +241,8 @@ test.describe('With real wallet - Mainnet USDT Position page - Withdraw', async 
 				threeYearsAmount: '0.[0-9]{4}',
 			},
 			previewInfo: {
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
+				// SKIP - No transaction fee for very small amounts with CowSwap
+				// transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
 		});
 	});

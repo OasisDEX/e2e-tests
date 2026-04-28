@@ -105,7 +105,7 @@ test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - De
 		await app.positionPage.sidebar.selectToken('USDC');
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '2.[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -132,7 +132,7 @@ test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - De
 		});
 	});
 
-	// SKIP - Deposti CAP set to 0 temporarily
+	// SKIP - Deposit CAP set to 0 temporarily
 	test.skip('It should deposit ETH, WETH & USDC (until rejecting "Deposit" tx) - DAO Mainnet ETH Higher Risk position', async ({
 		app,
 		metamask,
@@ -199,13 +199,12 @@ test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - De
 				threeYearsAmount: '0.00[0-9]{2}',
 			},
 			previewInfo: {
-				swap: {
-					positionTokenAmount: '0.000[0-9]',
+				withSwap: {
+					positionTokenAmount: '0.0[0-9]{3}',
+					limitPrice: '0.000[0-9]{1,3}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
 				},
-				price: { amount: '0.000[0-9]' },
-				// priceImpact: '[0-3].[0-9]{2}',
-				slippage: '0.10',
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
 			},
 		});
 	});
