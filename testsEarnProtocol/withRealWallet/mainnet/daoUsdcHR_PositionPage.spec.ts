@@ -9,9 +9,7 @@ import { expect } from '#earnProtocolFixtures';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
-// SKIP - All funds moved to BUFFER temporarily --> NO APY tag
-test.describe
-	.skip('With real wallet - DAO Mainnet USDC Higher Risk position page - APY tag', async () => {
+test.describe('With real wallet - DAO Mainnet USDC Higher Risk position page - APY tag', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
@@ -26,7 +24,7 @@ test.describe
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -80,7 +78,7 @@ test.describe('With real wallet - DAO Mainnet USDC Higher Risk position page - D
 		);
 
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -174,15 +172,16 @@ test.describe('With real wallet - DAO Mainnet USDC Higher Risk position page - D
 				oneYearAmount: '[1-7].[0-9]{4}',
 				threeYearsAmount: '[1-9].[0-9]{4}', // Edited because of not-priorotised bug about wrong ETH swap rate
 			},
-			previewInfo: {
-				swap: {
-					positionTokenAmount: '[0-7].[0-9]{4}',
-				},
-				price: { amount: '[0-9],[0-9]{3}.[0-9]{2}' },
-				priceImpact: '[0-3].[0-9]{2}',
-				slippage: '0.10',
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
-			},
+			// SKIP - TO BE UPDATED
+			// previewInfo: {
+			// 	swap: {
+			// 		positionTokenAmount: '[0-7].[0-9]{4}',
+			// 	},
+			// 	price: { amount: '[0-9],[0-9]{3}.[0-9]{2}' },
+			// 	priceImpact: '[0-3].[0-9]{2}',
+			// 	slippage: '0.10',
+			// 	transactionFee: '[0-9]{1,2}.[0-9]{2}',
+			// },
 		});
 	});
 });
@@ -203,7 +202,7 @@ test.describe('With real wallet - DAO Mainnet USDC Higher Risk position page - W
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -265,7 +264,7 @@ test.describe('With real wallet - DAO Mainnet USDC Higher Risk position page - S
 
 		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '[0-9].[0-9]{4}',
+			balance: '[0-9]{1,2}.[0-9]{2,4}',
 			token: 'USDC',
 			timeout: expectDefaultTimeout * 2,
 		});

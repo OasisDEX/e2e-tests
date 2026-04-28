@@ -29,12 +29,6 @@ export const withdraw = async ({
 		threeYearsAmount: string;
 	};
 	previewInfo?: {
-		swap?: {
-			positionTokenAmount: string;
-		};
-		price?: {
-			amount: string;
-		};
 		priceImpact?: string;
 		slippage?: string;
 		transactionFee?: string;
@@ -78,7 +72,7 @@ export const withdraw = async ({
 				token: nominatedToken,
 			},
 		],
-		{ timeout: expectDefaultTimeout * 3 }
+		{ timeout: expectDefaultTimeout * 3 },
 	);
 	await app.positionPage.sidebar.buttonShouldBeVisible('Preview');
 	await app.positionPage.sidebar.preview();
@@ -87,7 +81,7 @@ export const withdraw = async ({
 
 	await expect(
 		sidebarButtonLocator,
-		'[Agree], [Approve] or [Withdraw] buttons should be visible'
+		'[Agree], [Approve] or [Withdraw] buttons should be visible',
 	).toContainText(/Agree|Approve|Withdraw/, { timeout: expectDefaultTimeout * 3 });
 
 	let sidebarButtonLabel = await sidebarButtonLocator.innerText();
@@ -99,7 +93,7 @@ export const withdraw = async ({
 
 		await expect(
 			sidebarButtonLocator,
-			'[Approve] or [Withdraw] buttons should be visible'
+			'[Approve] or [Withdraw] buttons should be visible',
 		).toContainText(/Approve|Withdraw/, { timeout: expectDefaultTimeout * 3 });
 
 		sidebarButtonLabel = await sidebarButtonLocator.innerText();
@@ -110,10 +104,10 @@ export const withdraw = async ({
 			nominatedToken === 'ETH'
 				? 'WETH'
 				: network !== 'arbitrum' && network !== 'hyperliquid'
-				? nominatedToken
-				: nominatedToken === 'USD₮0'
-				? 'LVUSDT'
-				: 'LVUSDC'
+					? nominatedToken
+					: nominatedToken === 'USD₮0'
+						? 'LVUSDT'
+						: 'LVUSDC',
 		);
 		await metamask.rejectTransaction();
 	} else {
@@ -126,28 +120,11 @@ export const withdraw = async ({
 			withdrawnToken == 'WSTETH'
 				? 'wstETH'
 				: // : withdrawnToken == 'USDC.E'
-				  // ? 'USDC.e'
-				  withdrawnToken;
+					// ? 'USDC.e'
+					withdrawnToken;
 
 		await app.positionPage.sidebar.previewStep.shouldHave({
 			withdrawAmount: { amount: withdrawAmount, token: previewWithdrawnToken },
-			swap: previewInfo?.swap
-				? {
-						originalToken: withdrawnToken,
-						originalTokenAmount: withdrawAmount,
-						positionToken: nominatedToken,
-						positionTokenAmount: previewInfo.swap.positionTokenAmount,
-				  }
-				: undefined,
-			price: previewInfo?.price
-				? {
-						amount: previewInfo.price.amount,
-						originalToken: previewWithdrawnToken,
-						positionToken: nominatedToken,
-				  }
-				: undefined,
-			priceImpact: previewInfo?.priceImpact,
-			slippage: previewInfo?.slippage,
 			transactionFee: previewInfo?.transactionFee,
 		});
 

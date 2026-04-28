@@ -152,7 +152,12 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit @arbi
 				threeYearsAmount: '[1-7].[0-9]{4}',
 			},
 			previewInfo: {
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
+				withSwap: {
+					positionTokenAmount: '[0-7].[0-9]{4}',
+					limitPrice: '[0-9]{2,4}.[0-9]{2,6}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
+				},
 			},
 		});
 
@@ -173,7 +178,12 @@ test.describe('With real wallet - Arbitrum USD₮0 Position page - Deposit @arbi
 				threeYearsAmount: '[1-2].[0-9]{4}',
 			},
 			previewInfo: {
-				transactionFee: '[0-9]{1,2}.[0-9]{2}',
+				withSwap: {
+					positionTokenAmount: '0.[4-6][0-9]{3}',
+					limitPrice: '[0-1].[0-9]{2,6}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
+				},
 			},
 		});
 	});
