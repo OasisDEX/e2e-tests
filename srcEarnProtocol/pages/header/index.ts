@@ -2,6 +2,7 @@ import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
 import { Explore } from './explore';
+import { Products } from './products';
 import { Sumr } from './sumr';
 import { Support } from './support';
 
@@ -12,6 +13,8 @@ export class Header {
 
 	readonly explore: Explore;
 
+	readonly products: Products;
+
 	readonly sumr: Sumr;
 
 	readonly support: Support;
@@ -20,6 +23,7 @@ export class Header {
 		this.page = page;
 		this.headerLocator = page.locator('header');
 		this.explore = new Explore(page, this.headerLocator);
+		this.products = new Products(page, this.headerLocator);
 		this.sumr = new Sumr(page, this.headerLocator);
 		this.support = new Support(page, this.headerLocator);
 	}
@@ -28,7 +32,7 @@ export class Header {
 	async shouldHaveSummerfiLogo() {
 		await expect(
 			this.headerLocator.locator('img[alt="Summer.fi"]').nth(0),
-			'Summer.fi logo should be visible'
+			'Summer.fi logo should be visible',
 		).toBeVisible();
 	}
 
@@ -56,7 +60,7 @@ export class Header {
 	async shouldHaveWalletAddress(shortenedWalletAddress: string) {
 		await expect(
 			this.headerLocator.locator(`button:has-text("${shortenedWalletAddress}")`),
-			'Button with shortened wallet address should be visible'
+			'Button with shortened wallet address should be visible',
 		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 	}
 
@@ -64,7 +68,7 @@ export class Header {
 	async shouldShowLogInButton(timeout?: number) {
 		await expect(
 			this.headerLocator.getByRole('button', { name: 'Log in', exact: true }),
-			'"Log in" button shouldbe visible'
+			'"Log in" button shouldbe visible',
 		).toBeVisible({ timeout: timeout ?? expectDefaultTimeout * 2 });
 	}
 

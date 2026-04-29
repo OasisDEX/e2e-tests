@@ -172,16 +172,14 @@ test.describe('With real wallet - DAO Mainnet USDC Higher Risk position page - D
 				oneYearAmount: '[1-7].[0-9]{4}',
 				threeYearsAmount: '[1-9].[0-9]{4}', // Edited because of not-priorotised bug about wrong ETH swap rate
 			},
-			// SKIP - TO BE UPDATED
-			// previewInfo: {
-			// 	swap: {
-			// 		positionTokenAmount: '[0-7].[0-9]{4}',
-			// 	},
-			// 	price: { amount: '[0-9],[0-9]{3}.[0-9]{2}' },
-			// 	priceImpact: '[0-3].[0-9]{2}',
-			// 	slippage: '0.10',
-			// 	transactionFee: '[0-9]{1,2}.[0-9]{2}',
-			// },
+			previewInfo: {
+				withSwap: {
+					positionTokenAmount: '[0-7].[0-9]{4}',
+					limitPrice: '[0-9]{2,3}.[0-9]{2,6}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
+				},
+			},
 		});
 	});
 });

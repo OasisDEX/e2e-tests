@@ -22,7 +22,30 @@ export class Sumr {
 	}
 
 	@step
-	async select(option: 'Learn about $SUMR' | 'Stake $SUMR' | 'Governance') {
+	async select(option: '$SUMR token' | 'SUMR staking') {
 		await this.sumrLocator.locator(`a:has-text("${option}")`).click();
+	}
+
+	@step
+	async shouldHave(options: ('Lazy Summer Forum' | 'Lazy Summer Governance')[]) {
+		const hrefValue = {
+			'Lazy Summer Forum': 'https://forum.summer.fi/',
+			'Lazy Summer Governance': 'https://gov.summer.fi/dao',
+		};
+
+		for (const option in options) {
+			await expect(
+				this.sumrLocator.getByText(options[option]),
+				`"${options[option]}" should be visible`,
+			).toBeVisible();
+			await expect(
+				this.sumrLocator.locator(`a:has-text("${options[option]}")`),
+				`"${options[option]}" should have "target=_blank" attribute`,
+			).toHaveAttribute('target', '_blank');
+			await expect(
+				this.sumrLocator.locator(`a:has-text("${options[option]}")`),
+				`"${options[option]}" should have "href" attribute`,
+			).toHaveAttribute('href', hrefValue[options[option]]);
+		}
 	}
 }
