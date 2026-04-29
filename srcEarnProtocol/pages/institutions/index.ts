@@ -20,8 +20,10 @@ export class Institutions {
 	@step
 	async shouldBeVisible() {
 		await expect(
-			this.page.getByRole('heading', { name: 'Crypto native yield, built for' }),
-			'"Crypto native yield..." header should be visible',
+			this.page.getByRole('heading', {
+				name: `Want to learn more about Summer.fi's Institutional products`,
+			}),
+			'"Want to learn more about..." header should be visible',
 		).toBeVisible();
 	}
 
