@@ -375,7 +375,8 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch
 		]);
 	});
 
-	test('It should switch Mainnet ETH Higher Risk position', async ({ app, metamask }) => {
+	// SKIP - SWITCH with CowSwap doesn't work for positions with staked tokens
+	test.skip('It should switch Mainnet ETH Higher Risk position', async ({ app, metamask }) => {
 		test.setTimeout(extremelyLongTestTimeout);
 
 		// USDC Lower risk

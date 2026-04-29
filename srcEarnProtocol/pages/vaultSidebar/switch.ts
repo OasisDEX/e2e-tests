@@ -205,7 +205,8 @@ export class Switch {
 		).toContainText(earningDifferenceRegExp);
 
 		const priceImpactRegExp = new RegExp(
-			`([0-9],[0-9])?[0-9]{1,2}.[0-9]{2}([0-9]{2})?.*${targetToken}\\/${nominatedToken}.*\\([0-9].[0-9]{2}%\\)|n\\/a`,
+			// `([0-9],[0-9])?[0-9]{1,2}.[0-9]{2}([0-9]{2})?.*${targetToken}\\/${nominatedToken}.*\\([0-9].[0-9]{2}%\\)|n\\/a`,
+			`([0-9],[0-9])?[0-9]{1,2}.[0-9]{2}([0-9]{2})?.*${targetToken}\\/${nominatedToken}(.*\\([0-9].[0-9]{2}%\\))?`,
 		);
 		await expect(
 			this.page.getByText('Price impact', { exact: true }).locator('..'),

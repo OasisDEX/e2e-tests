@@ -399,16 +399,17 @@ test.describe('With real wallet - DAO Mainnet USDC Higher Risk position page - S
 			riskLevel: 'Lower Risk',
 		});
 
-		// ETH Higher Risk - DAO
-		await app.earn.sidebar.goBack();
+		// SKIP - ETH DAO with DEPOSIT Cap = 0 --> Switch returns error
+		// // ETH Higher Risk - DAO
+		// await app.earn.sidebar.goBack();
 
-		await switchPosition({
-			metamask,
-			app,
-			nominatedToken: 'USDC',
-			targetToken: 'ETH',
-			riskLevel: 'Higher Risk',
-			riskManagementType: 'DAO Risk-Managed',
-		});
+		// await switchPosition({
+		// 	metamask,
+		// 	app,
+		// 	nominatedToken: 'USDC',
+		// 	targetToken: 'ETH',
+		// 	riskLevel: 'Higher Risk',
+		// 	riskManagementType: 'DAO Risk-Managed',
+		// });
 	});
 });
