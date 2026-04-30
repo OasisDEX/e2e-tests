@@ -34,7 +34,8 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 		await app.positionPage.sidebar.selectTab('Switch');
 	});
 
-	test('It should switch Mainnet ETH Lower Risk position', async ({ app, metamask }) => {
+	// SKIP - There are staked shares --> Replaced with another position
+	test.skip('It should switch Mainnet ETH Lower Risk position', async ({ app, metamask }) => {
 		// USDC Lower Risk
 		await switchPosition({
 			metamask,

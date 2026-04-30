@@ -349,7 +349,8 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 		]);
 	});
 
-	test('It should switch Mainnet ETH Lower Risk position', async ({ app, metamask }) => {
+	// SKIP - There are staked shares
+	test.skip('It should switch Mainnet ETH Lower Risk position', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		// USDC Lower Risk

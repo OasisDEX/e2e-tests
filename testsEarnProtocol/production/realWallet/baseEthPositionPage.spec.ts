@@ -18,7 +18,7 @@ test.describe('Prod release - Position page - Base ETH - Deposit', async () => {
 		});
 
 		await app.positionPage.open(
-			'/earn/base/position/0x2bb9ad69feba5547b7cd57aafe8457d40bf834af/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/base/position/0x2bb9ad69feba5547b7cd57aafe8457d40bf834af/0x10649c79428d718621821cf6299e91920284743f',
 		);
 	});
 
@@ -39,6 +39,14 @@ test.describe('Prod release - Position page - Base ETH - Deposit', async () => {
 			nominatedToken: 'ETH',
 			depositedToken: 'CBETH',
 			depositAmount: '0.0005',
+			previewInfo: {
+				withSwap: {
+					positionTokenAmount: '0.000[0-9]',
+					limitPrice: '[0-1].[0-9]{4,6}',
+					slippage: '0.1',
+					quoteValidUntil: '[0-9]{1,2}:[0-9]{2}',
+				},
+			},
 		});
 	});
 });
