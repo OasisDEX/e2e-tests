@@ -24,7 +24,8 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		}).toPass();
 	});
 
-	test('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
+	// SKIP - PRIVY - test to be updated
+	test.skip('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
 		await expect(async () => {
 			await app.portfolio.rewards.claim();
 

@@ -18,7 +18,7 @@ test.describe('With real wallet - Sonic USDC.E Position page - Withdraw', async 
 		});
 
 		await app.positionPage.open(
-			'/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8/0x10649c79428d718621821cf6299e91920284743f'
+			'/earn/sonic/position/0x507a2d9e87dbd3076e65992049c41270b47964f8/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
 		// Wait for balance to fully load to avoid random fails
@@ -28,9 +28,6 @@ test.describe('With real wallet - Sonic USDC.E Position page - Withdraw', async 
 			timeout: expectDefaultTimeout * 2,
 		});
 		await app.page.waitForTimeout(expectDefaultTimeout / 3);
-
-		await app.positionPage.sidebar.changeNetwork();
-		await metamask.approveSwitchNetwork();
 
 		await app.positionPage.sidebar.selectTab('Withdraw');
 	});

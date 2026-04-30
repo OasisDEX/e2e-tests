@@ -4,8 +4,7 @@ import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
 
-// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
-test.describe.skip('Bridge Sonic SUMR tokens', async () => {
+test.describe('Bridge Sonic SUMR tokens', async () => {
 	test.beforeEach(async ({ metamask, app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 100_000);
 
@@ -17,8 +16,6 @@ test.describe.skip('Bridge Sonic SUMR tokens', async () => {
 		});
 
 		await app.portfolio.bridge.open('0x10649c79428d718621821cf6299e91920284743f');
-		await app.portfolio.bridge.selectNetwork({ fromOrTo: 'From', network: 'Sonic' });
-		await metamask.approveSwitchNetwork();
 	});
 
 	test('Bridge Sonic to Base', async ({ app, metamask }) => {

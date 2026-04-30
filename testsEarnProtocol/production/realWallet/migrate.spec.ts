@@ -6,7 +6,8 @@ import { longTestTimeout } from 'utils/config';
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
-test.describe('Real wallet - Portfolio - Migrate', async () => {
+// SKIP - MIGRATE feature hidden for now
+test.describe.skip('Real wallet - Portfolio - Migrate', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 25_000);
 

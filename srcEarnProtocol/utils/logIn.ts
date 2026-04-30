@@ -23,34 +23,34 @@ export const logInWithWalletAddress = async ({
 }) => {
 	await app.header.logIn();
 
-	// ===================
-	// TO BE REMOVED once PRIVY is released
-	const url = app.page.url();
-	if (!url.includes('staging')) {
-		await app.modals.logIn.withWallet(); // Step not needed with privy
-	}
-	// ===================
+	// // ===================
+	// // TO BE REMOVED once PRIVY is released
+	// const url = app.page.url();
+	// if (!url.includes('staging')) {
+	// 	await app.modals.logIn.withWallet(); // Step not needed with privy
+	// }
+	// // ===================
 
 	await app.modals.logIn.selectWallet(wallet);
 	await metamask.connectToDapp();
 
-	// ===================
-	// TO BE REMOVED once PRIVY is released
-	if (!url.includes('staging')) {
-		// Steps not needed with privy
-		if (network) {
-			// Earn protocol app switches to Base by default
-			await metamask.approveNewNetwork();
-			await metamask.approveSwitchNetwork();
-		}
+	// // ===================
+	// // TO BE REMOVED once PRIVY is released
+	// if (!url.includes('staging')) {
+	// 	// Steps not needed with privy
+	// 	if (network) {
+	// 		// Earn protocol app switches to Base by default
+	// 		await metamask.approveNewNetwork();
+	// 		await metamask.approveSwitchNetwork();
+	// 	}
 
-		// Connect wallet popup started not hiding on the 8th January 2026
-		await app.page.waitForTimeout(2_000);
-		// App doesn't reload when loging in at the moment
-		await app.page.reload();
-		await app.header.shouldHaveWalletAddress(shortenedWalletAddress ?? '0x1064...4743F');
-	}
-	// ===================
+	// 	// Connect wallet popup started not hiding on the 8th January 2026
+	// 	await app.page.waitForTimeout(2_000);
+	// 	// App doesn't reload when loging in at the moment
+	// 	await app.page.reload();
+	// 	await app.header.shouldHaveWalletAddress(shortenedWalletAddress ?? '0x1064...4743F');
+	// }
+	// // ===================
 
 	await app.page.waitForTimeout(2_000);
 };

@@ -162,8 +162,7 @@ test.describe('With real wallet - Sonic USDC.E Position page - Withdraw', async 
 		});
 	});
 
-	// SKIP - Enable once SUMR is deployed back to staging (currentlywith BUMMER)
-	test.skip('It should withdraw to USDC.E - (until rejecting "Withdraw" tx) - Sonic USDC.E position', async ({
+	test('It should withdraw to USDC.E - (until rejecting "Withdraw" tx) - Sonic USDC.E position', async ({
 		app,
 		metamask,
 	}) => {

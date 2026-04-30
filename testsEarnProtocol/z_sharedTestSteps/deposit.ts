@@ -118,9 +118,11 @@ export const deposit = async ({
 		const previewDepositedToken: EarnTokens =
 			depositedToken == 'WSTETH'
 				? 'wstETH'
-				: depositedToken == 'USDC.E'
-					? 'USDC.e'
-					: depositedToken;
+				: depositedToken == 'CBETH'
+					? 'cbETH'
+					: depositedToken == 'USDC.E'
+						? 'USDC.e'
+						: depositedToken;
 
 		if (previewInfo?.withSwap) {
 			await app.positionPage.sidebar.previewStep.shouldHave({

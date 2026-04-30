@@ -2,8 +2,8 @@ import { expect, test } from '#earnProtocolFixtures';
 import { logInWithEmailAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 
-test.describe('Logged in with Email', async () => {
-	// Feature disabled in staging - Can be tested on Prod only
+// Feature disabled after adding Privy
+test.describe.skip('Logged in with Email', async () => {
 	test('It should Send funds @productionOnly', async ({ app, request }) => {
 		test.setTimeout(veryLongTestTimeout);
 

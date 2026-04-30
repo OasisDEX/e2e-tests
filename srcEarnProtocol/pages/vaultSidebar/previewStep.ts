@@ -75,7 +75,7 @@ export class PreviewStep {
 
 			// Limit price
 			const limitPriceRegExp = new RegExp(
-				`${withSwap.limitPrice.price}.*${withSwap.limitPrice.positionToken}\\/${withSwap.limitPrice.originalToken === 'WSTETH' ? 'wstETH' : withSwap.limitPrice.originalToken}`,
+				`${withSwap.limitPrice.price}.*${withSwap.limitPrice.positionToken}\\/${withSwap.limitPrice.originalToken === 'WSTETH' ? 'wstETH' : withSwap.limitPrice.originalToken === 'CBETH' ? 'cbETH' : withSwap.limitPrice.originalToken}`,
 			);
 			await expect(
 				this.page
