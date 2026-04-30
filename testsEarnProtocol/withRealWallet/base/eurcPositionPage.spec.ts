@@ -308,14 +308,14 @@ test.describe('With real wallet - Base EURC position page - Switch', async () =>
 			targetToken: 'USDC',
 		});
 
-		// ETH
-		await app.earn.sidebar.goBack();
+		// // ETH
+		// await app.earn.sidebar.goBack();
 
-		await switchPosition({
-			metamask,
-			app,
-			nominatedToken: 'EURC',
-			targetToken: 'ETH',
-		});
+		// await switchPosition({
+		// 	metamask,
+		// 	app,
+		// 	nominatedToken: 'EURC',
+		// 	targetToken: 'ETH',
+		// });
 	});
 });

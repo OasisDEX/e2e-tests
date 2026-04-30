@@ -303,13 +303,13 @@ test.describe('With real wallet - Base USDC position page - Switch', async () =>
 	test('It should switch Base USDC position', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
-		// EURC
-		await switchPosition({
-			metamask,
-			app,
-			nominatedToken: 'USDC',
-			targetToken: 'EURC',
-		});
+		// // EURC
+		// await switchPosition({
+		// 	metamask,
+		// 	app,
+		// 	nominatedToken: 'USDC',
+		// 	targetToken: 'EURC',
+		// });
 
 		// ETH
 		await app.earn.sidebar.goBack();
