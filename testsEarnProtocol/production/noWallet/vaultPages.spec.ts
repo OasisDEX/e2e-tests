@@ -1,10 +1,10 @@
 import { expect, test } from '#earnProtocolFixtures';
 
 test.describe('Vault pages @productionOnly', async () => {
-	test('It should show 30d APY - DAO USDC', async ({ app }) => {
+	test('It should show Live Native APY - DAO USDC', async ({ app }) => {
 		await app.vaultPage.open('/earn/mainnet/position/0xd77f9a9f2b0c160db3e9dc2cce370c1a740c76fc');
 
-		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
+		await app.vaultPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
 	});
 
 	test('It should show 30d APY - Mainnet USDC HR', async ({ app }) => {
