@@ -14,27 +14,28 @@ export class Overview {
 	async shouldBeVisible() {
 		await expect(
 			this.page.getByText('Total Summer.fi Portfolio'),
-			'"Total Summer.fi Portfolio" should be visible'
+			'"Total Summer.fi Portfolio" should be visible',
 		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 
 		await expect(
 			this.page.getByText('$SUMR Token Rewards', { exact: true }),
-			'"SUMR Token Rewards" should be visible'
+			'"SUMR Token Rewards" should be visible',
 		).toBeVisible();
 
-		await expect(
-			this.page.getByText('Available to Migrate').first(),
-			'"Available to Migrate" should be visible'
-		).toBeVisible();
+		// SKIP - MIGRATE feature hidden for now
+		// await expect(
+		// 	this.page.getByText('Available to Migrate').first(),
+		// 	'"Available to Migrate" should be visible'
+		// ).toBeVisible();
 
 		await expect(
 			this.page.getByText('Positions', { exact: true }),
-			'"Positions" should be visible'
+			'"Positions" should be visible',
 		).toBeVisible();
 
 		await expect(
 			this.page.locator('section:has-text("You might like")'),
-			'"You might like" section should be visible'
+			'"You might like" section should be visible',
 		).toBeVisible();
 	}
 
@@ -42,7 +43,7 @@ export class Overview {
 	async shouldHaveAvailableToMigrateAmount(amount: string) {
 		const regEXP = new RegExp(`\\$${amount}`);
 		await expect(
-			this.page.locator('[class*="_dataBlockWrapper"]:has-text("Available to Migrate")')
+			this.page.locator('[class*="_dataBlockWrapper"]:has-text("Available to Migrate")'),
 		).toContainText(regEXP);
 	}
 
@@ -57,7 +58,7 @@ export class Overview {
 			current7dApy?: string;
 			summer7dApy?: string;
 			apyDiff?: string;
-		}[]
+		}[],
 	) {
 		for (const position of positions) {
 			const positionLocator = this.page
@@ -70,35 +71,35 @@ export class Overview {
 				})
 				.filter({
 					has: this.page.locator(
-						`[class*="positionSubHeader"]:has-text("${position.depositToken}")`
+						`[class*="positionSubHeader"]:has-text("${position.depositToken}")`,
 					),
 				});
 
 			if (position.depositAmount) {
 				const regEXP = new RegExp(position.depositAmount);
 				await expect(positionLocator.locator('[class*="MigrationPositionCard"]')).toContainText(
-					regEXP
+					regEXP,
 				);
 			}
 
 			if (position.current7dApy) {
 				const regEXP = new RegExp(position.current7dApy);
 				await expect(positionLocator.locator('li:has-text("Current 7d APY")')).toContainText(
-					regEXP
+					regEXP,
 				);
 			}
 
 			if (position.summer7dApy) {
 				const regEXP = new RegExp(position.summer7dApy);
 				await expect(positionLocator.locator('li:has-text("Lazy Summer 7d APY")')).toContainText(
-					regEXP
+					regEXP,
 				);
 			}
 
 			if (position.apyDiff) {
 				const regEXP = new RegExp(position.apyDiff);
 				await expect(positionLocator.locator('li:has-text("7d APY Differential")')).toContainText(
-					regEXP
+					regEXP,
 				);
 			}
 		}
