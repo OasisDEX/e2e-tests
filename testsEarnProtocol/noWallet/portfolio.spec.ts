@@ -24,23 +24,20 @@ test.describe('Portfolio @regression', async () => {
 		}).toPass();
 	});
 
-	// SKIP --> Enable once SUMR token deployed to staging again - Currently with BUMMER
-	test.skip('It should show Position info - Base ETH and Mainnet ETH HR positions', async ({
-		app,
-	}) => {
+	test('It should show Position info - Base ETH and Mainnet ETH HR positions', async ({ app }) => {
 		await expect(async () => {
-			await app.portfolio.open('0xdb6e9e7390e9acc34619e56efa48ade01cff6f12');
+			await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F');
 			await app.portfolio.shouldShowPositionData({
 				network: 'base',
-				token: 'ETH',
+				token: 'USDC',
 				risk: 'Lower Risk',
 				sumrApr: '[0-9]{1,2}.[0-9]{2}',
 				thirtyDayApy: '[0-9]{1,2}.[0-9]{2}',
 				liveApy: '[0-9]{1,2}.[0-9]{2}',
-				marketValue: '[0-9].[0-9]{2}',
-				netContributions: '[0-9].[0-9]{2}',
-				earningsToDate: '[0-9].[0-9]{2}',
-				sumrEarned: '[0-9].[0-9]{2}',
+				marketValue: '[0-9].[0-9]{2,4}',
+				netContributions: '[0-9].[0-9]{2,4}',
+				earningsToDate: '[0-9].[0-9]{2,4}',
+				sumrEarned: '[0-9].[0-9]{2,4}',
 			});
 		}).toPass();
 	});
