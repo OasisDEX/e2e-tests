@@ -11,7 +11,7 @@ test.describe('Vault page - DAO Mainnet ETH Higher Risk', async () => {
 		await app.page.waitForTimeout(1_000);
 	});
 
-	test.only('It should have tooltip with APY details and match Net APY tag @regression', async ({
+	test('It should have tooltip with APY details and match Net APY tag @regression', async ({
 		app,
 	}) => {
 		// Get Net APY in tag
