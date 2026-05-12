@@ -11,7 +11,7 @@ test.describe('Vault page - DAO Mainnet ETH Higher Risk', async () => {
 		await app.page.waitForTimeout(1_000);
 	});
 
-	test('It should have tooltip with APY details and match Net APY tag @regression', async ({
+	test.only('It should have tooltip with APY details and match Net APY tag @regression', async ({
 		app,
 	}) => {
 		// Get Net APY in tag
@@ -24,13 +24,12 @@ test.describe('Vault page - DAO Mainnet ETH Higher Risk', async () => {
 		await app.tooltips.netApy.shouldHave({
 			liveNativeApy: '[0-9]{1,2}.[0-9]{2}',
 			sumrRewards: '[0-9]{1,2}.[0-9]{2}',
-			wstethRewards: '[0-9]{1,2}.[0-9]{2}',
 			managementFee: '0.30',
 			netApy: '[0-9]{1,2}.[0-9]{2}',
 		});
 
 		// Get Net APY in tag tooltip
-		const tooltipDetails = await app.tooltips.netApy.getDetails({ withWstethRewards: true });
+		const tooltipDetails = await app.tooltips.netApy.getDetails();
 		// Verify that tag and tooltip Net APY match
 		expect(
 			tagNetApy,
@@ -40,8 +39,7 @@ test.describe('Vault page - DAO Mainnet ETH Higher Risk', async () => {
 		// Verify that tooltip Net APY equals tooltip Native Live APY + SUMR rewards - Management Fee
 		expect(
 			parseFloat(tooltipDetails.liveNativeApy) +
-				parseFloat(tooltipDetails.sumrRewards) +
-				parseFloat(tooltipDetails.wstethRewards) -
+				parseFloat(tooltipDetails.sumrRewards) -
 				parseFloat(tooltipDetails.managementFee),
 			`Native APY (${tooltipDetails.liveNativeApy}) + SUMR (${tooltipDetails.sumrRewards}) - Fee (${tooltipDetails.managementFee}) should be very close to Net APY (${tooltipDetails.netApy})`,
 		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);

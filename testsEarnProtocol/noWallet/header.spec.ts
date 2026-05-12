@@ -2,9 +2,12 @@ import { test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 
 test.describe('Header - App @regression', async () => {
-	test('It should open Landing page', async ({ app }) => {
+	test('It should redirect to Earn page', async ({ app }) => {
+		await app.sumr.openPage()
+		await app.sumr.shouldBeVisible()
+
 		await app.header.summerfi();
-		await app.landingPage.shouldBeVisible();
+		await app.earn.shouldBeVisible();
 	});
 
 	// SKIP - TO BE UPDATED
