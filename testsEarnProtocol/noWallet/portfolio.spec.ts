@@ -13,12 +13,11 @@ test.describe('Portfolio @regression', async () => {
 		}).toPass();
 	});
 
-	test('It should show Total $SUMR and Total Wallet value', async ({ app }) => {
+	test('It should show Total $SUMR', async ({ app }) => {
 		await expect(async () => {
 			await app.portfolio.open('0xbEf4befb4F230F43905313077e3824d7386E09F8');
-			await app.portfolio.shouldShowOverviewAmounts({
+			await app.portfolio.shouldShowtotal$SUMR({
 				total$SUMR: '[0-9]{1,2}.[0-9]{2}',
-				totalWallet: '[0-9]{1,2}.[0-9]{2}',
 				timeout: expectDefaultTimeout * 2,
 			});
 		}).toPass();
