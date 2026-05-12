@@ -80,7 +80,7 @@ export class NetApy {
 	}
 
 	@step
-	async getDetails(args?: { withWstethRewards: boolean }) {
+	async getDetails(args?: { withoutSumrRewards?: boolean; withWstethRewards?: boolean }) {
 		const details = {
 			liveNativeApy: '',
 			sumrRewards: '',
@@ -95,8 +95,10 @@ export class NetApy {
 			liveNativeApy.indexOf('%'),
 		);
 
-		const sumrRewards: string = await this.sumrRewardsLocator.innerText();
-		details.sumrRewards = sumrRewards.replace('%', '');
+		if (!args?.withoutSumrRewards) {
+			const sumrRewards: string = await this.sumrRewardsLocator.innerText();
+			details.sumrRewards = sumrRewards.replace('%', '');
+		}
 
 		if (args?.withWstethRewards) {
 			const wstethRewards: string = await this.wstethRewardsLocator.innerText();

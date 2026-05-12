@@ -1,10 +1,10 @@
+import { expect } from '#earnProtocolFixtures';
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletHyperliquidFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletHyperliquid';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
-import { expect } from '#earnProtocolFixtures';
+import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
+import { test as withRealWalletHyperliquidFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletHyperliquid';
 
 const test = testWithSynpress(withRealWalletHyperliquidFixtures);
 
@@ -35,25 +35,22 @@ test.describe('With real wallet - Hyperliquid USDC Position page - APY tag', asy
 
 		await app.tooltips.netApy.shouldHave({
 			liveNativeApy: '[0-9]{1,2}.[0-9]{2}',
-			sumrRewards: '[0-9]{1,2}.[0-9]{2}',
 			managementFee: '1.00',
 			netApy: '[0-9]{1,2}.[0-9]{2}',
 		});
 
 		// Get Net APY in tag tooltip
-		const tooltipDetails = await app.tooltips.netApy.getDetails();
+		const tooltipDetails = await app.tooltips.netApy.getDetails({ withoutSumrRewards: true });
 		// Verify that tag and tooltip Net APY match
 		expect(
 			tagNetApy,
 			`Card Net APY(${tagNetApy}) should equal Card Tooltip Net APY (${tooltipDetails.netApy})`,
 		).toEqual(tooltipDetails.netApy);
 
-		// Verify that tooltip Net APY equals tooltip Native Live APY + SUMR rewards - Management Fee
+		// Verify that tooltip Net APY equals tooltip Native Live APY - Management Fee
 		expect(
-			parseFloat(tooltipDetails.liveNativeApy) +
-				parseFloat(tooltipDetails.sumrRewards) -
-				parseFloat(tooltipDetails.managementFee),
-			`Native APY (${tooltipDetails.liveNativeApy}) + SUMR (${tooltipDetails.sumrRewards}) - Fee (${tooltipDetails.managementFee}) should be very close to Net APY (${tooltipDetails.netApy})`,
+			parseFloat(tooltipDetails.liveNativeApy) - parseFloat(tooltipDetails.managementFee),
+			`Native APY (${tooltipDetails.liveNativeApy}) - Fee (${tooltipDetails.managementFee}) should be very close to Net APY (${tooltipDetails.netApy})`,
 		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);
 	});
 });
