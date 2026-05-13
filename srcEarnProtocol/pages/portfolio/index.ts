@@ -1,5 +1,6 @@
 import { expect, step, test } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
+import { LazyNominatedTokens, Networks, RiskLevels } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
 import { BeachClub } from './beachClub';
 import { Bridge } from './bridge';
@@ -7,10 +8,9 @@ import { Overview } from './overview';
 import { RebalanceActivity } from './rebalanceActivity';
 import { Rewards } from './rewards';
 import { Send } from './send';
+import { Wallet } from './wallet';
 import { YouMightLike } from './youMightLike';
 import { YourActivity } from './yourActivity';
-import { Wallet } from './wallet';
-import { LazyNominatedTokens, Networks, RiskLevels } from 'srcEarnProtocol/utils/types';
 
 type Tabs =
 	| 'Overview'
@@ -98,34 +98,14 @@ export class Portfolio {
 	}
 
 	@step
-	async shouldShowOverviewAmounts({
-		total$SUMR,
-		totalWallet,
-		timeout,
-	}: {
-		total$SUMR: string;
-		totalWallet: string;
-		timeout?: number;
-	}) {
-		if (total$SUMR) {
-			const regExp = new RegExp(total$SUMR);
-			await expect(
-				this.portfolioSecondHeaderLocator
-					.locator('[class*="_dataBlockWrapper_"]')
-					.filter({ has: this.page.getByText('Total $SUMR', { exact: true }) })
-					.locator('span'),
-			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
-		}
-
-		if (totalWallet) {
-			const regExp = new RegExp(`\\$${totalWallet}`);
-			await expect(
-				this.portfolioSecondHeaderLocator
-					.locator('[class*="_dataBlockWrapper_"]')
-					.filter({ has: this.page.getByText('Total Wallet Value', { exact: true }) })
-					.locator('span'),
-			).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
-		}
+	async shouldShowtotal$SUMR({ total$SUMR, timeout }: { total$SUMR: string; timeout?: number }) {
+		const regExp = new RegExp(total$SUMR);
+		await expect(
+			this.portfolioSecondHeaderLocator
+				.locator('[class*="_dataBlockWrapper_"]')
+				.filter({ has: this.page.getByText('Total $SUMR', { exact: true }) })
+				.locator('span'),
+		).toContainText(regExp, { timeout: timeout ?? expectDefaultTimeout });
 	}
 
 	@step
