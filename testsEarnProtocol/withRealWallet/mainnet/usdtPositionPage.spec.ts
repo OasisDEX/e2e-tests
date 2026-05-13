@@ -346,7 +346,8 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 		]);
 	});
 
-	test('It should switch Mainnet USDT position', async ({ app, metamask }) => {
+	// SKIP - Staked vault tokens should be unstaked before switching
+	test.skip('It should switch Mainnet USDT position', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		// USDC Lower Risk

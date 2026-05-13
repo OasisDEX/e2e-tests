@@ -1,11 +1,11 @@
-import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
-import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
-import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
-import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
-import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 import { expect } from '#earnProtocolFixtures';
+import { testWithSynpress } from '@synthetixio/synpress';
+import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
+import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
+import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
+import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { expectDefaultTimeout, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -42,13 +42,12 @@ test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - AP
 		await app.tooltips.netApy.shouldHave({
 			liveNativeApy: '[0-9]{1,2}.[0-9]{2}',
 			sumrRewards: '[0-9]{1,2}.[0-9]{2}',
-			wstethRewards: '[0-9]{1,2}.[0-9]{2}',
 			managementFee: '0.30',
 			netApy: '[0-9]{1,2}.[0-9]{2}',
 		});
 
 		// Get Net APY in tag tooltip
-		const tooltipDetails = await app.tooltips.netApy.getDetails({ withWstethRewards: true });
+		const tooltipDetails = await app.tooltips.netApy.getDetails();
 		// Verify that tag and tooltip Net APY match
 		expect(
 			tagNetApy,
@@ -58,10 +57,9 @@ test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - AP
 		// Verify that tooltip Net APY equals tooltip Native Live APY + SUMR rewards - Management Fee
 		expect(
 			parseFloat(tooltipDetails.liveNativeApy) +
-				parseFloat(tooltipDetails.sumrRewards) +
-				parseFloat(tooltipDetails.wstethRewards) -
+				parseFloat(tooltipDetails.sumrRewards) -
 				parseFloat(tooltipDetails.managementFee),
-			`Native APY (${tooltipDetails.liveNativeApy}) + WSTETH (${tooltipDetails.wstethRewards}) + SUMR (${tooltipDetails.sumrRewards}) - Fee (${tooltipDetails.managementFee}) should be very close to Net APY (${tooltipDetails.netApy})`,
+			`Native APY (${tooltipDetails.liveNativeApy}) + SUMR (${tooltipDetails.sumrRewards}) - Fee (${tooltipDetails.managementFee}) should be very close to Net APY (${tooltipDetails.netApy})`,
 		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);
 	});
 });

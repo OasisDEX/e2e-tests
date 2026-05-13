@@ -1,11 +1,11 @@
-import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
-import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, longTestTimeout, veryLongTestTimeout } from 'utils/config';
-import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
-import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
-import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 import { expect } from '#earnProtocolFixtures';
+import { testWithSynpress } from '@synthetixio/synpress';
+import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
+import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
+import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
+import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
+import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -311,9 +311,9 @@ test.describe('With real wallet - Base USDC position page - Switch', async () =>
 		// 	targetToken: 'EURC',
 		// });
 
-		// ETH
-		await app.earn.sidebar.goBack();
+		// await app.earn.sidebar.goBack();
 
+		// ETH
 		await switchPosition({
 			metamask,
 			app,
