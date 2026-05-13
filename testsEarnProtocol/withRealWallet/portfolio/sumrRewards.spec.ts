@@ -1,8 +1,8 @@
+import { expect } from '#earnProtocolFixtures';
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletSonicFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletSonic';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
-import { expect } from '#earnProtocolFixtures';
+import { test as withRealWalletSonicFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletSonic';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
 
@@ -37,8 +37,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		await app.portfolio.rewards.shouldBeVisible();
 	});
 
-	// SKIP - Privy - Bug with privy - Wallet popup not triggered with 1st click when in different network
-	test.skip('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
+	test('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await expect(async () => {
@@ -84,21 +83,10 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 
 		// Base rewards
 		await app.portfolio.rewards.claimAndDelegate.claim('Base');
-		//
-		await app.pause();
-		//
 		await metamask.approveNewNetwork();
-		//
-		await app.pause();
-		//
 		await metamask.approveSwitchNetwork();
-		//
-		await app.pause();
-		//
-		// Wait for Metamaskwindow to re-open
-		await expect(async () => {
-			await metamask.rejectTransaction();
-		}).toPass();
+		await app.portfolio.rewards.claimAndDelegate.approveStakingRewardsCaller();
+		await metamask.rejectTransaction();
 
 		// Pause to avoid random fails
 		await app.page.waitForTimeout(3_000);
@@ -115,9 +103,6 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		// Pause to avoid random fails
 		await app.page.waitForTimeout(3_000);
 
-		// Pause to avoid random fails
-		await app.page.waitForTimeout(3_000);
-
 		// Mainnet rewards
 		await app.portfolio.rewards.claimAndDelegate.claim('Ethereum');
 		await metamask.approveSwitchNetwork();
@@ -128,8 +113,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 	});
 });
 
-// TO BE DONE in February once there are USDC rewards to be claimed
-test.describe.skip('Real wallet - Portfolio - Staking USDC rewards', async () => {
+test.describe('Real wallet - Portfolio - Staking rewards', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 45_000);
@@ -147,13 +131,17 @@ test.describe.skip('Real wallet - Portfolio - Staking USDC rewards', async () =>
 		}).toPass();
 	});
 
-	test('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
+	test('It should claim LVUSDC rewards (until tx) @regression', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
-		//
-		await app.pause();
-		//
+		await app.portfolio.rewards.switchToBaseToClaimRewards();
+		await metamask.approveNewNetwork();
+		await metamask.approveSwitchNetwork();
 
-		//TO BE DONE
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(2_000);
+
+		await app.portfolio.rewards.claimRewards();
+		await metamask.rejectTransaction();
 	});
 });

@@ -14,14 +14,14 @@ export class ClaimAndDelegate {
 	async shouldBeVisible(args?: { timeout?: number }) {
 		await expect(
 			this.page.getByText('Claim').first(),
-			'"Claim" header in Claim page should be visible'
+			'"Claim" header in Claim page should be visible',
 		).toBeVisible({ timeout: args?.timeout ?? expectDefaultTimeout });
 	}
 
 	@step
 	async shouldHaveButton(
 		button: 'Reject' | 'Accept & Sign' | 'Loading' | 'Continue',
-		args?: { hidden: boolean }
+		args?: { hidden: boolean },
 	) {
 		if (args?.hidden) {
 			await expect(this.page.locator(`button:has-text("${button}")`)).not.toBeVisible();
@@ -51,7 +51,7 @@ export class ClaimAndDelegate {
 			networkName: 'Arbitrum' | 'Base' | 'Ethereum' | 'Sonic';
 			claimable: string;
 			inWallet: string;
-		}[]
+		}[],
 	) {
 		for (const network of networks) {
 			const claimableRegExp = new RegExp(network.claimable);
@@ -82,10 +82,15 @@ export class ClaimAndDelegate {
 		const haveEarnedLocator = this.page.locator('p:has-text("You have claimed")');
 
 		await expect(haveEarnedLocator.locator('xpath=//following-sibling::div[1]')).toContainText(
-			sumrRegExp
+			sumrRegExp,
 		);
 		await expect(haveEarnedLocator.locator('xpath=//following-sibling::p[1]')).toContainText(
-			usdRegExp
+			usdRegExp,
 		);
+	}
+
+	@step
+	async approveStakingRewardsCaller() {
+		await this.page.getByRole('button', { name: 'Approve Staking Rewards Caller' }).click();
 	}
 }

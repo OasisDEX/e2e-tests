@@ -1,7 +1,7 @@
-import { Locator, Page } from '@playwright/test';
-import { ClaimAndDelegate } from './claimAndDelegate';
 import { expect, step } from '#earnProtocolFixtures';
+import { Locator, Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
+import { ClaimAndDelegate } from './claimAndDelegate';
 
 export class Rewards {
 	readonly page: Page;
@@ -22,12 +22,12 @@ export class Rewards {
 	async shouldBeVisible() {
 		await expect(
 			this.page.getByText('Your Total $SUMR'),
-			'"Your Total $SUMR" should be visible'
+			'"Your Total $SUMR" should be visible',
 		).toBeVisible({ timeout: expectDefaultTimeout * 2 });
 
 		await expect(
 			this.page.getByText('Total $SUMR available to claim', { exact: true }),
-			'"$SUMR available to claim" should be visible'
+			'"$SUMR available to claim" should be visible',
 		).toBeVisible();
 	}
 
@@ -36,6 +36,26 @@ export class Rewards {
 		await this.page
 			.getByRole('button', {
 				name: 'Claim $SUMR',
+				exact: true,
+			})
+			.click();
+	}
+
+	@step
+	async switchToBaseToClaimRewards() {
+		await this.page
+			.getByRole('button', {
+				name: 'Switch to Base to claim rewards',
+				exact: true,
+			})
+			.click();
+	}
+
+	@step
+	async claimRewards() {
+		await this.page
+			.getByRole('button', {
+				name: 'Claim rewards',
 				exact: true,
 			})
 			.click();
@@ -69,7 +89,7 @@ export class Rewards {
 			await expect(
 				this.priceLocator
 					.locator('[class*="_sumrPriceDataBlock_"]')
-					.filter({ hasText: 'Market Cap' })
+					.filter({ hasText: 'Market Cap' }),
 			).toContainText(regExp);
 		}
 
@@ -78,7 +98,7 @@ export class Rewards {
 			await expect(
 				this.priceLocator
 					.locator('[class*="_sumrPriceDataBlock_"]')
-					.filter({ hasText: 'Fully Diluted Valuation' })
+					.filter({ hasText: 'Fully Diluted Valuation' }),
 			).toContainText(regExp);
 		}
 
@@ -87,14 +107,16 @@ export class Rewards {
 			await expect(
 				this.priceLocator
 					.locator('[class*="_sumrPriceDataBlock_"]')
-					.filter({ hasText: 'SUMR Holders' })
+					.filter({ hasText: 'SUMR Holders' }),
 			).toContainText(regExp);
 		}
 
 		if (sevenDaysTrend) {
 			const regExp = new RegExp(`${sevenDaysTrend}%`);
 			await expect(
-				this.priceLocator.locator('[class*="_sumrPriceDataBlock_"]').filter({ hasText: '7d Trend' })
+				this.priceLocator
+					.locator('[class*="_sumrPriceDataBlock_"]')
+					.filter({ hasText: '7d Trend' }),
 			).toContainText(regExp);
 		}
 
@@ -103,7 +125,7 @@ export class Rewards {
 			await expect(
 				this.priceLocator
 					.locator('[class*="_sumrPriceDataBlock_"]')
-					.filter({ hasText: '30d Trend' })
+					.filter({ hasText: '30d Trend' }),
 			).toContainText(regExp);
 		}
 
@@ -112,7 +134,7 @@ export class Rewards {
 			await expect(
 				this.priceLocator
 					.locator('[class*="_sumrPriceDataBlock_"]')
-					.filter({ hasText: '90d Trend' })
+					.filter({ hasText: '90d Trend' }),
 			).toContainText(regExp);
 		}
 	}
