@@ -1,8 +1,8 @@
-import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletSonicFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletSonic';
-import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout } from 'utils/config';
 import { expect } from '#earnProtocolFixtures';
+import { testWithSynpress } from '@synthetixio/synpress';
+import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
+import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
+import { test as withRealWalletSonicFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletSonic';
 
 const test = testWithSynpress(withRealWalletSonicFixtures);
 
@@ -24,8 +24,9 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		}).toPass();
 	});
 
-	// SKIP - PRIVY - test to be updated
-	test.skip('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
+	test('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
+		test.setTimeout(veryLongTestTimeout);
+
 		await expect(async () => {
 			await app.portfolio.rewards.claim();
 
@@ -60,12 +61,22 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 			},
 		]);
 
-		// Base rewards
-		await app.portfolio.rewards.claimAndDelegate.claim('Base');
+		// Sonic rewards --> This will fail until more SUMR are accrued on Sonic
+		await app.portfolio.rewards.claimAndDelegate.claim('Sonic');
 		await metamask.rejectTransaction();
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(expectDefaultTimeout);
+		await app.page.waitForTimeout(3_000);
+
+		// Base rewards
+		await app.portfolio.rewards.claimAndDelegate.claim('Base');
+		await metamask.approveNewNetwork();
+		await metamask.approveSwitchNetwork();
+		await app.portfolio.rewards.claimAndDelegate.approveStakingRewardsCaller();
+		await metamask.rejectTransaction();
+
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(3_000);
 
 		// Arbitrum rewards
 		await app.portfolio.rewards.claimAndDelegate.claim('Arbitrum');
@@ -77,18 +88,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		}).toPass();
 
 		// Pause to avoid random fails
-		await app.page.waitForTimeout(expectDefaultTimeout);
-
-		// Sonic rewards --> This will fail until more SUMR are accrued on Sonic
-		await app.portfolio.rewards.claimAndDelegate.claim('Sonic');
-		await metamask.approveSwitchNetwork();
-		// Wait for Metamaskwindow to re-open
-		await expect(async () => {
-			await metamask.rejectTransaction();
-		}).toPass();
-
-		// Pause to avoid random fails
-		await app.page.waitForTimeout(expectDefaultTimeout);
+		await app.page.waitForTimeout(3_000);
 
 		// Mainnet rewards
 		await app.portfolio.rewards.claimAndDelegate.claim('Ethereum');
