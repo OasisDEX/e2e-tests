@@ -1,12 +1,12 @@
+import { expect } from '#earnProtocolFixtures';
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
-import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 import { unstakeLvTokens } from 'testsEarnProtocol/z_sharedTestSteps/unstakeLvTokens';
-import { expect } from '#earnProtocolFixtures';
+import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { expectDefaultTimeout, veryLongTestTimeout } from 'utils/config';
+import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -344,7 +344,8 @@ test.describe('With real wallet - Mainnet USDC Higher Risk position page - Switc
 		]);
 	});
 
-	test('It should switch Mainnet USDC Higher Risk position', async ({ app, metamask }) => {
+	// SKIP - Staked vault tokens should be unstaked before switching
+	test.skip('It should switch Mainnet USDC Higher Risk position', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		// USDC Lower Risk
