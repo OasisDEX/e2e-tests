@@ -1,6 +1,6 @@
 name: Lazy Prod trigger
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       run_id:
@@ -11,10 +11,15 @@ on:
         description: 'Name of the respository that is triggering this workflow.'
         type: string
         required: true
+      triggerManually:
+        description: 'Triggered manually'
+        type: boolean
+        default: false
 
 jobs:
   lazy-prod-release-trigger-received:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
+    if: ${{ inputs.triggerManually == 'false'}}
     steps:
       - run: echo "Regression E2E tests for ${{ inputs.repository }} - Release Earn apps workflow -  RUN_ID ${{ inputs.run_id }}"
       - name: Create artifact with trigger repository name
@@ -28,6 +33,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: wait-job
+    if: ${{ inputs.triggerManually == 'false'}}
     steps:
       - name: Sleep for 900 seconds
         run: sleep 900s
