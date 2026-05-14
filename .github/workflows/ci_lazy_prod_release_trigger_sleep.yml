@@ -17,6 +17,11 @@ on:
         default: false
 
 jobs:
+  lazy-prod-release-trigger-immediately:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Regression E2E tests on Production - Tests triggered manually"
+
   lazy-prod-release-trigger-received:
     runs-on: ubuntu-latest
     if: ${{ inputs.triggerManually == 'false'}}
