@@ -1,7 +1,6 @@
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout } from 'utils/config';
+import { test as withRealWalletBaseFixtures } from '../../srcEarnProtocol/fixtures/withRealWalletBase';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -19,14 +18,14 @@ test.describe('With real wallet - $SUMR page @regression', async () => {
 		await app.sumr.openPage();
 	});
 
-	// SUMR page being reconstructed - NEw tests to be created
-	test.skip('It should claim $SUMR', async ({ app }) => {
-		await app.sumr.viewYourAddress();
+	test('It should redirect to /staking/manage page', async ({ app }) => {
+		await app.sumr.stakeSUMR('Intro');
+		await app.staking.manage.shouldBeVisible();
 
-		await app.portfolio.shouldBeVisible();
-		await app.portfolio.shouldShowWalletAddress('0x1064...4743f', {
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.portfolio.shouldHaveTabHighlighted('SUMR Rewards');
+		await app.staking.manage.goBack();
+		await app.sumr.shouldBeVisible();
+
+		await app.sumr.stakeSUMR('What you need to know');
+		await app.staking.manage.shouldBeVisible();
 	});
 });
