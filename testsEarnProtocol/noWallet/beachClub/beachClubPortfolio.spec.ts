@@ -98,7 +98,7 @@ test.describe('Beach Club - Portfolio page @regression', async () => {
 		]);
 	});
 
-	test('It sould show Referral Rewards Overview, user`s Rewards group and Rewards simulation', async ({
+	test('It should show Referral Rewards Overview, user`s Rewards group and Rewards simulation', async ({
 		app,
 	}) => {
 		await app.portfolio.beachClub.openPage('0x10649c79428d718621821cf6299e91920284743f');
