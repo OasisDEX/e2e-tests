@@ -1,12 +1,12 @@
+import { expect } from '#earnProtocolFixtures';
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
-import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 import { unstakeLvTokens } from 'testsEarnProtocol/z_sharedTestSteps/unstakeLvTokens';
-import { expect } from '#earnProtocolFixtures';
+import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { expectDefaultTimeout, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
+import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -349,7 +349,7 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 		]);
 	});
 
-	// SKIP - There are staked shares
+	// SKIP - Staked vault tokens should be unstaked before switching
 	test.skip('It should switch Mainnet ETH Lower Risk position', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 

@@ -26,6 +26,14 @@ export class Manage {
 	}
 
 	@step
+	async goBack() {
+		await this.page
+			.getByRole('link')
+			.filter({ has: this.page.locator('[title="arrow_backward"]') })
+			.click();
+	}
+
+	@step
 	async shouldHaveBalance({ balance, timeout }: { balance: string; timeout?: number }) {
 		const regExp = new RegExp(`${balance}.*SUMR`);
 		await expect(this.page.getByText('Balance', { exact: true }).locator('..')).toContainText(

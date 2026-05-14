@@ -1,12 +1,12 @@
+import { expect } from '#earnProtocolFixtures';
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
-import { expectDefaultTimeout, extremelyLongTestTimeout } from 'utils/config';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
-import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
 import { unstakeLvTokens } from 'testsEarnProtocol/z_sharedTestSteps/unstakeLvTokens';
-import { expect } from '#earnProtocolFixtures';
+import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
+import { expectDefaultTimeout, extremelyLongTestTimeout } from 'utils/config';
+import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -375,7 +375,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Switch
 		]);
 	});
 
-	// SKIP - SWITCH with CowSwap doesn't work for positions with staked tokens
+	// SKIP - Staked vault tokens should be unstaked before switching
 	test.skip('It should switch Mainnet ETH Higher Risk position', async ({ app, metamask }) => {
 		test.setTimeout(extremelyLongTestTimeout);
 

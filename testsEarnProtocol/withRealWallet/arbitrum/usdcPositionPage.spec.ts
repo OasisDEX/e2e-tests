@@ -250,7 +250,7 @@ test.describe('With real wallet - Arbitrum USDC Position page - Withdraw @arbitr
 	});
 });
 
-// SKIP - SWITCH with CowSwap doesn't work for Arbitrum
+// SKIP - SWITCH with CowSwap doesn't work for Arbitrum - feature disabled for this network
 test.describe
 	.skip('With real wallet - Arbitrum USDC Position page - Switch @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
