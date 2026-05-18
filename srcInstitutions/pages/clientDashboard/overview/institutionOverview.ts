@@ -102,7 +102,7 @@ export class InstitutionOverview {
 			'90d': { days: 90, margin: 10 },
 			'6m': { days: 180, margin: 15 },
 			'1y': { days: 365, margin: 32 },
-			'3y': { days: 1095, margin: 70 },
+			'3y': { days: 1095, margin: 75 },
 		};
 
 		const firstChartLegend = await this.page

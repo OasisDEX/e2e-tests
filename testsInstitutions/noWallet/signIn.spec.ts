@@ -11,6 +11,11 @@ import {
 } from 'srcInstitutions/utils/signIn';
 
 test.describe('Sign in', async () => {
+	test.beforeEach(async ({ app }) => {
+		// Wait for the page to load and avoid flakiness
+		await app.page.waitForTimeout(1_000);
+	});
+
 	test('It should sign in with valid credentials - Admin', async ({ app }) => {
 		await app.signIn.enterEmail(adminUsername);
 		await app.signIn.enterPassword(adminPassword);
@@ -55,7 +60,7 @@ test.describe('Sign in', async () => {
 		await app.clientDashboard.shouldBeVisible();
 	});
 
-	test('It should askfor 2FA code - Client', async ({ app }) => {
+	test('It should ask for 2FA code - Client', async ({ app }) => {
 		await app.signIn.enterEmail(clientMfaUsername);
 		await app.signIn.enterPassword(clientMfaPassword);
 		await app.signIn.signIn();
