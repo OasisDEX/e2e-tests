@@ -468,10 +468,7 @@ test.describe('With real wallet - DAO Mainnet ETH Higher Risk position page - Cl
 		await metamask.approveSwitchNetwork();
 	});
 
-	test('It should claim WSTETH Rewards - Until rejecting 1st tx @regression', async ({
-		app,
-		metamask,
-	}) => {
+	test('It should claim WSTETH Rewards - Until rejecting 1st tx', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await app.positionPage.shouldHaveWstethRewards({

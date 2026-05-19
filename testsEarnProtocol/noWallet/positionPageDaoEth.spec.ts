@@ -1,6 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 
-test.describe('Position page - DAO ETH @regression', async () => {
+test.describe('Position page - DAO ETH', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
