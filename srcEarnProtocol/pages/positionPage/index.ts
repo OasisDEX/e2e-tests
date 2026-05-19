@@ -1,11 +1,21 @@
-import { expect, Locator, Page } from '@playwright/test';
-import { VaultSidebar } from '../vaultSidebar';
 import { step } from '#noWalletFixtures';
+import { expect, Locator, Page } from '@playwright/test';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
+import { VaultSidebar } from '../vaultSidebar';
 
 export class PositionPage {
 	readonly page: Page;
+
+	readonly earnedTooltipLocator: Locator;
+
+	readonly marketValueDataBlockLocator: Locator;
+
+	readonly marketValueTooltipBtnLocator: Locator;
+
+	readonly marketValueTooltipLocator: Locator;
+
+	readonly refreshButtonLocator: Locator;
 
 	readonly sidebar: VaultSidebar;
 
@@ -13,6 +23,17 @@ export class PositionPage {
 
 	constructor(page: Page) {
 		this.page = page;
+		this.earnedTooltipLocator = this.page.locator('[data-tooltip-id]:has-text("Earned")');
+		this.marketValueDataBlockLocator = this.page.locator(
+			'[class*="_dataBlockWrapper_"]:has-text("Market Value") span',
+		);
+		this.marketValueTooltipBtnLocator = this.page.locator(
+			'[class*="_dataBlockWrapper_"]:has-text("Market Value") [data-tooltip-btn-id]',
+		);
+		this.marketValueTooltipLocator = this.page.locator(
+			'[data-tooltip-id]:has-text("Market Value")',
+		);
+		this.refreshButtonLocator = this.page.locator('svg[title="refresh"]');
 		this.sidebar = new VaultSidebar(page, this.page.locator('[class*="_sidebarWrapper_"]'));
 		this.wstethRewardsLocator = this.page.getByText('WSTETH Rewards', { exact: true });
 	}
@@ -23,18 +44,15 @@ export class PositionPage {
 			await this.page.goto(url, { timeout: expectDefaultTimeout * 4 });
 
 			// Reload position data to avoid random fails
-			await expect(this.page.locator('svg[title="refresh"]')).toBeVisible({
+			await expect(this.refreshButtonLocator).toBeVisible({
 				timeout: expectDefaultTimeout * 2,
 			});
 			await this.page.waitForTimeout(1_000);
-			await this.page.locator('svg[title="refresh"]').click();
+			await this.refreshButtonLocator.click();
 
 			await this.shouldHaveLiveApy('[0-9].[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
 		}).toPass();
 	}
-
-	@step
-	async shouldHaveSumr({ apy, earnedToDate }: { apy: string; earnedToDate: string }) {}
 
 	@step
 	async shouldHaveMarketValue({
@@ -49,23 +67,20 @@ export class PositionPage {
 		const regExp = new RegExp(`${amount}.*${token}`);
 
 		await expect(
-			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span').first(),
+			this.marketValueDataBlockLocator.first(),
 			`Market Value should contain ${regExp}`,
 		).toContainText(regExp);
 
 		// Verify tooltip
-		await this.page
-			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") [data-tooltip-btn-id]')
-			.first()
-			.hover();
+		await this.marketValueTooltipBtnLocator.first().hover();
 		await expect(
-			this.page.locator('[data-tooltip-id]:has-text("Market")'),
+			this.marketValueTooltipLocator,
 			'Market Value tooltip should be visible',
 		).toHaveClass(/tooltipOpen/);
 
 		const tootltipRegExp = new RegExp(`USD.*Market.*Value:.*\\$${usdAmount}`);
 		await expect(
-			this.page.locator('[data-tooltip-id]:has-text("Market")'),
+			this.marketValueTooltipLocator,
 			`Market Value tooltip should contain ${tootltipRegExp}`,
 		).toContainText(tootltipRegExp);
 	}
@@ -82,40 +97,29 @@ export class PositionPage {
 	}) {
 		const regExp = new RegExp(`${amount}.*${token}`);
 
-		await expect(
-			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span').last(),
-		).toContainText(regExp);
+		await expect(this.marketValueDataBlockLocator.last()).toContainText(regExp);
 
 		// Verify that is greater than 0
-		const earnedAmountText = await this.page
-			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") span')
-			.last()
-			.innerText();
+		const earnedAmountText = await this.marketValueDataBlockLocator.last().innerText();
 		const earnedAmount = parseFloat(
 			earnedAmountText.replace('Earned:', '').replace('<', '').replace(token, ''),
 		);
 		expect(earnedAmount).toBeGreaterThan(0);
 
 		// Verify tooltip
-		await this.page
-			.locator('[class*="_dataBlockWrapper_"]:has-text("Market Value") [data-tooltip-btn-id]')
-			.nth(1)
-			.hover();
-		await expect(
-			this.page.locator('[data-tooltip-id]:has-text("Earned:")'),
-			'Earned tooltip should be visible',
-		).toHaveClass(/tooltipOpen/);
+		await this.marketValueTooltipBtnLocator.nth(1).hover();
+		await expect(this.earnedTooltipLocator, 'Earned tooltip should be visible').toHaveClass(
+			/tooltipOpen/,
+		);
 
 		const tootltipRegExp = new RegExp(`USD.*Earned:.*\\$${usdAmount}`);
 		await expect(
-			this.page.locator('[data-tooltip-id]:has-text("Earned:")'),
+			this.earnedTooltipLocator,
 			`Earned tooltip should contain ${tootltipRegExp}`,
 		).toContainText(tootltipRegExp);
 
 		// Verify that tooltip is greater than 0
-		const earnedTooltipAmountText = await this.page
-			.locator('[data-tooltip-id]:has-text("Earned:")')
-			.innerText();
+		const earnedTooltipAmountText = await this.earnedTooltipLocator.innerText();
 
 		const earnedTooltipAmount = parseFloat(
 			earnedTooltipAmountText.replace('USD Earned: $', '').replace('<', '').replace(token, ''),

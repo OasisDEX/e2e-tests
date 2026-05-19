@@ -9,6 +9,32 @@ test.describe('Position page - Mainnet ETH HR @regression', async () => {
 		);
 	});
 
+	test('It should show Market value, Earned, Net Contribution, # of Deposits APYs and Instant liquidity info', async ({
+		app,
+	}) => {
+		await app.positionPage.shouldHaveMarketValue({
+			token: 'ETH',
+			amount: '0.000[0-9]',
+			usdAmount: '[0-3].[0-9]{2,4}',
+		});
+
+		await app.positionPage.shouldHaveEarned({
+			token: 'ETH',
+			amount: '0.0[0-9]{1,3}',
+			usdAmount: '(<)?0.[0-9]{2}',
+		});
+
+		await app.positionPage.shouldHaveNetContribution({
+			token: 'ETH',
+			amount: '0.000[3-6]',
+			numberOfDeposits: '[0-9]{1,2}',
+		});
+
+		await app.positionPage.shouldHaveNumberOfDeposits();
+
+		await app.positionPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
+	});
+
 	test('It should not have WSTETH Rewards', async ({ app }) => {
 		await app.positionPage.shouldNotHaveWstethRewards();
 	});
