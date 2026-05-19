@@ -286,15 +286,16 @@ test.describe('With real wallet - Mainnet USDT Position page - Switch', async ()
 		});
 
 		await app.positionPage.sidebar.switch.targetPositionsShouldBe([
-			{
-				network: 'ethereum',
-				token: 'ETH',
-				riskLevel: 'Higher Risk',
-				riskManagementType: 'DAO Risk-Managed',
-				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
-				liveAPY: '[0-9]{1,2}.[0-9]{2}',
-				apySpread: '[0-9]{1,2}.[0-9]{2}',
-			},
+			// SKIP - CAP set temporarily to 0
+			// {
+			// 	network: 'ethereum',
+			// 	token: 'ETH',
+			// 	riskLevel: 'Higher Risk',
+			// 	riskManagementType: 'DAO Risk-Managed',
+			// 	thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+			// 	liveAPY: '[0-9]{1,2}.[0-9]{2}',
+			// 	apySpread: '[0-9]{1,2}.[0-9]{2}',
+			// },
 			// SKIP - Wrong "30d APY" in staging
 			// {
 			// 	network: 'ethereum',
