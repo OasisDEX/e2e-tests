@@ -301,15 +301,16 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 			// 	liveAPY: '[0-9]{1,2}.[0-9]{2}',
 			// 	apySpread: '[0-9]{1,2}.[0-9]{2}',
 			// },
-			{
-				network: 'ethereum',
-				token: 'ETH',
-				riskLevel: 'Higher Risk',
-				riskManagementType: 'DAO Risk-Managed',
-				thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
-				liveAPY: '[0-9]{1,2}.[0-9]{2}',
-				apySpread: '[0-9]{1,2}.[0-9]{2}',
-			},
+			// SKIP - CAP set temporarily to 0
+			// {
+			// 	network: 'ethereum',
+			// 	token: 'ETH',
+			// 	riskLevel: 'Higher Risk',
+			// 	riskManagementType: 'DAO Risk-Managed',
+			// 	thirtyDayAPY: '[0-9]{1,2}.[0-9]{2}',
+			// 	liveAPY: '[0-9]{1,2}.[0-9]{2}',
+			// 	apySpread: '[0-9]{1,2}.[0-9]{2}',
+			// },
 			{
 				network: 'ethereum',
 				token: 'USDC',
