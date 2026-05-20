@@ -3,8 +3,11 @@ import { expectDefaultTimeout, longTestTimeout } from 'utils/config';
 
 test.describe('Header - App @regression', async () => {
 	test('It should redirect to Earn page', async ({ app }) => {
-		await app.sumr.openPage()
-		await app.sumr.shouldBeVisible()
+		await app.sumr.openPage();
+		await app.sumr.shouldBeVisible();
+
+		// Pause to avoid random fails
+		await app.page.waitForTimeout(expectDefaultTimeout / 5);
 
 		await app.header.summerfi();
 		await app.earn.shouldBeVisible();
