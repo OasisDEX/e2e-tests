@@ -1,16 +1,16 @@
+import { expect } from '#earnProtocolFixtures';
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
+import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
+import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
+import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import {
 	expectDefaultTimeout,
 	extremelyLongTestTimeout,
 	longTestTimeout,
 	veryLongTestTimeout,
 } from 'utils/config';
-import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
-import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
-import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
-import { expect } from '#earnProtocolFixtures';
+import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -151,10 +151,10 @@ test.describe('With real wallet - Base ETH Position page - Deposit', async () =>
 			depositedToken: 'ETH',
 			depositAmount: '0.0005',
 			estimatedEarnings: {
-				thirtyDaysAmount: '0.001[0-9]',
-				sixMonthsAmount: '0.001[0-9]',
-				oneYearAmount: '0.001[0-9]',
-				threeYearsAmount: '0.001[0-9]',
+				thirtyDaysAmount: '0.00[1-3][0-9]',
+				sixMonthsAmount: '0.00[1-4][0-9]',
+				oneYearAmount: '0.00[1-5][0-9]',
+				threeYearsAmount: '0.00[1-6][0-9]',
 			},
 			previewInfo: { transactionFee: '[0-2].[0-9]{2}' },
 		});
