@@ -67,7 +67,6 @@ test.describe('With real wallet - ETH Mainnet Lower Risk position page - APY tag
 
 test.describe('With real wallet - ETH Mainnet Lower Risk position page - Deposit @regression', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
-		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 110_000);
 
 		await logInWithWalletAddress({
@@ -80,8 +79,9 @@ test.describe('With real wallet - ETH Mainnet Lower Risk position page - Deposit
 			'/earn/mainnet/position/0x67e536797570b3d8919df052484273815a0ab506/0x10649c79428d718621821cf6299e91920284743f',
 		);
 
+		// Wait for balance to fully load to avoid random fails
 		await app.positionPage.sidebar.shouldHaveBalance({
-			balance: '0.00[0-9]{2}',
+			balance: '0.0[0-9]{3}',
 			token: 'ETH',
 			timeout: expectDefaultTimeout * 2,
 		});
@@ -350,8 +350,7 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 		]);
 	});
 
-	// SKIP - Staked vault tokens should be unstaked before switching
-	test.skip('It should switch Mainnet ETH Lower Risk position', async ({ app, metamask }) => {
+	test('It should switch Mainnet ETH Lower Risk position', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		// USDC Lower Risk
@@ -409,17 +408,17 @@ test.describe('With real wallet - Mainnet ETH Lower Risk position page - Switch'
 			riskManagementType: 'DAO Risk-Managed',
 		});
 
-		// ETH Higher Risk - DAO
-		await app.earn.sidebar.goBack();
+		// SKIP - Re-enabled when CAP is increased 		// // ETH Higher Risk - DAO
+		// await app.earn.sidebar.goBack();
 
-		await switchPosition({
-			metamask,
-			app,
-			nominatedToken: 'ETH',
-			targetToken: 'ETH',
-			riskLevel: 'Higher Risk',
-			riskManagementType: 'DAO Risk-Managed',
-		});
+		// await switchPosition({
+		// 	metamask,
+		// 	app,
+		// 	nominatedToken: 'ETH',
+		// 	targetToken: 'ETH',
+		// 	riskLevel: 'Higher Risk',
+		// 	riskManagementType: 'DAO Risk-Managed',
+		// });
 	});
 });
 
