@@ -17,4 +17,12 @@ test.describe('DCA Strategy', async () => {
 		await app.dca.selectNetwork('Ethereum');
 		await app.dca.shouldHaveNetworkSelected('Ethereum');
 	});
+
+	// SKIP - Test to be completed
+	test.skip('It should select Starting Vault - Ethereum', async ({ app }) => {
+		await app.dca.openStartingVaultDropdown();
+		await app.dca.shouldHaveVaultDropdownOpened('starting');
+
+		
+	});
 });
