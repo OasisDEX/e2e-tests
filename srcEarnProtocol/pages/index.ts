@@ -1,4 +1,5 @@
 import { BeachClubLandingPage } from './beachClubLandingPage';
+import { Dca } from './dca';
 import { Earn } from './earn';
 import { Header } from './header';
 import { Institutions } from './institutions';
@@ -17,6 +18,7 @@ import { YieldTrend } from './yieldTrend';
 
 export {
 	BeachClubLandingPage,
+	Dca,
 	Earn,
 	Header,
 	Institutions,
