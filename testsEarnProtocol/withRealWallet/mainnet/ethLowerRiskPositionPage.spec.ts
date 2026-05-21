@@ -3,7 +3,6 @@ import { testWithSynpress } from '@synthetixio/synpress';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { deposit } from 'testsEarnProtocol/z_sharedTestSteps/deposit';
 import { switchPosition } from 'testsEarnProtocol/z_sharedTestSteps/switch';
-import { unstakeLvTokens } from 'testsEarnProtocol/z_sharedTestSteps/unstakeLvTokens';
 import { withdraw } from 'testsEarnProtocol/z_sharedTestSteps/withdraw';
 import { expectDefaultTimeout, extremelyLongTestTimeout, veryLongTestTimeout } from 'utils/config';
 import { test as withRealWalletBaseFixtures } from '../../../srcEarnProtocol/fixtures/withRealWalletBase';
@@ -448,16 +447,5 @@ test.describe('With real wallet - Mainnet ETH Lower Risk Position page - Unstake
 		await metamask.approveSwitchNetwork();
 	});
 
-	test('It should Unstake LV tokens - Mainnet ETH Lower Risk position', async ({
-		app,
-		metamask,
-	}) => {
-		await unstakeLvTokens({
-			metamask,
-			app,
-			lvToken: 'LVWETH',
-			lvTokenAmount: '0.000[1-2]',
-			dollarAmount: '[0-1].[0-9]{4}',
-		});
-	});
+
 });

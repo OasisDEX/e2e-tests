@@ -1,9 +1,11 @@
+import { expect } from '#earnProtocolFixtures';
+import { step } from '#noWalletFixtures';
 import { Page } from '@playwright/test';
 import { Banners } from './banners';
 import { Modals } from './modals';
-import { Tooltips } from './tooltips';
 import {
 	BeachClubLandingPage,
+	Dca,
 	Earn,
 	Header,
 	Institutions,
@@ -20,8 +22,7 @@ import {
 	VaultPage,
 	YieldTrend,
 } from './pages';
-import { step } from '#noWalletFixtures';
-import { expect } from '#earnProtocolFixtures';
+import { Tooltips } from './tooltips';
 
 export class App {
 	readonly page: Page;
@@ -29,6 +30,8 @@ export class App {
 	readonly banners: Banners;
 
 	readonly beachClubLandingPage: BeachClubLandingPage;
+
+	readonly dca: Dca;
 
 	readonly earn: Earn;
 
@@ -68,6 +71,7 @@ export class App {
 		this.page = page;
 		this.banners = new Banners(page);
 		this.beachClubLandingPage = new BeachClubLandingPage(page);
+		this.dca = new Dca(page);
 		this.earn = new Earn(page);
 		this.header = new Header(page);
 		this.institutions = new Institutions(page);
