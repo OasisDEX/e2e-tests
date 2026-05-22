@@ -1,6 +1,6 @@
 import { test } from '#earnProtocolFixtures';
 
-test.describe('DCA Strategy', async () => {
+test.describe('DCA Strategy - No wallet', async () => {
 	test.beforeEach(async ({ app }) => {
 		await app.dca.openPage();
 	});
@@ -325,6 +325,7 @@ test.describe('DCA Strategy', async () => {
 		await app.dca.priceLimit('5000');
 		await app.dca.maxNumberOfTrades('200');
 		await app.dca.tradeUntil('20/12/2026');
+
 		await app.dca.previewDcaStrategy();
 
 		await app.dca.preview.shouldBeVisible();
