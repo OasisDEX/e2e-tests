@@ -134,6 +134,20 @@ export class Dca {
 	}
 
 	@step
+	async enterAmount(amount: string) {
+		await this.page
+			.locator('[class*="dca_amountInputsColumn_"]')
+			.locator('input')
+			.first()
+			.fill(amount);
+	}
+
+	@step
+	async enterCustomFrequency(days: string) {
+		await this.page.locator('input[id="dca-frequency-days-input"]').fill(days);
+	}
+
+	@step
 	async shouldHaveKpiCards(
 		cards: {
 			frequency: '7 days' | '30 days' | '90 days' | '180 days' | '1 year' | '2 years' | '3 years';
@@ -181,7 +195,7 @@ export class Dca {
 	@step
 	async maxNumberOfTrades(numberOfTrades: string) {
 		await this.conditionBlockLocator
-			.filter({ hasText: 'Maximum Number of Trades' })
+			.filter({ hasText: 'Max. Number of Trades' })
 			.locator('input')
 			.fill(numberOfTrades);
 	}
@@ -192,5 +206,10 @@ export class Dca {
 			.filter({ hasText: 'Only trade until' })
 			.locator('input')
 			.fill(date);
+	}
+
+	@step
+	async agreeAndSign() {
+		await this.page.getByRole('button', { name: 'Agree and sign' }).click();
 	}
 }
