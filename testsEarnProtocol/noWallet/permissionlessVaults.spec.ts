@@ -82,8 +82,8 @@ test.describe('Permissionless DeFi Vaults', async () => {
 
 		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 		await app.earn.vaults.allVaultsShouldBe({
-			filter: 'riskManagementTypes',
-			riskManagementType: 'Risk-Managed by BlockAnalitica',
+			filter: 'vaultTypes',
+			vaultType: 'DeFi Vaults',
 		});
 	});
 
@@ -92,8 +92,8 @@ test.describe('Permissionless DeFi Vaults', async () => {
 
 		await app.earn.shouldBeVisible({ timeout: expectDefaultTimeout * 3 });
 		await app.earn.vaults.allVaultsShouldBe({
-			filter: 'riskManagementTypes',
-			riskManagementType: 'DAO Risk-Managed',
+			filter: 'vaultTypes',
+			vaultType: 'DeFi Vaults',
 		});
 	});
 

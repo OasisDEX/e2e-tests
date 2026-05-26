@@ -1,18 +1,19 @@
-import { expect, Locator, Page } from '@playwright/test';
-import { VaultCard } from '../vaultCard';
 import { step } from '#noWalletFixtures';
+import { expect, Locator, Page } from '@playwright/test';
+import {
+	allAssets,
+	allAssetsWithDuplicates,
+	allStables,
+	allStablesWithDuplicates,
+} from 'srcEarnProtocol/utils/general';
 import {
 	EarnFilters,
 	LazyNominatedTokens,
 	Networks,
 	RiskLevels,
+	RiskManagementTypes,
 } from 'srcEarnProtocol/utils/types';
-import {
-	allAssets,
-	allStables,
-	allAssetsWithDuplicates,
-	allStablesWithDuplicates,
-} from 'srcEarnProtocol/utils/general';
+import { VaultCard } from '../vaultCard';
 
 export class Vaults {
 	readonly page: Page;
@@ -31,7 +32,12 @@ export class Vaults {
 		return new VaultCard(this.page, this.vaultLocator.nth(nth));
 	}
 
-	byStrategy(strategy: { token: LazyNominatedTokens; network: Networks; risk: RiskLevels }) {
+	byStrategy(strategy: {
+		token: LazyNominatedTokens;
+		network: Networks;
+		riskLevel: RiskLevels;
+		riskManagementType?: RiskManagementTypes;
+	}) {
 		return new VaultCard(
 			this.page,
 			this.vaultLocator
@@ -39,7 +45,13 @@ export class Vaults {
 					has: this.page.locator(`[data-testid="vault-token"]:has-text("${strategy.token}")`),
 				})
 				.filter({ has: this.page.locator(`[title="earn_network_${strategy.network}"]`) })
-				.filter({ hasText: strategy.risk }),
+				.filter({ hasText: strategy.riskLevel })
+				.filter({
+					hasText:
+						strategy.riskManagementType === 'DAO Risk-Managed'
+							? 'DAO Risk-Managed'
+							: 'Block Analitica',
+				}),
 		);
 	}
 
@@ -92,6 +104,15 @@ export class Vaults {
 				expect(vaultRiskManagementType).toContain(
 					arg.riskManagementType === 'DAO Risk-Managed' ? 'DAO Risk-Managed' : 'Block Analitica',
 				);
+			}
+
+			if (arg.filter === 'vaultTypes') {
+				const vaultHeader = await this.nth(i).header.getToken();
+				if (arg.vaultType === 'DeFi Vaults') {
+					expect(vaultHeader).not.toContain('RWA');
+				} else {
+					expect(vaultHeader).toContain('RWA');
+				}
 			}
 		}
 

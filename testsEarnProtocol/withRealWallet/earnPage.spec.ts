@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout } from 'utils/config';
+import { test as withRealWalletBaseFixtures } from '../../srcEarnProtocol/fixtures/withRealWalletBase';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -21,11 +21,11 @@ test.describe('With real wallet - Earn page', async () => {
 		app,
 	}) => {
 		await app.earn.vaults
-			.byStrategy({ token: 'USD₮0', network: 'arbitrum', risk: 'Lower Risk' })
+			.byStrategy({ token: 'USD₮0', network: 'arbitrum', riskLevel: 'Lower Risk' })
 			.select({ delay: expectDefaultTimeout / 5 });
 
 		await app.earn.vaults
-			.byStrategy({ token: 'USD₮0', network: 'arbitrum', risk: 'Lower Risk' })
+			.byStrategy({ token: 'USD₮0', network: 'arbitrum', riskLevel: 'Lower Risk' })
 			.shouldBeSelected();
 
 		await app.page.waitForTimeout(3_000);
@@ -80,11 +80,11 @@ test.describe('With real wallet - Earn page', async () => {
 
 	test('It should show Deposit balances and Deposit amounts - Base USDC vault', async ({ app }) => {
 		await app.earn.vaults
-			.byStrategy({ token: 'USDC', network: 'base', risk: 'Lower Risk' })
+			.byStrategy({ token: 'USDC', network: 'base', riskLevel: 'Lower Risk' })
 			.select({ delay: expectDefaultTimeout / 5 });
 
 		await app.earn.vaults
-			.byStrategy({ token: 'USDC', network: 'base', risk: 'Lower Risk' })
+			.byStrategy({ token: 'USDC', network: 'base', riskLevel: 'Lower Risk' })
 			.shouldBeSelected();
 
 		// USDC
@@ -155,7 +155,7 @@ test.describe('With real wallet - Earn page', async () => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 25_000);
 
-		// Add wallet with only a few tokens
+		// Add wallet with a few tokens
 		const walletPK = process.env.OLD_WALLET_PK ?? '';
 		await metamask.importWalletFromPrivateKey(walletPK);
 
@@ -171,11 +171,11 @@ test.describe('With real wallet - Earn page', async () => {
 
 		// Vaults for which user does not have tokens --> Displayed
 		await app.earn.shouldHaveVaults([
-			{ network: 'base', token: 'ETH', risk: 'Lower Risk' },
-			{ network: 'base', token: 'EURC', risk: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USDC', risk: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USD₮0', risk: 'Lower Risk' },
-			{ network: 'sonic', token: 'USDC.E', risk: 'Lower Risk' },
+			{ network: 'base', token: 'ETH', riskLevel: 'Lower Risk' },
+			{ network: 'base', token: 'EURC', riskLevel: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' },
+			{ network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' },
 		]);
 
 		// =====
@@ -185,22 +185,33 @@ test.describe('With real wallet - Earn page', async () => {
 
 		// Vaults for which user does not have tokens --> Hidden
 		await app.earn.shouldNotHaveVaults([
-			{ network: 'base', token: 'ETH', risk: 'Lower Risk' },
-			{ network: 'base', token: 'EURC', risk: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USDC', risk: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USD₮0', risk: 'Lower Risk' },
-			{ network: 'sonic', token: 'USDC.E', risk: 'Lower Risk' },
+			{ network: 'base', token: 'ETH', riskLevel: 'Lower Risk' },
+			{ network: 'base', token: 'EURC', riskLevel: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' },
+			{ network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' },
 		]);
 		// Vaults for which user has tokens --> Displayed
 		await app.earn.shouldHaveVaults([
-			{ network: 'arbitrum', token: 'USDC', risk: 'Lower Risk' },
-			{ network: 'arbitrum', token: 'USD₮0', risk: 'Lower Risk' },
-			{ network: 'base', token: 'USDC', risk: 'Lower Risk' },
-			{ network: 'ethereum', token: 'ETH', risk: 'Lower Risk' },
-			{ network: 'ethereum', token: 'ETH', risk: 'Higher Risk' },
-			{ network: 'ethereum', token: 'USDC', risk: 'Lower Risk' },
-			{ network: 'ethereum', token: 'USDC', risk: 'Higher Risk' },
-			{ network: 'ethereum', token: 'USDT', risk: 'Lower Risk' },
+			{ network: 'arbitrum', token: 'USDC', riskLevel: 'Lower Risk' },
+			{ network: 'arbitrum', token: 'USD₮0', riskLevel: 'Lower Risk' },
+			{ network: 'base', token: 'USDC', riskLevel: 'Lower Risk' },
+			{ network: 'ethereum', token: 'ETH', riskLevel: 'Lower Risk' },
+			{ network: 'ethereum', token: 'ETH', riskLevel: 'Higher Risk' },
+			{ network: 'ethereum', token: 'USDC', riskLevel: 'Lower Risk' },
+			{
+				network: 'ethereum',
+				token: 'USDC',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'DAO Risk-Managed',
+			},
+			{
+				network: 'ethereum',
+				token: 'USDC',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'Risk-Managed by BlockAnalitica',
+			},
+			{ network: 'ethereum', token: 'USDT', riskLevel: 'Lower Risk' },
 		]);
 
 		// =====
@@ -210,11 +221,11 @@ test.describe('With real wallet - Earn page', async () => {
 
 		// Vaults for which user does not have tokens --> Displayed
 		await app.earn.shouldHaveVaults([
-			{ network: 'base', token: 'ETH', risk: 'Lower Risk' },
-			{ network: 'base', token: 'EURC', risk: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USDC', risk: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USD₮0', risk: 'Lower Risk' },
-			{ network: 'sonic', token: 'USDC.E', risk: 'Lower Risk' },
+			{ network: 'base', token: 'ETH', riskLevel: 'Lower Risk' },
+			{ network: 'base', token: 'EURC', riskLevel: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' },
+			{ network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' },
+			{ network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' },
 		]);
 	});
 });
