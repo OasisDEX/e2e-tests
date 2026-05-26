@@ -45,7 +45,7 @@ export class Earn {
 	}
 
 	@step
-	async filterByVaultType(type: 'Defi Vaults' | 'Permissioned RWA Vaults') {
+	async filterByVaultType(type: 'DeFi Vaults' | 'Permissioned RWA Vaults') {
 		await this.page.getByRole('button', { name: type, exact: true }).click();
 	}
 
