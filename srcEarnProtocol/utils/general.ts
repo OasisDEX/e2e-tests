@@ -8,6 +8,7 @@ export const allStablesWithDuplicates = [
 	'USDC',
 	'USDC',
 	'USDC',
+	'USDC',
 	'USDC.E',
 	'USDT',
 	'USD₮0',

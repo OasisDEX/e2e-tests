@@ -5,18 +5,19 @@ test.describe('Earn page @regression', async () => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
 	});
 
-	test('It should filter by Risk Management type', async ({ app }) => {
-		await app.earn.filterByRiskManagementType('DAO Risk-Managed New!');
+	test('It should filter by Vault type', async ({ app }) => {
+		await app.earn.filterByVaultType('Defi Vaults');
 		await app.earn.vaults.allVaultsShouldBe({
-			filter: 'riskManagementTypes',
-			riskManagementType: 'DAO Risk-Managed',
+			filter: 'vaultTypes',
+			vaultType: 'DeFi Vaults',
 		});
 
-		await app.earn.filterByRiskManagementType('Risk-Managed By BlockAnalitica');
-		await app.earn.vaults.allVaultsShouldBe({
-			filter: 'riskManagementTypes',
-			riskManagementType: 'Risk-Managed by BlockAnalitica',
-		});
+		// SKIP - Enable once 'Permissioned RWA Vaults' are deployed
+		// await app.earn.filterByVaultType('Permissioned RWA Vaults');
+		// await app.earn.vaults.allVaultsShouldBe({
+		// 	filter: 'vaultTypes',
+		// 	vaultType: 'Permissioned RWA Vaults',
+		// });
 	});
 
 	(['ARBITRUM', 'BASE', 'MAINNET', 'SONIC', 'HYPERLIQUID'] as const).forEach((network) => {
@@ -48,8 +49,8 @@ test.describe('Earn page @regression', async () => {
 				await app.earn.assetsSelector.open();
 
 				await app.earn.assetsSelector.select({ option: asset });
-
 				await app.earn.assetsSelector.shouldBe({ option: asset });
+
 				await app.earn.vaults.allVaultsShouldBe({ filter: 'assets', asset });
 			});
 		},

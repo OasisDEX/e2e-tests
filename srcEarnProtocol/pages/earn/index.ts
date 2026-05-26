@@ -1,11 +1,16 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
+import {
+	LazyNominatedTokens,
+	Networks,
+	RiskLevels,
+	RiskManagementTypes,
+} from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
+import { VaultSidebar } from '../vaultSidebar';
 import { AssetsSelector } from './assetSelector';
 import { NetworkSelector } from './networkSelector';
 import { Vaults } from './vaults';
-import { VaultSidebar } from '../vaultSidebar';
-import { LazyNominatedTokens, Networks, RiskLevels } from 'srcEarnProtocol/utils/types';
 
 export class Earn {
 	readonly page: Page;
@@ -40,9 +45,7 @@ export class Earn {
 	}
 
 	@step
-	async filterByRiskManagementType(
-		type: 'Risk-Managed By BlockAnalitica' | 'DAO Risk-Managed New!',
-	) {
+	async filterByVaultType(type: 'Defi Vaults' | 'Permissioned RWA Vaults') {
 		await this.page.getByRole('button', { name: type, exact: true }).click();
 	}
 
@@ -66,22 +69,42 @@ export class Earn {
 
 	@step
 	async shouldHaveVaults(
-		vaults: { token: LazyNominatedTokens; network: Networks; risk: RiskLevels }[],
+		vaults: {
+			token: LazyNominatedTokens;
+			network: Networks;
+			riskLevel: RiskLevels;
+			riskManagementType?: RiskManagementTypes;
+		}[],
 	) {
 		for (const vault of vaults) {
 			await this.vaults
-				.byStrategy({ token: vault.token, network: vault.network, risk: vault.risk })
+				.byStrategy({
+					token: vault.token,
+					network: vault.network,
+					riskLevel: vault.riskLevel,
+					riskManagementType: vault.riskManagementType,
+				})
 				.shouldBeVisible();
 		}
 	}
 
 	@step
 	async shouldNotHaveVaults(
-		vaults: { token: LazyNominatedTokens; network: Networks; risk: RiskLevels }[],
+		vaults: {
+			token: LazyNominatedTokens;
+			network: Networks;
+			riskLevel: RiskLevels;
+			riskManagementType?: RiskManagementTypes;
+		}[],
 	) {
 		for (const vault of vaults) {
 			await this.vaults
-				.byStrategy({ token: vault.token, network: vault.network, risk: vault.risk })
+				.byStrategy({
+					token: vault.token,
+					network: vault.network,
+					riskLevel: vault.riskLevel,
+					riskManagementType: vault.riskManagementType,
+				})
 				.shouldNotBeVisible();
 		}
 	}

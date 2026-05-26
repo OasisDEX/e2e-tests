@@ -42,7 +42,10 @@ export type AssetsSelectorOptions =
 	| 'USDC.E'
 	| 'USDT';
 
+export type VaultTypes = 'DeFi Vaults' | 'Permissioned RWA Vaults';
+
 export type EarnFilters =
 	| { filter: 'assets'; asset: AssetsSelectorOptions }
 	| { filter: 'networks'; network: Networks }
-	| { filter: 'riskManagementTypes'; riskManagementType: RiskManagementTypes };
+	| { filter: 'riskManagementTypes'; riskManagementType: RiskManagementTypes }
+	| { filter: 'vaultTypes'; vaultType: VaultTypes };
