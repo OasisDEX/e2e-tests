@@ -6,7 +6,7 @@ test.describe('Earn page @regression', async () => {
 	});
 
 	test('It should filter by Vault type', async ({ app }) => {
-		await app.earn.filterByVaultType('Defi Vaults');
+		await app.earn.filterByVaultType('DeFi Vaults');
 		await app.earn.vaults.allVaultsShouldBe({
 			filter: 'vaultTypes',
 			vaultType: 'DeFi Vaults',
