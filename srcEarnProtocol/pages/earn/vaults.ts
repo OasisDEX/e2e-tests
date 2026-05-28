@@ -50,7 +50,9 @@ export class Vaults {
 					hasText:
 						strategy.riskManagementType === 'DAO Risk-Managed'
 							? 'DAO Risk-Managed'
-							: 'Block Analitica',
+							: strategy.riskManagementType === 'Risk-Managed by BlockAnalitica'
+								? 'Block Analitica'
+								: '', // Condition needed to skip filter when riskManagementType is not provided
 				}),
 		);
 	}

@@ -166,7 +166,7 @@ test.describe('With real wallet - Earn page', async () => {
 		});
 	});
 
-	test('It should toggle "In wallet" feature', async ({ app, metamask }) => {
+	test('It should toggle "In wallet" feature', async ({ app }) => {
 		// 'In wallet' toggle OFF
 
 		// Vaults for which user does not have tokens --> Displayed
@@ -191,6 +191,7 @@ test.describe('With real wallet - Earn page', async () => {
 			{ network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' },
 			{ network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' },
 		]);
+
 		// Vaults for which user has tokens --> Displayed
 		await app.earn.shouldHaveVaults([
 			{ network: 'arbitrum', token: 'USDC', riskLevel: 'Lower Risk' },
