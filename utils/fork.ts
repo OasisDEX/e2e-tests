@@ -1,6 +1,6 @@
 import { MetaMask } from '@synthetixio/synpress/playwright';
-import * as customMetamask from 'utils/customMetamask';
 import { App } from 'src/app';
+import * as customMetamask from 'utils/customMetamask';
 
 const networks = {
 	mainnet: { locator: '5', placeholder: '1' },

@@ -56,6 +56,9 @@ test.describe('Header - App @regression', async () => {
 		await app.page.mouse.move(200, 0);
 		await app.sumr.shouldBeVisible();
 
+		// To avoid random fails
+		await app.page.waitForTimeout(expectDefaultTimeout / 5);
+
 		await app.header.sumr.open();
 		await app.header.sumr.select('SUMR staking');
 		await app.page.mouse.move(200, 0);

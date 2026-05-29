@@ -3,8 +3,12 @@
 	"editor.formatOnPaste": true,
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
 	"[typescript]": {
-		"editor.formatOnSave": true
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnSave": true,
+		"editor.formatOnSaveMode": "file"
 	},
+	"editor.formatOnSaveMode": "file",
+	"editor.detectIndentation": false,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.eslint": "explicit",
 		"source.organizeImports": "explicit"

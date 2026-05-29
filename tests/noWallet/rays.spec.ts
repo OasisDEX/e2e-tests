@@ -269,11 +269,11 @@ test.describe.skip('No-wallet connected - Rays', async () => {
 		// Check that values difference is smaller than 1%
 		expect(
 			Math.abs(positionPage - portfolio) / portfolio,
-			'Portfolio and Position page diff should be less than 1%'
+			'Portfolio and Position page diff should be less than 1%',
 		).toBeLessThan(0.01);
 		expect(
 			Math.abs(raysPage - portfolio) / portfolio,
-			'Portfolio and Rays page diff should be less than 1%'
+			'Portfolio and Rays page diff should be less than 1%',
 		).toBeLessThan(0.01);
 	});
 
