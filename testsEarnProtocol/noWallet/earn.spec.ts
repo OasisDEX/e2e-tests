@@ -12,12 +12,11 @@ test.describe('Earn page @regression', async () => {
 			vaultType: 'DeFi Vaults',
 		});
 
-		// SKIP - Enable once 'Permissioned RWA Vaults' are deployed
-		// await app.earn.filterByVaultType('Permissioned RWA Vaults');
-		// await app.earn.vaults.allVaultsShouldBe({
-		// 	filter: 'vaultTypes',
-		// 	vaultType: 'Permissioned RWA Vaults',
-		// });
+		await app.earn.filterByVaultType('Permissioned RWA Vaults');
+		await app.earn.vaults.allVaultsShouldBe({
+			filter: 'vaultTypes',
+			vaultType: 'Permissioned RWA Vaults',
+		});
 	});
 
 	(['ARBITRUM', 'BASE', 'MAINNET', 'SONIC', 'HYPERLIQUID'] as const).forEach((network) => {

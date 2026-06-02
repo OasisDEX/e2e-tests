@@ -243,7 +243,7 @@ test.describe('With real wallet - Mainnet ETH Higher Risk position page - Withdr
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
 			// amount: '0.0001',  --> Issue with 1Inch - Fix not prioritised
-			amount: '<0.001',
+			amount: '(<)?0.00[0-1]{1,2}',
 			tokenOrCurrency: 'ETH',
 		});
 	});

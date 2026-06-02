@@ -1,7 +1,7 @@
-import { Locator, Page } from '@playwright/test';
-import { Header } from './header';
 import { expect, step } from '#earnProtocolFixtures';
+import { Locator, Page } from '@playwright/test';
 import { expectDefaultTimeout } from 'utils/config';
+import { Header } from './header';
 
 export class VaultCard {
 	readonly page: Page;
@@ -46,5 +46,14 @@ export class VaultCard {
 			.locator('..')
 			.innerText();
 		return riskManagementType;
+	}
+
+	@step
+	async shouldHave(
+		features: ('Minimum Deposit' | 'Curated By')[] | ('Deposit cap' | 'Risk Management')[],
+	) {
+		for (const feature of features) {
+			await expect(this.cardLocator).toContainText(feature);
+		}
 	}
 }
