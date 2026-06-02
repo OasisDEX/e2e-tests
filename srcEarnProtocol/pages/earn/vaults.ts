@@ -109,11 +109,10 @@ export class Vaults {
 			}
 
 			if (arg.filter === 'vaultTypes') {
-				const vaultHeader = await this.nth(i).header.getToken();
 				if (arg.vaultType === 'DeFi Vaults') {
-					expect(vaultHeader).not.toContain('RWA');
+					await this.nth(i).shouldHave(['Deposit cap', 'Risk Management']);
 				} else {
-					expect(vaultHeader).toContain('RWA');
+					await this.nth(i).shouldHave(['Minimum Deposit', 'Curated By']);
 				}
 			}
 		}
