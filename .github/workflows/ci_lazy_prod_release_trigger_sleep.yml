@@ -30,7 +30,7 @@ jobs:
       - name: Create artifact with trigger repository name
         run: echo "${{ inputs.repository }}" > trigger_repository.txt
       - name: Upload artifact with trigger repository name
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: trigger_repository_name
           path: trigger_repository.txt

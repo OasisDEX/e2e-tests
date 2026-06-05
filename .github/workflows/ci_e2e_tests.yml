@@ -1,6 +1,6 @@
 name: CI E2E tests
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       run_id:
@@ -19,13 +19,13 @@ on:
 
 jobs:
   staging-deployed-trigger-received:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
     steps:
       - run: echo "Regression E2E and API tests for ${{ inputs.repository }} - RUN_ID ${{ inputs.run_id }}"
       - name: Create artifact with trigger repository name
         run: echo "${{ inputs.repository }}" > trigger_repository.txt
       - name: Upload artifact with trigger repository name
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: trigger_repository_name
           path: trigger_repository.txt
@@ -49,7 +49,7 @@ jobs:
   #     base_url: 'https://pro.oasisapp.dev'
   #     flags_features: ${{ inputs.flags_features}}
   #   secrets: inherit
-  
+
   lazy-no-wallet-tests:
     uses: ./.github/workflows/z_Reusable_LazyNoWallet.yml
     with:

@@ -1,6 +1,6 @@
 name: Reusable Workflow - Institutions - No wallet
 
-on: 
+on:
   workflow_call:
     inputs:
       base_url:
@@ -29,8 +29,8 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 18
       - name: Install dependencies
@@ -66,7 +66,7 @@ jobs:
           INSTITUTIONS_ADMIN_MFA_USERNAME=${{ secrets.INSTITUTIONS_ADMIN_MFA_USERNAME }} \
           INSTITUTIONS_ADMIN_MFA_PASSWORD=${{ secrets.INSTITUTIONS_ADMIN_MFA_PASSWORD }} \
           yarn ${{ inputs.script }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         if: always()
         with:
           name: ${{ inputs.report_name }}
