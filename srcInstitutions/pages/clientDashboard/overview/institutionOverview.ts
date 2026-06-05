@@ -10,6 +10,8 @@ export class InstitutionOverview {
 
 	readonly stackedSliderLocator: Locator;
 
+	readonly tvlChartLocator: Locator;
+
 	constructor(page: Page) {
 		this.page = page;
 		this.panelLocator = page.locator('[class*="PanelInstitutionOverview"]');
@@ -17,6 +19,7 @@ export class InstitutionOverview {
 			.getByText('Stacked', { exact: true })
 			.locator('..')
 			.locator('[class*="_slider_"]');
+		this.tvlChartLocator = this.panelLocator.locator('[class*="_tvlChart_"]');
 	}
 
 	vaultLocator(name: string): Locator {
@@ -38,30 +41,32 @@ export class InstitutionOverview {
 			'Should display "Total Value Locked" chart title',
 		).toBeVisible();
 
-		await expect(
-			this.panelLocator.locator('[class*="_tvlChart_"]'),
-			'Should display TVL chart',
-		).toBeVisible();
+		await expect(this.tvlChartLocator, 'Should display TVL chart').toBeVisible();
 	}
 
 	@step
-	async openChartTooltip() {
-		await this.page.locator('[class="recharts-wrapper"] [class="recharts-layer"]').first().hover();
+	async openTvlChartTooltip() {
+		await this.tvlChartLocator
+			.locator('[class="recharts-wrapper"] [class="recharts-layer"]')
+			.first()
+			.hover();
 		await expect(
-			this.page.locator('[class="recharts-default-tooltip"]'),
+			this.tvlChartLocator.locator('[class="recharts-default-tooltip"]'),
 			'TVL chart tooltip should be visible',
 		).toBeVisible();
 	}
 
 	@step
 	async shouldHaveChartTooltipWithDateAndArksTvl() {
-		const dateRegExp = '[0-3][0-9].*[Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec].*202[5-9]';
+		const dateRegExp = '202[5-9].*[0-1][0-9].*[0-3][0-9]';
 		const arbVault = 'ExtDemoCorp USDC arbitrum.*:.*[0-9]{4}.[0-9]{2}';
 		const baseVault = 'ExtDemoCorp USDC base.*:.*[0-9]{4}.[0-9]{2}';
 
 		const regExp = new RegExp(`${dateRegExp}.*${arbVault}.*${baseVault}`);
 
-		await expect(this.page.locator('[class="recharts-default-tooltip"]')).toContainText(regExp);
+		await expect(this.tvlChartLocator.locator('[class="recharts-default-tooltip"]')).toContainText(
+			regExp,
+		);
 	}
 
 	@step
@@ -89,7 +94,7 @@ export class InstitutionOverview {
 	async shouldHaveStackedChartMaxY(maxY: string) {
 		const regExp = new RegExp(`\\$${maxY}`);
 		await expect(
-			this.page.locator('[class*="recharts-yAxis-tick-labels"] tspan').last(),
+			this.tvlChartLocator.locator('[class*="recharts-yAxis-tick-labels"] tspan').last(),
 			`Top Y axis legend should read ${maxY}`,
 		).toContainText(regExp);
 	}

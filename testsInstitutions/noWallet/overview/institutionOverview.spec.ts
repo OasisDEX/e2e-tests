@@ -38,20 +38,15 @@ test.describe('Client dashboard - Overview - Institution overview', async () => 
 
 	test('It should have tooltip with date and TVL per vault', async ({ app }) => {
 		await app.clientDashboard.overview.institutionOverview.shouldHaveValueLockedChart();
-		await app.clientDashboard.overview.institutionOverview.openChartTooltip();
+		await app.clientDashboard.overview.institutionOverview.openTvlChartTooltip();
 		await app.clientDashboard.overview.institutionOverview.shouldHaveChartTooltipWithDateAndArksTvl();
 	});
 
 	test('It should show data for different time periods', async ({ app }) => {
 		await app.clientDashboard.overview.institutionOverview.shouldHaveValueLockedChart();
 
-		// 90d by default
-		await app.clientDashboard.overview.institutionOverview.shouldHaveTimePeriodInX('90d');
-
-		// Switch to '7d' view
+		// 7d by default
 		await app.clientDashboard.overview.institutionOverview.selectTimePeriod('7d');
-		await app.page.waitForTimeout(1_000);
-		await app.clientDashboard.overview.institutionOverview.shouldHaveTimePeriodInX('7d');
 
 		// Switch to '30d' view
 		await app.clientDashboard.overview.institutionOverview.selectTimePeriod('30d');
@@ -77,6 +72,11 @@ test.describe('Client dashboard - Overview - Institution overview', async () => 
 		await app.clientDashboard.overview.institutionOverview.selectTimePeriod('3y');
 		await app.page.waitForTimeout(1_000);
 		await app.clientDashboard.overview.institutionOverview.shouldHaveTimePeriodInX('3y');
+
+		// Switch to '7d' view
+		await app.clientDashboard.overview.institutionOverview.selectTimePeriod('7d');
+		await app.page.waitForTimeout(1_000);
+		await app.clientDashboard.overview.institutionOverview.shouldHaveTimePeriodInX('7d');
 	});
 
 	test('It should list vaults', async ({ app }) => {
