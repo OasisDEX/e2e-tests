@@ -1,8 +1,7 @@
 name: 0.0.0.0 Synpress cache test - All networks
 
-on: 
-  workflow_dispatch
-    
+on: workflow_dispatch
+
 jobs:
   hyperevm-test-synpress-cache:
     name: 'Synpress cache test - All networks'
@@ -10,8 +9,8 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.49.0-jammy
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
           node-version: 18
       - name: Install dependencies

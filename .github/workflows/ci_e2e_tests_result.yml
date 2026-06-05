@@ -1,6 +1,6 @@
 name: Sending CI E2E tests result to trigger repository
 
-on: 
+on:
   workflow_run:
     branches: [main]
     workflows: [CI E2E tests]
@@ -12,7 +12,7 @@ jobs:
     steps:
       - run: echo 'CI E2E tests result -- ${{ github.event.workflow_run.conclusion }}'
       - name: Get trigger repository name
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: trigger_repository_name
           github-token: ${{ github.token }}
