@@ -15,4 +15,9 @@ export const allStablesWithDuplicates = [
 	'USD₮0',
 ];
 
-export const allAssetsWithDuplicates = allStablesWithDuplicates.concat(['ETH', 'ETH', 'ETH']);
+export const allAssetsWithDuplicates = allStablesWithDuplicates.concat([
+	'ETH',
+	'ETH',
+	'ETH',
+	'ETH',
+]);
