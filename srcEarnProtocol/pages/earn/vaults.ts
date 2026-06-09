@@ -122,7 +122,10 @@ export class Vaults {
 		if (arg.filter === 'assets') {
 			if (arg.asset === 'All assets') {
 				// Verify correct length of listed assets, with duplicates (i.e. several USDC vaults)
-				expect(allAssetsWithDuplicates.length).toEqual(assetsListed.length);
+				expect(
+					allAssetsWithDuplicates.length,
+					`Should list ${allAssetsWithDuplicates.length} vaults`,
+				).toEqual(assetsListed.length);
 
 				// Verify correct list of assets/vaults listed, with duplicates (i.e. several USDC vaults)
 				expect(JSON.stringify([...assetsListed].sort()), `${assetsListed}`).toEqual(

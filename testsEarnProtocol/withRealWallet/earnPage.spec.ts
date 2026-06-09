@@ -198,7 +198,18 @@ test.describe('With real wallet - Earn page', async () => {
 			{ network: 'arbitrum', token: 'USD₮0', riskLevel: 'Lower Risk' },
 			{ network: 'base', token: 'USDC', riskLevel: 'Lower Risk' },
 			{ network: 'ethereum', token: 'ETH', riskLevel: 'Lower Risk' },
-			{ network: 'ethereum', token: 'ETH', riskLevel: 'Higher Risk' },
+			{
+				network: 'ethereum',
+				token: 'ETH',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'Risk-Managed by BlockAnalitica',
+			},
+			{
+				network: 'ethereum',
+				token: 'ETH',
+				riskLevel: 'Higher Risk',
+				riskManagementType: 'DAO Risk-Managed',
+			},
 			{ network: 'ethereum', token: 'USDC', riskLevel: 'Lower Risk' },
 			{
 				network: 'ethereum',
