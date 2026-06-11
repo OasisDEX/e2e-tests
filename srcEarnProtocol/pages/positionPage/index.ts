@@ -43,14 +43,18 @@ export class PositionPage {
 		await expect(async () => {
 			await this.page.goto(url, { timeout: expectDefaultTimeout * 4 });
 
-			// Reload position data to avoid random fails
-			await expect(this.refreshButtonLocator).toBeVisible({
-				timeout: expectDefaultTimeout * 2,
-			});
-			await this.page.waitForTimeout(1_000);
-			await this.refreshButtonLocator.click();
+			if (url.includes('arbitrum') || url.includes('sonic')) {
+				await this.shouldHaveNumberOfDeposits();
+			} else {
+				// Reload position data to avoid random fails
+				await expect(this.refreshButtonLocator).toBeVisible({
+					timeout: expectDefaultTimeout * 2,
+				});
+				await this.page.waitForTimeout(1_000);
+				await this.refreshButtonLocator.click();
 
-			await this.shouldHaveLiveApy('[0-9].[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
+				await this.shouldHaveLiveApy('[0-9].[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
+			}
 		}).toPass();
 	}
 

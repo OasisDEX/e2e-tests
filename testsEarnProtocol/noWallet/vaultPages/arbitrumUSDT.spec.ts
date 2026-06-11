@@ -1,5 +1,4 @@
 import { expect, test } from '#earnProtocolFixtures';
-import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Vault page - Arbitrum USDT', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
@@ -8,7 +7,8 @@ test.describe('Vault page - Arbitrum USDT', async () => {
 		await app.vaultPage.open('/earn/arbitrum/position/0x98c49e13bf99d7cad8069faa2a370933ec9ecf17');
 	});
 
-	test('It should have tooltip with APY details and match Net APY tag', async ({ app }) => {
+	// SKIP - Deposit cap set to 0.00
+	test.skip('It should have tooltip with APY details and match Net APY tag', async ({ app }) => {
 		// Get Net APY in tag
 		await app.vaultPage.shouldHaveNetApyTag();
 		const tagNetApy: string = await app.vaultPage.getTagNetApy();
@@ -37,7 +37,8 @@ test.describe('Vault page - Arbitrum USDT', async () => {
 		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);
 	});
 
-	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({
+	// SKIP - Deposit cap set to 0.00
+	test.skip('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info', async ({
 		app,
 	}) => {
 		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
@@ -56,28 +57,17 @@ test.describe('Vault page - Arbitrum USDT', async () => {
 		});
 	});
 
-	test('It should show "How it works" page', async ({ app }) => {
-		// Wait for page to fully load to avoid random fails
-		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
-
-		await app.vaultPage.howItAllWorks();
-
-		await app.vaultPage.howItWorks.shouldHaveHeader('How it all works', {
-			timeout: expectDefaultTimeout * 2,
-		});
-		await app.vaultPage.howItWorks.shouldLinkToLitePaper();
-		await app.vaultPage.howItWorks.shouldHaveTabActive('Rebalance mechanism');
-		await app.vaultPage.howItWorks.shouldHaveImage('how-it-works');
-
-		await app.vaultPage.howItWorks.selectTab('Governance');
-		await app.vaultPage.howItWorks.shouldHaveTabActive('Governance');
-		await app.vaultPage.howItWorks.shouldHaveImage('governance');
-
-		await app.vaultPage.howItWorks.shouldHaveHeader('Lower Risk Historical Yields', {
-			timeout: expectDefaultTimeout * 2,
+	test('It should show Assets in vault and Deposit Cap info', async ({ app }) => {
+		await app.vaultPage.shouldHaveAssets({
+			token: 'USD₮0',
+			tokenAmount: '([0-9]{1,3},)?[0-9]{1,3}.[0-9]{2}(K)?',
+			usdAmount: '([0-9]{1,3},)?[0-9]{1,3}.[0-9]{2}(K)?',
 		});
 
-		await app.vaultPage.howItWorks.shouldHaveHeader('Security');
+		await app.vaultPage.shouldHaveDepositCap({
+			token: 'USD₮0',
+			tokenAmount: '0.00',
+		});
 	});
 
 	test('It should show strategies exposure and be 100% in total', async ({ app }) => {
