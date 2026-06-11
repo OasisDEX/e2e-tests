@@ -1,10 +1,10 @@
-import { expect, Locator, Page } from '@playwright/test';
-import { HowItWorks } from './howItWorks';
-import { VaultExposure } from './vaultExposure';
-import { VaultSidebar } from '../vaultSidebar';
 import { step } from '#noWalletFixtures';
+import { expect, Locator, Page } from '@playwright/test';
 import { EarnTokens } from 'srcEarnProtocol/utils/types';
 import { expectDefaultTimeout } from 'utils/config';
+import { VaultSidebar } from '../vaultSidebar';
+import { HowItWorks } from './howItWorks';
+import { VaultExposure } from './vaultExposure';
 
 export class VaultPage {
 	readonly page: Page;
@@ -33,7 +33,9 @@ export class VaultPage {
 		await expect(async () => {
 			await this.page.goto(url, { timeout: expectDefaultTimeout * 3 });
 
-			if (!url.includes('sonic')) {
+			if (url.includes('arbitrum') || url.includes('sonic')) {
+				await this.shouldHaveDepositCap({ tokenAmount: '0.00' });
+			} else {
 				// Reload position data to avoid random fails
 				await expect(this.page.locator('svg[title="refresh"]')).toBeVisible({
 					timeout: expectDefaultTimeout * 2,
@@ -41,12 +43,10 @@ export class VaultPage {
 				await this.page.waitForTimeout(1_000);
 				await this.page.locator('svg[title="refresh"]').click();
 
-				// await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 2 });
-				// await this.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
+				await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', {
+					timeout: expectDefaultTimeout * 3,
+				});
 			}
-
-			await this.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
-			// await this.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}', { timeout: expectDefaultTimeout * 3 });
 		}).toPass();
 	}
 
@@ -128,8 +128,8 @@ export class VaultPage {
 	}
 
 	@step
-	async shouldHaveDepositCap({ token, tokenAmount }: { token: EarnTokens; tokenAmount: string }) {
-		const tokenRegExp = new RegExp(`${tokenAmount}.*${token}`);
+	async shouldHaveDepositCap({ token, tokenAmount }: { token?: EarnTokens; tokenAmount: string }) {
+		const tokenRegExp = new RegExp(`${tokenAmount}.*${token ?? ''}`);
 		await expect(
 			this.page.locator('[class*="_dataBlockWrapper_"]:has-text("Deposit Cap") span').first(),
 		).toContainText(tokenRegExp);

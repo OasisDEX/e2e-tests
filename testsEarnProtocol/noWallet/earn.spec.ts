@@ -19,7 +19,8 @@ test.describe('Earn page @regression', async () => {
 		});
 	});
 
-	(['ARBITRUM', 'BASE', 'MAINNET', 'SONIC', 'HYPERLIQUID'] as const).forEach((network) => {
+	// 'ARBITRUM' and 'SONIC' disabled (cap=0.00)
+	(['BASE', 'MAINNET', 'HYPERLIQUID'] as const).forEach((network) => {
 		const networkShortName: {
 			[index: string]: 'arbitrum' | 'base' | 'ethereum' | 'sonic' | 'hyperliquid';
 		} = {
@@ -42,16 +43,15 @@ test.describe('Earn page @regression', async () => {
 		});
 	});
 
-	(['All stables', 'ETH', 'EURC', 'USDC', 'USDC.E', 'USDT', 'All assets'] as const).forEach(
-		(asset) => {
-			test(`It should filter by assets -  "${asset}"`, async ({ app }) => {
-				await app.earn.assetsSelector.open();
+	// USDC.E (Sonic) disabled (cap=0.00)
+	(['All stables', 'ETH', 'EURC', 'USDC', 'USDT', 'All assets'] as const).forEach((asset) => {
+		test(`It should filter by assets -  "${asset}"`, async ({ app }) => {
+			await app.earn.assetsSelector.open();
 
-				await app.earn.assetsSelector.select({ option: asset });
-				await app.earn.assetsSelector.shouldBe({ option: asset });
+			await app.earn.assetsSelector.select({ option: asset });
+			await app.earn.assetsSelector.shouldBe({ option: asset });
 
-				await app.earn.vaults.allVaultsShouldBe({ filter: 'assets', asset });
-			});
-		},
-	);
+			await app.earn.vaults.allVaultsShouldBe({ filter: 'assets', asset });
+		});
+	});
 });

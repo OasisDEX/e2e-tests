@@ -1,17 +1,15 @@
-export const allStables = ['EURC', 'USDC', 'USDC.E', 'USDT', 'USD₮0'];
+export const allStables = ['EURC', 'USDC', 'USDT', 'USD₮0']; // ARBITRUM and SONIC are set to 0.00
 export const allAssets = allStables.concat(['ETH']);
 
 export const allStablesWithDuplicates = [
+	// ARBITRUM and SONIC are set to 0.00
 	'EURC',
 	'USDC',
 	'USDC',
 	'USDC',
 	'USDC',
 	'USDC',
-	'USDC',
-	'USDC.E',
 	'USDT',
-	'USD₮0',
 	'USD₮0',
 ];
 

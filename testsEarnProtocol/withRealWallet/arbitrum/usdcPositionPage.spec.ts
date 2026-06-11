@@ -9,7 +9,9 @@ import { test as withRealWalletArbitrumFixtures } from '../../../srcEarnProtocol
 
 const test = testWithSynpress(withRealWalletArbitrumFixtures);
 
-test.describe('With real wallet - Arbitrum USDC Position page - APY tag @arbitrum', async () => {
+// SKIP - Deposit cap set to 0.00
+test.describe
+	.skip('With real wallet - Arbitrum USDC Position page - APY tag @arbitrum', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 110_000);
@@ -123,7 +125,8 @@ test.describe('With real wallet - Arbitrum USDC Position page - Deposit @arbitru
 		});
 	});
 
-	test('It should deposit WSTETH & DAI - (until rejecting "Deposit" tx) - Arbitrum USDC position', async ({
+	// SKIP - Deposit cap set to 0.00
+	test.skip('It should deposit WSTETH & DAI - (until rejecting "Deposit" tx) - Arbitrum USDC position', async ({
 		app,
 		metamask,
 	}) => {

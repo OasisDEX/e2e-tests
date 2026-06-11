@@ -17,7 +17,8 @@ test.describe('With real wallet - Earn page', async () => {
 		});
 	});
 
-	test('It should show Deposit balances and Deposit amounts - Arbitrum USDT vault', async ({
+	// SKIP - Arbitrum vaults -> Deposit cap set to 0.00
+	test.skip('It should show Deposit balances and Deposit amounts - Arbitrum USDT vault', async ({
 		app,
 	}) => {
 		await app.earn.vaults
@@ -175,7 +176,7 @@ test.describe('With real wallet - Earn page', async () => {
 			{ network: 'base', token: 'EURC', riskLevel: 'Lower Risk' },
 			{ network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' },
 			{ network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' },
-			{ network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' },
+			// { network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' }, // SKIP - SONIC -> Deposit cap set to 0.00
 		]);
 
 		// =====
@@ -189,13 +190,13 @@ test.describe('With real wallet - Earn page', async () => {
 			{ network: 'base', token: 'EURC', riskLevel: 'Lower Risk' },
 			{ network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' },
 			{ network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' },
-			{ network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' },
+			// { network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' }, // SKIP - SONIC vaults -> Deposit cap set to 0.00
 		]);
 
 		// Vaults for which user has tokens --> Displayed
 		await app.earn.shouldHaveVaults([
-			{ network: 'arbitrum', token: 'USDC', riskLevel: 'Lower Risk' },
-			{ network: 'arbitrum', token: 'USD₮0', riskLevel: 'Lower Risk' },
+			// { network: 'arbitrum', token: 'USDC', riskLevel: 'Lower Risk' }, // SKIP - Arbitrum vaults -> Deposit cap set to 0.00
+			// { network: 'arbitrum', token: 'USD₮0', riskLevel: 'Lower Risk' }, // SKIP - Arbitrum vaults -> Deposit cap set to 0.00
 			{ network: 'base', token: 'USDC', riskLevel: 'Lower Risk' },
 			{ network: 'ethereum', token: 'ETH', riskLevel: 'Lower Risk' },
 			{
@@ -237,7 +238,7 @@ test.describe('With real wallet - Earn page', async () => {
 			{ network: 'base', token: 'EURC', riskLevel: 'Lower Risk' },
 			{ network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' },
 			{ network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' },
-			{ network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' },
+			// { network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' }, // SKIP - SONIC vaults -> Deposit cap set to 0.00
 		]);
 	});
 });
