@@ -33,7 +33,7 @@ export class VaultPage {
 		await expect(async () => {
 			await this.page.goto(url, { timeout: expectDefaultTimeout * 3 });
 
-			if (url.includes('arbitrum') || url.includes('sonic')) {
+			if (url.includes('arbitrum') || url.includes('sonic') || url.includes('hyperliquid')) {
 				await this.shouldHaveDepositCap({ tokenAmount: '0.00' });
 			} else {
 				// Reload position data to avoid random fails

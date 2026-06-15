@@ -19,8 +19,8 @@ test.describe('Earn page @regression', async () => {
 		});
 	});
 
-	// 'ARBITRUM' and 'SONIC' disabled (cap=0.00)
-	(['BASE', 'MAINNET', 'HYPERLIQUID'] as const).forEach((network) => {
+	// 'ARBITRUM', 'HYPERLIQUID' and 'SONIC' disabled (cap=0.00)
+	(['BASE', 'MAINNET'] as const).forEach((network) => {
 		const networkShortName: {
 			[index: string]: 'arbitrum' | 'base' | 'ethereum' | 'sonic' | 'hyperliquid';
 		} = {

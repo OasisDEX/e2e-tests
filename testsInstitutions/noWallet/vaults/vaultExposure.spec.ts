@@ -216,6 +216,8 @@ import { expectDefaultTimeout } from 'utils/config';
 		});
 
 		test(`It should have arks available on chain - ${vault}`, async ({ app }) => {
+			test.skip(vault === 'USDC arbitrum'); // Arbitrum arks disabled
+
 			if (vault === 'USDC Base') {
 				// USDC Base arks
 				await app.clientDashboard.vaults.vaultExposure.shouldHaveArksOnChain([
