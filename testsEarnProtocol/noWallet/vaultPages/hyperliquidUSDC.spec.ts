@@ -13,7 +13,8 @@ test.describe('Vault page - Hyperliquid USDC', async () => {
 		await app.page.waitForTimeout(2_000);
 	});
 
-	test('It should have tooltip with APY details and match Net APY tag', async ({ app }) => {
+	// SKIP - Hyperliquid USDC Deposit cap set to 0.00
+	test.skip('It should have tooltip with APY details and match Net APY tag', async ({ app }) => {
 		// Get Net APY in tag
 		await app.vaultPage.shouldHaveNetApyTag();
 		const tagNetApy: string = await app.vaultPage.getTagNetApy();
@@ -42,13 +43,10 @@ test.describe('Vault page - Hyperliquid USDC', async () => {
 		).toBeCloseTo(parseFloat(tooltipDetails.netApy), 1);
 	});
 
-	test('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @regression', async ({
+	// SKIP - Hyperliquid USDC Deposit cap set to 0.00
+	test.skip('It should show 30d APY, Live APY, Assets in vault and Deposit Cap info @regression', async ({
 		app,
 	}) => {
-		await app.vaultPage.shouldHave30dApy('[0-9]{1,2}.[0-9]{2}');
-
-		await app.vaultPage.shouldHaveLiveApy('[0-9]{1,2}.[0-9]{2}');
-
 		await app.vaultPage.shouldHaveAssets({
 			token: 'USDC',
 			tokenAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
@@ -58,6 +56,19 @@ test.describe('Vault page - Hyperliquid USDC', async () => {
 		await app.vaultPage.shouldHaveDepositCap({
 			token: 'USDC',
 			tokenAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
+		});
+	});
+
+	test('It should show Assets in vault and Deposit Cap info @regression', async ({ app }) => {
+		await app.vaultPage.shouldHaveAssets({
+			token: 'USDC',
+			tokenAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
+			usdAmount: '[0-9]{1,3}.[0-9]{2}[MK]',
+		});
+
+		await app.vaultPage.shouldHaveDepositCap({
+			token: 'USDC',
+			tokenAmount: '0.00',
 		});
 	});
 
