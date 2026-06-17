@@ -1,7 +1,7 @@
 import { testWithSynpress } from '@synthetixio/synpress';
-import { test as withRealWalletBaseFixtures } from '../../srcEarnProtocol/fixtures/withRealWalletBase';
 import { logInWithWalletAddress } from 'srcEarnProtocol/utils/logIn';
 import { expectDefaultTimeout } from 'utils/config';
+import { test as withRealWalletBaseFixtures } from '../../srcEarnProtocol/fixtures/withRealWalletBase';
 
 const test = testWithSynpress(withRealWalletBaseFixtures);
 
@@ -43,10 +43,7 @@ test.describe('Staking page', async () => {
 		});
 	});
 
-	test('It should unstake position - Until cancelling tx @regression', async ({
-		app,
-		metamask,
-	}) => {
+	test('It should unstake position - Until cancelling tx', async ({ app, metamask }) => {
 		await app.staking.removeStakingPosition({
 			sumrStaked: '2.0000',
 			lockPeriod: '82 days',
