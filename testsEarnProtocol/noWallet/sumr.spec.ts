@@ -40,10 +40,10 @@ test.describe('$SUMR', async () => {
 			await app.sumr.stakeSUMR(section);
 
 			await app.staking.manage.shouldBeVisible();
-		})
+		}),
 	);
 
-	test('It should show yield source @regression', async ({ app }) => {
+	test('It should show yield source', async ({ app }) => {
 		await app.sumr.shouldHaveYieldSource();
 	});
 

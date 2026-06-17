@@ -37,7 +37,7 @@ test.describe('Real wallet - Portfolio - SUMR rewards', async () => {
 		await app.portfolio.rewards.shouldBeVisible();
 	});
 
-	test('It should claim rewards (until tx) @regression', async ({ app, metamask }) => {
+	test('It should claim rewards (until tx)', async ({ app, metamask }) => {
 		test.setTimeout(veryLongTestTimeout);
 
 		await expect(async () => {

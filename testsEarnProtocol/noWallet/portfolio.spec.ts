@@ -1,19 +1,19 @@
 import { expect, test } from '#earnProtocolFixtures';
 import { expectDefaultTimeout } from 'utils/config';
 
-test.describe('Portfolio @regression', async () => {
+test.describe('Portfolio', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 45_000);
 	});
 
-	test('It should show wallet address', async ({ app }) => {
+	test('It should show wallet address @regression', async ({ app }) => {
 		await expect(async () => {
 			await app.portfolio.open('0x548b79cb42d4a204765e9a9e599b83d4225319a9');
 			await app.portfolio.shouldShowWalletAddress('0x548b...319a9');
 		}).toPass();
 	});
 
-	test('It should show Total $SUMR', async ({ app }) => {
+	test('It should show Total $SUMR @regression', async ({ app }) => {
 		await expect(async () => {
 			await app.portfolio.open('0xbEf4befb4F230F43905313077e3824d7386E09F8');
 			await app.portfolio.shouldShowtotal$SUMR({
@@ -41,7 +41,7 @@ test.describe('Portfolio @regression', async () => {
 		}).toPass();
 	});
 
-	test('It should switch to all Portfolio main tabs', async ({ app }) => {
+	test('It should switch to all Portfolio main tabs @regression', async ({ app }) => {
 		// Trying to reduce flakines due to `Something went wrong` error in app
 		await expect(async () => {
 			await app.portfolio.open('0xDDc68f9dE415ba2fE2FD84bc62Be2d2CFF1098dA');
