@@ -174,8 +174,8 @@ test.describe('With real wallet - Earn page', async () => {
 		await app.earn.shouldHaveVaults([
 			{ network: 'base', token: 'ETH', riskLevel: 'Lower Risk' },
 			{ network: 'base', token: 'EURC', riskLevel: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' },
+			// { network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' }, // SKIP - Hyperliquid -> Deposit cap set to 0.00
+			// { network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' }, // SKIP - Hyperliquid -> Deposit cap set to 0.00
 			// { network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' }, // SKIP - SONIC -> Deposit cap set to 0.00
 		]);
 
@@ -188,8 +188,8 @@ test.describe('With real wallet - Earn page', async () => {
 		await app.earn.shouldNotHaveVaults([
 			{ network: 'base', token: 'ETH', riskLevel: 'Lower Risk' },
 			{ network: 'base', token: 'EURC', riskLevel: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' },
+			// { network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' }, // SKIP - Hyperliquid -> Deposit cap set to 0.00
+			// { network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' }, // SKIP - Hyperliquid -> Deposit cap set to 0.00
 			// { network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' }, // SKIP - SONIC vaults -> Deposit cap set to 0.00
 		]);
 
@@ -236,8 +236,8 @@ test.describe('With real wallet - Earn page', async () => {
 		await app.earn.shouldHaveVaults([
 			{ network: 'base', token: 'ETH', riskLevel: 'Lower Risk' },
 			{ network: 'base', token: 'EURC', riskLevel: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' },
-			{ network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' },
+			// { network: 'hyperliquid', token: 'USDC', riskLevel: 'Lower Risk' }, // SKIP - Hyperliquid -> Deposit cap set to 0.00
+			// { network: 'hyperliquid', token: 'USD₮0', riskLevel: 'Lower Risk' }, // SKIP - Hyperliquid -> Deposit cap set to 0.00
 			// { network: 'sonic', token: 'USDC.E', riskLevel: 'Lower Risk' }, // SKIP - SONIC vaults -> Deposit cap set to 0.00
 		]);
 	});

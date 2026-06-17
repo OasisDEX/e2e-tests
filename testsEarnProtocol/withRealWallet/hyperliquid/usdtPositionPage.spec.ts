@@ -8,7 +8,8 @@ import { test as withRealWalletHyperliquidFixtures } from '../../../srcEarnProto
 
 const test = testWithSynpress(withRealWalletHyperliquidFixtures);
 
-test.describe('With real wallet - Hyperliquid USD₮0 Position page - APY tag', async () => {
+// SKIP - Deposit cap set to 0.00
+test.describe.skip('With real wallet - Hyperliquid USD₮0 Position page - APY tag', async () => {
 	test.beforeEach(async ({ app, metamask }, testInfo) => {
 		// Extending tests timeout by 25 extra seconds due to beforeEach actions
 		testInfo.setTimeout(testInfo.timeout + 100_000);
@@ -88,7 +89,8 @@ test.describe('With real wallet - Hyperliquid USD₮0 Position page - Deposit', 
 		});
 	});
 
-	test('It should deposit USD₮0 - (until rejecting "Deposit" tx) - Hyperliquid USD₮0 position', async ({
+	// SKIP - Deposit cap set to 0.00
+	test.skip('It should deposit USD₮0 - (until rejecting "Deposit" tx) - Hyperliquid USD₮0 position', async ({
 		app,
 		metamask,
 	}) => {
