@@ -43,7 +43,7 @@ export class PositionPage {
 		await expect(async () => {
 			await this.page.goto(url, { timeout: expectDefaultTimeout * 4 });
 
-			if (url.includes('arbitrum') || url.includes('sonic')) {
+			if (url.includes('arbitrum') || url.includes('sonic') || url.includes('hyperliquid')) {
 				await this.shouldHaveNumberOfDeposits();
 			} else {
 				// Reload position data to avoid random fails
