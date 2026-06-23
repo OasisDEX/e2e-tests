@@ -135,11 +135,13 @@ export class Dca {
 
 	@step
 	async enterAmount(amount: string) {
-		await this.page
+		const inputLocator = this.page
 			.locator('[class*="dca_amountInputsColumn_"]')
 			.locator('input')
-			.first()
-			.fill(amount);
+			.first();
+
+		await inputLocator.clear();
+		await inputLocator.fill(amount);
 	}
 
 	@step
