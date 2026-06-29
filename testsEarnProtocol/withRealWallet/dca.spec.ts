@@ -65,7 +65,7 @@ test.describe('DCA strategy - With wallet', async () => {
 		});
 
 		await app.dca.selectFrequency('Monthly');
-		await app.dca.enterAmount('0.0005');
+		await app.dca.enterAmount('0.01');
 		await app.dca.priceLimit('1000');
 		await app.dca.maxNumberOfTrades('5');
 		await app.dca.tradeUntil('2026-12-31');
