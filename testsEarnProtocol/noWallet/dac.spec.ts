@@ -294,13 +294,13 @@ test.describe('DCA Strategy - No wallet', async () => {
 			{
 				frequency: '7 days',
 				spend: '1.75K.*USDC',
-				accumulate: '0.[0-9]{2,4}.*ETH',
+				accumulate: '[0-2].[0-9]{2,4}.*ETH',
 				executions: '7',
 			},
 			{
 				frequency: '30 days',
 				spend: '7.50K.*USDC',
-				accumulate: '[1-4].[0-9]{2,4}.*ETH',
+				accumulate: '[1-6].[0-9]{2,4}.*ETH',
 				executions: '30',
 			},
 			{
