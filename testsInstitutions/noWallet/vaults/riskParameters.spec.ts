@@ -1,9 +1,12 @@
 import { test } from '#institutionsNoWalletFixtures';
+import { openInstitutionDashboard } from 'srcInstitutions/utils/openInstitutionDashboard';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('Vaults - Risk Parameters', async () => {
 	test.beforeEach(async ({ app }) => {
-		await signIn({ app, userRights: 'client', role: 'Viewer' });
+		await signIn({ app, userRights: 'admin' });
+		await openInstitutionDashboard({ app, institution: 'Ext Demo Corp' });
+
 		await app.clientDashboard.selectTab('Vaults');
 		await app.clientDashboard.vaults.selectPanel('Risk Parameters');
 		await app.clientDashboard.vaults.riskParameters.shouldBeVisible();

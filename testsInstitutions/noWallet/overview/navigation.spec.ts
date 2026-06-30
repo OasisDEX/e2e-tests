@@ -1,9 +1,11 @@
 import { test } from '#institutionsNoWalletFixtures';
+import { openInstitutionDashboard } from 'srcInstitutions/utils/openInstitutionDashboard';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('Client dashboard - Overview - Navigation', async () => {
 	test.beforeEach(async ({ app }) => {
-		await signIn({ app, userRights: 'client', role: 'Viewer' });
+		await signIn({ app, userRights: 'admin' });
+		await openInstitutionDashboard({ app, institution: 'Ext Demo Corp' });
 	});
 
 	test('It should switch to all available panels', async ({ app }) => {

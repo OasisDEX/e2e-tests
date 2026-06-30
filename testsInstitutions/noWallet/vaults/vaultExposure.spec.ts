@@ -1,11 +1,14 @@
 import { expect, test } from '#institutionsNoWalletFixtures';
+import { openInstitutionDashboard } from 'srcInstitutions/utils/openInstitutionDashboard';
 import { signIn } from 'srcInstitutions/utils/signIn';
 import { expectDefaultTimeout } from 'utils/config';
 
 ['USDC Base', 'USDC arbitrum'].forEach((vault) =>
 	test.describe('Client dashboard - Vaults - Vault exposure', async () => {
 		test.beforeEach(async ({ app }) => {
-			await signIn({ app, userRights: 'client', role: 'Viewer' });
+			await signIn({ app, userRights: 'admin' });
+			await openInstitutionDashboard({ app, institution: 'Ext Demo Corp' });
+
 			await app.clientDashboard.selectTab('Vaults');
 
 			if (vault === 'USDC arbitrum') {
