@@ -9,7 +9,8 @@ test.describe('Overview page - Client', async () => {
 		await openInstitutionDashboard({ app, institution: 'Ext Demo Corp' });
 	});
 
-	test('It should display User role', async ({ app }) => {
+	// SKIP - Client test accounts have been removed
+	test.skip('It should display User role', async ({ app }) => {
 		await app.clientDashboard.shouldHaveRoles({ user: 'Viewer', wallet: 'No wallet connected' });
 	});
 

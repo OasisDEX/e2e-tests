@@ -15,9 +15,12 @@ test.describe('Client dashboard - Overview - Manage internal users - Viewer role
 	});
 });
 
-test.describe('Client dashboard - Overview - Manage internal users - Admin role', async () => {
+// SKIP - Client test accounts have been removed
+test.describe.skip('Client dashboard - Overview - Manage internal users - Admin role', async () => {
 	test.beforeEach(async ({ app }) => {
-		await signIn({ app, userRights: 'client', role: 'RoleAdmin' });
+		await signIn({ app, userRights: 'admin' });
+		await openInstitutionDashboard({ app, institution: 'Ext Demo Corp' });
+
 		await app.clientDashboard.overview.selectPanel('Manage internal users');
 	});
 

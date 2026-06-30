@@ -2,7 +2,8 @@ import { test } from '#institutionsNoWalletFixtures';
 import { openInstitutionDashboard } from 'srcInstitutions/utils/openInstitutionDashboard';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
-test.describe('Overview - Feedback', async () => {
+// SKIP - Client test accounts have been removed
+test.describe.skip('Overview - Feedback', async () => {
 	test.beforeEach(async ({ app }) => {
 		await signIn({ app, userRights: 'admin' });
 		await openInstitutionDashboard({ app, institution: 'Ext Demo Corp' });

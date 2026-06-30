@@ -1,6 +1,6 @@
 import { test } from '#institutionsNoWalletFixtures';
 import { openInstitutionDashboard } from 'srcInstitutions/utils/openInstitutionDashboard';
-import { adminUsername, clientViewerUsername, signIn } from 'srcInstitutions/utils/signIn';
+import { adminUsername, signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('Header - Client', async () => {
 	test.beforeEach(async ({ app }) => {
@@ -13,7 +13,7 @@ test.describe('Header - Client', async () => {
 	}) => {
 		await app.header.shouldHave({
 			logOut: true,
-			emailAddress: clientViewerUsername,
+			emailAddress: adminUsername,
 			connectWallet: true,
 		});
 	});
