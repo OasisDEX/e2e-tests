@@ -1,12 +1,14 @@
 import { test } from '#institutionsWithWalletFixtures';
 import { connectWallet } from 'srcInstitutions/utils/connectWallet';
+import { openInstitutionDashboard } from 'srcInstitutions/utils/openInstitutionDashboard';
 import { signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('Header - Client -  With wallet', async () => {
 	test.beforeEach(async ({ app }, testInfo) => {
 		testInfo.setTimeout(testInfo.timeout + 30_000);
 
-		await signIn({ app, userRights: 'client', role: 'Viewer' });
+		await signIn({ app, userRights: 'admin' });
+		await openInstitutionDashboard({ app, institution: 'Ext Demo Corp' });
 	});
 
 	test('It should connect wallet', async ({ app, metamask }) => {
