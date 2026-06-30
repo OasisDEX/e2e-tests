@@ -1,10 +1,12 @@
 import { test } from '#institutionsNoWalletFixtures';
+import { openInstitutionDashboard } from 'srcInstitutions/utils/openInstitutionDashboard';
 import { signIn } from 'srcInstitutions/utils/signIn';
 import { expectDefaultTimeout } from 'utils/config';
 
 test.describe('Client dashboard - Overview - Institution overview', async () => {
 	test.beforeEach(async ({ app }) => {
-		await signIn({ app, userRights: 'client', role: 'Viewer' });
+		await signIn({ app, userRights: 'admin' });
+		await openInstitutionDashboard({ app, institution: 'Ext Demo Corp' });
 	});
 
 	test('It should display Value Locked graph and switch off/on "Stack" feature', async ({

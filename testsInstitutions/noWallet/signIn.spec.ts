@@ -52,7 +52,8 @@ test.describe('Sign in', async () => {
 		await app.signIn.shouldDisplayInvalid2faCodeError();
 	});
 
-	test('It should sign in with valid credentials - Client', async ({ app }) => {
+	// Client test accounts have been removed
+	test.skip('It should sign in with valid credentials - Client', async ({ app }) => {
 		await app.signIn.enterEmail(clientViewerUsername);
 		await app.signIn.enterPassword(clientViewerPassword);
 		await app.signIn.signIn();
@@ -60,7 +61,8 @@ test.describe('Sign in', async () => {
 		await app.clientDashboard.shouldBeVisible();
 	});
 
-	test('It should ask for 2FA code - Client', async ({ app }) => {
+	// Client test accounts have been removed
+	test.skip('It should ask for 2FA code - Client', async ({ app }) => {
 		await app.signIn.enterEmail(clientMfaUsername);
 		await app.signIn.enterPassword(clientMfaPassword);
 		await app.signIn.signIn();
@@ -68,7 +70,8 @@ test.describe('Sign in', async () => {
 		await app.signIn.shouldAskFor2fa();
 	});
 
-	test('It should show error when entering wrong 2FA code - Client', async ({ app }) => {
+	// Client test accounts have been removed
+	test.skip('It should show error when entering wrong 2FA code - Client', async ({ app }) => {
 		await app.signIn.enterEmail(clientMfaUsername);
 		await app.signIn.enterPassword(clientMfaPassword);
 		await app.signIn.signIn();
@@ -78,7 +81,8 @@ test.describe('Sign in', async () => {
 		await app.signIn.shouldDisplayWrong2faCodeError();
 	});
 
-	test('It should show error when entering invalid 2FA code - Client', async ({ app }) => {
+	// Client test accounts have been removed
+	test.skip('It should show error when entering invalid 2FA code - Client', async ({ app }) => {
 		await app.signIn.enterEmail(clientMfaUsername);
 		await app.signIn.enterPassword(clientMfaPassword);
 		await app.signIn.signIn();

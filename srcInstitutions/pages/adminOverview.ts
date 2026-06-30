@@ -15,4 +15,13 @@ export class AdminOverview {
 			timeout: expectDefaultTimeout * 3,
 		});
 	}
+
+	@step
+	async openInstitution(name: string) {
+		await this.page
+			.locator('[class*="AdminPanelInstitutions_table_"] tr')
+			.filter({ has: this.page.getByText(name, { exact: true }) })
+			.getByRole('button', { name: 'Open' })
+			.click();
+	}
 }

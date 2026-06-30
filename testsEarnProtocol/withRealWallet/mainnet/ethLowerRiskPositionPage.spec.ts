@@ -220,8 +220,8 @@ test.describe('With real wallet - ETH Mainnet Lower Risk position page - Withdra
 		await app.positionPage.sidebar.depositOrWithdraw('0.0001');
 
 		await app.positionPage.sidebar.depositOrWithdrawAmountShouldBe({
-			// amount: '0.0001',  --> Issue with 1Inch - Fix not prioritised
-			amount: '<0.001',
+			// amount: '0.0001',  --> Issue with 1Inch - Amount randomly displayed as '0.0001' or '<0.001'
+			amount: '(<)?0.00(0)?1',
 			tokenOrCurrency: 'ETH',
 		});
 	});
@@ -446,6 +446,4 @@ test.describe('With real wallet - Mainnet ETH Lower Risk Position page - Unstake
 		await app.positionPage.sidebar.changeNetwork();
 		await metamask.approveSwitchNetwork();
 	});
-
-
 });

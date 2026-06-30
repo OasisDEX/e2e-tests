@@ -1,9 +1,11 @@
 import { test } from '#institutionsNoWalletFixtures';
+import { openInstitutionDashboard } from 'srcInstitutions/utils/openInstitutionDashboard';
 import { adminUsername, clientViewerUsername, signIn } from 'srcInstitutions/utils/signIn';
 
 test.describe('Header - Client', async () => {
 	test.beforeEach(async ({ app }) => {
-		await signIn({ app, userRights: 'client', role: 'Viewer' });
+		await signIn({ app, userRights: 'admin' });
+		await openInstitutionDashboard({ app, institution: 'Ext Demo Corp' });
 	});
 
 	test(`It should display 'Log out' button, user's email address and 'Connect wallet' button in header`, async ({
