@@ -1,8 +1,9 @@
 name: Nightly Run
 
-on: 
-  schedule:
-    - cron:  '0 1 * * 1-5'
+on:
+  # schedule:
+  #   - cron:  '0 1 * * 1-5'
+  workflow_dispatch:
 
 jobs:
   institutions-no-wallet-tests:
@@ -53,7 +54,7 @@ jobs:
       report_name: lazy-real-wallet-balance
     secrets: inherit
 
-  # api-tests: 
+  # api-tests:
   #   uses: ./.github/workflows/z_Reusable_Apis.yml
   #   with:
   #     script: api-tests
@@ -97,7 +98,7 @@ jobs:
   #         name: playwright-report-with-wallet-aave-ethereum
   #         path: playwright-reports/with-wallet-aave-ethereum
   #         retention-days: 30
-  
+
   # with-wallet-aave-arbitrum-tests:
   #   name: 'With wallet - Aave - Arbitrum'
   #   runs-on: ubuntu-latest
@@ -252,7 +253,7 @@ jobs:
   #         name: playwright-report-with-wallet-morphoblue
   #         path: playwright-reports/with-wallet-morphoblue
   #         retention-days: 30
-  
+
   # with-wallet-morpho-and-ajna-ethereum:
   #   name: 'With wallet - Morpho & Ajna - Ethereum'
   #   runs-on: ubuntu-latest
@@ -283,7 +284,7 @@ jobs:
   #         name: with-wallet-morpho-and-ajna-ethereum
   #         path: playwright-reports/with-wallet-morpho-and-ajna-ethereum
   #         retention-days: 30
-  
+
   # with-wallet-morpho-and-ajna-base:
   #   name: 'With wallet - Morpho & Ajna - Base'
   #   runs-on: ubuntu-latest
@@ -314,7 +315,7 @@ jobs:
   #         name: with-wallet-morpho-and-ajna-base
   #         path: playwright-reports/with-wallet-morpho-and-ajna-base
   #         retention-days: 30
-  
+
   # with-wallet-ajna-arbitrum:
   #   name: 'With wallet - Ajna - Arbitrum'
   #   runs-on: ubuntu-latest
@@ -345,7 +346,7 @@ jobs:
   #         name: with-wallet-ajna-arbitrum
   #         path: playwright-reports/with-wallet-ajna-arbitrum
   #         retention-days: 30
-  
+
   # with-wallet-ajna-tests:
   #   name: 'With wallet - Ajna - All but Optimism'
   #   runs-on: ubuntu-latest
@@ -376,7 +377,7 @@ jobs:
   #         name: playwright-report-with-wallet-ajna
   #         path: playwright-reports/with-wallet-ajna
   #         retention-days: 30
-  
+
   # with-wallet-maker-tests:
   #   name: 'With wallet - Maker'
   #   runs-on: ubuntu-latest
@@ -469,7 +470,7 @@ jobs:
   #         name: playwright-report-with-wallet-open-positions-aave-ethereum-borrow
   #         path: playwright-reports/with-wallet-open-positions-aave-ethereum-borrow
   #         retention-days: 30
- 
+
   # with-wallet-open-positions-tests-aave-ethereum-earn-multiply:
   #   name: 'Open Positions - Aave - Ethereum - Earn & Multiply'
   #   runs-on: ubuntu-latest
