@@ -26,6 +26,7 @@ test.describe('Portfolio', async () => {
 	test('It should show Position info - Base ETH and Mainnet ETH HR positions', async ({ app }) => {
 		await expect(async () => {
 			await app.portfolio.open('0x10649c79428d718621821Cf6299e91920284743F');
+
 			await app.portfolio.shouldShowPositionData({
 				network: 'base',
 				token: 'USDC',
@@ -36,7 +37,7 @@ test.describe('Portfolio', async () => {
 				marketValue: '[0-9].[0-9]{2,4}',
 				netContributions: '[0-9].[0-9]{2,4}',
 				earningsToDate: '[0-9].[0-9]{2,4}',
-				sumrEarned: '[0-9].[0-9]{2,4}',
+				// sumrEarned: '[0-9].[0-9]{2,4}', --> SKIP while BUMMER deployed to staging
 			});
 		}).toPass();
 	});
