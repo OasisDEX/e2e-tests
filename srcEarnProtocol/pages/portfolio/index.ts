@@ -144,6 +144,8 @@ export class Portfolio {
 
 		// Assertion with debugging purposes
 		await expect(positionLocator, `Testing: ${network} ${token} ${risk} position`).toBeVisible();
+		// Data not visible without scroll
+		await positionLocator.scrollIntoViewIfNeeded();
 
 		//
 		const parameterLocator = (
@@ -213,8 +215,8 @@ export class Portfolio {
 						['$SUMR', '30d APY', 'Live APY'].includes(label)
 							? '%'
 							: label === '$SUMR Earned'
-								? '.* SUMR'
-								: `.* ${token}`
+								? '.*SUMR'
+								: `.*${token}`
 					}`,
 				);
 
