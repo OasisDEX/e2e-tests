@@ -1,6 +1,7 @@
 import { expect, step } from '#earnProtocolFixtures';
 import { Locator, Page } from '@playwright/test';
 import { RiskLevels, RiskManagementTypes } from 'srcEarnProtocol/utils/types';
+import { expectDefaultTimeout } from 'utils/config';
 import { Preview } from './preview';
 
 export class Dca {
@@ -177,11 +178,6 @@ export class Dca {
 	}
 
 	@step
-	async previewDcaStrategy() {
-		await this.page.getByRole('button', { name: 'Preview DCA Strategy' }).click();
-	}
-
-	@step
 	async connectWallet() {
 		await this.page.getByRole('button', { name: 'Connect Wallet' }).click();
 	}
@@ -208,6 +204,26 @@ export class Dca {
 			.filter({ hasText: 'Only trade until' })
 			.locator('input')
 			.fill(date);
+	}
+
+	@step
+	async previewDcaStrategy() {
+		await this.page.getByRole('button', { name: 'Preview DCA Strategy' }).click();
+	}
+
+	@step
+	async shouldLoadAllDataInPreviewPage() {
+		await expect(
+			this.page
+				.locator('[class*="dca_pricePreviewBlock_"]')
+				.filter({
+					has: this.page.getByText('Balance covers strategy', { exact: true }),
+				})
+				.filter({
+					has: this.page.getByText('No', { exact: true }),
+				}),
+			'Should load all data in preview page',
+		).toBeVisible({ timeout: expectDefaultTimeout });
 	}
 
 	@step
