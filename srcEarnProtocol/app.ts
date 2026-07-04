@@ -1,6 +1,7 @@
 import { expect } from '#earnProtocolFixtures';
 import { step } from '#noWalletFixtures';
 import { Page } from '@playwright/test';
+import { expectDefaultTimeout } from 'utils/config';
 import { Banners } from './banners';
 import { Modals } from './modals';
 import {
@@ -93,6 +94,14 @@ export class App {
 
 	async pause() {
 		await this.page.pause();
+	}
+
+	@step
+	async openPage() {
+		await expect(async () => {
+			await this.page.goto('', { timeout: expectDefaultTimeout * 2 });
+			await this.waitForAppToBeStable();
+		}).toPass();
 	}
 
 	@step

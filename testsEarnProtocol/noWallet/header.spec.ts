@@ -111,8 +111,7 @@ test.describe('Header - App @regression', async () => {
 		await app.header.support.shouldHave(['Email support', 'Join the Discord Community']);
 	});
 
-	// SKIP - TO BE UPDATED
-	test.skip('It should open Beach Club landing page', async ({ app }) => {
+	test('It should open Beach Club landing page', async ({ app }) => {
 		await app.header.beachClub();
 		await app.beachClubLandingPage.shouldBeVisible();
 	});

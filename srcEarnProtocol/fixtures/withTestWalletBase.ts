@@ -10,8 +10,6 @@ export const test = metaMaskFixtures(baseSetup).extend<{
 		async ({ page, context }, use) => {
 			const app = new App(page);
 
-			await app.page.goto('');
-
 			await context.addCookies([
 				{
 					name: 'analyticsCookie',
@@ -21,7 +19,7 @@ export const test = metaMaskFixtures(baseSetup).extend<{
 				},
 			]);
 
-			await app.waitForAppToBeStable();
+			await app.openPage();
 
 			await use(app);
 
