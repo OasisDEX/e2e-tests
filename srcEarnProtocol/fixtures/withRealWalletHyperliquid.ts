@@ -1,7 +1,7 @@
 import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import hyperliquidRealWalletSetup from '../../utils/synpress/real-wallet-setup/hyperliquidRealWallet.setup';
 import { App } from '../app';
-import { earnProtocolBaseUrl } from 'utils/config';
+import { earnProtocolBaseUrl, openPageTimeout } from 'utils/config';
 
 export const test = metaMaskFixtures(hyperliquidRealWalletSetup).extend<{
 	app: App;
@@ -25,7 +25,7 @@ export const test = metaMaskFixtures(hyperliquidRealWalletSetup).extend<{
 
 			await app.page.close();
 		},
-		{ timeout: 360_000 },
+		{ timeout: openPageTimeout },
 	],
 });
 

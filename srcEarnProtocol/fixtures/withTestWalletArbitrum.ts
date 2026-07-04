@@ -1,7 +1,7 @@
 import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import arbitrumSetup from '../../utils/synpress/test-wallet-setup/arbitrum.setup';
 import { App } from '../app';
-import { earnProtocolBaseUrl } from 'utils/config';
+import { earnProtocolBaseUrl, openPageTimeout } from 'utils/config';
 
 export const test = metaMaskFixtures(arbitrumSetup).extend<{
 	app: App;
@@ -25,7 +25,7 @@ export const test = metaMaskFixtures(arbitrumSetup).extend<{
 
 			await app.page.close();
 		},
-		{ timeout: 360_000 },
+		{ timeout: openPageTimeout },
 	],
 });
 

@@ -1,7 +1,7 @@
 import { expect } from '#earnProtocolFixtures';
 import { step } from '#noWalletFixtures';
 import { Page } from '@playwright/test';
-import { expectDefaultTimeout } from 'utils/config';
+import { expectDefaultTimeout, openPageTimeout } from 'utils/config';
 import { Banners } from './banners';
 import { Modals } from './modals';
 import {
@@ -98,13 +98,14 @@ export class App {
 
 	@step
 	async openPage() {
+		// Quadratic backoff: 3*n² seconds per retry → 3s, 12s, 27s, 48s, 75s
 		const retryIntervals = [1, 2, 3, 4, 5].map((n) => 3_000 * n * n);
 		await expect(async () => {
 			await this.page.goto('', { timeout: expectDefaultTimeout * 2 });
 			await this.waitForAppToBeStable();
 		}).toPass({
 			intervals: retryIntervals,
-			timeout: 360_000,
+			timeout: openPageTimeout,
 		});
 	}
 

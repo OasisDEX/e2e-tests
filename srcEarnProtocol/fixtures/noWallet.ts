@@ -1,6 +1,6 @@
 import { test as base } from '@playwright/test';
 import { App } from '../app';
-import { earnProtocolBaseUrl } from 'utils/config';
+import { earnProtocolBaseUrl, openPageTimeout } from 'utils/config';
 
 type MyFixtures = {
 	app: App;
@@ -26,7 +26,7 @@ export const test = base.extend<MyFixtures>({
 
 			await app.page.close();
 		},
-		{ timeout: 360_000 },
+		{ timeout: openPageTimeout },
 	],
 });
 
