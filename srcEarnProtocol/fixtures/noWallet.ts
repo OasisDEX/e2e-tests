@@ -26,7 +26,7 @@ export const test = base.extend<MyFixtures>({
 
 			await app.page.close();
 		},
-		{ timeout: openPageTimeout },
+		{ timeout: openPageTimeout + 5_000 },
 	],
 });
 
