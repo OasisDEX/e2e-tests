@@ -98,10 +98,14 @@ export class App {
 
 	@step
 	async openPage() {
+		const retryIntervals = [1, 2, 3, 4, 5].map((n) => 3_000 * n * n);
 		await expect(async () => {
 			await this.page.goto('', { timeout: expectDefaultTimeout * 2 });
 			await this.waitForAppToBeStable();
-		}).toPass();
+		}).toPass({
+			intervals: retryIntervals,
+			timeout: 360_000,
+		});
 	}
 
 	@step

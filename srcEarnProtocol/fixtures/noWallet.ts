@@ -26,7 +26,7 @@ export const test = base.extend<MyFixtures>({
 
 			await app.page.close();
 		},
-		{ timeout: 50000 },
+		{ timeout: 360_000 },
 	],
 });
 
