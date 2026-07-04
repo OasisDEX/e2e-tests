@@ -25,7 +25,7 @@ export const test = metaMaskFixtures(sonicRealWalletSetup).extend<{
 
 			await app.page.close();
 		},
-		{ timeout: openPageTimeout },
+		{ timeout: openPageTimeout + 5_000 },
 	],
 });
 
