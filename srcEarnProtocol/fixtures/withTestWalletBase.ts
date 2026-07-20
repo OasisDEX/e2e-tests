@@ -1,7 +1,7 @@
 import { metaMaskFixtures } from '@synthetixio/synpress/playwright';
 import baseSetup from '../../utils/synpress/test-wallet-setup/base.setup';
 import { App } from '../app';
-import { earnProtocolBaseUrl } from 'utils/config';
+import { earnProtocolBaseUrl, openPageTimeout } from 'utils/config';
 
 export const test = metaMaskFixtures(baseSetup).extend<{
 	app: App;
@@ -9,8 +9,6 @@ export const test = metaMaskFixtures(baseSetup).extend<{
 	app: [
 		async ({ page, context }, use) => {
 			const app = new App(page);
-
-			await app.page.goto('');
 
 			await context.addCookies([
 				{
@@ -21,13 +19,13 @@ export const test = metaMaskFixtures(baseSetup).extend<{
 				},
 			]);
 
-			await app.waitForAppToBeStable();
+			await app.openPage();
 
 			await use(app);
 
 			await app.page.close();
 		},
-		{ timeout: 50000 },
+		{ timeout: openPageTimeout + 5_000 },
 	],
 });
 

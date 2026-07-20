@@ -27,6 +27,11 @@ export const extremelyLongTestTimeout: number =
 export const gigaTestTimeout: number =
 	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 400_000 : 360_000;
 
+export const openPageTimeout: number =
+	earnProtocolBaseUrl.includes('localhost') || earnProtocolBaseUrl.includes('3000.csb.app')
+		? 400_000
+		: 360_000;
+
 export const positionTimeout: number =
 	baseUrl.includes('localhost') || baseUrl.includes('3000.csb.app') ? 60_000 : 45_000;
 
